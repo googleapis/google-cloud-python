@@ -17,10 +17,10 @@ The 1.0.0 release requires Python 3.6+.
 
 Methods expect request objects. We provide a script that will convert most common use cases.
 
-* Install the library
+* Install the library and `libcst`.
 
 ```py
-python3 -m pip install google-cloud-websecurityscanner
+python3 -m pip install google-cloud-websecurityscanner libcst
 ```
 
 * The script `fixup_websecurityscanner_v1alpha_keywords.py` and `fixup_websecurityscanner_v1beta_keywords.py` are shipped with the library. It expects an input directory (with the code to convert) and an empty destination directory.

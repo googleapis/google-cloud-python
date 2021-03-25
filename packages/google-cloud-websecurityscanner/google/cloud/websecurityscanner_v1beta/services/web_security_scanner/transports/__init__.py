@@ -30,7 +30,6 @@ _transport_registry = (
 _transport_registry["grpc"] = WebSecurityScannerGrpcTransport
 _transport_registry["grpc_asyncio"] = WebSecurityScannerGrpcAsyncIOTransport
 
-
 __all__ = (
     "WebSecurityScannerTransport",
     "WebSecurityScannerGrpcTransport",

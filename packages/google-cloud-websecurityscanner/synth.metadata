@@ -3,15 +3,23 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-websecurityscanner.git",
-        "sha": "bd5365c10f681b2300a834c13a9a970e71c74b03"
+        "remote": "git@github.com:googleapis/python-websecurityscanner",
+        "sha": "c051344a2a83b0e22794984a6502cec59b97fe54"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "d5c594f49d7ce6c698807c3602551e56b45f0b33",
+        "internalRef": "365084845"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d07b7b7afa718686db7b095317f608a2f1b6b1cb"
+        "sha": "bb854b6c048619e3be4e8b8ce8ed10aa74ea78ef"
       }
     }
   ],

@@ -48,22 +48,22 @@ class ScanConfig(proto.Message):
         starting_urls (Sequence[str]):
             Required. The starting URLs from which the
             scanner finds site pages.
-        authentication (~.scan_config.ScanConfig.Authentication):
+        authentication (google.cloud.websecurityscanner_v1alpha.types.ScanConfig.Authentication):
             The authentication configuration. If
             specified, service will use the authentication
             configuration during scanning.
-        user_agent (~.scan_config.ScanConfig.UserAgent):
+        user_agent (google.cloud.websecurityscanner_v1alpha.types.ScanConfig.UserAgent):
             The user agent used during scanning.
         blacklist_patterns (Sequence[str]):
             The blacklist URL patterns as described in
             https://cloud.google.com/security-
             scanner/docs/excluded-urls
-        schedule (~.scan_config.ScanConfig.Schedule):
+        schedule (google.cloud.websecurityscanner_v1alpha.types.ScanConfig.Schedule):
             The schedule of the ScanConfig.
-        target_platforms (Sequence[~.scan_config.ScanConfig.TargetPlatform]):
+        target_platforms (Sequence[google.cloud.websecurityscanner_v1alpha.types.ScanConfig.TargetPlatform]):
             Set of Cloud Platforms targeted by the scan. If empty,
             APP_ENGINE will be used as a default.
-        latest_run (~.scan_run.ScanRun):
+        latest_run (google.cloud.websecurityscanner_v1alpha.types.ScanRun):
             Latest ScanRun if available.
     """
 
@@ -84,9 +84,9 @@ class ScanConfig(proto.Message):
         r"""Scan authentication configuration.
 
         Attributes:
-            google_account (~.scan_config.ScanConfig.Authentication.GoogleAccount):
+            google_account (google.cloud.websecurityscanner_v1alpha.types.ScanConfig.Authentication.GoogleAccount):
                 Authentication using a Google account.
-            custom_account (~.scan_config.ScanConfig.Authentication.CustomAccount):
+            custom_account (google.cloud.websecurityscanner_v1alpha.types.ScanConfig.Authentication.CustomAccount):
                 Authentication using a custom account.
         """
 
@@ -150,7 +150,7 @@ class ScanConfig(proto.Message):
         r"""Scan schedule configuration.
 
         Attributes:
-            schedule_time (~.timestamp.Timestamp):
+            schedule_time (google.protobuf.timestamp_pb2.Timestamp):
                 A timestamp indicates when the next run will
                 be scheduled. The value is refreshed by the
                 server after each run. If unspecified, it will

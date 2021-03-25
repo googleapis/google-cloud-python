@@ -16,17 +16,19 @@
 #
 
 from collections import OrderedDict
+from distutils import util
 import os
 import re
-from typing import Callable, Dict, Sequence, Tuple, Type, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
@@ -42,7 +44,7 @@ from google.cloud.websecurityscanner_v1alpha.types import web_security_scanner
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
-from .transports.base import WebSecurityScannerTransport
+from .transports.base import WebSecurityScannerTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import WebSecurityScannerGrpcTransport
 from .transports.grpc_asyncio import WebSecurityScannerGrpcAsyncIOTransport
 
@@ -124,6 +126,22 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            WebSecurityScannerClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -135,13 +153,43 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            WebSecurityScannerClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> WebSecurityScannerTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            WebSecurityScannerTransport: The transport used by the client instance.
+        """
+        return self._transport
+
+    @staticmethod
+    def finding_path(
+        project: str, scan_config: str, scan_run: str, finding: str,
+    ) -> str:
+        """Return a fully-qualified finding string."""
+        return "projects/{project}/scanConfigs/{scan_config}/scanRuns/{scan_run}/findings/{finding}".format(
+            project=project,
+            scan_config=scan_config,
+            scan_run=scan_run,
+            finding=finding,
+        )
+
+    @staticmethod
+    def parse_finding_path(path: str) -> Dict[str, str]:
+        """Parse a finding path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/scanConfigs/(?P<scan_config>.+?)/scanRuns/(?P<scan_run>.+?)/findings/(?P<finding>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def scan_config_path(project: str, scan_config: str,) -> str:
@@ -174,12 +222,72 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         )
         return m.groupdict() if m else {}
 
+    @staticmethod
+    def common_billing_account_path(billing_account: str,) -> str:
+        """Return a fully-qualified billing_account string."""
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
+
+    @staticmethod
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+        """Parse a billing_account path into its component segments."""
+        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_folder_path(folder: str,) -> str:
+        """Return a fully-qualified folder string."""
+        return "folders/{folder}".format(folder=folder,)
+
+    @staticmethod
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
+        """Parse a folder path into its component segments."""
+        m = re.match(r"^folders/(?P<folder>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_organization_path(organization: str,) -> str:
+        """Return a fully-qualified organization string."""
+        return "organizations/{organization}".format(organization=organization,)
+
+    @staticmethod
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
+        """Parse a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_project_path(project: str,) -> str:
+        """Return a fully-qualified project string."""
+        return "projects/{project}".format(project=project,)
+
+    @staticmethod
+    def parse_common_project_path(path: str) -> Dict[str, str]:
+        """Parse a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_location_path(project: str, location: str,) -> str:
+        """Return a fully-qualified location string."""
+        return "projects/{project}/locations/{location}".format(
+            project=project, location=location,
+        )
+
+    @staticmethod
+    def parse_common_location_path(path: str) -> Dict[str, str]:
+        """Parse a location path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
+        return m.groupdict() if m else {}
+
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
-        transport: Union[str, WebSecurityScannerTransport] = None,
-        client_options: ClientOptions = None,
+        credentials: Optional[credentials.Credentials] = None,
+        transport: Union[str, WebSecurityScannerTransport, None] = None,
+        client_options: Optional[client_options_lib.ClientOptions] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the web security scanner client.
 
@@ -189,51 +297,73 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.WebSecurityScannerTransport]): The
+            transport (Union[str, WebSecurityScannerTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (ClientOptions): Custom options for the client. It
-                won't take effect if a ``transport`` instance is provided.
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint, this is the default value for
-                the environment variable) and "auto" (auto switch to the default
-                mTLS endpoint if client SSL credentials is present). However,
-                the ``api_endpoint`` property takes precedence if provided.
-                (2) The ``client_cert_source`` property is used to provide client
-                SSL credentials for mutual TLS transport. If not provided, the
-                default SSL credentials will be used if present.
+                use the default regular endpoint) and "auto" (auto switch to the
+                default mTLS endpoint if client certificate is present, this is
+                the default value). However, the ``api_endpoint`` property takes
+                precedence if provided.
+                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                is "true", then the ``client_cert_source`` property can be used
+                to provide client certificate for mutual TLS transport. If
+                not provided, the default SSL client certificate will be used if
+                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
+                set, no client certificate will be used.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
+                your own client library.
 
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
         if isinstance(client_options, dict):
-            client_options = ClientOptions.from_dict(client_options)
+            client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
-            client_options = ClientOptions.ClientOptions()
+            client_options = client_options_lib.ClientOptions()
 
-        if client_options.api_endpoint is None:
-            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS", "never")
-            if use_mtls_env == "never":
-                client_options.api_endpoint = self.DEFAULT_ENDPOINT
-            elif use_mtls_env == "always":
-                client_options.api_endpoint = self.DEFAULT_MTLS_ENDPOINT
-            elif use_mtls_env == "auto":
-                has_client_cert_source = (
-                    client_options.client_cert_source is not None
-                    or mtls.has_default_client_cert_source()
+        # Create SSL credentials for mutual TLS if needed.
+        use_client_cert = bool(
+            util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
+        )
+
+        client_cert_source_func = None
+        is_mtls = False
+        if use_client_cert:
+            if client_options.client_cert_source:
+                is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
+            else:
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
                 )
-                client_options.api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT
-                    if has_client_cert_source
-                    else self.DEFAULT_ENDPOINT
+
+        # Figure out which api endpoint to use.
+        if client_options.api_endpoint is not None:
+            api_endpoint = client_options.api_endpoint
+        else:
+            use_mtls_env = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
+            if use_mtls_env == "never":
+                api_endpoint = self.DEFAULT_ENDPOINT
+            elif use_mtls_env == "always":
+                api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+            elif use_mtls_env == "auto":
+                api_endpoint = (
+                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
                 )
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -257,11 +387,11 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
             self._transport = Transport(
                 credentials=credentials,
                 credentials_file=client_options.credentials_file,
-                host=client_options.api_endpoint,
+                host=api_endpoint,
                 scopes=client_options.scopes,
-                api_mtls_endpoint=client_options.api_endpoint,
-                client_cert_source=client_options.client_cert_source,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
+                client_info=client_info,
             )
 
     def create_scan_config(
@@ -277,20 +407,22 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         r"""Creates a new ScanConfig.
 
         Args:
-            request (:class:`~.web_security_scanner.CreateScanConfigRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.CreateScanConfigRequest):
                 The request object. Request for the `CreateScanConfig`
                 method.
-            parent (:class:`str`):
+            parent (str):
                 Required. The parent resource name
                 where the scan is created, which should
                 be a project resource name in the format
                 'projects/{projectId}'.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            scan_config (:class:`~.gcw_scan_config.ScanConfig`):
+            scan_config (google.cloud.websecurityscanner_v1alpha.types.ScanConfig):
                 Required. The ScanConfig to be
                 created.
+
                 This corresponds to the ``scan_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -302,7 +434,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcw_scan_config.ScanConfig:
+            google.cloud.websecurityscanner_v1alpha.types.ScanConfig:
                 A ScanConfig resource contains the
                 configurations to launch a scan. next
                 id: 12
@@ -311,29 +443,31 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, scan_config]):
+        has_flattened_params = any([parent, scan_config])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = web_security_scanner.CreateScanConfigRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a web_security_scanner.CreateScanConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, web_security_scanner.CreateScanConfigRequest):
+            request = web_security_scanner.CreateScanConfigRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
-        if scan_config is not None:
-            request.scan_config = scan_config
+            if parent is not None:
+                request.parent = parent
+            if scan_config is not None:
+                request.scan_config = scan_config
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.create_scan_config,
-            default_timeout=600.0,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.create_scan_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -360,14 +494,15 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         resources.
 
         Args:
-            request (:class:`~.web_security_scanner.DeleteScanConfigRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.DeleteScanConfigRequest):
                 The request object. Request for the `DeleteScanConfig`
                 method.
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 ScanConfig to be deleted. The name
                 follows the format of
                 'projects/{projectId}/scanConfigs/{scanConfigId}'.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -381,35 +516,29 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = web_security_scanner.DeleteScanConfigRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a web_security_scanner.DeleteScanConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, web_security_scanner.DeleteScanConfigRequest):
+            request = web_security_scanner.DeleteScanConfigRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.delete_scan_config,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
-                ),
-            ),
-            default_timeout=600.0,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.delete_scan_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -434,14 +563,15 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         r"""Gets a ScanConfig.
 
         Args:
-            request (:class:`~.web_security_scanner.GetScanConfigRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.GetScanConfigRequest):
                 The request object. Request for the `GetScanConfig`
                 method.
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 ScanConfig to be returned. The name
                 follows the format of
                 'projects/{projectId}/scanConfigs/{scanConfigId}'.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -453,7 +583,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.scan_config.ScanConfig:
+            google.cloud.websecurityscanner_v1alpha.types.ScanConfig:
                 A ScanConfig resource contains the
                 configurations to launch a scan. next
                 id: 12
@@ -462,35 +592,29 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = web_security_scanner.GetScanConfigRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a web_security_scanner.GetScanConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, web_security_scanner.GetScanConfigRequest):
+            request = web_security_scanner.GetScanConfigRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_scan_config,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
-                ),
-            ),
-            default_timeout=600.0,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.get_scan_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -516,13 +640,14 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         r"""Lists ScanConfigs under a given project.
 
         Args:
-            request (:class:`~.web_security_scanner.ListScanConfigsRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.ListScanConfigsRequest):
                 The request object. Request for the `ListScanConfigs`
                 method.
-            parent (:class:`str`):
+            parent (str):
                 Required. The parent resource name,
                 which should be a project resource name
                 in the format 'projects/{projectId}'.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -534,8 +659,8 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListScanConfigsPager:
-                Response for the ``ListScanConfigs`` method.
+            google.cloud.websecurityscanner_v1alpha.services.web_security_scanner.pagers.ListScanConfigsPager:
+                Response for the ListScanConfigs method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -544,35 +669,29 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = web_security_scanner.ListScanConfigsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a web_security_scanner.ListScanConfigsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, web_security_scanner.ListScanConfigsRequest):
+            request = web_security_scanner.ListScanConfigsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_scan_configs,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
-                ),
-            ),
-            default_timeout=600.0,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_scan_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -606,22 +725,24 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         update of a ScanConfig.
 
         Args:
-            request (:class:`~.web_security_scanner.UpdateScanConfigRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.UpdateScanConfigRequest):
                 The request object. Request for the
                 `UpdateScanConfigRequest` method.
-            scan_config (:class:`~.gcw_scan_config.ScanConfig`):
+            scan_config (google.cloud.websecurityscanner_v1alpha.types.ScanConfig):
                 Required. The ScanConfig to be
                 updated. The name field must be set to
                 identify the resource to be updated. The
                 values of fields not covered by the mask
                 will be ignored.
+
                 This corresponds to the ``scan_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. The update mask applies to the resource. For
                 the ``FieldMask`` definition, see
                 https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -633,7 +754,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcw_scan_config.ScanConfig:
+            google.cloud.websecurityscanner_v1alpha.types.ScanConfig:
                 A ScanConfig resource contains the
                 configurations to launch a scan. next
                 id: 12
@@ -642,29 +763,31 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([scan_config, update_mask]):
+        has_flattened_params = any([scan_config, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = web_security_scanner.UpdateScanConfigRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a web_security_scanner.UpdateScanConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, web_security_scanner.UpdateScanConfigRequest):
+            request = web_security_scanner.UpdateScanConfigRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if scan_config is not None:
-            request.scan_config = scan_config
-        if update_mask is not None:
-            request.update_mask = update_mask
+            if scan_config is not None:
+                request.scan_config = scan_config
+            if update_mask is not None:
+                request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.update_scan_config,
-            default_timeout=600.0,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.update_scan_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -692,14 +815,15 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         r"""Start a ScanRun according to the given ScanConfig.
 
         Args:
-            request (:class:`~.web_security_scanner.StartScanRunRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.StartScanRunRequest):
                 The request object. Request for the `StartScanRun`
                 method.
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 ScanConfig to be used. The name follows
                 the format of
                 'projects/{projectId}/scanConfigs/{scanConfigId}'.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -711,7 +835,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.scan_run.ScanRun:
+            google.cloud.websecurityscanner_v1alpha.types.ScanRun:
                 A ScanRun is a output-only resource
                 representing an actual run of the scan.
 
@@ -719,27 +843,29 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = web_security_scanner.StartScanRunRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a web_security_scanner.StartScanRunRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, web_security_scanner.StartScanRunRequest):
+            request = web_security_scanner.StartScanRunRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.start_scan_run,
-            default_timeout=600.0,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.start_scan_run]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -765,13 +891,14 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         r"""Gets a ScanRun.
 
         Args:
-            request (:class:`~.web_security_scanner.GetScanRunRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.GetScanRunRequest):
                 The request object. Request for the `GetScanRun` method.
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 ScanRun to be returned. The name follows
                 the format of
                 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -783,7 +910,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.scan_run.ScanRun:
+            google.cloud.websecurityscanner_v1alpha.types.ScanRun:
                 A ScanRun is a output-only resource
                 representing an actual run of the scan.
 
@@ -791,35 +918,29 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = web_security_scanner.GetScanRunRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a web_security_scanner.GetScanRunRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, web_security_scanner.GetScanRunRequest):
+            request = web_security_scanner.GetScanRunRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_scan_run,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
-                ),
-            ),
-            default_timeout=600.0,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.get_scan_run]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -846,14 +967,15 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         descending order of ScanRun stop time.
 
         Args:
-            request (:class:`~.web_security_scanner.ListScanRunsRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.ListScanRunsRequest):
                 The request object. Request for the `ListScanRuns`
                 method.
-            parent (:class:`str`):
+            parent (str):
                 Required. The parent resource name,
                 which should be a scan resource name in
                 the format
                 'projects/{projectId}/scanConfigs/{scanConfigId}'.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -865,8 +987,8 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListScanRunsPager:
-                Response for the ``ListScanRuns`` method.
+            google.cloud.websecurityscanner_v1alpha.services.web_security_scanner.pagers.ListScanRunsPager:
+                Response for the ListScanRuns method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -875,35 +997,29 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = web_security_scanner.ListScanRunsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a web_security_scanner.ListScanRunsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, web_security_scanner.ListScanRunsRequest):
+            request = web_security_scanner.ListScanRunsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_scan_runs,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
-                ),
-            ),
-            default_timeout=600.0,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_scan_runs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -935,14 +1051,15 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         r"""Stops a ScanRun. The stopped ScanRun is returned.
 
         Args:
-            request (:class:`~.web_security_scanner.StopScanRunRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.StopScanRunRequest):
                 The request object. Request for the `StopScanRun`
                 method.
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 ScanRun to be stopped. The name follows
                 the format of
                 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -954,7 +1071,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.scan_run.ScanRun:
+            google.cloud.websecurityscanner_v1alpha.types.ScanRun:
                 A ScanRun is a output-only resource
                 representing an actual run of the scan.
 
@@ -962,27 +1079,29 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = web_security_scanner.StopScanRunRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a web_security_scanner.StopScanRunRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, web_security_scanner.StopScanRunRequest):
+            request = web_security_scanner.StopScanRunRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.stop_scan_run,
-            default_timeout=600.0,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.stop_scan_run]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1008,14 +1127,15 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         r"""List CrawledUrls under a given ScanRun.
 
         Args:
-            request (:class:`~.web_security_scanner.ListCrawledUrlsRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.ListCrawledUrlsRequest):
                 The request object. Request for the `ListCrawledUrls`
                 method.
-            parent (:class:`str`):
+            parent (str):
                 Required. The parent resource name,
                 which should be a scan run resource name
                 in the format
                 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1027,8 +1147,8 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListCrawledUrlsPager:
-                Response for the ``ListCrawledUrls`` method.
+            google.cloud.websecurityscanner_v1alpha.services.web_security_scanner.pagers.ListCrawledUrlsPager:
+                Response for the ListCrawledUrls method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1037,35 +1157,29 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = web_security_scanner.ListCrawledUrlsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a web_security_scanner.ListCrawledUrlsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, web_security_scanner.ListCrawledUrlsRequest):
+            request = web_security_scanner.ListCrawledUrlsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_crawled_urls,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
-                ),
-            ),
-            default_timeout=600.0,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_crawled_urls]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1097,13 +1211,14 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         r"""Gets a Finding.
 
         Args:
-            request (:class:`~.web_security_scanner.GetFindingRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.GetFindingRequest):
                 The request object. Request for the `GetFinding` method.
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 Finding to be returned. The name follows
                 the format of
                 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}/findings/{findingId}'.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1115,7 +1230,7 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.finding.Finding:
+            google.cloud.websecurityscanner_v1alpha.types.Finding:
                 A Finding resource represents a
                 vulnerability instance identified during
                 a ScanRun.
@@ -1124,35 +1239,29 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = web_security_scanner.GetFindingRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a web_security_scanner.GetFindingRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, web_security_scanner.GetFindingRequest):
+            request = web_security_scanner.GetFindingRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if name is not None:
-            request.name = name
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.get_finding,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
-                ),
-            ),
-            default_timeout=600.0,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.get_finding]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1179,21 +1288,23 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         r"""List Findings under a given ScanRun.
 
         Args:
-            request (:class:`~.web_security_scanner.ListFindingsRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.ListFindingsRequest):
                 The request object. Request for the `ListFindings`
                 method.
-            parent (:class:`str`):
+            parent (str):
                 Required. The parent resource name,
                 which should be a scan run resource name
                 in the format
                 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            filter (:class:`str`):
+            filter (str):
                 Required. The filter expression. The expression must be
                 in the format: . Supported field: 'finding_type'.
                 Supported operator: '='.
+
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1205,8 +1316,8 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListFindingsPager:
-                Response for the ``ListFindings`` method.
+            google.cloud.websecurityscanner_v1alpha.services.web_security_scanner.pagers.ListFindingsPager:
+                Response for the ListFindings method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1215,37 +1326,31 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, filter]):
+        has_flattened_params = any([parent, filter])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = web_security_scanner.ListFindingsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a web_security_scanner.ListFindingsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, web_security_scanner.ListFindingsRequest):
+            request = web_security_scanner.ListFindingsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
-        if filter is not None:
-            request.filter = filter
+            if parent is not None:
+                request.parent = parent
+            if filter is not None:
+                request.filter = filter
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_findings,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
-                ),
-            ),
-            default_timeout=600.0,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_findings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1277,14 +1382,15 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         r"""List all FindingTypeStats under a given ScanRun.
 
         Args:
-            request (:class:`~.web_security_scanner.ListFindingTypeStatsRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.ListFindingTypeStatsRequest):
                 The request object. Request for the
                 `ListFindingTypeStats` method.
-            parent (:class:`str`):
+            parent (str):
                 Required. The parent resource name,
                 which should be a scan run resource name
                 in the format
                 'projects/{projectId}/scanConfigs/{scanConfigId}/scanRuns/{scanRunId}'.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1296,41 +1402,35 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.web_security_scanner.ListFindingTypeStatsResponse:
-                Response for the ``ListFindingTypeStats`` method.
+            google.cloud.websecurityscanner_v1alpha.types.ListFindingTypeStatsResponse:
+                Response for the ListFindingTypeStats method.
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
             )
 
-        request = web_security_scanner.ListFindingTypeStatsRequest(request)
+        # Minor optimization to avoid making a copy if the user passes
+        # in a web_security_scanner.ListFindingTypeStatsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, web_security_scanner.ListFindingTypeStatsRequest):
+            request = web_security_scanner.ListFindingTypeStatsRequest(request)
 
-        # If we have keyword arguments corresponding to fields on the
-        # request, apply these.
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
 
-        if parent is not None:
-            request.parent = parent
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = gapic_v1.method.wrap_method(
-            self._transport.list_finding_type_stats,
-            default_retry=retries.Retry(
-                initial=0.1,
-                maximum=60.0,
-                multiplier=1.3,
-                predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
-                ),
-            ),
-            default_timeout=600.0,
-            client_info=_client_info,
-        )
+        rpc = self._transport._wrapped_methods[self._transport.list_finding_type_stats]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1346,13 +1446,13 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
             "google-cloud-websecurityscanner",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = ("WebSecurityScannerClient",)

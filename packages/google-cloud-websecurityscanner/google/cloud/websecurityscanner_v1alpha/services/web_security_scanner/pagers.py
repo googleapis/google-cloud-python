@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.websecurityscanner_v1alpha.types import crawled_url
 from google.cloud.websecurityscanner_v1alpha.types import finding
@@ -28,7 +37,7 @@ class ListScanConfigsPager:
     """A pager for iterating through ``list_scan_configs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.web_security_scanner.ListScanConfigsResponse` object, and
+    :class:`google.cloud.websecurityscanner_v1alpha.types.ListScanConfigsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``scan_configs`` field.
 
@@ -37,7 +46,7 @@ class ListScanConfigsPager:
     through the ``scan_configs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.web_security_scanner.ListScanConfigsResponse`
+    All the usual :class:`google.cloud.websecurityscanner_v1alpha.types.ListScanConfigsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -55,9 +64,9 @@ class ListScanConfigsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.web_security_scanner.ListScanConfigsRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.ListScanConfigsRequest):
                 The initial request object.
-            response (:class:`~.web_security_scanner.ListScanConfigsResponse`):
+            response (google.cloud.websecurityscanner_v1alpha.types.ListScanConfigsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -90,7 +99,7 @@ class ListScanConfigsAsyncPager:
     """A pager for iterating through ``list_scan_configs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.web_security_scanner.ListScanConfigsResponse` object, and
+    :class:`google.cloud.websecurityscanner_v1alpha.types.ListScanConfigsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``scan_configs`` field.
 
@@ -99,7 +108,7 @@ class ListScanConfigsAsyncPager:
     through the ``scan_configs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.web_security_scanner.ListScanConfigsResponse`
+    All the usual :class:`google.cloud.websecurityscanner_v1alpha.types.ListScanConfigsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -117,9 +126,9 @@ class ListScanConfigsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.web_security_scanner.ListScanConfigsRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.ListScanConfigsRequest):
                 The initial request object.
-            response (:class:`~.web_security_scanner.ListScanConfigsResponse`):
+            response (google.cloud.websecurityscanner_v1alpha.types.ListScanConfigsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -158,7 +167,7 @@ class ListScanRunsPager:
     """A pager for iterating through ``list_scan_runs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.web_security_scanner.ListScanRunsResponse` object, and
+    :class:`google.cloud.websecurityscanner_v1alpha.types.ListScanRunsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``scan_runs`` field.
 
@@ -167,7 +176,7 @@ class ListScanRunsPager:
     through the ``scan_runs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.web_security_scanner.ListScanRunsResponse`
+    All the usual :class:`google.cloud.websecurityscanner_v1alpha.types.ListScanRunsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -185,9 +194,9 @@ class ListScanRunsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.web_security_scanner.ListScanRunsRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.ListScanRunsRequest):
                 The initial request object.
-            response (:class:`~.web_security_scanner.ListScanRunsResponse`):
+            response (google.cloud.websecurityscanner_v1alpha.types.ListScanRunsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -220,7 +229,7 @@ class ListScanRunsAsyncPager:
     """A pager for iterating through ``list_scan_runs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.web_security_scanner.ListScanRunsResponse` object, and
+    :class:`google.cloud.websecurityscanner_v1alpha.types.ListScanRunsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``scan_runs`` field.
 
@@ -229,7 +238,7 @@ class ListScanRunsAsyncPager:
     through the ``scan_runs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.web_security_scanner.ListScanRunsResponse`
+    All the usual :class:`google.cloud.websecurityscanner_v1alpha.types.ListScanRunsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -247,9 +256,9 @@ class ListScanRunsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.web_security_scanner.ListScanRunsRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.ListScanRunsRequest):
                 The initial request object.
-            response (:class:`~.web_security_scanner.ListScanRunsResponse`):
+            response (google.cloud.websecurityscanner_v1alpha.types.ListScanRunsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -286,7 +295,7 @@ class ListCrawledUrlsPager:
     """A pager for iterating through ``list_crawled_urls`` requests.
 
     This class thinly wraps an initial
-    :class:`~.web_security_scanner.ListCrawledUrlsResponse` object, and
+    :class:`google.cloud.websecurityscanner_v1alpha.types.ListCrawledUrlsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``crawled_urls`` field.
 
@@ -295,7 +304,7 @@ class ListCrawledUrlsPager:
     through the ``crawled_urls`` field on the
     corresponding responses.
 
-    All the usual :class:`~.web_security_scanner.ListCrawledUrlsResponse`
+    All the usual :class:`google.cloud.websecurityscanner_v1alpha.types.ListCrawledUrlsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -313,9 +322,9 @@ class ListCrawledUrlsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.web_security_scanner.ListCrawledUrlsRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.ListCrawledUrlsRequest):
                 The initial request object.
-            response (:class:`~.web_security_scanner.ListCrawledUrlsResponse`):
+            response (google.cloud.websecurityscanner_v1alpha.types.ListCrawledUrlsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -348,7 +357,7 @@ class ListCrawledUrlsAsyncPager:
     """A pager for iterating through ``list_crawled_urls`` requests.
 
     This class thinly wraps an initial
-    :class:`~.web_security_scanner.ListCrawledUrlsResponse` object, and
+    :class:`google.cloud.websecurityscanner_v1alpha.types.ListCrawledUrlsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``crawled_urls`` field.
 
@@ -357,7 +366,7 @@ class ListCrawledUrlsAsyncPager:
     through the ``crawled_urls`` field on the
     corresponding responses.
 
-    All the usual :class:`~.web_security_scanner.ListCrawledUrlsResponse`
+    All the usual :class:`google.cloud.websecurityscanner_v1alpha.types.ListCrawledUrlsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -375,9 +384,9 @@ class ListCrawledUrlsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.web_security_scanner.ListCrawledUrlsRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.ListCrawledUrlsRequest):
                 The initial request object.
-            response (:class:`~.web_security_scanner.ListCrawledUrlsResponse`):
+            response (google.cloud.websecurityscanner_v1alpha.types.ListCrawledUrlsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -416,7 +425,7 @@ class ListFindingsPager:
     """A pager for iterating through ``list_findings`` requests.
 
     This class thinly wraps an initial
-    :class:`~.web_security_scanner.ListFindingsResponse` object, and
+    :class:`google.cloud.websecurityscanner_v1alpha.types.ListFindingsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``findings`` field.
 
@@ -425,7 +434,7 @@ class ListFindingsPager:
     through the ``findings`` field on the
     corresponding responses.
 
-    All the usual :class:`~.web_security_scanner.ListFindingsResponse`
+    All the usual :class:`google.cloud.websecurityscanner_v1alpha.types.ListFindingsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -443,9 +452,9 @@ class ListFindingsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.web_security_scanner.ListFindingsRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.ListFindingsRequest):
                 The initial request object.
-            response (:class:`~.web_security_scanner.ListFindingsResponse`):
+            response (google.cloud.websecurityscanner_v1alpha.types.ListFindingsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -478,7 +487,7 @@ class ListFindingsAsyncPager:
     """A pager for iterating through ``list_findings`` requests.
 
     This class thinly wraps an initial
-    :class:`~.web_security_scanner.ListFindingsResponse` object, and
+    :class:`google.cloud.websecurityscanner_v1alpha.types.ListFindingsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``findings`` field.
 
@@ -487,7 +496,7 @@ class ListFindingsAsyncPager:
     through the ``findings`` field on the
     corresponding responses.
 
-    All the usual :class:`~.web_security_scanner.ListFindingsResponse`
+    All the usual :class:`google.cloud.websecurityscanner_v1alpha.types.ListFindingsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -505,9 +514,9 @@ class ListFindingsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.web_security_scanner.ListFindingsRequest`):
+            request (google.cloud.websecurityscanner_v1alpha.types.ListFindingsRequest):
                 The initial request object.
-            response (:class:`~.web_security_scanner.ListFindingsResponse`):
+            response (google.cloud.websecurityscanner_v1alpha.types.ListFindingsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

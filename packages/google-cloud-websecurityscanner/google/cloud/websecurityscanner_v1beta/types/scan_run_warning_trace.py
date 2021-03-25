@@ -30,7 +30,7 @@ class ScanRunWarningTrace(proto.Message):
     scanning process more effective.
 
     Attributes:
-        code (~.scan_run_warning_trace.ScanRunWarningTrace.Code):
+        code (google.cloud.websecurityscanner_v1beta.types.ScanRunWarningTrace.Code):
             Indicates the warning code.
     """
 

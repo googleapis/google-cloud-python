@@ -62,7 +62,7 @@ class CreateScanConfigRequest(proto.Message):
             scan is created, which should be a project
             resource name in the format
             'projects/{projectId}'.
-        scan_config (~.gcw_scan_config.ScanConfig):
+        scan_config (google.cloud.websecurityscanner_v1beta.types.ScanConfig):
             Required. The ScanConfig to be created.
     """
 
@@ -130,12 +130,12 @@ class UpdateScanConfigRequest(proto.Message):
     r"""Request for the ``UpdateScanConfigRequest`` method.
 
     Attributes:
-        scan_config (~.gcw_scan_config.ScanConfig):
+        scan_config (google.cloud.websecurityscanner_v1beta.types.ScanConfig):
             Required. The ScanConfig to be updated. The
             name field must be set to identify the resource
             to be updated. The values of fields not covered
             by the mask will be ignored.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The update mask applies to the resource. For the
             ``FieldMask`` definition, see
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
@@ -152,7 +152,7 @@ class ListScanConfigsResponse(proto.Message):
     r"""Response for the ``ListScanConfigs`` method.
 
     Attributes:
-        scan_configs (Sequence[~.gcw_scan_config.ScanConfig]):
+        scan_configs (Sequence[google.cloud.websecurityscanner_v1beta.types.ScanConfig]):
             The list of ScanConfigs returned.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -228,7 +228,7 @@ class ListScanRunsResponse(proto.Message):
     r"""Response for the ``ListScanRuns`` method.
 
     Attributes:
-        scan_runs (Sequence[~.scan_run.ScanRun]):
+        scan_runs (Sequence[google.cloud.websecurityscanner_v1beta.types.ScanRun]):
             The list of ScanRuns returned.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -289,7 +289,7 @@ class ListCrawledUrlsResponse(proto.Message):
     r"""Response for the ``ListCrawledUrls`` method.
 
     Attributes:
-        crawled_urls (Sequence[~.crawled_url.CrawledUrl]):
+        crawled_urls (Sequence[google.cloud.websecurityscanner_v1beta.types.CrawledUrl]):
             The list of CrawledUrls returned.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -358,7 +358,7 @@ class ListFindingsResponse(proto.Message):
     r"""Response for the ``ListFindings`` method.
 
     Attributes:
-        findings (Sequence[~.finding.Finding]):
+        findings (Sequence[google.cloud.websecurityscanner_v1beta.types.Finding]):
             The list of Findings returned.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -392,7 +392,7 @@ class ListFindingTypeStatsResponse(proto.Message):
     r"""Response for the ``ListFindingTypeStats`` method.
 
     Attributes:
-        finding_type_stats (Sequence[~.gcw_finding_type_stats.FindingTypeStats]):
+        finding_type_stats (Sequence[google.cloud.websecurityscanner_v1beta.types.FindingTypeStats]):
             The list of FindingTypeStats returned.
     """
 

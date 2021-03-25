@@ -33,9 +33,9 @@ class ScanRunErrorTrace(proto.Message):
     Defines an error trace message for a ScanRun.
 
     Attributes:
-        code (~.scan_run_error_trace.ScanRunErrorTrace.Code):
+        code (google.cloud.websecurityscanner_v1beta.types.ScanRunErrorTrace.Code):
             Indicates the error reason code.
-        scan_config_error (~.gcw_scan_config_error.ScanConfigError):
+        scan_config_error (google.cloud.websecurityscanner_v1beta.types.ScanConfigError):
             If the scan encounters SCAN_CONFIG_ISSUE error, this field
             has the error message encountered during scan configuration
             validation that is performed before each scan run.

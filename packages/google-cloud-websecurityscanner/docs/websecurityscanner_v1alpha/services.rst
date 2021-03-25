@@ -1,6 +1,6 @@
 Services for Google Cloud Websecurityscanner v1alpha API
 ========================================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.websecurityscanner_v1alpha.services.web_security_scanner
-    :members:
-    :inherited-members:
+    web_security_scanner

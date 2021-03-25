@@ -81,9 +81,9 @@ class VulnerableHeaders(proto.Message):
     r"""Information about vulnerable or missing HTTP Headers.
 
     Attributes:
-        headers (Sequence[~.finding_addon.VulnerableHeaders.Header]):
+        headers (Sequence[google.cloud.websecurityscanner_v1alpha.types.VulnerableHeaders.Header]):
             List of vulnerable headers.
-        missing_headers (Sequence[~.finding_addon.VulnerableHeaders.Header]):
+        missing_headers (Sequence[google.cloud.websecurityscanner_v1alpha.types.VulnerableHeaders.Header]):
             List of missing headers.
     """
 

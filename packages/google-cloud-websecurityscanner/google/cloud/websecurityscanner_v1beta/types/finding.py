@@ -68,24 +68,24 @@ class Finding(proto.Message):
         tracking_id (str):
             The tracking ID uniquely identifies a
             vulnerability instance across multiple ScanRuns.
-        form (~.finding_addon.Form):
+        form (google.cloud.websecurityscanner_v1beta.types.Form):
             An addon containing information reported for
             a vulnerability with an HTML form, if any.
-        outdated_library (~.finding_addon.OutdatedLibrary):
+        outdated_library (google.cloud.websecurityscanner_v1beta.types.OutdatedLibrary):
             An addon containing information about
             outdated libraries.
-        violating_resource (~.finding_addon.ViolatingResource):
+        violating_resource (google.cloud.websecurityscanner_v1beta.types.ViolatingResource):
             An addon containing detailed information
             regarding any resource causing the vulnerability
             such as JavaScript sources, image, audio files,
             etc.
-        vulnerable_headers (~.finding_addon.VulnerableHeaders):
+        vulnerable_headers (google.cloud.websecurityscanner_v1beta.types.VulnerableHeaders):
             An addon containing information about
             vulnerable or missing HTTP headers.
-        vulnerable_parameters (~.finding_addon.VulnerableParameters):
+        vulnerable_parameters (google.cloud.websecurityscanner_v1beta.types.VulnerableParameters):
             An addon containing information about request
             parameters which were found to be vulnerable.
-        xss (~.finding_addon.Xss):
+        xss (google.cloud.websecurityscanner_v1beta.types.Xss):
             An addon containing information reported for
             an XSS, if any.
     """

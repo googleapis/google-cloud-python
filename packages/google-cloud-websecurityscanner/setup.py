@@ -27,11 +27,10 @@ version = "1.0.0"
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
-release_status = "Development Status :: 3 - Alpha"
+release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "google-api-core[grpc] >= 1.22.0, < 2.0.0dev",
-    "proto-plus >= 0.4.0",
-    "libcst >= 0.2.5",
+    "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
+    "proto-plus >= 1.15.0",
 ]
 extras = {}
 
@@ -70,7 +69,7 @@ setuptools.setup(
     classifiers=[
         release_status,
         "Intended Audience :: Developers",
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",

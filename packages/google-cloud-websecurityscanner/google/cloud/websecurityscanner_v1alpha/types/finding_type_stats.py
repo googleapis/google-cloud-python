@@ -31,7 +31,7 @@ class FindingTypeStats(proto.Message):
     specific FindingType of Findings under a given ScanRun.
 
     Attributes:
-        finding_type (~.finding.Finding.FindingType):
+        finding_type (google.cloud.websecurityscanner_v1alpha.types.Finding.FindingType):
             The finding type associated with the stats.
         finding_count (int):
             The count of findings belonging to this
