@@ -354,8 +354,13 @@ def mtls_http(session):
     )
 
 
-# ASYNC SYSTEM TESTS
+@nox.session(python=PYTHON_VERSIONS_SYNC)
+def external_accounts(session):
+    session.install(*TEST_DEPENDENCIES_SYNC, "google-auth", "google-api-python-client", "enum34")
+    default(session, "system_tests_sync/test_external_accounts.py")
 
+
+# ASYNC SYSTEM TESTS
 
 @nox.session(python=PYTHON_VERSIONS_ASYNC)
 def service_account_async(session):
@@ -374,7 +379,7 @@ def default_explicit_service_account_async(session):
     session.install(LIBRARY_DIR)
     default(
         session,
-        "system_tests_async/test_default.py", 
+        "system_tests_async/test_default.py",
         "system_tests_async/test_id_token.py",
     )
 

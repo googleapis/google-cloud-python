@@ -42,9 +42,9 @@ You can run the system tests with ``nox``::
 To run a single session, specify it with ``nox -s``::
 
     $ nox -f system_tests/noxfile.py -s service_account
-    
-First, set the environemnt variable ``GOOGLE_APPLICATION_CREDENTIALS`` to a valid service account.
-See `Creating and Managing Service Account Keys`_ for how to obtain a service account. 
+
+First, set the environment variable ``GOOGLE_APPLICATION_CREDENTIALS`` to a valid service account.
+See `Creating and Managing Service Account Keys`_ for how to obtain a service account.
 
 Project and Credentials Setup
 -------------------------------
@@ -86,25 +86,39 @@ This will allow the user to impersonate service accounts on the project.
 ``service_account.json``
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Follow `Creating and Managing Service Account Keys`_ to create a service account. 
+Follow `Creating and Managing Service Account Keys`_ to create a service account.
 
 Copy the credentials file to ``service_account.json``.
 
 Grant the account associated with ``service_account.json`` the following roles.
 
 - App Engine Admin (for App Engine tests)
-- Service Account Token Creator (for impersonated credentials tests)
+- Service Account Token Creator (for impersonated credentials and workload identity federation tests)
 - Pub/Sub Viewer (for gRPC tests)
 - Storage Object Viewer (for impersonated credentials tests)
+- DNS Viewer (for workload identity federation tests)
 
 ``impersonated_service_account.json``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Follow `Creating and Managing Service Account Keys`_ to create a service account. 
+Follow `Creating and Managing Service Account Keys`_ to create a service account.
 
 Copy the credentials file to ``impersonated_service_account.json``.
 
 .. _Creating and Managing Service Account Keys: https://cloud.google.com/iam/docs/creating-managing-service-account-keys
+
+``setup_external_accounts``
+~~~~~~~~~~~~~~~~
+
+In order to run the workload identity federation tests, you will need to set up
+a Workload Identity Pool, as well as attach relevant policy bindings for this
+new resource to our service account. To do this, make sure you have IAM Workload
+Identity Pool Admin and Security Admin permissions, and then run:
+
+  $ ./scripts/setup_external_accounts.sh
+
+and then use the output to replace the variables near
+the top of system_tests/system_tests_sync/test_external_accounts.py
 
 App Engine System Tests
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -118,16 +132,16 @@ From ``system_tests/app_engine_test_app`` run the following commands ::
     $ pip install --target lib -r requirements.txt
     $ gcloud app deploy -q app.yaml
 
-After the app is deployed, change ``service`` in ``app.yaml`` back to ``google-auth-system-tests``. 
+After the app is deployed, change ``service`` in ``app.yaml`` back to ``google-auth-system-tests``.
 You can now run the App Engine tests: ::
 
     $ nox -f system_tests/noxfile.py -s app_engine
-    
+
 Compute Engine Tests
 ^^^^^^^^^^^^^^^^^^^^
 
 These tests cannot be run locally and will be skipped if they are run outside of Google Compute Engine.
-    
+
 grpc Tests
 ^^^^^^^^^^^^
 
