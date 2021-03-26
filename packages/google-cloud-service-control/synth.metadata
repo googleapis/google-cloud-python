@@ -1,0 +1,35 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "sso://devrel/cloud/libraries/python/python-service-control"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "60fc32cc950c20cfdd774b846a4a7dc5d1e4d0ef"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "60fc32cc950c20cfdd774b846a4a7dc5d1e4d0ef"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "servicecontrol",
+        "apiVersion": "v1",
+        "language": "python",
+        "generator": "bazel"
+      }
+    }
+  ]
+}

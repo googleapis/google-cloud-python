@@ -1,0 +1,12 @@
+{
+    "name": "servicecontrol",
+    "name_pretty": "Service Control API",
+    "product_documentation": "https://cloud.google.com/service-infrastructure/docs/overview/",
+    "client_documentation": "https://googleapis.dev/python/servicecontrol/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-service-control",
+    "distribution_name": "google-cloud-service-control",
+    "api_id": "servicecontrol.googleapis.com"
+}
