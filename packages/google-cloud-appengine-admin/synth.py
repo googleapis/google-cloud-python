@@ -35,7 +35,7 @@ for version in versions:
     library = gapic.py_library(
         service="appengine",
         version=version,
-        bazel_target=f"//google/appengine/{version}:google-cloud-appengine-admin-{version}-py",
+        bazel_target=f"//google/appengine/{version}:google-cloud-appengine-{version}-py",
     )
 
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
