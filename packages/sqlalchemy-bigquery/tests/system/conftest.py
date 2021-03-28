@@ -7,6 +7,7 @@
 import pathlib
 
 import pytest
+import google.api_core.exceptions
 from google.cloud import bigquery
 
 from typing import List
@@ -21,9 +22,6 @@ def load_sample_data(
     bigquery_schema: List[bigquery.SchemaField],
     filename: str = "sample.json",
 ):
-    # Delete the table first. Even though we can use WRITE_TRUNCATE, the load
-    # job fails if properties such as table description do not match.
-    bigquery_client.delete_table(full_table_id, not_found_ok=True)
     sample_config = bigquery.LoadJobConfig()
     sample_config.destination_table_description = (
         "A sample table containing most data types."
@@ -58,25 +56,40 @@ def bigquery_dataset(
     dataset_id = "test_pybigquery"
     dataset = bigquery.Dataset(f"{project_id}.{dataset_id}")
     dataset = bigquery_client.create_dataset(dataset, exists_ok=True)
-    empty_table = bigquery.Table(
-        f"{project_id}.{dataset_id}.sample_dml", schema=bigquery_schema
-    )
+    sample_table_id = f"{project_id}.{dataset_id}.sample"
+    try:
+        # Since the data changes rarely and the tests are mostly read-only,
+        # only create the tables if they don't already exist.
+        # TODO: Create shared sample data tables in bigquery-public-data that
+        #       include test values for all data types.
+        bigquery_client.get_table(sample_table_id)
+    except google.api_core.exceptions.NotFound:
+        job1 = load_sample_data(sample_table_id, bigquery_client, bigquery_schema)
+        job1.result()
+    one_row_table_id = f"{project_id}.{dataset_id}.sample_one_row"
+    try:
+        bigquery_client.get_table(one_row_table_id)
+    except google.api_core.exceptions.NotFound:
+        job2 = load_sample_data(
+            one_row_table_id,
+            bigquery_client,
+            bigquery_schema,
+            filename="sample_one_row.json",
+        )
+        job2.result()
     view = bigquery.Table(f"{project_id}.{dataset_id}.sample_view",)
     view.view_query = f"SELECT string FROM `{dataset_id}.sample`"
-    job1 = load_sample_data(
-        f"{project_id}.{dataset_id}.sample", bigquery_client, bigquery_schema
-    )
-    job2 = load_sample_data(
-        f"{project_id}.{dataset_id}.sample_one_row",
-        bigquery_client,
-        bigquery_schema,
-        filename="sample_one_row.json",
-    )
-    bigquery_client.create_table(empty_table, exists_ok=True)
-    job1.result()
-    job2.result()
     bigquery_client.create_table(view, exists_ok=True)
     return dataset_id
+
+
+@pytest.fixture(scope="session", autouse=True)
+def bigquery_empty_table(bigquery_dataset, bigquery_client, bigquery_schema):
+    project_id = bigquery_client.project
+    dataset_id = bigquery_dataset
+    table_id = f"{project_id}.{dataset_id}.sample_dml"
+    empty_table = bigquery.Table(table_id, schema=bigquery_schema)
+    bigquery_client.create_table(empty_table, exists_ok=True)
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -87,10 +100,12 @@ def bigquery_alt_dataset(
     dataset_id = "test_pybigquery_alt"
     dataset = bigquery.Dataset(f"{project_id}.{dataset_id}")
     dataset = bigquery_client.create_dataset(dataset, exists_ok=True)
-    job = load_sample_data(
-        f"{project_id}.{dataset_id}.sample_alt", bigquery_client, bigquery_schema
-    )
-    job.result()
+    sample_table_id = f"{project_id}.{dataset_id}.sample_alt"
+    try:
+        bigquery_client.get_table(sample_table_id)
+    except google.api_core.exceptions.NotFound:
+        job = load_sample_data(sample_table_id, bigquery_client, bigquery_schema)
+        job.result()
     return dataset_id
 
 
@@ -101,11 +116,15 @@ def bigquery_regional_dataset(bigquery_client, bigquery_schema):
     dataset = bigquery.Dataset(f"{project_id}.{dataset_id}")
     dataset.location = "asia-northeast1"
     dataset = bigquery_client.create_dataset(dataset, exists_ok=True)
-    job = load_sample_data(
-        f"{project_id}.{dataset_id}.sample_one_row",
-        bigquery_client,
-        bigquery_schema,
-        filename="sample_one_row.json",
-    )
-    job.result()
+    sample_table_id = f"{project_id}.{dataset_id}.sample_one_row"
+    try:
+        bigquery_client.get_table(sample_table_id)
+    except google.api_core.exceptions.NotFound:
+        job = load_sample_data(
+            sample_table_id,
+            bigquery_client,
+            bigquery_schema,
+            filename="sample_one_row.json",
+        )
+        job.result()
     return dataset_id
