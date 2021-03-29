@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+### [3.1.1](https://www.github.com/googleapis/python-datacatalog/compare/v3.1.0...v3.1.1) (2021-03-29)
+
+
+### Bug Fixes
+
+* use correct retry deadline ([#124](https://www.github.com/googleapis/python-datacatalog/issues/124)) ([0c69bc2](https://www.github.com/googleapis/python-datacatalog/commit/0c69bc2fbae593f62c543c5a15dbe810467b7510))
+
 ## [3.1.0](https://www.github.com/googleapis/python-datacatalog/compare/v3.0.0...v3.1.0) (2021-03-22)
 
 
