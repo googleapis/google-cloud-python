@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth-oauthlib/#history
 
+### [0.4.4](https://www.github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.4.3...v0.4.4) (2021-03-29)
+
+
+### Bug Fixes
+
+* add redirect_uri_trailing slash param to run_local_server ([#111](https://www.github.com/googleapis/google-auth-library-python-oauthlib/issues/111)) ([666863a](https://www.github.com/googleapis/google-auth-library-python-oauthlib/commit/666863aeabb8d6b3608ea95edce09fe69a5f2679))
+
 ### [0.4.3](https://www.github.com/googleapis/google-auth-library-python-oauthlib/compare/v0.4.2...v0.4.3) (2021-02-12)
 
 
