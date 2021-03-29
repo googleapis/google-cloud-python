@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+### [1.26.3](https://www.github.com/googleapis/python-api-core/compare/v1.26.2...v1.26.3) (2021-03-25)
+
+
+### Bug Fixes
+
+* skip empty policy bindings in `len()` and `iter()` ([#159](https://www.github.com/googleapis/python-api-core/issues/159)) ([9eaa786](https://www.github.com/googleapis/python-api-core/commit/9eaa7868164a7e98792de24d2be97f79fba22322))
+
+
+### Documentation
+
+* update python contributing guide ([#147](https://www.github.com/googleapis/python-api-core/issues/147)) ([1d76b57](https://www.github.com/googleapis/python-api-core/commit/1d76b57d1f218f7885f85dc7c052bad1ad3857ac))
+
 ### [1.26.2](https://www.github.com/googleapis/python-api-core/compare/v1.26.1...v1.26.2) (2021-03-23)
 
 
