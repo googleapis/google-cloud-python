@@ -422,6 +422,7 @@ class InstalledAppFlow(Flow):
         authorization_prompt_message=_DEFAULT_AUTH_PROMPT_MESSAGE,
         success_message=_DEFAULT_WEB_SUCCESS_MESSAGE,
         open_browser=True,
+        redirect_uri_trailing_slash=True,
         **kwargs
     ):
         """Run the flow using the server strategy.
@@ -444,6 +445,8 @@ class InstalledAppFlow(Flow):
                 the authorization flow is complete.
             open_browser (bool): Whether or not to open the authorization URL
                 in the user's browser.
+            redirect_uri_trailing_slash (bool): whether or not to add trailing
+                slash when constructing the redirect_uri. Default value is True.
             kwargs: Additional keyword arguments passed through to
                 :meth:`authorization_url`.
 
@@ -458,7 +461,10 @@ class InstalledAppFlow(Flow):
             host, port, wsgi_app, handler_class=_WSGIRequestHandler
         )
 
-        self.redirect_uri = "http://{}:{}/".format(host, local_server.server_port)
+        redirect_uri_format = (
+            "http://{}:{}/" if redirect_uri_trailing_slash else "http://{}:{}"
+        )
+        self.redirect_uri = redirect_uri_format.format(host, local_server.server_port)
         auth_url, _ = self.authorization_url(**kwargs)
 
         if open_browser:

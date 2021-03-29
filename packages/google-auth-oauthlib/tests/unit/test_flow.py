@@ -321,6 +321,7 @@ class TestInstalledAppFlow(object):
         assert credentials._refresh_token == mock.sentinel.refresh_token
         assert credentials.id_token == mock.sentinel.id_token
         assert webbrowser_mock.open.called
+        assert instance.redirect_uri == f"http://localhost:{port}/"
 
         expected_auth_response = auth_redirect_url.replace("http", "https")
         mock_fetch_token.assert_called_with(
@@ -341,7 +342,13 @@ class TestInstalledAppFlow(object):
         instance.code_verifier = "amanaplanacanalpanama"
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
-            future = pool.submit(partial(instance.run_local_server, port=port))
+            future = pool.submit(
+                partial(
+                    instance.run_local_server,
+                    port=port,
+                    redirect_uri_trailing_slash=False,
+                )
+            )
 
             while not future.done():
                 try:
@@ -355,6 +362,7 @@ class TestInstalledAppFlow(object):
         assert credentials._refresh_token == mock.sentinel.refresh_token
         assert credentials.id_token == mock.sentinel.id_token
         assert webbrowser_mock.open.called
+        assert instance.redirect_uri == f"http://localhost:{port}"
 
         expected_auth_response = auth_redirect_url.replace("http", "https")
         mock_fetch_token.assert_called_with(
