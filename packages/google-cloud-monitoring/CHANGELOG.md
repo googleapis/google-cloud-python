@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+### [2.2.1](https://www.github.com/googleapis/python-monitoring/compare/v2.2.0...v2.2.1) (2021-03-29)
+
+
+### Bug Fixes
+
+* fix minimum required versions of proto-plus and pandas ([#102](https://www.github.com/googleapis/python-monitoring/issues/102)) ([782b3b2](https://www.github.com/googleapis/python-monitoring/commit/782b3b29a93f5f6aa0fc027fd9863d753f604dc9))
+
 ## [2.2.0](https://www.github.com/googleapis/python-monitoring/compare/v2.1.0...v2.2.0) (2021-03-25)
 
 
