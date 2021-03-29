@@ -1134,6 +1134,9 @@ class TestStorageWriteFiles(TestStorageFiles):
                     file_obj.read(256 * 1024 * 2), reader.read(256 * 1024 * 2)
                 )
                 self.assertEqual(file_obj.read(), reader.read())
+                # End of file reached; further reads should be blank but not
+                # raise an error.
+                self.assertEqual(b"", reader.read())
 
     def test_blobwriter_and_blobreader_text_mode(self):
         blob = self.bucket.blob("MultibyteTextFile")

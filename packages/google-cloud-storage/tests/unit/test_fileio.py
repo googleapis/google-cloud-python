@@ -17,8 +17,10 @@
 import unittest
 import mock
 import io
-from google.cloud.storage.fileio import BlobReader, BlobWriter, SlidingBuffer
 import string
+
+from google.cloud.storage.fileio import BlobReader, BlobWriter, SlidingBuffer
+from google.api_core.exceptions import RequestRangeNotSatisfiable
 
 TEST_TEXT_DATA = string.ascii_lowercase + "\n" + string.ascii_uppercase + "\n"
 TEST_BINARY_DATA = TEST_TEXT_DATA.encode("utf-8")
@@ -50,7 +52,7 @@ class TestBlobReaderBinary(unittest.TestCase):
         # Read and trigger the first download of chunk_size.
         self.assertEqual(reader.read(1), TEST_BINARY_DATA[0:1])
         blob.download_as_bytes.assert_called_once_with(
-            start=0, end=8, **download_kwargs
+            start=0, end=8, checksum=None, **download_kwargs
         )
 
         # Read from buffered data only.
@@ -61,20 +63,35 @@ class TestBlobReaderBinary(unittest.TestCase):
         self.assertEqual(reader.read(8), TEST_BINARY_DATA[4:12])
         self.assertEqual(reader._pos, 12)
         self.assertEqual(blob.download_as_bytes.call_count, 2)
-        blob.download_as_bytes.assert_called_with(start=8, end=16, **download_kwargs)
+        blob.download_as_bytes.assert_called_with(
+            start=8, end=16, checksum=None, **download_kwargs
+        )
 
         # Read a larger amount, requiring a download larger than chunk_size.
         self.assertEqual(reader.read(16), TEST_BINARY_DATA[12:28])
         self.assertEqual(reader._pos, 28)
         self.assertEqual(blob.download_as_bytes.call_count, 3)
-        blob.download_as_bytes.assert_called_with(start=16, end=28, **download_kwargs)
+        blob.download_as_bytes.assert_called_with(
+            start=16, end=28, checksum=None, **download_kwargs
+        )
 
         # Read all remaining data.
         self.assertEqual(reader.read(), TEST_BINARY_DATA[28:])
         self.assertEqual(blob.download_as_bytes.call_count, 4)
-        blob.download_as_bytes.assert_called_with(start=28, end=None, **download_kwargs)
+        blob.download_as_bytes.assert_called_with(
+            start=28, end=None, checksum=None, **download_kwargs
+        )
 
         reader.close()
+
+    def test_416_error_handled(self):
+        blob = mock.Mock()
+        blob.download_as_bytes = mock.Mock(
+            side_effect=RequestRangeNotSatisfiable("message")
+        )
+
+        reader = BlobReader(blob)
+        self.assertEqual(reader.read(), b"")
 
     def test_readline(self):
         blob = mock.Mock()
@@ -87,12 +104,12 @@ class TestBlobReaderBinary(unittest.TestCase):
 
         # Read a line. With chunk_size=10, expect three chunks downloaded.
         self.assertEqual(reader.readline(), TEST_BINARY_DATA[:27])
-        blob.download_as_bytes.assert_called_with(start=20, end=30)
+        blob.download_as_bytes.assert_called_with(start=20, end=30, checksum=None)
         self.assertEqual(blob.download_as_bytes.call_count, 3)
 
         # Read another line.
         self.assertEqual(reader.readline(), TEST_BINARY_DATA[27:])
-        blob.download_as_bytes.assert_called_with(start=50, end=60)
+        blob.download_as_bytes.assert_called_with(start=50, end=60, checksum=None)
         self.assertEqual(blob.download_as_bytes.call_count, 6)
 
         blob.size = len(TEST_BINARY_DATA)
@@ -101,7 +118,7 @@ class TestBlobReaderBinary(unittest.TestCase):
         # Read all lines. The readlines algorithm will attempt to read past the end of the last line once to verify there is no more to read.
         self.assertEqual(b"".join(reader.readlines()), TEST_BINARY_DATA)
         blob.download_as_bytes.assert_called_with(
-            start=len(TEST_BINARY_DATA), end=len(TEST_BINARY_DATA) + 10
+            start=len(TEST_BINARY_DATA), end=len(TEST_BINARY_DATA) + 10, checksum=None
         )
         self.assertEqual(blob.download_as_bytes.call_count, 13)
 

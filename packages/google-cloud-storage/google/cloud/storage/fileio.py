@@ -14,6 +14,8 @@
 
 import io
 
+from google.api_core.exceptions import RequestRangeNotSatisfiable
+
 # Resumable uploads require a chunk size of precisely a multiple of 256 KiB.
 CHUNK_SIZE_MULTIPLE = 256 * 1024  # 256 KiB
 DEFAULT_CHUNK_SIZE = 40 * 1024 * 1024  # 40 MiB
@@ -92,10 +94,20 @@ class BlobReader(io.BufferedIOBase):
             else:
                 fetch_end = None
 
-            # Download the blob.
-            result += self._blob.download_as_bytes(
-                start=fetch_start, end=fetch_end, **self._download_kwargs
-            )
+            # Download the blob. Checksumming must be disabled as we are using
+            # chunked downloads, and the server only knows the checksum of the
+            # entire file.
+            try:
+                result += self._blob.download_as_bytes(
+                    start=fetch_start,
+                    end=fetch_end,
+                    checksum=None,
+                    **self._download_kwargs
+                )
+            except RequestRangeNotSatisfiable:
+                # We've reached the end of the file. Python file objects should
+                # return an empty response in this case, not raise an error.
+                pass
 
             # If more bytes were read than is immediately needed, buffer the
             # remainder and then trim the result.

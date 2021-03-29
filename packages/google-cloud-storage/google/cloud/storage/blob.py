@@ -3434,6 +3434,11 @@ class Blob(_PropertyMixin):
         latest generation number and set it; or, if the generation is known, set
         it manually, for instance with bucket.blob(generation=123456).
 
+        Checksumming (hashing) to verify data integrity is disabled for reads
+        using this feature because reads are implemented using request ranges,
+        which do not provide checksums to validate. See
+        https://cloud.google.com/storage/docs/hashes-etags for details.
+
         :type mode: str
         :param mode:
             (Optional) A mode string, as per standard Python `open()` semantics.The first
