@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,96 +15,102 @@
 # limitations under the License.
 #
 
-from .common import FeatureMap
-from .catalog import CatalogItem, ProductCatalogItem, Image
-from .user_event import (
-    UserEvent,
-    UserInfo,
-    EventDetail,
-    ProductEventDetail,
-    PurchaseTransaction,
-    ProductDetail,
-)
-from .prediction_service import PredictRequest, PredictResponse
-from .import_ import (
-    GcsSource,
-    CatalogInlineSource,
-    UserEventInlineSource,
-    ImportErrorsConfig,
-    ImportCatalogItemsRequest,
-    ImportUserEventsRequest,
-    InputConfig,
-    ImportMetadata,
-    ImportCatalogItemsResponse,
-    ImportUserEventsResponse,
-    UserEventImportSummary,
-)
-from .user_event_service import (
-    PurgeUserEventsRequest,
-    PurgeUserEventsMetadata,
-    PurgeUserEventsResponse,
-    WriteUserEventRequest,
-    CollectUserEventRequest,
-    ListUserEventsRequest,
-    ListUserEventsResponse,
-)
-from .prediction_apikey_registry_service import (
-    PredictionApiKeyRegistration,
-    CreatePredictionApiKeyRegistrationRequest,
-    ListPredictionApiKeyRegistrationsRequest,
-    ListPredictionApiKeyRegistrationsResponse,
-    DeletePredictionApiKeyRegistrationRequest,
+from .catalog import (
+    CatalogItem,
+    Image,
+    ProductCatalogItem,
 )
 from .catalog_service import (
     CreateCatalogItemRequest,
+    DeleteCatalogItemRequest,
     GetCatalogItemRequest,
     ListCatalogItemsRequest,
     ListCatalogItemsResponse,
     UpdateCatalogItemRequest,
-    DeleteCatalogItemRequest,
+)
+from .common import FeatureMap
+from .import_ import (
+    CatalogInlineSource,
+    GcsSource,
+    ImportCatalogItemsRequest,
+    ImportCatalogItemsResponse,
+    ImportErrorsConfig,
+    ImportMetadata,
+    ImportUserEventsRequest,
+    ImportUserEventsResponse,
+    InputConfig,
+    UserEventImportSummary,
+    UserEventInlineSource,
+)
+from .prediction_apikey_registry_service import (
+    CreatePredictionApiKeyRegistrationRequest,
+    DeletePredictionApiKeyRegistrationRequest,
+    ListPredictionApiKeyRegistrationsRequest,
+    ListPredictionApiKeyRegistrationsResponse,
+    PredictionApiKeyRegistration,
+)
+from .prediction_service import (
+    PredictRequest,
+    PredictResponse,
+)
+from .user_event import (
+    EventDetail,
+    ProductDetail,
+    ProductEventDetail,
+    PurchaseTransaction,
+    UserEvent,
+    UserInfo,
+)
+from .user_event_service import (
+    CollectUserEventRequest,
+    ListUserEventsRequest,
+    ListUserEventsResponse,
+    PurgeUserEventsMetadata,
+    PurgeUserEventsRequest,
+    PurgeUserEventsResponse,
+    WriteUserEventRequest,
 )
 
-
 __all__ = (
-    "FeatureMap",
     "CatalogItem",
-    "ProductCatalogItem",
     "Image",
-    "UserEvent",
-    "UserInfo",
-    "EventDetail",
-    "ProductEventDetail",
-    "PurchaseTransaction",
-    "ProductDetail",
-    "PredictRequest",
-    "PredictResponse",
-    "GcsSource",
-    "CatalogInlineSource",
-    "UserEventInlineSource",
-    "ImportErrorsConfig",
-    "ImportCatalogItemsRequest",
-    "ImportUserEventsRequest",
-    "InputConfig",
-    "ImportMetadata",
-    "ImportCatalogItemsResponse",
-    "ImportUserEventsResponse",
-    "UserEventImportSummary",
-    "PurgeUserEventsRequest",
-    "PurgeUserEventsMetadata",
-    "PurgeUserEventsResponse",
-    "WriteUserEventRequest",
-    "CollectUserEventRequest",
-    "ListUserEventsRequest",
-    "ListUserEventsResponse",
-    "PredictionApiKeyRegistration",
-    "CreatePredictionApiKeyRegistrationRequest",
-    "ListPredictionApiKeyRegistrationsRequest",
-    "ListPredictionApiKeyRegistrationsResponse",
-    "DeletePredictionApiKeyRegistrationRequest",
+    "ProductCatalogItem",
     "CreateCatalogItemRequest",
+    "DeleteCatalogItemRequest",
     "GetCatalogItemRequest",
     "ListCatalogItemsRequest",
     "ListCatalogItemsResponse",
     "UpdateCatalogItemRequest",
-    "DeleteCatalogItemRequest",
+    "FeatureMap",
+    "CatalogInlineSource",
+    "GcsSource",
+    "ImportCatalogItemsRequest",
+    "ImportCatalogItemsResponse",
+    "ImportErrorsConfig",
+    "ImportMetadata",
+    "ImportUserEventsRequest",
+    "ImportUserEventsResponse",
+    "InputConfig",
+    "UserEventImportSummary",
+    "UserEventInlineSource",
+    "CreatePredictionApiKeyRegistrationRequest",
+    "DeletePredictionApiKeyRegistrationRequest",
+    "ListPredictionApiKeyRegistrationsRequest",
+    "ListPredictionApiKeyRegistrationsResponse",
+    "PredictionApiKeyRegistration",
+    "PredictRequest",
+    "PredictResponse",
+    "EventDetail",
+    "ProductDetail",
+    "ProductEventDetail",
+    "PurchaseTransaction",
+    "UserEvent",
+    "UserInfo",
+    "CollectUserEventRequest",
+    "ListUserEventsRequest",
+    "ListUserEventsResponse",
+    "PurgeUserEventsMetadata",
+    "PurgeUserEventsRequest",
+    "PurgeUserEventsResponse",
+    "WriteUserEventRequest",
 )

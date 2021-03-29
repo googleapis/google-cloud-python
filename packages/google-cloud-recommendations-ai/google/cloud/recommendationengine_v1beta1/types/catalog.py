@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ from google.cloud.recommendationengine_v1beta1.types import common
 
 __protobuf__ = proto.module(
     package="google.cloud.recommendationengine.v1beta1",
-    manifest={"CatalogItem", "ProductCatalogItem", "Image"},
+    manifest={"CatalogItem", "ProductCatalogItem", "Image",},
 )
 
 
@@ -39,7 +39,7 @@ class CatalogItem(proto.Message):
             within the same catalog. It should also be used
             when logging user events in order for the user
             events to be joined with the Catalog.
-        category_hierarchies (Sequence[~.catalog.CatalogItem.CategoryHierarchy]):
+        category_hierarchies (Sequence[google.cloud.recommendationengine_v1beta1.types.CatalogItem.CategoryHierarchy]):
             Required. Catalog item categories. This field is repeated
             for supporting one catalog item belonging to several
             parallel category hierarchies.
@@ -60,7 +60,7 @@ class CatalogItem(proto.Message):
         description (str):
             Optional. Catalog item description. UTF-8
             encoded string with a length limit of 5 KiB.
-        item_attributes (~.common.FeatureMap):
+        item_attributes (google.cloud.recommendationengine_v1beta1.types.FeatureMap):
             Optional. Highly encouraged. Extra catalog
             item attributes to be included in the
             recommendation model. For example, for retail
@@ -88,7 +88,7 @@ class CatalogItem(proto.Message):
 
             This field must be enabled before it can be used. `Learn
             more </recommendations-ai/docs/catalog#item-group-id>`__.
-        product_metadata (~.catalog.ProductCatalogItem):
+        product_metadata (google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem):
             Optional. Metadata specific to retail
             products.
     """
@@ -108,17 +108,28 @@ class CatalogItem(proto.Message):
         categories = proto.RepeatedField(proto.STRING, number=1)
 
     id = proto.Field(proto.STRING, number=1)
+
     category_hierarchies = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=CategoryHierarchy
+        proto.MESSAGE, number=2, message=CategoryHierarchy,
     )
+
     title = proto.Field(proto.STRING, number=3)
+
     description = proto.Field(proto.STRING, number=4)
-    item_attributes = proto.Field(proto.MESSAGE, number=5, message=common.FeatureMap)
+
+    item_attributes = proto.Field(proto.MESSAGE, number=5, message=common.FeatureMap,)
+
     language_code = proto.Field(proto.STRING, number=6)
+
     tags = proto.RepeatedField(proto.STRING, number=8)
+
     item_group_id = proto.Field(proto.STRING, number=9)
+
     product_metadata = proto.Field(
-        proto.MESSAGE, number=10, message="ProductCatalogItem"
+        proto.MESSAGE,
+        number=10,
+        oneof="recommendation_type",
+        message="ProductCatalogItem",
     )
 
 
@@ -127,11 +138,11 @@ class ProductCatalogItem(proto.Message):
     products.
 
     Attributes:
-        exact_price (~.catalog.ProductCatalogItem.ExactPrice):
+        exact_price (google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem.ExactPrice):
             Optional. The exact product price.
-        price_range (~.catalog.ProductCatalogItem.PriceRange):
+        price_range (google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem.PriceRange):
             Optional. The product price range.
-        costs (Sequence[~.catalog.ProductCatalogItem.CostsEntry]):
+        costs (Sequence[google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem.CostsEntry]):
             Optional. A map to pass the costs associated with the
             product.
 
@@ -146,7 +157,7 @@ class ProductCatalogItem(proto.Message):
             Optional. Only required if the price is set.
             Currency code for price/costs. Use three-
             character ISO-4217 code.
-        stock_state (~.catalog.ProductCatalogItem.StockState):
+        stock_state (google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem.StockState):
             Optional. Online stock state of the catalog item. Default is
             ``IN_STOCK``.
         available_quantity (int):
@@ -155,7 +166,7 @@ class ProductCatalogItem(proto.Message):
             Optional. Canonical URL directly linking to
             the item detail page with a length limit of 5
             KiB..
-        images (Sequence[~.catalog.Image]):
+        images (Sequence[google.cloud.recommendationengine_v1beta1.types.Image]):
             Optional. Product images for the catalog
             item.
     """
@@ -164,6 +175,7 @@ class ProductCatalogItem(proto.Message):
         r"""Item stock state. If this field is unspecified, the item is
         assumed to be in stock.
         """
+        _pb_options = {"allow_alias": True}
         STOCK_STATE_UNSPECIFIED = 0
         IN_STOCK = 0
         OUT_OF_STOCK = 1
@@ -183,6 +195,7 @@ class ProductCatalogItem(proto.Message):
         """
 
         display_price = proto.Field(proto.FLOAT, number=1)
+
         original_price = proto.Field(proto.FLOAT, number=2)
 
     class PriceRange(proto.Message):
@@ -190,23 +203,35 @@ class ProductCatalogItem(proto.Message):
         different variations of the same product.
 
         Attributes:
-            min (float):
+            min_ (float):
                 Required. The minimum product price.
-            max (float):
+            max_ (float):
                 Required. The maximum product price.
         """
 
-        min = proto.Field(proto.FLOAT, number=1)
-        max = proto.Field(proto.FLOAT, number=2)
+        min_ = proto.Field(proto.FLOAT, number=1)
 
-    exact_price = proto.Field(proto.MESSAGE, number=1, message=ExactPrice)
-    price_range = proto.Field(proto.MESSAGE, number=2, message=PriceRange)
+        max_ = proto.Field(proto.FLOAT, number=2)
+
+    exact_price = proto.Field(
+        proto.MESSAGE, number=1, oneof="price", message=ExactPrice,
+    )
+
+    price_range = proto.Field(
+        proto.MESSAGE, number=2, oneof="price", message=PriceRange,
+    )
+
     costs = proto.MapField(proto.STRING, proto.FLOAT, number=3)
+
     currency_code = proto.Field(proto.STRING, number=4)
-    stock_state = proto.Field(proto.ENUM, number=5, enum=StockState)
+
+    stock_state = proto.Field(proto.ENUM, number=5, enum=StockState,)
+
     available_quantity = proto.Field(proto.INT64, number=6)
+
     canonical_product_uri = proto.Field(proto.STRING, number=7)
-    images = proto.RepeatedField(proto.MESSAGE, number=8, message="Image")
+
+    images = proto.RepeatedField(proto.MESSAGE, number=8, message="Image",)
 
 
 class Image(proto.Message):
@@ -225,7 +250,9 @@ class Image(proto.Message):
     """
 
     uri = proto.Field(proto.STRING, number=1)
+
     height = proto.Field(proto.INT32, number=2)
+
     width = proto.Field(proto.INT32, number=3)
 
 

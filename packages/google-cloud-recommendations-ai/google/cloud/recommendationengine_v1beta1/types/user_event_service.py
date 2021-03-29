@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -72,7 +72,9 @@ class PurgeUserEventsRequest(proto.Message):
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
     filter = proto.Field(proto.STRING, number=2)
+
     force = proto.Field(proto.BOOL, number=3)
 
 
@@ -84,12 +86,13 @@ class PurgeUserEventsMetadata(proto.Message):
     Attributes:
         operation_name (str):
             The ID of the request / operation.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
     """
 
     operation_name = proto.Field(proto.STRING, number=1)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp)
+
+    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
 
 
 class PurgeUserEventsResponse(proto.Message):
@@ -101,15 +104,16 @@ class PurgeUserEventsResponse(proto.Message):
         purged_events_count (int):
             The total count of events purged as a result
             of the operation.
-        user_events_sample (Sequence[~.gcr_user_event.UserEvent]):
+        user_events_sample (Sequence[google.cloud.recommendationengine_v1beta1.types.UserEvent]):
             A sampling of events deleted (or will be deleted) depending
             on the ``force`` property in the request. Max of 500 items
             will be returned.
     """
 
     purged_events_count = proto.Field(proto.INT64, number=1)
+
     user_events_sample = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=gcr_user_event.UserEvent
+        proto.MESSAGE, number=2, message=gcr_user_event.UserEvent,
     )
 
 
@@ -120,12 +124,13 @@ class WriteUserEventRequest(proto.Message):
         parent (str):
             Required. The parent eventStore resource name, such as
             "projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store".
-        user_event (~.gcr_user_event.UserEvent):
+        user_event (google.cloud.recommendationengine_v1beta1.types.UserEvent):
             Required. User event to write.
     """
 
     parent = proto.Field(proto.STRING, number=1)
-    user_event = proto.Field(proto.MESSAGE, number=2, message=gcr_user_event.UserEvent)
+
+    user_event = proto.Field(proto.MESSAGE, number=2, message=gcr_user_event.UserEvent,)
 
 
 class CollectUserEventRequest(proto.Message):
@@ -152,8 +157,11 @@ class CollectUserEventRequest(proto.Message):
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
     user_event = proto.Field(proto.STRING, number=2)
+
     uri = proto.Field(proto.STRING, number=3)
+
     ets = proto.Field(proto.INT64, number=4)
 
 
@@ -211,8 +219,11 @@ class ListUserEventsRequest(proto.Message):
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
     page_size = proto.Field(proto.INT32, number=2)
+
     page_token = proto.Field(proto.STRING, number=3)
+
     filter = proto.Field(proto.STRING, number=4)
 
 
@@ -220,7 +231,7 @@ class ListUserEventsResponse(proto.Message):
     r"""Response message for ListUserEvents method.
 
     Attributes:
-        user_events (Sequence[~.gcr_user_event.UserEvent]):
+        user_events (Sequence[google.cloud.recommendationengine_v1beta1.types.UserEvent]):
             The user events.
         next_page_token (str):
             If empty, the list is complete. If nonempty, the token to
@@ -232,8 +243,9 @@ class ListUserEventsResponse(proto.Message):
         return self
 
     user_events = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcr_user_event.UserEvent
+        proto.MESSAGE, number=1, message=gcr_user_event.UserEvent,
     )
+
     next_page_token = proto.Field(proto.STRING, number=2)
 
 

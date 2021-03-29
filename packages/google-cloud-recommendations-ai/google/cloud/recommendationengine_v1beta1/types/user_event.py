@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -63,12 +63,12 @@ class UserEvent(proto.Message):
             -  ``shopping-cart-page-view`` User viewing a shopping cart.
             -  ``impression`` List of items displayed. Used by Google
                Tag Manager.
-        user_info (~.user_event.UserInfo):
+        user_info (google.cloud.recommendationengine_v1beta1.types.UserInfo):
             Required. User information.
-        event_detail (~.user_event.EventDetail):
+        event_detail (google.cloud.recommendationengine_v1beta1.types.EventDetail):
             Optional. User event detailed information
             common across different recommendation types.
-        product_event_detail (~.user_event.ProductEventDetail):
+        product_event_detail (google.cloud.recommendationengine_v1beta1.types.ProductEventDetail):
             Optional. Retail product specific user event metadata.
 
             This field is required for the following event types:
@@ -94,10 +94,10 @@ class UserEvent(proto.Message):
             This field is not allowed for the following event types:
 
             -  ``home-page-view``
-        event_time (~.timestamp.Timestamp):
+        event_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. Only required for ImportUserEvents
             method. Timestamp of user event created.
-        event_source (~.user_event.UserEvent.EventSource):
+        event_source (google.cloud.recommendationengine_v1beta1.types.UserEvent.EventSource):
             Optional. This field should *not* be set when using
             JavaScript pixel or the Recommendations AI Tag. Defaults to
             ``EVENT_SOURCE_UNSPECIFIED``.
@@ -111,13 +111,18 @@ class UserEvent(proto.Message):
         BATCH_UPLOAD = 3
 
     event_type = proto.Field(proto.STRING, number=1)
-    user_info = proto.Field(proto.MESSAGE, number=2, message="UserInfo")
-    event_detail = proto.Field(proto.MESSAGE, number=3, message="EventDetail")
+
+    user_info = proto.Field(proto.MESSAGE, number=2, message="UserInfo",)
+
+    event_detail = proto.Field(proto.MESSAGE, number=3, message="EventDetail",)
+
     product_event_detail = proto.Field(
-        proto.MESSAGE, number=4, message="ProductEventDetail"
+        proto.MESSAGE, number=4, message="ProductEventDetail",
     )
-    event_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp)
-    event_source = proto.Field(proto.ENUM, number=6, enum=EventSource)
+
+    event_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
+
+    event_source = proto.Field(proto.ENUM, number=6, enum=EventSource,)
 
 
 class UserInfo(proto.Message):
@@ -162,9 +167,13 @@ class UserInfo(proto.Message):
     """
 
     visitor_id = proto.Field(proto.STRING, number=1)
+
     user_id = proto.Field(proto.STRING, number=2)
+
     ip_address = proto.Field(proto.STRING, number=3)
+
     user_agent = proto.Field(proto.STRING, number=4)
+
     direct_user_request = proto.Field(proto.BOOL, number=5)
 
 
@@ -215,7 +224,7 @@ class EventDetail(proto.Message):
 
             Optional, but highly encouraged for user events that are the
             result of a recommendation prediction query.
-        event_attributes (~.common.FeatureMap):
+        event_attributes (google.cloud.recommendationengine_v1beta1.types.FeatureMap):
             Optional. Extra user event features to include in the
             recommendation model.
 
@@ -226,11 +235,16 @@ class EventDetail(proto.Message):
     """
 
     uri = proto.Field(proto.STRING, number=1)
+
     referrer_uri = proto.Field(proto.STRING, number=6)
+
     page_view_id = proto.Field(proto.STRING, number=2)
+
     experiment_ids = proto.RepeatedField(proto.STRING, number=3)
+
     recommendation_token = proto.Field(proto.STRING, number=4)
-    event_attributes = proto.Field(proto.MESSAGE, number=5, message=common.FeatureMap)
+
+    event_attributes = proto.Field(proto.MESSAGE, number=5, message=common.FeatureMap,)
 
 
 class ProductEventDetail(proto.Message):
@@ -242,14 +256,14 @@ class ProductEventDetail(proto.Message):
             Required for ``search`` events. Other event types should not
             set this field. The user's search query as UTF-8 encoded
             text with a length limit of 5 KiB.
-        page_categories (Sequence[~.catalog.CatalogItem.CategoryHierarchy]):
+        page_categories (Sequence[google.cloud.recommendationengine_v1beta1.types.CatalogItem.CategoryHierarchy]):
             Required for ``category-page-view`` events. Other event
             types should not set this field. The categories associated
             with a category page. Category pages include special pages
             such as sales or promotions. For instance, a special sale
             page may have the category hierarchy: categories : ["Sales",
             "2017 Black Friday Deals"].
-        product_details (Sequence[~.user_event.ProductDetail]):
+        product_details (Sequence[google.cloud.recommendationengine_v1beta1.types.ProductDetail]):
             The main product details related to the event.
 
             This field is required for the following event types:
@@ -288,7 +302,7 @@ class ProductEventDetail(proto.Message):
             ``remove-from-cart``, ``checkout-start``,
             ``purchase-complete``, or ``shopping-cart-page-view``
             events.
-        purchase_transaction (~.user_event.PurchaseTransaction):
+        purchase_transaction (google.cloud.recommendationengine_v1beta1.types.PurchaseTransaction):
             Optional. A transaction represents the entire purchase
             transaction. Required for ``purchase-complete`` events.
             Optional for ``checkout-start`` events. Other event types
@@ -296,16 +310,21 @@ class ProductEventDetail(proto.Message):
     """
 
     search_query = proto.Field(proto.STRING, number=1)
+
     page_categories = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=catalog.CatalogItem.CategoryHierarchy
+        proto.MESSAGE, number=2, message=catalog.CatalogItem.CategoryHierarchy,
     )
+
     product_details = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="ProductDetail"
+        proto.MESSAGE, number=3, message="ProductDetail",
     )
+
     list_id = proto.Field(proto.STRING, number=4)
+
     cart_id = proto.Field(proto.STRING, number=5)
+
     purchase_transaction = proto.Field(
-        proto.MESSAGE, number=6, message="PurchaseTransaction"
+        proto.MESSAGE, number=6, message="PurchaseTransaction",
     )
 
 
@@ -322,10 +341,10 @@ class PurchaseTransaction(proto.Message):
             adjustments to total revenue that you want to include as
             part of your revenue calculations. This field is not
             required if the event type is ``refund``.
-        taxes (Sequence[~.user_event.PurchaseTransaction.TaxesEntry]):
+        taxes (Sequence[google.cloud.recommendationengine_v1beta1.types.PurchaseTransaction.TaxesEntry]):
             Optional. All the taxes associated with the
             transaction.
-        costs (Sequence[~.user_event.PurchaseTransaction.CostsEntry]):
+        costs (Sequence[google.cloud.recommendationengine_v1beta1.types.PurchaseTransaction.CostsEntry]):
             Optional. All the costs associated with the product. These
             can be manufacturing costs, shipping expenses not borne by
             the end user, or any other costs.
@@ -343,9 +362,13 @@ class PurchaseTransaction(proto.Message):
     """
 
     id = proto.Field(proto.STRING, number=1)
+
     revenue = proto.Field(proto.FLOAT, number=2)
+
     taxes = proto.MapField(proto.STRING, proto.FLOAT, number=3)
+
     costs = proto.MapField(proto.STRING, proto.FLOAT, number=4)
+
     currency_code = proto.Field(proto.STRING, number=6)
 
 
@@ -369,7 +392,7 @@ class ProductDetail(proto.Message):
             discounted price). If provided, this will
             override the display price in Catalog for this
             product.
-        stock_state (~.catalog.ProductCatalogItem.StockState):
+        stock_state (google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem.StockState):
             Optional. Item stock state. If provided, this
             overrides the stock state in Catalog for items
             in this event.
@@ -390,21 +413,28 @@ class ProductDetail(proto.Message):
             ``stock_state`` field to be ``OUT_OF_STOCK``. Leaving this
             field unspecified / as zero is not sufficient to mark the
             item out of stock.
-        item_attributes (~.common.FeatureMap):
+        item_attributes (google.cloud.recommendationengine_v1beta1.types.FeatureMap):
             Optional. Extra features associated with a
             product in the user event.
     """
 
     id = proto.Field(proto.STRING, number=1)
+
     currency_code = proto.Field(proto.STRING, number=2)
+
     original_price = proto.Field(proto.FLOAT, number=3)
+
     display_price = proto.Field(proto.FLOAT, number=4)
+
     stock_state = proto.Field(
-        proto.ENUM, number=5, enum=catalog.ProductCatalogItem.StockState
+        proto.ENUM, number=5, enum=catalog.ProductCatalogItem.StockState,
     )
+
     quantity = proto.Field(proto.INT32, number=6)
+
     available_quantity = proto.Field(proto.INT32, number=7)
-    item_attributes = proto.Field(proto.MESSAGE, number=8, message=common.FeatureMap)
+
+    item_attributes = proto.Field(proto.MESSAGE, number=8, message=common.FeatureMap,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

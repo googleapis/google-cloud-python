@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ from google.protobuf import struct_pb2 as struct  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.recommendationengine.v1beta1",
-    manifest={"PredictRequest", "PredictResponse"},
+    manifest={"PredictRequest", "PredictResponse",},
 )
 
 
@@ -68,7 +68,7 @@ class PredictRequest(proto.Message):
 
             The full list of available placements can be seen at
             https://console.cloud.google.com/recommendation/datafeeds/default_catalog/dashboard
-        user_event (~.gcr_user_event.UserEvent):
+        user_event (google.cloud.recommendationengine_v1beta1.types.UserEvent):
             Required. Context about the user, what they
             are looking at and what action they took to
             trigger the predict request. Note that this user
@@ -109,7 +109,7 @@ class PredictRequest(proto.Message):
             used that returns arbitrary catalog items. Note
             that the dryRun mode should only be used for
             testing the API, or if the model is not ready.
-        params (Sequence[~.prediction_service.PredictRequest.ParamsEntry]):
+        params (Sequence[google.cloud.recommendationengine_v1beta1.types.PredictRequest.ParamsEntry]):
             Optional. Additional domain specific parameters for the
             predictions.
 
@@ -125,7 +125,7 @@ class PredictRequest(proto.Message):
                response. The given 'score' indicates the probability of
                an item being clicked/purchased given the user's context
                and history.
-        labels (Sequence[~.prediction_service.PredictRequest.LabelsEntry]):
+        labels (Sequence[google.cloud.recommendationengine_v1beta1.types.PredictRequest.LabelsEntry]):
             Optional. The labels for the predict request.
 
             -  Label keys can contain lowercase letters, digits and
@@ -142,12 +142,21 @@ class PredictRequest(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
-    user_event = proto.Field(proto.MESSAGE, number=2, message=gcr_user_event.UserEvent)
+
+    user_event = proto.Field(proto.MESSAGE, number=2, message=gcr_user_event.UserEvent,)
+
     page_size = proto.Field(proto.INT32, number=7)
+
     page_token = proto.Field(proto.STRING, number=8)
+
     filter = proto.Field(proto.STRING, number=3)
+
     dry_run = proto.Field(proto.BOOL, number=4)
-    params = proto.MapField(proto.STRING, proto.MESSAGE, number=6, message=struct.Value)
+
+    params = proto.MapField(
+        proto.STRING, proto.MESSAGE, number=6, message=struct.Value,
+    )
+
     labels = proto.MapField(proto.STRING, proto.STRING, number=9)
 
 
@@ -155,7 +164,7 @@ class PredictResponse(proto.Message):
     r"""Response message for predict method.
 
     Attributes:
-        results (Sequence[~.prediction_service.PredictResponse.PredictionResult]):
+        results (Sequence[google.cloud.recommendationengine_v1beta1.types.PredictResponse.PredictionResult]):
             A list of recommended items. The order
             represents the ranking (from the most relevant
             item to the least).
@@ -170,7 +179,7 @@ class PredictResponse(proto.Message):
         dry_run (bool):
             True if the dryRun property was set in the
             request.
-        metadata (Sequence[~.prediction_service.PredictResponse.MetadataEntry]):
+        metadata (Sequence[google.cloud.recommendationengine_v1beta1.types.PredictResponse.MetadataEntry]):
             Additional domain specific prediction
             response metadata.
         next_page_token (str):
@@ -185,7 +194,7 @@ class PredictResponse(proto.Message):
         Attributes:
             id (str):
                 ID of the recommended catalog item
-            item_metadata (Sequence[~.prediction_service.PredictResponse.PredictionResult.ItemMetadataEntry]):
+            item_metadata (Sequence[google.cloud.recommendationengine_v1beta1.types.PredictResponse.PredictionResult.ItemMetadataEntry]):
                 Additional item metadata / annotations.
 
                 Possible values:
@@ -199,21 +208,27 @@ class PredictResponse(proto.Message):
         """
 
         id = proto.Field(proto.STRING, number=1)
+
         item_metadata = proto.MapField(
-            proto.STRING, proto.MESSAGE, number=2, message=struct.Value
+            proto.STRING, proto.MESSAGE, number=2, message=struct.Value,
         )
 
     @property
     def raw_page(self):
         return self
 
-    results = proto.RepeatedField(proto.MESSAGE, number=1, message=PredictionResult)
+    results = proto.RepeatedField(proto.MESSAGE, number=1, message=PredictionResult,)
+
     recommendation_token = proto.Field(proto.STRING, number=2)
+
     items_missing_in_catalog = proto.RepeatedField(proto.STRING, number=3)
+
     dry_run = proto.Field(proto.BOOL, number=4)
+
     metadata = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=5, message=struct.Value
+        proto.STRING, proto.MESSAGE, number=5, message=struct.Value,
     )
+
     next_page_token = proto.Field(proto.STRING, number=6)
 
 

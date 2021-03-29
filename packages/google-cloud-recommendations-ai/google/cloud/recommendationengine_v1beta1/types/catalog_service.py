@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,12 +42,13 @@ class CreateCatalogItemRequest(proto.Message):
         parent (str):
             Required. The parent catalog resource name, such as
             ``projects/*/locations/global/catalogs/default_catalog``
-        catalog_item (~.catalog.CatalogItem):
+        catalog_item (google.cloud.recommendationengine_v1beta1.types.CatalogItem):
             Required. The catalog item to create.
     """
 
     parent = proto.Field(proto.STRING, number=1)
-    catalog_item = proto.Field(proto.MESSAGE, number=2, message=catalog.CatalogItem)
+
+    catalog_item = proto.Field(proto.MESSAGE, number=2, message=catalog.CatalogItem,)
 
 
 class GetCatalogItemRequest(proto.Message):
@@ -82,8 +83,11 @@ class ListCatalogItemsRequest(proto.Message):
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
     page_size = proto.Field(proto.INT32, number=2)
+
     page_token = proto.Field(proto.STRING, number=3)
+
     filter = proto.Field(proto.STRING, number=4)
 
 
@@ -91,7 +95,7 @@ class ListCatalogItemsResponse(proto.Message):
     r"""Response message for ListCatalogItems method.
 
     Attributes:
-        catalog_items (Sequence[~.catalog.CatalogItem]):
+        catalog_items (Sequence[google.cloud.recommendationengine_v1beta1.types.CatalogItem]):
             The catalog items.
         next_page_token (str):
             If empty, the list is complete. If nonempty, the token to
@@ -104,8 +108,9 @@ class ListCatalogItemsResponse(proto.Message):
         return self
 
     catalog_items = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=catalog.CatalogItem
+        proto.MESSAGE, number=1, message=catalog.CatalogItem,
     )
+
     next_page_token = proto.Field(proto.STRING, number=2)
 
 
@@ -116,18 +121,20 @@ class UpdateCatalogItemRequest(proto.Message):
         name (str):
             Required. Full resource name of catalog item, such as
             ``projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id``
-        catalog_item (~.catalog.CatalogItem):
+        catalog_item (google.cloud.recommendationengine_v1beta1.types.CatalogItem):
             Required. The catalog item to update/create. The
             'catalog_item_id' field has to match that in the 'name'.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Indicates which fields in the
             provided 'item' to update. If not set, will by
             default update all fields.
     """
 
     name = proto.Field(proto.STRING, number=1)
-    catalog_item = proto.Field(proto.MESSAGE, number=2, message=catalog.CatalogItem)
-    update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask)
+
+    catalog_item = proto.Field(proto.MESSAGE, number=2, message=catalog.CatalogItem,)
+
+    update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
 
 
 class DeleteCatalogItemRequest(proto.Message):

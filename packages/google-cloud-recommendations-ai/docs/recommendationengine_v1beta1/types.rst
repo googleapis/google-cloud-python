@@ -1,5 +1,7 @@
-Types for Google Cloud Recommendationengine API
-===============================================
+Types for Google Cloud Recommendationengine v1beta1 API
+=======================================================
 
 .. automodule:: google.cloud.recommendationengine_v1beta1.types
     :members:
+    :undoc-members:
+    :show-inheritance:

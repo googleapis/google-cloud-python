@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 
 from .services.catalog_service import CatalogServiceClient
 from .services.prediction_api_key_registry import PredictionApiKeyRegistryClient
@@ -74,6 +73,7 @@ from .types.user_event_service import WriteUserEventRequest
 __all__ = (
     "CatalogInlineSource",
     "CatalogItem",
+    "CatalogServiceClient",
     "CollectUserEventRequest",
     "CreateCatalogItemRequest",
     "CreatePredictionApiKeyRegistrationRequest",
@@ -113,8 +113,7 @@ __all__ = (
     "UserEvent",
     "UserEventImportSummary",
     "UserEventInlineSource",
-    "UserEventServiceClient",
     "UserInfo",
     "WriteUserEventRequest",
-    "CatalogServiceClient",
+    "UserEventServiceClient",
 )

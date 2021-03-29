@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -67,13 +67,13 @@ class CatalogInlineSource(proto.Message):
     method.
 
     Attributes:
-        catalog_items (Sequence[~.catalog.CatalogItem]):
+        catalog_items (Sequence[google.cloud.recommendationengine_v1beta1.types.CatalogItem]):
             Optional. A list of catalog items to
             update/create. Recommended max of 10k items.
     """
 
     catalog_items = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=catalog.CatalogItem
+        proto.MESSAGE, number=1, message=catalog.CatalogItem,
     )
 
 
@@ -82,13 +82,13 @@ class UserEventInlineSource(proto.Message):
     method.
 
     Attributes:
-        user_events (Sequence[~.user_event.UserEvent]):
+        user_events (Sequence[google.cloud.recommendationengine_v1beta1.types.UserEvent]):
             Optional. A list of user events to import.
             Recommended max of 10k items.
     """
 
     user_events = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=user_event.UserEvent
+        proto.MESSAGE, number=1, message=user_event.UserEvent,
     )
 
 
@@ -103,7 +103,7 @@ class ImportErrorsConfig(proto.Message):
             JSON-encoded ``google.rpc.Status`` message.
     """
 
-    gcs_prefix = proto.Field(proto.STRING, number=1)
+    gcs_prefix = proto.Field(proto.STRING, number=1, oneof="destination")
 
 
 class ImportCatalogItemsRequest(proto.Message):
@@ -121,18 +121,21 @@ class ImportCatalogItemsRequest(proto.Message):
             Up to 128 characters long. This is returned as
             google.longrunning.Operation.name in the
             response.
-        input_config (~.import_.InputConfig):
+        input_config (google.cloud.recommendationengine_v1beta1.types.InputConfig):
             Required. The desired input location of the
             data.
-        errors_config (~.import_.ImportErrorsConfig):
+        errors_config (google.cloud.recommendationengine_v1beta1.types.ImportErrorsConfig):
             Optional. The desired location of errors
             incurred during the Import.
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
     request_id = proto.Field(proto.STRING, number=2)
-    input_config = proto.Field(proto.MESSAGE, number=3, message="InputConfig")
-    errors_config = proto.Field(proto.MESSAGE, number=4, message=ImportErrorsConfig)
+
+    input_config = proto.Field(proto.MESSAGE, number=3, message="InputConfig",)
+
+    errors_config = proto.Field(proto.MESSAGE, number=4, message="ImportErrorsConfig",)
 
 
 class ImportUserEventsRequest(proto.Message):
@@ -150,41 +153,48 @@ class ImportUserEventsRequest(proto.Message):
             google.longrunning.Operation.name in the response. Note that
             this field must not be set if the desired input config is
             catalog_inline_source.
-        input_config (~.import_.InputConfig):
+        input_config (google.cloud.recommendationengine_v1beta1.types.InputConfig):
             Required. The desired input location of the
             data.
-        errors_config (~.import_.ImportErrorsConfig):
+        errors_config (google.cloud.recommendationengine_v1beta1.types.ImportErrorsConfig):
             Optional. The desired location of errors
             incurred during the Import.
     """
 
     parent = proto.Field(proto.STRING, number=1)
+
     request_id = proto.Field(proto.STRING, number=2)
-    input_config = proto.Field(proto.MESSAGE, number=3, message="InputConfig")
-    errors_config = proto.Field(proto.MESSAGE, number=4, message=ImportErrorsConfig)
+
+    input_config = proto.Field(proto.MESSAGE, number=3, message="InputConfig",)
+
+    errors_config = proto.Field(proto.MESSAGE, number=4, message="ImportErrorsConfig",)
 
 
 class InputConfig(proto.Message):
     r"""The input config source.
 
     Attributes:
-        catalog_inline_source (~.import_.CatalogInlineSource):
+        catalog_inline_source (google.cloud.recommendationengine_v1beta1.types.CatalogInlineSource):
             The Inline source for the input content for
             Catalog items.
-        gcs_source (~.import_.GcsSource):
+        gcs_source (google.cloud.recommendationengine_v1beta1.types.GcsSource):
             Google Cloud Storage location for the input
             content.
-        user_event_inline_source (~.import_.UserEventInlineSource):
+        user_event_inline_source (google.cloud.recommendationengine_v1beta1.types.UserEventInlineSource):
             The Inline source for the input content for
             UserEvents.
     """
 
     catalog_inline_source = proto.Field(
-        proto.MESSAGE, number=1, message=CatalogInlineSource
+        proto.MESSAGE, number=1, oneof="source", message="CatalogInlineSource",
     )
-    gcs_source = proto.Field(proto.MESSAGE, number=2, message=GcsSource)
+
+    gcs_source = proto.Field(
+        proto.MESSAGE, number=2, oneof="source", message="GcsSource",
+    )
+
     user_event_inline_source = proto.Field(
-        proto.MESSAGE, number=3, message=UserEventInlineSource
+        proto.MESSAGE, number=3, oneof="source", message="UserEventInlineSource",
     )
 
 
@@ -200,7 +210,7 @@ class ImportMetadata(proto.Message):
             Id of the request / operation. This is
             parroting back the requestId that was passed in
             the request.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         success_count (int):
             Count of entries that were processed
@@ -208,17 +218,22 @@ class ImportMetadata(proto.Message):
         failure_count (int):
             Count of entries that encountered errors
             while processing.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation last update time. If the operation
             is done, this is also the finish time.
     """
 
     operation_name = proto.Field(proto.STRING, number=5)
+
     request_id = proto.Field(proto.STRING, number=3)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp)
+
+    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
+
     success_count = proto.Field(proto.INT64, number=1)
+
     failure_count = proto.Field(proto.INT64, number=2)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp.Timestamp)
+
+    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp.Timestamp,)
 
 
 class ImportCatalogItemsResponse(proto.Message):
@@ -228,16 +243,17 @@ class ImportCatalogItemsResponse(proto.Message):
     was successful.
 
     Attributes:
-        error_samples (Sequence[~.status.Status]):
+        error_samples (Sequence[google.rpc.status_pb2.Status]):
             A sample of errors encountered while
             processing the request.
-        errors_config (~.import_.ImportErrorsConfig):
+        errors_config (google.cloud.recommendationengine_v1beta1.types.ImportErrorsConfig):
             Echoes the destination for the complete
             errors in the request if set.
     """
 
-    error_samples = proto.RepeatedField(proto.MESSAGE, number=1, message=status.Status)
-    errors_config = proto.Field(proto.MESSAGE, number=2, message=ImportErrorsConfig)
+    error_samples = proto.RepeatedField(proto.MESSAGE, number=1, message=status.Status,)
+
+    errors_config = proto.Field(proto.MESSAGE, number=2, message="ImportErrorsConfig",)
 
 
 class ImportUserEventsResponse(proto.Message):
@@ -247,21 +263,23 @@ class ImportUserEventsResponse(proto.Message):
     was successful.
 
     Attributes:
-        error_samples (Sequence[~.status.Status]):
+        error_samples (Sequence[google.rpc.status_pb2.Status]):
             A sample of errors encountered while
             processing the request.
-        errors_config (~.import_.ImportErrorsConfig):
+        errors_config (google.cloud.recommendationengine_v1beta1.types.ImportErrorsConfig):
             Echoes the destination for the complete
             errors if this field was set in the request.
-        import_summary (~.import_.UserEventImportSummary):
+        import_summary (google.cloud.recommendationengine_v1beta1.types.UserEventImportSummary):
             Aggregated statistics of user event import
             status.
     """
 
-    error_samples = proto.RepeatedField(proto.MESSAGE, number=1, message=status.Status)
-    errors_config = proto.Field(proto.MESSAGE, number=2, message=ImportErrorsConfig)
+    error_samples = proto.RepeatedField(proto.MESSAGE, number=1, message=status.Status,)
+
+    errors_config = proto.Field(proto.MESSAGE, number=2, message="ImportErrorsConfig",)
+
     import_summary = proto.Field(
-        proto.MESSAGE, number=3, message="UserEventImportSummary"
+        proto.MESSAGE, number=3, message="UserEventImportSummary",
     )
 
 
@@ -280,6 +298,7 @@ class UserEventImportSummary(proto.Message):
     """
 
     joined_events_count = proto.Field(proto.INT64, number=1)
+
     unjoined_events_count = proto.Field(proto.INT64, number=2)
 
 

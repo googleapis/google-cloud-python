@@ -1,25 +1,32 @@
 {
-  "updateTime": "2020-03-09T20:18:03.054595Z",
   "sources": [
     {
       "git": {
         "name": ".",
-        "remote": "sso://devrel/cloud/libraries/python/python-recommendations-ai"
+        "remote": "git@github.com:googleapis/python-recommendations-ai",
+        "sha": "6c6581870702de9834b39ef63b66ee3b1acf13c7"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "8f631c4c70a60a9c7da3749511ee4ad432b62898",
-        "internalRef": "299885195"
+        "sha": "c0507a2bf28ea9f9af82559f2c876d2af598d6d9",
+        "internalRef": "365593953"
       }
     },
     {
-      "template": {
-        "name": "python_library",
-        "origin": "synthtool.gcp",
-        "version": "2020.2.4"
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "60fc32cc950c20cfdd774b846a4a7dc5d1e4d0ef"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "60fc32cc950c20cfdd774b846a4a7dc5d1e4d0ef"
       }
     }
   ],
@@ -30,7 +37,7 @@
         "apiName": "recommendationengine",
         "apiVersion": "v1beta1",
         "language": "python",
-        "generator": "gapic-generator-python"
+        "generator": "bazel"
       }
     }
   ]

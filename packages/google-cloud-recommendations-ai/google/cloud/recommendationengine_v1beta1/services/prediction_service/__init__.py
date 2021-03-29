@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,5 +16,9 @@
 #
 
 from .client import PredictionServiceClient
+from .async_client import PredictionServiceAsyncClient
 
-__all__ = ("PredictionServiceClient",)
+__all__ = (
+    "PredictionServiceClient",
+    "PredictionServiceAsyncClient",
+)

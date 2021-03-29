@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ from typing import Dict, Type
 
 from .base import PredictionApiKeyRegistryTransport
 from .grpc import PredictionApiKeyRegistryGrpcTransport
+from .grpc_asyncio import PredictionApiKeyRegistryGrpcAsyncIOTransport
 
 
 # Compile a registry of transports.
@@ -27,6 +28,10 @@ _transport_registry = (
     OrderedDict()
 )  # type: Dict[str, Type[PredictionApiKeyRegistryTransport]]
 _transport_registry["grpc"] = PredictionApiKeyRegistryGrpcTransport
+_transport_registry["grpc_asyncio"] = PredictionApiKeyRegistryGrpcAsyncIOTransport
 
-
-__all__ = ("PredictionApiKeyRegistryTransport", "PredictionApiKeyRegistryGrpcTransport")
+__all__ = (
+    "PredictionApiKeyRegistryTransport",
+    "PredictionApiKeyRegistryGrpcTransport",
+    "PredictionApiKeyRegistryGrpcAsyncIOTransport",
+)

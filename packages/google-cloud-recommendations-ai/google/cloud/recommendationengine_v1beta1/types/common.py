@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.recommendationengine.v1beta1", manifest={"FeatureMap"}
+    package="google.cloud.recommendationengine.v1beta1", manifest={"FeatureMap",},
 )
 
 
@@ -29,7 +29,7 @@ class FeatureMap(proto.Message):
     categorical/numerical features.
 
     Attributes:
-        categorical_features (Sequence[~.common.FeatureMap.CategoricalFeaturesEntry]):
+        categorical_features (Sequence[google.cloud.recommendationengine_v1beta1.types.FeatureMap.CategoricalFeaturesEntry]):
             Categorical features that can take on one of a limited
             number of possible values. Some examples would be the
             brand/maker of a product, or country of a customer.
@@ -38,7 +38,7 @@ class FeatureMap(proto.Message):
 
             For example:
             ``{ "colors": {"value": ["yellow", "green"]}, "sizes": {"value":["S", "M"]}``
-        numerical_features (Sequence[~.common.FeatureMap.NumericalFeaturesEntry]):
+        numerical_features (Sequence[google.cloud.recommendationengine_v1beta1.types.FeatureMap.NumericalFeaturesEntry]):
             Numerical features. Some examples would be the height/weight
             of a product, or age of a customer.
 
@@ -70,10 +70,11 @@ class FeatureMap(proto.Message):
         value = proto.RepeatedField(proto.FLOAT, number=1)
 
     categorical_features = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=1, message=StringList
+        proto.STRING, proto.MESSAGE, number=1, message=StringList,
     )
+
     numerical_features = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=2, message=FloatList
+        proto.STRING, proto.MESSAGE, number=2, message=FloatList,
     )
 
 

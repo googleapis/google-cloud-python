@@ -1,6 +1,9 @@
-Client for Google Cloud Recommendationengine API
-================================================
+Services for Google Cloud Recommendationengine v1beta1 API
+==========================================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.recommendationengine_v1beta1
-    :members:
-    :inherited-members:
+    catalog_service
+    prediction_api_key_registry
+    prediction_service
+    user_event_service

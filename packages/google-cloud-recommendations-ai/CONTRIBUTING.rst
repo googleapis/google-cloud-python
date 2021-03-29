@@ -21,8 +21,8 @@ In order to add a feature:
 - The feature must be documented in both the API and narrative
   documentation.
 
-- The feature must work fully on the following CPython versions:  2.7,
-  3.5, 3.6, and 3.7 on both UNIX and Windows.
+- The feature must work fully on the following CPython versions:
+  3.6, 3.7, 3.8 and 3.9 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
@@ -70,8 +70,13 @@ We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 - To test your changes, run unit tests with ``nox``::
 
     $ nox -s unit-2.7
-    $ nox -s unit-3.7
+    $ nox -s unit-3.8
     $ ...
+
+- Args to pytest can be passed through the nox command separated by a `--`. For
+  example, to run a single test::
+
+    $ nox -s unit-3.8 -- -k <name of test>
 
   .. note::
 
@@ -79,25 +84,6 @@ We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
     ``noxfile.py`` files in each directory.
 
 .. nox: https://pypi.org/project/nox/
-
-Note on Editable Installs / Develop Mode
-========================================
-
-- As mentioned previously, using ``setuptools`` in `develop mode`_
-  or a ``pip`` `editable install`_ is not possible with this
-  library. This is because this library uses `namespace packages`_.
-  For context see `Issue #2316`_ and the relevant `PyPA issue`_.
-
-  Since ``editable`` / ``develop`` mode can't be used, packages
-  need to be installed directly. Hence your changes to the source
-  tree don't get incorporated into the **already installed**
-  package.
-
-.. _namespace packages: https://www.python.org/dev/peps/pep-0420/
-.. _Issue #2316: https://github.com/GoogleCloudPlatform/google-cloud-python/issues/2316
-.. _PyPA issue: https://github.com/pypa/packaging-problems/issues/12
-.. _develop mode: https://setuptools.readthedocs.io/en/latest/setuptools.html#development-mode
-.. _editable install: https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs
 
 *****************************************
 I'm getting weird errors... Can you help?
@@ -112,8 +98,12 @@ On Debian/Ubuntu::
 ************
 Coding Style
 ************
+- We use the automatic code formatter ``black``. You can run it using
+  the nox session ``blacken``. This will eliminate many lint errors. Run via::
 
-- PEP8 compliance, with exceptions defined in the linter configuration.
+   $ nox -s blacken
+
+- PEP8 compliance is required, with exceptions defined in the linter configuration.
   If you have ``nox`` installed, you can test that you have not introduced
   any non-compliant code via::
 
@@ -130,6 +120,16 @@ Coding Style
   should point to the official ``googleapis`` checkout and the
   the branch should be the main branch on that remote (``master``).
 
+- This repository contains configuration for the
+  `pre-commit <https://pre-commit.com/>`__ tool, which automates checking
+  our linters during a commit.  If you have it installed on your ``$PATH``,
+  you can enable enforcing those checks via:
+
+.. code-block:: bash
+
+   $ pre-commit install
+   pre-commit installed at .git/hooks/pre-commit
+
 Exceptions to PEP8:
 
 - Many unit tests use a helper method, ``_call_fut`` ("FUT" is short for
@@ -142,13 +142,18 @@ Running System Tests
 
 - To run system tests, you can execute::
 
-   $ nox -s system-3.7
+   # Run all system tests
+   $ nox -s system-3.8
    $ nox -s system-2.7
+
+   # Run a single system test
+   $ nox -s system-3.8 -- -k <name of test>
+
 
   .. note::
 
       System tests are only configured to run under Python 2.7 and
-      Python 3.7. For expediency, we do not run them in older versions
+      Python 3.8. For expediency, we do not run them in older versions
       of Python 3.
 
   This alone will not run the tests. You'll need to change some local
@@ -211,33 +216,24 @@ Supported Python Versions
 
 We support:
 
--  `Python 3.5`_
 -  `Python 3.6`_
 -  `Python 3.7`_
+-  `Python 3.8`_
+-  `Python 3.9`_
 
-.. _Python 3.5: https://docs.python.org/3.5/
 .. _Python 3.6: https://docs.python.org/3.6/
 .. _Python 3.7: https://docs.python.org/3.7/
+.. _Python 3.8: https://docs.python.org/3.8/
+.. _Python 3.9: https://docs.python.org/3.9/
 
 
 Supported versions can be found in our ``noxfile.py`` `config`_.
 
 .. _config: https://github.com/googleapis/python-recommendations-ai/blob/master/noxfile.py
 
-We explicitly decided not to support `Python 2.5`_ due to `decreased usage`_
-and lack of continuous integration `support`_.
-
-.. _Python 2.5: https://docs.python.org/2.5/
-.. _decreased usage: https://caremad.io/2013/10/a-look-at-pypi-downloads/
-.. _support: https://blog.travis-ci.com/2013-11-18-upcoming-build-environment-updates/
-
-We have `dropped 2.6`_ as a supported version as well since Python 2.6 is no
-longer supported by the core development team.
-
-Python 2.7 support is deprecated. All code changes should maintain Python 2.7 compatibility until January 1, 2020.
 
 We also explicitly decided to support Python 3 beginning with version
-3.5. Reasons for this include:
+3.6. Reasons for this include:
 
 -  Encouraging use of newest versions of Python 3
 -  Taking the lead of `prominent`_ open-source `projects`_
@@ -247,7 +243,6 @@ We also explicitly decided to support Python 3 beginning with version
 .. _prominent: https://docs.djangoproject.com/en/1.9/faq/install/#what-python-version-can-i-use-with-django
 .. _projects: http://flask.pocoo.org/docs/0.10/python3/
 .. _Unicode literal support: https://www.python.org/dev/peps/pep-0414/
-.. _dropped 2.6: https://github.com/googleapis/google-cloud-python/issues/995
 
 **********
 Versioning

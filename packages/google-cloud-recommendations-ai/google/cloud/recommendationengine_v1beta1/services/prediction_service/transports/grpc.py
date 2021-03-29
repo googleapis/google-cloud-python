@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2019  Google LLC
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,16 +15,20 @@
 # limitations under the License.
 #
 
-from typing import Callable, Dict
+import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple
 
 from google.api_core import grpc_helpers  # type: ignore
+from google.api_core import gapic_v1  # type: ignore
+from google import auth  # type: ignore
 from google.auth import credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.cloud.recommendationengine_v1beta1.types import prediction_service
 
-from .base import PredictionServiceTransport
+from .base import PredictionServiceTransport, DEFAULT_CLIENT_INFO
 
 
 class PredictionServiceGrpcTransport(PredictionServiceTransport):
@@ -40,12 +44,22 @@ class PredictionServiceGrpcTransport(PredictionServiceTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
+    _stubs: Dict[str, Callable]
+
     def __init__(
         self,
         *,
         host: str = "recommendationengine.googleapis.com",
         credentials: credentials.Credentials = None,
-        channel: grpc.Channel = None
+        credentials_file: str = None,
+        scopes: Sequence[str] = None,
+        channel: grpc.Channel = None,
+        api_mtls_endpoint: str = None,
+        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
+        ssl_channel_credentials: grpc.ChannelCredentials = None,
+        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the transport.
 
@@ -57,66 +71,159 @@ class PredictionServiceGrpcTransport(PredictionServiceTransport):
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
                 This argument is ignored if ``channel`` is provided.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                ignored if ``channel`` is provided.
             channel (Optional[grpc.Channel]): A ``Channel`` instance through
                 which to make calls.
+            api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
+                If provided, it overrides the ``host`` argument and tries to create
+                a mutual TLS channel with client SSL credentials from
+                ``client_cert_source`` or applicatin default SSL credentials.
+            client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]):
+                Deprecated. A callback to provide client SSL certificate bytes and
+                private key bytes, both in PEM format. It is ignored if
+                ``api_mtls_endpoint`` is None.
+            ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
+                for grpc channel. It is ignored if ``channel`` is provided.
+            client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
+                A callback to provide client certificate bytes and private key bytes,
+                both in PEM format. It is used to configure mutual TLS channel. It is
+                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
+                your own client library.
+
+        Raises:
+          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+              creation failed for any reason.
+          google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
+              and ``credentials_file`` are passed.
         """
-        # Sanity check: Ensure that channel and credentials are not both
-        # provided.
+        self._grpc_channel = None
+        self._ssl_channel_credentials = ssl_channel_credentials
+        self._stubs: Dict[str, Callable] = {}
+
+        if api_mtls_endpoint:
+            warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
+        if client_cert_source:
+            warnings.warn("client_cert_source is deprecated", DeprecationWarning)
+
         if channel:
+            # Ignore credentials if a channel was passed.
             credentials = False
-
-        # Run the base constructor.
-        super().__init__(host=host, credentials=credentials)
-        self._stubs = {}  # type: Dict[str, Callable]
-
-        # If a channel was explicitly provided, set it.
-        if channel:
+            # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
+            self._ssl_channel_credentials = None
+
+        else:
+            if api_mtls_endpoint:
+                host = api_mtls_endpoint
+
+                # Create SSL credentials with client_cert_source or application
+                # default SSL credentials.
+                if client_cert_source:
+                    cert, key = client_cert_source()
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                        certificate_chain=cert, private_key=key
+                    )
+                else:
+                    self._ssl_channel_credentials = SslCredentials().ssl_credentials
+
+            else:
+                if client_cert_source_for_mtls and not ssl_channel_credentials:
+                    cert, key = client_cert_source_for_mtls()
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                        certificate_chain=cert, private_key=key
+                    )
+
+        # The base transport sets the host, credentials and scopes
+        super().__init__(
+            host=host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            scopes=scopes,
+            quota_project_id=quota_project_id,
+            client_info=client_info,
+        )
+
+        if not self._grpc_channel:
+            self._grpc_channel = type(self).create_channel(
+                self._host,
+                credentials=self._credentials,
+                credentials_file=credentials_file,
+                scopes=self._scopes,
+                ssl_credentials=self._ssl_channel_credentials,
+                quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+
+        # Wrap messages. This must be done after self._grpc_channel exists
+        self._prep_wrapped_messages(client_info)
 
     @classmethod
     def create_channel(
         cls,
         host: str = "recommendationengine.googleapis.com",
         credentials: credentials.Credentials = None,
-        **kwargs
+        credentials_file: str = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
     ) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
-            address (Optionsl[str]): The host for the channel to use.
+            host (Optional[str]): The host for the channel to use.
             credentials (Optional[~.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If
                 none are specified, the client will attempt to ascertain
                 the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is mutually exclusive with credentials.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
             kwargs (Optional[dict]): Keyword arguments, which are passed to the
                 channel creation.
         Returns:
             grpc.Channel: A gRPC channel object.
+
+        Raises:
+            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
+              and ``credentials_file`` are passed.
         """
+        scopes = scopes or cls.AUTH_SCOPES
         return grpc_helpers.create_channel(
-            host, credentials=credentials, scopes=cls.AUTH_SCOPES, **kwargs
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            scopes=scopes,
+            quota_project_id=quota_project_id,
+            **kwargs,
         )
 
     @property
     def grpc_channel(self) -> grpc.Channel:
-        """Create the channel designed to connect to this service.
-
-        This property caches on the instance; repeated calls return
-        the same channel.
+        """Return the channel designed to connect to this service.
         """
-        # Sanity check: Only create a new channel if we do not already
-        # have one.
-        if not hasattr(self, "_grpc_channel"):
-            self._grpc_channel = self.create_channel(
-                self._host, credentials=self._credentials
-            )
-
-        # Return the channel from cache.
         return self._grpc_channel
 
     @property
     def predict(
-        self
+        self,
     ) -> Callable[
         [prediction_service.PredictRequest], prediction_service.PredictResponse
     ]:
