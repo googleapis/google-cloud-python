@@ -1,0 +1,12 @@
+{
+    "name": "resourcesettings",
+    "name_pretty": "Resource Settings",
+    "product_documentation": "https://cloud.google.com/resource-settings",
+    "client_documentation": "https://googleapis.dev/python/resourcesettings/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "repo": "googleapis/python-resource-settings",
+    "distribution_name": "google-cloud-resource-settings",
+    "api_id": "resourcesettings.googleapis.com"
+  }
