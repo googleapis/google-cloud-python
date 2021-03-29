@@ -21,6 +21,8 @@ from .types.bundle import BundledDocumentMetadata
 from .types.bundle import BundledQuery
 from .types.bundle import NamedQuery
 
+from .bundle import FirestoreBundle
+
 
 __all__ = (
     "BundleElement",
@@ -28,4 +30,5 @@ __all__ = (
     "BundledDocumentMetadata",
     "NamedQuery",
     "BundledQuery",
+    "FirestoreBundle",
 )

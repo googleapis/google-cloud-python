@@ -19,6 +19,7 @@ a :class:`~google.cloud.firestore_v1.collection.Collection` and that can be
 a more common way to create a query than direct usage of the constructor.
 """
 
+from google.cloud.firestore_v1.base_document import DocumentSnapshot
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 
@@ -33,9 +34,7 @@ from google.cloud.firestore_v1.base_query import (
 
 from google.cloud.firestore_v1 import document
 from google.cloud.firestore_v1.watch import Watch
-from typing import Any
-from typing import Callable
-from typing import Generator
+from typing import Any, Callable, Generator, List
 
 
 class Query(BaseQuery):
@@ -125,7 +124,7 @@ class Query(BaseQuery):
         transaction=None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
-    ) -> list:
+    ) -> List[DocumentSnapshot]:
         """Read the documents in the collection that match this query.
 
         This sends a ``RunQuery`` RPC and returns a list of documents

@@ -247,6 +247,18 @@ omit =
 """,
 )
 
+s.replace(
+    "google/cloud/firestore_bundle/__init__.py",
+    "from .types.bundle import NamedQuery\n",
+    "from .types.bundle import NamedQuery\n\nfrom .bundle import FirestoreBundle\n",
+)
+
+s.replace(
+    "google/cloud/firestore_bundle/__init__.py",
+    "\'BundledQuery\',",
+    "\"BundledQuery\",\n    \"FirestoreBundle\",",
+)
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 
 s.replace(

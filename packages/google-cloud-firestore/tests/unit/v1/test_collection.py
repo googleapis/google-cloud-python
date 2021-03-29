@@ -17,6 +17,8 @@ import unittest
 
 import mock
 
+from tests.unit.v1 import _test_helpers
+
 
 class TestCollectionReference(unittest.TestCase):
     @staticmethod
@@ -89,7 +91,7 @@ class TestCollectionReference(unittest.TestCase):
         firestore_api.commit.return_value = commit_response
         create_doc_response = document.Document()
         firestore_api.create_document.return_value = create_doc_response
-        client = _make_client()
+        client = _test_helpers.make_client()
         client._firestore_api_internal = firestore_api
 
         # Actually make a collection.
@@ -140,7 +142,7 @@ class TestCollectionReference(unittest.TestCase):
 
     def _add_helper(self, retry=None, timeout=None):
         from google.cloud.firestore_v1.document import DocumentReference
-        from google.cloud.firestore_v1 import _helpers
+        from google.cloud.firestore_v1 import _helpers as _fs_v1_helpers
 
         # Create a minimal fake GAPIC with a dummy response.
         firestore_api = mock.Mock(spec=["commit"])
@@ -155,7 +157,7 @@ class TestCollectionReference(unittest.TestCase):
         firestore_api.commit.return_value = commit_response
 
         # Attach the fake GAPIC to a real client.
-        client = _make_client()
+        client = _test_helpers.make_client()
         client._firestore_api_internal = firestore_api
 
         # Actually make a collection and call add().
@@ -163,7 +165,7 @@ class TestCollectionReference(unittest.TestCase):
         document_data = {"zorp": 208.75, "i-did-not": b"know that"}
         doc_id = "child"
 
-        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+        kwargs = _fs_v1_helpers.make_retry_timeout_kwargs(retry, timeout)
         update_time, document_ref = collection.add(
             document_data, document_id=doc_id, **kwargs
         )
@@ -196,7 +198,7 @@ class TestCollectionReference(unittest.TestCase):
         self._add_helper(retry=retry, timeout=timeout)
 
     def _list_documents_helper(self, page_size=None, retry=None, timeout=None):
-        from google.cloud.firestore_v1 import _helpers
+        from google.cloud.firestore_v1 import _helpers as _fs_v1_helpers
         from google.api_core.page_iterator import Iterator
         from google.api_core.page_iterator import Page
         from google.cloud.firestore_v1.document import DocumentReference
@@ -213,7 +215,7 @@ class TestCollectionReference(unittest.TestCase):
                     page, self._pages = self._pages[0], self._pages[1:]
                     return Page(self, page, self.item_to_value)
 
-        client = _make_client()
+        client = _test_helpers.make_client()
         template = client._database_string + "/documents/{}"
         document_ids = ["doc-1", "doc-2"]
         documents = [
@@ -224,7 +226,7 @@ class TestCollectionReference(unittest.TestCase):
         api_client.list_documents.return_value = iterator
         client._firestore_api_internal = api_client
         collection = self._make_one("collection", client=client)
-        kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
+        kwargs = _fs_v1_helpers.make_retry_timeout_kwargs(retry, timeout)
 
         if page_size is not None:
             documents = list(collection.list_documents(page_size=page_size, **kwargs))
@@ -347,16 +349,3 @@ class TestCollectionReference(unittest.TestCase):
         collection = self._make_one("collection")
         collection.on_snapshot(None)
         watch.for_query.assert_called_once()
-
-
-def _make_credentials():
-    import google.auth.credentials
-
-    return mock.Mock(spec=google.auth.credentials.Credentials)
-
-
-def _make_client():
-    from google.cloud.firestore_v1.client import Client
-
-    credentials = _make_credentials()
-    return Client(project="project-project", credentials=credentials)

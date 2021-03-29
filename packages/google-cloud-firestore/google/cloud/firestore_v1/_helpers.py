@@ -15,7 +15,9 @@
 """Common helpers shared across Google Cloud Firestore modules."""
 
 import datetime
+import json
 
+import google
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.protobuf import struct_pb2
@@ -32,7 +34,18 @@ from google.cloud.firestore_v1.field_path import parse_field_path
 from google.cloud.firestore_v1.types import common
 from google.cloud.firestore_v1.types import document
 from google.cloud.firestore_v1.types import write
-from typing import Any, Generator, List, NoReturn, Optional, Tuple, Union
+from google.protobuf.timestamp_pb2 import Timestamp  # type: ignore
+from typing import (
+    Any,
+    Dict,
+    Generator,
+    Iterator,
+    List,
+    NoReturn,
+    Optional,
+    Tuple,
+    Union,
+)
 
 _EmptyDict: transforms.Sentinel
 _GRPC_ERROR_MAPPING: dict
@@ -219,6 +232,72 @@ def encode_dict(values_dict) -> dict:
     return {key: encode_value(value) for key, value in values_dict.items()}
 
 
+def document_snapshot_to_protobuf(snapshot: "google.cloud.firestore_v1.base_document.DocumentSnapshot") -> Optional["google.cloud.firestore_v1.types.Document"]:  # type: ignore
+    from google.cloud.firestore_v1.types import Document
+
+    if not snapshot.exists:
+        return None
+
+    return Document(
+        name=snapshot.reference._document_path,
+        fields=encode_dict(snapshot._data),
+        create_time=snapshot.create_time,
+        update_time=snapshot.update_time,
+    )
+
+
+class DocumentReferenceValue:
+    """DocumentReference path container with accessors for each relevant chunk.
+
+    Usage:
+        doc_ref_val = DocumentReferenceValue(
+            'projects/my-proj/databases/(default)/documents/my-col/my-doc',
+        )
+        assert doc_ref_val.project_name == 'my-proj'
+        assert doc_ref_val.collection_name == 'my-col'
+        assert doc_ref_val.document_id == 'my-doc'
+        assert doc_ref_val.database_name == '(default)'
+
+    Raises:
+        ValueError: If the supplied value cannot satisfy a complete path.
+    """
+
+    def __init__(self, reference_value: str):
+        self._reference_value = reference_value
+
+        # The first 5 parts are
+        # projects, {project}, databases, {database}, documents
+        parts = reference_value.split(DOCUMENT_PATH_DELIMITER)
+        if len(parts) < 7:
+            msg = BAD_REFERENCE_ERROR.format(reference_value)
+            raise ValueError(msg)
+
+        self.project_name = parts[1]
+        self.collection_name = parts[5]
+        self.database_name = parts[3]
+        self.document_id = "/".join(parts[6:])
+
+    @property
+    def full_key(self) -> str:
+        """Computed property for a DocumentReference's collection_name and
+        document Id"""
+        return "/".join([self.collection_name, self.document_id])
+
+    @property
+    def full_path(self) -> str:
+        return self._reference_value or "/".join(
+            [
+                "projects",
+                self.project_name,
+                "databases",
+                self.database_name,
+                "documents",
+                self.collection_name,
+                self.document_id,
+            ]
+        )
+
+
 def reference_value_to_document(reference_value, client) -> Any:
     """Convert a reference value string to a document.
 
@@ -237,15 +316,11 @@ def reference_value_to_document(reference_value, client) -> Any:
         ValueError: If the ``reference_value`` does not come from the same
             project / database combination as the ``client``.
     """
-    # The first 5 parts are
-    # projects, {project}, databases, {database}, documents
-    parts = reference_value.split(DOCUMENT_PATH_DELIMITER, 5)
-    if len(parts) != 6:
-        msg = BAD_REFERENCE_ERROR.format(reference_value)
-        raise ValueError(msg)
+    from google.cloud.firestore_v1.base_document import BaseDocumentReference
 
-    # The sixth part is `a/b/c/d` (i.e. the document path)
-    document = client.document(parts[-1])
+    doc_ref_value = DocumentReferenceValue(reference_value)
+
+    document: BaseDocumentReference = client.document(doc_ref_value.full_key)
     if document._document_path != reference_value:
         msg = WRONG_APP_REFERENCE.format(reference_value, client._database_string)
         raise ValueError(msg)
@@ -1041,3 +1116,179 @@ def make_retry_timeout_kwargs(retry, timeout) -> dict:
         kwargs["timeout"] = timeout
 
     return kwargs
+
+
+def build_timestamp(
+    dt: Optional[Union[DatetimeWithNanoseconds, datetime.datetime]] = None
+) -> Timestamp:
+    """Returns the supplied datetime (or "now") as a Timestamp"""
+    return _datetime_to_pb_timestamp(dt or DatetimeWithNanoseconds.utcnow())
+
+
+def compare_timestamps(
+    ts1: Union[Timestamp, datetime.datetime], ts2: Union[Timestamp, datetime.datetime],
+) -> int:
+    ts1 = build_timestamp(ts1) if not isinstance(ts1, Timestamp) else ts1
+    ts2 = build_timestamp(ts2) if not isinstance(ts2, Timestamp) else ts2
+    ts1_nanos = ts1.nanos + ts1.seconds * 1e9
+    ts2_nanos = ts2.nanos + ts2.seconds * 1e9
+    if ts1_nanos == ts2_nanos:
+        return 0
+    return 1 if ts1_nanos > ts2_nanos else -1
+
+
+def deserialize_bundle(
+    serialized: Union[str, bytes],
+    client: "google.cloud.firestore_v1.client.BaseClient",  # type: ignore
+) -> "google.cloud.firestore_bundle.FirestoreBundle":  # type: ignore
+    """Inverse operation to a `FirestoreBundle` instance's `build()` method.
+
+    Args:
+        serialized (Union[str, bytes]): The result of `FirestoreBundle.build()`.
+            Should be a list of dictionaries in string format.
+        client (BaseClient): A connected Client instance.
+
+    Returns:
+        FirestoreBundle: A bundle equivalent to that which called `build()` and
+            initially created the `serialized` value.
+
+    Raises:
+        ValueError: If any of the dictionaries in the list contain any more than
+            one top-level key.
+        ValueError: If any unexpected BundleElement types are encountered.
+        ValueError: If the serialized bundle ends before expected.
+    """
+    from google.cloud.firestore_bundle import BundleElement, FirestoreBundle
+
+    # Outlines the legal transitions from one BundleElement to another.
+    bundle_state_machine = {
+        "__initial__": ["metadata"],
+        "metadata": ["namedQuery", "documentMetadata", "__end__"],
+        "namedQuery": ["namedQuery", "documentMetadata", "__end__"],
+        "documentMetadata": ["document"],
+        "document": ["documentMetadata", "__end__"],
+    }
+    allowed_next_element_types: List[str] = bundle_state_machine["__initial__"]
+
+    # This must be saved and added last, since we cache it to preserve timestamps,
+    # yet must flush it whenever a new document or query is added to a bundle.
+    # The process of deserializing a bundle uses these methods which flush a
+    # cached metadata element, and thus, it must be the last BundleElement
+    # added during deserialization.
+    metadata_bundle_element: Optional[BundleElement] = None
+
+    bundle: Optional[FirestoreBundle] = None
+    data: Dict
+    for data in _parse_bundle_elements_data(serialized):
+
+        # BundleElements are serialized as JSON containing one key outlining
+        # the type, with all further data nested under that key
+        keys: List[str] = list(data.keys())
+
+        if len(keys) != 1:
+            raise ValueError("Expected serialized BundleElement with one top-level key")
+
+        key: str = keys[0]
+
+        if key not in allowed_next_element_types:
+            raise ValueError(
+                f"Encountered BundleElement of type {key}. "
+                f"Expected one of {allowed_next_element_types}"
+            )
+
+        # Create and add our BundleElement
+        bundle_element: BundleElement
+        try:
+            bundle_element: BundleElement = BundleElement.from_json(json.dumps(data))  # type: ignore
+        except AttributeError as e:
+            # Some bad serialization formats cannot be universally deserialized.
+            if e.args[0] == "'dict' object has no attribute 'find'":
+                raise ValueError(
+                    "Invalid serialization of datetimes. "
+                    "Cannot deserialize Bundles created from the NodeJS SDK."
+                )
+            raise e  # pragma: NO COVER
+
+        if bundle is None:
+            # This must be the first bundle type encountered
+            assert key == "metadata"
+            bundle = FirestoreBundle(data[key]["id"])
+            metadata_bundle_element = bundle_element
+
+        else:
+            bundle._add_bundle_element(bundle_element, client=client, type=key)
+
+        # Update the allowed next BundleElement types
+        allowed_next_element_types = bundle_state_machine[key]
+
+    if "__end__" not in allowed_next_element_types:
+        raise ValueError("Unexpected end to serialized FirestoreBundle")
+
+    # Now, finally add the metadata element
+    bundle._add_bundle_element(
+        metadata_bundle_element, client=client, type="metadata",  # type: ignore
+    )
+
+    return bundle
+
+
+def _parse_bundle_elements_data(serialized: Union[str, bytes]) -> Generator[Dict, None, None]:  # type: ignore
+    """Reads through a serialized FirestoreBundle and yields JSON chunks that
+    were created via `BundleElement.to_json(bundle_element)`.
+
+    Serialized FirestoreBundle instances are length-prefixed JSON objects, and
+    so are of the form "123{...}57{...}"
+    To correctly and safely read a bundle, we must first detect these length
+    prefixes, read that many bytes of data, and attempt to JSON-parse that.
+
+    Raises:
+        ValueError: If a chunk of JSON ever starts without following a length
+            prefix.
+    """
+    _serialized: Iterator[int] = iter(
+        serialized if isinstance(serialized, bytes) else serialized.encode("utf-8")
+    )
+
+    length_prefix: str = ""
+    while True:
+        byte: Optional[int] = next(_serialized, None)
+
+        if byte is None:
+            return None
+
+        _str: str = chr(byte)
+        if _str.isnumeric():
+            length_prefix += _str
+        else:
+            if length_prefix == "":
+                raise ValueError("Expected length prefix")
+
+            _length_prefix = int(length_prefix)
+            length_prefix = ""
+            _bytes = bytearray([byte])
+            _counter = 1
+            while _counter < _length_prefix:
+                _bytes.append(next(_serialized))
+                _counter += 1
+
+            yield json.loads(_bytes.decode("utf-8"))
+
+
+def _get_documents_from_bundle(
+    bundle, *, query_name: Optional[str] = None
+) -> Generator["google.cloud.firestore.DocumentSnapshot", None, None]:  # type: ignore
+    from google.cloud.firestore_bundle.bundle import _BundledDocument
+
+    bundled_doc: _BundledDocument
+    for bundled_doc in bundle.documents.values():
+        if query_name and query_name not in bundled_doc.metadata.queries:
+            continue
+        yield bundled_doc.snapshot
+
+
+def _get_document_from_bundle(
+    bundle, *, document_id: str,
+) -> Optional["google.cloud.firestore.DocumentSnapshot"]:  # type: ignore
+    bundled_doc = bundle.documents.get(document_id)
+    if bundled_doc:
+        return bundled_doc.snapshot
