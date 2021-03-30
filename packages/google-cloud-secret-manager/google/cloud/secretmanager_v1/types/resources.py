@@ -32,6 +32,7 @@ __protobuf__ = proto.module(
         "ReplicationStatus",
         "CustomerManagedEncryptionStatus",
         "Topic",
+        "Rotation",
         "SecretPayload",
     },
 )
@@ -88,6 +89,10 @@ class Secret(proto.Message):
         ttl (google.protobuf.duration_pb2.Duration):
             Input only. The TTL for the
             [Secret][google.cloud.secretmanager.v1.Secret].
+        rotation (google.cloud.secretmanager_v1.types.Rotation):
+            Optional. Rotation policy attached to the
+            [Secret][google.cloud.secretmanager.v1.Secret]. May be
+            excluded if there is no rotation policy.
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -107,6 +112,8 @@ class Secret(proto.Message):
     ttl = proto.Field(
         proto.MESSAGE, number=7, oneof="expiration", message=duration.Duration,
     )
+
+    rotation = proto.Field(proto.MESSAGE, number=9, message="Rotation",)
 
 
 class SecretVersion(proto.Message):
@@ -405,6 +412,46 @@ class Topic(proto.Message):
     """
 
     name = proto.Field(proto.STRING, number=1)
+
+
+class Rotation(proto.Message):
+    r"""The rotation time and period for a
+    [Secret][google.cloud.secretmanager.v1.Secret]. At
+    next_rotation_time, Secret Manager will send a Pub/Sub notification
+    to the topics configured on the Secret.
+    [Secret.topics][google.cloud.secretmanager.v1.Secret.topics] must be
+    set to configure rotation.
+
+    Attributes:
+        next_rotation_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Timestamp in UTC at which the
+            [Secret][google.cloud.secretmanager.v1.Secret] is scheduled
+            to rotate.
+
+            [next_rotation_time][google.cloud.secretmanager.v1.Rotation.next_rotation_time]
+            MUST be set if
+            [rotation_period][google.cloud.secretmanager.v1.Rotation.rotation_period]
+            is set.
+        rotation_period (google.protobuf.duration_pb2.Duration):
+            Input only. The Duration between rotation notifications.
+            Must be in seconds and at least 3600s (1h) and at most
+            3153600000s (100 years).
+
+            If
+            [rotation_period][google.cloud.secretmanager.v1.Rotation.rotation_period]
+            is set,
+            [next_rotation_time][google.cloud.secretmanager.v1.Rotation.next_rotation_time]
+            must be set.
+            [next_rotation_time][google.cloud.secretmanager.v1.Rotation.next_rotation_time]
+            will be advanced by this period when the service
+            automatically sends rotation notifications.
+    """
+
+    next_rotation_time = proto.Field(
+        proto.MESSAGE, number=1, message=timestamp.Timestamp,
+    )
+
+    rotation_period = proto.Field(proto.MESSAGE, number=2, message=duration.Duration,)
 
 
 class SecretPayload(proto.Message):

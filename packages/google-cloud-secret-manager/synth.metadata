@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-secret-manager.git",
-        "sha": "0006fbaf97f1e02217d127d45c85efd4f47cc14a"
+        "sha": "c862bbe5ab67903aa6669fd4a75acf5de1be6f98"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "2124b6251e56e2ec8dd5c47e7d3815d7d5841880",
-        "internalRef": "364422694"
+        "sha": "6c7693680fe320b4705dd8500c255843749eb58a",
+        "internalRef": "365574085"
       }
     },
     {

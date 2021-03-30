@@ -20,6 +20,7 @@ from .types.resources import CustomerManagedEncryption
 from .types.resources import CustomerManagedEncryptionStatus
 from .types.resources import Replication
 from .types.resources import ReplicationStatus
+from .types.resources import Rotation
 from .types.resources import Secret
 from .types.resources import SecretPayload
 from .types.resources import SecretVersion
@@ -60,6 +61,7 @@ __all__ = (
     "ListSecretsResponse",
     "Replication",
     "ReplicationStatus",
+    "Rotation",
     "Secret",
     "SecretPayload",
     "SecretVersion",
