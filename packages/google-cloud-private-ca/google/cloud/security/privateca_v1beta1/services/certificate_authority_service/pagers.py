@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.security.privateca_v1beta1.types import resources
 from google.cloud.security.privateca_v1beta1.types import service
@@ -25,7 +34,7 @@ class ListCertificatesPager:
     """A pager for iterating through ``list_certificates`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListCertificatesResponse` object, and
+    :class:`google.cloud.security.privateca_v1beta1.types.ListCertificatesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``certificates`` field.
 
@@ -34,7 +43,7 @@ class ListCertificatesPager:
     through the ``certificates`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListCertificatesResponse`
+    All the usual :class:`google.cloud.security.privateca_v1beta1.types.ListCertificatesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -52,9 +61,9 @@ class ListCertificatesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListCertificatesRequest`):
+            request (google.cloud.security.privateca_v1beta1.types.ListCertificatesRequest):
                 The initial request object.
-            response (:class:`~.service.ListCertificatesResponse`):
+            response (google.cloud.security.privateca_v1beta1.types.ListCertificatesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -87,7 +96,7 @@ class ListCertificatesAsyncPager:
     """A pager for iterating through ``list_certificates`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListCertificatesResponse` object, and
+    :class:`google.cloud.security.privateca_v1beta1.types.ListCertificatesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``certificates`` field.
 
@@ -96,7 +105,7 @@ class ListCertificatesAsyncPager:
     through the ``certificates`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListCertificatesResponse`
+    All the usual :class:`google.cloud.security.privateca_v1beta1.types.ListCertificatesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -114,9 +123,9 @@ class ListCertificatesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListCertificatesRequest`):
+            request (google.cloud.security.privateca_v1beta1.types.ListCertificatesRequest):
                 The initial request object.
-            response (:class:`~.service.ListCertificatesResponse`):
+            response (google.cloud.security.privateca_v1beta1.types.ListCertificatesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -153,7 +162,7 @@ class ListCertificateAuthoritiesPager:
     """A pager for iterating through ``list_certificate_authorities`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListCertificateAuthoritiesResponse` object, and
+    :class:`google.cloud.security.privateca_v1beta1.types.ListCertificateAuthoritiesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``certificate_authorities`` field.
 
@@ -162,7 +171,7 @@ class ListCertificateAuthoritiesPager:
     through the ``certificate_authorities`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListCertificateAuthoritiesResponse`
+    All the usual :class:`google.cloud.security.privateca_v1beta1.types.ListCertificateAuthoritiesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -180,9 +189,9 @@ class ListCertificateAuthoritiesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListCertificateAuthoritiesRequest`):
+            request (google.cloud.security.privateca_v1beta1.types.ListCertificateAuthoritiesRequest):
                 The initial request object.
-            response (:class:`~.service.ListCertificateAuthoritiesResponse`):
+            response (google.cloud.security.privateca_v1beta1.types.ListCertificateAuthoritiesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -215,7 +224,7 @@ class ListCertificateAuthoritiesAsyncPager:
     """A pager for iterating through ``list_certificate_authorities`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListCertificateAuthoritiesResponse` object, and
+    :class:`google.cloud.security.privateca_v1beta1.types.ListCertificateAuthoritiesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``certificate_authorities`` field.
 
@@ -224,7 +233,7 @@ class ListCertificateAuthoritiesAsyncPager:
     through the ``certificate_authorities`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListCertificateAuthoritiesResponse`
+    All the usual :class:`google.cloud.security.privateca_v1beta1.types.ListCertificateAuthoritiesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -242,9 +251,9 @@ class ListCertificateAuthoritiesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListCertificateAuthoritiesRequest`):
+            request (google.cloud.security.privateca_v1beta1.types.ListCertificateAuthoritiesRequest):
                 The initial request object.
-            response (:class:`~.service.ListCertificateAuthoritiesResponse`):
+            response (google.cloud.security.privateca_v1beta1.types.ListCertificateAuthoritiesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -281,7 +290,7 @@ class ListCertificateRevocationListsPager:
     """A pager for iterating through ``list_certificate_revocation_lists`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListCertificateRevocationListsResponse` object, and
+    :class:`google.cloud.security.privateca_v1beta1.types.ListCertificateRevocationListsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``certificate_revocation_lists`` field.
 
@@ -290,7 +299,7 @@ class ListCertificateRevocationListsPager:
     through the ``certificate_revocation_lists`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListCertificateRevocationListsResponse`
+    All the usual :class:`google.cloud.security.privateca_v1beta1.types.ListCertificateRevocationListsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -308,9 +317,9 @@ class ListCertificateRevocationListsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListCertificateRevocationListsRequest`):
+            request (google.cloud.security.privateca_v1beta1.types.ListCertificateRevocationListsRequest):
                 The initial request object.
-            response (:class:`~.service.ListCertificateRevocationListsResponse`):
+            response (google.cloud.security.privateca_v1beta1.types.ListCertificateRevocationListsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -343,7 +352,7 @@ class ListCertificateRevocationListsAsyncPager:
     """A pager for iterating through ``list_certificate_revocation_lists`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListCertificateRevocationListsResponse` object, and
+    :class:`google.cloud.security.privateca_v1beta1.types.ListCertificateRevocationListsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``certificate_revocation_lists`` field.
 
@@ -352,7 +361,7 @@ class ListCertificateRevocationListsAsyncPager:
     through the ``certificate_revocation_lists`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListCertificateRevocationListsResponse`
+    All the usual :class:`google.cloud.security.privateca_v1beta1.types.ListCertificateRevocationListsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -372,9 +381,9 @@ class ListCertificateRevocationListsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListCertificateRevocationListsRequest`):
+            request (google.cloud.security.privateca_v1beta1.types.ListCertificateRevocationListsRequest):
                 The initial request object.
-            response (:class:`~.service.ListCertificateRevocationListsResponse`):
+            response (google.cloud.security.privateca_v1beta1.types.ListCertificateRevocationListsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -413,7 +422,7 @@ class ListReusableConfigsPager:
     """A pager for iterating through ``list_reusable_configs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListReusableConfigsResponse` object, and
+    :class:`google.cloud.security.privateca_v1beta1.types.ListReusableConfigsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``reusable_configs`` field.
 
@@ -422,7 +431,7 @@ class ListReusableConfigsPager:
     through the ``reusable_configs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListReusableConfigsResponse`
+    All the usual :class:`google.cloud.security.privateca_v1beta1.types.ListReusableConfigsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -440,9 +449,9 @@ class ListReusableConfigsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListReusableConfigsRequest`):
+            request (google.cloud.security.privateca_v1beta1.types.ListReusableConfigsRequest):
                 The initial request object.
-            response (:class:`~.service.ListReusableConfigsResponse`):
+            response (google.cloud.security.privateca_v1beta1.types.ListReusableConfigsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -475,7 +484,7 @@ class ListReusableConfigsAsyncPager:
     """A pager for iterating through ``list_reusable_configs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListReusableConfigsResponse` object, and
+    :class:`google.cloud.security.privateca_v1beta1.types.ListReusableConfigsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``reusable_configs`` field.
 
@@ -484,7 +493,7 @@ class ListReusableConfigsAsyncPager:
     through the ``reusable_configs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListReusableConfigsResponse`
+    All the usual :class:`google.cloud.security.privateca_v1beta1.types.ListReusableConfigsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -502,9 +511,9 @@ class ListReusableConfigsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListReusableConfigsRequest`):
+            request (google.cloud.security.privateca_v1beta1.types.ListReusableConfigsRequest):
                 The initial request object.
-            response (:class:`~.service.ListReusableConfigsResponse`):
+            response (google.cloud.security.privateca_v1beta1.types.ListReusableConfigsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

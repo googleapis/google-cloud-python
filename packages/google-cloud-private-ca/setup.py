@@ -42,7 +42,6 @@ setuptools.setup(
     include_package_data=True,
     install_requires=(
         "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
-        "libcst >= 0.2.5",
         "proto-plus >= 1.4.0",
     ),
     python_requires=">=3.6",

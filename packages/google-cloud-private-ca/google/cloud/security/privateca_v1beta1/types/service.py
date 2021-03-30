@@ -76,7 +76,7 @@ class CreateCertificateRequest(proto.Message):
             in the Enterprise
             [CertificateAuthority.Tier][google.cloud.security.privateca.v1beta1.CertificateAuthority.Tier],
             but is optional and its value is ignored otherwise.
-        certificate (~.resources.Certificate):
+        certificate (google.cloud.security.privateca_v1beta1.types.Certificate):
             Required. A
             [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
             with initial field values.
@@ -177,7 +177,7 @@ class ListCertificatesResponse(proto.Message):
     [CertificateAuthorityService.ListCertificates][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificates].
 
     Attributes:
-        certificates (Sequence[~.resources.Certificate]):
+        certificates (Sequence[google.cloud.security.privateca_v1beta1.types.Certificate]):
             The list of
             [Certificates][google.cloud.security.privateca.v1beta1.Certificate].
         next_page_token (str):
@@ -212,7 +212,7 @@ class RevokeCertificateRequest(proto.Message):
             [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
             in the format
             ``projects/*/locations/*/certificateAuthorities/*/certificates/*``.
-        reason (~.resources.RevocationReason):
+        reason (google.cloud.security.privateca_v1beta1.types.RevocationReason):
             Required. The
             [RevocationReason][google.cloud.security.privateca.v1beta1.RevocationReason]
             for revoking this certificate.
@@ -249,11 +249,11 @@ class UpdateCertificateRequest(proto.Message):
     [CertificateAuthorityService.UpdateCertificate][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateCertificate].
 
     Attributes:
-        certificate (~.resources.Certificate):
+        certificate (google.cloud.security.privateca_v1beta1.types.Certificate):
             Required.
             [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
             with updated values.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. A list of fields to be updated in
             this request.
         request_id (str):
@@ -297,7 +297,7 @@ class ActivateCertificateAuthorityRequest(proto.Message):
         pem_ca_certificate (str):
             Required. The signed CA certificate issued from
             [FetchCertificateAuthorityCsrResponse.pem_csr][google.cloud.security.privateca.v1beta1.FetchCertificateAuthorityCsrResponse.pem_csr].
-        subordinate_config (~.resources.SubordinateConfig):
+        subordinate_config (google.cloud.security.privateca_v1beta1.types.SubordinateConfig):
             Required. Must include information about the issuer of
             'pem_ca_certificate', and any further issuers until the
             self-signed CA.
@@ -346,7 +346,7 @@ class CreateCertificateAuthorityRequest(proto.Message):
         certificate_authority_id (str):
             Required. It must be unique within a location and match the
             regular expression ``[a-zA-Z0-9_-]{1,63}``
-        certificate_authority (~.resources.CertificateAuthority):
+        certificate_authority (google.cloud.security.privateca_v1beta1.types.CertificateAuthority):
             Required. A
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
             with initial field values.
@@ -544,7 +544,7 @@ class ListCertificateAuthoritiesResponse(proto.Message):
     [CertificateAuthorityService.ListCertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateAuthorities].
 
     Attributes:
-        certificate_authorities (Sequence[~.resources.CertificateAuthority]):
+        certificate_authorities (Sequence[google.cloud.security.privateca_v1beta1.types.CertificateAuthority]):
             The list of
             [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority].
         next_page_token (str):
@@ -646,11 +646,11 @@ class UpdateCertificateAuthorityRequest(proto.Message):
     [CertificateAuthorityService.UpdateCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateCertificateAuthority].
 
     Attributes:
-        certificate_authority (~.resources.CertificateAuthority):
+        certificate_authority (google.cloud.security.privateca_v1beta1.types.CertificateAuthority):
             Required.
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
             with updated values.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. A list of fields to be updated in
             this request.
         request_id (str):
@@ -746,7 +746,7 @@ class ListCertificateRevocationListsResponse(proto.Message):
     [CertificateAuthorityService.ListCertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateRevocationLists].
 
     Attributes:
-        certificate_revocation_lists (Sequence[~.resources.CertificateRevocationList]):
+        certificate_revocation_lists (Sequence[google.cloud.security.privateca_v1beta1.types.CertificateRevocationList]):
             The list of
             [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList].
         next_page_token (str):
@@ -776,11 +776,11 @@ class UpdateCertificateRevocationListRequest(proto.Message):
     [CertificateAuthorityService.UpdateCertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateCertificateRevocationList].
 
     Attributes:
-        certificate_revocation_list (~.resources.CertificateRevocationList):
+        certificate_revocation_list (google.cloud.security.privateca_v1beta1.types.CertificateRevocationList):
             Required.
             [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]
             with updated values.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. A list of fields to be updated in
             this request.
         request_id (str):
@@ -872,7 +872,7 @@ class ListReusableConfigsResponse(proto.Message):
     [CertificateAuthorityService.ListReusableConfigs][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListReusableConfigs].
 
     Attributes:
-        reusable_configs (Sequence[~.resources.ReusableConfig]):
+        reusable_configs (Sequence[google.cloud.security.privateca_v1beta1.types.ReusableConfig]):
             The list of
             [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig].
         next_page_token (str):
@@ -901,10 +901,10 @@ class OperationMetadata(proto.Message):
     r"""Represents the metadata of the long-running operation.
 
     Attributes:
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the operation was
             created.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the operation finished
             running.
         target (str):

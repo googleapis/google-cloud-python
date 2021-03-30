@@ -1,6 +1,6 @@
 Services for Google Cloud Security Privateca v1beta1 API
 ========================================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.security.privateca_v1beta1.services.certificate_authority_service
-    :members:
-    :inherited-members:
+    certificate_authority_service

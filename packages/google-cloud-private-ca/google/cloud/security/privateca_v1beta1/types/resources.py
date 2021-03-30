@@ -82,24 +82,24 @@ class CertificateAuthority(proto.Message):
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
             in the format
             ``projects/*/locations/*/certificateAuthorities/*``.
-        type_ (~.resources.CertificateAuthority.Type):
+        type_ (google.cloud.security.privateca_v1beta1.types.CertificateAuthority.Type):
             Required. Immutable. The
             [Type][google.cloud.security.privateca.v1beta1.CertificateAuthority.Type]
             of this
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
-        tier (~.resources.CertificateAuthority.Tier):
+        tier (google.cloud.security.privateca_v1beta1.types.CertificateAuthority.Tier):
             Required. Immutable. The
             [Tier][google.cloud.security.privateca.v1beta1.CertificateAuthority.Tier]
             of this
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
-        config (~.resources.CertificateConfig):
+        config (google.cloud.security.privateca_v1beta1.types.CertificateConfig):
             Required. Immutable. The config used to
             create a self-signed X.509 certificate or CSR.
-        lifetime (~.duration.Duration):
+        lifetime (google.protobuf.duration_pb2.Duration):
             Required. The desired lifetime of the CA certificate. Used
             to create the "not_before_time" and "not_after_time" fields
             inside an X.509 certificate.
-        key_spec (~.resources.CertificateAuthority.KeyVersionSpec):
+        key_spec (google.cloud.security.privateca_v1beta1.types.CertificateAuthority.KeyVersionSpec):
             Required. Immutable. Used when issuing certificates for this
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
             If this
@@ -107,28 +107,28 @@ class CertificateAuthority(proto.Message):
             is a self-signed CertificateAuthority, this key is also used
             to sign the self-signed CA certificate. Otherwise, it is
             used to sign a CSR.
-        certificate_policy (~.resources.CertificateAuthority.CertificateAuthorityPolicy):
+        certificate_policy (google.cloud.security.privateca_v1beta1.types.CertificateAuthority.CertificateAuthorityPolicy):
             Optional. The
             [CertificateAuthorityPolicy][google.cloud.security.privateca.v1beta1.CertificateAuthority.CertificateAuthorityPolicy]
             to enforce when issuing
             [Certificates][google.cloud.security.privateca.v1beta1.Certificate]
             from this
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
-        issuing_options (~.resources.CertificateAuthority.IssuingOptions):
+        issuing_options (google.cloud.security.privateca_v1beta1.types.CertificateAuthority.IssuingOptions):
             Optional. The
             [IssuingOptions][google.cloud.security.privateca.v1beta1.CertificateAuthority.IssuingOptions]
             to follow when issuing
             [Certificates][google.cloud.security.privateca.v1beta1.Certificate]
             from this
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
-        subordinate_config (~.resources.SubordinateConfig):
+        subordinate_config (google.cloud.security.privateca_v1beta1.types.SubordinateConfig):
             Optional. If this is a subordinate
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority],
             this field will be set with the subordinate configuration,
             which describes its issuers. This may be updated, but this
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
             must continue to validate.
-        state (~.resources.CertificateAuthority.State):
+        state (google.cloud.security.privateca_v1beta1.types.CertificateAuthority.State):
             Output only. The
             [State][google.cloud.security.privateca.v1beta1.CertificateAuthority.State]
             for this
@@ -143,7 +143,7 @@ class CertificateAuthority(proto.Message):
             this will only list the current
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]'s
             certificate.
-        ca_certificate_descriptions (Sequence[~.resources.CertificateDescription]):
+        ca_certificate_descriptions (Sequence[google.cloud.security.privateca_v1beta1.types.CertificateDescription]):
             Output only. A structured description of this
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]'s
             CA certificate and its issuers. Ordered as self-to-root.
@@ -156,23 +156,23 @@ class CertificateAuthority(proto.Message):
             example, to use a bucket named ``my-bucket``, you would
             simply specify ``my-bucket``. If not specified, a managed
             bucket will be created.
-        access_urls (~.resources.CertificateAuthority.AccessUrls):
+        access_urls (google.cloud.security.privateca_v1beta1.types.CertificateAuthority.AccessUrls):
             Output only. URLs for accessing content
             published by this CA, such as the CA certificate
             and CRLs.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
             was created.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
             was updated.
-        delete_time (~.timestamp.Timestamp):
+        delete_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
             will be deleted, if scheduled for deletion.
-        labels (Sequence[~.resources.CertificateAuthority.LabelsEntry]):
+        labels (Sequence[google.cloud.security.privateca_v1beta1.types.CertificateAuthority.LabelsEntry]):
             Optional. Labels with user-defined metadata.
     """
 
@@ -257,7 +257,7 @@ class CertificateAuthority(proto.Message):
         if they violate the policy.
 
         Attributes:
-            allowed_config_list (~.resources.CertificateAuthority.CertificateAuthorityPolicy.AllowedConfigList):
+            allowed_config_list (google.cloud.security.privateca_v1beta1.types.CertificateAuthority.CertificateAuthorityPolicy.AllowedConfigList):
                 Optional. All
                 [Certificates][google.cloud.security.privateca.v1beta1.Certificate]
                 issued by the
@@ -265,14 +265,14 @@ class CertificateAuthority(proto.Message):
                 must match at least one listed
                 [ReusableConfigWrapper][google.cloud.security.privateca.v1beta1.ReusableConfigWrapper]
                 in the list.
-            overwrite_config_values (~.resources.ReusableConfigWrapper):
+            overwrite_config_values (google.cloud.security.privateca_v1beta1.types.ReusableConfigWrapper):
                 Optional. All
                 [Certificates][google.cloud.security.privateca.v1beta1.Certificate]
                 issued by the
                 [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
                 will use the provided configuration values, overwriting any
                 requested configuration values.
-            allowed_locations_and_organizations (Sequence[~.resources.Subject]):
+            allowed_locations_and_organizations (Sequence[google.cloud.security.privateca_v1beta1.types.Subject]):
                 Optional. If any
                 [Subject][google.cloud.security.privateca.v1beta1.Subject]
                 is specified here, then all
@@ -293,7 +293,7 @@ class CertificateAuthority(proto.Message):
                 must match at least one listed value. If no value is
                 specified, all values will be allowed for this fied. Glob
                 patterns are also supported.
-            allowed_sans (~.resources.CertificateAuthority.CertificateAuthorityPolicy.AllowedSubjectAltNames):
+            allowed_sans (google.cloud.security.privateca_v1beta1.types.CertificateAuthority.CertificateAuthorityPolicy.AllowedSubjectAltNames):
                 Optional. If a
                 [AllowedSubjectAltNames][google.cloud.security.privateca.v1beta1.CertificateAuthority.CertificateAuthorityPolicy.AllowedSubjectAltNames]
                 is specified here, then all
@@ -306,7 +306,7 @@ class CertificateAuthority(proto.Message):
                 be allowed for the
                 [SubjectAltNames][google.cloud.security.privateca.v1beta1.SubjectAltNames]
                 field.
-            maximum_lifetime (~.duration.Duration):
+            maximum_lifetime (google.protobuf.duration_pb2.Duration):
                 Optional. The maximum lifetime allowed by the
                 [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
                 Note that if the any part if the issuing chain expires
@@ -314,7 +314,7 @@ class CertificateAuthority(proto.Message):
                 [Certificate][google.cloud.security.privateca.v1beta1.Certificate]'s
                 requested maximum_lifetime, the effective lifetime will be
                 explicitly truncated.
-            allowed_issuance_modes (~.resources.CertificateAuthority.CertificateAuthorityPolicy.IssuanceModes):
+            allowed_issuance_modes (google.cloud.security.privateca_v1beta1.types.CertificateAuthority.CertificateAuthorityPolicy.IssuanceModes):
                 Optional. If specified, then only methods allowed in the
                 [IssuanceModes][google.cloud.security.privateca.v1beta1.CertificateAuthority.CertificateAuthorityPolicy.IssuanceModes]
                 may be used to issue
@@ -325,7 +325,7 @@ class CertificateAuthority(proto.Message):
             r"""
 
             Attributes:
-                allowed_config_values (Sequence[~.resources.ReusableConfigWrapper]):
+                allowed_config_values (Sequence[google.cloud.security.privateca_v1beta1.types.ReusableConfigWrapper]):
                     Required. All
                     [Certificates][google.cloud.security.privateca.v1beta1.Certificate]
                     issued by the
@@ -490,7 +490,7 @@ class CertificateAuthority(proto.Message):
                 ``projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*``.
                 This option enables full flexibility in the key's
                 capabilities and properties.
-            algorithm (~.resources.CertificateAuthority.SignHashAlgorithm):
+            algorithm (google.cloud.security.privateca_v1beta1.types.CertificateAuthority.SignHashAlgorithm):
                 Required. The algorithm to use for creating a managed Cloud
                 KMS key for a for a simplified experience. All managed keys
                 will be have their
@@ -566,27 +566,27 @@ class CertificateRevocationList(proto.Message):
         sequence_number (int):
             Output only. The CRL sequence number that appears in
             pem_crl.
-        revoked_certificates (Sequence[~.resources.CertificateRevocationList.RevokedCertificate]):
+        revoked_certificates (Sequence[google.cloud.security.privateca_v1beta1.types.CertificateRevocationList.RevokedCertificate]):
             Output only. The revoked serial numbers that appear in
             pem_crl.
         pem_crl (str):
             Output only. The PEM-encoded X.509 CRL.
         access_url (str):
             Output only. The location where 'pem_crl' can be accessed.
-        state (~.resources.CertificateRevocationList.State):
+        state (google.cloud.security.privateca_v1beta1.types.CertificateRevocationList.State):
             Output only. The
             [State][google.cloud.security.privateca.v1beta1.CertificateRevocationList.State]
             for this
             [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList].
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]
             was created.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]
             was updated.
-        labels (Sequence[~.resources.CertificateRevocationList.LabelsEntry]):
+        labels (Sequence[google.cloud.security.privateca_v1beta1.types.CertificateRevocationList.LabelsEntry]):
             Optional. Labels with user-defined metadata.
     """
 
@@ -612,7 +612,7 @@ class CertificateRevocationList(proto.Message):
             hex_serial_number (str):
                 The serial number of the
                 [Certificate][google.cloud.security.privateca.v1beta1.Certificate].
-            revocation_reason (~.resources.RevocationReason):
+            revocation_reason (google.cloud.security.privateca_v1beta1.types.RevocationReason):
                 The reason the
                 [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
                 was revoked.
@@ -659,16 +659,16 @@ class Certificate(proto.Message):
         pem_csr (str):
             Immutable. A pem-encoded X.509 certificate
             signing request (CSR).
-        config (~.resources.CertificateConfig):
+        config (google.cloud.security.privateca_v1beta1.types.CertificateConfig):
             Immutable. A description of the certificate
             and key that does not require X.509 or ASN.1.
-        lifetime (~.duration.Duration):
+        lifetime (google.protobuf.duration_pb2.Duration):
             Required. Immutable. The desired lifetime of a certificate.
             Used to create the "not_before_time" and "not_after_time"
             fields inside an X.509 certificate. Note that the lifetime
             may be truncated if it would extend past the life of any
             certificate authority in the issuing chain.
-        revocation_details (~.resources.Certificate.RevocationDetails):
+        revocation_details (google.cloud.security.privateca_v1beta1.types.Certificate.RevocationDetails):
             Output only. Details regarding the revocation of this
             [Certificate][google.cloud.security.privateca.v1beta1.Certificate].
             This
@@ -677,22 +677,22 @@ class Certificate(proto.Message):
         pem_certificate (str):
             Output only. The pem-encoded, signed X.509
             certificate.
-        certificate_description (~.resources.CertificateDescription):
+        certificate_description (google.cloud.security.privateca_v1beta1.types.CertificateDescription):
             Output only. A structured description of the
             issued X.509 certificate.
         pem_certificate_chain (Sequence[str]):
             Output only. The chain that may be used to
             verify the X.509 certificate. Expected to be in
             issuer-to-root order according to RFC 5246.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
             was created.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
             was updated.
-        labels (Sequence[~.resources.Certificate.LabelsEntry]):
+        labels (Sequence[google.cloud.security.privateca_v1beta1.types.Certificate.LabelsEntry]):
             Optional. Labels with user-defined metadata.
     """
 
@@ -701,11 +701,11 @@ class Certificate(proto.Message):
         [Certificate][google.cloud.security.privateca.v1beta1.Certificate].
 
         Attributes:
-            revocation_state (~.resources.RevocationReason):
+            revocation_state (google.cloud.security.privateca_v1beta1.types.RevocationReason):
                 Indicates why a
                 [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
                 was revoked.
-            revocation_time (~.timestamp.Timestamp):
+            revocation_time (google.protobuf.timestamp_pb2.Timestamp):
                 The time at which this
                 [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
                 was revoked.
@@ -763,21 +763,21 @@ class ReusableConfig(proto.Message):
             Output only. The resource path for this
             [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
             in the format ``projects/*/locations/*/reusableConfigs/*``.
-        values (~.resources.ReusableConfigValues):
+        values (google.cloud.security.privateca_v1beta1.types.ReusableConfigValues):
             Required. The config values.
         description (str):
             Optional. A human-readable description of
             scenarios these ReusableConfigValues may be
             compatible with.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
             was created.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
             was updated.
-        labels (Sequence[~.resources.ReusableConfig.LabelsEntry]):
+        labels (Sequence[google.cloud.security.privateca_v1beta1.types.ReusableConfig.LabelsEntry]):
             Optional. Labels with user-defined metadata.
     """
 
@@ -802,14 +802,14 @@ class ReusableConfigValues(proto.Message):
     certificate policy extensions and custom extensions.
 
     Attributes:
-        key_usage (~.resources.KeyUsage):
+        key_usage (google.cloud.security.privateca_v1beta1.types.KeyUsage):
             Optional. Indicates the intended use for keys
             that correspond to a certificate.
-        ca_options (~.resources.ReusableConfigValues.CaOptions):
+        ca_options (google.cloud.security.privateca_v1beta1.types.ReusableConfigValues.CaOptions):
             Optional. Describes options in this
             [ReusableConfigValues][google.cloud.security.privateca.v1beta1.ReusableConfigValues]
             that are relevant in a CA certificate.
-        policy_ids (Sequence[~.resources.ObjectId]):
+        policy_ids (Sequence[google.cloud.security.privateca_v1beta1.types.ObjectId]):
             Optional. Describes the X.509 certificate
             policy object identifiers, per
             https://tools.ietf.org/html/rfc5280#section-4.2.1.4.
@@ -818,7 +818,7 @@ class ReusableConfigValues(proto.Message):
             Protocol (OCSP) endpoint addresses that appear
             in the "Authority Information Access" extension
             in the certificate.
-        additional_extensions (Sequence[~.resources.X509Extension]):
+        additional_extensions (Sequence[google.cloud.security.privateca_v1beta1.types.X509Extension]):
             Optional. Describes custom X.509 extensions.
     """
 
@@ -826,12 +826,12 @@ class ReusableConfigValues(proto.Message):
         r"""Describes values that are relevant in a CA certificate.
 
         Attributes:
-            is_ca (~.wrappers.BoolValue):
+            is_ca (google.protobuf.wrappers_pb2.BoolValue):
                 Optional. Refers to the "CA" X.509 extension,
                 which is a boolean value. When this value is
                 missing, the extension will be omitted from the
                 CA certificate.
-            max_issuer_path_length (~.wrappers.Int32Value):
+            max_issuer_path_length (google.protobuf.wrappers_pb2.Int32Value):
                 Optional. Refers to the path length
                 restriction X.509 extension. For a CA
                 certificate, this value describes the depth of
@@ -871,7 +871,7 @@ class ReusableConfigWrapper(proto.Message):
             Required. A resource path to a
             [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
             in the format ``projects/*/locations/*/reusableConfigs/*``.
-        reusable_config_values (~.resources.ReusableConfigValues):
+        reusable_config_values (google.cloud.security.privateca_v1beta1.types.ReusableConfigValues):
             Required. A user-specified inline
             [ReusableConfigValues][google.cloud.security.privateca.v1beta1.ReusableConfigValues].
     """
@@ -898,7 +898,7 @@ class SubordinateConfig(proto.Message):
             This field is used for information and usability purposes
             only. The resource name is in the format
             ``projects/*/locations/*/certificateAuthorities/*``.
-        pem_issuer_chain (~.resources.SubordinateConfig.SubordinateConfigChain):
+        pem_issuer_chain (google.cloud.security.privateca_v1beta1.types.SubordinateConfig.SubordinateConfigChain):
             Required. Contains the PEM certificate chain for the issuers
             of this
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority],
@@ -934,7 +934,7 @@ class PublicKey(proto.Message):
     describes a public key.
 
     Attributes:
-        type_ (~.resources.PublicKey.KeyType):
+        type_ (google.cloud.security.privateca_v1beta1.types.PublicKey.KeyType):
             Required. The type of public key.
         key (bytes):
             Required. A public key. Padding and encoding
@@ -963,13 +963,13 @@ class CertificateConfig(proto.Message):
     alternative to using ASN.1.
 
     Attributes:
-        subject_config (~.resources.CertificateConfig.SubjectConfig):
+        subject_config (google.cloud.security.privateca_v1beta1.types.CertificateConfig.SubjectConfig):
             Required. Specifies some of the values in a
             certificate that are related to the subject.
-        reusable_config (~.resources.ReusableConfigWrapper):
+        reusable_config (google.cloud.security.privateca_v1beta1.types.ReusableConfigWrapper):
             Required. Describes how some of the technical
             fields in a certificate should be populated.
-        public_key (~.resources.PublicKey):
+        public_key (google.cloud.security.privateca_v1beta1.types.PublicKey):
             Optional. The public key that corresponds to this config.
             This is, for example, used when issuing
             [Certificates][google.cloud.security.privateca.v1beta1.Certificate],
@@ -985,13 +985,13 @@ class CertificateConfig(proto.Message):
         subject alternative name fields in an X.509 certificate.
 
         Attributes:
-            subject (~.resources.Subject):
+            subject (google.cloud.security.privateca_v1beta1.types.Subject):
                 Required. Contains distinguished name fields
                 such as the location and organization.
             common_name (str):
                 Optional. The "common name" of the
                 distinguished name.
-            subject_alt_name (~.resources.SubjectAltNames):
+            subject_alt_name (google.cloud.security.privateca_v1beta1.types.SubjectAltNames):
                 Optional. The subject alternative name
                 fields.
         """
@@ -1020,20 +1020,20 @@ class CertificateDescription(proto.Message):
     alternative to using ASN.1 / X.509.
 
     Attributes:
-        subject_description (~.resources.CertificateDescription.SubjectDescription):
+        subject_description (google.cloud.security.privateca_v1beta1.types.CertificateDescription.SubjectDescription):
             Describes some of the values in a certificate
             that are related to the subject and lifetime.
-        config_values (~.resources.ReusableConfigValues):
+        config_values (google.cloud.security.privateca_v1beta1.types.ReusableConfigValues):
             Describes some of the technical fields in a
             certificate.
-        public_key (~.resources.PublicKey):
+        public_key (google.cloud.security.privateca_v1beta1.types.PublicKey):
             The public key that corresponds to an issued
             certificate.
-        subject_key_id (~.resources.CertificateDescription.KeyId):
+        subject_key_id (google.cloud.security.privateca_v1beta1.types.CertificateDescription.KeyId):
             Provides a means of identifiying certificates
             that contain a particular public key, per
             https://tools.ietf.org/html/rfc5280#section-4.2.1.2.
-        authority_key_id (~.resources.CertificateDescription.KeyId):
+        authority_key_id (google.cloud.security.privateca_v1beta1.types.CertificateDescription.KeyId):
             Identifies the subject_key_id of the parent certificate, per
             https://tools.ietf.org/html/rfc5280#section-4.2.1.1
         crl_distribution_points (Sequence[str]):
@@ -1045,7 +1045,7 @@ class CertificateDescription(proto.Message):
             Describes lists of issuer CA certificate URLs
             that appear in the "Authority Information
             Access" extension in the certificate.
-        cert_fingerprint (~.resources.CertificateDescription.CertificateFingerprint):
+        cert_fingerprint (google.cloud.security.privateca_v1beta1.types.CertificateDescription.CertificateFingerprint):
             The hash of the x.509 certificate.
     """
 
@@ -1055,24 +1055,24 @@ class CertificateDescription(proto.Message):
         serial number, and lifetime.
 
         Attributes:
-            subject (~.resources.Subject):
+            subject (google.cloud.security.privateca_v1beta1.types.Subject):
                 Contains distinguished name fields such as
                 the location and organization.
             common_name (str):
                 The "common name" of the distinguished name.
-            subject_alt_name (~.resources.SubjectAltNames):
+            subject_alt_name (google.cloud.security.privateca_v1beta1.types.SubjectAltNames):
                 The subject alternative name fields.
             hex_serial_number (str):
                 The serial number encoded in lowercase
                 hexadecimal.
-            lifetime (~.duration.Duration):
+            lifetime (google.protobuf.duration_pb2.Duration):
                 For convenience, the actual lifetime of an issued
                 certificate. Corresponds to 'not_after_time' -
                 'not_before_time'.
-            not_before_time (~.timestamp.Timestamp):
+            not_before_time (google.protobuf.timestamp_pb2.Timestamp):
                 The time at which the certificate becomes
                 valid.
-            not_after_time (~.timestamp.Timestamp):
+            not_after_time (google.protobuf.timestamp_pb2.Timestamp):
                 The time at which the certificate expires.
         """
 
@@ -1164,7 +1164,7 @@ class X509Extension(proto.Message):
     of X.509 objects like certificates, CSRs, and CRLs.
 
     Attributes:
-        object_id (~.resources.ObjectId):
+        object_id (google.cloud.security.privateca_v1beta1.types.ObjectId):
             Required. The OID for this X.509 extension.
         critical (bool):
             Required. Indicates whether or not this
@@ -1187,13 +1187,13 @@ class KeyUsage(proto.Message):
     describes key usage values that may appear in an X.509 certificate.
 
     Attributes:
-        base_key_usage (~.resources.KeyUsage.KeyUsageOptions):
+        base_key_usage (google.cloud.security.privateca_v1beta1.types.KeyUsage.KeyUsageOptions):
             Describes high-level ways in which a key may
             be used.
-        extended_key_usage (~.resources.KeyUsage.ExtendedKeyUsageOptions):
+        extended_key_usage (google.cloud.security.privateca_v1beta1.types.KeyUsage.ExtendedKeyUsageOptions):
             Detailed scenarios in which a key may be
             used.
-        unknown_extended_key_usages (Sequence[~.resources.ObjectId]):
+        unknown_extended_key_usages (Sequence[google.cloud.security.privateca_v1beta1.types.ObjectId]):
             Used to describe extended key usages that are not listed in
             the
             [KeyUsage.ExtendedKeyUsageOptions][google.cloud.security.privateca.v1beta1.KeyUsage.ExtendedKeyUsageOptions]
@@ -1360,7 +1360,7 @@ class SubjectAltNames(proto.Message):
         ip_addresses (Sequence[str]):
             Contains only valid 32-bit IPv4 addresses or
             RFC 4291 IPv6 addresses.
-        custom_sans (Sequence[~.resources.X509Extension]):
+        custom_sans (Sequence[google.cloud.security.privateca_v1beta1.types.X509Extension]):
             Contains additional subject alternative name
             values.
     """
