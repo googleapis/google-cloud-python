@@ -2,8 +2,9 @@ codecov
 coverage
 fastavro
 flake8
+numpy==1.14.5
 google-cloud-bigquery==1.11.1
-google-cloud-bigquery-storage
 pydata-google-auth
 pytest
 pytest-cov
+tqdm==4.23.0

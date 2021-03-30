@@ -2,11 +2,20 @@
 
 import textwrap
 from io import StringIO
+from unittest import mock
 
 import numpy
 import pandas
+import pytest
 
+from pandas_gbq.features import FEATURES
 from pandas_gbq import load
+
+
+def load_method(bqclient):
+    if FEATURES.bigquery_has_from_dataframe_with_csv:
+        return bqclient.load_table_from_dataframe
+    return bqclient.load_table_from_file
 
 
 def test_encode_chunk_with_unicode():
@@ -64,19 +73,59 @@ def test_encode_chunk_with_newlines():
     assert '"ij\r\nkl"' in csv_string
 
 
-def test_encode_chunks_splits_dataframe():
+def test_split_dataframe():
     df = pandas.DataFrame(numpy.random.randn(6, 4), index=range(6))
-    chunks = list(load.encode_chunks(df, chunksize=2))
+    chunks = list(load.split_dataframe(df, chunksize=2))
     assert len(chunks) == 3
-    remaining, buffer = chunks[0]
+    remaining, chunk = chunks[0]
     assert remaining == 4
-    assert len(buffer.readlines()) == 2
+    assert len(chunk.index) == 2
 
 
 def test_encode_chunks_with_chunksize_none():
     df = pandas.DataFrame(numpy.random.randn(6, 4), index=range(6))
-    chunks = list(load.encode_chunks(df))
+    chunks = list(load.split_dataframe(df))
     assert len(chunks) == 1
-    remaining, buffer = chunks[0]
+    remaining, chunk = chunks[0]
     assert remaining == 0
-    assert len(buffer.readlines()) == 6
+    assert len(chunk.index) == 6
+
+
+@pytest.mark.parametrize(
+    ["bigquery_has_from_dataframe_with_csv"], [(True,), (False,)]
+)
+def test_load_chunks_omits_policy_tags(
+    monkeypatch, mock_bigquery_client, bigquery_has_from_dataframe_with_csv
+):
+    """Ensure that policyTags are omitted.
+
+    We don't want to change the policyTags via a load job, as this can cause
+    403 error. See: https://github.com/googleapis/python-bigquery/pull/557
+    """
+    import google.cloud.bigquery
+
+    monkeypatch.setattr(
+        type(FEATURES),
+        "bigquery_has_from_dataframe_with_csv",
+        mock.PropertyMock(return_value=bigquery_has_from_dataframe_with_csv),
+    )
+    df = pandas.DataFrame({"col1": [1, 2, 3]})
+    destination = google.cloud.bigquery.TableReference.from_string(
+        "my-project.my_dataset.my_table"
+    )
+    schema = {
+        "fields": [
+            {"name": "col1", "type": "INT64", "policyTags": ["tag1", "tag2"]}
+        ]
+    }
+
+    _ = list(
+        load.load_chunks(mock_bigquery_client, df, destination, schema=schema)
+    )
+
+    mock_load = load_method(mock_bigquery_client)
+    assert mock_load.called
+    _, kwargs = mock_load.call_args
+    assert "job_config" in kwargs
+    sent_field = kwargs["job_config"].schema[0].to_api_repr()
+    assert "policyTags" not in sent_field

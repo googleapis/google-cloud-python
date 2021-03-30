@@ -16,17 +16,13 @@ except ImportError:  # pragma: NO COVER
 
 from pandas_gbq.exceptions import AccessDenied
 from pandas_gbq.exceptions import PerformanceWarning
+from pandas_gbq import features
+from pandas_gbq.features import FEATURES
 import pandas_gbq.schema
 import pandas_gbq.timestamp
 
 
 logger = logging.getLogger(__name__)
-
-BIGQUERY_INSTALLED_VERSION = None
-BIGQUERY_CLIENT_INFO_VERSION = "1.12.0"
-BIGQUERY_BQSTORAGE_VERSION = "1.24.0"
-HAS_CLIENT_INFO = False
-HAS_BQSTORAGE_SUPPORT = False
 
 try:
     import tqdm  # noqa
@@ -34,82 +30,31 @@ except ImportError:
     tqdm = None
 
 
-def _check_google_client_version():
-    global BIGQUERY_INSTALLED_VERSION, HAS_CLIENT_INFO, HAS_BQSTORAGE_SUPPORT, SHOW_VERBOSE_DEPRECATION
-
-    try:
-        import pkg_resources
-
-    except ImportError:
-        raise ImportError("Could not import pkg_resources (setuptools).")
-
-    # https://github.com/googleapis/python-bigquery/blob/master/CHANGELOG.md
-    bigquery_minimum_version = pkg_resources.parse_version("1.11.0")
-    bigquery_client_info_version = pkg_resources.parse_version(
-        BIGQUERY_CLIENT_INFO_VERSION
-    )
-    bigquery_bqstorage_version = pkg_resources.parse_version(
-        BIGQUERY_BQSTORAGE_VERSION
-    )
-    BIGQUERY_INSTALLED_VERSION = pkg_resources.get_distribution(
-        "google-cloud-bigquery"
-    ).parsed_version
-
-    HAS_CLIENT_INFO = (
-        BIGQUERY_INSTALLED_VERSION >= bigquery_client_info_version
-    )
-    HAS_BQSTORAGE_SUPPORT = (
-        BIGQUERY_INSTALLED_VERSION >= bigquery_bqstorage_version
-    )
-
-    if BIGQUERY_INSTALLED_VERSION < bigquery_minimum_version:
-        raise ImportError(
-            "pandas-gbq requires google-cloud-bigquery >= {0}, "
-            "current version {1}".format(
-                bigquery_minimum_version, BIGQUERY_INSTALLED_VERSION
-            )
-        )
-
-    # Add check for Pandas version before showing deprecation warning.
-    # https://github.com/pydata/pandas-gbq/issues/157
-    pandas_installed_version = pkg_resources.get_distribution(
-        "pandas"
-    ).parsed_version
-    pandas_version_wo_verbosity = pkg_resources.parse_version("0.23.0")
-    SHOW_VERBOSE_DEPRECATION = (
-        pandas_installed_version >= pandas_version_wo_verbosity
-    )
-
-
 def _test_google_api_imports():
+    try:
+        import pkg_resources  # noqa
+    except ImportError as ex:
+        raise ImportError("pandas-gbq requires setuptools") from ex
 
     try:
         import pydata_google_auth  # noqa
     except ImportError as ex:
-        raise ImportError(
-            "pandas-gbq requires pydata-google-auth: {0}".format(ex)
-        )
+        raise ImportError("pandas-gbq requires pydata-google-auth") from ex
 
     try:
         from google_auth_oauthlib.flow import InstalledAppFlow  # noqa
     except ImportError as ex:
-        raise ImportError(
-            "pandas-gbq requires google-auth-oauthlib: {0}".format(ex)
-        )
+        raise ImportError("pandas-gbq requires google-auth-oauthlib") from ex
 
     try:
         import google.auth  # noqa
     except ImportError as ex:
-        raise ImportError("pandas-gbq requires google-auth: {0}".format(ex))
+        raise ImportError("pandas-gbq requires google-auth") from ex
 
     try:
         from google.cloud import bigquery  # noqa
     except ImportError as ex:
-        raise ImportError(
-            "pandas-gbq requires google-cloud-bigquery: {0}".format(ex)
-        )
-
-    _check_google_client_version()
+        raise ImportError("pandas-gbq requires google-cloud-bigquery") from ex
 
 
 class DatasetCreationError(ValueError):
@@ -416,7 +361,7 @@ class GbqConnector(object):
         # In addition to new enough version of google-api-core, a new enough
         # version of google-cloud-bigquery is required to populate the
         # client_info.
-        if HAS_CLIENT_INFO:
+        if FEATURES.bigquery_has_client_info:
             return bigquery.Client(
                 project=self.project_id,
                 credentials=self.credentials,
@@ -550,14 +495,15 @@ class GbqConnector(object):
         if user_dtypes is None:
             user_dtypes = {}
 
-        if self.use_bqstorage_api and not HAS_BQSTORAGE_SUPPORT:
+        if self.use_bqstorage_api and not FEATURES.bigquery_has_bqstorage:
             warnings.warn(
                 (
                     "use_bqstorage_api was set, but have google-cloud-bigquery "
                     "version {}. Requires google-cloud-bigquery version "
                     "{} or later."
                 ).format(
-                    BIGQUERY_INSTALLED_VERSION, BIGQUERY_BQSTORAGE_VERSION
+                    FEATURES.bigquery_installed_version,
+                    features.BIGQUERY_BQSTORAGE_VERSION,
                 ),
                 PerformanceWarning,
                 stacklevel=4,
@@ -568,7 +514,7 @@ class GbqConnector(object):
             create_bqstorage_client = False
 
         to_dataframe_kwargs = {}
-        if HAS_BQSTORAGE_SUPPORT:
+        if FEATURES.bigquery_has_bqstorage:
             to_dataframe_kwargs[
                 "create_bqstorage_client"
             ] = create_bqstorage_client
@@ -880,7 +826,7 @@ def read_gbq(
 
     _test_google_api_imports()
 
-    if verbose is not None and SHOW_VERBOSE_DEPRECATION:
+    if verbose is not None and FEATURES.pandas_has_deprecated_verbose:
         warnings.warn(
             "verbose is deprecated and will be removed in "
             "a future version. Set logging level in order to vary "
@@ -1054,7 +1000,7 @@ def to_gbq(
 
     _test_google_api_imports()
 
-    if verbose is not None and SHOW_VERBOSE_DEPRECATION:
+    if verbose is not None and FEATURES.pandas_has_deprecated_verbose:
         warnings.warn(
             "verbose is deprecated and will be removed in "
             "a future version. Set logging level in order to vary "
@@ -1133,8 +1079,8 @@ def to_gbq(
                     "schema of the destination table."
                 )
 
-            # Update the local `table_schema` so mode matches.
-            # See: https://github.com/pydata/pandas-gbq/issues/315
+            # Update the local `table_schema` so mode (NULLABLE/REQUIRED)
+            # matches. See: https://github.com/pydata/pandas-gbq/issues/315
             table_schema = pandas_gbq.schema.update_schema(
                 table_schema, original_schema
             )
@@ -1252,7 +1198,6 @@ class _Table(GbqConnector):
             dataframe.
         """
         from google.cloud.bigquery import DatasetReference
-        from google.cloud.bigquery import SchemaField
         from google.cloud.bigquery import Table
         from google.cloud.bigquery import TableReference
 
@@ -1274,12 +1219,7 @@ class _Table(GbqConnector):
             DatasetReference(self.project_id, self.dataset_id), table_id
         )
         table = Table(table_ref)
-
-        schema = pandas_gbq.schema.add_default_nullable_mode(schema)
-
-        table.schema = [
-            SchemaField.from_api_repr(field) for field in schema["fields"]
-        ]
+        table.schema = pandas_gbq.schema.to_google_cloud_bigquery(schema)
 
         try:
             self.client.create_table(table)

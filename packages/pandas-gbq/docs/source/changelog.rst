@@ -13,6 +13,11 @@ Features
   client project. Specify the target table ID as ``project.dataset.table`` to
   use this feature. (:issue:`321`, :issue:`347`)
 
+Bug fixes
+~~~~~~~~~
+
+- Avoid 403 error from ``to_gbq`` when table has ``policyTags``. (:issue:`354`)
+
 Dependencies
 ~~~~~~~~~~~~
 

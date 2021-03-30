@@ -27,6 +27,19 @@ def to_pandas_gbq(client_schema):
     return {"fields": remote_fields}
 
 
+def to_google_cloud_bigquery(pandas_gbq_schema):
+    """Given a schema in pandas-gbq API format,
+    return a sequence of :class:`google.cloud.bigquery.schema.SchemaField`.
+    """
+    from google.cloud import bigquery
+
+    # Need to convert from JSON representation to format used by client library.
+    schema = add_default_nullable_mode(pandas_gbq_schema)
+    return [
+        bigquery.SchemaField.from_api_repr(field) for field in schema["fields"]
+    ]
+
+
 def _clean_schema_fields(fields):
     """Return a sanitized version of the schema for comparisons.
 
@@ -129,13 +142,30 @@ def update_schema(schema_old, schema_new):
 
 
 def add_default_nullable_mode(schema):
-    """Manually create the schema objects, adding NULLABLE mode."""
-    # Workaround for:
-    # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/4456
-    #
+    """Manually create the schema objects, adding NULLABLE mode.
+
+    Workaround for error in SchemaField.from_api_repr, which required
+    "mode" to be set:
+    https://github.com/GoogleCloudPlatform/google-cloud-python/issues/4456
+    """
     # Returns a copy rather than modifying the mutable arg,
     # per Issue #277
     result = copy.deepcopy(schema)
     for field in result["fields"]:
         field.setdefault("mode", "NULLABLE")
+    return result
+
+
+def remove_policy_tags(schema):
+    """Manually create the schema objects, removing policyTags.
+
+    Workaround for 403 error with policy tags, which are not required in a load
+    job: https://github.com/googleapis/python-bigquery/pull/557
+    """
+    # Returns a copy rather than modifying the mutable arg,
+    # per Issue #277
+    result = copy.deepcopy(schema)
+    for field in result["fields"]:
+        if "policyTags" in field:
+            del field["policyTags"]
     return result
