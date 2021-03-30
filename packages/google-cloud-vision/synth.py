@@ -33,7 +33,7 @@ for version in versions:
         bazel_target=f"//google/cloud/vision/{version}:vision-{version}-py",
         include_protos=True
     )
-    
+
     s.move(library / f"google/cloud/vision_{version}/proto")
     s.move(library / f"google/cloud/vision_{version}/services")
     s.move(library / f"google/cloud/vision_{version}/types")
@@ -117,7 +117,7 @@ s.move(library / f"docs/conf.py")
 templated_files = common.py_library(
    samples=True,
    microgenerator=True,
-   cov_level=99,
+   cov_level=98,
    system_test_external_dependencies=["google-cloud-storage"]
 )
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file

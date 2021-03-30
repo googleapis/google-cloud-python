@@ -23,9 +23,10 @@ version = "2.2.0"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
-    "proto-plus >= 1.4.0",
-    "libcst >= 0.2.5",
+    "proto-plus >= 1.15.0",
 ]
+
+extras = {"libcst": "libcst >= 0.2.5"}
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -68,6 +69,7 @@ setuptools.setup(
     packages=packages,
     namespace_packages=namespaces,
     install_requires=dependencies,
+    extras_require=extras,
     python_requires=">=3.6",
     scripts=[
         "scripts/fixup_vision_v1_keywords.py",
