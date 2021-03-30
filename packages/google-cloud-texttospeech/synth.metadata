@@ -163,6 +163,7 @@
     "tests/unit/gapic/texttospeech_v1/__init__.py",
     "tests/unit/gapic/texttospeech_v1/test_text_to_speech.py",
     "tests/unit/gapic/texttospeech_v1beta1/__init__.py",
-    "tests/unit/gapic/texttospeech_v1beta1/test_text_to_speech.py"
+    "tests/unit/gapic/texttospeech_v1beta1/test_text_to_speech.py",
+    "texttospeech-v1beta1-py.tar.gz"
   ]
 }
