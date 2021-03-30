@@ -63,11 +63,11 @@ class Job(proto.Message):
 
             A human-readable description for the job. This string must
             not contain more than 500 characters.
-        pubsub_target (~.target.PubsubTarget):
+        pubsub_target (google.cloud.scheduler_v1.types.PubsubTarget):
             Pub/Sub target.
-        app_engine_http_target (~.target.AppEngineHttpTarget):
+        app_engine_http_target (google.cloud.scheduler_v1.types.AppEngineHttpTarget):
             App Engine HTTP target.
-        http_target (~.target.HttpTarget):
+        http_target (google.cloud.scheduler_v1.types.HttpTarget):
             HTTP target.
         schedule (str):
             Required, except when used with
@@ -109,24 +109,24 @@ class Job(proto.Message):
             determined by the chosen tz. For UTC use the string "utc".
             If a time zone is not specified, the default will be in UTC
             (also known as GMT).
-        user_update_time (~.timestamp.Timestamp):
+        user_update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation time of the job.
-        state (~.job.Job.State):
+        state (google.cloud.scheduler_v1.types.Job.State):
             Output only. State of the job.
-        status (~.gr_status.Status):
+        status (google.rpc.status_pb2.Status):
             Output only. The response from the target for
             the last attempted execution.
-        schedule_time (~.timestamp.Timestamp):
+        schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The next time the job is
             scheduled. Note that this may be a retry of a
             previously failed attempt or the next execution
             time according to the schedule.
-        last_attempt_time (~.timestamp.Timestamp):
+        last_attempt_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the last job attempt
             started.
-        retry_config (~.job.RetryConfig):
+        retry_config (google.cloud.scheduler_v1.types.RetryConfig):
             Settings that determine the retry behavior.
-        attempt_deadline (~.duration.Duration):
+        attempt_deadline (google.protobuf.duration_pb2.Duration):
             The deadline for job attempts. If the request handler does
             not respond by this deadline then the request is cancelled
             and the attempt is marked as a ``DEADLINE_EXCEEDED``
@@ -217,7 +217,7 @@ class RetryConfig(proto.Message):
             execution time, whichever comes first.
 
             Values greater than 5 and negative values are not allowed.
-        max_retry_duration (~.duration.Duration):
+        max_retry_duration (google.protobuf.duration_pb2.Duration):
             The time limit for retrying a failed job, measured from time
             when an execution was first attempted. If specified with
             [retry_count][google.cloud.scheduler.v1.RetryConfig.retry_count],
@@ -225,12 +225,12 @@ class RetryConfig(proto.Message):
 
             The default value for max_retry_duration is zero, which
             means retry duration is unlimited.
-        min_backoff_duration (~.duration.Duration):
+        min_backoff_duration (google.protobuf.duration_pb2.Duration):
             The minimum amount of time to wait before
             retrying a job after it fails.
 
             The default value of this field is 5 seconds.
-        max_backoff_duration (~.duration.Duration):
+        max_backoff_duration (google.protobuf.duration_pb2.Duration):
             The maximum amount of time to wait before
             retrying a job after it fails.
 

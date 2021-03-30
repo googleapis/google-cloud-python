@@ -80,7 +80,7 @@ class ListJobsResponse(proto.Message):
     [ListJobs][google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs].
 
     Attributes:
-        jobs (Sequence[~.gcs_job.Job]):
+        jobs (Sequence[google.cloud.scheduler_v1beta1.types.Job]):
             The list of jobs.
         next_page_token (str):
             A token to retrieve next page of results. Pass this value in
@@ -125,7 +125,7 @@ class CreateJobRequest(proto.Message):
         parent (str):
             Required. The location name. For example:
             ``projects/PROJECT_ID/locations/LOCATION_ID``.
-        job (~.gcs_job.Job):
+        job (google.cloud.scheduler_v1beta1.types.Job):
             Required. The job to add. The user can optionally specify a
             name for the job in
             [name][google.cloud.scheduler.v1beta1.Job.name].
@@ -146,14 +146,14 @@ class UpdateJobRequest(proto.Message):
     [UpdateJob][google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob].
 
     Attributes:
-        job (~.gcs_job.Job):
+        job (google.cloud.scheduler_v1beta1.types.Job):
             Required. The new job properties.
             [name][google.cloud.scheduler.v1beta1.Job.name] must be
             specified.
 
             Output only fields cannot be modified using UpdateJob. Any
             value specified for an output only field will be ignored.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             A  mask used to specify which fields of the
             job are being updated.
     """

@@ -64,9 +64,9 @@ class HttpTarget(proto.Message):
             Cloud Scheduler will encode some characters for safety and
             compatibility. The maximum allowed URL length is 2083
             characters after encoding.
-        http_method (~.target.HttpMethod):
+        http_method (google.cloud.scheduler_v1beta1.types.HttpMethod):
             Which HTTP method to use for the request.
-        headers (Sequence[~.target.HttpTarget.HeadersEntry]):
+        headers (Sequence[google.cloud.scheduler_v1beta1.types.HttpTarget.HeadersEntry]):
             The user can specify HTTP request headers to send with the
             job's HTTP request. This map contains the header field names
             and values. Repeated headers are not supported, but a header
@@ -93,7 +93,7 @@ class HttpTarget(proto.Message):
             HTTP method is POST, PUT, or PATCH. It is an error to set
             body on a job with an incompatible
             [HttpMethod][google.cloud.scheduler.v1beta1.HttpMethod].
-        oauth_token (~.target.OAuthToken):
+        oauth_token (google.cloud.scheduler_v1beta1.types.OAuthToken):
             If specified, an `OAuth
             token <https://developers.google.com/identity/protocols/OAuth2>`__
             will be generated and attached as an ``Authorization``
@@ -101,7 +101,7 @@ class HttpTarget(proto.Message):
 
             This type of authorization should generally only be used
             when calling Google APIs hosted on \*.googleapis.com.
-        oidc_token (~.target.OidcToken):
+        oidc_token (google.cloud.scheduler_v1beta1.types.OidcToken):
             If specified, an
             `OIDC <https://developers.google.com/identity/protocols/OpenIDConnect>`__
             token will be generated and attached as an ``Authorization``
@@ -142,10 +142,10 @@ class AppEngineHttpTarget(proto.Message):
     deadline, constitutes a failed attempt.
 
     Attributes:
-        http_method (~.target.HttpMethod):
+        http_method (google.cloud.scheduler_v1beta1.types.HttpMethod):
             The HTTP method to use for the request. PATCH
             and OPTIONS are not permitted.
-        app_engine_routing (~.target.AppEngineRouting):
+        app_engine_routing (google.cloud.scheduler_v1beta1.types.AppEngineRouting):
             App Engine Routing setting for the job.
         relative_uri (str):
             The relative URI.
@@ -155,7 +155,7 @@ class AppEngineHttpTarget(proto.Message):
             arguments, and ``#`` fragments. If the relative URL is
             empty, then the root path "/" will be used. No spaces are
             allowed, and the maximum length allowed is 2083 characters.
-        headers (Sequence[~.target.AppEngineHttpTarget.HeadersEntry]):
+        headers (Sequence[google.cloud.scheduler_v1beta1.types.AppEngineHttpTarget.HeadersEntry]):
             HTTP request headers.
 
             This map contains the header field names and values. Headers
@@ -234,7 +234,7 @@ class PubsubTarget(proto.Message):
             The message payload for PubsubMessage.
             Pubsub message must contain either non-empty
             data, or at least one attribute.
-        attributes (Sequence[~.target.PubsubTarget.AttributesEntry]):
+        attributes (Sequence[google.cloud.scheduler_v1beta1.types.PubsubTarget.AttributesEntry]):
             Attributes for PubsubMessage.
             Pubsub message must contain either non-empty
             data, or at least one attribute.

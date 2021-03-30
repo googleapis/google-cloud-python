@@ -53,6 +53,7 @@ for version in versions:
 templated_files = common.py_library(
   samples=True,
   microgenerator=True,
+  cov_level=98,
 )
 s.move(templated_files, excludes=[".coveragerc"])
 

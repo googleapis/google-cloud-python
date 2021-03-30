@@ -120,6 +120,22 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            CloudSchedulerClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -131,7 +147,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            CloudSchedulerClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -250,10 +266,10 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.CloudSchedulerTransport]): The
+            transport (Union[str, CloudSchedulerTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -289,21 +305,17 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -346,7 +358,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -363,13 +375,14 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         r"""Lists jobs.
 
         Args:
-            request (:class:`~.cloudscheduler.ListJobsRequest`):
+            request (google.cloud.scheduler_v1beta1.types.ListJobsRequest):
                 The request object. Request message for listing jobs
                 using
                 [ListJobs][google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs].
-            parent (:class:`str`):
+            parent (str):
                 Required. The location name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -381,7 +394,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListJobsPager:
+            google.cloud.scheduler_v1beta1.services.cloud_scheduler.pagers.ListJobsPager:
                 Response message for listing jobs using
                 [ListJobs][google.cloud.scheduler.v1beta1.CloudScheduler.ListJobs].
 
@@ -446,12 +459,13 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         r"""Gets a job.
 
         Args:
-            request (:class:`~.cloudscheduler.GetJobRequest`):
+            request (google.cloud.scheduler_v1beta1.types.GetJobRequest):
                 The request object. Request message for
                 [GetJob][google.cloud.scheduler.v1beta1.CloudScheduler.GetJob].
-            name (:class:`str`):
+            name (str):
                 Required. The job name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -463,7 +477,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.job.Job:
+            google.cloud.scheduler_v1beta1.types.Job:
                 Configuration for a job.
                 The maximum allowed size for a job is
                 100KB.
@@ -521,16 +535,17 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         r"""Creates a job.
 
         Args:
-            request (:class:`~.cloudscheduler.CreateJobRequest`):
+            request (google.cloud.scheduler_v1beta1.types.CreateJobRequest):
                 The request object. Request message for
                 [CreateJob][google.cloud.scheduler.v1beta1.CloudScheduler.CreateJob].
-            parent (:class:`str`):
+            parent (str):
                 Required. The location name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            job (:class:`~.gcs_job.Job`):
+            job (google.cloud.scheduler_v1beta1.types.Job):
                 Required. The job to add. The user can optionally
                 specify a name for the job in
                 [name][google.cloud.scheduler.v1beta1.Job.name].
@@ -540,6 +555,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
                 name that will be returned
                 ([name][google.cloud.scheduler.v1beta1.Job.name]) in the
                 response.
+
                 This corresponds to the ``job`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -551,7 +567,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcs_job.Job:
+            google.cloud.scheduler_v1beta1.types.Job:
                 Configuration for a job.
                 The maximum allowed size for a job is
                 100KB.
@@ -622,10 +638,10 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         received.
 
         Args:
-            request (:class:`~.cloudscheduler.UpdateJobRequest`):
+            request (google.cloud.scheduler_v1beta1.types.UpdateJobRequest):
                 The request object. Request message for
                 [UpdateJob][google.cloud.scheduler.v1beta1.CloudScheduler.UpdateJob].
-            job (:class:`~.gcs_job.Job`):
+            job (google.cloud.scheduler_v1beta1.types.Job):
                 Required. The new job properties.
                 [name][google.cloud.scheduler.v1beta1.Job.name] must be
                 specified.
@@ -633,12 +649,14 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
                 Output only fields cannot be modified using UpdateJob.
                 Any value specified for an output only field will be
                 ignored.
+
                 This corresponds to the ``job`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 A  mask used to specify which fields
                 of the job are being updated.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -650,7 +668,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gcs_job.Job:
+            google.cloud.scheduler_v1beta1.types.Job:
                 Configuration for a job.
                 The maximum allowed size for a job is
                 100KB.
@@ -709,13 +727,14 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         r"""Deletes a job.
 
         Args:
-            request (:class:`~.cloudscheduler.DeleteJobRequest`):
+            request (google.cloud.scheduler_v1beta1.types.DeleteJobRequest):
                 The request object. Request message for deleting a job
                 using
                 [DeleteJob][google.cloud.scheduler.v1beta1.CloudScheduler.DeleteJob].
-            name (:class:`str`):
+            name (str):
                 Required. The job name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -787,12 +806,13 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         to be paused.
 
         Args:
-            request (:class:`~.cloudscheduler.PauseJobRequest`):
+            request (google.cloud.scheduler_v1beta1.types.PauseJobRequest):
                 The request object. Request message for
                 [PauseJob][google.cloud.scheduler.v1beta1.CloudScheduler.PauseJob].
-            name (:class:`str`):
+            name (str):
                 Required. The job name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -804,7 +824,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.job.Job:
+            google.cloud.scheduler_v1beta1.types.Job:
                 Configuration for a job.
                 The maximum allowed size for a job is
                 100KB.
@@ -871,12 +891,13 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         to be resumed.
 
         Args:
-            request (:class:`~.cloudscheduler.ResumeJobRequest`):
+            request (google.cloud.scheduler_v1beta1.types.ResumeJobRequest):
                 The request object. Request message for
                 [ResumeJob][google.cloud.scheduler.v1beta1.CloudScheduler.ResumeJob].
-            name (:class:`str`):
+            name (str):
                 Required. The job name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -888,7 +909,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.job.Job:
+            google.cloud.scheduler_v1beta1.types.Job:
                 Configuration for a job.
                 The maximum allowed size for a job is
                 100KB.
@@ -947,13 +968,14 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         dispatch the job, even if the job is already running.
 
         Args:
-            request (:class:`~.cloudscheduler.RunJobRequest`):
+            request (google.cloud.scheduler_v1beta1.types.RunJobRequest):
                 The request object. Request message for forcing a job to
                 run now using
                 [RunJob][google.cloud.scheduler.v1beta1.CloudScheduler.RunJob].
-            name (:class:`str`):
+            name (str):
                 Required. The job name. For example:
                 ``projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -965,7 +987,7 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.job.Job:
+            google.cloud.scheduler_v1beta1.types.Job:
                 Configuration for a job.
                 The maximum allowed size for a job is
                 100KB.
