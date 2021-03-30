@@ -67,7 +67,7 @@ class Instance(proto.Message):
         display_name (str):
             An arbitrary and optional user-provided name
             for the instance.
-        labels (Sequence[~.cloud_redis.Instance.LabelsEntry]):
+        labels (Sequence[google.cloud.redis_v1beta1.types.Instance.LabelsEntry]):
             Resource labels to represent user provided
             metadata
         location_id (str):
@@ -118,16 +118,16 @@ class Instance(proto.Message):
             or
             [alternative_location_id][google.cloud.redis.v1beta1.Instance.alternative_location_id]
             and can change after a failover event.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the instance was
             created.
-        state (~.cloud_redis.Instance.State):
+        state (google.cloud.redis_v1beta1.types.Instance.State):
             Output only. The current state of this
             instance.
         status_message (str):
             Output only. Additional information about the
             current status of this instance, if available.
-        redis_configs (Sequence[~.cloud_redis.Instance.RedisConfigsEntry]):
+        redis_configs (Sequence[google.cloud.redis_v1beta1.types.Instance.RedisConfigsEntry]):
             Optional. Redis configuration parameters, according to
             http://redis.io/topics/config. Currently, the only supported
             parameters are:
@@ -148,7 +148,7 @@ class Instance(proto.Message):
 
             -  stream-node-max-bytes
             -  stream-node-max-entries
-        tier (~.cloud_redis.Instance.Tier):
+        tier (google.cloud.redis_v1beta1.types.Instance.Tier):
             Required. The service tier of the instance.
         memory_size_gb (int):
             Required. Redis memory size in GiB.
@@ -163,7 +163,7 @@ class Instance(proto.Message):
             "serviceAccount:<service_account_email>". The value may
             change over time for a given instance so should be checked
             before each import/export operation.
-        connect_mode (~.cloud_redis.Instance.ConnectMode):
+        connect_mode (google.cloud.redis_v1beta1.types.Instance.ConnectMode):
             Optional. The connect mode of Redis instance. If not
             provided, default one will be used. Current default:
             DIRECT_PEERING.
@@ -268,7 +268,7 @@ class ListInstancesResponse(proto.Message):
     [ListInstances][google.cloud.redis.v1beta1.CloudRedis.ListInstances].
 
     Attributes:
-        instances (Sequence[~.cloud_redis.Instance]):
+        instances (Sequence[google.cloud.redis_v1beta1.types.Instance]):
             A list of Redis instances in the project in the specified
             location, or across all locations.
 
@@ -333,7 +333,7 @@ class CreateInstanceRequest(proto.Message):
             -  Must be between 1-40 characters.
             -  Must end with a number or a letter.
             -  Must be unique within the customer project / location
-        instance (~.cloud_redis.Instance):
+        instance (google.cloud.redis_v1beta1.types.Instance):
             Required. A Redis [Instance] resource
     """
 
@@ -349,7 +349,7 @@ class UpdateInstanceRequest(proto.Message):
     [UpdateInstance][google.cloud.redis.v1beta1.CloudRedis.UpdateInstance].
 
     Attributes:
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Mask of fields to update. At least one path must
             be supplied in this field. The elements of the repeated
             paths field may only include these fields from
@@ -359,7 +359,7 @@ class UpdateInstanceRequest(proto.Message):
             -  ``labels``
             -  ``memorySizeGb``
             -  ``redisConfig``
-        instance (~.cloud_redis.Instance):
+        instance (google.cloud.redis_v1beta1.types.Instance):
             Required. Update description. Only fields specified in
             update_mask are updated.
     """
@@ -418,7 +418,7 @@ class InputConfig(proto.Message):
     r"""The input content
 
     Attributes:
-        gcs_source (~.cloud_redis.GcsSource):
+        gcs_source (google.cloud.redis_v1beta1.types.GcsSource):
             Google Cloud Storage location where input
             content is located.
     """
@@ -437,7 +437,7 @@ class ImportInstanceRequest(proto.Message):
             Required. Redis instance resource name using the form:
             ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
             where ``location_id`` refers to a GCP region.
-        input_config (~.cloud_redis.InputConfig):
+        input_config (google.cloud.redis_v1beta1.types.InputConfig):
             Required. Specify data to be imported.
     """
 
@@ -463,7 +463,7 @@ class OutputConfig(proto.Message):
     r"""The output content
 
     Attributes:
-        gcs_destination (~.cloud_redis.GcsDestination):
+        gcs_destination (google.cloud.redis_v1beta1.types.GcsDestination):
             Google Cloud Storage destination for output
             content.
     """
@@ -482,7 +482,7 @@ class ExportInstanceRequest(proto.Message):
             Required. Redis instance resource name using the form:
             ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
             where ``location_id`` refers to a GCP region.
-        output_config (~.cloud_redis.OutputConfig):
+        output_config (google.cloud.redis_v1beta1.types.OutputConfig):
             Required. Specify data to be exported.
     """
 
@@ -500,7 +500,7 @@ class FailoverInstanceRequest(proto.Message):
             Required. Redis instance resource name using the form:
             ``projects/{project_id}/locations/{location_id}/instances/{instance_id}``
             where ``location_id`` refers to a GCP region.
-        data_protection_mode (~.cloud_redis.FailoverInstanceRequest.DataProtectionMode):
+        data_protection_mode (google.cloud.redis_v1beta1.types.FailoverInstanceRequest.DataProtectionMode):
             Optional. Available data protection modes that the user can
             choose. If it's unspecified, data protection mode will be
             LIMITED_DATA_LOSS by default.
@@ -526,7 +526,7 @@ class LocationMetadata(proto.Message):
     ``google.cloud.location.Location.metadata`` field.
 
     Attributes:
-        available_zones (Sequence[~.cloud_redis.LocationMetadata.AvailableZonesEntry]):
+        available_zones (Sequence[google.cloud.redis_v1beta1.types.LocationMetadata.AvailableZonesEntry]):
             Output only. The set of available zones in the location. The
             map is keyed by the lowercase ID of each zone, as defined by
             GCE. These keys can be specified in ``location_id`` or

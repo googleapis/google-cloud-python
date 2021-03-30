@@ -43,6 +43,7 @@ for version in ["v1beta1", "v1"]:
 templated_files = common.py_library(
     samples=False,
     microgenerator=True,
+    cov_level=98,
 )
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
