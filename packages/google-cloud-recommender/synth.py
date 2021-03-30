@@ -61,6 +61,7 @@ s.replace(
 templated_files = common.py_library(
     samples=False,  # set to True only if there are samples
     microgenerator=True,
+    cov_level=98,
 )
 s.move(
     templated_files, excludes=[".coveragerc"]

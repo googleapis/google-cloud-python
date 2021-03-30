@@ -85,7 +85,7 @@ class ListInsightsResponse(proto.Message):
     r"""Response to the ``ListInsights`` method.
 
     Attributes:
-        insights (Sequence[~.insight.Insight]):
+        insights (Sequence[google.cloud.recommender_v1beta1.types.Insight]):
             The set of insights for the ``parent`` resource.
         next_page_token (str):
             A token that can be used to request the next
@@ -119,7 +119,7 @@ class MarkInsightAcceptedRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of the insight.
-        state_metadata (Sequence[~.recommender_service.MarkInsightAcceptedRequest.StateMetadataEntry]):
+        state_metadata (Sequence[google.cloud.recommender_v1beta1.types.MarkInsightAcceptedRequest.StateMetadataEntry]):
             Optional. State properties user wish to include with this
             state. Full replace of the current state_metadata.
         etag (str):
@@ -180,7 +180,7 @@ class ListRecommendationsResponse(proto.Message):
     r"""Response to the ``ListRecommendations`` method.
 
     Attributes:
-        recommendations (Sequence[~.recommendation.Recommendation]):
+        recommendations (Sequence[google.cloud.recommender_v1beta1.types.Recommendation]):
             The set of recommendations for the ``parent`` resource.
         next_page_token (str):
             A token that can be used to request the next
@@ -216,7 +216,7 @@ class MarkRecommendationClaimedRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of the recommendation.
-        state_metadata (Sequence[~.recommender_service.MarkRecommendationClaimedRequest.StateMetadataEntry]):
+        state_metadata (Sequence[google.cloud.recommender_v1beta1.types.MarkRecommendationClaimedRequest.StateMetadataEntry]):
             State properties to include with this state. Overwrites any
             existing ``state_metadata``. Keys must match the regex
             ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must match the regex
@@ -239,7 +239,7 @@ class MarkRecommendationSucceededRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of the recommendation.
-        state_metadata (Sequence[~.recommender_service.MarkRecommendationSucceededRequest.StateMetadataEntry]):
+        state_metadata (Sequence[google.cloud.recommender_v1beta1.types.MarkRecommendationSucceededRequest.StateMetadataEntry]):
             State properties to include with this state. Overwrites any
             existing ``state_metadata``. Keys must match the regex
             ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must match the regex
@@ -262,7 +262,7 @@ class MarkRecommendationFailedRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of the recommendation.
-        state_metadata (Sequence[~.recommender_service.MarkRecommendationFailedRequest.StateMetadataEntry]):
+        state_metadata (Sequence[google.cloud.recommender_v1beta1.types.MarkRecommendationFailedRequest.StateMetadataEntry]):
             State properties to include with this state. Overwrites any
             existing ``state_metadata``. Keys must match the regex
             ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must match the regex

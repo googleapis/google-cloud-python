@@ -62,29 +62,29 @@ class Recommendation(proto.Message):
             Examples: For recommender = "google.iam.policy.Recommender",
             recommender_subtype can be one of
             "REMOVE_ROLE"/"REPLACE_ROLE".
-        last_refresh_time (~.timestamp.Timestamp):
+        last_refresh_time (google.protobuf.timestamp_pb2.Timestamp):
             Last time this recommendation was refreshed
             by the system that created it in the first
             place.
-        primary_impact (~.recommendation.Impact):
+        primary_impact (google.cloud.recommender_v1beta1.types.Impact):
             The primary impact that this recommendation
             can have while trying to optimize for one
             category.
-        additional_impact (Sequence[~.recommendation.Impact]):
+        additional_impact (Sequence[google.cloud.recommender_v1beta1.types.Impact]):
             Optional set of additional impact that this
             recommendation may have when trying to optimize
             for the primary category. These may be positive
             or negative.
-        content (~.recommendation.RecommendationContent):
+        content (google.cloud.recommender_v1beta1.types.RecommendationContent):
             Content of the recommendation describing
             recommended changes to resources.
-        state_info (~.recommendation.RecommendationStateInfo):
+        state_info (google.cloud.recommender_v1beta1.types.RecommendationStateInfo):
             Information for state. Contains state and
             metadata.
         etag (str):
             Fingerprint of the Recommendation. Provides
             optimistic locking when updating states.
-        associated_insights (Sequence[~.recommendation.Recommendation.InsightReference]):
+        associated_insights (Sequence[google.cloud.recommender_v1beta1.types.Recommendation.InsightReference]):
             Insights that led to this recommendation.
     """
 
@@ -131,7 +131,7 @@ class RecommendationContent(proto.Message):
     changing.
 
     Attributes:
-        operation_groups (Sequence[~.recommendation.OperationGroup]):
+        operation_groups (Sequence[google.cloud.recommender_v1beta1.types.OperationGroup]):
             Operations to one or more Google Cloud
             resources grouped in such a way that, all
             operations within one group are expected to be
@@ -147,7 +147,7 @@ class OperationGroup(proto.Message):
     r"""Group of operations that need to be performed atomically.
 
     Attributes:
-        operations (Sequence[~.recommendation.Operation]):
+        operations (Sequence[google.cloud.recommender_v1beta1.types.Operation]):
             List of operations across one or more
             resources that belong to this group. Loosely
             based on RFC6902 and should be performed in the
@@ -199,16 +199,16 @@ class Operation(proto.Message):
             Can be set with action 'copy' or 'move' to indicate the
             source field within resource or source_resource, ignored if
             provided for other operation types.
-        value (~.struct.Value):
+        value (google.protobuf.struct_pb2.Value):
             Value for the ``path`` field. Will be set for
             actions:'add'/'replace'. Maybe set for action: 'test'.
             Either this or ``value_matcher`` will be set for 'test'
             operation. An exact match must be performed.
-        value_matcher (~.recommendation.ValueMatcher):
+        value_matcher (google.cloud.recommender_v1beta1.types.ValueMatcher):
             Can be set for action 'test' for advanced matching for the
             value of 'path' field. Either this or ``value`` will be set
             for 'test' operation.
-        path_filters (Sequence[~.recommendation.Operation.PathFiltersEntry]):
+        path_filters (Sequence[google.cloud.recommender_v1beta1.types.Operation.PathFiltersEntry]):
             Set of filters to apply if ``path`` refers to array elements
             or nested array elements in order to narrow down to a single
             unique element that is being tested/modified. This is
@@ -224,7 +224,7 @@ class Operation(proto.Message):
                "y@example.com"] }`` When both path_filters and
                path_value_matchers are set, an implicit AND must be
                performed.
-        path_value_matchers (Sequence[~.recommendation.Operation.PathValueMatchersEntry]):
+        path_value_matchers (Sequence[google.cloud.recommender_v1beta1.types.Operation.PathValueMatchersEntry]):
             Similar to path_filters, this contains set of filters to
             apply if ``path`` field referes to array elements. This is
             meant to support value matching beyond exact match. To
@@ -283,13 +283,13 @@ class CostProjection(proto.Message):
     save or incur.
 
     Attributes:
-        cost (~.money.Money):
+        cost (google.type.money_pb2.Money):
             An approximate projection on amount saved or
             amount incurred. Negative cost units indicate
             cost savings and positive cost units indicate
             increase. See google.type.Money documentation
             for positive/negative units.
-        duration (~.gp_duration.Duration):
+        duration (google.protobuf.duration_pb2.Duration):
             Duration for which this cost applies.
     """
 
@@ -303,9 +303,9 @@ class Impact(proto.Message):
     category.
 
     Attributes:
-        category (~.recommendation.Impact.Category):
+        category (google.cloud.recommender_v1beta1.types.Impact.Category):
             Category that is being targeted.
-        cost_projection (~.recommendation.CostProjection):
+        cost_projection (google.cloud.recommender_v1beta1.types.CostProjection):
             Use with CategoryType.COST
     """
 
@@ -328,10 +328,10 @@ class RecommendationStateInfo(proto.Message):
     r"""Information for state. Contains state and metadata.
 
     Attributes:
-        state (~.recommendation.RecommendationStateInfo.State):
+        state (google.cloud.recommender_v1beta1.types.RecommendationStateInfo.State):
             The state of the recommendation, Eg ACTIVE,
             SUCCEEDED, FAILED.
-        state_metadata (Sequence[~.recommendation.RecommendationStateInfo.StateMetadataEntry]):
+        state_metadata (Sequence[google.cloud.recommender_v1beta1.types.RecommendationStateInfo.StateMetadataEntry]):
             A map of metadata for the state, provided by
             user or automations systems.
     """

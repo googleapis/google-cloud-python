@@ -45,25 +45,25 @@ class Insight(proto.Message):
         insight_subtype (str):
             Insight subtype. Insight content schema will
             be stable for a given subtype.
-        content (~.struct.Struct):
+        content (google.protobuf.struct_pb2.Struct):
             A struct of custom fields to explain the
             insight. Example: "grantedPermissionsCount":
             "1000".
-        last_refresh_time (~.timestamp.Timestamp):
+        last_refresh_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp of the latest data used to generate
             the insight.
-        observation_period (~.duration.Duration):
+        observation_period (google.protobuf.duration_pb2.Duration):
             Observation period that led to the insight. The source data
             used to generate the insight ends at last_refresh_time and
             begins at (last_refresh_time - observation_period).
-        state_info (~.insight.InsightStateInfo):
+        state_info (google.cloud.recommender_v1beta1.types.InsightStateInfo):
             Information state and metadata.
-        category (~.insight.Insight.Category):
+        category (google.cloud.recommender_v1beta1.types.Insight.Category):
             Category being targeted by the insight.
         etag (str):
             Fingerprint of the Insight. Provides
             optimistic locking when updating states.
-        associated_recommendations (Sequence[~.insight.Insight.RecommendationReference]):
+        associated_recommendations (Sequence[google.cloud.recommender_v1beta1.types.Insight.RecommendationReference]):
             Recommendations derived from this insight.
     """
 
@@ -119,9 +119,9 @@ class InsightStateInfo(proto.Message):
     r"""Information related to insight state.
 
     Attributes:
-        state (~.insight.InsightStateInfo.State):
+        state (google.cloud.recommender_v1beta1.types.InsightStateInfo.State):
             Insight state.
-        state_metadata (Sequence[~.insight.InsightStateInfo.StateMetadataEntry]):
+        state_metadata (Sequence[google.cloud.recommender_v1beta1.types.InsightStateInfo.StateMetadataEntry]):
             A map of metadata for the state, provided by
             user or automations systems.
     """

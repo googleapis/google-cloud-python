@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.recommender_v1beta1.types import insight
 from google.cloud.recommender_v1beta1.types import recommendation
@@ -26,7 +35,7 @@ class ListInsightsPager:
     """A pager for iterating through ``list_insights`` requests.
 
     This class thinly wraps an initial
-    :class:`~.recommender_service.ListInsightsResponse` object, and
+    :class:`google.cloud.recommender_v1beta1.types.ListInsightsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``insights`` field.
 
@@ -35,7 +44,7 @@ class ListInsightsPager:
     through the ``insights`` field on the
     corresponding responses.
 
-    All the usual :class:`~.recommender_service.ListInsightsResponse`
+    All the usual :class:`google.cloud.recommender_v1beta1.types.ListInsightsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -53,9 +62,9 @@ class ListInsightsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.recommender_service.ListInsightsRequest`):
+            request (google.cloud.recommender_v1beta1.types.ListInsightsRequest):
                 The initial request object.
-            response (:class:`~.recommender_service.ListInsightsResponse`):
+            response (google.cloud.recommender_v1beta1.types.ListInsightsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -88,7 +97,7 @@ class ListInsightsAsyncPager:
     """A pager for iterating through ``list_insights`` requests.
 
     This class thinly wraps an initial
-    :class:`~.recommender_service.ListInsightsResponse` object, and
+    :class:`google.cloud.recommender_v1beta1.types.ListInsightsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``insights`` field.
 
@@ -97,7 +106,7 @@ class ListInsightsAsyncPager:
     through the ``insights`` field on the
     corresponding responses.
 
-    All the usual :class:`~.recommender_service.ListInsightsResponse`
+    All the usual :class:`google.cloud.recommender_v1beta1.types.ListInsightsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -115,9 +124,9 @@ class ListInsightsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.recommender_service.ListInsightsRequest`):
+            request (google.cloud.recommender_v1beta1.types.ListInsightsRequest):
                 The initial request object.
-            response (:class:`~.recommender_service.ListInsightsResponse`):
+            response (google.cloud.recommender_v1beta1.types.ListInsightsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -154,7 +163,7 @@ class ListRecommendationsPager:
     """A pager for iterating through ``list_recommendations`` requests.
 
     This class thinly wraps an initial
-    :class:`~.recommender_service.ListRecommendationsResponse` object, and
+    :class:`google.cloud.recommender_v1beta1.types.ListRecommendationsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``recommendations`` field.
 
@@ -163,7 +172,7 @@ class ListRecommendationsPager:
     through the ``recommendations`` field on the
     corresponding responses.
 
-    All the usual :class:`~.recommender_service.ListRecommendationsResponse`
+    All the usual :class:`google.cloud.recommender_v1beta1.types.ListRecommendationsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -181,9 +190,9 @@ class ListRecommendationsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.recommender_service.ListRecommendationsRequest`):
+            request (google.cloud.recommender_v1beta1.types.ListRecommendationsRequest):
                 The initial request object.
-            response (:class:`~.recommender_service.ListRecommendationsResponse`):
+            response (google.cloud.recommender_v1beta1.types.ListRecommendationsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -216,7 +225,7 @@ class ListRecommendationsAsyncPager:
     """A pager for iterating through ``list_recommendations`` requests.
 
     This class thinly wraps an initial
-    :class:`~.recommender_service.ListRecommendationsResponse` object, and
+    :class:`google.cloud.recommender_v1beta1.types.ListRecommendationsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``recommendations`` field.
 
@@ -225,7 +234,7 @@ class ListRecommendationsAsyncPager:
     through the ``recommendations`` field on the
     corresponding responses.
 
-    All the usual :class:`~.recommender_service.ListRecommendationsResponse`
+    All the usual :class:`google.cloud.recommender_v1beta1.types.ListRecommendationsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -245,9 +254,9 @@ class ListRecommendationsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.recommender_service.ListRecommendationsRequest`):
+            request (google.cloud.recommender_v1beta1.types.ListRecommendationsRequest):
                 The initial request object.
-            response (:class:`~.recommender_service.ListRecommendationsResponse`):
+            response (google.cloud.recommender_v1beta1.types.ListRecommendationsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
