@@ -29,12 +29,12 @@ versions = ["v1"]
 
 for version in versions:
     library = gapic.py_library(
-        service="recaptchaenterprise", 
+        service="recaptchaenterprise",
         version="v1",
         bazel_target=f"//google/cloud/recaptchaenterprise/{version}:recaptchaenterprise-{version}-py",
     )
 
-    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
+    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst", "*.tar.gz"])
 
 
 # rename to google-cloud-recaptcha-enterprise
@@ -47,7 +47,7 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=100, microgenerator=True)
+templated_files = common.py_library(cov_level=98, microgenerator=True)
 s.move(
     templated_files, excludes=[".coveragerc"]
 )  # the microgenerator has a good coveragerc file
