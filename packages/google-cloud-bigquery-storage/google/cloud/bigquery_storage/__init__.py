@@ -20,6 +20,7 @@ from google.cloud.bigquery_storage_v1 import gapic_types as types
 from google.cloud.bigquery_storage_v1 import __version__
 from google.cloud.bigquery_storage_v1.types.arrow import ArrowRecordBatch
 from google.cloud.bigquery_storage_v1.types.arrow import ArrowSchema
+from google.cloud.bigquery_storage_v1.types.arrow import ArrowSerializationOptions
 from google.cloud.bigquery_storage_v1.types.avro import AvroRows
 from google.cloud.bigquery_storage_v1.types.avro import AvroSchema
 from google.cloud.bigquery_storage_v1.types.storage import CreateReadSessionRequest
@@ -38,6 +39,7 @@ __all__ = (
     "types",
     "ArrowRecordBatch",
     "ArrowSchema",
+    "ArrowSerializationOptions",
     "AvroRows",
     "AvroSchema",
     "BigQueryReadClient",

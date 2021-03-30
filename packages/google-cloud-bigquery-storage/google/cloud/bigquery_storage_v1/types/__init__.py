@@ -18,6 +18,7 @@
 from .arrow import (
     ArrowRecordBatch,
     ArrowSchema,
+    ArrowSerializationOptions,
 )
 from .avro import (
     AvroRows,
@@ -42,6 +43,7 @@ from .stream import (
 __all__ = (
     "ArrowRecordBatch",
     "ArrowSchema",
+    "ArrowSerializationOptions",
     "AvroRows",
     "AvroSchema",
     "CreateReadSessionRequest",

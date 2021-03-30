@@ -104,12 +104,23 @@ class ReadSession(proto.Message):
                 Examples: "int_field > 5" "date_field = CAST('2014-9-27' as
                 DATE)" "nullable_field is not NULL" "st_equals(geo_field,
                 st_geofromtext("POINT(2, 2)"))" "numeric_field BETWEEN 1.0
-                AND 5.0".
+                AND 5.0"
+
+                Restricted to a maximum length for 1 MB.
+            arrow_serialization_options (google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions):
+
         """
 
         selected_fields = proto.RepeatedField(proto.STRING, number=1)
 
         row_restriction = proto.Field(proto.STRING, number=2)
+
+        arrow_serialization_options = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="output_format_serialization_options",
+            message=arrow.ArrowSerializationOptions,
+        )
 
     name = proto.Field(proto.STRING, number=1)
 

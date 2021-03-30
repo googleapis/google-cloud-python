@@ -154,6 +154,10 @@ class ReadRowsResponse(proto.Message):
             Throttling state. If unset, the latest
             response still describes the current throttling
             status.
+        avro_schema (google.cloud.bigquery_storage_v1.types.AvroSchema):
+            Output only. Avro schema.
+        arrow_schema (google.cloud.bigquery_storage_v1.types.ArrowSchema):
+            Output only. Arrow schema.
     """
 
     avro_rows = proto.Field(
@@ -169,6 +173,14 @@ class ReadRowsResponse(proto.Message):
     stats = proto.Field(proto.MESSAGE, number=2, message="StreamStats",)
 
     throttle_state = proto.Field(proto.MESSAGE, number=5, message="ThrottleState",)
+
+    avro_schema = proto.Field(
+        proto.MESSAGE, number=7, oneof="schema", message=avro.AvroSchema,
+    )
+
+    arrow_schema = proto.Field(
+        proto.MESSAGE, number=8, oneof="schema", message=arrow.ArrowSchema,
+    )
 
 
 class SplitReadStreamRequest(proto.Message):
