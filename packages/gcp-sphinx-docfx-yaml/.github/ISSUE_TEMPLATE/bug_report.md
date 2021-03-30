@@ -20,7 +20,7 @@ If you are still having issues, please be sure to include as much information as
   - OS type and version:
   - Python version: `python --version`
   - pip version: `pip --version`
-  - `sphinx-docfx-yaml` version: `pip show sphinx-docfx-yaml`
+  - `gcp-sphinx-docfx-yaml` version: `pip show gcp-sphinx-docfx-yaml`
 
 #### Steps to reproduce
 
