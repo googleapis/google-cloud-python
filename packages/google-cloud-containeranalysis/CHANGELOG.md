@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.2.2](https://www.github.com/googleapis/python-containeranalysis/compare/v2.2.1...v2.2.2) (2021-03-25)
+
+
+### Bug Fixes
+
+* effective severity attribute error ([#104](https://www.github.com/googleapis/python-containeranalysis/issues/104)) ([913251a](https://www.github.com/googleapis/python-containeranalysis/commit/913251aa5535612460cd7ed6139c3cb5b7c7cc3f))
+
 ### [2.2.1](https://www.github.com/googleapis/python-containeranalysis/compare/v2.2.0...v2.2.1) (2021-02-09)
 
 
