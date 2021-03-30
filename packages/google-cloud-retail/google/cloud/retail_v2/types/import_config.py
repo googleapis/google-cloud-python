@@ -190,7 +190,7 @@ class ImportProductsRequest(proto.Message):
     Attributes:
         parent (str):
             Required.
-            "projects/1234/locations/global/catalogs/default_catalog/branches/default_branch"
+            ``projects/1234/locations/global/catalogs/default_catalog/branches/default_branch``
 
             If no updateMask is specified, requires products.create
             permission. If updateMask is specified, requires
@@ -222,7 +222,7 @@ class ImportUserEventsRequest(proto.Message):
     Attributes:
         parent (str):
             Required.
-            "projects/1234/locations/global/catalogs/default_catalog".
+            ``projects/1234/locations/global/catalogs/default_catalog``
         input_config (google.cloud.retail_v2.types.UserEventInputConfig):
             Required. The desired input location of the
             data.

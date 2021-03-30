@@ -39,7 +39,7 @@ class WriteUserEventRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent catalog resource name, such as
-            "projects/1234/locations/global/catalogs/default_catalog".
+            ``projects/1234/locations/global/catalogs/default_catalog``.
         user_event (google.cloud.retail_v2.types.UserEvent):
             Required. User event to write.
     """
@@ -55,7 +55,7 @@ class CollectUserEventRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent catalog name, such as
-            "projects/1234/locations/global/catalogs/default_catalog".
+            ``projects/1234/locations/global/catalogs/default_catalog``.
         user_event (str):
             Required. URL encoded UserEvent proto with a
             length limit of 2,000,000 characters.
@@ -87,7 +87,7 @@ class RejoinUserEventsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent catalog resource name, such as
-            "projects/1234/locations/global/catalogs/default_catalog".
+            ``projects/1234/locations/global/catalogs/default_catalog``.
         user_event_rejoin_scope (google.cloud.retail_v2.types.RejoinUserEventsRequest.UserEventRejoinScope):
             The type of the user event rejoin to define the scope and
             range of the user events to be rejoined with the latest

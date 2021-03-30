@@ -16,8 +16,8 @@
 #
 
 from .catalog import (
-    ProductLevelConfig,
     Catalog,
+    ProductLevelConfig,
 )
 from .catalog_service import (
     ListCatalogsRequest,
@@ -30,53 +30,53 @@ from .common import (
     PriceInfo,
     UserInfo,
 )
-from .product import Product
-from .user_event import (
-    UserEvent,
-    ProductDetail,
-    PurchaseTransaction,
-)
 from .import_config import (
-    GcsSource,
     BigQuerySource,
-    ProductInlineSource,
-    UserEventInlineSource,
+    GcsSource,
     ImportErrorsConfig,
-    ImportProductsRequest,
-    ImportUserEventsRequest,
-    ProductInputConfig,
-    UserEventInputConfig,
     ImportMetadata,
+    ImportProductsRequest,
     ImportProductsResponse,
+    ImportUserEventsRequest,
     ImportUserEventsResponse,
+    ProductInlineSource,
+    ProductInputConfig,
     UserEventImportSummary,
+    UserEventInlineSource,
+    UserEventInputConfig,
 )
 from .prediction_service import (
     PredictRequest,
     PredictResponse,
+)
+from .product import Product
+from .product_service import (
+    CreateProductRequest,
+    DeleteProductRequest,
+    GetProductRequest,
+    UpdateProductRequest,
 )
 from .purge_config import (
     PurgeMetadata,
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
 )
-from .product_service import (
-    CreateProductRequest,
-    GetProductRequest,
-    UpdateProductRequest,
-    DeleteProductRequest,
+from .user_event import (
+    ProductDetail,
+    PurchaseTransaction,
+    UserEvent,
 )
 from .user_event_service import (
-    WriteUserEventRequest,
     CollectUserEventRequest,
+    RejoinUserEventsMetadata,
     RejoinUserEventsRequest,
     RejoinUserEventsResponse,
-    RejoinUserEventsMetadata,
+    WriteUserEventRequest,
 )
 
 __all__ = (
-    "ProductLevelConfig",
     "Catalog",
+    "ProductLevelConfig",
     "ListCatalogsRequest",
     "ListCatalogsResponse",
     "UpdateCatalogRequest",
@@ -84,35 +84,35 @@ __all__ = (
     "Image",
     "PriceInfo",
     "UserInfo",
-    "Product",
-    "UserEvent",
-    "ProductDetail",
-    "PurchaseTransaction",
-    "GcsSource",
     "BigQuerySource",
-    "ProductInlineSource",
-    "UserEventInlineSource",
+    "GcsSource",
     "ImportErrorsConfig",
-    "ImportProductsRequest",
-    "ImportUserEventsRequest",
-    "ProductInputConfig",
-    "UserEventInputConfig",
     "ImportMetadata",
+    "ImportProductsRequest",
     "ImportProductsResponse",
+    "ImportUserEventsRequest",
     "ImportUserEventsResponse",
+    "ProductInlineSource",
+    "ProductInputConfig",
     "UserEventImportSummary",
+    "UserEventInlineSource",
+    "UserEventInputConfig",
     "PredictRequest",
     "PredictResponse",
+    "Product",
+    "CreateProductRequest",
+    "DeleteProductRequest",
+    "GetProductRequest",
+    "UpdateProductRequest",
     "PurgeMetadata",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
-    "CreateProductRequest",
-    "GetProductRequest",
-    "UpdateProductRequest",
-    "DeleteProductRequest",
-    "WriteUserEventRequest",
+    "ProductDetail",
+    "PurchaseTransaction",
+    "UserEvent",
     "CollectUserEventRequest",
+    "RejoinUserEventsMetadata",
     "RejoinUserEventsRequest",
     "RejoinUserEventsResponse",
-    "RejoinUserEventsMetadata",
+    "WriteUserEventRequest",
 )
