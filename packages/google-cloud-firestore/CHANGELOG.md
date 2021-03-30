@@ -5,6 +5,32 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.1.0](https://www.github.com/googleapis/python-firestore/compare/v2.0.2...v2.1.0) (2021-03-30)
+
+
+### Features
+
+* add firestore bundles ([#319](https://www.github.com/googleapis/python-firestore/issues/319)) ([c54de50](https://www.github.com/googleapis/python-firestore/commit/c54de50922b810cac030a71526bf62b9e4785a2f))
+* adds synthed bundle protos ([#325](https://www.github.com/googleapis/python-firestore/issues/325)) ([8fdf2a8](https://www.github.com/googleapis/python-firestore/commit/8fdf2a868c66f7ebec39b190deb5d3a8a38bbc96))
+* support using client credentials with emulator ([#269](https://www.github.com/googleapis/python-firestore/issues/269)) ([dffc580](https://www.github.com/googleapis/python-firestore/commit/dffc580472193c7d3b0eecadc316d77afaa0d0bf))
+
+
+### Bug Fixes
+
+* limit data transferred as part of list_documents as we don't require field data ([#280](https://www.github.com/googleapis/python-firestore/issues/280)) ([0386bc4](https://www.github.com/googleapis/python-firestore/commit/0386bc4824bd082410112c495963f13fb2489dfa))
+* patch emulator channel to be created accordingly ([#288](https://www.github.com/googleapis/python-firestore/issues/288)) ([1a973f3](https://www.github.com/googleapis/python-firestore/commit/1a973f37e86207925e705d3fccdc88875d5d3ad1))
+* remove client recv msg limit fix: add enums to `types/__init__.py` ([#274](https://www.github.com/googleapis/python-firestore/issues/274)) ([2b47c00](https://www.github.com/googleapis/python-firestore/commit/2b47c0072769ee47073c68ccab73733416aa0cef))
+* use correct retry deadline ([#331](https://www.github.com/googleapis/python-firestore/issues/331)) ([f9586d4](https://www.github.com/googleapis/python-firestore/commit/f9586d4d75390e0daccd1ef0902d11b4dcca6472))
+* use correct type hint for '*path' args ([#300](https://www.github.com/googleapis/python-firestore/issues/300)) ([15b579f](https://www.github.com/googleapis/python-firestore/commit/15b579f0b94aa8de3310b8bbc14916e97ac0c060))
+
+
+### Documentation
+
+* add documentation for documentsnapshot class ([#263](https://www.github.com/googleapis/python-firestore/issues/263)) ([448c965](https://www.github.com/googleapis/python-firestore/commit/448c96580da9e6db039cc3c69d2ac0b87ae9a05e))
+* clarify semantics of 'merge' argument to 'Document.set' ([#278](https://www.github.com/googleapis/python-firestore/issues/278)) ([29c6374](https://www.github.com/googleapis/python-firestore/commit/29c637490e43db59529edcd3b61ccfca383eb223)), closes [#277](https://www.github.com/googleapis/python-firestore/issues/277)
+* trailing whitespace ([#310](https://www.github.com/googleapis/python-firestore/issues/310)) ([b8192f0](https://www.github.com/googleapis/python-firestore/commit/b8192f018ef53f93a75d3623045e3fd356fba17f))
+* update intersphinx for grpc and auth ([#261](https://www.github.com/googleapis/python-firestore/issues/261)) ([1bbd3a0](https://www.github.com/googleapis/python-firestore/commit/1bbd3a0dca43714289f741e759d8aaa40e3ef600))
+
 ### [2.0.2](https://www.github.com/googleapis/python-firestore/compare/v2.0.1...v2.0.2) (2020-12-05)
 
 
