@@ -55,7 +55,7 @@ templated_files = common.py_library(
     microgenerator=True,
     cov_level=99
 )
-s.move(templated_files, excludes=[".coveragerc"])
+s.move(templated_files, excludes=[".coveragerc", "noxfile.py"])
 
 # ----------------------------------------------------------------------------
 # Samples templates
