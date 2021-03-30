@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-tasks.git",
-        "sha": "e4865024dd3acf6a8f7e64712f19f5369ee30202"
+        "sha": "c653f489f453b562c7076816981d8541ba84a029"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "eabec5a21219401bad79e1cc7d900c1658aee5fd",
-        "internalRef": "359130387"
+        "sha": "149a3a84c29c9b8189576c7442ccb6dcf6a8f95b",
+        "internalRef": "364411656"
       }
     },
     {

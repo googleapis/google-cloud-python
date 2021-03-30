@@ -95,15 +95,17 @@ def test__get_default_mtls_endpoint():
     assert CloudTasksClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-def test_cloud_tasks_client_from_service_account_info():
+@pytest.mark.parametrize("client_class", [CloudTasksClient, CloudTasksAsyncClient,])
+def test_cloud_tasks_client_from_service_account_info(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = CloudTasksClient.from_service_account_info(info)
+        client = client_class.from_service_account_info(info)
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "cloudtasks.googleapis.com:443"
 
@@ -117,9 +119,11 @@ def test_cloud_tasks_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "cloudtasks.googleapis.com:443"
 
@@ -476,6 +480,22 @@ def test_list_queues_from_dict():
     test_list_queues(request_type=dict)
 
 
+def test_list_queues_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_queues), "__call__") as call:
+        client.list_queues()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.ListQueuesRequest()
+
+
 @pytest.mark.asyncio
 async def test_list_queues_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.ListQueuesRequest
@@ -789,6 +809,22 @@ def test_get_queue_from_dict():
     test_get_queue(request_type=dict)
 
 
+def test_get_queue_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_queue), "__call__") as call:
+        client.get_queue()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.GetQueueRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_queue_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.GetQueueRequest
@@ -986,6 +1022,22 @@ def test_create_queue(
 
 def test_create_queue_from_dict():
     test_create_queue(request_type=dict)
+
+
+def test_create_queue_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_queue), "__call__") as call:
+        client.create_queue()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.CreateQueueRequest()
 
 
 @pytest.mark.asyncio
@@ -1199,6 +1251,22 @@ def test_update_queue_from_dict():
     test_update_queue(request_type=dict)
 
 
+def test_update_queue_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_queue), "__call__") as call:
+        client.update_queue()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.UpdateQueueRequest()
+
+
 @pytest.mark.asyncio
 async def test_update_queue_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.UpdateQueueRequest
@@ -1399,6 +1467,22 @@ def test_delete_queue_from_dict():
     test_delete_queue(request_type=dict)
 
 
+def test_delete_queue_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_queue), "__call__") as call:
+        client.delete_queue()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.DeleteQueueRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_queue_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.DeleteQueueRequest
@@ -1590,6 +1674,22 @@ def test_purge_queue(
 
 def test_purge_queue_from_dict():
     test_purge_queue(request_type=dict)
+
+
+def test_purge_queue_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.purge_queue), "__call__") as call:
+        client.purge_queue()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.PurgeQueueRequest()
 
 
 @pytest.mark.asyncio
@@ -1791,6 +1891,22 @@ def test_pause_queue_from_dict():
     test_pause_queue(request_type=dict)
 
 
+def test_pause_queue_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pause_queue), "__call__") as call:
+        client.pause_queue()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.PauseQueueRequest()
+
+
 @pytest.mark.asyncio
 async def test_pause_queue_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.PauseQueueRequest
@@ -1990,6 +2106,22 @@ def test_resume_queue_from_dict():
     test_resume_queue(request_type=dict)
 
 
+def test_resume_queue_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resume_queue), "__call__") as call:
+        client.resume_queue()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.ResumeQueueRequest()
+
+
 @pytest.mark.asyncio
 async def test_resume_queue_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.ResumeQueueRequest
@@ -2179,6 +2311,22 @@ def test_get_iam_policy(
 
 def test_get_iam_policy_from_dict():
     test_get_iam_policy(request_type=dict)
+
+
+def test_get_iam_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        client.get_iam_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == iam_policy.GetIamPolicyRequest()
 
 
 @pytest.mark.asyncio
@@ -2388,6 +2536,22 @@ def test_set_iam_policy_from_dict():
     test_set_iam_policy(request_type=dict)
 
 
+def test_set_iam_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        client.set_iam_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == iam_policy.SetIamPolicyRequest()
+
+
 @pytest.mark.asyncio
 async def test_set_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy.SetIamPolicyRequest
@@ -2595,6 +2759,24 @@ def test_test_iam_permissions(
 
 def test_test_iam_permissions_from_dict():
     test_test_iam_permissions(request_type=dict)
+
+
+def test_test_iam_permissions_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        client.test_iam_permissions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == iam_policy.TestIamPermissionsRequest()
 
 
 @pytest.mark.asyncio
@@ -2826,6 +3008,22 @@ def test_list_tasks(transport: str = "grpc", request_type=cloudtasks.ListTasksRe
 
 def test_list_tasks_from_dict():
     test_list_tasks(request_type=dict)
+
+
+def test_list_tasks_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
+        client.list_tasks()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.ListTasksRequest()
 
 
 @pytest.mark.asyncio
@@ -3127,6 +3325,22 @@ def test_get_task_from_dict():
     test_get_task(request_type=dict)
 
 
+def test_get_task_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_task), "__call__") as call:
+        client.get_task()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.GetTaskRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_task_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.GetTaskRequest
@@ -3322,6 +3536,22 @@ def test_create_task(
 
 def test_create_task_from_dict():
     test_create_task(request_type=dict)
+
+
+def test_create_task_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_task), "__call__") as call:
+        client.create_task()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.CreateTaskRequest()
 
 
 @pytest.mark.asyncio
@@ -3522,6 +3752,22 @@ def test_delete_task_from_dict():
     test_delete_task(request_type=dict)
 
 
+def test_delete_task_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_task), "__call__") as call:
+        client.delete_task()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.DeleteTaskRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_task_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.DeleteTaskRequest
@@ -3701,6 +3947,22 @@ def test_lease_tasks(
 
 def test_lease_tasks_from_dict():
     test_lease_tasks(request_type=dict)
+
+
+def test_lease_tasks_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lease_tasks), "__call__") as call:
+        client.lease_tasks()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.LeaseTasksRequest()
 
 
 @pytest.mark.asyncio
@@ -3903,6 +4165,22 @@ def test_acknowledge_task(
 
 def test_acknowledge_task_from_dict():
     test_acknowledge_task(request_type=dict)
+
+
+def test_acknowledge_task_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.acknowledge_task), "__call__") as call:
+        client.acknowledge_task()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.AcknowledgeTaskRequest()
 
 
 @pytest.mark.asyncio
@@ -4110,6 +4388,22 @@ def test_renew_lease(
 
 def test_renew_lease_from_dict():
     test_renew_lease(request_type=dict)
+
+
+def test_renew_lease_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.renew_lease), "__call__") as call:
+        client.renew_lease()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.RenewLeaseRequest()
 
 
 @pytest.mark.asyncio
@@ -4339,6 +4633,22 @@ def test_cancel_lease_from_dict():
     test_cancel_lease(request_type=dict)
 
 
+def test_cancel_lease_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_lease), "__call__") as call:
+        client.cancel_lease()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.CancelLeaseRequest()
+
+
 @pytest.mark.asyncio
 async def test_cancel_lease_async(
     transport: str = "grpc_asyncio", request_type=cloudtasks.CancelLeaseRequest
@@ -4548,6 +4858,22 @@ def test_run_task(transport: str = "grpc", request_type=cloudtasks.RunTaskReques
 
 def test_run_task_from_dict():
     test_run_task(request_type=dict)
+
+
+def test_run_task_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudTasksClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_task), "__call__") as call:
+        client.run_task()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == cloudtasks.RunTaskRequest()
 
 
 @pytest.mark.asyncio
