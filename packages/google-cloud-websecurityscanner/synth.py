@@ -23,7 +23,7 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 # Generate websecurityscanner GAPIC layer
 # ----------------------------------------------------------------------------
-versions = ["v1alpha", "v1beta"]
+versions = ["v1alpha", "v1beta", "v1"]
 
 for version in versions:
     library = gapic.py_library(
