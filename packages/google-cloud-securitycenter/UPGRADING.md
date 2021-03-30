@@ -17,10 +17,10 @@ The 1.0.0 release requires Python 3.6+.
 
 Methods expect request objects. We provide a script that will convert most common use cases.
 
-* Install the library
+* Install the library with `libcst`.
 
 ```py
-python3 -m pip install google-cloud-securitycenter
+python3 -m pip install google-cloud-securitycenter[libcst]
 ```
 
 * The script `fixup_securitycenter_v1_keywords.py` is shipped with the library. It expects
@@ -50,7 +50,7 @@ client = securitycenter.securitycenterClient()
 
 assets = client.list_assets(
    request={
-    "org_name": org_name, 
+    "org_name": org_name,
     "filter_:": project_filter,
     "read_time": timestamp_proto
     }

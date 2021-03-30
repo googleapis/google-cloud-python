@@ -46,7 +46,7 @@ class NotificationConfig(proto.Message):
             Output only. The service account that needs
             "pubsub.topics.publish" permission to publish to
             the Pub/Sub topic.
-        streaming_config (~.notification_config.NotificationConfig.StreamingConfig):
+        streaming_config (google.cloud.securitycenter_v1.types.NotificationConfig.StreamingConfig):
             The config for triggering streaming-based
             notifications.
     """

@@ -55,7 +55,7 @@ class Finding(proto.Message):
             When the finding is for a non-Google Cloud resource, the
             resourceName can be a customer or partner defined string.
             This field is immutable after creation time.
-        state (~.finding.Finding.State):
+        state (google.cloud.securitycenter_v1.types.Finding.State):
             The state of the finding.
         category (str):
             The additional taxonomy group within findings from a given
@@ -67,18 +67,18 @@ class Finding(proto.Message):
             additional information about the finding can be
             found. This field is guaranteed to be either
             empty or a well formed URL.
-        source_properties (Sequence[~.finding.Finding.SourcePropertiesEntry]):
+        source_properties (Sequence[google.cloud.securitycenter_v1.types.Finding.SourcePropertiesEntry]):
             Source specific properties. These properties are managed by
             the source that writes the finding. The key names in the
             source_properties map must be between 1 and 255 characters,
             and must start with a letter and contain alphanumeric
             characters or underscores only.
-        security_marks (~.gcs_security_marks.SecurityMarks):
+        security_marks (google.cloud.securitycenter_v1.types.SecurityMarks):
             Output only. User specified security marks.
             These marks are entirely managed by the user and
             come from the SecurityMarks resource that
             belongs to the finding.
-        event_time (~.timestamp.Timestamp):
+        event_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the event took place, or
             when an update to the finding occurred. For
             example, if the finding represents an open
@@ -87,10 +87,10 @@ class Finding(proto.Message):
             is determined by the detector. If the finding
             were to be resolved afterward, this time would
             reflect when the finding was resolved.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the finding was created in
             Security Command Center.
-        severity (~.finding.Finding.Severity):
+        severity (google.cloud.securitycenter_v1.types.Finding.Severity):
             The severity of the finding. This field is
             managed by the source that writes the finding.
     """

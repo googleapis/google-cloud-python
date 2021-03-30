@@ -75,7 +75,7 @@ class CreateFindingRequest(proto.Message):
             alphanumeric and less than or equal to 32
             characters and greater than 0 characters in
             length.
-        finding (~.gcs_finding.Finding):
+        finding (google.cloud.securitycenter_v1beta1.types.Finding):
             Required. The Finding being created. The name and
             security_marks will be ignored as they are both output only
             fields on this resource.
@@ -95,7 +95,7 @@ class CreateSourceRequest(proto.Message):
         parent (str):
             Required. Resource name of the new source's parent. Its
             format should be "organizations/[organization_id]".
-        source (~.gcs_source.Source):
+        source (google.cloud.securitycenter_v1beta1.types.Source):
             Required. The Source being created, only the display_name
             and description will be used. All other fields will be
             ignored.
@@ -186,7 +186,7 @@ class GroupAssetsRequest(proto.Message):
             set:
 
             -  security_center_properties.resource_type
-        compare_duration (~.duration.Duration):
+        compare_duration (google.protobuf.duration_pb2.Duration):
             When compare_duration is set, the Asset's "state" property
             is updated to indicate whether the asset was added, removed,
             or remained present during the compare_duration period of
@@ -212,7 +212,7 @@ class GroupAssetsRequest(proto.Message):
 
             This field is ignored if ``state`` is not a field in
             ``group_by``.
-        read_time (~.timestamp.Timestamp):
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time used as a reference point when filtering
             assets. The filter is limited to assets existing
             at the supplied time and their values are those
@@ -248,13 +248,13 @@ class GroupAssetsResponse(proto.Message):
     r"""Response message for grouping by assets.
 
     Attributes:
-        group_by_results (Sequence[~.securitycenter_service.GroupResult]):
+        group_by_results (Sequence[google.cloud.securitycenter_v1beta1.types.GroupResult]):
             Group results. There exists an element for
             each existing unique combination of
             property/values. The element contains a count
             for the number of times those specific
             property/values appear.
-        read_time (~.timestamp.Timestamp):
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time used for executing the groupBy request.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -324,7 +324,7 @@ class GroupFindingsRequest(proto.Message):
             -  category
             -  state
             -  parent
-        read_time (~.timestamp.Timestamp):
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time used as a reference point when filtering
             findings. The filter is limited to findings
             existing at the supplied time and their values
@@ -358,13 +358,13 @@ class GroupFindingsResponse(proto.Message):
     r"""Response message for group by findings.
 
     Attributes:
-        group_by_results (Sequence[~.securitycenter_service.GroupResult]):
+        group_by_results (Sequence[google.cloud.securitycenter_v1beta1.types.GroupResult]):
             Group results. There exists an element for
             each existing unique combination of
             property/values. The element contains a count
             for the number of times those specific
             property/values appear.
-        read_time (~.timestamp.Timestamp):
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time used for executing the groupBy request.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -389,7 +389,7 @@ class GroupResult(proto.Message):
     request.
 
     Attributes:
-        properties (Sequence[~.securitycenter_service.GroupResult.PropertiesEntry]):
+        properties (Sequence[google.cloud.securitycenter_v1beta1.types.GroupResult.PropertiesEntry]):
             Properties matching the groupBy fields in the
             request.
         count (int):
@@ -433,7 +433,7 @@ class ListSourcesResponse(proto.Message):
     r"""Response message for listing sources.
 
     Attributes:
-        sources (Sequence[~.gcs_source.Source]):
+        sources (Sequence[google.cloud.securitycenter_v1beta1.types.Source]):
             Sources belonging to the requested parent.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -498,13 +498,13 @@ class ListAssetsRequest(proto.Message):
             Redundant space characters in the syntax are insignificant.
             "name desc,resource_properties.a_property" and " name desc ,
             resource_properties.a_property " are equivalent.
-        read_time (~.timestamp.Timestamp):
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time used as a reference point when filtering
             assets. The filter is limited to assets existing
             at the supplied time and their values are those
             at that specific time. Absence of this field
             will default to the API's version of NOW.
-        compare_duration (~.duration.Duration):
+        compare_duration (google.protobuf.duration_pb2.Duration):
             When compare_duration is set, the ListAssetResult's "state"
             attribute is updated to indicate whether the asset was
             added, removed, or remained present during the
@@ -531,7 +531,7 @@ class ListAssetsRequest(proto.Message):
             If compare_duration is not specified, then the only possible
             state is "UNUSED", which indicates that the asset is present
             at read_time.
-        field_mask (~.gp_field_mask.FieldMask):
+        field_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. A field mask to specify the
             ListAssetsResult fields to be listed in the
             response. An empty field mask will list all
@@ -568,9 +568,9 @@ class ListAssetsResponse(proto.Message):
     r"""Response message for listing assets.
 
     Attributes:
-        list_assets_results (Sequence[~.securitycenter_service.ListAssetsResponse.ListAssetsResult]):
+        list_assets_results (Sequence[google.cloud.securitycenter_v1beta1.types.ListAssetsResponse.ListAssetsResult]):
             Assets matching the list request.
-        read_time (~.timestamp.Timestamp):
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time used for executing the list request.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -584,9 +584,9 @@ class ListAssetsResponse(proto.Message):
         r"""Result containing the Asset and its State.
 
         Attributes:
-            asset (~.gcs_asset.Asset):
+            asset (google.cloud.securitycenter_v1beta1.types.Asset):
                 Asset matching the search request.
-            state (~.securitycenter_service.ListAssetsResponse.ListAssetsResult.State):
+            state (google.cloud.securitycenter_v1beta1.types.ListAssetsResponse.ListAssetsResult.State):
                 State of the asset.
         """
 
@@ -674,13 +674,13 @@ class ListFindingsRequest(proto.Message):
             space characters in the syntax are insignificant. "name
             desc,source_properties.a_property" and " name desc ,
             source_properties.a_property " are equivalent.
-        read_time (~.timestamp.Timestamp):
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time used as a reference point when filtering
             findings. The filter is limited to findings
             existing at the supplied time and their values
             are those at that specific time. Absence of this
             field will default to the API's version of NOW.
-        field_mask (~.gp_field_mask.FieldMask):
+        field_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. A field mask to specify the Finding
             fields to be listed in the response. An empty
             field mask will list all fields.
@@ -714,9 +714,9 @@ class ListFindingsResponse(proto.Message):
     r"""Response message for listing findings.
 
     Attributes:
-        findings (Sequence[~.gcs_finding.Finding]):
+        findings (Sequence[google.cloud.securitycenter_v1beta1.types.Finding]):
             Findings matching the list request.
-        read_time (~.timestamp.Timestamp):
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time used for executing the list request.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -750,9 +750,9 @@ class SetFindingStateRequest(proto.Message):
             https://cloud.google.com/apis/design/resource_names#relative_resource_name
             Example:
             "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}".
-        state (~.gcs_finding.Finding.State):
+        state (google.cloud.securitycenter_v1beta1.types.Finding.State):
             Required. The desired State of the finding.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. The time at which the updated state
             takes effect.
     """
@@ -781,7 +781,7 @@ class UpdateFindingRequest(proto.Message):
     r"""Request message for updating or creating a finding.
 
     Attributes:
-        finding (~.gcs_finding.Finding):
+        finding (google.cloud.securitycenter_v1beta1.types.Finding):
             Required. The finding resource to update or create if it
             does not already exist. parent, security_marks, and
             update_time will be ignored.
@@ -789,7 +789,7 @@ class UpdateFindingRequest(proto.Message):
             In the case of creation, the finding id portion of the name
             must alphanumeric and less than or equal to 32 characters
             and greater than 0 characters in length.
-        update_mask (~.gp_field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The FieldMask to use when updating the
             finding resource. This field should not be
             specified when creating a finding.
@@ -804,10 +804,10 @@ class UpdateOrganizationSettingsRequest(proto.Message):
     r"""Request message for updating an organization's settings.
 
     Attributes:
-        organization_settings (~.gcs_organization_settings.OrganizationSettings):
+        organization_settings (google.cloud.securitycenter_v1beta1.types.OrganizationSettings):
             Required. The organization settings resource
             to update.
-        update_mask (~.gp_field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The FieldMask to use when updating the
             settings resource.
     """
@@ -823,9 +823,9 @@ class UpdateSourceRequest(proto.Message):
     r"""Request message for updating a source.
 
     Attributes:
-        source (~.gcs_source.Source):
+        source (google.cloud.securitycenter_v1beta1.types.Source):
             Required. The source resource to update.
-        update_mask (~.gp_field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The FieldMask to use when updating the source
             resource.
     """
@@ -839,13 +839,13 @@ class UpdateSecurityMarksRequest(proto.Message):
     r"""Request message for updating a SecurityMarks resource.
 
     Attributes:
-        security_marks (~.gcs_security_marks.SecurityMarks):
+        security_marks (google.cloud.securitycenter_v1beta1.types.SecurityMarks):
             Required. The security marks resource to
             update.
-        update_mask (~.gp_field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The FieldMask to use when updating the
             security marks resource.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the updated SecurityMarks
             take effect.
     """

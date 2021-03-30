@@ -46,26 +46,26 @@ class Asset(proto.Message):
             https://cloud.google.com/apis/design/resource_names#relative_resource_name
             Example:
             "organizations/{organization_id}/assets/{asset_id}".
-        security_center_properties (~.asset.Asset.SecurityCenterProperties):
+        security_center_properties (google.cloud.securitycenter_v1p1beta1.types.Asset.SecurityCenterProperties):
             Security Command Center managed properties.
             These properties are managed by Security Command
             Center and cannot be modified by the user.
-        resource_properties (Sequence[~.asset.Asset.ResourcePropertiesEntry]):
+        resource_properties (Sequence[google.cloud.securitycenter_v1p1beta1.types.Asset.ResourcePropertiesEntry]):
             Resource managed properties. These properties
             are managed and defined by the Google Cloud
             resource and cannot be modified by the user.
-        security_marks (~.gcs_security_marks.SecurityMarks):
+        security_marks (google.cloud.securitycenter_v1p1beta1.types.SecurityMarks):
             User specified security marks. These marks
             are entirely managed by the user and come from
             the SecurityMarks resource that belongs to the
             asset.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the asset was created in
             Security Command Center.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the asset was last updated,
             added, or deleted in Cloud SCC.
-        iam_policy (~.asset.Asset.IamPolicy):
+        iam_policy (google.cloud.securitycenter_v1p1beta1.types.Asset.IamPolicy):
             Cloud IAM Policy information associated with
             the Google Cloud resource described by the
             Security Command Center asset. This information

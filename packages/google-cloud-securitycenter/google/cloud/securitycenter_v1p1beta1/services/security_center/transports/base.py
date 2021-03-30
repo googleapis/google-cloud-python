@@ -23,7 +23,6 @@ from google import auth  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.api_core import retry as retries  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials  # type: ignore
 
@@ -90,16 +89,19 @@ class SecurityCenterTransport(abc.ABC):
             scope (Optional[Sequence[str]]): A list of scopes.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
             host += ":443"
         self._host = host
+
+        # Save the scopes.
+        self._scopes = scopes or self.AUTH_SCOPES
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
@@ -110,19 +112,16 @@ class SecurityCenterTransport(abc.ABC):
 
         if credentials_file is not None:
             credentials, _ = auth.load_credentials_from_file(
-                credentials_file, scopes=scopes, quota_project_id=quota_project_id
+                credentials_file, scopes=self._scopes, quota_project_id=quota_project_id
             )
 
         elif credentials is None:
             credentials, _ = auth.default(
-                scopes=scopes, quota_project_id=quota_project_id
+                scopes=self._scopes, quota_project_id=quota_project_id
             )
 
         # Save the credentials.
         self._credentials = credentials
-
-        # Lifted into its own function so it can be stubbed out during tests.
-        self._prep_wrapped_messages(client_info)
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
@@ -152,6 +151,7 @@ class SecurityCenterTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=60.0,
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
@@ -165,6 +165,7 @@ class SecurityCenterTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=60.0,
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
@@ -178,6 +179,7 @@ class SecurityCenterTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=60.0,
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
@@ -191,6 +193,7 @@ class SecurityCenterTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=60.0,
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
@@ -204,6 +207,7 @@ class SecurityCenterTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=480.0,
                 ),
                 default_timeout=480.0,
                 client_info=client_info,
@@ -217,6 +221,7 @@ class SecurityCenterTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=480.0,
                 ),
                 default_timeout=480.0,
                 client_info=client_info,
@@ -230,6 +235,7 @@ class SecurityCenterTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=480.0,
                 ),
                 default_timeout=480.0,
                 client_info=client_info,
@@ -243,6 +249,7 @@ class SecurityCenterTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=480.0,
                 ),
                 default_timeout=480.0,
                 client_info=client_info,
@@ -256,6 +263,7 @@ class SecurityCenterTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=60.0,
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
@@ -269,6 +277,7 @@ class SecurityCenterTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=60.0,
                 ),
                 default_timeout=60.0,
                 client_info=client_info,
@@ -291,6 +300,7 @@ class SecurityCenterTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=60.0,
                 ),
                 default_timeout=60.0,
                 client_info=client_info,

@@ -38,7 +38,7 @@ class OrganizationSettings(proto.Message):
             If the flag is set to ``true``, then discovery of assets
             will occur. If it is set to \`false, all historical assets
             will remain, but discovery of future assets will not occur.
-        asset_discovery_config (~.organization_settings.OrganizationSettings.AssetDiscoveryConfig):
+        asset_discovery_config (google.cloud.securitycenter_v1p1beta1.types.OrganizationSettings.AssetDiscoveryConfig):
             The configuration used for Asset Discovery
             runs.
     """
@@ -50,7 +50,7 @@ class OrganizationSettings(proto.Message):
             project_ids (Sequence[str]):
                 The project ids to use for filtering asset
                 discovery.
-            inclusion_mode (~.organization_settings.OrganizationSettings.AssetDiscoveryConfig.InclusionMode):
+            inclusion_mode (google.cloud.securitycenter_v1p1beta1.types.OrganizationSettings.AssetDiscoveryConfig.InclusionMode):
                 The mode to use for filtering asset
                 discovery.
         """

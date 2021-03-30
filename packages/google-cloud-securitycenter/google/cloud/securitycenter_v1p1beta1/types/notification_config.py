@@ -38,7 +38,7 @@ class NotificationConfig(proto.Message):
         description (str):
             The description of the notification config
             (max of 1024 characters).
-        event_type (~.notification_config.NotificationConfig.EventType):
+        event_type (google.cloud.securitycenter_v1p1beta1.types.NotificationConfig.EventType):
             The type of events the config is for, e.g.
             FINDING.
         pubsub_topic (str):
@@ -48,7 +48,7 @@ class NotificationConfig(proto.Message):
             Output only. The service account that needs
             "pubsub.topics.publish" permission to publish to
             the Pub/Sub topic.
-        streaming_config (~.notification_config.NotificationConfig.StreamingConfig):
+        streaming_config (google.cloud.securitycenter_v1p1beta1.types.NotificationConfig.StreamingConfig):
             The config for triggering streaming-based
             notifications.
     """

@@ -34,10 +34,10 @@ class NotificationMessage(proto.Message):
         notification_config_name (str):
             Name of the notification config that
             generated current notification.
-        finding (~.gcs_finding.Finding):
+        finding (google.cloud.securitycenter_v1.types.Finding):
             If it's a Finding based notification config,
             this field will be populated.
-        resource (~.gcs_resource.Resource):
+        resource (google.cloud.securitycenter_v1.types.Resource):
             The Cloud resource tied to this
             notification's Finding.
     """
