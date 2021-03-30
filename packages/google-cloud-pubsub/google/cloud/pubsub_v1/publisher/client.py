@@ -269,8 +269,6 @@ class Client(object):
             ordering_key: A string that identifies related messages for which
                 publish order should be respected. Message ordering must be
                 enabled for this client to use this feature.
-                EXPERIMENTAL: This feature is currently available in a closed
-                alpha. Please contact the Cloud Pub/Sub team to use it.
             retry (Optional[google.api_core.retry.Retry]): Designation of what
                 errors, if any, should be retried. If `ordering_key` is specified,
                 the total retry deadline will be changed to "infinity".
