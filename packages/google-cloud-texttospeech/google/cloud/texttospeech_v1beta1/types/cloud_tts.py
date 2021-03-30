@@ -56,6 +56,7 @@ class AudioEncoding(proto.Enum):
     MP3_64_KBPS = 4
     OGG_OPUS = 3
     MULAW = 5
+    ALAW = 6
 
 
 class ListVoicesRequest(proto.Message):
@@ -66,13 +67,14 @@ class ListVoicesRequest(proto.Message):
         language_code (str):
             Optional. Recommended.
             `BCP-47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__
-            language tag. If specified, the ListVoices call will only
-            return voices that can be used to synthesize this
+            language tag. If not specified, the API will return all
+            supported voices. If specified, the ListVoices call will
+            only return voices that can be used to synthesize this
             language_code. E.g. when specifying "en-NZ", you will get
-            supported "en-\*" voices; when specifying "no", you will get
+            supported "en-NZ" voices; when specifying "no", you will get
             supported "no-\*" (Norwegian) and "nb-\*" (Norwegian Bokmal)
             voices; specifying "zh" will also get supported "cmn-\*"
-            voices; specifying "zh-hk" will also get supported "yue-\*"
+            voices; specifying "zh-hk" will also get supported "yue-hk"
             voices.
     """
 
@@ -132,8 +134,8 @@ class SynthesizeSpeechRequest(proto.Message):
             Required. The configuration of the
             synthesized audio.
         enable_time_pointing (Sequence[google.cloud.texttospeech_v1beta1.types.SynthesizeSpeechRequest.TimepointType]):
-            Whether and what timepoints should be
-            returned in the response.
+            Whether and what timepoints are returned in
+            the response.
     """
 
     class TimepointType(proto.Enum):
