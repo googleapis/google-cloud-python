@@ -3,8 +3,8 @@ Changelog
 
 .. _changelog-0.15.0:
 
-0.15.0 / TBD
-------------
+0.15.0 / 2021-03-30
+-------------------
 
 Features
 ~~~~~~~~
@@ -12,11 +12,14 @@ Features
 - Load DataFrame with ``to_gbq`` to a table in a project different from the API
   client project. Specify the target table ID as ``project.dataset.table`` to
   use this feature. (:issue:`321`, :issue:`347`)
+- Allow billing project to be separate from destination table project in
+  ``to_gbq``. (:issue:`321`)
 
 Bug fixes
 ~~~~~~~~~
 
 - Avoid 403 error from ``to_gbq`` when table has ``policyTags``. (:issue:`354`)
+- Avoid ``client.dataset`` deprecation warnings. (:issue:`312`)
 
 Dependencies
 ~~~~~~~~~~~~
