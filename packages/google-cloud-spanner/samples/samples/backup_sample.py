@@ -55,6 +55,42 @@ def create_backup(instance_id, database_id, backup_id, version_time):
 
 # [END spanner_create_backup]
 
+# [START spanner_create_backup_with_encryption_key]
+def create_backup_with_encryption_key(instance_id, database_id, backup_id, kms_key_name):
+    """Creates a backup for a database using a Customer Managed Encryption Key (CMEK)."""
+    from google.cloud.spanner_admin_database_v1 import CreateBackupEncryptionConfig
+
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    # Create a backup
+    expire_time = datetime.utcnow() + timedelta(days=14)
+    encryption_config = {
+        'encryption_type': CreateBackupEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
+        'kms_key_name': kms_key_name,
+    }
+    backup = instance.backup(backup_id, database=database, expire_time=expire_time, encryption_config=encryption_config)
+    operation = backup.create()
+
+    # Wait for backup operation to complete.
+    operation.result(1200)
+
+    # Verify that the backup is ready.
+    backup.reload()
+    assert backup.is_ready() is True
+
+    # Get the name, create time, backup size and encryption key.
+    backup.reload()
+    print(
+        "Backup {} of size {} bytes was created at {} using encryption key {}".format(
+            backup.name, backup.size_bytes, backup.create_time, kms_key_name
+        )
+    )
+
+
+# [END spanner_create_backup_with_encryption_key]
+
 
 # [START spanner_restore_backup]
 def restore_database(instance_id, new_database_id, backup_id):
@@ -85,6 +121,42 @@ def restore_database(instance_id, new_database_id, backup_id):
 
 
 # [END spanner_restore_backup]
+
+
+# [START spanner_restore_backup_with_encryption_key]
+def restore_database_with_encryption_key(instance_id, new_database_id, backup_id, kms_key_name):
+    """Restores a database from a backup using a Customer Managed Encryption Key (CMEK)."""
+    from google.cloud.spanner_admin_database_v1 import RestoreDatabaseEncryptionConfig
+
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+
+    # Start restoring an existing backup to a new database.
+    backup = instance.backup(backup_id)
+    encryption_config = {
+        'encryption_type': RestoreDatabaseEncryptionConfig.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
+        'kms_key_name': kms_key_name,
+    }
+    new_database = instance.database(new_database_id, encryption_config=encryption_config)
+    operation = new_database.restore(backup)
+
+    # Wait for restore operation to complete.
+    operation.result(1600)
+
+    # Newly created database has restore information.
+    new_database.reload()
+    restore_info = new_database.restore_info
+    print(
+        "Database {} restored to {} from backup {} with using encryption key {}.".format(
+            restore_info.backup_info.source_database,
+            new_database_id,
+            restore_info.backup_info.backup,
+            new_database.encryption_config.kms_key_name,
+        )
+    )
+
+
+# [END spanner_restore_backup_with_encryption_key]
 
 
 # [START spanner_cancel_backup_create]

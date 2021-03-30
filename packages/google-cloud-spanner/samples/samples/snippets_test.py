@@ -33,6 +33,7 @@ def unique_database_id():
 
 INSTANCE_ID = unique_instance_id()
 DATABASE_ID = unique_database_id()
+CMEK_DATABASE_ID = unique_database_id()
 
 
 @pytest.fixture(scope="module")
@@ -61,6 +62,16 @@ def test_create_instance(spanner_instance):
 def test_create_database(database):
     # Reload will only succeed if the database exists.
     database.reload()
+
+
+def test_create_database_with_encryption_config(capsys, spanner_instance):
+    kms_key_name = "projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}".format(
+        spanner_instance._client.project, "us-central1", "spanner-test-keyring", "spanner-test-cmek"
+    )
+    snippets.create_database_with_encryption_key(INSTANCE_ID, CMEK_DATABASE_ID, kms_key_name)
+    out, _ = capsys.readouterr()
+    assert CMEK_DATABASE_ID in out
+    assert kms_key_name in out
 
 
 def test_insert_data(capsys):

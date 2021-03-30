@@ -38,9 +38,11 @@ def unique_backup_id():
 
 INSTANCE_ID = unique_instance_id()
 DATABASE_ID = unique_database_id()
-RETENTION_DATABASE_ID = unique_database_id()
 RESTORE_DB_ID = unique_database_id()
 BACKUP_ID = unique_backup_id()
+CMEK_RESTORE_DB_ID = unique_database_id()
+CMEK_BACKUP_ID = unique_backup_id()
+RETENTION_DATABASE_ID = unique_database_id()
 RETENTION_PERIOD = "7d"
 
 
@@ -54,6 +56,12 @@ def spanner_instance():
     op = instance.create()
     op.result(120)  # block until completion
     yield instance
+    for database_pb in instance.list_databases():
+        database = instance.database(database_pb.name.split("/")[-1])
+        database.drop()
+    for backup_pb in instance.list_backups():
+        backup = instance.backup(backup_pb.name.split("/")[-1])
+        backup.delete()
     instance.delete()
 
 
@@ -77,6 +85,16 @@ def test_create_backup(capsys, database):
     assert BACKUP_ID in out
 
 
+def test_create_backup_with_encryption_key(capsys, spanner_instance, database):
+    kms_key_name = "projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}".format(
+        spanner_instance._client.project, "us-central1", "spanner-test-keyring", "spanner-test-cmek"
+    )
+    backup_sample.create_backup_with_encryption_key(INSTANCE_ID, DATABASE_ID, CMEK_BACKUP_ID, kms_key_name)
+    out, _ = capsys.readouterr()
+    assert CMEK_BACKUP_ID in out
+    assert kms_key_name in out
+
+
 # Depends on test_create_backup having run first
 @RetryErrors(exception=DeadlineExceeded, max_tries=2)
 def test_restore_database(capsys):
@@ -85,6 +103,20 @@ def test_restore_database(capsys):
     assert (DATABASE_ID + " restored to ") in out
     assert (RESTORE_DB_ID + " from backup ") in out
     assert BACKUP_ID in out
+
+
+# Depends on test_create_backup having run first
+@RetryErrors(exception=DeadlineExceeded, max_tries=2)
+def test_restore_database_with_encryption_key(capsys, spanner_instance):
+    kms_key_name = "projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}".format(
+        spanner_instance._client.project, "us-central1", "spanner-test-keyring", "spanner-test-cmek"
+    )
+    backup_sample.restore_database_with_encryption_key(INSTANCE_ID, CMEK_RESTORE_DB_ID, CMEK_BACKUP_ID, kms_key_name)
+    out, _ = capsys.readouterr()
+    assert (DATABASE_ID + " restored to ") in out
+    assert (CMEK_RESTORE_DB_ID + " from backup ") in out
+    assert CMEK_BACKUP_ID in out
+    assert kms_key_name in out
 
 
 # Depends on test_create_backup having run first

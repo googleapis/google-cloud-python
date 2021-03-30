@@ -92,6 +92,43 @@ def create_database(instance_id, database_id):
 # [END spanner_create_database]
 
 
+# [START spanner_create_database_with_encryption_key]
+def create_database_with_encryption_key(instance_id, database_id, kms_key_name):
+    """Creates a database with tables using a Customer Managed Encryption Key (CMEK)."""
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+
+    database = instance.database(
+        database_id,
+        ddl_statements=[
+            """CREATE TABLE Singers (
+            SingerId     INT64 NOT NULL,
+            FirstName    STRING(1024),
+            LastName     STRING(1024),
+            SingerInfo   BYTES(MAX)
+        ) PRIMARY KEY (SingerId)""",
+            """CREATE TABLE Albums (
+            SingerId     INT64 NOT NULL,
+            AlbumId      INT64 NOT NULL,
+            AlbumTitle   STRING(MAX)
+        ) PRIMARY KEY (SingerId, AlbumId),
+        INTERLEAVE IN PARENT Singers ON DELETE CASCADE""",
+        ],
+        encryption_config={'kms_key_name': kms_key_name},
+    )
+
+    operation = database.create()
+
+    print("Waiting for operation to complete...")
+    operation.result(120)
+
+    print("Database {} created with encryption key {}".format(
+        database.name, database.encryption_config.kms_key_name))
+
+
+# [END spanner_create_database_with_encryption_key]
+
+
 # [START spanner_insert_data]
 def insert_data(instance_id, database_id):
     """Inserts sample data into the given database.
