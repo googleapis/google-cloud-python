@@ -9,5 +9,5 @@ google-api-core==1.22.2
 proto-plus==1.4.0
 libcst==0.2.5
 fastavro==0.21.2
-pandas==0.17.1
+pandas==0.21.1
 pyarrow==0.15.0

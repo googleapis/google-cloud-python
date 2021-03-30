@@ -427,7 +427,9 @@ def test_to_dataframe_empty_w_scalars_avro(class_under_test):
     expected["int_col"] = expected["int_col"].astype("int64")
     expected["float_col"] = expected["float_col"].astype("float64")
     expected["bool_col"] = expected["bool_col"].astype("bool")
-    expected["ts_col"] = expected["ts_col"].astype("datetime64[ns, UTC]")
+    expected["ts_col"] = (
+        expected["ts_col"].astype("datetime64[ns]").dt.tz_localize("UTC")
+    )
 
     pandas.testing.assert_frame_equal(
         got.reset_index(drop=True),  # reset_index to ignore row labels
