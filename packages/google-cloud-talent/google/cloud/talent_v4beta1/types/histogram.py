@@ -50,7 +50,7 @@ class HistogramQueryResult(proto.Message):
     Attributes:
         histogram_query (str):
             Requested histogram expression.
-        histogram (Sequence[~.gct_histogram.HistogramQueryResult.HistogramEntry]):
+        histogram (Sequence[google.cloud.talent_v4beta1.types.HistogramQueryResult.HistogramEntry]):
             A map from the values of the facet associated with distinct
             values to the number of matching entries with corresponding
             value.

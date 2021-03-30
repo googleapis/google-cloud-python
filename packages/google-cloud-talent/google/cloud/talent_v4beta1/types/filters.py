@@ -90,7 +90,7 @@ class JobQuery(proto.Message):
             example, "projects/foo/companies/bar".
 
             At most 20 company filters are allowed.
-        location_filters (Sequence[~.filters.LocationFilter]):
+        location_filters (Sequence[google.cloud.talent_v4beta1.types.LocationFilter]):
             The location filter specifies geo-regions containing the
             jobs to search against. See
             [LocationFilter][google.cloud.talent.v4beta1.LocationFilter]
@@ -108,7 +108,7 @@ class JobQuery(proto.Message):
             locations.
 
             At most 5 location filters are allowed.
-        job_categories (Sequence[~.common.JobCategory]):
+        job_categories (Sequence[google.cloud.talent_v4beta1.types.JobCategory]):
             The category filter specifies the categories of jobs to
             search against. See
             [JobCategory][google.cloud.talent.v4beta1.JobCategory] for
@@ -119,7 +119,7 @@ class JobQuery(proto.Message):
 
             If multiple values are specified, jobs from any of the
             specified categories are searched against.
-        commute_filter (~.filters.CommuteFilter):
+        commute_filter (google.cloud.talent_v4beta1.types.CommuteFilter):
             Allows filtering jobs by commute time with different travel
             methods (for example, driving or public transit).
 
@@ -143,7 +143,7 @@ class JobQuery(proto.Message):
             companies.
 
             At most 20 company display name filters are allowed.
-        compensation_filter (~.filters.CompensationFilter):
+        compensation_filter (google.cloud.talent_v4beta1.types.CompensationFilter):
             This search filter is applied only to
             [Job.compensation_info][google.cloud.talent.v4beta1.Job.compensation_info].
             For example, if the filter is specified as "Hourly job with
@@ -182,7 +182,7 @@ class JobQuery(proto.Message):
             misspelled query, for example, "enginee" is
             corrected to "engineer".
             Defaults to false: a spell check is performed.
-        employment_types (Sequence[~.common.EmploymentType]):
+        employment_types (Sequence[google.cloud.talent_v4beta1.types.EmploymentType]):
             The employment type filter specifies the employment type of
             jobs to search against, such as
             [EmploymentType.FULL_TIME][google.cloud.talent.v4beta1.EmploymentType.FULL_TIME].
@@ -205,7 +205,7 @@ class JobQuery(proto.Message):
             Languages <https://tools.ietf.org/html/bcp47>`__.
 
             At most 10 language code filters are allowed.
-        publish_time_range (~.common.TimestampRange):
+        publish_time_range (google.cloud.talent_v4beta1.types.TimestampRange):
             Jobs published within a range specified by
             this filter are searched against.
         excluded_jobs (Sequence[str]):
@@ -259,7 +259,7 @@ class ProfileQuery(proto.Message):
             Keywords to match any text fields of
             profiles.
             For example, "software engineer in Palo Alto".
-        location_filters (Sequence[~.filters.LocationFilter]):
+        location_filters (Sequence[google.cloud.talent_v4beta1.types.LocationFilter]):
             The location filter specifies geo-regions containing the
             profiles to search against.
 
@@ -379,7 +379,7 @@ class ProfileQuery(proto.Message):
             If
             [LocationFilter.distance_in_miles][google.cloud.talent.v4beta1.LocationFilter.distance_in_miles]
             is negative, an error is thrown.
-        job_title_filters (Sequence[~.filters.JobTitleFilter]):
+        job_title_filters (Sequence[google.cloud.talent_v4beta1.types.JobTitleFilter]):
             Job title filter specifies job titles of profiles to match
             on.
 
@@ -396,7 +396,7 @@ class ProfileQuery(proto.Message):
 
             For example, search for profiles with a job title "Product
             Manager".
-        employer_filters (Sequence[~.filters.EmployerFilter]):
+        employer_filters (Sequence[google.cloud.talent_v4beta1.types.EmployerFilter]):
             Employer filter specifies employers of profiles to match on.
 
             If an employer filter isn't specified, profiles with any
@@ -412,7 +412,7 @@ class ProfileQuery(proto.Message):
 
             For example, search for profiles that have working
             experience at "Google LLC".
-        education_filters (Sequence[~.filters.EducationFilter]):
+        education_filters (Sequence[google.cloud.talent_v4beta1.types.EducationFilter]):
             Education filter specifies education of profiles to match
             on.
 
@@ -428,7 +428,7 @@ class ProfileQuery(proto.Message):
             the educations.
 
             For example, search for profiles with a master degree.
-        skill_filters (Sequence[~.filters.SkillFilter]):
+        skill_filters (Sequence[google.cloud.talent_v4beta1.types.SkillFilter]):
             Skill filter specifies skill of profiles to match on.
 
             If a skill filter isn't specified, profiles with any skills
@@ -444,7 +444,7 @@ class ProfileQuery(proto.Message):
 
             For example, search for profiles that have "Java" and
             "Python" in skill list.
-        work_experience_filter (Sequence[~.filters.WorkExperienceFilter]):
+        work_experience_filter (Sequence[google.cloud.talent_v4beta1.types.WorkExperienceFilter]):
             Work experience filter specifies the total
             working experience of profiles to match on.
 
@@ -458,23 +458,23 @@ class ProfileQuery(proto.Message):
 
             For example, search for profiles with 10 years
             of work experience.
-        time_filters (Sequence[~.filters.TimeFilter]):
+        time_filters (Sequence[google.cloud.talent_v4beta1.types.TimeFilter]):
             Time filter specifies the create/update
             timestamp of the profiles to match on.
 
             For example, search for profiles created since
             "2018-1-1".
-        hirable_filter (~.wrappers.BoolValue):
+        hirable_filter (google.protobuf.wrappers_pb2.BoolValue):
             The hirable filter specifies the profile's
             hirable status to match on.
-        application_date_filters (Sequence[~.filters.ApplicationDateFilter]):
+        application_date_filters (Sequence[google.cloud.talent_v4beta1.types.ApplicationDateFilter]):
             The application date filters specify
             application date ranges to match on.
-        application_outcome_notes_filters (Sequence[~.filters.ApplicationOutcomeNotesFilter]):
+        application_outcome_notes_filters (Sequence[google.cloud.talent_v4beta1.types.ApplicationOutcomeNotesFilter]):
             The application outcome notes filters specify
             the notes for the outcome of the job
             application.
-        application_job_filters (Sequence[~.filters.ApplicationJobFilter]):
+        application_job_filters (Sequence[google.cloud.talent_v4beta1.types.ApplicationJobFilter]):
             The application job filters specify the job
             applied for in the application.
         custom_attribute_filter (str):
@@ -507,7 +507,7 @@ class ProfileQuery(proto.Message):
 
             Sample Query: (key1 = "TEST" OR LOWER(key1)="test" OR NOT
             EMPTY(key1))
-        candidate_availability_filter (~.filters.CandidateAvailabilityFilter):
+        candidate_availability_filter (google.cloud.talent_v4beta1.types.CandidateAvailabilityFilter):
             Deprecated. Use availability_filters instead.
 
             The candidate availability filter which filters based on
@@ -528,7 +528,7 @@ class ProfileQuery(proto.Message):
             signals. Specifically, the intent is NOT to indicate the
             candidate's potential qualification / interest / close
             ability for a specific job.
-        availability_filters (Sequence[~.filters.AvailabilityFilter]):
+        availability_filters (Sequence[google.cloud.talent_v4beta1.types.AvailabilityFilter]):
             The availability filter which filters based on
             [Profile.availability_signals][google.cloud.talent.v4beta1.Profile.availability_signals].
 
@@ -548,7 +548,7 @@ class ProfileQuery(proto.Message):
             for a
             [signal_type][google.cloud.talent.v4beta1.AvailabilityFilter.signal_type],
             an error is thrown.
-        person_name_filters (Sequence[~.filters.PersonNameFilter]):
+        person_name_filters (Sequence[google.cloud.talent_v4beta1.types.PersonNameFilter]):
             Person name filter specifies person name of
             profiles to match on.
             If multiple person name filters are specified,
@@ -635,7 +635,7 @@ class LocationFilter(proto.Message):
             https://www.unicode.org/cldr/charts/30/supplemental/territory_information.html
             for details. Example: "CH" for Switzerland. Note that this
             filter is not applicable for Profile Search related queries.
-        lat_lng (~.latlng.LatLng):
+        lat_lng (google.type.latlng_pb2.LatLng):
             The latitude and longitude of the geographic center to
             search from. This field is ignored if ``address`` is
             provided.
@@ -644,7 +644,7 @@ class LocationFilter(proto.Message):
             searched for is identified as a city or smaller. This field
             is ignored if the location being searched for is a state or
             larger.
-        telecommute_preference (~.filters.LocationFilter.TelecommutePreference):
+        telecommute_preference (google.cloud.talent_v4beta1.types.LocationFilter.TelecommutePreference):
             Allows the client to return jobs without a set location,
             specifically, telecommuting jobs (telecommuting is
             considered by the service as a special location.
@@ -701,12 +701,12 @@ class CompensationFilter(proto.Message):
     r"""Filter on job compensation type and amount.
 
     Attributes:
-        type_ (~.filters.CompensationFilter.FilterType):
+        type_ (google.cloud.talent_v4beta1.types.CompensationFilter.FilterType):
             Required. Type of filter.
-        units (Sequence[~.common.CompensationInfo.CompensationUnit]):
+        units (Sequence[google.cloud.talent_v4beta1.types.CompensationInfo.CompensationUnit]):
             Required. Specify desired ``base compensation entry's``
             [CompensationInfo.CompensationUnit][google.cloud.talent.v4beta1.CompensationInfo.CompensationUnit].
-        range_ (~.common.CompensationInfo.CompensationRange):
+        range_ (google.cloud.talent_v4beta1.types.CompensationInfo.CompensationRange):
             Compensation range.
         include_jobs_with_unspecified_compensation_range (bool):
             If set to true, jobs with unspecified
@@ -738,13 +738,13 @@ class CommuteFilter(proto.Message):
     r"""Parameters needed for commute search.
 
     Attributes:
-        commute_method (~.common.CommuteMethod):
+        commute_method (google.cloud.talent_v4beta1.types.CommuteMethod):
             Required. The method of transportation to
             calculate the commute time for.
-        start_coordinates (~.latlng.LatLng):
+        start_coordinates (google.type.latlng_pb2.LatLng):
             Required. The latitude and longitude of the
             location to calculate the commute time from.
-        travel_duration (~.duration.Duration):
+        travel_duration (google.protobuf.duration_pb2.Duration):
             Required. The maximum travel time in seconds. The maximum
             allowed value is ``3600s`` (one hour). Format is ``123s``.
         allow_imprecise_addresses (bool):
@@ -754,10 +754,10 @@ class CommuteFilter(proto.Message):
             used. If this field is set to ``false`` or isn't specified,
             only jobs that include street level addresses will be
             returned by commute search.
-        road_traffic (~.filters.CommuteFilter.RoadTraffic):
+        road_traffic (google.cloud.talent_v4beta1.types.CommuteFilter.RoadTraffic):
             Specifies the traffic density to use when
             calculating commute time.
-        departure_time (~.timeofday.TimeOfDay):
+        departure_time (google.type.timeofday_pb2.TimeOfDay):
             The departure time used to calculate traffic impact,
             represented as
             [google.type.TimeOfDay][google.type.TimeOfDay] in local time
@@ -831,7 +831,7 @@ class EmployerFilter(proto.Message):
         employer (str):
             Required. The name of the employer, for
             example "Google", "Alphabet".
-        mode (~.filters.EmployerFilter.EmployerFilterMode):
+        mode (google.cloud.talent_v4beta1.types.EmployerFilter.EmployerFilterMode):
             Define set of
             [EmploymentRecord][google.cloud.talent.v4beta1.EmploymentRecord]s
             to search against.
@@ -872,7 +872,7 @@ class EducationFilter(proto.Message):
             in
             [Degree.fields_of_study][google.cloud.talent.v4beta1.Degree.fields_of_study].
             For example "Computer Science", "Mathematics".
-        degree_type (~.common.DegreeType):
+        degree_type (google.cloud.talent_v4beta1.types.DegreeType):
             Education degree in ISCED code. Each value in
             degree covers a specific level of education,
             without any expansion to upper nor lower levels
@@ -901,10 +901,10 @@ class WorkExperienceFilter(proto.Message):
     [max_experience][google.cloud.talent.v4beta1.WorkExperienceFilter.max_experience].
 
     Attributes:
-        min_experience (~.duration.Duration):
+        min_experience (google.protobuf.duration_pb2.Duration):
             The minimum duration of the work experience
             (inclusive).
-        max_experience (~.duration.Duration):
+        max_experience (google.protobuf.duration_pb2.Duration):
             The maximum duration of the work experience
             (exclusive).
     """
@@ -927,11 +927,11 @@ class ApplicationDateFilter(proto.Message):
     are missing.
 
     Attributes:
-        start_date (~.date.Date):
+        start_date (google.type.date_pb2.Date):
             Start date. If it's missing, The API matches
             profiles with application date not after the end
             date.
-        end_date (~.date.Date):
+        end_date (google.type.date_pb2.Date):
             End date. If it's missing, The API matches
             profiles with application date not before the
             start date.
@@ -996,17 +996,17 @@ class TimeFilter(proto.Message):
     r"""Filter on create timestamp or update timestamp of profiles.
 
     Attributes:
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Start timestamp, matching profiles with the
             start time. If this field missing, The API
             matches profiles with create / update timestamp
             before the end timestamp.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             End timestamp, matching profiles with the end
             time. If this field missing, The API matches
             profiles with create / update timestamp after
             the start timestamp.
-        time_field (~.filters.TimeFilter.TimeField):
+        time_field (google.cloud.talent_v4beta1.types.TimeFilter.TimeField):
             Specifies which time field to filter profiles.
 
             Defaults to
@@ -1043,9 +1043,9 @@ class AvailabilityFilter(proto.Message):
     r"""Filter on availability signals.
 
     Attributes:
-        signal_type (~.common.AvailabilitySignalType):
+        signal_type (google.cloud.talent_v4beta1.types.AvailabilitySignalType):
             Required. Type of signal to apply filter on.
-        range_ (~.common.TimestampRange):
+        range_ (google.cloud.talent_v4beta1.types.TimestampRange):
             Required. Range of times to filter candidate
             signals by.
         required (bool):

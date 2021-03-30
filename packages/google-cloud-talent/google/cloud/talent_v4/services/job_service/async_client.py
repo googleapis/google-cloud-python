@@ -84,7 +84,36 @@ class JobServiceAsyncClient:
         JobServiceClient.parse_common_location_path
     )
 
-    from_service_account_file = JobServiceClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            JobServiceAsyncClient: The constructed client.
+        """
+        return JobServiceClient.from_service_account_info.__func__(JobServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            JobServiceAsyncClient: The constructed client.
+        """
+        return JobServiceClient.from_service_account_file.__func__(JobServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -163,7 +192,7 @@ class JobServiceAsyncClient:
         but it may take up to 5 minutes.
 
         Args:
-            request (:class:`~.job_service.CreateJobRequest`):
+            request (:class:`google.cloud.talent_v4.types.CreateJobRequest`):
                 The request object. Create job request.
             parent (:class:`str`):
                 Required. The resource name of the tenant under which
@@ -172,10 +201,11 @@ class JobServiceAsyncClient:
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}". For
                 example, "projects/foo/tenants/bar".
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            job (:class:`~.gct_job.Job`):
+            job (:class:`google.cloud.talent_v4.types.Job`):
                 Required. The Job to be created.
                 This corresponds to the ``job`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -188,11 +218,11 @@ class JobServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gct_job.Job:
-                A Job resource represents a job posting (also referred
-                to as a "job listing" or "job requisition"). A job
-                belongs to a [Company][google.cloud.talent.v4.Company],
-                which is the hiring entity responsible for the job.
+            google.cloud.talent_v4.types.Job:
+                A Job resource represents a job posting (also referred to as a "job listing"
+                   or "job requisition"). A job belongs to a
+                   [Company][google.cloud.talent.v4.Company], which is
+                   the hiring entity responsible for the job.
 
         """
         # Create or coerce a protobuf request object.
@@ -248,7 +278,7 @@ class JobServiceAsyncClient:
         r"""Begins executing a batch create jobs operation.
 
         Args:
-            request (:class:`~.job_service.BatchCreateJobsRequest`):
+            request (:class:`google.cloud.talent_v4.types.BatchCreateJobsRequest`):
                 The request object. Request to create a batch of jobs.
             parent (:class:`str`):
                 Required. The resource name of the tenant under which
@@ -257,13 +287,15 @@ class JobServiceAsyncClient:
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}". For
                 example, "projects/foo/tenants/bar".
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            jobs (:class:`Sequence[~.job.Job]`):
+            jobs (:class:`Sequence[google.cloud.talent_v4.types.Job]`):
                 Required. The jobs to be created.
                 A maximum of 200 jobs can be created in
                 a batch.
+
                 This corresponds to the ``jobs`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -275,16 +307,13 @@ class JobServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.job_service.BatchCreateJobsResponse``: The
-                result of
-                [JobService.BatchCreateJobs][google.cloud.talent.v4.JobService.BatchCreateJobs].
-                It's used to replace
-                [google.longrunning.Operation.response][google.longrunning.Operation.response]
-                in case of success.
+                The result type for the operation will be :class:`google.cloud.talent_v4.types.BatchCreateJobsResponse` The result of [JobService.BatchCreateJobs][google.cloud.talent.v4.JobService.BatchCreateJobs]. It's used to
+                   replace
+                   [google.longrunning.Operation.response][google.longrunning.Operation.response]
+                   in case of success.
 
         """
         # Create or coerce a protobuf request object.
@@ -349,7 +378,7 @@ class JobServiceAsyncClient:
         recently EXPIRED within the last 90 days.
 
         Args:
-            request (:class:`~.job_service.GetJobRequest`):
+            request (:class:`google.cloud.talent_v4.types.GetJobRequest`):
                 The request object. Get job request.
             name (:class:`str`):
                 Required. The resource name of the job to retrieve.
@@ -357,6 +386,7 @@ class JobServiceAsyncClient:
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}".
                 For example, "projects/foo/tenants/bar/jobs/baz".
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -368,11 +398,11 @@ class JobServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.job.Job:
-                A Job resource represents a job posting (also referred
-                to as a "job listing" or "job requisition"). A job
-                belongs to a [Company][google.cloud.talent.v4.Company],
-                which is the hiring entity responsible for the job.
+            google.cloud.talent_v4.types.Job:
+                A Job resource represents a job posting (also referred to as a "job listing"
+                   or "job requisition"). A job belongs to a
+                   [Company][google.cloud.talent.v4.Company], which is
+                   the hiring entity responsible for the job.
 
         """
         # Create or coerce a protobuf request object.
@@ -404,6 +434,7 @@ class JobServiceAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=30.0,
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -437,14 +468,14 @@ class JobServiceAsyncClient:
         minutes.
 
         Args:
-            request (:class:`~.job_service.UpdateJobRequest`):
+            request (:class:`google.cloud.talent_v4.types.UpdateJobRequest`):
                 The request object. Update job request.
-            job (:class:`~.gct_job.Job`):
+            job (:class:`google.cloud.talent_v4.types.Job`):
                 Required. The Job to be updated.
                 This corresponds to the ``job`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Strongly recommended for the best service experience.
 
                 If
@@ -456,6 +487,7 @@ class JobServiceAsyncClient:
                 A field mask to restrict the fields that are updated.
                 Only top level fields of
                 [Job][google.cloud.talent.v4.Job] are supported.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -467,11 +499,11 @@ class JobServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gct_job.Job:
-                A Job resource represents a job posting (also referred
-                to as a "job listing" or "job requisition"). A job
-                belongs to a [Company][google.cloud.talent.v4.Company],
-                which is the hiring entity responsible for the job.
+            google.cloud.talent_v4.types.Job:
+                A Job resource represents a job posting (also referred to as a "job listing"
+                   or "job requisition"). A job belongs to a
+                   [Company][google.cloud.talent.v4.Company], which is
+                   the hiring entity responsible for the job.
 
         """
         # Create or coerce a protobuf request object.
@@ -527,7 +559,7 @@ class JobServiceAsyncClient:
         r"""Begins executing a batch update jobs operation.
 
         Args:
-            request (:class:`~.job_service.BatchUpdateJobsRequest`):
+            request (:class:`google.cloud.talent_v4.types.BatchUpdateJobsRequest`):
                 The request object. Request to update a batch of jobs.
             parent (:class:`str`):
                 Required. The resource name of the tenant under which
@@ -536,13 +568,15 @@ class JobServiceAsyncClient:
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}". For
                 example, "projects/foo/tenants/bar".
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            jobs (:class:`Sequence[~.job.Job]`):
+            jobs (:class:`Sequence[google.cloud.talent_v4.types.Job]`):
                 Required. The jobs to be updated.
                 A maximum of 200 jobs can be updated in
                 a batch.
+
                 This corresponds to the ``jobs`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -554,16 +588,13 @@ class JobServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.job_service.BatchUpdateJobsResponse``: The
-                result of
-                [JobService.BatchUpdateJobs][google.cloud.talent.v4.JobService.BatchUpdateJobs].
-                It's used to replace
-                [google.longrunning.Operation.response][google.longrunning.Operation.response]
-                in case of success.
+                The result type for the operation will be :class:`google.cloud.talent_v4.types.BatchUpdateJobsResponse` The result of [JobService.BatchUpdateJobs][google.cloud.talent.v4.JobService.BatchUpdateJobs]. It's used to
+                   replace
+                   [google.longrunning.Operation.response][google.longrunning.Operation.response]
+                   in case of success.
 
         """
         # Create or coerce a protobuf request object.
@@ -629,7 +660,7 @@ class JobServiceAsyncClient:
         seconds, but it may take up to 5 minutes.
 
         Args:
-            request (:class:`~.job_service.DeleteJobRequest`):
+            request (:class:`google.cloud.talent_v4.types.DeleteJobRequest`):
                 The request object. Delete job request.
             name (:class:`str`):
                 Required. The resource name of the job to be deleted.
@@ -637,6 +668,7 @@ class JobServiceAsyncClient:
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}/jobs/{job_id}".
                 For example, "projects/foo/tenants/bar/jobs/baz".
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -676,6 +708,7 @@ class JobServiceAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=30.0,
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -705,7 +738,7 @@ class JobServiceAsyncClient:
         r"""Begins executing a batch delete jobs operation.
 
         Args:
-            request (:class:`~.job_service.BatchDeleteJobsRequest`):
+            request (:class:`google.cloud.talent_v4.types.BatchDeleteJobsRequest`):
                 The request object. Request to delete a batch of jobs.
             parent (:class:`str`):
                 Required. The resource name of the tenant under which
@@ -717,6 +750,7 @@ class JobServiceAsyncClient:
 
                 The parent of all of the jobs specified in ``names``
                 must match this field.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -728,6 +762,7 @@ class JobServiceAsyncClient:
                 For example, "projects/foo/tenants/bar/jobs/baz".
 
                 A maximum of 200 jobs can be deleted in a batch.
+
                 This corresponds to the ``names`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -739,16 +774,13 @@ class JobServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.job_service.BatchDeleteJobsResponse``: The
-                result of
-                [JobService.BatchDeleteJobs][google.cloud.talent.v4.JobService.BatchDeleteJobs].
-                It's used to replace
-                [google.longrunning.Operation.response][google.longrunning.Operation.response]
-                in case of success.
+                The result type for the operation will be :class:`google.cloud.talent_v4.types.BatchDeleteJobsResponse` The result of [JobService.BatchDeleteJobs][google.cloud.talent.v4.JobService.BatchDeleteJobs]. It's used to
+                   replace
+                   [google.longrunning.Operation.response][google.longrunning.Operation.response]
+                   in case of success.
 
         """
         # Create or coerce a protobuf request object.
@@ -813,7 +845,7 @@ class JobServiceAsyncClient:
         r"""Lists jobs by filter.
 
         Args:
-            request (:class:`~.job_service.ListJobsRequest`):
+            request (:class:`google.cloud.talent_v4.types.ListJobsRequest`):
                 The request object. List jobs request.
             parent (:class:`str`):
                 Required. The resource name of the tenant under which
@@ -822,6 +854,7 @@ class JobServiceAsyncClient:
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}". For
                 example, "projects/foo/tenants/bar".
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -847,7 +880,8 @@ class JobServiceAsyncClient:
                    requisitionId = "req-1"
                 -  companyName =
                    "projects/foo/tenants/bar/companies/baz" AND status =
-                   "EXPIRED".
+                   "EXPIRED"
+
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -859,7 +893,7 @@ class JobServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListJobsAsyncPager:
+            google.cloud.talent_v4.services.job_service.pagers.ListJobsAsyncPager:
                 List jobs response.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -897,6 +931,7 @@ class JobServiceAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=30.0,
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -937,7 +972,7 @@ class JobServiceAsyncClient:
         has permission to search against.
 
         Args:
-            request (:class:`~.job_service.SearchJobsRequest`):
+            request (:class:`google.cloud.talent_v4.types.SearchJobsRequest`):
                 The request object. The Request body of the `SearchJobs`
                 call.
 
@@ -948,7 +983,7 @@ class JobServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.job_service.SearchJobsResponse:
+            google.cloud.talent_v4.types.SearchJobsResponse:
                 Response for SearchJob method.
         """
         # Create or coerce a protobuf request object.
@@ -998,7 +1033,7 @@ class JobServiceAsyncClient:
         permission to search against.
 
         Args:
-            request (:class:`~.job_service.SearchJobsRequest`):
+            request (:class:`google.cloud.talent_v4.types.SearchJobsRequest`):
                 The request object. The Request body of the `SearchJobs`
                 call.
 
@@ -1009,7 +1044,7 @@ class JobServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.job_service.SearchJobsResponse:
+            google.cloud.talent_v4.types.SearchJobsResponse:
                 Response for SearchJob method.
         """
         # Create or coerce a protobuf request object.

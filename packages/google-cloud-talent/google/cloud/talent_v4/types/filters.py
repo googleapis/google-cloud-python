@@ -65,7 +65,7 @@ class JobQuery(proto.Message):
             For example, "projects/foo/tenants/bar/companies/baz".
 
             At most 20 company filters are allowed.
-        location_filters (Sequence[~.filters.LocationFilter]):
+        location_filters (Sequence[google.cloud.talent_v4.types.LocationFilter]):
             The location filter specifies geo-regions containing the
             jobs to search against. See
             [LocationFilter][google.cloud.talent.v4.LocationFilter] for
@@ -83,7 +83,7 @@ class JobQuery(proto.Message):
             locations.
 
             At most 5 location filters are allowed.
-        job_categories (Sequence[~.common.JobCategory]):
+        job_categories (Sequence[google.cloud.talent_v4.types.JobCategory]):
             The category filter specifies the categories of jobs to
             search against. See
             [JobCategory][google.cloud.talent.v4.JobCategory] for more
@@ -94,7 +94,7 @@ class JobQuery(proto.Message):
 
             If multiple values are specified, jobs from any of the
             specified categories are searched against.
-        commute_filter (~.filters.CommuteFilter):
+        commute_filter (google.cloud.talent_v4.types.CommuteFilter):
             Allows filtering jobs by commute time with different travel
             methods (for example, driving or public transit).
 
@@ -118,7 +118,7 @@ class JobQuery(proto.Message):
             companies.
 
             At most 20 company display name filters are allowed.
-        compensation_filter (~.filters.CompensationFilter):
+        compensation_filter (google.cloud.talent_v4.types.CompensationFilter):
             This search filter is applied only to
             [Job.compensation_info][google.cloud.talent.v4.Job.compensation_info].
             For example, if the filter is specified as "Hourly job with
@@ -157,7 +157,7 @@ class JobQuery(proto.Message):
             misspelled query, for example, "enginee" is
             corrected to "engineer".
             Defaults to false: a spell check is performed.
-        employment_types (Sequence[~.common.EmploymentType]):
+        employment_types (Sequence[google.cloud.talent_v4.types.EmploymentType]):
             The employment type filter specifies the employment type of
             jobs to search against, such as
             [EmploymentType.FULL_TIME][google.cloud.talent.v4.EmploymentType.FULL_TIME].
@@ -180,7 +180,7 @@ class JobQuery(proto.Message):
             Languages <https://tools.ietf.org/html/bcp47>`__.
 
             At most 10 language code filters are allowed.
-        publish_time_range (~.common.TimestampRange):
+        publish_time_range (google.cloud.talent_v4.types.TimestampRange):
             Jobs published within a range specified by
             this filter are searched against.
         excluded_jobs (Sequence[str]):
@@ -246,7 +246,7 @@ class LocationFilter(proto.Message):
             See
             https://www.unicode.org/cldr/charts/30/supplemental/territory_information.html
             for details. Example: "CH" for Switzerland.
-        lat_lng (~.latlng.LatLng):
+        lat_lng (google.type.latlng_pb2.LatLng):
             The latitude and longitude of the geographic center to
             search from. This field is ignored if ``address`` is
             provided.
@@ -255,7 +255,7 @@ class LocationFilter(proto.Message):
             searched for is identified as a city or smaller. This field
             is ignored if the location being searched for is a state or
             larger.
-        telecommute_preference (~.filters.LocationFilter.TelecommutePreference):
+        telecommute_preference (google.cloud.talent_v4.types.LocationFilter.TelecommutePreference):
             Allows the client to return jobs without a set location,
             specifically, telecommuting jobs (telecommuting is
             considered by the service as a special location.
@@ -304,12 +304,12 @@ class CompensationFilter(proto.Message):
     r"""Filter on job compensation type and amount.
 
     Attributes:
-        type_ (~.filters.CompensationFilter.FilterType):
+        type_ (google.cloud.talent_v4.types.CompensationFilter.FilterType):
             Required. Type of filter.
-        units (Sequence[~.common.CompensationInfo.CompensationUnit]):
+        units (Sequence[google.cloud.talent_v4.types.CompensationInfo.CompensationUnit]):
             Required. Specify desired ``base compensation entry's``
             [CompensationInfo.CompensationUnit][google.cloud.talent.v4.CompensationInfo.CompensationUnit].
-        range_ (~.common.CompensationInfo.CompensationRange):
+        range_ (google.cloud.talent_v4.types.CompensationInfo.CompensationRange):
             Compensation range.
         include_jobs_with_unspecified_compensation_range (bool):
             If set to true, jobs with unspecified
@@ -341,13 +341,13 @@ class CommuteFilter(proto.Message):
     r"""Parameters needed for commute search.
 
     Attributes:
-        commute_method (~.common.CommuteMethod):
+        commute_method (google.cloud.talent_v4.types.CommuteMethod):
             Required. The method of transportation to
             calculate the commute time for.
-        start_coordinates (~.latlng.LatLng):
+        start_coordinates (google.type.latlng_pb2.LatLng):
             Required. The latitude and longitude of the
             location to calculate the commute time from.
-        travel_duration (~.duration.Duration):
+        travel_duration (google.protobuf.duration_pb2.Duration):
             Required. The maximum travel time in seconds. The maximum
             allowed value is ``3600s`` (one hour). Format is ``123s``.
         allow_imprecise_addresses (bool):
@@ -357,10 +357,10 @@ class CommuteFilter(proto.Message):
             used. If this field is set to ``false`` or isn't specified,
             only jobs that include street level addresses will be
             returned by commute search.
-        road_traffic (~.filters.CommuteFilter.RoadTraffic):
+        road_traffic (google.cloud.talent_v4.types.CommuteFilter.RoadTraffic):
             Specifies the traffic density to use when
             calculating commute time.
-        departure_time (~.timeofday.TimeOfDay):
+        departure_time (google.type.timeofday_pb2.TimeOfDay):
             The departure time used to calculate traffic impact,
             represented as
             [google.type.TimeOfDay][google.type.TimeOfDay] in local time

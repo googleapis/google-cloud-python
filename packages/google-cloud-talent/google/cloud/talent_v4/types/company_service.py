@@ -46,7 +46,7 @@ class CreateCompanyRequest(proto.Message):
 
             The format is "projects/{project_id}/tenants/{tenant_id}",
             for example, "projects/foo/tenants/bar".
-        company (~.gct_company.Company):
+        company (google.cloud.talent_v4.types.Company):
             Required. The company to be created.
     """
 
@@ -75,10 +75,10 @@ class UpdateCompanyRequest(proto.Message):
     r"""Request for updating a specified company.
 
     Attributes:
-        company (~.gct_company.Company):
+        company (google.cloud.talent_v4.types.Company):
             Required. The company resource to replace the
             current resource in the system.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Strongly recommended for the best service experience.
 
             If
@@ -153,11 +153,11 @@ class ListCompaniesResponse(proto.Message):
     r"""The List companies response object.
 
     Attributes:
-        companies (Sequence[~.gct_company.Company]):
+        companies (Sequence[google.cloud.talent_v4.types.Company]):
             Companies for the current client.
         next_page_token (str):
             A token to retrieve the next page of results.
-        metadata (~.common.ResponseMetadata):
+        metadata (google.cloud.talent_v4.types.ResponseMetadata):
             Additional information for the API
             invocation, such as the request tracking id.
     """

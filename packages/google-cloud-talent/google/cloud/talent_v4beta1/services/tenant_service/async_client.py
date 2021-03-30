@@ -80,7 +80,36 @@ class TenantServiceAsyncClient:
         TenantServiceClient.parse_common_location_path
     )
 
-    from_service_account_file = TenantServiceClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            TenantServiceAsyncClient: The constructed client.
+        """
+        return TenantServiceClient.from_service_account_info.__func__(TenantServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            TenantServiceAsyncClient: The constructed client.
+        """
+        return TenantServiceClient.from_service_account_file.__func__(TenantServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -157,7 +186,7 @@ class TenantServiceAsyncClient:
         r"""Creates a new tenant entity.
 
         Args:
-            request (:class:`~.tenant_service.CreateTenantRequest`):
+            request (:class:`google.cloud.talent_v4beta1.types.CreateTenantRequest`):
                 The request object. The Request of the CreateTenant
                 method.
             parent (:class:`str`):
@@ -166,10 +195,11 @@ class TenantServiceAsyncClient:
 
                 The format is "projects/{project_id}", for example,
                 "projects/foo".
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            tenant (:class:`~.gct_tenant.Tenant`):
+            tenant (:class:`google.cloud.talent_v4beta1.types.Tenant`):
                 Required. The tenant to be created.
                 This corresponds to the ``tenant`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -182,7 +212,7 @@ class TenantServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gct_tenant.Tenant:
+            google.cloud.talent_v4beta1.types.Tenant:
                 A Tenant resource represents a tenant
                 in the service. A tenant is a group or
                 entity that shares common access with
@@ -244,7 +274,7 @@ class TenantServiceAsyncClient:
         r"""Retrieves specified tenant.
 
         Args:
-            request (:class:`~.tenant_service.GetTenantRequest`):
+            request (:class:`google.cloud.talent_v4beta1.types.GetTenantRequest`):
                 The request object. Request for getting a tenant by
                 name.
             name (:class:`str`):
@@ -254,6 +284,7 @@ class TenantServiceAsyncClient:
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}", for
                 example, "projects/foo/tenants/bar".
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -265,7 +296,7 @@ class TenantServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.tenant.Tenant:
+            google.cloud.talent_v4beta1.types.Tenant:
                 A Tenant resource represents a tenant
                 in the service. A tenant is a group or
                 entity that shares common access with
@@ -304,6 +335,7 @@ class TenantServiceAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=30.0,
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -333,13 +365,14 @@ class TenantServiceAsyncClient:
         r"""Updates specified tenant.
 
         Args:
-            request (:class:`~.tenant_service.UpdateTenantRequest`):
+            request (:class:`google.cloud.talent_v4beta1.types.UpdateTenantRequest`):
                 The request object. Request for updating a specified
                 tenant.
-            tenant (:class:`~.gct_tenant.Tenant`):
+            tenant (:class:`google.cloud.talent_v4beta1.types.Tenant`):
                 Required. The tenant resource to
                 replace the current resource in the
                 system.
+
                 This corresponds to the ``tenant`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -351,7 +384,7 @@ class TenantServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gct_tenant.Tenant:
+            google.cloud.talent_v4beta1.types.Tenant:
                 A Tenant resource represents a tenant
                 in the service. A tenant is a group or
                 entity that shares common access with
@@ -413,7 +446,7 @@ class TenantServiceAsyncClient:
         r"""Deletes specified tenant.
 
         Args:
-            request (:class:`~.tenant_service.DeleteTenantRequest`):
+            request (:class:`google.cloud.talent_v4beta1.types.DeleteTenantRequest`):
                 The request object. Request to delete a tenant.
             name (:class:`str`):
                 Required. The resource name of the tenant to be deleted.
@@ -421,6 +454,7 @@ class TenantServiceAsyncClient:
                 The format is
                 "projects/{project_id}/tenants/{tenant_id}", for
                 example, "projects/foo/tenants/bar".
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -460,6 +494,7 @@ class TenantServiceAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=30.0,
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -488,7 +523,7 @@ class TenantServiceAsyncClient:
         r"""Lists all tenants associated with the project.
 
         Args:
-            request (:class:`~.tenant_service.ListTenantsRequest`):
+            request (:class:`google.cloud.talent_v4beta1.types.ListTenantsRequest`):
                 The request object. List tenants for which the client
                 has ACL visibility.
             parent (:class:`str`):
@@ -497,6 +532,7 @@ class TenantServiceAsyncClient:
 
                 The format is "projects/{project_id}", for example,
                 "projects/foo".
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -508,7 +544,7 @@ class TenantServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListTenantsAsyncPager:
+            google.cloud.talent_v4beta1.services.tenant_service.pagers.ListTenantsAsyncPager:
                 The List tenants response object.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -544,6 +580,7 @@ class TenantServiceAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=30.0,
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,

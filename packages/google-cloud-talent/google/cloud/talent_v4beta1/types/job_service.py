@@ -73,7 +73,7 @@ class CreateJobRequest(proto.Message):
             For example, "projects/foo/tenant/bar". If tenant id is
             unspecified a default tenant is created. For example,
             "projects/foo".
-        job (~.gct_job.Job):
+        job (google.cloud.talent_v4beta1.types.Job):
             Required. The Job to be created.
     """
 
@@ -104,9 +104,9 @@ class UpdateJobRequest(proto.Message):
     r"""Update job request.
 
     Attributes:
-        job (~.gct_job.Job):
+        job (google.cloud.talent_v4beta1.types.Job):
             Required. The Job to be updated.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Strongly recommended for the best service experience.
 
             If
@@ -221,7 +221,7 @@ class ListJobsRequest(proto.Message):
             maximum allowed page size is 100.
 
             Default is 100 if empty or a number < 1 is specified.
-        job_view (~.job_service.JobView):
+        job_view (google.cloud.talent_v4beta1.types.JobView):
             The desired job attributes returned for jobs in the search
             response. Defaults to
             [JobView.JOB_VIEW_FULL][google.cloud.talent.v4beta1.JobView.JOB_VIEW_FULL]
@@ -243,13 +243,13 @@ class ListJobsResponse(proto.Message):
     r"""List jobs response.
 
     Attributes:
-        jobs (Sequence[~.gct_job.Job]):
+        jobs (Sequence[google.cloud.talent_v4beta1.types.Job]):
             The Jobs for a given company.
             The maximum number of items returned is based on
             the limit field provided in the request.
         next_page_token (str):
             A token to retrieve the next page of results.
-        metadata (~.common.ResponseMetadata):
+        metadata (google.cloud.talent_v4beta1.types.ResponseMetadata):
             Additional information for the API
             invocation, such as the request tracking id.
     """
@@ -276,17 +276,17 @@ class SearchJobsRequest(proto.Message):
             For example, "projects/foo/tenant/bar". If tenant id is
             unspecified, a default tenant is created. For example,
             "projects/foo".
-        search_mode (~.job_service.SearchJobsRequest.SearchMode):
+        search_mode (google.cloud.talent_v4beta1.types.SearchJobsRequest.SearchMode):
             Mode of a search.
 
             Defaults to
             [SearchMode.JOB_SEARCH][google.cloud.talent.v4beta1.SearchJobsRequest.SearchMode.JOB_SEARCH].
-        request_metadata (~.common.RequestMetadata):
+        request_metadata (google.cloud.talent_v4beta1.types.RequestMetadata):
             Required. The meta information collected about the job
             searcher, used to improve the search quality of the service.
             The identifiers (such as ``user_id``) are provided by users,
             and must be unique and consistent.
-        job_query (~.filters.JobQuery):
+        job_query (google.cloud.talent_v4beta1.types.JobQuery):
             Query used to search against jobs, such as
             keyword, location filters, etc.
         enable_broadening (bool):
@@ -307,7 +307,7 @@ class SearchJobsRequest(proto.Message):
             Enabling this flag may adversely impact performance.
 
             Defaults to false.
-        histogram_queries (Sequence[~.histogram.HistogramQuery]):
+        histogram_queries (Sequence[google.cloud.talent_v4beta1.types.HistogramQuery]):
             An expression specifies a histogram request against matching
             jobs.
 
@@ -420,7 +420,7 @@ class SearchJobsRequest(proto.Message):
             -  ``count(base_compensation, [bucket(1000, 10000), bucket(10000, 100000), bucket(100000, MAX)])``
             -  ``count(string_custom_attribute["some-string-custom-attribute"])``
             -  ``count(numeric_custom_attribute["some-numeric-custom-attribute"], [bucket(MIN, 0, "negative"), bucket(0, MAX, "non-negative"])``
-        job_view (~.job_service.JobView):
+        job_view (google.cloud.talent_v4beta1.types.JobView):
             The desired job attributes returned for jobs in the search
             response. Defaults to
             [JobView.JOB_VIEW_SMALL][google.cloud.talent.v4beta1.JobView.JOB_VIEW_SMALL]
@@ -512,7 +512,7 @@ class SearchJobsRequest(proto.Message):
                (37.4 feet). Diversification strategy is still applied
                unless explicitly disabled in
                [diversification_level][google.cloud.talent.v4beta1.SearchJobsRequest.diversification_level].
-        diversification_level (~.job_service.SearchJobsRequest.DiversificationLevel):
+        diversification_level (google.cloud.talent_v4beta1.types.SearchJobsRequest.DiversificationLevel):
             Controls whether highly similar jobs are returned next to
             each other in the search results. Jobs are identified as
             highly similar based on their titles, job categories, and
@@ -524,7 +524,7 @@ class SearchJobsRequest(proto.Message):
             Defaults to
             [DiversificationLevel.SIMPLE][google.cloud.talent.v4beta1.SearchJobsRequest.DiversificationLevel.SIMPLE]
             if no value is specified.
-        custom_ranking_info (~.job_service.SearchJobsRequest.CustomRankingInfo):
+        custom_ranking_info (google.cloud.talent_v4beta1.types.SearchJobsRequest.CustomRankingInfo):
             Controls over how job documents get ranked on
             top of existing relevance score (determined by
             API algorithm).
@@ -582,7 +582,7 @@ class SearchJobsRequest(proto.Message):
         [SearchJobsRequest][google.cloud.talent.v4beta1.SearchJobsRequest].
 
         Attributes:
-            importance_level (~.job_service.SearchJobsRequest.CustomRankingInfo.ImportanceLevel):
+            importance_level (google.cloud.talent_v4beta1.types.SearchJobsRequest.CustomRankingInfo.ImportanceLevel):
                 Required. Controls over how important the score of
                 [CustomRankingInfo.ranking_expression][google.cloud.talent.v4beta1.SearchJobsRequest.CustomRankingInfo.ranking_expression]
                 gets applied to job's final ranking position.
@@ -679,17 +679,17 @@ class SearchJobsResponse(proto.Message):
     r"""Response for SearchJob method.
 
     Attributes:
-        matching_jobs (Sequence[~.job_service.SearchJobsResponse.MatchingJob]):
+        matching_jobs (Sequence[google.cloud.talent_v4beta1.types.SearchJobsResponse.MatchingJob]):
             The Job entities that match the specified
             [SearchJobsRequest][google.cloud.talent.v4beta1.SearchJobsRequest].
-        histogram_query_results (Sequence[~.histogram.HistogramQueryResult]):
+        histogram_query_results (Sequence[google.cloud.talent_v4beta1.types.HistogramQueryResult]):
             The histogram results that match with specified
             [SearchJobsRequest.histogram_queries][google.cloud.talent.v4beta1.SearchJobsRequest.histogram_queries].
         next_page_token (str):
             The token that specifies the starting
             position of the next page of results. This field
             is empty if there are no more results.
-        location_filters (Sequence[~.common.Location]):
+        location_filters (Sequence[google.cloud.talent_v4beta1.types.Location]):
             The location filters that the service applied to the
             specified query. If any filters are lat-lng based, the
             [Location.location_type][google.cloud.talent.v4beta1.Location.location_type]
@@ -708,7 +708,7 @@ class SearchJobsResponse(proto.Message):
             [SearchJobsRequest.require_precise_result_size][google.cloud.talent.v4beta1.SearchJobsRequest.require_precise_result_size]
             to ``true``, or if the response is the last page of results.
             Otherwise, the value is ``-1``.
-        metadata (~.common.ResponseMetadata):
+        metadata (google.cloud.talent_v4beta1.types.ResponseMetadata):
             Additional information for the API
             invocation, such as the request tracking id.
         broadened_query_jobs_count (int):
@@ -723,7 +723,7 @@ class SearchJobsResponse(proto.Message):
             broadening) query. If this field is non-zero,
             subsequent requests with offset after this
             result set should contain all broadened results.
-        spell_correction (~.common.SpellingCorrection):
+        spell_correction (google.cloud.talent_v4beta1.types.SpellingCorrection):
             The spell checking result, and correction.
     """
 
@@ -732,7 +732,7 @@ class SearchJobsResponse(proto.Message):
         [SearchJobsResponse][google.cloud.talent.v4beta1.SearchJobsResponse].
 
         Attributes:
-            job (~.gct_job.Job):
+            job (google.cloud.talent_v4beta1.types.Job):
                 Job resource that matches the specified
                 [SearchJobsRequest][google.cloud.talent.v4beta1.SearchJobsRequest].
             job_summary (str):
@@ -752,7 +752,7 @@ class SearchJobsResponse(proto.Message):
                 keywords, if available. All HTML tags in the original fields
                 are stripped when returned in this field, and matching query
                 keywords are enclosed in HTML bold tags.
-            commute_info (~.job_service.SearchJobsResponse.CommuteInfo):
+            commute_info (google.cloud.talent_v4beta1.types.SearchJobsResponse.CommuteInfo):
                 Commute information which is generated based on specified
                 [CommuteFilter][google.cloud.talent.v4beta1.CommuteFilter].
         """
@@ -773,10 +773,10 @@ class SearchJobsResponse(proto.Message):
         r"""Commute details related to this job.
 
         Attributes:
-            job_location (~.common.Location):
+            job_location (google.cloud.talent_v4beta1.types.Location):
                 Location used as the destination in the
                 commute calculation.
-            travel_duration (~.duration.Duration):
+            travel_duration (google.protobuf.duration_pb2.Duration):
                 The number of seconds required to travel to
                 the job location from the query location. A
                 duration of 0 seconds indicates that the job
@@ -831,7 +831,7 @@ class BatchCreateJobsRequest(proto.Message):
             For example, "projects/foo/tenant/bar". If tenant id is
             unspecified, a default tenant is created. For example,
             "projects/foo".
-        jobs (Sequence[~.gct_job.Job]):
+        jobs (Sequence[google.cloud.talent_v4beta1.types.Job]):
             Required. The jobs to be created.
     """
 
@@ -852,9 +852,9 @@ class BatchUpdateJobsRequest(proto.Message):
             For example, "projects/foo/tenant/bar". If tenant id is
             unspecified, a default tenant is created. For example,
             "projects/foo".
-        jobs (Sequence[~.gct_job.Job]):
+        jobs (Sequence[google.cloud.talent_v4beta1.types.Job]):
             Required. The jobs to be updated.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Strongly recommended for the best service experience. Be
             aware that it will also increase latency when checking the
             status of a batch operation.
@@ -897,7 +897,7 @@ class JobOperationResult(proto.Message):
     in case of success.
 
     Attributes:
-        job_results (Sequence[~.job_service.JobOperationResult.JobResult]):
+        job_results (Sequence[google.cloud.talent_v4beta1.types.JobOperationResult.JobResult]):
             List of job mutation results from a batch
             mutate operation. It can change until operation
             status is FINISHED, FAILED or CANCELLED.
@@ -907,7 +907,7 @@ class JobOperationResult(proto.Message):
         r"""Mutation result of a job.
 
         Attributes:
-            job (~.gct_job.Job):
+            job (google.cloud.talent_v4beta1.types.Job):
                 Here [Job][google.cloud.talent.v4beta1.Job] only contains
                 basic information including
                 [name][google.cloud.talent.v4beta1.Job.name],
@@ -917,7 +917,7 @@ class JobOperationResult(proto.Message):
                 [requisition_id][google.cloud.talent.v4beta1.Job.requisition_id],
                 use getJob method to retrieve detailed information of the
                 created/updated job.
-            status (~.gr_status.Status):
+            status (google.rpc.status_pb2.Status):
                 The status of the job processed. This field is populated if
                 the processing of the
                 [job][google.cloud.talent.v4beta1.JobOperationResult.JobResult.job]

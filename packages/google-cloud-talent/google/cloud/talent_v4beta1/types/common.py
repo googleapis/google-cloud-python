@@ -187,6 +187,7 @@ class Visibility(proto.Enum):
     r"""Deprecated. All resources are only visible to the owner.
     An enum that represents who has view access to the resource.
     """
+    _pb_options = {"deprecated": True}
     VISIBILITY_UNSPECIFIED = 0
     ACCOUNT_ONLY = 1
     SHARED_WITH_GOOGLE = 2
@@ -254,9 +255,9 @@ class TimestampRange(proto.Message):
     r"""Message representing a period of time between two timestamps.
 
     Attributes:
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Begin of the period (inclusive).
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             End of the period (exclusive).
     """
 
@@ -270,7 +271,7 @@ class Location(proto.Message):
     information.
 
     Attributes:
-        location_type (~.common.Location.LocationType):
+        location_type (google.cloud.talent_v4beta1.types.Location.LocationType):
             The type of a location, which corresponds to the address
             lines field of
             [google.type.PostalAddress][google.type.PostalAddress]. For
@@ -278,13 +279,13 @@ class Location(proto.Message):
             [LocationType.NEIGHBORHOOD][google.cloud.talent.v4beta1.Location.LocationType.NEIGHBORHOOD],
             and "Kansas City, KS, USA" has a type of
             [LocationType.LOCALITY][google.cloud.talent.v4beta1.Location.LocationType.LOCALITY].
-        postal_address (~.gt_postal_address.PostalAddress):
+        postal_address (google.type.postal_address_pb2.PostalAddress):
             Postal address of the location that includes
             human readable information, such as postal
             delivery and payments addresses. Given a postal
             address, a postal service can deliver items to a
             premises, P.O. Box, or other delivery location.
-        lat_lng (~.latlng.LatLng):
+        lat_lng (google.type.latlng_pb2.LatLng):
             An object representing a latitude/longitude
             pair.
         radius_miles (float):
@@ -390,7 +391,7 @@ class RequestMetadata(proto.Message):
             and
             [user_id][google.cloud.talent.v4beta1.RequestMetadata.user_id]
             for the best service experience.
-        device_info (~.common.DeviceInfo):
+        device_info (google.cloud.talent_v4beta1.types.DeviceInfo):
             The type of device used by the job seeker at
             the time of the call to the service.
     """
@@ -426,7 +427,7 @@ class DeviceInfo(proto.Message):
     devices.
 
     Attributes:
-        device_type (~.common.DeviceInfo.DeviceType):
+        device_type (google.cloud.talent_v4beta1.types.DeviceInfo.DeviceType):
             Type of the device.
         id (str):
             A device-specific ID. The ID must be a unique
@@ -532,14 +533,14 @@ class CompensationInfo(proto.Message):
     r"""Job compensation details.
 
     Attributes:
-        entries (Sequence[~.common.CompensationInfo.CompensationEntry]):
+        entries (Sequence[google.cloud.talent_v4beta1.types.CompensationInfo.CompensationEntry]):
             Job compensation information.
 
             At most one entry can be of type
             [CompensationInfo.CompensationType.BASE][google.cloud.talent.v4beta1.CompensationInfo.CompensationType.BASE],
             which is referred as **base compensation entry** for the
             job.
-        annualized_base_compensation_range (~.common.CompensationInfo.CompensationRange):
+        annualized_base_compensation_range (google.cloud.talent_v4beta1.types.CompensationInfo.CompensationRange):
             Output only. Annualized base compensation range. Computed as
             base compensation entry's
             [CompensationEntry.amount][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.amount]
@@ -549,7 +550,7 @@ class CompensationInfo(proto.Message):
             See
             [CompensationEntry][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry]
             for explanation on compensation annualization.
-        annualized_total_compensation_range (~.common.CompensationInfo.CompensationRange):
+        annualized_total_compensation_range (google.cloud.talent_v4beta1.types.CompensationInfo.CompensationRange):
             Output only. Annualized total compensation range. Computed
             as all compensation entries'
             [CompensationEntry.amount][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.amount]
@@ -631,25 +632,25 @@ class CompensationInfo(proto.Message):
            [expected_units_per_year][google.cloud.talent.v4beta1.CompensationInfo.CompensationEntry.expected_units_per_year].
 
         Attributes:
-            type_ (~.common.CompensationInfo.CompensationType):
+            type_ (google.cloud.talent_v4beta1.types.CompensationInfo.CompensationType):
                 Compensation type.
 
                 Default is
                 [CompensationType.COMPENSATION_TYPE_UNSPECIFIED][google.cloud.talent.v4beta1.CompensationInfo.CompensationType.COMPENSATION_TYPE_UNSPECIFIED].
-            unit (~.common.CompensationInfo.CompensationUnit):
+            unit (google.cloud.talent_v4beta1.types.CompensationInfo.CompensationUnit):
                 Frequency of the specified amount.
 
                 Default is
                 [CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED][google.cloud.talent.v4beta1.CompensationInfo.CompensationUnit.COMPENSATION_UNIT_UNSPECIFIED].
-            amount (~.money.Money):
+            amount (google.type.money_pb2.Money):
                 Compensation amount.
-            range_ (~.common.CompensationInfo.CompensationRange):
+            range_ (google.cloud.talent_v4beta1.types.CompensationInfo.CompensationRange):
                 Compensation range.
             description (str):
                 Compensation description.  For example, could
                 indicate equity terms or provide additional
                 context to an estimated bonus.
-            expected_units_per_year (~.wrappers.DoubleValue):
+            expected_units_per_year (google.protobuf.wrappers_pb2.DoubleValue):
                 Expected number of units paid each year. If not specified,
                 when
                 [Job.employment_types][google.cloud.talent.v4beta1.Job.employment_types]
@@ -693,12 +694,12 @@ class CompensationInfo(proto.Message):
         r"""Compensation range.
 
         Attributes:
-            max_compensation (~.money.Money):
+            max_compensation (google.type.money_pb2.Money):
                 The maximum amount of compensation. If left empty, the value
                 is set to a maximal compensation value and the currency code
                 is set to match the [currency
                 code][google.type.Money.currency_code] of min_compensation.
-            min_compensation (~.money.Money):
+            min_compensation (google.type.money_pb2.Money):
                 The minimum amount of compensation. If left empty, the value
                 is set to zero and the currency code is set to match the
                 [currency code][google.type.Money.currency_code] of
@@ -727,10 +728,10 @@ class Certification(proto.Message):
         display_name (str):
             Name of license or certification.
             Number of characters allowed is 100.
-        acquire_date (~.date.Date):
+        acquire_date (google.type.date_pb2.Date):
             Acquisition date or effective date of license
             or certification.
-        expire_date (~.date.Date):
+        expire_date (google.type.date_pb2.Date):
             Expiration date of license of certification.
         authority (str):
             Authority of license, such as government.
@@ -760,9 +761,9 @@ class Skill(proto.Message):
             For example, "Java", "Python".
 
             Number of characters allowed is 100.
-        last_used_date (~.date.Date):
+        last_used_date (google.type.date_pb2.Date):
             The last time this skill was used.
-        level (~.common.SkillProficiencyLevel):
+        level (google.cloud.talent_v4beta1.types.SkillProficiencyLevel):
             Skill proficiency level which indicates how
             proficient the candidate is at this skill.
         context (str):
@@ -791,9 +792,9 @@ class Interview(proto.Message):
     r"""Details of an interview.
 
     Attributes:
-        rating (~.common.Rating):
+        rating (google.cloud.talent_v4beta1.types.Rating):
             The rating on this interview.
-        outcome (~.common.Outcome):
+        outcome (google.cloud.talent_v4beta1.types.Outcome):
             Required. The overall decision resulting from
             this interview (positive, negative, nuetral).
     """
@@ -835,7 +836,7 @@ class BatchOperationMetadata(proto.Message):
     [google.longrunning.Operation.metadata][google.longrunning.Operation.metadata].
 
     Attributes:
-        state (~.common.BatchOperationMetadata.State):
+        state (google.cloud.talent_v4beta1.types.BatchOperationMetadata.State):
             The state of a long running operation.
         state_description (str):
             More detailed information about operation
@@ -847,14 +848,14 @@ class BatchOperationMetadata(proto.Message):
             Count of failed item(s) inside an operation.
         total_count (int):
             Count of total item(s) inside an operation.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the batch operation is created.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the batch operation status is updated. The
             metadata and the
             [update_time][google.cloud.talent.v4beta1.BatchOperationMetadata.update_time]
             is refreshed every minute otherwise cached data is returned.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the batch operation is finished and
             [google.longrunning.Operation.done][google.longrunning.Operation.done]
             is set to ``true``.

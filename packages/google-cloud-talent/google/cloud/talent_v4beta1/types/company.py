@@ -53,7 +53,7 @@ class Company(proto.Message):
             used to uniquely identify the company.
 
             The maximum number of allowed characters is 255.
-        size (~.common.CompanySize):
+        size (google.cloud.talent_v4beta1.types.CompanySize):
             The employer's company size.
         headquarters_address (str):
             The street address of the company's main headquarters, which
@@ -92,7 +92,7 @@ class Company(proto.Message):
             search keyword. Custom field values with parenthesis,
             brackets and special symbols are not searchable as-is, and
             those keyword queries must be surrounded by quotes.
-        derived_info (~.company.Company.DerivedInfo):
+        derived_info (google.cloud.talent_v4beta1.types.Company.DerivedInfo):
             Output only. Derived details about the
             company.
         suspended (bool):
@@ -106,7 +106,7 @@ class Company(proto.Message):
         r"""Derived details about the company.
 
         Attributes:
-            headquarters_location (~.common.Location):
+            headquarters_location (google.cloud.talent_v4beta1.types.Location):
                 A structured headquarters location of the company, resolved
                 from
                 [Company.headquarters_address][google.cloud.talent.v4beta1.Company.headquarters_address]

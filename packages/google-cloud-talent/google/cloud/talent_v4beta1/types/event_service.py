@@ -38,7 +38,7 @@ class CreateClientEventRequest(proto.Message):
             for example, "projects/foo/tenant/bar". If tenant id is
             unspecified, a default tenant is created, for example,
             "projects/foo".
-        client_event (~.event.ClientEvent):
+        client_event (google.cloud.talent_v4beta1.types.ClientEvent):
             Required. Events issued when end user
             interacts with customer's application that uses
             Cloud Talent Solution.

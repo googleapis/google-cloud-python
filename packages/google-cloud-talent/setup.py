@@ -29,11 +29,10 @@ version = "2.1.0"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "google-api-core[grpc] >= 1.22.0, < 2.0.0dev",
-    "proto-plus >= 1.4.0",
-    "libcst >= 0.2.5",
+    "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
+    "proto-plus >= 1.15.0",
 ]
-extras = {}
+extras = {"libcst": "libcst >= 0.2.5"}
 
 
 # Setup boilerplate below this line.

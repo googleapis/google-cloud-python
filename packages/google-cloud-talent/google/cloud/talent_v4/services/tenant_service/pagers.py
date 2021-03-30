@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.talent_v4.types import tenant
 from google.cloud.talent_v4.types import tenant_service
@@ -25,7 +34,7 @@ class ListTenantsPager:
     """A pager for iterating through ``list_tenants`` requests.
 
     This class thinly wraps an initial
-    :class:`~.tenant_service.ListTenantsResponse` object, and
+    :class:`google.cloud.talent_v4.types.ListTenantsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``tenants`` field.
 
@@ -34,7 +43,7 @@ class ListTenantsPager:
     through the ``tenants`` field on the
     corresponding responses.
 
-    All the usual :class:`~.tenant_service.ListTenantsResponse`
+    All the usual :class:`google.cloud.talent_v4.types.ListTenantsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -52,9 +61,9 @@ class ListTenantsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.tenant_service.ListTenantsRequest`):
+            request (google.cloud.talent_v4.types.ListTenantsRequest):
                 The initial request object.
-            response (:class:`~.tenant_service.ListTenantsResponse`):
+            response (google.cloud.talent_v4.types.ListTenantsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -87,7 +96,7 @@ class ListTenantsAsyncPager:
     """A pager for iterating through ``list_tenants`` requests.
 
     This class thinly wraps an initial
-    :class:`~.tenant_service.ListTenantsResponse` object, and
+    :class:`google.cloud.talent_v4.types.ListTenantsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``tenants`` field.
 
@@ -96,7 +105,7 @@ class ListTenantsAsyncPager:
     through the ``tenants`` field on the
     corresponding responses.
 
-    All the usual :class:`~.tenant_service.ListTenantsResponse`
+    All the usual :class:`google.cloud.talent_v4.types.ListTenantsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -114,9 +123,9 @@ class ListTenantsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.tenant_service.ListTenantsRequest`):
+            request (google.cloud.talent_v4.types.ListTenantsRequest):
                 The initial request object.
-            response (:class:`~.tenant_service.ListTenantsResponse`):
+            response (google.cloud.talent_v4.types.ListTenantsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

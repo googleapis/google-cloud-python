@@ -111,15 +111,15 @@ class Job(proto.Message):
             experience.
 
             The maximum number of allowed characters is 500.
-        application_info (~.job.Job.ApplicationInfo):
+        application_info (google.cloud.talent_v4.types.Job.ApplicationInfo):
             Job application information.
-        job_benefits (Sequence[~.common.JobBenefit]):
+        job_benefits (Sequence[google.cloud.talent_v4.types.JobBenefit]):
             The benefits included with the job.
-        compensation_info (~.common.CompensationInfo):
+        compensation_info (google.cloud.talent_v4.types.CompensationInfo):
             Job compensation information (a.k.a. "pay
             rate") i.e., the compensation that will paid to
             the employee.
-        custom_attributes (Sequence[~.job.Job.CustomAttributesEntry]):
+        custom_attributes (Sequence[google.cloud.talent_v4.types.Job.CustomAttributesEntry]):
             A map of fields to hold both filterable and non-filterable
             custom job attributes that are not covered by the provided
             structured fields.
@@ -134,7 +134,7 @@ class Job(proto.Message):
             than 255 characters. For unfilterable ``string_values``, the
             maximum total size of ``string_values`` across all keys is
             50KB.
-        degree_types (Sequence[~.common.DegreeType]):
+        degree_types (Sequence[google.cloud.talent_v4.types.DegreeType]):
             The desired education degrees for the job,
             such as Bachelors, Masters.
         department (str):
@@ -142,7 +142,7 @@ class Job(proto.Message):
             company with the open position.
 
             The maximum number of allowed characters is 255.
-        employment_types (Sequence[~.common.EmploymentType]):
+        employment_types (Sequence[google.cloud.talent_v4.types.EmploymentType]):
             The employment type(s) of a job, for example, [full
             time][google.cloud.talent.v4.EmploymentType.FULL_TIME] or
             [part
@@ -167,7 +167,7 @@ class Job(proto.Message):
             present, detected language code based on
             [Job.description][google.cloud.talent.v4.Job.description] is
             assigned, otherwise defaults to 'en_US'.
-        job_level (~.common.JobLevel):
+        job_level (google.cloud.talent_v4.types.JobLevel):
             The experience level associated with the job,
             such as "Entry Level".
         promotion_value (int):
@@ -200,7 +200,7 @@ class Job(proto.Message):
             markup tags.
 
             The maximum number of allowed characters is 10,000.
-        posting_region (~.common.PostingRegion):
+        posting_region (google.cloud.talent_v4.types.PostingRegion):
             The job
             [PostingRegion][google.cloud.talent.v4.PostingRegion] (for
             example, state, country) throughout which the job is
@@ -215,7 +215,7 @@ class Job(proto.Message):
             setting job
             [Job.addresses][google.cloud.talent.v4.Job.addresses] to the
             same location level as this field is strongly recommended.
-        visibility (~.common.Visibility):
+        visibility (google.cloud.talent_v4.types.Visibility):
             Deprecated. The job is only visible to the owner.
 
             The visibility of the job.
@@ -223,21 +223,21 @@ class Job(proto.Message):
             Defaults to
             [Visibility.ACCOUNT_ONLY][google.cloud.talent.v4.Visibility.ACCOUNT_ONLY]
             if not specified.
-        job_start_time (~.timestamp.Timestamp):
+        job_start_time (google.protobuf.timestamp_pb2.Timestamp):
             The start timestamp of the job in UTC time
             zone. Typically this field is used for
             contracting engagements. Invalid timestamps are
             ignored.
-        job_end_time (~.timestamp.Timestamp):
+        job_end_time (google.protobuf.timestamp_pb2.Timestamp):
             The end timestamp of the job. Typically this
             field is used for contracting engagements.
             Invalid timestamps are ignored.
-        posting_publish_time (~.timestamp.Timestamp):
+        posting_publish_time (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp this job posting was most
             recently published. The default value is the
             time the request arrives at the server. Invalid
             timestamps are ignored.
-        posting_expire_time (~.timestamp.Timestamp):
+        posting_expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Strongly recommended for the best service experience.
 
             The expiration timestamp of the job. After this timestamp,
@@ -295,19 +295,19 @@ class Job(proto.Message):
             the masks are empty meaning that every field is updated, the
             job posting expires after 30 days from the job's last update
             time. Otherwise the expiration date isn't updated.
-        posting_create_time (~.timestamp.Timestamp):
+        posting_create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when this job
             posting was created.
-        posting_update_time (~.timestamp.Timestamp):
+        posting_update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when this job
             posting was last updated.
         company_display_name (str):
             Output only. Display name of the company
             listing the job.
-        derived_info (~.job.Job.DerivedInfo):
+        derived_info (google.cloud.talent_v4.types.Job.DerivedInfo):
             Output only. Derived details about the job
             posting.
-        processing_options (~.job.Job.ProcessingOptions):
+        processing_options (google.cloud.talent_v4.types.Job.ProcessingOptions):
             Options for job processing.
     """
 
@@ -347,7 +347,7 @@ class Job(proto.Message):
         r"""Derived details about the job posting.
 
         Attributes:
-            locations (Sequence[~.common.Location]):
+            locations (Sequence[google.cloud.talent_v4.types.Location]):
                 Structured locations of the job, resolved from
                 [Job.addresses][google.cloud.talent.v4.Job.addresses].
 
@@ -355,7 +355,7 @@ class Job(proto.Message):
                 are exactly matched to
                 [Job.addresses][google.cloud.talent.v4.Job.addresses] in the
                 same order.
-            job_categories (Sequence[~.common.JobCategory]):
+            job_categories (Sequence[google.cloud.talent_v4.types.JobCategory]):
                 Job categories derived from
                 [Job.title][google.cloud.talent.v4.Job.title] and
                 [Job.description][google.cloud.talent.v4.Job.description].
@@ -376,7 +376,7 @@ class Job(proto.Message):
             disable_street_address_resolution (bool):
                 If set to ``true``, the service does not attempt to resolve
                 a more precise address for the job.
-            html_sanitization (~.common.HtmlSanitization):
+            html_sanitization (google.cloud.talent_v4.types.HtmlSanitization):
                 Option for job HTML content sanitization. Applied fields
                 are:
 

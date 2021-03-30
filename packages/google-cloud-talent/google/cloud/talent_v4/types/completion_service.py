@@ -57,10 +57,10 @@ class CompleteQueryRequest(proto.Message):
             The format is
             "projects/{project_id}/tenants/{tenant_id}/companies/{company_id}",
             for example, "projects/foo/tenants/bar/companies/baz".
-        scope (~.completion_service.CompleteQueryRequest.CompletionScope):
+        scope (google.cloud.talent_v4.types.CompleteQueryRequest.CompletionScope):
             The scope of the completion. The defaults is
             [CompletionScope.PUBLIC][google.cloud.talent.v4.CompleteQueryRequest.CompletionScope.PUBLIC].
-        type_ (~.completion_service.CompleteQueryRequest.CompletionType):
+        type_ (google.cloud.talent_v4.types.CompleteQueryRequest.CompletionType):
             The completion topic. The default is
             [CompletionType.COMBINED][google.cloud.talent.v4.CompleteQueryRequest.CompletionType.COMBINED].
     """
@@ -97,10 +97,10 @@ class CompleteQueryResponse(proto.Message):
     r"""Response of auto-complete query.
 
     Attributes:
-        completion_results (Sequence[~.completion_service.CompleteQueryResponse.CompletionResult]):
+        completion_results (Sequence[google.cloud.talent_v4.types.CompleteQueryResponse.CompletionResult]):
             Results of the matching job/company
             candidates.
-        metadata (~.common.ResponseMetadata):
+        metadata (google.cloud.talent_v4.types.ResponseMetadata):
             Additional information for the API
             invocation, such as the request tracking id.
     """
@@ -111,7 +111,7 @@ class CompleteQueryResponse(proto.Message):
         Attributes:
             suggestion (str):
                 The suggestion for the query.
-            type_ (~.completion_service.CompleteQueryRequest.CompletionType):
+            type_ (google.cloud.talent_v4.types.CompleteQueryRequest.CompletionType):
                 The completion topic.
             image_uri (str):
                 The URI of the company image for

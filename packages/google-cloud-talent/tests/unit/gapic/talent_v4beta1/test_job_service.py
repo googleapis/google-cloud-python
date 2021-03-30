@@ -98,7 +98,22 @@ def test__get_default_mtls_endpoint():
     assert JobServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [JobServiceClient, JobServiceAsyncClient])
+@pytest.mark.parametrize("client_class", [JobServiceClient, JobServiceAsyncClient,])
+def test_job_service_client_from_service_account_info(client_class):
+    creds = credentials.AnonymousCredentials()
+    with mock.patch.object(
+        service_account.Credentials, "from_service_account_info"
+    ) as factory:
+        factory.return_value = creds
+        info = {"valid": True}
+        client = client_class.from_service_account_info(info)
+        assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
+
+        assert client.transport._host == "jobs.googleapis.com:443"
+
+
+@pytest.mark.parametrize("client_class", [JobServiceClient, JobServiceAsyncClient,])
 def test_job_service_client_from_service_account_file(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -107,16 +122,21 @@ def test_job_service_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "jobs.googleapis.com:443"
 
 
 def test_job_service_client_get_transport_class():
     transport = JobServiceClient.get_transport_class()
-    assert transport == transports.JobServiceGrpcTransport
+    available_transports = [
+        transports.JobServiceGrpcTransport,
+    ]
+    assert transport in available_transports
 
     transport = JobServiceClient.get_transport_class("grpc")
     assert transport == transports.JobServiceGrpcTransport
@@ -165,7 +185,7 @@ def test_job_service_client_client_options(
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -181,7 +201,7 @@ def test_job_service_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_ENDPOINT,
                 scopes=None,
-                ssl_channel_credentials=None,
+                client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
@@ -197,7 +217,7 @@ def test_job_service_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_MTLS_ENDPOINT,
                 scopes=None,
-                ssl_channel_credentials=None,
+                client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
@@ -225,7 +245,7 @@ def test_job_service_client_client_options(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -274,29 +294,25 @@ def test_job_service_client_mtls_env_auto(
             client_cert_source=client_cert_source_callback
         )
         with mock.patch.object(transport_class, "__init__") as patched:
-            ssl_channel_creds = mock.Mock()
-            with mock.patch(
-                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
-            ):
-                patched.return_value = None
-                client = client_class(client_options=options)
+            patched.return_value = None
+            client = client_class(client_options=options)
 
-                if use_client_cert_env == "false":
-                    expected_ssl_channel_creds = None
-                    expected_host = client.DEFAULT_ENDPOINT
-                else:
-                    expected_ssl_channel_creds = ssl_channel_creds
-                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+            if use_client_cert_env == "false":
+                expected_client_cert_source = None
+                expected_host = client.DEFAULT_ENDPOINT
+            else:
+                expected_client_cert_source = client_cert_source_callback
+                expected_host = client.DEFAULT_MTLS_ENDPOINT
 
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=expected_host,
-                    scopes=None,
-                    ssl_channel_credentials=expected_ssl_channel_creds,
-                    quota_project_id=None,
-                    client_info=transports.base.DEFAULT_CLIENT_INFO,
-                )
+            patched.assert_called_once_with(
+                credentials=None,
+                credentials_file=None,
+                host=expected_host,
+                scopes=None,
+                client_cert_source_for_mtls=expected_client_cert_source,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+            )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
@@ -305,40 +321,31 @@ def test_job_service_client_mtls_env_auto(
     ):
         with mock.patch.object(transport_class, "__init__") as patched:
             with mock.patch(
-                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=True,
             ):
                 with mock.patch(
-                    "google.auth.transport.grpc.SslCredentials.is_mtls",
-                    new_callable=mock.PropertyMock,
-                ) as is_mtls_mock:
-                    with mock.patch(
-                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
-                        new_callable=mock.PropertyMock,
-                    ) as ssl_credentials_mock:
-                        if use_client_cert_env == "false":
-                            is_mtls_mock.return_value = False
-                            ssl_credentials_mock.return_value = None
-                            expected_host = client.DEFAULT_ENDPOINT
-                            expected_ssl_channel_creds = None
-                        else:
-                            is_mtls_mock.return_value = True
-                            ssl_credentials_mock.return_value = mock.Mock()
-                            expected_host = client.DEFAULT_MTLS_ENDPOINT
-                            expected_ssl_channel_creds = (
-                                ssl_credentials_mock.return_value
-                            )
+                    "google.auth.transport.mtls.default_client_cert_source",
+                    return_value=client_cert_source_callback,
+                ):
+                    if use_client_cert_env == "false":
+                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_client_cert_source = None
+                    else:
+                        expected_host = client.DEFAULT_MTLS_ENDPOINT
+                        expected_client_cert_source = client_cert_source_callback
 
-                        patched.return_value = None
-                        client = client_class()
-                        patched.assert_called_once_with(
-                            credentials=None,
-                            credentials_file=None,
-                            host=expected_host,
-                            scopes=None,
-                            ssl_channel_credentials=expected_ssl_channel_creds,
-                            quota_project_id=None,
-                            client_info=transports.base.DEFAULT_CLIENT_INFO,
-                        )
+                    patched.return_value = None
+                    client = client_class()
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=expected_host,
+                        scopes=None,
+                        client_cert_source_for_mtls=expected_client_cert_source,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    )
 
     # Check the case client_cert_source and ADC client cert are not provided.
     with mock.patch.dict(
@@ -346,24 +353,20 @@ def test_job_service_client_mtls_env_auto(
     ):
         with mock.patch.object(transport_class, "__init__") as patched:
             with mock.patch(
-                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=False,
             ):
-                with mock.patch(
-                    "google.auth.transport.grpc.SslCredentials.is_mtls",
-                    new_callable=mock.PropertyMock,
-                ) as is_mtls_mock:
-                    is_mtls_mock.return_value = False
-                    patched.return_value = None
-                    client = client_class()
-                    patched.assert_called_once_with(
-                        credentials=None,
-                        credentials_file=None,
-                        host=client.DEFAULT_ENDPOINT,
-                        scopes=None,
-                        ssl_channel_credentials=None,
-                        quota_project_id=None,
-                        client_info=transports.base.DEFAULT_CLIENT_INFO,
-                    )
+                patched.return_value = None
+                client = client_class()
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=client.DEFAULT_ENDPOINT,
+                    scopes=None,
+                    client_cert_source_for_mtls=None,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                )
 
 
 @pytest.mark.parametrize(
@@ -390,7 +393,7 @@ def test_job_service_client_client_options_scopes(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -420,7 +423,7 @@ def test_job_service_client_client_options_credentials_file(
             credentials_file="credentials.json",
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -437,7 +440,7 @@ def test_job_service_client_client_options_from_dict():
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -530,6 +533,22 @@ def test_create_job(transport: str = "grpc", request_type=job_service.CreateJobR
 
 def test_create_job_from_dict():
     test_create_job(request_type=dict)
+
+
+def test_create_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = JobServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_job), "__call__") as call:
+        client.create_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == job_service.CreateJobRequest()
 
 
 @pytest.mark.asyncio
@@ -784,6 +803,24 @@ def test_batch_create_jobs(
 
 def test_batch_create_jobs_from_dict():
     test_batch_create_jobs(request_type=dict)
+
+
+def test_batch_create_jobs_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = JobServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_jobs), "__call__"
+    ) as call:
+        client.batch_create_jobs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == job_service.BatchCreateJobsRequest()
 
 
 @pytest.mark.asyncio
@@ -1049,6 +1086,22 @@ def test_get_job(transport: str = "grpc", request_type=job_service.GetJobRequest
 
 def test_get_job_from_dict():
     test_get_job(request_type=dict)
+
+
+def test_get_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = JobServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_job), "__call__") as call:
+        client.get_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == job_service.GetJobRequest()
 
 
 @pytest.mark.asyncio
@@ -1348,6 +1401,22 @@ def test_update_job_from_dict():
     test_update_job(request_type=dict)
 
 
+def test_update_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = JobServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_job), "__call__") as call:
+        client.update_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == job_service.UpdateJobRequest()
+
+
 @pytest.mark.asyncio
 async def test_update_job_async(
     transport: str = "grpc_asyncio", request_type=job_service.UpdateJobRequest
@@ -1590,6 +1659,24 @@ def test_batch_update_jobs_from_dict():
     test_batch_update_jobs(request_type=dict)
 
 
+def test_batch_update_jobs_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = JobServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_jobs), "__call__"
+    ) as call:
+        client.batch_update_jobs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == job_service.BatchUpdateJobsRequest()
+
+
 @pytest.mark.asyncio
 async def test_batch_update_jobs_async(
     transport: str = "grpc_asyncio", request_type=job_service.BatchUpdateJobsRequest
@@ -1796,6 +1883,22 @@ def test_delete_job_from_dict():
     test_delete_job(request_type=dict)
 
 
+def test_delete_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = JobServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
+        client.delete_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == job_service.DeleteJobRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_job_async(
     transport: str = "grpc_asyncio", request_type=job_service.DeleteJobRequest
@@ -1976,6 +2079,24 @@ def test_batch_delete_jobs(
 
 def test_batch_delete_jobs_from_dict():
     test_batch_delete_jobs(request_type=dict)
+
+
+def test_batch_delete_jobs_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = JobServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_jobs), "__call__"
+    ) as call:
+        client.batch_delete_jobs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == job_service.BatchDeleteJobsRequest()
 
 
 @pytest.mark.asyncio
@@ -2181,6 +2302,22 @@ def test_list_jobs(transport: str = "grpc", request_type=job_service.ListJobsReq
 
 def test_list_jobs_from_dict():
     test_list_jobs(request_type=dict)
+
+
+def test_list_jobs_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = JobServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
+        client.list_jobs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == job_service.ListJobsRequest()
 
 
 @pytest.mark.asyncio
@@ -2493,6 +2630,22 @@ def test_search_jobs_from_dict():
     test_search_jobs(request_type=dict)
 
 
+def test_search_jobs_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = JobServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_jobs), "__call__") as call:
+        client.search_jobs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == job_service.SearchJobsRequest()
+
+
 @pytest.mark.asyncio
 async def test_search_jobs_async(
     transport: str = "grpc_asyncio", request_type=job_service.SearchJobsRequest
@@ -2797,6 +2950,24 @@ def test_search_jobs_for_alert(
 
 def test_search_jobs_for_alert_from_dict():
     test_search_jobs_for_alert(request_type=dict)
+
+
+def test_search_jobs_for_alert_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = JobServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_jobs_for_alert), "__call__"
+    ) as call:
+        client.search_jobs_for_alert()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == job_service.SearchJobsRequest()
 
 
 @pytest.mark.asyncio
@@ -3127,7 +3298,7 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.JobServiceGrpcTransport, transports.JobServiceGrpcAsyncIOTransport],
+    [transports.JobServiceGrpcTransport, transports.JobServiceGrpcAsyncIOTransport,],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -3250,6 +3421,51 @@ def test_job_service_transport_auth_adc():
         )
 
 
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.JobServiceGrpcTransport, transports.JobServiceGrpcAsyncIOTransport],
+)
+def test_job_service_grpc_transport_client_cert_source_for_mtls(transport_class):
+    cred = credentials.AnonymousCredentials()
+
+    # Check ssl_channel_credentials is used if provided.
+    with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
+        mock_ssl_channel_creds = mock.Mock()
+        transport_class(
+            host="squid.clam.whelk",
+            credentials=cred,
+            ssl_channel_credentials=mock_ssl_channel_creds,
+        )
+        mock_create_channel.assert_called_once_with(
+            "squid.clam.whelk:443",
+            credentials=cred,
+            credentials_file=None,
+            scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/jobs",
+            ),
+            ssl_credentials=mock_ssl_channel_creds,
+            quota_project_id=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+    # Check if ssl_channel_credentials is not provided, then client_cert_source_for_mtls
+    # is used.
+    with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
+        with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
+            transport_class(
+                credentials=cred,
+                client_cert_source_for_mtls=client_cert_source_callback,
+            )
+            expected_cert, expected_key = client_cert_source_callback()
+            mock_ssl_cred.assert_called_once_with(
+                certificate_chain=expected_cert, private_key=expected_key
+            )
+
+
 def test_job_service_host_no_port():
     client = JobServiceClient(
         credentials=credentials.AnonymousCredentials(),
@@ -3269,7 +3485,7 @@ def test_job_service_host_with_port():
 
 
 def test_job_service_grpc_transport_channel():
-    channel = grpc.insecure_channel("http://localhost/")
+    channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.JobServiceGrpcTransport(
@@ -3281,7 +3497,7 @@ def test_job_service_grpc_transport_channel():
 
 
 def test_job_service_grpc_asyncio_transport_channel():
-    channel = aio.insecure_channel("http://localhost/")
+    channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.JobServiceGrpcAsyncIOTransport(
@@ -3292,6 +3508,8 @@ def test_job_service_grpc_asyncio_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
     [transports.JobServiceGrpcTransport, transports.JobServiceGrpcAsyncIOTransport],
@@ -3301,7 +3519,7 @@ def test_job_service_transport_channel_mtls_with_client_cert_source(transport_cl
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
@@ -3342,6 +3560,8 @@ def test_job_service_transport_channel_mtls_with_client_cert_source(transport_cl
             assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
     [transports.JobServiceGrpcTransport, transports.JobServiceGrpcAsyncIOTransport],
@@ -3354,7 +3574,7 @@ def test_job_service_transport_channel_mtls_with_adc(transport_class):
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel

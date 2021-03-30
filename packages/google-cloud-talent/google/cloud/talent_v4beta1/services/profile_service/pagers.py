@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.talent_v4beta1.types import histogram
 from google.cloud.talent_v4beta1.types import profile
@@ -26,7 +35,7 @@ class ListProfilesPager:
     """A pager for iterating through ``list_profiles`` requests.
 
     This class thinly wraps an initial
-    :class:`~.profile_service.ListProfilesResponse` object, and
+    :class:`google.cloud.talent_v4beta1.types.ListProfilesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``profiles`` field.
 
@@ -35,7 +44,7 @@ class ListProfilesPager:
     through the ``profiles`` field on the
     corresponding responses.
 
-    All the usual :class:`~.profile_service.ListProfilesResponse`
+    All the usual :class:`google.cloud.talent_v4beta1.types.ListProfilesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -53,9 +62,9 @@ class ListProfilesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.profile_service.ListProfilesRequest`):
+            request (google.cloud.talent_v4beta1.types.ListProfilesRequest):
                 The initial request object.
-            response (:class:`~.profile_service.ListProfilesResponse`):
+            response (google.cloud.talent_v4beta1.types.ListProfilesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -88,7 +97,7 @@ class ListProfilesAsyncPager:
     """A pager for iterating through ``list_profiles`` requests.
 
     This class thinly wraps an initial
-    :class:`~.profile_service.ListProfilesResponse` object, and
+    :class:`google.cloud.talent_v4beta1.types.ListProfilesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``profiles`` field.
 
@@ -97,7 +106,7 @@ class ListProfilesAsyncPager:
     through the ``profiles`` field on the
     corresponding responses.
 
-    All the usual :class:`~.profile_service.ListProfilesResponse`
+    All the usual :class:`google.cloud.talent_v4beta1.types.ListProfilesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -115,9 +124,9 @@ class ListProfilesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.profile_service.ListProfilesRequest`):
+            request (google.cloud.talent_v4beta1.types.ListProfilesRequest):
                 The initial request object.
-            response (:class:`~.profile_service.ListProfilesResponse`):
+            response (google.cloud.talent_v4beta1.types.ListProfilesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -154,7 +163,7 @@ class SearchProfilesPager:
     """A pager for iterating through ``search_profiles`` requests.
 
     This class thinly wraps an initial
-    :class:`~.profile_service.SearchProfilesResponse` object, and
+    :class:`google.cloud.talent_v4beta1.types.SearchProfilesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``histogram_query_results`` field.
 
@@ -163,7 +172,7 @@ class SearchProfilesPager:
     through the ``histogram_query_results`` field on the
     corresponding responses.
 
-    All the usual :class:`~.profile_service.SearchProfilesResponse`
+    All the usual :class:`google.cloud.talent_v4beta1.types.SearchProfilesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -181,9 +190,9 @@ class SearchProfilesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.profile_service.SearchProfilesRequest`):
+            request (google.cloud.talent_v4beta1.types.SearchProfilesRequest):
                 The initial request object.
-            response (:class:`~.profile_service.SearchProfilesResponse`):
+            response (google.cloud.talent_v4beta1.types.SearchProfilesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -216,7 +225,7 @@ class SearchProfilesAsyncPager:
     """A pager for iterating through ``search_profiles`` requests.
 
     This class thinly wraps an initial
-    :class:`~.profile_service.SearchProfilesResponse` object, and
+    :class:`google.cloud.talent_v4beta1.types.SearchProfilesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``histogram_query_results`` field.
 
@@ -225,7 +234,7 @@ class SearchProfilesAsyncPager:
     through the ``histogram_query_results`` field on the
     corresponding responses.
 
-    All the usual :class:`~.profile_service.SearchProfilesResponse`
+    All the usual :class:`google.cloud.talent_v4beta1.types.SearchProfilesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -243,9 +252,9 @@ class SearchProfilesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.profile_service.SearchProfilesRequest`):
+            request (google.cloud.talent_v4beta1.types.SearchProfilesRequest):
                 The initial request object.
-            response (:class:`~.profile_service.SearchProfilesResponse`):
+            response (google.cloud.talent_v4beta1.types.SearchProfilesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

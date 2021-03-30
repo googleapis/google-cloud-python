@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.talent_v4beta1.types import job
 from google.cloud.talent_v4beta1.types import job_service
@@ -25,7 +34,7 @@ class ListJobsPager:
     """A pager for iterating through ``list_jobs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.job_service.ListJobsResponse` object, and
+    :class:`google.cloud.talent_v4beta1.types.ListJobsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``jobs`` field.
 
@@ -34,7 +43,7 @@ class ListJobsPager:
     through the ``jobs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.job_service.ListJobsResponse`
+    All the usual :class:`google.cloud.talent_v4beta1.types.ListJobsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -52,9 +61,9 @@ class ListJobsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.job_service.ListJobsRequest`):
+            request (google.cloud.talent_v4beta1.types.ListJobsRequest):
                 The initial request object.
-            response (:class:`~.job_service.ListJobsResponse`):
+            response (google.cloud.talent_v4beta1.types.ListJobsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -87,7 +96,7 @@ class ListJobsAsyncPager:
     """A pager for iterating through ``list_jobs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.job_service.ListJobsResponse` object, and
+    :class:`google.cloud.talent_v4beta1.types.ListJobsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``jobs`` field.
 
@@ -96,7 +105,7 @@ class ListJobsAsyncPager:
     through the ``jobs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.job_service.ListJobsResponse`
+    All the usual :class:`google.cloud.talent_v4beta1.types.ListJobsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -114,9 +123,9 @@ class ListJobsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.job_service.ListJobsRequest`):
+            request (google.cloud.talent_v4beta1.types.ListJobsRequest):
                 The initial request object.
-            response (:class:`~.job_service.ListJobsResponse`):
+            response (google.cloud.talent_v4beta1.types.ListJobsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -153,7 +162,7 @@ class SearchJobsPager:
     """A pager for iterating through ``search_jobs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.job_service.SearchJobsResponse` object, and
+    :class:`google.cloud.talent_v4beta1.types.SearchJobsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``matching_jobs`` field.
 
@@ -162,7 +171,7 @@ class SearchJobsPager:
     through the ``matching_jobs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.job_service.SearchJobsResponse`
+    All the usual :class:`google.cloud.talent_v4beta1.types.SearchJobsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -180,9 +189,9 @@ class SearchJobsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.job_service.SearchJobsRequest`):
+            request (google.cloud.talent_v4beta1.types.SearchJobsRequest):
                 The initial request object.
-            response (:class:`~.job_service.SearchJobsResponse`):
+            response (google.cloud.talent_v4beta1.types.SearchJobsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -215,7 +224,7 @@ class SearchJobsAsyncPager:
     """A pager for iterating through ``search_jobs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.job_service.SearchJobsResponse` object, and
+    :class:`google.cloud.talent_v4beta1.types.SearchJobsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``matching_jobs`` field.
 
@@ -224,7 +233,7 @@ class SearchJobsAsyncPager:
     through the ``matching_jobs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.job_service.SearchJobsResponse`
+    All the usual :class:`google.cloud.talent_v4beta1.types.SearchJobsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -242,9 +251,9 @@ class SearchJobsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.job_service.SearchJobsRequest`):
+            request (google.cloud.talent_v4beta1.types.SearchJobsRequest):
                 The initial request object.
-            response (:class:`~.job_service.SearchJobsResponse`):
+            response (google.cloud.talent_v4beta1.types.SearchJobsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -281,7 +290,7 @@ class SearchJobsForAlertPager:
     """A pager for iterating through ``search_jobs_for_alert`` requests.
 
     This class thinly wraps an initial
-    :class:`~.job_service.SearchJobsResponse` object, and
+    :class:`google.cloud.talent_v4beta1.types.SearchJobsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``matching_jobs`` field.
 
@@ -290,7 +299,7 @@ class SearchJobsForAlertPager:
     through the ``matching_jobs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.job_service.SearchJobsResponse`
+    All the usual :class:`google.cloud.talent_v4beta1.types.SearchJobsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -308,9 +317,9 @@ class SearchJobsForAlertPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.job_service.SearchJobsRequest`):
+            request (google.cloud.talent_v4beta1.types.SearchJobsRequest):
                 The initial request object.
-            response (:class:`~.job_service.SearchJobsResponse`):
+            response (google.cloud.talent_v4beta1.types.SearchJobsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -343,7 +352,7 @@ class SearchJobsForAlertAsyncPager:
     """A pager for iterating through ``search_jobs_for_alert`` requests.
 
     This class thinly wraps an initial
-    :class:`~.job_service.SearchJobsResponse` object, and
+    :class:`google.cloud.talent_v4beta1.types.SearchJobsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``matching_jobs`` field.
 
@@ -352,7 +361,7 @@ class SearchJobsForAlertAsyncPager:
     through the ``matching_jobs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.job_service.SearchJobsResponse`
+    All the usual :class:`google.cloud.talent_v4beta1.types.SearchJobsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -370,9 +379,9 @@ class SearchJobsForAlertAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.job_service.SearchJobsRequest`):
+            request (google.cloud.talent_v4beta1.types.SearchJobsRequest):
                 The initial request object.
-            response (:class:`~.job_service.SearchJobsResponse`):
+            response (google.cloud.talent_v4beta1.types.SearchJobsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

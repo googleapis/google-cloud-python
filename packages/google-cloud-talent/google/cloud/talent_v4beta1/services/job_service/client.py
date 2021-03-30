@@ -117,6 +117,22 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            JobServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -128,7 +144,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            JobServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -252,10 +268,10 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.JobServiceTransport]): The
+            transport (Union[str, JobServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -291,21 +307,17 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -348,7 +360,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -368,9 +380,9 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         but it may take up to 5 minutes.
 
         Args:
-            request (:class:`~.job_service.CreateJobRequest`):
+            request (google.cloud.talent_v4beta1.types.CreateJobRequest):
                 The request object. Create job request.
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the tenant under which
                 the job is created.
 
@@ -379,10 +391,11 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 example, "projects/foo/tenant/bar". If tenant id is
                 unspecified a default tenant is created. For example,
                 "projects/foo".
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            job (:class:`~.gct_job.Job`):
+            job (google.cloud.talent_v4beta1.types.Job):
                 Required. The Job to be created.
                 This corresponds to the ``job`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -395,12 +408,11 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gct_job.Job:
-                A Job resource represents a job posting (also referred
-                to as a "job listing" or "job requisition"). A job
-                belongs to a
-                [Company][google.cloud.talent.v4beta1.Company], which is
-                the hiring entity responsible for the job.
+            google.cloud.talent_v4beta1.types.Job:
+                A Job resource represents a job posting (also referred to as a "job listing"
+                   or "job requisition"). A job belongs to a
+                   [Company][google.cloud.talent.v4beta1.Company], which
+                   is the hiring entity responsible for the job.
 
         """
         # Create or coerce a protobuf request object.
@@ -457,9 +469,9 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         r"""Begins executing a batch create jobs operation.
 
         Args:
-            request (:class:`~.job_service.BatchCreateJobsRequest`):
+            request (google.cloud.talent_v4beta1.types.BatchCreateJobsRequest):
                 The request object. Request to create a batch of jobs.
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the tenant under which
                 the job is created.
 
@@ -468,10 +480,11 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 example, "projects/foo/tenant/bar". If tenant id is
                 unspecified, a default tenant is created. For example,
                 "projects/foo".
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            jobs (:class:`Sequence[~.job.Job]`):
+            jobs (Sequence[google.cloud.talent_v4beta1.types.Job]):
                 Required. The jobs to be created.
                 This corresponds to the ``jobs`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -484,18 +497,14 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.job_service.JobOperationResult``: The result
-                of
-                [JobService.BatchCreateJobs][google.cloud.talent.v4beta1.JobService.BatchCreateJobs]
-                or
-                [JobService.BatchUpdateJobs][google.cloud.talent.v4beta1.JobService.BatchUpdateJobs]
-                APIs. It's used to replace
-                [google.longrunning.Operation.response][google.longrunning.Operation.response]
-                in case of success.
+                The result type for the operation will be :class:`google.cloud.talent_v4beta1.types.JobOperationResult` The result of [JobService.BatchCreateJobs][google.cloud.talent.v4beta1.JobService.BatchCreateJobs] or
+                   [JobService.BatchUpdateJobs][google.cloud.talent.v4beta1.JobService.BatchUpdateJobs]
+                   APIs. It's used to replace
+                   [google.longrunning.Operation.response][google.longrunning.Operation.response]
+                   in case of success.
 
         """
         # Create or coerce a protobuf request object.
@@ -520,9 +529,8 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
             if parent is not None:
                 request.parent = parent
-
-            if jobs:
-                request.jobs.extend(jobs)
+            if jobs is not None:
+                request.jobs = jobs
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -561,9 +569,9 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         recently EXPIRED within the last 90 days.
 
         Args:
-            request (:class:`~.job_service.GetJobRequest`):
+            request (google.cloud.talent_v4beta1.types.GetJobRequest):
                 The request object. Get job request.
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the job to retrieve.
 
                 The format is
@@ -572,6 +580,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
                 If tenant id is unspecified, the default tenant is used.
                 For example, "projects/foo/jobs/bar".
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -583,12 +592,11 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.job.Job:
-                A Job resource represents a job posting (also referred
-                to as a "job listing" or "job requisition"). A job
-                belongs to a
-                [Company][google.cloud.talent.v4beta1.Company], which is
-                the hiring entity responsible for the job.
+            google.cloud.talent_v4beta1.types.Job:
+                A Job resource represents a job posting (also referred to as a "job listing"
+                   or "job requisition"). A job belongs to a
+                   [Company][google.cloud.talent.v4beta1.Company], which
+                   is the hiring entity responsible for the job.
 
         """
         # Create or coerce a protobuf request object.
@@ -645,9 +653,9 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         minutes.
 
         Args:
-            request (:class:`~.job_service.UpdateJobRequest`):
+            request (google.cloud.talent_v4beta1.types.UpdateJobRequest):
                 The request object. Update job request.
-            job (:class:`~.gct_job.Job`):
+            job (google.cloud.talent_v4beta1.types.Job):
                 Required. The Job to be updated.
                 This corresponds to the ``job`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -660,12 +668,11 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.gct_job.Job:
-                A Job resource represents a job posting (also referred
-                to as a "job listing" or "job requisition"). A job
-                belongs to a
-                [Company][google.cloud.talent.v4beta1.Company], which is
-                the hiring entity responsible for the job.
+            google.cloud.talent_v4beta1.types.Job:
+                A Job resource represents a job posting (also referred to as a "job listing"
+                   or "job requisition"). A job belongs to a
+                   [Company][google.cloud.talent.v4beta1.Company], which
+                   is the hiring entity responsible for the job.
 
         """
         # Create or coerce a protobuf request object.
@@ -720,9 +727,9 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         r"""Begins executing a batch update jobs operation.
 
         Args:
-            request (:class:`~.job_service.BatchUpdateJobsRequest`):
+            request (google.cloud.talent_v4beta1.types.BatchUpdateJobsRequest):
                 The request object. Request to update a batch of jobs.
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the tenant under which
                 the job is created.
 
@@ -731,10 +738,11 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 example, "projects/foo/tenant/bar". If tenant id is
                 unspecified, a default tenant is created. For example,
                 "projects/foo".
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            jobs (:class:`Sequence[~.job.Job]`):
+            jobs (Sequence[google.cloud.talent_v4beta1.types.Job]):
                 Required. The jobs to be updated.
                 This corresponds to the ``jobs`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -747,18 +755,14 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.job_service.JobOperationResult``: The result
-                of
-                [JobService.BatchCreateJobs][google.cloud.talent.v4beta1.JobService.BatchCreateJobs]
-                or
-                [JobService.BatchUpdateJobs][google.cloud.talent.v4beta1.JobService.BatchUpdateJobs]
-                APIs. It's used to replace
-                [google.longrunning.Operation.response][google.longrunning.Operation.response]
-                in case of success.
+                The result type for the operation will be :class:`google.cloud.talent_v4beta1.types.JobOperationResult` The result of [JobService.BatchCreateJobs][google.cloud.talent.v4beta1.JobService.BatchCreateJobs] or
+                   [JobService.BatchUpdateJobs][google.cloud.talent.v4beta1.JobService.BatchUpdateJobs]
+                   APIs. It's used to replace
+                   [google.longrunning.Operation.response][google.longrunning.Operation.response]
+                   in case of success.
 
         """
         # Create or coerce a protobuf request object.
@@ -783,9 +787,8 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
             if parent is not None:
                 request.parent = parent
-
-            if jobs:
-                request.jobs.extend(jobs)
+            if jobs is not None:
+                request.jobs = jobs
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -825,9 +828,9 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         seconds, but it may take up to 5 minutes.
 
         Args:
-            request (:class:`~.job_service.DeleteJobRequest`):
+            request (google.cloud.talent_v4beta1.types.DeleteJobRequest):
                 The request object. Delete job request.
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the job to be deleted.
 
                 The format is
@@ -836,6 +839,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
 
                 If tenant id is unspecified, the default tenant is used.
                 For example, "projects/foo/jobs/bar".
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -898,9 +902,9 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         filter.
 
         Args:
-            request (:class:`~.job_service.BatchDeleteJobsRequest`):
+            request (google.cloud.talent_v4beta1.types.BatchDeleteJobsRequest):
                 The request object. Batch delete jobs request.
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the tenant under which
                 the job is created.
 
@@ -909,10 +913,11 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 example, "projects/foo/tenant/bar". If tenant id is
                 unspecified, a default tenant is created. For example,
                 "projects/foo".
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            filter (:class:`str`):
+            filter (str):
                 Required. The filter string specifies the jobs to be
                 deleted.
 
@@ -924,7 +929,8 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 -  ``requisitionId`` (Required)
 
                 Sample Query: companyName = "projects/foo/companies/bar"
-                AND requisitionId = "req-1".
+                AND requisitionId = "req-1"
+
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -988,9 +994,9 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         r"""Lists jobs by filter.
 
         Args:
-            request (:class:`~.job_service.ListJobsRequest`):
+            request (google.cloud.talent_v4beta1.types.ListJobsRequest):
                 The request object. List jobs request.
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the tenant under which
                 the job is created.
 
@@ -999,10 +1005,11 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 example, "projects/foo/tenant/bar". If tenant id is
                 unspecified, a default tenant is created. For example,
                 "projects/foo".
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            filter (:class:`str`):
+            filter (str):
                 Required. The filter string specifies the jobs to be
                 enumerated.
 
@@ -1024,7 +1031,8 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                    requisitionId = "req-1"
                 -  companyName =
                    "projects/foo/tenants/bar/companies/baz" AND status =
-                   "EXPIRED".
+                   "EXPIRED"
+
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1036,7 +1044,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListJobsPager:
+            google.cloud.talent_v4beta1.services.job_service.pagers.ListJobsPager:
                 List jobs response.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -1107,7 +1115,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         has permission to search against.
 
         Args:
-            request (:class:`~.job_service.SearchJobsRequest`):
+            request (google.cloud.talent_v4beta1.types.SearchJobsRequest):
                 The request object. The Request body of the `SearchJobs`
                 call.
 
@@ -1118,7 +1126,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.SearchJobsPager:
+            google.cloud.talent_v4beta1.services.job_service.pagers.SearchJobsPager:
                 Response for SearchJob method.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -1179,7 +1187,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
         permission to search against.
 
         Args:
-            request (:class:`~.job_service.SearchJobsRequest`):
+            request (google.cloud.talent_v4beta1.types.SearchJobsRequest):
                 The request object. The Request body of the `SearchJobs`
                 call.
 
@@ -1190,7 +1198,7 @@ class JobServiceClient(metaclass=JobServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.SearchJobsForAlertPager:
+            google.cloud.talent_v4beta1.services.job_service.pagers.SearchJobsForAlertPager:
                 Response for SearchJob method.
                 Iterating over this object will yield
                 results and resolve additional pages

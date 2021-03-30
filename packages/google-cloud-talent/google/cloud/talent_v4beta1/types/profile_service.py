@@ -81,7 +81,7 @@ class ListProfilesRequest(proto.Message):
             returned, at most 100.
             Default is 100 unless a positive number smaller
             than 100 is specified.
-        read_mask (~.field_mask.FieldMask):
+        read_mask (google.protobuf.field_mask_pb2.FieldMask):
             A field mask to specify the profile fields to be listed in
             response. All fields are listed if it is unset.
 
@@ -105,7 +105,7 @@ class ListProfilesResponse(proto.Message):
     r"""The List profiles response object.
 
     Attributes:
-        profiles (Sequence[~.gct_profile.Profile]):
+        profiles (Sequence[google.cloud.talent_v4beta1.types.Profile]):
             Profiles for the specific tenant.
         next_page_token (str):
             A token to retrieve the next page of results.
@@ -132,7 +132,7 @@ class CreateProfileRequest(proto.Message):
 
             The format is "projects/{project_id}/tenants/{tenant_id}".
             For example, "projects/foo/tenants/bar".
-        profile (~.gct_profile.Profile):
+        profile (google.cloud.talent_v4beta1.types.Profile):
             Required. The profile to be created.
     """
 
@@ -160,9 +160,9 @@ class UpdateProfileRequest(proto.Message):
     r"""Update profile request
 
     Attributes:
-        profile (~.gct_profile.Profile):
+        profile (google.cloud.talent_v4beta1.types.Profile):
             Required. Profile to be updated.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             A field mask to specify the profile fields to
             update.
             A full update is performed if it is unset.
@@ -197,13 +197,13 @@ class SearchProfilesRequest(proto.Message):
 
             The format is "projects/{project_id}/tenants/{tenant_id}".
             For example, "projects/foo/tenants/bar".
-        request_metadata (~.common.RequestMetadata):
+        request_metadata (google.cloud.talent_v4beta1.types.RequestMetadata):
             Required. The meta information collected
             about the profile search user. This is used to
             improve the search quality of the service. These
             values are provided by users, and must be
             precise and consistent.
-        profile_query (~.filters.ProfileQuery):
+        profile_query (google.cloud.talent_v4beta1.types.ProfileQuery):
             Search query to execute. See
             [ProfileQuery][google.cloud.talent.v4beta1.ProfileQuery] for
             more details.
@@ -273,7 +273,7 @@ class SearchProfilesRequest(proto.Message):
             order, sort values case sensitively (based on
             ASCII) when the value is set to true. Default
             value is case in-sensitive sort (false).
-        histogram_queries (Sequence[~.histogram.HistogramQuery]):
+        histogram_queries (Sequence[google.cloud.talent_v4beta1.types.HistogramQuery]):
             A list of expressions specifies histogram requests against
             matching profiles for
             [SearchProfilesRequest][google.cloud.talent.v4beta1.SearchProfilesRequest].
@@ -463,18 +463,18 @@ class SearchProfilesResponse(proto.Message):
             An estimation of the number of profiles that
             match the specified query.
             This number isn't guaranteed to be accurate.
-        spell_correction (~.common.SpellingCorrection):
+        spell_correction (google.cloud.talent_v4beta1.types.SpellingCorrection):
             The spell checking result, and correction.
-        metadata (~.common.ResponseMetadata):
+        metadata (google.cloud.talent_v4beta1.types.ResponseMetadata):
             Additional information for the API
             invocation, such as the request tracking id.
         next_page_token (str):
             A token to retrieve the next page of results.
             This is empty if there are no more results.
-        histogram_query_results (Sequence[~.histogram.HistogramQueryResult]):
+        histogram_query_results (Sequence[google.cloud.talent_v4beta1.types.HistogramQueryResult]):
             The histogram results that match with specified
             [SearchProfilesRequest.histogram_queries][google.cloud.talent.v4beta1.SearchProfilesRequest.histogram_queries].
-        summarized_profiles (Sequence[~.profile_service.SummarizedProfile]):
+        summarized_profiles (Sequence[google.cloud.talent_v4beta1.types.SummarizedProfile]):
             The profile entities that match the specified
             [SearchProfilesRequest][google.cloud.talent.v4beta1.SearchProfilesRequest].
         result_set_id (str):
@@ -513,10 +513,10 @@ class SummarizedProfile(proto.Message):
     [SearchProfilesResponse][google.cloud.talent.v4beta1.SearchProfilesResponse].
 
     Attributes:
-        profiles (Sequence[~.gct_profile.Profile]):
+        profiles (Sequence[google.cloud.talent_v4beta1.types.Profile]):
             A list of profiles that are linked by
             [Profile.group_id][google.cloud.talent.v4beta1.Profile.group_id].
-        summary (~.gct_profile.Profile):
+        summary (google.cloud.talent_v4beta1.types.Profile):
             A profile summary shows the profile summary and how the
             profile matches the search query.
 
