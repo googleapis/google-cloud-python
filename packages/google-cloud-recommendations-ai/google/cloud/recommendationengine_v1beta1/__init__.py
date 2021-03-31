@@ -73,6 +73,7 @@ from .types.user_event_service import WriteUserEventRequest
 __all__ = (
     "CatalogInlineSource",
     "CatalogItem",
+    "CatalogServiceClient",
     "CollectUserEventRequest",
     "CreateCatalogItemRequest",
     "CreatePredictionApiKeyRegistrationRequest",
@@ -112,8 +113,7 @@ __all__ = (
     "UserEvent",
     "UserEventImportSummary",
     "UserEventInlineSource",
-    "UserEventServiceClient",
     "UserInfo",
     "WriteUserEventRequest",
-    "CatalogServiceClient",
+    "UserEventServiceClient",
 )
