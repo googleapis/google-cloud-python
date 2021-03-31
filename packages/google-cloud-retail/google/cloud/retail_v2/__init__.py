@@ -64,7 +64,6 @@ from .types.user_event_service import WriteUserEventRequest
 __all__ = (
     "BigQuerySource",
     "Catalog",
-    "CatalogServiceClient",
     "CollectUserEventRequest",
     "CreateProductRequest",
     "CustomAttribute",
@@ -82,6 +81,7 @@ __all__ = (
     "ListCatalogsResponse",
     "PredictRequest",
     "PredictResponse",
+    "PredictionServiceClient",
     "PriceInfo",
     "Product",
     "ProductDetail",
@@ -105,5 +105,5 @@ __all__ = (
     "UserEventServiceClient",
     "UserInfo",
     "WriteUserEventRequest",
-    "PredictionServiceClient",
+    "CatalogServiceClient",
 )
