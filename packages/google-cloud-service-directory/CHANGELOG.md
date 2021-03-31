@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/googleapis/python-service-directory/compare/v0.4.1...v0.5.0) (2021-03-31)
+
+
+### Features
+
+* add `from_service_account_info` ([#45](https://www.github.com/googleapis/python-service-directory/issues/45)) ([db77e88](https://www.github.com/googleapis/python-service-directory/commit/db77e88a44ffdabd284d61775960079309071617))
+
 ### [0.4.1](https://www.github.com/googleapis/python-service-directory/compare/v0.4.0...v0.4.1) (2021-02-11)
 
 
