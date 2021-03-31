@@ -24,6 +24,7 @@ from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 __protobuf__ = proto.module(
     package="google.devtools.clouderrorreporting.v1beta1",
     manifest={
+        "ResolutionStatus",
         "ErrorGroup",
         "TrackingIssue",
         "ErrorEvent",
@@ -35,6 +36,15 @@ __protobuf__ = proto.module(
 )
 
 
+class ResolutionStatus(proto.Enum):
+    r"""Resolution status of an error group."""
+    RESOLUTION_STATUS_UNSPECIFIED = 0
+    OPEN = 1
+    ACKNOWLEDGED = 2
+    RESOLVED = 3
+    MUTED = 4
+
+
 class ErrorGroup(proto.Message):
     r"""Description of a group of similar error events.
 
@@ -42,14 +52,18 @@ class ErrorGroup(proto.Message):
         name (str):
             The group resource name.
             Example: <code>projects/my-
-            project-123/groups/my-groupid</code>
+            project-123/groups/CNSgkpnppqKCUw</code>
         group_id (str):
             Group IDs are unique for a given project. If
             the same kind of error occurs in different
             service contexts, it will receive the same group
             ID.
-        tracking_issues (Sequence[~.common.TrackingIssue]):
+        tracking_issues (Sequence[google.cloud.errorreporting_v1beta1.types.TrackingIssue]):
             Associated tracking issues.
+        resolution_status (google.cloud.errorreporting_v1beta1.types.ResolutionStatus):
+            Error group's resolution status.
+            An unspecified resolution status will be
+            interpreted as OPEN
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -59,6 +73,8 @@ class ErrorGroup(proto.Message):
     tracking_issues = proto.RepeatedField(
         proto.MESSAGE, number=3, message="TrackingIssue",
     )
+
+    resolution_status = proto.Field(proto.ENUM, number=5, enum="ResolutionStatus",)
 
 
 class TrackingIssue(proto.Message):
@@ -80,17 +96,17 @@ class ErrorEvent(proto.Message):
     system.
 
     Attributes:
-        event_time (~.timestamp.Timestamp):
+        event_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the event occurred as provided in
             the error report. If the report did not contain
             a timestamp, the time the error was received by
             the Error Reporting system is used.
-        service_context (~.common.ServiceContext):
+        service_context (google.cloud.errorreporting_v1beta1.types.ServiceContext):
             The ``ServiceContext`` for which this error was reported.
         message (str):
             The stack trace that was reported or logged
             by the service.
-        context (~.common.ErrorContext):
+        context (google.cloud.errorreporting_v1beta1.types.ErrorContext):
             Data about the context in which the error
             occurred.
     """
@@ -149,7 +165,7 @@ class ErrorContext(proto.Message):
     Engine logs.
 
     Attributes:
-        http_request (~.common.HttpRequestContext):
+        http_request (google.cloud.errorreporting_v1beta1.types.HttpRequestContext):
             The HTTP request which was processed when the
             error was triggered.
         user (str):
@@ -160,7 +176,7 @@ class ErrorContext(proto.Message):
             this case the Error Reporting system will use other data,
             such as remote IP address, to distinguish affected users.
             See ``affected_users_count`` in ``ErrorGroupStats``.
-        report_location (~.common.SourceLocation):
+        report_location (google.cloud.errorreporting_v1beta1.types.SourceLocation):
             The location in the source code where the
             decision was made to report the error, usually
             the place where it was logged. For a logged

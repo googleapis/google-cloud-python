@@ -78,7 +78,36 @@ class ErrorGroupServiceAsyncClient:
         ErrorGroupServiceClient.parse_common_location_path
     )
 
-    from_service_account_file = ErrorGroupServiceClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            ErrorGroupServiceAsyncClient: The constructed client.
+        """
+        return ErrorGroupServiceClient.from_service_account_info.__func__(ErrorGroupServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            ErrorGroupServiceAsyncClient: The constructed client.
+        """
+        return ErrorGroupServiceClient.from_service_account_file.__func__(ErrorGroupServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -154,16 +183,17 @@ class ErrorGroupServiceAsyncClient:
         r"""Get the specified group.
 
         Args:
-            request (:class:`~.error_group_service.GetGroupRequest`):
+            request (:class:`google.cloud.errorreporting_v1beta1.types.GetGroupRequest`):
                 The request object. A request to return an individual
                 group.
             group_name (:class:`str`):
-                The group resource name. Written as
+                Required. The group resource name. Written as
                 ``projects/{projectID}/groups/{group_name}``. Call
                 ```groupStats.list`` <https://cloud.google.com/error-reporting/reference/rest/v1beta1/projects.groupStats/list>`__
                 to return a list of groups belonging to this project.
 
                 Example: ``projects/my-project-123/groups/my-group``
+
                 This corresponds to the ``group_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -175,7 +205,7 @@ class ErrorGroupServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.ErrorGroup:
+            google.cloud.errorreporting_v1beta1.types.ErrorGroup:
                 Description of a group of similar
                 error events.
 
@@ -233,12 +263,13 @@ class ErrorGroupServiceAsyncClient:
         Fails if the group does not exist.
 
         Args:
-            request (:class:`~.error_group_service.UpdateGroupRequest`):
+            request (:class:`google.cloud.errorreporting_v1beta1.types.UpdateGroupRequest`):
                 The request object. A request to replace the existing
                 data for the given group.
-            group (:class:`~.common.ErrorGroup`):
+            group (:class:`google.cloud.errorreporting_v1beta1.types.ErrorGroup`):
                 Required. The group which replaces
                 the resource on the server.
+
                 This corresponds to the ``group`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -250,7 +281,7 @@ class ErrorGroupServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.common.ErrorGroup:
+            google.cloud.errorreporting_v1beta1.types.ErrorGroup:
                 Description of a group of similar
                 error events.
 

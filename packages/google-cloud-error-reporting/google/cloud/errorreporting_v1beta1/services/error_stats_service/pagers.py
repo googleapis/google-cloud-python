@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.errorreporting_v1beta1.types import common
 from google.cloud.errorreporting_v1beta1.types import error_stats_service
@@ -25,7 +34,7 @@ class ListGroupStatsPager:
     """A pager for iterating through ``list_group_stats`` requests.
 
     This class thinly wraps an initial
-    :class:`~.error_stats_service.ListGroupStatsResponse` object, and
+    :class:`google.cloud.errorreporting_v1beta1.types.ListGroupStatsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``error_group_stats`` field.
 
@@ -34,7 +43,7 @@ class ListGroupStatsPager:
     through the ``error_group_stats`` field on the
     corresponding responses.
 
-    All the usual :class:`~.error_stats_service.ListGroupStatsResponse`
+    All the usual :class:`google.cloud.errorreporting_v1beta1.types.ListGroupStatsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -52,9 +61,9 @@ class ListGroupStatsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.error_stats_service.ListGroupStatsRequest`):
+            request (google.cloud.errorreporting_v1beta1.types.ListGroupStatsRequest):
                 The initial request object.
-            response (:class:`~.error_stats_service.ListGroupStatsResponse`):
+            response (google.cloud.errorreporting_v1beta1.types.ListGroupStatsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -87,7 +96,7 @@ class ListGroupStatsAsyncPager:
     """A pager for iterating through ``list_group_stats`` requests.
 
     This class thinly wraps an initial
-    :class:`~.error_stats_service.ListGroupStatsResponse` object, and
+    :class:`google.cloud.errorreporting_v1beta1.types.ListGroupStatsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``error_group_stats`` field.
 
@@ -96,7 +105,7 @@ class ListGroupStatsAsyncPager:
     through the ``error_group_stats`` field on the
     corresponding responses.
 
-    All the usual :class:`~.error_stats_service.ListGroupStatsResponse`
+    All the usual :class:`google.cloud.errorreporting_v1beta1.types.ListGroupStatsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -114,9 +123,9 @@ class ListGroupStatsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.error_stats_service.ListGroupStatsRequest`):
+            request (google.cloud.errorreporting_v1beta1.types.ListGroupStatsRequest):
                 The initial request object.
-            response (:class:`~.error_stats_service.ListGroupStatsResponse`):
+            response (google.cloud.errorreporting_v1beta1.types.ListGroupStatsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -153,7 +162,7 @@ class ListEventsPager:
     """A pager for iterating through ``list_events`` requests.
 
     This class thinly wraps an initial
-    :class:`~.error_stats_service.ListEventsResponse` object, and
+    :class:`google.cloud.errorreporting_v1beta1.types.ListEventsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``error_events`` field.
 
@@ -162,7 +171,7 @@ class ListEventsPager:
     through the ``error_events`` field on the
     corresponding responses.
 
-    All the usual :class:`~.error_stats_service.ListEventsResponse`
+    All the usual :class:`google.cloud.errorreporting_v1beta1.types.ListEventsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -180,9 +189,9 @@ class ListEventsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.error_stats_service.ListEventsRequest`):
+            request (google.cloud.errorreporting_v1beta1.types.ListEventsRequest):
                 The initial request object.
-            response (:class:`~.error_stats_service.ListEventsResponse`):
+            response (google.cloud.errorreporting_v1beta1.types.ListEventsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -215,7 +224,7 @@ class ListEventsAsyncPager:
     """A pager for iterating through ``list_events`` requests.
 
     This class thinly wraps an initial
-    :class:`~.error_stats_service.ListEventsResponse` object, and
+    :class:`google.cloud.errorreporting_v1beta1.types.ListEventsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``error_events`` field.
 
@@ -224,7 +233,7 @@ class ListEventsAsyncPager:
     through the ``error_events`` field on the
     corresponding responses.
 
-    All the usual :class:`~.error_stats_service.ListEventsResponse`
+    All the usual :class:`google.cloud.errorreporting_v1beta1.types.ListEventsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -242,9 +251,9 @@ class ListEventsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.error_stats_service.ListEventsRequest`):
+            request (google.cloud.errorreporting_v1beta1.types.ListEventsRequest):
                 The initial request object.
-            response (:class:`~.error_stats_service.ListEventsResponse`):
+            response (google.cloud.errorreporting_v1beta1.types.ListEventsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

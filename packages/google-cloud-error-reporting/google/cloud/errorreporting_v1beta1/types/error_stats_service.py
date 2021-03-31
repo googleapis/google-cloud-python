@@ -65,23 +65,23 @@ class ListGroupStatsRequest(proto.Message):
 
     Attributes:
         project_name (str):
-            Required. The resource name of the Google
-            Cloud Platform project. Written as
-            <code>projects/</code> plus the <a
-            href="https://support.google.com/cloud/answer/6158840">Google
-            Cloud Platform project ID</a>.
+            Required. The resource name of the Google Cloud Platform
+            project. Written as ``projects/{projectID}`` or
+            ``projects/{projectNumber}``, where ``{projectID}`` and
+            ``{projectNumber}`` can be found in the `Google Cloud
+            Console <https://support.google.com/cloud/answer/6158840>`__.
 
-            Example: <code>projects/my-project-123</code>.
+            Examples: ``projects/my-project-123``, ``projects/5551234``.
         group_id (Sequence[str]):
             Optional. List all
             <code>ErrorGroupStats</code> with these IDs.
-        service_filter (~.error_stats_service.ServiceContextFilter):
+        service_filter (google.cloud.errorreporting_v1beta1.types.ServiceContextFilter):
             Optional. List only
             <code>ErrorGroupStats</code> which belong to a
             service context that matches the filter. Data
             for all service contexts is returned if this
             field is not specified.
-        time_range (~.error_stats_service.QueryTimeRange):
+        time_range (google.cloud.errorreporting_v1beta1.types.QueryTimeRange):
             Optional. List data for the given time range. If not set, a
             default time range is used. The field time_range_begin in
             the response will specify the beginning of this time range.
@@ -89,17 +89,17 @@ class ListGroupStatsRequest(proto.Message):
             range are returned, unless the request contains an explicit
             group_id list. If a group_id list is given, also
             ErrorGroupStats with zero occurrences are returned.
-        timed_count_duration (~.duration.Duration):
+        timed_count_duration (google.protobuf.duration_pb2.Duration):
             Optional. The preferred duration for a single returned
             ``TimedCount``. If not set, no timed counts are returned.
-        alignment (~.error_stats_service.TimedCountAlignment):
+        alignment (google.cloud.errorreporting_v1beta1.types.TimedCountAlignment):
             Optional. The alignment of the timed counts to be returned.
             Default is ``ALIGNMENT_EQUAL_AT_END``.
-        alignment_time (~.timestamp.Timestamp):
+        alignment_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. Time where the timed counts shall
             be aligned if rounded alignment is chosen.
             Default is 00:00 UTC.
-        order (~.error_stats_service.ErrorGroupOrder):
+        order (google.cloud.errorreporting_v1beta1.types.ErrorGroupOrder):
             Optional. The sort order in which the results are returned.
             Default is ``COUNT_DESC``.
         page_size (int):
@@ -140,7 +140,7 @@ class ListGroupStatsResponse(proto.Message):
     r"""Contains a set of requested error group stats.
 
     Attributes:
-        error_group_stats (Sequence[~.error_stats_service.ErrorGroupStats]):
+        error_group_stats (Sequence[google.cloud.errorreporting_v1beta1.types.ErrorGroupStats]):
             The error group stats which match the given
             request.
         next_page_token (str):
@@ -148,7 +148,7 @@ class ListGroupStatsResponse(proto.Message):
             Pass this token, along with the same query
             parameters as the first request, to view the
             next page of results.
-        time_range_begin (~.timestamp.Timestamp):
+        time_range_begin (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp specifies the start time to
             which the request was restricted. The start time
             is set based on the requested time range. It may
@@ -177,7 +177,7 @@ class ErrorGroupStats(proto.Message):
     criteria, such as a given time period and/or service filter.
 
     Attributes:
-        group (~.common.ErrorGroup):
+        group (google.cloud.errorreporting_v1beta1.types.ErrorGroup):
             Group data that is independent of the filter
             criteria.
         count (int):
@@ -195,22 +195,22 @@ class ErrorGroupStats(proto.Message):
             provided in the error report. If more users are implicitly
             affected, such as due to a crash of the whole service, this
             is not reflected here.
-        timed_counts (Sequence[~.error_stats_service.TimedCount]):
+        timed_counts (Sequence[google.cloud.errorreporting_v1beta1.types.TimedCount]):
             Approximate number of occurrences over time.
             Timed counts returned by ListGroups are
             guaranteed to be:
             - Inside the requested time interval
             - Non-overlapping, and
             - Ordered by ascending time.
-        first_seen_time (~.timestamp.Timestamp):
+        first_seen_time (google.protobuf.timestamp_pb2.Timestamp):
             Approximate first occurrence that was ever seen for this
             group and which matches the given filter criteria, ignoring
             the time_range that was specified in the request.
-        last_seen_time (~.timestamp.Timestamp):
+        last_seen_time (google.protobuf.timestamp_pb2.Timestamp):
             Approximate last occurrence that was ever seen for this
             group and which matches the given filter criteria, ignoring
             the time_range that was specified in the request.
-        affected_services (Sequence[~.common.ServiceContext]):
+        affected_services (Sequence[google.cloud.errorreporting_v1beta1.types.ServiceContext]):
             Service contexts with a non-zero error count for the given
             filter criteria. This list can be truncated if multiple
             services are affected. Refer to ``num_affected_services``
@@ -218,7 +218,7 @@ class ErrorGroupStats(proto.Message):
         num_affected_services (int):
             The total number of services with a non-zero
             error count for the given filter criteria.
-        representative (~.common.ErrorEvent):
+        representative (google.cloud.errorreporting_v1beta1.types.ErrorEvent):
             An arbitrary event that is chosen as
             representative for the whole group. The
             representative event is intended to be used as a
@@ -259,10 +259,10 @@ class TimedCount(proto.Message):
         count (int):
             Approximate number of occurrences in the
             given time period.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Start of the time period to which ``count`` refers
             (included).
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             End of the time period to which ``count`` refers (excluded).
     """
 
@@ -279,19 +279,20 @@ class ListEventsRequest(proto.Message):
     Attributes:
         project_name (str):
             Required. The resource name of the Google Cloud Platform
-            project. Written as ``projects/`` plus the `Google Cloud
-            Platform project
+            project. Written as ``projects/{projectID}``, where
+            ``{projectID}`` is the `Google Cloud Platform project
             ID <https://support.google.com/cloud/answer/6158840>`__.
+
             Example: ``projects/my-project-123``.
         group_id (str):
             Required. The group for which events shall be
             returned.
-        service_filter (~.error_stats_service.ServiceContextFilter):
+        service_filter (google.cloud.errorreporting_v1beta1.types.ServiceContextFilter):
             Optional. List only ErrorGroups which belong
             to a service context that matches the filter.
             Data for all service contexts is returned if
             this field is not specified.
-        time_range (~.error_stats_service.QueryTimeRange):
+        time_range (google.cloud.errorreporting_v1beta1.types.QueryTimeRange):
             Optional. List only data for the given time range. If not
             set a default time range is used. The field time_range_begin
             in the response will specify the beginning of this time
@@ -323,7 +324,7 @@ class ListEventsResponse(proto.Message):
     r"""Contains a set of requested error events.
 
     Attributes:
-        error_events (Sequence[~.common.ErrorEvent]):
+        error_events (Sequence[google.cloud.errorreporting_v1beta1.types.ErrorEvent]):
             The error events which match the given
             request.
         next_page_token (str):
@@ -331,7 +332,7 @@ class ListEventsResponse(proto.Message):
             Pass this token, along with the same query
             parameters as the first request, to view the
             next page of results.
-        time_range_begin (~.timestamp.Timestamp):
+        time_range_begin (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp specifies the start time to
             which the request was restricted.
     """
@@ -356,7 +357,7 @@ class QueryTimeRange(proto.Message):
     durations might be adjusted for lower durations.
 
     Attributes:
-        period (~.error_stats_service.QueryTimeRange.Period):
+        period (google.cloud.errorreporting_v1beta1.types.QueryTimeRange.Period):
             Restricts the query to the specified time
             range.
     """
@@ -404,9 +405,10 @@ class DeleteEventsRequest(proto.Message):
     Attributes:
         project_name (str):
             Required. The resource name of the Google Cloud Platform
-            project. Written as ``projects/`` plus the `Google Cloud
-            Platform project
+            project. Written as ``projects/{projectID}``, where
+            ``{projectID}`` is the `Google Cloud Platform project
             ID <https://support.google.com/cloud/answer/6158840>`__.
+
             Example: ``projects/my-project-123``.
     """
 

@@ -4,15 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-error-reporting.git",
-        "sha": "eaf4a5aebe9f3cee0af211defec7ff10d5bae4a4"
+        "sha": "c4b168d1f4e045d72487abba88e118a15b1c99ef"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "dd372aa22ded7a8ba6f0e03a80e06358a3fa0907",
-        "internalRef": "347055288"
+        "sha": "f6dd7e47620566925a4b3f1ce029e74e1b2f2516",
+        "internalRef": "359781040"
       }
     },
     {
@@ -42,6 +42,7 @@
     }
   ],
   "generatedFiles": [
+    ".coveragerc",
     ".flake8",
     ".github/CONTRIBUTING.md",
     ".github/ISSUE_TEMPLATE/bug_report.md",
@@ -95,6 +96,9 @@
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/conf.py",
+    "docs/errorreporting_v1beta1/error_group_service.rst",
+    "docs/errorreporting_v1beta1/error_stats_service.rst",
+    "docs/errorreporting_v1beta1/report_errors_service.rst",
     "docs/errorreporting_v1beta1/services.rst",
     "docs/errorreporting_v1beta1/types.rst",
     "docs/multiprocessing.rst",

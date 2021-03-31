@@ -23,6 +23,7 @@ from .common import (
     ErrorContext,
     HttpRequestContext,
     SourceLocation,
+    ResolutionStatus,
 )
 from .error_group_service import (
     GetGroupRequest,
@@ -56,6 +57,7 @@ __all__ = (
     "ErrorContext",
     "HttpRequestContext",
     "SourceLocation",
+    "ResolutionStatus",
     "GetGroupRequest",
     "UpdateGroupRequest",
     "ListGroupStatsRequest",

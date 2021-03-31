@@ -112,6 +112,22 @@ class ReportErrorsServiceClient(metaclass=ReportErrorsServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            ReportErrorsServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -123,7 +139,7 @@ class ReportErrorsServiceClient(metaclass=ReportErrorsServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            ReportErrorsServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -215,10 +231,10 @@ class ReportErrorsServiceClient(metaclass=ReportErrorsServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.ReportErrorsServiceTransport]): The
+            transport (Union[str, ReportErrorsServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -254,21 +270,17 @@ class ReportErrorsServiceClient(metaclass=ReportErrorsServiceClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -311,7 +323,7 @@ class ReportErrorsServiceClient(metaclass=ReportErrorsServiceClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -326,31 +338,42 @@ class ReportErrorsServiceClient(metaclass=ReportErrorsServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> report_errors_service.ReportErrorEventResponse:
-        r"""Report an individual error event.
+        r"""Report an individual error event and record the event to a log.
 
         This endpoint accepts **either** an OAuth token, **or** an `API
         key <https://support.google.com/cloud/answer/6158862>`__ for
         authentication. To use an API key, append it to the URL as the
         value of a ``key`` parameter. For example:
 
-        ``POST https://clouderrorreporting.googleapis.com/v1beta1/projects/example-project/events:report?key=123ABC456``
+        ``POST https://clouderrorreporting.googleapis.com/v1beta1/{projectName}/events:report?key=123ABC456``
+
+        **Note:** `Error Reporting </error-reporting>`__ is a global
+        service built on Cloud Logging and doesn't analyze logs stored
+        in regional log buckets or logs routed to other Google Cloud
+        projects.
+
+        For more information, see `Using Error Reporting with
+        regionalized logs </error-reporting/docs/regionalization>`__.
 
         Args:
-            request (:class:`~.report_errors_service.ReportErrorEventRequest`):
+            request (google.cloud.errorreporting_v1beta1.types.ReportErrorEventRequest):
                 The request object. A request for reporting an
                 individual error event.
-            project_name (:class:`str`):
+            project_name (str):
                 Required. The resource name of the Google Cloud Platform
-                project. Written as ``projects/`` plus the `Google Cloud
-                Platform project
+                project. Written as ``projects/{projectId}``, where
+                ``{projectId}`` is the `Google Cloud Platform project
                 ID <https://support.google.com/cloud/answer/6158840>`__.
-                Example: ``projects/my-project-123``.
+
+                Example: // ``projects/my-project-123``.
+
                 This corresponds to the ``project_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            event (:class:`~.report_errors_service.ReportedErrorEvent`):
+            event (google.cloud.errorreporting_v1beta1.types.ReportedErrorEvent):
                 Required. The error event to be
                 reported.
+
                 This corresponds to the ``event`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -362,7 +385,7 @@ class ReportErrorsServiceClient(metaclass=ReportErrorsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.report_errors_service.ReportErrorEventResponse:
+            google.cloud.errorreporting_v1beta1.types.ReportErrorEventResponse:
                 Response for reporting an individual
                 error event. Data may be added to this
                 message in the future.
