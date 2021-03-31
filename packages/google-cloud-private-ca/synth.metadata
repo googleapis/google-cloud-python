@@ -3,8 +3,8 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-security-private-ca.git",
-        "sha": "d12cbba69ac37d2728dce2a2ac8078d6dcedb35a"
+        "remote": "https://github.com/googleapis/python-security-private-ca.git",
+        "sha": "82eac92f857486aefbcfaffead2bb3c45985280d"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "572ef8f70edd9041f5bcfa71511aed6aecfc2098"
+        "sha": "4501974ad08b5d693311457e2ea4ce845676e329"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "572ef8f70edd9041f5bcfa71511aed6aecfc2098"
+        "sha": "4501974ad08b5d693311457e2ea4ce845676e329"
       }
     }
   ],
@@ -40,5 +40,101 @@
         "generator": "bazel"
       }
     }
+  ],
+  "generatedFiles": [
+    ".coveragerc",
+    ".flake8",
+    ".github/CONTRIBUTING.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/support_request.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/header-checker-lint.yml",
+    ".github/release-please.yml",
+    ".github/snippet-bot.yml",
+    ".gitignore",
+    ".kokoro/build.sh",
+    ".kokoro/continuous/common.cfg",
+    ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
+    ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
+    ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
+    ".kokoro/presubmit/common.cfg",
+    ".kokoro/presubmit/presubmit.cfg",
+    ".kokoro/publish-docs.sh",
+    ".kokoro/release.sh",
+    ".kokoro/release/common.cfg",
+    ".kokoro/release/release.cfg",
+    ".kokoro/samples/lint/common.cfg",
+    ".kokoro/samples/lint/continuous.cfg",
+    ".kokoro/samples/lint/periodic.cfg",
+    ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.6/common.cfg",
+    ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic-head.cfg",
+    ".kokoro/samples/python3.6/periodic.cfg",
+    ".kokoro/samples/python3.6/presubmit.cfg",
+    ".kokoro/samples/python3.7/common.cfg",
+    ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic-head.cfg",
+    ".kokoro/samples/python3.7/periodic.cfg",
+    ".kokoro/samples/python3.7/presubmit.cfg",
+    ".kokoro/samples/python3.8/common.cfg",
+    ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic-head.cfg",
+    ".kokoro/samples/python3.8/periodic.cfg",
+    ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples-against-head.sh",
+    ".kokoro/test-samples-impl.sh",
+    ".kokoro/test-samples.sh",
+    ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
+    ".trampolinerc",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "MANIFEST.in",
+    "docs/_static/custom.css",
+    "docs/_templates/layout.html",
+    "docs/conf.py",
+    "docs/multiprocessing.rst",
+    "docs/privateca_v1beta1/certificate_authority_service.rst",
+    "docs/privateca_v1beta1/services.rst",
+    "docs/privateca_v1beta1/types.rst",
+    "google/cloud/security/privateca/__init__.py",
+    "google/cloud/security/privateca/py.typed",
+    "google/cloud/security/privateca_v1beta1/__init__.py",
+    "google/cloud/security/privateca_v1beta1/py.typed",
+    "google/cloud/security/privateca_v1beta1/services/__init__.py",
+    "google/cloud/security/privateca_v1beta1/services/certificate_authority_service/__init__.py",
+    "google/cloud/security/privateca_v1beta1/services/certificate_authority_service/async_client.py",
+    "google/cloud/security/privateca_v1beta1/services/certificate_authority_service/client.py",
+    "google/cloud/security/privateca_v1beta1/services/certificate_authority_service/pagers.py",
+    "google/cloud/security/privateca_v1beta1/services/certificate_authority_service/transports/__init__.py",
+    "google/cloud/security/privateca_v1beta1/services/certificate_authority_service/transports/base.py",
+    "google/cloud/security/privateca_v1beta1/services/certificate_authority_service/transports/grpc.py",
+    "google/cloud/security/privateca_v1beta1/services/certificate_authority_service/transports/grpc_asyncio.py",
+    "google/cloud/security/privateca_v1beta1/types/__init__.py",
+    "google/cloud/security/privateca_v1beta1/types/resources.py",
+    "google/cloud/security/privateca_v1beta1/types/service.py",
+    "mypy.ini",
+    "noxfile.py",
+    "renovate.json",
+    "scripts/decrypt-secrets.sh",
+    "scripts/fixup_privateca_v1beta1_keywords.py",
+    "scripts/readme-gen/readme_gen.py",
+    "scripts/readme-gen/templates/README.tmpl.rst",
+    "scripts/readme-gen/templates/auth.tmpl.rst",
+    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "setup.cfg",
+    "testing/.gitignore",
+    "tests/unit/gapic/privateca_v1beta1/__init__.py",
+    "tests/unit/gapic/privateca_v1beta1/test_certificate_authority_service.py"
   ]
 }
