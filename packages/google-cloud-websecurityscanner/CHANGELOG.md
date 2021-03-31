@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.1.0](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.0.0...v1.1.0) (2021-03-31)
+
+
+### Features
+
+* add client_info ([838be24](https://www.github.com/googleapis/python-websecurityscanner/commit/838be24c4e489ce6822f0e6ff6c87d67df8a172b))
+* add v1 ([#42](https://www.github.com/googleapis/python-websecurityscanner/issues/42)) ([8993d41](https://www.github.com/googleapis/python-websecurityscanner/commit/8993d4136b906179d852b9b7d688dd2d1df27ba0))
+
+
+### Bug Fixes
+
+* remove grpc send/recv limits ([838be24](https://www.github.com/googleapis/python-websecurityscanner/commit/838be24c4e489ce6822f0e6ff6c87d67df8a172b))
+
+
+### Documentation
+
+* fix sphinx references ([838be24](https://www.github.com/googleapis/python-websecurityscanner/commit/838be24c4e489ce6822f0e6ff6c87d67df8a172b))
+
 ## [1.0.0](https://www.github.com/googleapis/python-websecurityscanner/compare/v0.4.0...v1.0.0) (2020-07-23)
 
 
