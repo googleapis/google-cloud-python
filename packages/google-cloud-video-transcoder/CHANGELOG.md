@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-video-transcoder/compare/v0.2.1...v0.3.0) (2021-03-31)
+
+
+### Features
+
+* add `from_service_account_info` ([#32](https://www.github.com/googleapis/python-video-transcoder/issues/32)) ([4076914](https://www.github.com/googleapis/python-video-transcoder/commit/4076914adfde514417b5a39a0e5fcd905e5f6e8f))
+
 ### [0.2.1](https://www.github.com/googleapis/python-video-transcoder/compare/v0.2.0...v0.2.1) (2021-02-12)
 
 
