@@ -32,32 +32,28 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
-from google.cloud.workflows_v1beta.services.workflows import pagers
-from google.cloud.workflows_v1beta.types import workflows
-from google.protobuf import empty_pb2 as empty  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.cloud.workflows.executions_v1.services.executions import pagers
+from google.cloud.workflows.executions_v1.types import executions
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
-from .transports.base import WorkflowsTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc import WorkflowsGrpcTransport
-from .transports.grpc_asyncio import WorkflowsGrpcAsyncIOTransport
+from .transports.base import ExecutionsTransport, DEFAULT_CLIENT_INFO
+from .transports.grpc import ExecutionsGrpcTransport
+from .transports.grpc_asyncio import ExecutionsGrpcAsyncIOTransport
 
 
-class WorkflowsClientMeta(type):
-    """Metaclass for the Workflows client.
+class ExecutionsClientMeta(type):
+    """Metaclass for the Executions client.
 
     This provides class-level methods for building and retrieving
     support objects (e.g. transport) without polluting the client instance
     objects.
     """
 
-    _transport_registry = OrderedDict()  # type: Dict[str, Type[WorkflowsTransport]]
-    _transport_registry["grpc"] = WorkflowsGrpcTransport
-    _transport_registry["grpc_asyncio"] = WorkflowsGrpcAsyncIOTransport
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[ExecutionsTransport]]
+    _transport_registry["grpc"] = ExecutionsGrpcTransport
+    _transport_registry["grpc_asyncio"] = ExecutionsGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[WorkflowsTransport]:
+    def get_transport_class(cls, label: str = None,) -> Type[ExecutionsTransport]:
         """Return an appropriate transport class.
 
         Args:
@@ -76,10 +72,9 @@ class WorkflowsClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class WorkflowsClient(metaclass=WorkflowsClientMeta):
-    """Workflows is used to deploy and execute workflow programs.
-    Workflows makes sure the program executes reliably, despite
-    hardware and networking interruptions.
+class ExecutionsClient(metaclass=ExecutionsClientMeta):
+    """Executions is used to start and manage running instances of
+    [Workflows][google.cloud.workflows.v1.Workflow] called executions.
     """
 
     @staticmethod
@@ -111,7 +106,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
 
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
-    DEFAULT_ENDPOINT = "workflows.googleapis.com"
+    DEFAULT_ENDPOINT = "workflowexecutions.googleapis.com"
     DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
         DEFAULT_ENDPOINT
     )
@@ -126,7 +121,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            WorkflowsClient: The constructed client.
+            ExecutionsClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_info(info)
         kwargs["credentials"] = credentials
@@ -144,7 +139,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            WorkflowsClient: The constructed client.
+            ExecutionsClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -153,13 +148,31 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
     from_service_account_json = from_service_account_file
 
     @property
-    def transport(self) -> WorkflowsTransport:
+    def transport(self) -> ExecutionsTransport:
         """Return the transport used by the client instance.
 
         Returns:
-            WorkflowsTransport: The transport used by the client instance.
+            ExecutionsTransport: The transport used by the client instance.
         """
         return self._transport
+
+    @staticmethod
+    def execution_path(
+        project: str, location: str, workflow: str, execution: str,
+    ) -> str:
+        """Return a fully-qualified execution string."""
+        return "projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}".format(
+            project=project, location=location, workflow=workflow, execution=execution,
+        )
+
+    @staticmethod
+    def parse_execution_path(path: str) -> Dict[str, str]:
+        """Parse a execution path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/workflows/(?P<workflow>.+?)/executions/(?P<execution>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
 
     @staticmethod
     def workflow_path(project: str, location: str, workflow: str,) -> str:
@@ -240,11 +253,11 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         self,
         *,
         credentials: Optional[credentials.Credentials] = None,
-        transport: Union[str, WorkflowsTransport, None] = None,
+        transport: Union[str, ExecutionsTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the workflows client.
+        """Instantiate the executions client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -252,7 +265,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, WorkflowsTransport]): The
+            transport (Union[str, ExecutionsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (google.api_core.client_options.ClientOptions): Custom options for the
@@ -324,8 +337,8 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, WorkflowsTransport):
-            # transport is a WorkflowsTransport instance.
+        if isinstance(transport, ExecutionsTransport):
+            # transport is a ExecutionsTransport instance.
             if credentials or client_options.credentials_file:
                 raise ValueError(
                     "When providing a transport instance, "
@@ -349,28 +362,31 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 client_info=client_info,
             )
 
-    def list_workflows(
+    def list_executions(
         self,
-        request: workflows.ListWorkflowsRequest = None,
+        request: executions.ListExecutionsRequest = None,
         *,
         parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListWorkflowsPager:
-        r"""Lists Workflows in a given project and location.
-        The default order is not specified.
+    ) -> pagers.ListExecutionsPager:
+        r"""Returns a list of executions which belong to the
+        workflow with the given name. The method returns
+        executions of all workflow revisions. Returned
+        executions are ordered by their start time (newest
+        first).
 
         Args:
-            request (google.cloud.workflows_v1beta.types.ListWorkflowsRequest):
+            request (google.cloud.workflows.executions_v1.types.ListExecutionsRequest):
                 The request object. Request for the
-                [ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows]
+                [ListExecutions][]
                 method.
             parent (str):
-                Required. Project and location from
-                which the workflows should be listed.
+                Required. Name of the workflow for
+                which the executions should be listed.
                 Format:
-                projects/{project}/locations/{location}
+                projects/{project}/locations/{location}/workflows/{workflow}
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -383,9 +399,9 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.workflows_v1beta.services.workflows.pagers.ListWorkflowsPager:
+            google.cloud.workflows.executions_v1.services.executions.pagers.ListExecutionsPager:
                 Response for the
-                   [ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows]
+                   [ListExecutions][google.cloud.workflows.executions.v1.Executions.ListExecutions]
                    method.
 
                 Iterating over this object will yield results and
@@ -403,11 +419,11 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a workflows.ListWorkflowsRequest.
+        # in a executions.ListExecutionsRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, workflows.ListWorkflowsRequest):
-            request = workflows.ListWorkflowsRequest(request)
+        if not isinstance(request, executions.ListExecutionsRequest):
+            request = executions.ListExecutionsRequest(request)
 
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -417,7 +433,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_workflows]
+        rpc = self._transport._wrapped_methods[self._transport.list_executions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -430,137 +446,45 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
-        response = pagers.ListWorkflowsPager(
+        response = pagers.ListExecutionsPager(
             method=rpc, request=request, response=response, metadata=metadata,
         )
 
         # Done; return the response.
         return response
 
-    def get_workflow(
+    def create_execution(
         self,
-        request: workflows.GetWorkflowRequest = None,
-        *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> workflows.Workflow:
-        r"""Gets details of a single Workflow.
-
-        Args:
-            request (google.cloud.workflows_v1beta.types.GetWorkflowRequest):
-                The request object. Request for the
-                [GetWorkflow][google.cloud.workflows.v1beta.Workflows.GetWorkflow]
-                method.
-            name (str):
-                Required. Name of the workflow which
-                information should be retrieved. Format:
-                projects/{project}/locations/{location}/workflows/{workflow}
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.workflows_v1beta.types.Workflow:
-                Workflow program to be executed by
-                Workflows.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a workflows.GetWorkflowRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, workflows.GetWorkflowRequest):
-            request = workflows.GetWorkflowRequest(request)
-
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_workflow]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    def create_workflow(
-        self,
-        request: workflows.CreateWorkflowRequest = None,
+        request: executions.CreateExecutionRequest = None,
         *,
         parent: str = None,
-        workflow: workflows.Workflow = None,
-        workflow_id: str = None,
+        execution: executions.Execution = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Creates a new workflow. If a workflow with the specified name
-        already exists in the specified project and location, the long
-        running operation will return
-        [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS] error.
+    ) -> executions.Execution:
+        r"""Creates a new execution using the latest revision of
+        the given workflow.
 
         Args:
-            request (google.cloud.workflows_v1beta.types.CreateWorkflowRequest):
+            request (google.cloud.workflows.executions_v1.types.CreateExecutionRequest):
                 The request object. Request for the
-                [CreateWorkflow][google.cloud.workflows.v1beta.Workflows.CreateWorkflow]
+                [CreateExecution][google.cloud.workflows.executions.v1.Executions.CreateExecution]
                 method.
             parent (str):
-                Required. Project and location in
-                which the workflow should be created.
+                Required. Name of the workflow for
+                which an execution should be created.
                 Format:
-                projects/{project}/locations/{location}
+                projects/{project}/locations/{location}/workflows/{workflow}
+                The latest revision of the workflow will
+                be used.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            workflow (google.cloud.workflows_v1beta.types.Workflow):
-                Required. Workflow to be created.
-                This corresponds to the ``workflow`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            workflow_id (str):
-                Required. The ID of the workflow to be created. It has
-                to fulfill the following requirements:
-
-                -  Must contain only letters, numbers, underscores and
-                   hyphens.
-                -  Must start with a letter.
-                -  Must be between 1-64 characters.
-                -  Must end with a number or a letter.
-                -  Must be unique within the customer project and
-                   location.
-
-                This corresponds to the ``workflow_id`` field
+            execution (google.cloud.workflows.executions_v1.types.Execution):
+                Required. Execution to be created.
+                This corresponds to the ``execution`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
 
@@ -571,18 +495,15 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.workflows_v1beta.types.Workflow`
-                Workflow program to be executed by Workflows.
+            google.cloud.workflows.executions_v1.types.Execution:
+                A running instance of a
+                   [Workflow](/workflows/docs/reference/rest/v1/projects.locations.workflows).
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, workflow, workflow_id])
+        has_flattened_params = any([parent, execution])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -590,25 +511,23 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a workflows.CreateWorkflowRequest.
+        # in a executions.CreateExecutionRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, workflows.CreateWorkflowRequest):
-            request = workflows.CreateWorkflowRequest(request)
+        if not isinstance(request, executions.CreateExecutionRequest):
+            request = executions.CreateExecutionRequest(request)
 
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
 
             if parent is not None:
                 request.parent = parent
-            if workflow is not None:
-                request.workflow = workflow
-            if workflow_id is not None:
-                request.workflow_id = workflow_id
+            if execution is not None:
+                request.execution = execution
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_workflow]
+        rpc = self._transport._wrapped_methods[self._transport.create_execution]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -619,39 +538,29 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            workflows.Workflow,
-            metadata_type=workflows.OperationMetadata,
-        )
-
         # Done; return the response.
         return response
 
-    def delete_workflow(
+    def get_execution(
         self,
-        request: workflows.DeleteWorkflowRequest = None,
+        request: executions.GetExecutionRequest = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Deletes a workflow with the specified name.
-        This method also cancels and deletes all running
-        executions of the workflow.
+    ) -> executions.Execution:
+        r"""Returns an execution of the given name.
 
         Args:
-            request (google.cloud.workflows_v1beta.types.DeleteWorkflowRequest):
+            request (google.cloud.workflows.executions_v1.types.GetExecutionRequest):
                 The request object. Request for the
-                [DeleteWorkflow][google.cloud.workflows.v1beta.Workflows.DeleteWorkflow]
+                [GetExecution][google.cloud.workflows.executions.v1.Executions.GetExecution]
                 method.
             name (str):
-                Required. Name of the workflow to be
-                deleted. Format:
-                projects/{project}/locations/{location}/workflows/{workflow}
+                Required. Name of the execution to be
+                retrieved. Format:
+                projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -664,22 +573,9 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
-
-                   The JSON representation for Empty is empty JSON
-                   object {}.
+            google.cloud.workflows.executions_v1.types.Execution:
+                A running instance of a
+                   [Workflow](/workflows/docs/reference/rest/v1/projects.locations.workflows).
 
         """
         # Create or coerce a protobuf request object.
@@ -693,11 +589,11 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a workflows.DeleteWorkflowRequest.
+        # in a executions.GetExecutionRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, workflows.DeleteWorkflowRequest):
-            request = workflows.DeleteWorkflowRequest(request)
+        if not isinstance(request, executions.GetExecutionRequest):
+            request = executions.GetExecutionRequest(request)
 
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -707,7 +603,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_workflow]
+        rpc = self._transport._wrapped_methods[self._transport.get_execution]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -718,50 +614,31 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            empty.Empty,
-            metadata_type=workflows.OperationMetadata,
-        )
-
         # Done; return the response.
         return response
 
-    def update_workflow(
+    def cancel_execution(
         self,
-        request: workflows.UpdateWorkflowRequest = None,
+        request: executions.CancelExecutionRequest = None,
         *,
-        workflow: workflows.Workflow = None,
-        update_mask: field_mask.FieldMask = None,
+        name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> operation.Operation:
-        r"""Updates an existing workflow.
-        Running this method has no impact on already running
-        executions of the workflow. A new revision of the
-        workflow may be created as a result of a successful
-        update operation. In that case, such revision will be
-        used in new workflow executions.
+    ) -> executions.Execution:
+        r"""Cancels an execution of the given name.
 
         Args:
-            request (google.cloud.workflows_v1beta.types.UpdateWorkflowRequest):
+            request (google.cloud.workflows.executions_v1.types.CancelExecutionRequest):
                 The request object. Request for the
-                [UpdateWorkflow][google.cloud.workflows.v1beta.Workflows.UpdateWorkflow]
+                [CancelExecution][google.cloud.workflows.executions.v1.Executions.CancelExecution]
                 method.
-            workflow (google.cloud.workflows_v1beta.types.Workflow):
-                Required. Workflow to be updated.
-                This corresponds to the ``workflow`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                List of fields to be updated. If not
-                present, the entire workflow will be
-                updated.
+            name (str):
+                Required. Name of the execution to be
+                cancelled. Format:
+                projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
 
-                This corresponds to the ``update_mask`` field
+                This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
 
@@ -772,18 +649,15 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
-                :class:`google.cloud.workflows_v1beta.types.Workflow`
-                Workflow program to be executed by Workflows.
+            google.cloud.workflows.executions_v1.types.Execution:
+                A running instance of a
+                   [Workflow](/workflows/docs/reference/rest/v1/projects.locations.workflows).
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([workflow, update_mask])
+        has_flattened_params = any([name])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -791,42 +665,30 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a workflows.UpdateWorkflowRequest.
+        # in a executions.CancelExecutionRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, workflows.UpdateWorkflowRequest):
-            request = workflows.UpdateWorkflowRequest(request)
+        if not isinstance(request, executions.CancelExecutionRequest):
+            request = executions.CancelExecutionRequest(request)
 
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
 
-            if workflow is not None:
-                request.workflow = workflow
-            if update_mask is not None:
-                request.update_mask = update_mask
+            if name is not None:
+                request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_workflow]
+        rpc = self._transport._wrapped_methods[self._transport.cancel_execution]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("workflow.name", request.workflow.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
         # Send the request.
         response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Wrap the response in an operation future.
-        response = operation.from_gapic(
-            response,
-            self._transport.operations_client,
-            workflows.Workflow,
-            metadata_type=workflows.OperationMetadata,
-        )
 
         # Done; return the response.
         return response
@@ -834,10 +696,10 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-workflows",).version,
+        gapic_version=pkg_resources.get_distribution("google-cloud-workflow",).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("WorkflowsClient",)
+__all__ = ("ExecutionsClient",)

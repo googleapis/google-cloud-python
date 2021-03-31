@@ -4,29 +4,29 @@
       "git": {
         "name": ".",
         "remote": "git@github.com:googleapis/python-workflows",
-        "sha": "229763479721dd5a5d3686b14add4ac7803ec06e"
+        "sha": "d377593110a3972ed2a00223d495e65c9ea0e55b"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "a1af63efb82f54428ab35ea76869d9cd57ca52b8",
-        "internalRef": "364635275"
+        "sha": "3f94707cc14766a6d73c9e23f77be2b95992f59b",
+        "internalRef": "365104345"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "86ed43d4f56e6404d068e62e497029018879c771"
+        "sha": "bb854b6c048619e3be4e8b8ce8ed10aa74ea78ef"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "86ed43d4f56e6404d068e62e497029018879c771"
+        "sha": "bb854b6c048619e3be4e8b8ce8ed10aa74ea78ef"
       }
     }
   ],
@@ -35,7 +35,16 @@
       "client": {
         "source": "googleapis",
         "apiName": "workflows_executions",
-        "apiVersion": "v1beta1",
+        "apiVersion": "v1beta",
+        "language": "python",
+        "generator": "bazel"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "workflows_executions",
+        "apiVersion": "v1",
         "language": "python",
         "generator": "bazel"
       }
@@ -45,6 +54,15 @@
         "source": "googleapis",
         "apiName": "workflows",
         "apiVersion": "v1beta",
+        "language": "python",
+        "generator": "bazel"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "workflows",
+        "apiVersion": "v1",
         "language": "python",
         "generator": "bazel"
       }

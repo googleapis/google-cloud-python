@@ -34,8 +34,8 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.workflows_v1beta.services.workflows import pagers
-from google.cloud.workflows_v1beta.types import workflows
+from google.cloud.workflows_v1.services.workflows import pagers
+from google.cloud.workflows_v1.types import workflows
 from google.protobuf import empty_pb2 as empty  # type: ignore
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
@@ -362,9 +362,9 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         The default order is not specified.
 
         Args:
-            request (google.cloud.workflows_v1beta.types.ListWorkflowsRequest):
+            request (google.cloud.workflows_v1.types.ListWorkflowsRequest):
                 The request object. Request for the
-                [ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows]
+                [ListWorkflows][google.cloud.workflows.v1.Workflows.ListWorkflows]
                 method.
             parent (str):
                 Required. Project and location from
@@ -383,9 +383,9 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.workflows_v1beta.services.workflows.pagers.ListWorkflowsPager:
+            google.cloud.workflows_v1.services.workflows.pagers.ListWorkflowsPager:
                 Response for the
-                   [ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows]
+                   [ListWorkflows][google.cloud.workflows.v1.Workflows.ListWorkflows]
                    method.
 
                 Iterating over this object will yield results and
@@ -449,9 +449,9 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         r"""Gets details of a single Workflow.
 
         Args:
-            request (google.cloud.workflows_v1beta.types.GetWorkflowRequest):
+            request (google.cloud.workflows_v1.types.GetWorkflowRequest):
                 The request object. Request for the
-                [GetWorkflow][google.cloud.workflows.v1beta.Workflows.GetWorkflow]
+                [GetWorkflow][google.cloud.workflows.v1.Workflows.GetWorkflow]
                 method.
             name (str):
                 Required. Name of the workflow which
@@ -469,7 +469,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.workflows_v1beta.types.Workflow:
+            google.cloud.workflows_v1.types.Workflow:
                 Workflow program to be executed by
                 Workflows.
 
@@ -530,9 +530,9 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS] error.
 
         Args:
-            request (google.cloud.workflows_v1beta.types.CreateWorkflowRequest):
+            request (google.cloud.workflows_v1.types.CreateWorkflowRequest):
                 The request object. Request for the
-                [CreateWorkflow][google.cloud.workflows.v1beta.Workflows.CreateWorkflow]
+                [CreateWorkflow][google.cloud.workflows.v1.Workflows.CreateWorkflow]
                 method.
             parent (str):
                 Required. Project and location in
@@ -543,7 +543,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            workflow (google.cloud.workflows_v1beta.types.Workflow):
+            workflow (google.cloud.workflows_v1.types.Workflow):
                 Required. Workflow to be created.
                 This corresponds to the ``workflow`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -575,7 +575,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.workflows_v1beta.types.Workflow`
+                :class:`google.cloud.workflows_v1.types.Workflow`
                 Workflow program to be executed by Workflows.
 
         """
@@ -644,9 +644,9 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         executions of the workflow.
 
         Args:
-            request (google.cloud.workflows_v1beta.types.DeleteWorkflowRequest):
+            request (google.cloud.workflows_v1.types.DeleteWorkflowRequest):
                 The request object. Request for the
-                [DeleteWorkflow][google.cloud.workflows.v1beta.Workflows.DeleteWorkflow]
+                [DeleteWorkflow][google.cloud.workflows.v1.Workflows.DeleteWorkflow]
                 method.
             name (str):
                 Required. Name of the workflow to be
@@ -747,11 +747,11 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         used in new workflow executions.
 
         Args:
-            request (google.cloud.workflows_v1beta.types.UpdateWorkflowRequest):
+            request (google.cloud.workflows_v1.types.UpdateWorkflowRequest):
                 The request object. Request for the
-                [UpdateWorkflow][google.cloud.workflows.v1beta.Workflows.UpdateWorkflow]
+                [UpdateWorkflow][google.cloud.workflows.v1.Workflows.UpdateWorkflow]
                 method.
-            workflow (google.cloud.workflows_v1beta.types.Workflow):
+            workflow (google.cloud.workflows_v1.types.Workflow):
                 Required. Workflow to be updated.
                 This corresponds to the ``workflow`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -776,7 +776,7 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:`google.cloud.workflows_v1beta.types.Workflow`
+                :class:`google.cloud.workflows_v1.types.Workflow`
                 Workflow program to be executed by Workflows.
 
         """

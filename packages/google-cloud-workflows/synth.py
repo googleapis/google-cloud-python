@@ -22,51 +22,50 @@ from synthtool.languages import python
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
+# This library ships clients for two different APIs,
+# Workflows and Workflows Executions
+workflows_versions = ["v1beta", "v1"]
+workflows_executions_versions = ["v1beta", "v1"]
+
 # ----------------------------------------------------------------------------
 # Generate workflows and workflows executions GAPIC layer
 # ----------------------------------------------------------------------------
 
-library = gapic.py_library(
-    service="workflows_executions",
-    version="v1beta1",
-    bazel_target="//google/cloud/workflows/executions/v1beta:workflows-executions-v1beta-py",
-)
+for version in workflows_executions_versions:
+    library = gapic.py_library(
+        service="workflows_executions",
+        version=version,
+        bazel_target=f"//google/cloud/workflows/executions/{version}:workflows-executions-{version}-py",
+    )
 
-s.move(
-    library,
-    excludes=[
-        "setup.py",
-        "README.rst",
-        "docs/index.rst",
-        "scripts/fixup_executions_v1beta_keywords.py",
-    ],
-)
+    s.move(
+        library,
+        excludes=[
+            "setup.py",
+            "README.rst",
+            "docs/index.rst",
+            f"scripts/fixup_executions_{version}_keywords.py",
+        ],
+    )
 
-# move workflows after executions, since we want to use "workflows" for the name
-library = gapic.py_library(
-    service="workflows",
-    version="v1beta",
-    bazel_target="//google/cloud/workflows/v1beta:workflows-v1beta-py",
-)
+for version in workflows_versions:
+    # move workflows after executions, since we want to use "workflows" for the name
+    library = gapic.py_library(
+        service="workflows",
+        version=version,
+        bazel_target=f"//google/cloud/workflows/{version}:workflows-{version}-py",
+    )
 
-s.move(
-    library,
-    excludes=[
-        "setup.py",
-        "README.rst",
-        "docs/index.rst",
-        "scripts/fixup_workflows_v1beta_keywords.py",
-    ],
-)
+    s.move(
+        library,
+        excludes=[
+            "setup.py",
+            "README.rst",
+            "docs/index.rst",
+            f"scripts/fixup_workflows_{version}_keywords.py",
+        ],
+    )
 
-# add empty line after list in docstring
-s.replace(
-    "google/**/*.py",
-    """-  Must be unique within the customer project and
-                   location.""",
-    """-  Must be unique within the customer project and
-                   location.\n""",
-)
 
 # Make sure this library is named 'google-cloud-workflows' everywhere
 s.replace(
