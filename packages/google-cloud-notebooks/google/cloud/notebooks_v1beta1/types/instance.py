@@ -34,10 +34,10 @@ class Instance(proto.Message):
         name (str):
             Output only. The name of this notebook instance. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
-        vm_image (~.environment.VmImage):
+        vm_image (google.cloud.notebooks_v1beta1.types.VmImage):
             Use a Compute Engine VM image to start the
             notebook instance.
-        container_image (~.environment.ContainerImage):
+        container_image (google.cloud.notebooks_v1beta1.types.ContainerImage):
             Use a container image to start the notebook
             instance.
         post_startup_script (str):
@@ -67,12 +67,12 @@ class Instance(proto.Message):
             Required. The `Compute Engine machine
             type <https://cloud.google.com/compute/docs/machine-types>`__
             of this instance.
-        accelerator_config (~.instance.Instance.AcceleratorConfig):
+        accelerator_config (google.cloud.notebooks_v1beta1.types.Instance.AcceleratorConfig):
             The hardware accelerator used on this instance. If you use
             accelerators, make sure that your configuration has `enough
             vCPUs and memory to support the ``machine_type`` you have
             selected <https://cloud.google.com/compute/docs/gpus/#gpus-list>`__.
-        state (~.instance.Instance.State):
+        state (google.cloud.notebooks_v1beta1.types.Instance.State):
             Output only. The state of this instance.
         install_gpu_driver (bool):
             Whether the end user authorizes Google Cloud
@@ -84,7 +84,7 @@ class Instance(proto.Message):
             Specify a custom Cloud Storage path where the
             GPU driver is stored. If not specified, we'll
             automatically choose from official GPU drivers.
-        boot_disk_type (~.instance.Instance.DiskType):
+        boot_disk_type (google.cloud.notebooks_v1beta1.types.Instance.DiskType):
             Input only. The type of the boot disk attached to this
             instance, defaults to standard persistent disk
             (``PD_STANDARD``).
@@ -94,7 +94,7 @@ class Instance(proto.Message):
             64000&nbsp;GB (64&nbsp;TB). The minimum
             recommended value is 100&nbsp;GB. If not
             specified, this defaults to 100.
-        data_disk_type (~.instance.Instance.DiskType):
+        data_disk_type (google.cloud.notebooks_v1beta1.types.Instance.DiskType):
             Input only. The type of the data disk attached to this
             instance, defaults to standard persistent disk
             (``PD_STANDARD``).
@@ -108,7 +108,7 @@ class Instance(proto.Message):
         no_remove_data_disk (bool):
             Input only. If true, the data disk will not
             be auto deleted when deleting the instance.
-        disk_encryption (~.instance.Instance.DiskEncryption):
+        disk_encryption (google.cloud.notebooks_v1beta1.types.Instance.DiskEncryption):
             Input only. Disk encryption method used on
             the boot and data disks, defaults to GMEK.
         kms_key (str):
@@ -130,15 +130,15 @@ class Instance(proto.Message):
         subnet (str):
             The name of the subnet that this instance is in. Format:
             ``projects/{project_id}/regions/{region}/subnetworks/{subnetwork_id}``
-        labels (Sequence[~.instance.Instance.LabelsEntry]):
+        labels (Sequence[google.cloud.notebooks_v1beta1.types.Instance.LabelsEntry]):
             Labels to apply to this instance.
             These can be later modified by the setLabels
             method.
-        metadata (Sequence[~.instance.Instance.MetadataEntry]):
+        metadata (Sequence[google.cloud.notebooks_v1beta1.types.Instance.MetadataEntry]):
             Custom metadata to apply to this instance.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Instance creation time.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Instance update time.
     """
 
@@ -191,7 +191,7 @@ class Instance(proto.Message):
         combination. TPUs are not supported.
 
         Attributes:
-            type_ (~.instance.Instance.AcceleratorType):
+            type_ (google.cloud.notebooks_v1beta1.types.Instance.AcceleratorType):
                 Type of this accelerator.
             core_count (int):
                 Count of cores of this accelerator.

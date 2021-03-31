@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.notebooks_v1beta1.types import environment
 from google.cloud.notebooks_v1beta1.types import instance
@@ -26,7 +35,7 @@ class ListInstancesPager:
     """A pager for iterating through ``list_instances`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListInstancesResponse` object, and
+    :class:`google.cloud.notebooks_v1beta1.types.ListInstancesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``instances`` field.
 
@@ -35,7 +44,7 @@ class ListInstancesPager:
     through the ``instances`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListInstancesResponse`
+    All the usual :class:`google.cloud.notebooks_v1beta1.types.ListInstancesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -53,9 +62,9 @@ class ListInstancesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListInstancesRequest`):
+            request (google.cloud.notebooks_v1beta1.types.ListInstancesRequest):
                 The initial request object.
-            response (:class:`~.service.ListInstancesResponse`):
+            response (google.cloud.notebooks_v1beta1.types.ListInstancesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -88,7 +97,7 @@ class ListInstancesAsyncPager:
     """A pager for iterating through ``list_instances`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListInstancesResponse` object, and
+    :class:`google.cloud.notebooks_v1beta1.types.ListInstancesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``instances`` field.
 
@@ -97,7 +106,7 @@ class ListInstancesAsyncPager:
     through the ``instances`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListInstancesResponse`
+    All the usual :class:`google.cloud.notebooks_v1beta1.types.ListInstancesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -115,9 +124,9 @@ class ListInstancesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListInstancesRequest`):
+            request (google.cloud.notebooks_v1beta1.types.ListInstancesRequest):
                 The initial request object.
-            response (:class:`~.service.ListInstancesResponse`):
+            response (google.cloud.notebooks_v1beta1.types.ListInstancesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -154,7 +163,7 @@ class ListEnvironmentsPager:
     """A pager for iterating through ``list_environments`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListEnvironmentsResponse` object, and
+    :class:`google.cloud.notebooks_v1beta1.types.ListEnvironmentsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``environments`` field.
 
@@ -163,7 +172,7 @@ class ListEnvironmentsPager:
     through the ``environments`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListEnvironmentsResponse`
+    All the usual :class:`google.cloud.notebooks_v1beta1.types.ListEnvironmentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -181,9 +190,9 @@ class ListEnvironmentsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListEnvironmentsRequest`):
+            request (google.cloud.notebooks_v1beta1.types.ListEnvironmentsRequest):
                 The initial request object.
-            response (:class:`~.service.ListEnvironmentsResponse`):
+            response (google.cloud.notebooks_v1beta1.types.ListEnvironmentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -216,7 +225,7 @@ class ListEnvironmentsAsyncPager:
     """A pager for iterating through ``list_environments`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListEnvironmentsResponse` object, and
+    :class:`google.cloud.notebooks_v1beta1.types.ListEnvironmentsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``environments`` field.
 
@@ -225,7 +234,7 @@ class ListEnvironmentsAsyncPager:
     through the ``environments`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListEnvironmentsResponse`
+    All the usual :class:`google.cloud.notebooks_v1beta1.types.ListEnvironmentsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -243,9 +252,9 @@ class ListEnvironmentsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListEnvironmentsRequest`):
+            request (google.cloud.notebooks_v1beta1.types.ListEnvironmentsRequest):
                 The initial request object.
-            response (:class:`~.service.ListEnvironmentsResponse`):
+            response (google.cloud.notebooks_v1beta1.types.ListEnvironmentsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

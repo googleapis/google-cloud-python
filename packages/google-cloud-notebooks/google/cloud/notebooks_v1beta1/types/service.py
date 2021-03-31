@@ -57,9 +57,9 @@ class OperationMetadata(proto.Message):
     r"""Represents the metadata of the long-running operation.
 
     Attributes:
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time the operation was created.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time the operation finished running.
         target (str):
             Server-defined resource path for the target
@@ -123,7 +123,7 @@ class ListInstancesResponse(proto.Message):
     r"""Response for listing notebook instances.
 
     Attributes:
-        instances (Sequence[~.gcn_instance.Instance]):
+        instances (Sequence[google.cloud.notebooks_v1beta1.types.Instance]):
             A list of returned instances.
         next_page_token (str):
             Page token that can be used to continue
@@ -170,7 +170,7 @@ class CreateInstanceRequest(proto.Message):
         instance_id (str):
             Required. User-defined unique ID of this
             instance.
-        instance (~.gcn_instance.Instance):
+        instance (google.cloud.notebooks_v1beta1.types.Instance):
             Required. The instance to be created.
     """
 
@@ -208,7 +208,7 @@ class SetInstanceAcceleratorRequest(proto.Message):
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
-        type_ (~.gcn_instance.Instance.AcceleratorType):
+        type_ (google.cloud.notebooks_v1beta1.types.Instance.AcceleratorType):
             Required. Type of this accelerator.
         core_count (int):
             Required. Count of cores of this accelerator. Note that not
@@ -251,7 +251,7 @@ class SetInstanceLabelsRequest(proto.Message):
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
-        labels (Sequence[~.service.SetInstanceLabelsRequest.LabelsEntry]):
+        labels (Sequence[google.cloud.notebooks_v1beta1.types.SetInstanceLabelsRequest.LabelsEntry]):
             Labels to apply to this instance.
             These can be later modified by the setLabels
             method
@@ -323,7 +323,7 @@ class ReportInstanceInfoRequest(proto.Message):
             authenticating the VM.
             https://cloud.google.com/compute/docs/instances/verifying-
             instance-identity
-        metadata (Sequence[~.service.ReportInstanceInfoRequest.MetadataEntry]):
+        metadata (Sequence[google.cloud.notebooks_v1beta1.types.ReportInstanceInfoRequest.MetadataEntry]):
             The metadata reported to Notebooks API. This
             will be merged to the instance metadata store
     """
@@ -424,7 +424,7 @@ class ListEnvironmentsResponse(proto.Message):
     r"""Response for listing environments.
 
     Attributes:
-        environments (Sequence[~.gcn_environment.Environment]):
+        environments (Sequence[google.cloud.notebooks_v1beta1.types.Environment]):
             A list of returned environments.
         next_page_token (str):
             A page token that can be used to continue
@@ -472,7 +472,7 @@ class CreateEnvironmentRequest(proto.Message):
             contain only lowercase letters, numeric characters, and
             dashes. The first character must be a lowercase letter and
             the last character cannot be a dash.
-        environment (~.gcn_environment.Environment):
+        environment (google.cloud.notebooks_v1beta1.types.Environment):
             Required. The environment to be created.
     """
 
