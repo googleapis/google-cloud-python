@@ -51,7 +51,7 @@ s.replace("google/cloud/**/*client.py",
 templated_files = common.py_library(
     samples=False,
     microgenerator=True,
-    cov_level=99,
+    cov_level=98,
 )
 s.move(
     templated_files, excludes=[".coveragerc"]

@@ -62,34 +62,34 @@ class PatchDeployment(proto.Message):
             Optional. Description of the patch
             deployment. Length of the description is limited
             to 1024 characters.
-        instance_filter (~.patch_jobs.PatchInstanceFilter):
+        instance_filter (google.cloud.osconfig_v1.types.PatchInstanceFilter):
             Required. VM instances to patch.
-        patch_config (~.patch_jobs.PatchConfig):
+        patch_config (google.cloud.osconfig_v1.types.PatchConfig):
             Optional. Patch configuration that is
             applied.
-        duration (~.gp_duration.Duration):
+        duration (google.protobuf.duration_pb2.Duration):
             Optional. Duration of the patch. After the
             duration ends, the patch times out.
-        one_time_schedule (~.gco_patch_deployments.OneTimeSchedule):
+        one_time_schedule (google.cloud.osconfig_v1.types.OneTimeSchedule):
             Required. Schedule a one-time execution.
-        recurring_schedule (~.gco_patch_deployments.RecurringSchedule):
+        recurring_schedule (google.cloud.osconfig_v1.types.RecurringSchedule):
             Required. Schedule recurring executions.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time the patch deployment was created.
             Timestamp is in
             `RFC3339 <https://www.ietf.org/rfc/rfc3339.txt>`__ text
             format.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time the patch deployment was last updated.
             Timestamp is in
             `RFC3339 <https://www.ietf.org/rfc/rfc3339.txt>`__ text
             format.
-        last_execute_time (~.timestamp.Timestamp):
+        last_execute_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last time a patch job was started by this
             deployment. Timestamp is in
             `RFC3339 <https://www.ietf.org/rfc/rfc3339.txt>`__ text
             format.
-        rollout (~.patch_jobs.PatchRollout):
+        rollout (google.cloud.osconfig_v1.types.PatchRollout):
             Optional. Rollout strategy of the patch job.
     """
 
@@ -129,7 +129,7 @@ class OneTimeSchedule(proto.Message):
     `RFC3339 <https://www.ietf.org/rfc/rfc3339.txt>`__ text format.
 
     Attributes:
-        execute_time (~.timestamp.Timestamp):
+        execute_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. The desired patch job execution
             time.
     """
@@ -141,31 +141,31 @@ class RecurringSchedule(proto.Message):
     r"""Sets the time for recurring patch deployments.
 
     Attributes:
-        time_zone (~.datetime.TimeZone):
+        time_zone (google.type.datetime_pb2.TimeZone):
             Required. Defines the time zone that ``time_of_day`` is
             relative to. The rules for daylight saving time are
             determined by the chosen time zone.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The time that the recurring schedule becomes
             effective. Defaults to ``create_time`` of the patch
             deployment.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The end time at which a recurring
             patch deployment schedule is no longer active.
-        time_of_day (~.timeofday.TimeOfDay):
+        time_of_day (google.type.timeofday_pb2.TimeOfDay):
             Required. Time of the day to run a recurring
             deployment.
-        frequency (~.gco_patch_deployments.RecurringSchedule.Frequency):
+        frequency (google.cloud.osconfig_v1.types.RecurringSchedule.Frequency):
             Required. The frequency unit of this
             recurring schedule.
-        weekly (~.gco_patch_deployments.WeeklySchedule):
+        weekly (google.cloud.osconfig_v1.types.WeeklySchedule):
             Required. Schedule with weekly executions.
-        monthly (~.gco_patch_deployments.MonthlySchedule):
+        monthly (google.cloud.osconfig_v1.types.MonthlySchedule):
             Required. Schedule with monthly executions.
-        last_execute_time (~.timestamp.Timestamp):
+        last_execute_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the last patch job ran
             successfully.
-        next_execute_time (~.timestamp.Timestamp):
+        next_execute_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the next patch job is
             scheduled to run.
     """
@@ -207,7 +207,7 @@ class WeeklySchedule(proto.Message):
     r"""Represents a weekly schedule.
 
     Attributes:
-        day_of_week (~.dayofweek.DayOfWeek):
+        day_of_week (google.type.dayofweek_pb2.DayOfWeek):
             Required. Day of the week.
     """
 
@@ -220,7 +220,7 @@ class MonthlySchedule(proto.Message):
     of the month".
 
     Attributes:
-        week_day_of_month (~.gco_patch_deployments.WeekDayOfMonth):
+        week_day_of_month (google.cloud.osconfig_v1.types.WeekDayOfMonth):
             Required. Week day in a month.
         month_day (int):
             Required. One day of the month. 1-31
@@ -247,7 +247,7 @@ class WeekDayOfMonth(proto.Message):
             Required. Week number in a month. 1-4
             indicates the 1st to 4th week of the month. -1
             indicates the last week of the month.
-        day_of_week (~.dayofweek.DayOfWeek):
+        day_of_week (google.type.dayofweek_pb2.DayOfWeek):
             Required. A day of the week.
     """
 
@@ -273,7 +273,7 @@ class CreatePatchDeploymentRequest(proto.Message):
             -  Must be between 1-63 characters.
             -  Must end with a number or a letter.
             -  Must be unique within the project.
-        patch_deployment (~.gco_patch_deployments.PatchDeployment):
+        patch_deployment (google.cloud.osconfig_v1.types.PatchDeployment):
             Required. The patch deployment to create.
     """
 
@@ -324,7 +324,7 @@ class ListPatchDeploymentsResponse(proto.Message):
     r"""A response message for listing patch deployments.
 
     Attributes:
-        patch_deployments (Sequence[~.gco_patch_deployments.PatchDeployment]):
+        patch_deployments (Sequence[google.cloud.osconfig_v1.types.PatchDeployment]):
             The list of patch deployments.
         next_page_token (str):
             A pagination token that can be used to get

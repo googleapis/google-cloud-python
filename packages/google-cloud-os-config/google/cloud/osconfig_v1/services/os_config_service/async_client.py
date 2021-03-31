@@ -89,8 +89,36 @@ class OsConfigServiceAsyncClient:
         OsConfigServiceClient.parse_common_location_path
     )
 
-    from_service_account_info = OsConfigServiceClient.from_service_account_info
-    from_service_account_file = OsConfigServiceClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            OsConfigServiceAsyncClient: The constructed client.
+        """
+        return OsConfigServiceClient.from_service_account_info.__func__(OsConfigServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            OsConfigServiceAsyncClient: The constructed client.
+        """
+        return OsConfigServiceClient.from_service_account_file.__func__(OsConfigServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -166,7 +194,7 @@ class OsConfigServiceAsyncClient:
         job.
 
         Args:
-            request (:class:`~.patch_jobs.ExecutePatchJobRequest`):
+            request (:class:`google.cloud.osconfig_v1.types.ExecutePatchJobRequest`):
                 The request object. A request message to initiate
                 patching across Compute Engine instances.
 
@@ -177,17 +205,17 @@ class OsConfigServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.patch_jobs.PatchJob:
-                A high level representation of a patch job that is
-                either in progress or has completed.
+            google.cloud.osconfig_v1.types.PatchJob:
+                A high level representation of a patch job that is either in progress
+                   or has completed.
 
-                Instance details are not included in the job. To
-                paginate through instance details, use
-                ListPatchJobInstanceDetails.
+                   Instance details are not included in the job. To
+                   paginate through instance details, use
+                   ListPatchJobInstanceDetails.
 
-                For more information about patch jobs, see `Creating
-                patch
-                jobs <https://cloud.google.com/compute/docs/os-patch-management/create-patch-job>`__.
+                   For more information about patch jobs, see [Creating
+                   patch
+                   jobs](\ https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
 
         """
         # Create or coerce a protobuf request object.
@@ -228,12 +256,13 @@ class OsConfigServiceAsyncClient:
         of completed jobs.
 
         Args:
-            request (:class:`~.patch_jobs.GetPatchJobRequest`):
+            request (:class:`google.cloud.osconfig_v1.types.GetPatchJobRequest`):
                 The request object. Request to get an active or
                 completed patch job.
             name (:class:`str`):
                 Required. Name of the patch in the form
                 ``projects/*/patchJobs/*``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -245,17 +274,17 @@ class OsConfigServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.patch_jobs.PatchJob:
-                A high level representation of a patch job that is
-                either in progress or has completed.
+            google.cloud.osconfig_v1.types.PatchJob:
+                A high level representation of a patch job that is either in progress
+                   or has completed.
 
-                Instance details are not included in the job. To
-                paginate through instance details, use
-                ListPatchJobInstanceDetails.
+                   Instance details are not included in the job. To
+                   paginate through instance details, use
+                   ListPatchJobInstanceDetails.
 
-                For more information about patch jobs, see `Creating
-                patch
-                jobs <https://cloud.google.com/compute/docs/os-patch-management/create-patch-job>`__.
+                   For more information about patch jobs, see [Creating
+                   patch
+                   jobs](\ https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
 
         """
         # Create or coerce a protobuf request object.
@@ -308,7 +337,7 @@ class OsConfigServiceAsyncClient:
         Canceled patch jobs cannot be restarted.
 
         Args:
-            request (:class:`~.patch_jobs.CancelPatchJobRequest`):
+            request (:class:`google.cloud.osconfig_v1.types.CancelPatchJobRequest`):
                 The request object. Message for canceling a patch job.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -318,17 +347,17 @@ class OsConfigServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.patch_jobs.PatchJob:
-                A high level representation of a patch job that is
-                either in progress or has completed.
+            google.cloud.osconfig_v1.types.PatchJob:
+                A high level representation of a patch job that is either in progress
+                   or has completed.
 
-                Instance details are not included in the job. To
-                paginate through instance details, use
-                ListPatchJobInstanceDetails.
+                   Instance details are not included in the job. To
+                   paginate through instance details, use
+                   ListPatchJobInstanceDetails.
 
-                For more information about patch jobs, see `Creating
-                patch
-                jobs <https://cloud.google.com/compute/docs/os-patch-management/create-patch-job>`__.
+                   For more information about patch jobs, see [Creating
+                   patch
+                   jobs](\ https://cloud.google.com/compute/docs/os-patch-management/create-patch-job).
 
         """
         # Create or coerce a protobuf request object.
@@ -367,7 +396,7 @@ class OsConfigServiceAsyncClient:
         r"""Get a list of patch jobs.
 
         Args:
-            request (:class:`~.patch_jobs.ListPatchJobsRequest`):
+            request (:class:`google.cloud.osconfig_v1.types.ListPatchJobsRequest`):
                 The request object. A request message for listing patch
                 jobs.
             parent (:class:`str`):
@@ -383,7 +412,7 @@ class OsConfigServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListPatchJobsAsyncPager:
+            google.cloud.osconfig_v1.services.os_config_service.pagers.ListPatchJobsAsyncPager:
                 A response message for listing patch
                 jobs.
                 Iterating over this object will yield
@@ -447,12 +476,13 @@ class OsConfigServiceAsyncClient:
         r"""Get a list of instance details for a given patch job.
 
         Args:
-            request (:class:`~.patch_jobs.ListPatchJobInstanceDetailsRequest`):
+            request (:class:`google.cloud.osconfig_v1.types.ListPatchJobInstanceDetailsRequest`):
                 The request object. Request to list details for all
                 instances that are part of a patch job.
             parent (:class:`str`):
                 Required. The parent for the instances are in the form
                 of ``projects/*/patchJobs/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -464,7 +494,7 @@ class OsConfigServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListPatchJobInstanceDetailsAsyncPager:
+            google.cloud.osconfig_v1.services.os_config_service.pagers.ListPatchJobInstanceDetailsAsyncPager:
                 A response message for listing the
                 instances details for a patch job.
                 Iterating over this object will yield
@@ -530,18 +560,20 @@ class OsConfigServiceAsyncClient:
         r"""Create an OS Config patch deployment.
 
         Args:
-            request (:class:`~.patch_deployments.CreatePatchDeploymentRequest`):
+            request (:class:`google.cloud.osconfig_v1.types.CreatePatchDeploymentRequest`):
                 The request object. A request message for creating a
                 patch deployment.
             parent (:class:`str`):
                 Required. The project to apply this patch deployment to
                 in the form ``projects/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            patch_deployment (:class:`~.patch_deployments.PatchDeployment`):
+            patch_deployment (:class:`google.cloud.osconfig_v1.types.PatchDeployment`):
                 Required. The patch deployment to
                 create.
+
                 This corresponds to the ``patch_deployment`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -556,6 +588,7 @@ class OsConfigServiceAsyncClient:
                 -  Must end with a number or a letter.
                 -  Must be unique within the project.
 
+
                 This corresponds to the ``patch_deployment_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -567,13 +600,13 @@ class OsConfigServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.patch_deployments.PatchDeployment:
-                Patch deployments are configurations that individual
-                patch jobs use to complete a patch. These configurations
-                include instance filter, package repository settings,
-                and a schedule. For more information about creating and
-                managing patch deployments, see `Scheduling patch
-                jobs <https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs>`__.
+            google.cloud.osconfig_v1.types.PatchDeployment:
+                Patch deployments are configurations that individual patch jobs use to
+                   complete a patch. These configurations include
+                   instance filter, package repository settings, and a
+                   schedule. For more information about creating and
+                   managing patch deployments, see [Scheduling patch
+                   jobs](\ https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
 
         """
         # Create or coerce a protobuf request object.
@@ -630,12 +663,13 @@ class OsConfigServiceAsyncClient:
         r"""Get an OS Config patch deployment.
 
         Args:
-            request (:class:`~.patch_deployments.GetPatchDeploymentRequest`):
+            request (:class:`google.cloud.osconfig_v1.types.GetPatchDeploymentRequest`):
                 The request object. A request message for retrieving a
                 patch deployment.
             name (:class:`str`):
                 Required. The resource name of the patch deployment in
                 the form ``projects/*/patchDeployments/*``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -647,13 +681,13 @@ class OsConfigServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.patch_deployments.PatchDeployment:
-                Patch deployments are configurations that individual
-                patch jobs use to complete a patch. These configurations
-                include instance filter, package repository settings,
-                and a schedule. For more information about creating and
-                managing patch deployments, see `Scheduling patch
-                jobs <https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs>`__.
+            google.cloud.osconfig_v1.types.PatchDeployment:
+                Patch deployments are configurations that individual patch jobs use to
+                   complete a patch. These configurations include
+                   instance filter, package repository settings, and a
+                   schedule. For more information about creating and
+                   managing patch deployments, see [Scheduling patch
+                   jobs](\ https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs).
 
         """
         # Create or coerce a protobuf request object.
@@ -706,12 +740,13 @@ class OsConfigServiceAsyncClient:
         r"""Get a page of OS Config patch deployments.
 
         Args:
-            request (:class:`~.patch_deployments.ListPatchDeploymentsRequest`):
+            request (:class:`google.cloud.osconfig_v1.types.ListPatchDeploymentsRequest`):
                 The request object. A request message for listing patch
                 deployments.
             parent (:class:`str`):
                 Required. The resource name of the parent in the form
                 ``projects/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -723,7 +758,7 @@ class OsConfigServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListPatchDeploymentsAsyncPager:
+            google.cloud.osconfig_v1.services.os_config_service.pagers.ListPatchDeploymentsAsyncPager:
                 A response message for listing patch
                 deployments.
                 Iterating over this object will yield
@@ -787,12 +822,13 @@ class OsConfigServiceAsyncClient:
         r"""Delete an OS Config patch deployment.
 
         Args:
-            request (:class:`~.patch_deployments.DeletePatchDeploymentRequest`):
+            request (:class:`google.cloud.osconfig_v1.types.DeletePatchDeploymentRequest`):
                 The request object. A request message for deleting a
                 patch deployment.
             name (:class:`str`):
                 Required. The resource name of the patch deployment in
                 the form ``projects/*/patchDeployments/*``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

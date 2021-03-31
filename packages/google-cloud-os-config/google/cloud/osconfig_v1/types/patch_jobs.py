@@ -62,15 +62,15 @@ class ExecutePatchJobRequest(proto.Message):
         description (str):
             Description of the patch job. Length of the
             description is limited to 1024 characters.
-        instance_filter (~.gco_patch_jobs.PatchInstanceFilter):
+        instance_filter (google.cloud.osconfig_v1.types.PatchInstanceFilter):
             Required. Instances to patch, either
             explicitly or filtered by some criteria such as
             zone or labels.
-        patch_config (~.gco_patch_jobs.PatchConfig):
+        patch_config (google.cloud.osconfig_v1.types.PatchConfig):
             Patch configuration being applied. If
             omitted, instances are patched using the default
             configurations.
-        duration (~.gp_duration.Duration):
+        duration (google.protobuf.duration_pb2.Duration):
             Duration of the patch job. After the duration
             ends, the patch job times out.
         dry_run (bool):
@@ -79,7 +79,7 @@ class ExecutePatchJobRequest(proto.Message):
         display_name (str):
             Display name for this patch job. This does
             not have to be unique.
-        rollout (~.gco_patch_jobs.PatchRollout):
+        rollout (google.cloud.osconfig_v1.types.PatchRollout):
             Rollout strategy of the patch job.
     """
 
@@ -149,7 +149,7 @@ class ListPatchJobInstanceDetailsResponse(proto.Message):
     patch job.
 
     Attributes:
-        patch_job_instance_details (Sequence[~.gco_patch_jobs.PatchJobInstanceDetails]):
+        patch_job_instance_details (Sequence[google.cloud.osconfig_v1.types.PatchJobInstanceDetails]):
             A list of instance status.
         next_page_token (str):
             A pagination token that can be used to get
@@ -180,7 +180,7 @@ class PatchJobInstanceDetails(proto.Message):
         instance_system_id (str):
             The unique identifier for the instance. This
             identifier is defined by the server.
-        state (~.gco_patch_jobs.Instance.PatchState):
+        state (google.cloud.osconfig_v1.types.Instance.PatchState):
             Current state of instance patch.
         failure_reason (str):
             If the patch fails, this field provides the
@@ -233,7 +233,7 @@ class ListPatchJobsResponse(proto.Message):
     r"""A response message for listing patch jobs.
 
     Attributes:
-        patch_jobs (Sequence[~.gco_patch_jobs.PatchJob]):
+        patch_jobs (Sequence[google.cloud.osconfig_v1.types.PatchJob]):
             The list of patch jobs.
         next_page_token (str):
             A pagination token that can be used to get
@@ -269,20 +269,20 @@ class PatchJob(proto.Message):
         description (str):
             Description of the patch job. Length of the
             description is limited to 1024 characters.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Time this patch job was created.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Last time this patch job was updated.
-        state (~.gco_patch_jobs.PatchJob.State):
+        state (google.cloud.osconfig_v1.types.PatchJob.State):
             The current state of the PatchJob.
-        instance_filter (~.gco_patch_jobs.PatchInstanceFilter):
+        instance_filter (google.cloud.osconfig_v1.types.PatchInstanceFilter):
             Instances to patch.
-        patch_config (~.gco_patch_jobs.PatchConfig):
+        patch_config (google.cloud.osconfig_v1.types.PatchConfig):
             Patch configuration being applied.
-        duration (~.gp_duration.Duration):
+        duration (google.protobuf.duration_pb2.Duration):
             Duration of the patch job. After the duration
             ends, the patch job times out.
-        instance_details_summary (~.gco_patch_jobs.PatchJob.InstanceDetailsSummary):
+        instance_details_summary (google.cloud.osconfig_v1.types.PatchJob.InstanceDetailsSummary):
             Summary of instance details.
         dry_run (bool):
             If this patch job is a dry run, the agent
@@ -298,7 +298,7 @@ class PatchJob(proto.Message):
         patch_deployment (str):
             Output only. Name of the patch deployment
             that created this patch job.
-        rollout (~.gco_patch_jobs.PatchRollout):
+        rollout (google.cloud.osconfig_v1.types.PatchRollout):
             Rollout strategy being applied.
     """
 
@@ -434,26 +434,26 @@ class PatchConfig(proto.Message):
     to apply the patch(es) to a VM instance.
 
     Attributes:
-        reboot_config (~.gco_patch_jobs.PatchConfig.RebootConfig):
+        reboot_config (google.cloud.osconfig_v1.types.PatchConfig.RebootConfig):
             Post-patch reboot settings.
-        apt (~.gco_patch_jobs.AptSettings):
+        apt (google.cloud.osconfig_v1.types.AptSettings):
             Apt update settings. Use this setting to override the
             default ``apt`` patch rules.
-        yum (~.gco_patch_jobs.YumSettings):
+        yum (google.cloud.osconfig_v1.types.YumSettings):
             Yum update settings. Use this setting to override the
             default ``yum`` patch rules.
-        goo (~.gco_patch_jobs.GooSettings):
+        goo (google.cloud.osconfig_v1.types.GooSettings):
             Goo update settings. Use this setting to override the
             default ``goo`` patch rules.
-        zypper (~.gco_patch_jobs.ZypperSettings):
+        zypper (google.cloud.osconfig_v1.types.ZypperSettings):
             Zypper update settings. Use this setting to override the
             default ``zypper`` patch rules.
-        windows_update (~.gco_patch_jobs.WindowsUpdateSettings):
+        windows_update (google.cloud.osconfig_v1.types.WindowsUpdateSettings):
             Windows update settings. Use this override
             the default windows patch rules.
-        pre_step (~.gco_patch_jobs.ExecStep):
+        pre_step (google.cloud.osconfig_v1.types.ExecStep):
             The ``ExecStep`` to run before the patch update.
-        post_step (~.gco_patch_jobs.ExecStep):
+        post_step (google.cloud.osconfig_v1.types.ExecStep):
             The ``ExecStep`` to run after the patch update.
     """
 
@@ -524,7 +524,7 @@ class AptSettings(proto.Message):
     to control how this is executed.
 
     Attributes:
-        type_ (~.gco_patch_jobs.AptSettings.Type):
+        type_ (google.cloud.osconfig_v1.types.AptSettings.Type):
             By changing the type to DIST, the patching is performed
             using ``apt-get dist-upgrade`` instead.
         excludes (Sequence[str]):
@@ -632,7 +632,7 @@ class WindowsUpdateSettings(proto.Message):
     r"""Windows patching is performed using the Windows Update Agent.
 
     Attributes:
-        classifications (Sequence[~.gco_patch_jobs.WindowsUpdateSettings.Classification]):
+        classifications (Sequence[google.cloud.osconfig_v1.types.WindowsUpdateSettings.Classification]):
             Only apply updates of these windows update
             classifications. If empty, all updates are
             applied.
@@ -671,10 +671,10 @@ class ExecStep(proto.Message):
     r"""A step that runs an executable for a PatchJob.
 
     Attributes:
-        linux_exec_step_config (~.gco_patch_jobs.ExecStepConfig):
+        linux_exec_step_config (google.cloud.osconfig_v1.types.ExecStepConfig):
             The ExecStepConfig for all Linux VMs targeted
             by the PatchJob.
-        windows_exec_step_config (~.gco_patch_jobs.ExecStepConfig):
+        windows_exec_step_config (google.cloud.osconfig_v1.types.ExecStepConfig):
             The ExecStepConfig for all Windows VMs
             targeted by the PatchJob.
     """
@@ -694,13 +694,13 @@ class ExecStepConfig(proto.Message):
     Attributes:
         local_path (str):
             An absolute path to the executable on the VM.
-        gcs_object (~.gco_patch_jobs.GcsObject):
+        gcs_object (google.cloud.osconfig_v1.types.GcsObject):
             A Cloud Storage object containing the
             executable.
         allowed_success_codes (Sequence[int]):
             Defaults to [0]. A list of possible return values that the
             execution can return to indicate a success.
-        interpreter (~.gco_patch_jobs.ExecStepConfig.Interpreter):
+        interpreter (google.cloud.osconfig_v1.types.ExecStepConfig.Interpreter):
             The script interpreter to use to run the script. If no
             interpreter is specified the script will be executed
             directly, which will likely only succeed for scripts with
@@ -757,7 +757,7 @@ class PatchInstanceFilter(proto.Message):
         all_ (bool):
             Target all VM instances in the project. If
             true, no other criteria is permitted.
-        group_labels (Sequence[~.gco_patch_jobs.PatchInstanceFilter.GroupLabel]):
+        group_labels (Sequence[google.cloud.osconfig_v1.types.PatchInstanceFilter.GroupLabel]):
             Targets VM instances matching ANY of these
             GroupLabels. This allows targeting of disparate
             groups of VM instances.
@@ -790,7 +790,7 @@ class PatchInstanceFilter(proto.Message):
         and ``app=web``.
 
         Attributes:
-            labels (Sequence[~.gco_patch_jobs.PatchInstanceFilter.GroupLabel.LabelsEntry]):
+            labels (Sequence[google.cloud.osconfig_v1.types.PatchInstanceFilter.GroupLabel.LabelsEntry]):
                 Compute Engine instance labels that must be
                 present for a VM instance to be targeted by this
                 filter.
@@ -815,9 +815,9 @@ class PatchRollout(proto.Message):
     targeted VMs.
 
     Attributes:
-        mode (~.gco_patch_jobs.PatchRollout.Mode):
+        mode (google.cloud.osconfig_v1.types.PatchRollout.Mode):
             Mode of the patch rollout.
-        disruption_budget (~.osconfig_common.FixedOrPercent):
+        disruption_budget (google.cloud.osconfig_v1.types.FixedOrPercent):
             The maximum number (or percentage) of VMs per zone to
             disrupt at any given moment. The number of VMs calculated
             from multiplying the percentage by the total number of VMs

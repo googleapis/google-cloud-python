@@ -31,9 +31,8 @@ version = "1.1.0"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "google-api-core[grpc] >= 1.22.0, < 2.0.0dev",
+    "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
     "proto-plus >= 1.10.0",
-    "libcst >= 0.2.5",
 ]
 extras = {}
 

@@ -30,10 +30,10 @@ class Inventory(proto.Message):
     r"""The inventory details of a VM.
 
     Attributes:
-        os_info (~.inventory.Inventory.OsInfo):
+        os_info (google.cloud.osconfig_v1.types.Inventory.OsInfo):
             Base level operating system information for
             the VM.
-        items (Sequence[~.inventory.Inventory.ItemsEntry]):
+        items (Sequence[google.cloud.osconfig_v1.types.Inventory.ItemsEntry]):
             Inventory items related to the VM keyed by an
             opaque unique identifier for each inventory
             item.  The identifier is unique to each distinct
@@ -91,18 +91,18 @@ class Inventory(proto.Message):
             id (str):
                 Identifier for this item, unique across items
                 for this VM.
-            origin_type (~.inventory.Inventory.Item.OriginType):
+            origin_type (google.cloud.osconfig_v1.types.Inventory.Item.OriginType):
                 The origin of this inventory item.
-            create_time (~.timestamp.Timestamp):
+            create_time (google.protobuf.timestamp_pb2.Timestamp):
                 When this inventory item was first detected.
-            update_time (~.timestamp.Timestamp):
+            update_time (google.protobuf.timestamp_pb2.Timestamp):
                 When this inventory item was last modified.
-            type_ (~.inventory.Inventory.Item.Type):
+            type_ (google.cloud.osconfig_v1.types.Inventory.Item.Type):
                 The specific type of inventory, correlating
                 to its specific details.
-            installed_package (~.inventory.Inventory.SoftwarePackage):
+            installed_package (google.cloud.osconfig_v1.types.Inventory.SoftwarePackage):
                 Software package present on the VM instance.
-            available_package (~.inventory.Inventory.SoftwarePackage):
+            available_package (google.cloud.osconfig_v1.types.Inventory.SoftwarePackage):
                 Software package available to be installed on
                 the VM instance.
         """
@@ -148,37 +148,37 @@ class Inventory(proto.Message):
         r"""Software package information of the operating system.
 
         Attributes:
-            yum_package (~.inventory.Inventory.VersionedPackage):
+            yum_package (google.cloud.osconfig_v1.types.Inventory.VersionedPackage):
                 Yum package info. For details about the yum package manager,
                 see
                 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-yum.
-            apt_package (~.inventory.Inventory.VersionedPackage):
+            apt_package (google.cloud.osconfig_v1.types.Inventory.VersionedPackage):
                 Details of an APT package.
                 For details about the apt package manager, see
                 https://wiki.debian.org/Apt.
-            zypper_package (~.inventory.Inventory.VersionedPackage):
+            zypper_package (google.cloud.osconfig_v1.types.Inventory.VersionedPackage):
                 Details of a Zypper package. For details about the Zypper
                 package manager, see
                 https://en.opensuse.org/SDB:Zypper_manual.
-            googet_package (~.inventory.Inventory.VersionedPackage):
+            googet_package (google.cloud.osconfig_v1.types.Inventory.VersionedPackage):
                 Details of a Googet package.
                 For details about the googet package manager,
                 see  https://github.com/google/googet.
-            zypper_patch (~.inventory.Inventory.ZypperPatch):
+            zypper_patch (google.cloud.osconfig_v1.types.Inventory.ZypperPatch):
                 Details of a Zypper patch. For details about the Zypper
                 package manager, see
                 https://en.opensuse.org/SDB:Zypper_manual.
-            wua_package (~.inventory.Inventory.WindowsUpdatePackage):
+            wua_package (google.cloud.osconfig_v1.types.Inventory.WindowsUpdatePackage):
                 Details of a Windows Update package. See
                 https://docs.microsoft.com/en-us/windows/win32/api/_wua/ for
                 information about Windows Update.
-            qfe_package (~.inventory.Inventory.WindowsQuickFixEngineeringPackage):
+            qfe_package (google.cloud.osconfig_v1.types.Inventory.WindowsQuickFixEngineeringPackage):
                 Details of a Windows Quick Fix engineering
                 package. See
                 https://docs.microsoft.com/en-
                 us/windows/win32/cimwin32prov/win32-quickfixengineering
                 for info in Windows Quick Fix Engineering.
-            cos_package (~.inventory.Inventory.VersionedPackage):
+            cos_package (google.cloud.osconfig_v1.types.Inventory.VersionedPackage):
                 Details of a COS package.
         """
 
@@ -269,7 +269,7 @@ class Inventory(proto.Message):
             description (str):
                 The localized description of the update
                 package.
-            categories (Sequence[~.inventory.Inventory.WindowsUpdatePackage.WindowsUpdateCategory]):
+            categories (Sequence[google.cloud.osconfig_v1.types.Inventory.WindowsUpdatePackage.WindowsUpdateCategory]):
                 The categories that are associated with this
                 update package.
             kb_article_ids (Sequence[str]):
@@ -287,7 +287,7 @@ class Inventory(proto.Message):
                 Stays the same across revisions.
             revision_number (int):
                 The revision number of this update package.
-            last_deployment_change_time (~.timestamp.Timestamp):
+            last_deployment_change_time (google.protobuf.timestamp_pb2.Timestamp):
                 The last published date of the update, in
                 (UTC) date and time.
         """
@@ -370,7 +370,7 @@ class Inventory(proto.Message):
             hot_fix_id (str):
                 Unique identifier associated with a
                 particular QFE update.
-            install_time (~.timestamp.Timestamp):
+            install_time (google.protobuf.timestamp_pb2.Timestamp):
                 Date that the QFE update was installed. Mapped from
                 installed_on field.
         """
