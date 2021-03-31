@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import
 import os
+import pathlib
 import shutil
 
 import nox
@@ -30,6 +31,8 @@ DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9"]
 
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
     "unit",
@@ -41,16 +44,19 @@ nox.options.sessions = [
     "docs",
 ]
 
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
+
 
 @nox.session(python="3.8")
 def generate_protos(session):
     """Generates the protos using protoc.
-    
+
     Some notes on the `google` directory:
-    1. The `_pb2.py` files are produced by protoc. 
+    1. The `_pb2.py` files are produced by protoc.
     2. The .proto files are non-functional but are left in the repository
        to make it easier to understand diffs.
-    3. The `google` directory also has `__init__.py` files to create proper modules. 
+    3. The `google` directory also has `__init__.py` files to create proper modules.
        If a new subdirectory is added, you will need to create more `__init__.py`
        files.
 
@@ -111,13 +117,15 @@ def lint_setup_py(session):
 
 def default(session):
     # Install all test dependencies, then install this package in-place.
-    session.install("asyncmock", "pytest-asyncio")
 
-    session.install(
-        "mock", "pytest", "pytest-cov",
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
+    session.install("asyncmock", "pytest-asyncio", "-c", constraints_path)
 
-    session.install("-e", ".")
+    session.install("mock", "pytest", "pytest-cov", "-c", constraints_path)
+
+    session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the unit tests.
     session.run(
@@ -144,6 +152,9 @@ def unit(session):
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
     """Run the system test suite."""
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
 
@@ -153,6 +164,9 @@ def system(session):
     # Sanity check: Only run tests if the environment variable is set.
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
         session.skip("Credentials must be set via environment variable")
+    # Install pyopenssl for mTLS testing.
+    if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
+        session.install("pyopenssl")
 
     system_test_exists = os.path.exists(system_test_path)
     system_test_folder_exists = os.path.exists(system_test_folder_path)
@@ -165,10 +179,8 @@ def system(session):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install(
-        "mock", "pytest", "google-cloud-testutils",
-    )
-    session.install("-e", ".")
+    session.install("mock", "pytest", "google-cloud-testutils", "-c", constraints_path)
+    session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the system tests.
     if system_test_exists:
@@ -197,7 +209,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=97")
+    session.run("coverage", "report", "--show-missing", "--fail-under=95")
 
     session.run("coverage", "erase")
 
@@ -229,9 +241,7 @@ def docfx(session):
     """Build the docfx yaml files for this library."""
 
     session.install("-e", ".")
-    # sphinx-docfx-yaml supports up to sphinx version 1.5.5.
-    # https://github.com/docascode/sphinx-docfx-yaml/issues/97
-    session.install("sphinx==1.5.5", "alabaster", "recommonmark", "sphinx-docfx-yaml")
+    session.install("sphinx", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(

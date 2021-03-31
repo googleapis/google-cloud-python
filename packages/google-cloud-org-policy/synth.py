@@ -50,7 +50,7 @@ s.replace(
 # ----------------------------------------------------------------------------
 
 # coverage is 97 to exclude orgpolicy/v1 code
-templated_files = common.py_library(microgenerator=True, cov_level=97)
+templated_files = common.py_library(microgenerator=True, cov_level=95)
 s.move(
     templated_files, excludes=[".coveragerc",]
 )
@@ -69,12 +69,12 @@ def lint\(.+?)""",
     '''@nox.session(python="3.8")
 def generate_protos(session):
     """Generates the protos using protoc.
-    
+
     Some notes on the `google` directory:
-    1. The `_pb2.py` files are produced by protoc. 
+    1. The `_pb2.py` files are produced by protoc.
     2. The .proto files are non-functional but are left in the repository
        to make it easier to understand diffs.
-    3. The `google` directory also has `__init__.py` files to create proper modules. 
+    3. The `google` directory also has `__init__.py` files to create proper modules.
        If a new subdirectory is added, you will need to create more `__init__.py`
        files.
 
@@ -94,7 +94,7 @@ def generate_protos(session):
         "--python_out=.",
         *protos,
     )
-    
+
 \g<1>''',
 )
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
