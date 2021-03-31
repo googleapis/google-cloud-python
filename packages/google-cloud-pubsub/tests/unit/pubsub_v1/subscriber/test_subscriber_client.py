@@ -12,9 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import warnings
+
 from google.auth import credentials
 import grpc
 import mock
+import pytest
 
 from google.api_core.gapic_v1.client_info import METRICS_METADATA_KEY
 from google.cloud.pubsub_v1 import subscriber
@@ -217,3 +220,43 @@ def test_streaming_pull_gapic_monkeypatch():
     transport = client.api._transport
     assert hasattr(transport.streaming_pull, "_prefetch_first_result_")
     assert not transport.streaming_pull._prefetch_first_result_
+
+
+def test_sync_pull_warning_if_return_immediately():
+    client = subscriber.Client()
+    subscription_path = "projects/foo/subscriptions/bar"
+
+    with mock.patch.object(
+        client.api._transport, "_wrapped_methods"
+    ), warnings.catch_warnings(record=True) as warned:
+        client.pull(subscription=subscription_path, return_immediately=True)
+
+    # Setting the deprecated return_immediately flag to True should emit a warning.
+    assert len(warned) == 1
+    assert issubclass(warned[0].category, DeprecationWarning)
+    warning_msg = str(warned[0].message)
+    assert "return_immediately" in warning_msg
+    assert "deprecated" in warning_msg
+
+
+@pytest.mark.asyncio
+async def test_sync_pull_warning_if_return_immediately_async():
+    from google.pubsub_v1.services.subscriber.async_client import SubscriberAsyncClient
+
+    client = SubscriberAsyncClient()
+    subscription_path = "projects/foo/subscriptions/bar"
+
+    patcher = mock.patch(
+        "google.pubsub_v1.services.subscriber.async_client.gapic_v1.method_async.wrap_method",
+        new=mock.AsyncMock,
+    )
+
+    with patcher, warnings.catch_warnings(record=True) as warned:
+        await client.pull(subscription=subscription_path, return_immediately=True)
+
+    # Setting the deprecated return_immediately flag to True should emit a warning.
+    assert len(warned) == 1
+    assert issubclass(warned[0].category, DeprecationWarning)
+    warning_msg = str(warned[0].message)
+    assert "return_immediately" in warning_msg
+    assert "deprecated" in warning_msg

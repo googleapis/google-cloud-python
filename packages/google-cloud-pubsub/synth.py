@@ -76,7 +76,7 @@ count = s.replace(
     flags=re.MULTILINE | re.DOTALL,
 )
 
-if count < 18:
+if count < 15:
     raise Exception("Expected replacements for gRPC channel options not made.")
 
 # If the emulator is used, force an insecure gRPC channel to avoid SSL errors.
@@ -140,6 +140,35 @@ s.replace(
 
         \g<0>""",
 )
+
+# Emit deprecation warning if return_immediately flag is set with synchronous pull.
+count = s.replace(
+    "google/pubsub_v1/services/subscriber/*client.py",
+    r"import pkg_resources",
+    "import warnings\n\g<0>",
+)
+count = s.replace(
+    "google/pubsub_v1/services/subscriber/*client.py",
+    r"""
+    ([^\n\S]+(?:async\ )?def\ pull\(.*?->\ pubsub\.PullResponse:.*?)
+    ((?P<indent>[^\n\S]+)\#\ Wrap\ the\ RPC\ method)
+    """,
+    textwrap.dedent(
+    """
+    \g<1>
+    \g<indent>if request.return_immediately:
+    \g<indent>    warnings.warn(
+    \g<indent>        "The return_immediately flag is deprecated and should be set to False.",
+    \g<indent>        category=DeprecationWarning,
+    \g<indent>    )
+
+    \g<2>"""
+    ),
+    flags=re.MULTILINE | re.DOTALL | re.VERBOSE,
+)
+
+if count != 2:
+    raise Exception("Too many or too few replacements in pull() methods.")
 
 # Make sure that client library version is present in user agent header.
 s.replace(

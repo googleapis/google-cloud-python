@@ -31,6 +31,7 @@ from typing import (
     Type,
     Union,
 )
+import warnings
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
@@ -1123,6 +1124,12 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
                 request.return_immediately = return_immediately
             if max_messages is not None:
                 request.max_messages = max_messages
+
+        if request.return_immediately:
+            warnings.warn(
+                "The return_immediately flag is deprecated and should be set to False.",
+                category=DeprecationWarning,
+            )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
