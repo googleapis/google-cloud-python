@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-scheduler/compare/v2.1.1...v2.2.0) (2021-03-31)
+
+
+### Features
+
+* add `from_service_account_info` ([#67](https://www.github.com/googleapis/python-scheduler/issues/67)) ([bd21900](https://www.github.com/googleapis/python-scheduler/commit/bd2190046269eea1e08111b97f01e845f748b8e5))
+
 ### [2.1.1](https://www.github.com/googleapis/python-scheduler/compare/v2.1.0...v2.1.1) (2021-02-08)
 
 
