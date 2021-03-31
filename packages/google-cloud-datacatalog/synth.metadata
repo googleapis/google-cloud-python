@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-datacatalog.git",
-        "sha": "0c69bc2fbae593f62c543c5a15dbe810467b7510"
+        "sha": "348ac56128f7af782d51a72efd001d3c45dd771a"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "86ed43d4f56e6404d068e62e497029018879c771"
+        "sha": "4501974ad08b5d693311457e2ea4ce845676e329"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "86ed43d4f56e6404d068e62e497029018879c771"
+        "sha": "4501974ad08b5d693311457e2ea4ce845676e329"
       }
     }
   ],
