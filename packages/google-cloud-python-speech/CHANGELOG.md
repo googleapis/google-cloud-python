@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+### [2.2.1](https://www.github.com/googleapis/python-speech/compare/v2.2.0...v2.2.1) (2021-03-31)
+
+
+### Bug Fixes
+
+* use correct retry deadline ([#134](https://www.github.com/googleapis/python-speech/issues/134)) ([07a30a1](https://www.github.com/googleapis/python-speech/commit/07a30a18ab4e38cca46af905cfd4221ce06daeb3))
+
 ## [2.2.0](https://www.github.com/googleapis/python-speech/compare/v2.1.0...v2.2.0) (2021-03-19)
 
 
