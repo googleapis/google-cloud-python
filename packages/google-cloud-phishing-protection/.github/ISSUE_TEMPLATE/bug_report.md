@@ -20,7 +20,7 @@ If you are still having issues, please be sure to include as much information as
   - OS type and version:
   - Python version: `python --version`
   - pip version: `pip --version`
-  - `google-cloud-phishingprotection` version: `pip show google-cloud-phishingprotection`
+  - `google-cloud-phishing-protection` version: `pip show google-cloud-phishing-protection`
 
 #### Steps to reproduce
 
