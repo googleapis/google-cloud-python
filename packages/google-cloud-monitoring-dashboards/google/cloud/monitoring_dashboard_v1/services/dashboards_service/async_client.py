@@ -80,7 +80,36 @@ class DashboardsServiceAsyncClient:
         DashboardsServiceClient.parse_common_location_path
     )
 
-    from_service_account_file = DashboardsServiceClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            DashboardsServiceAsyncClient: The constructed client.
+        """
+        return DashboardsServiceClient.from_service_account_info.__func__(DashboardsServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            DashboardsServiceAsyncClient: The constructed client.
+        """
+        return DashboardsServiceClient.from_service_account_file.__func__(DashboardsServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -152,14 +181,16 @@ class DashboardsServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dashboard.Dashboard:
-        r"""Creates a new custom dashboard.
-
+        r"""Creates a new custom dashboard. For examples on how you can use
+        this API to create dashboards, see `Managing dashboards by
+        API <https://cloud.google.com/monitoring/dashboards/api-dashboard>`__.
         This method requires the ``monitoring.dashboards.create``
-        permission on the specified project. For more information, see
-        `Google Cloud IAM <https://cloud.google.com/iam>`__.
+        permission on the specified project. For more information about
+        permissions, see `Cloud Identity and Access
+        Management <https://cloud.google.com/iam>`__.
 
         Args:
-            request (:class:`~.dashboards_service.CreateDashboardRequest`):
+            request (:class:`google.cloud.monitoring_dashboard_v1.types.CreateDashboardRequest`):
                 The request object. The `CreateDashboard` request.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -169,7 +200,7 @@ class DashboardsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.dashboard.Dashboard:
+            google.cloud.monitoring_dashboard_v1.types.Dashboard:
                 A Google Stackdriver dashboard.
                 Dashboards define the content and layout
                 of pages in the Stackdriver web
@@ -212,10 +243,11 @@ class DashboardsServiceAsyncClient:
 
         This method requires the ``monitoring.dashboards.list``
         permission on the specified project. For more information, see
-        `Google Cloud IAM <https://cloud.google.com/iam>`__.
+        `Cloud Identity and Access
+        Management <https://cloud.google.com/iam>`__.
 
         Args:
-            request (:class:`~.dashboards_service.ListDashboardsRequest`):
+            request (:class:`google.cloud.monitoring_dashboard_v1.types.ListDashboardsRequest`):
                 The request object. The `ListDashboards` request.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -225,8 +257,8 @@ class DashboardsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListDashboardsAsyncPager:
-                The ``ListDashboards`` request.
+            google.cloud.monitoring_dashboard_v1.services.dashboards_service.pagers.ListDashboardsAsyncPager:
+                The ListDashboards request.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -274,10 +306,11 @@ class DashboardsServiceAsyncClient:
 
         This method requires the ``monitoring.dashboards.get``
         permission on the specified dashboard. For more information, see
-        `Google Cloud IAM <https://cloud.google.com/iam>`__.
+        `Cloud Identity and Access
+        Management <https://cloud.google.com/iam>`__.
 
         Args:
-            request (:class:`~.dashboards_service.GetDashboardRequest`):
+            request (:class:`google.cloud.monitoring_dashboard_v1.types.GetDashboardRequest`):
                 The request object. The `GetDashboard` request.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -287,7 +320,7 @@ class DashboardsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.dashboard.Dashboard:
+            google.cloud.monitoring_dashboard_v1.types.Dashboard:
                 A Google Stackdriver dashboard.
                 Dashboards define the content and layout
                 of pages in the Stackdriver web
@@ -330,10 +363,11 @@ class DashboardsServiceAsyncClient:
 
         This method requires the ``monitoring.dashboards.delete``
         permission on the specified dashboard. For more information, see
-        `Google Cloud IAM <https://cloud.google.com/iam>`__.
+        `Cloud Identity and Access
+        Management <https://cloud.google.com/iam>`__.
 
         Args:
-            request (:class:`~.dashboards_service.DeleteDashboardRequest`):
+            request (:class:`google.cloud.monitoring_dashboard_v1.types.DeleteDashboardRequest`):
                 The request object. The `DeleteDashboard` request.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -377,10 +411,11 @@ class DashboardsServiceAsyncClient:
 
         This method requires the ``monitoring.dashboards.update``
         permission on the specified dashboard. For more information, see
-        `Google Cloud IAM <https://cloud.google.com/iam>`__.
+        `Cloud Identity and Access
+        Management <https://cloud.google.com/iam>`__.
 
         Args:
-            request (:class:`~.dashboards_service.UpdateDashboardRequest`):
+            request (:class:`google.cloud.monitoring_dashboard_v1.types.UpdateDashboardRequest`):
                 The request object. The `UpdateDashboard` request.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -390,7 +425,7 @@ class DashboardsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.dashboard.Dashboard:
+            google.cloud.monitoring_dashboard_v1.types.Dashboard:
                 A Google Stackdriver dashboard.
                 Dashboards define the content and layout
                 of pages in the Stackdriver web

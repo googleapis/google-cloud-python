@@ -36,14 +36,14 @@ class Widget(proto.Message):
     Attributes:
         title (str):
             Optional. The title of the widget.
-        xy_chart (~.xychart.XyChart):
+        xy_chart (google.cloud.monitoring_dashboard_v1.types.XyChart):
             A chart of time series data.
-        scorecard (~.gmd_scorecard.Scorecard):
+        scorecard (google.cloud.monitoring_dashboard_v1.types.Scorecard):
             A scorecard summarizing time series data.
-        text (~.gmd_text.Text):
+        text (google.cloud.monitoring_dashboard_v1.types.Text):
             A raw string or markdown displaying textual
             content.
-        blank (~.empty.Empty):
+        blank (google.protobuf.empty_pb2.Empty):
             A blank space.
     """
 

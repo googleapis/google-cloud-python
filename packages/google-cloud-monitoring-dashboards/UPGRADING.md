@@ -29,10 +29,11 @@ client = monitoring_dashboard_v1.DashboardsServiceClient()
 
 > **WARNING**: Breaking change
 Methods expect request objects. We provide a script that will convert most common use cases.
-* Install the library
+
+* Install the library with `libcst`.
 
 ```py
-python3 -m pip install google-cloud-monitoring-dashboards
+python3 -m pip install google-cloud-monitoring-dashboards[libcst]
 ```
 
 * The scripts `fixup_dashboard_v1_keywords.py` shipped with the library. It expects

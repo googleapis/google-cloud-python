@@ -58,7 +58,7 @@ class Aggregation(proto.Message):
     aggregation <https://cloud.google.com/monitoring/api/v3/aggregation>`__.
 
     Attributes:
-        alignment_period (~.duration.Duration):
+        alignment_period (google.protobuf.duration_pb2.Duration):
             The ``alignment_period`` specifies a time interval, in
             seconds, that is used to divide the data in all the [time
             series][google.monitoring.v3.TimeSeries] into consistent
@@ -70,7 +70,10 @@ class Aggregation(proto.Message):
             is required or an error is returned. If no per-series
             aligner is specified, or the aligner ``ALIGN_NONE`` is
             specified, then this field is ignored.
-        per_series_aligner (~.common.Aggregation.Aligner):
+
+            The maximum value of the ``alignment_period`` is 2 years, or
+            104 weeks.
+        per_series_aligner (google.cloud.monitoring_dashboard_v1.types.Aggregation.Aligner):
             An ``Aligner`` describes how to bring the data points in a
             single time series into temporal alignment. Except for
             ``ALIGN_NONE``, all alignments cause all the data points in
@@ -90,7 +93,7 @@ class Aggregation(proto.Message):
             specified, then ``per_series_aligner`` must be specified and
             not equal to ``ALIGN_NONE`` and ``alignment_period`` must be
             specified; otherwise, an error is returned.
-        cross_series_reducer (~.common.Aggregation.Reducer):
+        cross_series_reducer (google.cloud.monitoring_dashboard_v1.types.Aggregation.Reducer):
             The reduction operation to be used to combine time series
             into a single time series, where the value of each data
             point in the resulting series is a function of all the
@@ -203,14 +206,14 @@ class PickTimeSeriesFilter(proto.Message):
     mean values will pass through the filter.
 
     Attributes:
-        ranking_method (~.common.PickTimeSeriesFilter.Method):
+        ranking_method (google.cloud.monitoring_dashboard_v1.types.PickTimeSeriesFilter.Method):
             ``ranking_method`` is applied to each time series
             independently to produce the value which will be used to
             compare the time series to other time series.
         num_time_series (int):
             How many time series to allow to pass through
             the filter.
-        direction (~.common.PickTimeSeriesFilter.Direction):
+        direction (google.cloud.monitoring_dashboard_v1.types.PickTimeSeriesFilter.Direction):
             How to use the ranking to select time series
             that pass through the filter.
     """
@@ -246,7 +249,7 @@ class StatisticalTimeSeriesFilter(proto.Message):
     API.
 
     Attributes:
-        ranking_method (~.common.StatisticalTimeSeriesFilter.Method):
+        ranking_method (google.cloud.monitoring_dashboard_v1.types.StatisticalTimeSeriesFilter.Method):
             ``rankingMethod`` is applied to a set of time series, and
             then the produced value for each individual time series is
             used to compare a given time series to others. These are

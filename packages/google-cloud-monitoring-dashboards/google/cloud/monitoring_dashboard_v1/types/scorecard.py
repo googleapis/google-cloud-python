@@ -32,16 +32,16 @@ class Scorecard(proto.Message):
     value relates to one or more thresholds.
 
     Attributes:
-        time_series_query (~.metrics.TimeSeriesQuery):
+        time_series_query (google.cloud.monitoring_dashboard_v1.types.TimeSeriesQuery):
             Required. Fields for querying time series
             data from the Stackdriver metrics API.
-        gauge_view (~.scorecard.Scorecard.GaugeView):
+        gauge_view (google.cloud.monitoring_dashboard_v1.types.Scorecard.GaugeView):
             Will cause the scorecard to show a gauge
             chart.
-        spark_chart_view (~.scorecard.Scorecard.SparkChartView):
+        spark_chart_view (google.cloud.monitoring_dashboard_v1.types.Scorecard.SparkChartView):
             Will cause the scorecard to show a spark
             chart.
-        thresholds (Sequence[~.metrics.Threshold]):
+        thresholds (Sequence[google.cloud.monitoring_dashboard_v1.types.Threshold]):
             The thresholds used to determine the state of
             the scorecard given the time series' current
             value. For an actual value x, the scorecard is
@@ -111,10 +111,10 @@ class Scorecard(proto.Message):
         showing recent trends of the scorecard's timeseries.
 
         Attributes:
-            spark_chart_type (~.metrics.SparkChartType):
+            spark_chart_type (google.cloud.monitoring_dashboard_v1.types.SparkChartType):
                 Required. The type of sparkchart to show in
                 this chartView.
-            min_alignment_period (~.duration.Duration):
+            min_alignment_period (google.protobuf.duration_pb2.Duration):
                 The lower bound on data point frequency in
                 the chart implemented by specifying the minimum
                 alignment period to use in a time series query.

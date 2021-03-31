@@ -31,9 +31,9 @@ class XyChart(proto.Message):
     r"""A chart that displays data on a 2D (X and Y axes) plane.
 
     Attributes:
-        data_sets (Sequence[~.xychart.XyChart.DataSet]):
+        data_sets (Sequence[google.cloud.monitoring_dashboard_v1.types.XyChart.DataSet]):
             Required. The data displayed in this chart.
-        timeshift_duration (~.duration.Duration):
+        timeshift_duration (google.protobuf.duration_pb2.Duration):
             The duration used to display a comparison
             chart. A comparison chart simultaneously shows
             values from two similar-length time periods
@@ -41,14 +41,14 @@ class XyChart(proto.Message):
             The duration must be positive, and it can only
             be applied to charts with data sets of LINE plot
             type.
-        thresholds (Sequence[~.metrics.Threshold]):
+        thresholds (Sequence[google.cloud.monitoring_dashboard_v1.types.Threshold]):
             Threshold lines drawn horizontally across the
             chart.
-        x_axis (~.xychart.XyChart.Axis):
+        x_axis (google.cloud.monitoring_dashboard_v1.types.XyChart.Axis):
             The properties applied to the X axis.
-        y_axis (~.xychart.XyChart.Axis):
+        y_axis (google.cloud.monitoring_dashboard_v1.types.XyChart.Axis):
             The properties applied to the Y axis.
-        chart_options (~.xychart.ChartOptions):
+        chart_options (google.cloud.monitoring_dashboard_v1.types.ChartOptions):
             Display options for the chart.
     """
 
@@ -56,17 +56,17 @@ class XyChart(proto.Message):
         r"""Groups a time series query definition with charting options.
 
         Attributes:
-            time_series_query (~.metrics.TimeSeriesQuery):
+            time_series_query (google.cloud.monitoring_dashboard_v1.types.TimeSeriesQuery):
                 Required. Fields for querying time series
                 data from the Stackdriver metrics API.
-            plot_type (~.xychart.XyChart.DataSet.PlotType):
+            plot_type (google.cloud.monitoring_dashboard_v1.types.XyChart.DataSet.PlotType):
                 How this data should be plotted on the chart.
             legend_template (str):
                 A template string for naming ``TimeSeries`` in the resulting
                 data set. This should be a string with interpolations of the
                 form ``${label_name}``, which will resolve to the label's
                 value.
-            min_alignment_period (~.duration.Duration):
+            min_alignment_period (google.protobuf.duration_pb2.Duration):
                 Optional. The lower bound on data point frequency for this
                 data set, implemented by specifying the minimum alignment
                 period to use in a time series query For example, if the
@@ -102,7 +102,7 @@ class XyChart(proto.Message):
         Attributes:
             label (str):
                 The label of the axis.
-            scale (~.xychart.XyChart.Axis.Scale):
+            scale (google.cloud.monitoring_dashboard_v1.types.XyChart.Axis.Scale):
                 The axis scale. By default, a linear scale is
                 used.
         """
@@ -138,7 +138,7 @@ class ChartOptions(proto.Message):
     r"""Options to control visual rendering of a chart.
 
     Attributes:
-        mode (~.xychart.ChartOptions.Mode):
+        mode (google.cloud.monitoring_dashboard_v1.types.ChartOptions.Mode):
             The chart mode.
     """
 

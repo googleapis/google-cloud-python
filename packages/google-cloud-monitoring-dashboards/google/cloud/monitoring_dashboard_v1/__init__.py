@@ -28,6 +28,7 @@ from .types.dashboards_service import ListDashboardsResponse
 from .types.dashboards_service import UpdateDashboardRequest
 from .types.layouts import ColumnLayout
 from .types.layouts import GridLayout
+from .types.layouts import MosaicLayout
 from .types.layouts import RowLayout
 from .types.metrics import SparkChartType
 from .types.metrics import Threshold
@@ -52,6 +53,7 @@ __all__ = (
     "GridLayout",
     "ListDashboardsRequest",
     "ListDashboardsResponse",
+    "MosaicLayout",
     "PickTimeSeriesFilter",
     "RowLayout",
     "Scorecard",

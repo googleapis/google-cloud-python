@@ -29,7 +29,7 @@ class Text(proto.Message):
     Attributes:
         content (str):
             The text content to be displayed.
-        format_ (~.text.Text.Format):
+        format_ (google.cloud.monitoring_dashboard_v1.types.Text.Format):
             How the text content is formatted.
     """
 
