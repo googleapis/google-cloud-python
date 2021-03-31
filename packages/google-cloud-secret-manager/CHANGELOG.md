@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.4.0](https://www.github.com/googleapis/python-secret-manager/compare/v2.3.0...v2.4.0) (2021-03-31)
+
+
+### Features
+
+* Rotation for Secrets ([#95](https://www.github.com/googleapis/python-secret-manager/issues/95)) ([c0aea0f](https://www.github.com/googleapis/python-secret-manager/commit/c0aea0f4f932a2c78c3f5e747092279290611a65))
+
+
+### Bug Fixes
+
+* use correct retry deadline ([#92](https://www.github.com/googleapis/python-secret-manager/issues/92)) ([5f57e66](https://www.github.com/googleapis/python-secret-manager/commit/5f57e6615b2bf0793626dc574de94d76915f7489))
+
 ## [2.3.0](https://www.github.com/googleapis/python-secret-manager/compare/v2.2.0...v2.3.0) (2021-03-11)
 
 
