@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-videointelligence/compare/v2.0.0...v2.1.0) (2021-03-31)
+
+
+### Features
+
+* Introduce tracks and thumbnails fields for FaceDetectionAnnotations ([#90](https://www.github.com/googleapis/python-videointelligence/issues/90)) ([e4bbbad](https://www.github.com/googleapis/python-videointelligence/commit/e4bbbad245df46c226f51fac4d89f5b8bff64d15))
+* updates person detection samples for GA ([#86](https://www.github.com/googleapis/python-videointelligence/issues/86)) ([1a68219](https://www.github.com/googleapis/python-videointelligence/commit/1a68219142ed23c434417808da9fcdca3812280d))
+
+
+### Bug Fixes
+
+* remove gRPC send/recv limits; add enums to `__init__.py` ([#94](https://www.github.com/googleapis/python-videointelligence/issues/94)) ([d2dcc14](https://www.github.com/googleapis/python-videointelligence/commit/d2dcc14b1d5b0b1df815aa6fe50007266365462b))
+
 ## [2.0.0](https://www.github.com/googleapis/python-videointelligence/compare/v1.16.1...v2.0.0) (2020-11-19)
 
 
