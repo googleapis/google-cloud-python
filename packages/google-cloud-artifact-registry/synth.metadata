@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-artifact-registry.git",
-        "sha": "e1f1afcff584ca3c81dd7318b19a025954015b24"
+        "sha": "0e4d430888c009b5b333f1093488fd737701c1f8"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "79c8dd7ee768292f933012d3a69a5b4676404cda"
+        "sha": "86ed43d4f56e6404d068e62e497029018879c771"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "79c8dd7ee768292f933012d3a69a5b4676404cda"
+        "sha": "86ed43d4f56e6404d068e62e497029018879c771"
       }
     }
   ],
