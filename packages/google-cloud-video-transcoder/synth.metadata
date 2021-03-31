@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-video-transcoder.git",
-        "sha": "4076914adfde514417b5a39a0e5fcd905e5f6e8f"
+        "sha": "e593578dab2d641de7df178ffd118ada158ab602"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "86ed43d4f56e6404d068e62e497029018879c771"
+        "sha": "4501974ad08b5d693311457e2ea4ce845676e329"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "86ed43d4f56e6404d068e62e497029018879c771"
+        "sha": "4501974ad08b5d693311457e2ea4ce845676e329"
       }
     }
   ],
