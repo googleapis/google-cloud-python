@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-vision/compare/v2.2.0...v2.3.0) (2021-03-31)
+
+
+### Features
+
+* add `from_service_account_info` ([ace6046](https://www.github.com/googleapis/python-vision/commit/ace604680ff0f2d1b0d458aa5c3eb1e98b4e81b0))
+
+
+### Bug Fixes
+
+* fix retry deadlines ([#119](https://www.github.com/googleapis/python-vision/issues/119)) ([ace6046](https://www.github.com/googleapis/python-vision/commit/ace604680ff0f2d1b0d458aa5c3eb1e98b4e81b0))
+
 ## [2.2.0](https://www.github.com/googleapis/python-vision/compare/v2.1.0...v2.2.0) (2021-02-11)
 
 
