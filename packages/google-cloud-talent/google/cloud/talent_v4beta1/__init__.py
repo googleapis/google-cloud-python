@@ -163,7 +163,6 @@ __all__ = (
     "CompensationInfo",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
-    "CompletionClient",
     "ContactInfoUsage",
     "CreateApplicationRequest",
     "CreateClientEventRequest",
@@ -244,6 +243,7 @@ __all__ = (
     "SpellingCorrection",
     "SummarizedProfile",
     "Tenant",
+    "TenantServiceClient",
     "TimeFilter",
     "TimestampRange",
     "UpdateApplicationRequest",
@@ -253,5 +253,5 @@ __all__ = (
     "UpdateTenantRequest",
     "Visibility",
     "WorkExperienceFilter",
-    "TenantServiceClient",
+    "CompletionClient",
 )
