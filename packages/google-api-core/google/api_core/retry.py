@@ -345,7 +345,7 @@ class Retry(object):
             predicate=self._predicate,
             initial=initial if initial is not None else self._initial,
             maximum=maximum if maximum is not None else self._maximum,
-            multiplier=multiplier if maximum is not None else self._multiplier,
+            multiplier=multiplier if multiplier is not None else self._multiplier,
             deadline=self._deadline,
             on_error=self._on_error,
         )

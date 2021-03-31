@@ -246,11 +246,43 @@ class TestRetry(object):
             deadline=4,
             on_error=mock.sentinel.on_error,
         )
-        new_retry = retry_.with_delay(initial=1, maximum=2, multiplier=3)
+        new_retry = retry_.with_delay(initial=5, maximum=6, multiplier=7)
+        assert retry_ is not new_retry
+        assert new_retry._initial == 5
+        assert new_retry._maximum == 6
+        assert new_retry._multiplier == 7
+
+        # the rest of the attributes should remain the same
+        assert new_retry._deadline == retry_._deadline
+        assert new_retry._predicate is retry_._predicate
+        assert new_retry._on_error is retry_._on_error
+
+    def test_with_delay_partial_options(self):
+        retry_ = retry.Retry(
+            predicate=mock.sentinel.predicate,
+            initial=1,
+            maximum=2,
+            multiplier=3,
+            deadline=4,
+            on_error=mock.sentinel.on_error,
+        )
+        new_retry = retry_.with_delay(initial=4)
+        assert retry_ is not new_retry
+        assert new_retry._initial == 4
+        assert new_retry._maximum == 2
+        assert new_retry._multiplier == 3
+
+        new_retry = retry_.with_delay(maximum=4)
+        assert retry_ is not new_retry
+        assert new_retry._initial == 1
+        assert new_retry._maximum == 4
+        assert new_retry._multiplier == 3
+
+        new_retry = retry_.with_delay(multiplier=4)
         assert retry_ is not new_retry
         assert new_retry._initial == 1
         assert new_retry._maximum == 2
-        assert new_retry._multiplier == 3
+        assert new_retry._multiplier == 4
 
         # the rest of the attributes should remain the same
         assert new_retry._deadline == retry_._deadline
