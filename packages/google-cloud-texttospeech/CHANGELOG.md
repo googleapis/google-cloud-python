@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-texttospeech/compare/v2.2.0...v2.3.0) (2021-03-31)
+
+
+### Features
+
+* add `from_service_account_info` to clients ([139e6e8](https://www.github.com/googleapis/python-texttospeech/commit/139e6e8511cdce4c0be7983520f7efc47092f3b1))
+* Add ALAW support on client library and improve the ListVoiceRequest message's documentation ([#113](https://www.github.com/googleapis/python-texttospeech/issues/113)) ([8bbd380](https://www.github.com/googleapis/python-texttospeech/commit/8bbd38014fe796b30f4b12ae9432d3a05c130063))
+* add common resource helper methods ([139e6e8](https://www.github.com/googleapis/python-texttospeech/commit/139e6e8511cdce4c0be7983520f7efc47092f3b1))
+* support custom client info ([#82](https://www.github.com/googleapis/python-texttospeech/issues/82)) ([0612793](https://www.github.com/googleapis/python-texttospeech/commit/06127932a920f6318db8f25d6430755b35d09bb5))
+
+
+### Bug Fixes
+
+* change default retry and timeout settings ([139e6e8](https://www.github.com/googleapis/python-texttospeech/commit/139e6e8511cdce4c0be7983520f7efc47092f3b1))
+
+
+### Documentation
+
+* use sphinx-1.5.5 for sphinx-docfx-yaml ([#89](https://www.github.com/googleapis/python-texttospeech/issues/89)) ([feb04c5](https://www.github.com/googleapis/python-texttospeech/commit/feb04c50b56c2c3359b92d8b5887c8ee50be2b95))
+
 ## [2.2.0](https://www.github.com/googleapis/python-texttospeech/compare/v2.1.0...v2.2.0) (2020-08-10)
 
 
