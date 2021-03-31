@@ -3,30 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-workflows.git",
-        "sha": "22bf4f1fdaf8bf1781821fc13ca03e1b5745f01f"
+        "remote": "git@github.com:googleapis/python-workflows",
+        "sha": "229763479721dd5a5d3686b14add4ac7803ec06e"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "520682435235d9c503983a360a2090025aa47cd1",
-        "internalRef": "350246057"
+        "sha": "a1af63efb82f54428ab35ea76869d9cd57ca52b8",
+        "internalRef": "364635275"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0780323da96d5a53925fe0547757181fe76e8f1e"
+        "sha": "86ed43d4f56e6404d068e62e497029018879c771"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0780323da96d5a53925fe0547757181fe76e8f1e"
+        "sha": "86ed43d4f56e6404d068e62e497029018879c771"
       }
     }
   ],
@@ -49,114 +49,5 @@
         "generator": "bazel"
       }
     }
-  ],
-  "generatedFiles": [
-    ".coveragerc",
-    ".flake8",
-    ".github/CONTRIBUTING.md",
-    ".github/ISSUE_TEMPLATE/bug_report.md",
-    ".github/ISSUE_TEMPLATE/feature_request.md",
-    ".github/ISSUE_TEMPLATE/support_request.md",
-    ".github/PULL_REQUEST_TEMPLATE.md",
-    ".github/header-checker-lint.yml",
-    ".github/release-please.yml",
-    ".github/snippet-bot.yml",
-    ".gitignore",
-    ".kokoro/build.sh",
-    ".kokoro/continuous/common.cfg",
-    ".kokoro/continuous/continuous.cfg",
-    ".kokoro/docker/docs/Dockerfile",
-    ".kokoro/docker/docs/fetch_gpg_keys.sh",
-    ".kokoro/docs/common.cfg",
-    ".kokoro/docs/docs-presubmit.cfg",
-    ".kokoro/docs/docs.cfg",
-    ".kokoro/populate-secrets.sh",
-    ".kokoro/presubmit/common.cfg",
-    ".kokoro/presubmit/presubmit.cfg",
-    ".kokoro/publish-docs.sh",
-    ".kokoro/release.sh",
-    ".kokoro/release/common.cfg",
-    ".kokoro/release/release.cfg",
-    ".kokoro/samples/lint/common.cfg",
-    ".kokoro/samples/lint/continuous.cfg",
-    ".kokoro/samples/lint/periodic.cfg",
-    ".kokoro/samples/lint/presubmit.cfg",
-    ".kokoro/samples/python3.6/common.cfg",
-    ".kokoro/samples/python3.6/continuous.cfg",
-    ".kokoro/samples/python3.6/periodic.cfg",
-    ".kokoro/samples/python3.6/presubmit.cfg",
-    ".kokoro/samples/python3.7/common.cfg",
-    ".kokoro/samples/python3.7/continuous.cfg",
-    ".kokoro/samples/python3.7/periodic.cfg",
-    ".kokoro/samples/python3.7/presubmit.cfg",
-    ".kokoro/samples/python3.8/common.cfg",
-    ".kokoro/samples/python3.8/continuous.cfg",
-    ".kokoro/samples/python3.8/periodic.cfg",
-    ".kokoro/samples/python3.8/presubmit.cfg",
-    ".kokoro/test-samples.sh",
-    ".kokoro/trampoline.sh",
-    ".kokoro/trampoline_v2.sh",
-    ".pre-commit-config.yaml",
-    ".trampolinerc",
-    "CODE_OF_CONDUCT.md",
-    "CONTRIBUTING.rst",
-    "LICENSE",
-    "MANIFEST.in",
-    "docs/_static/custom.css",
-    "docs/_templates/layout.html",
-    "docs/conf.py",
-    "docs/executions_v1beta/executions.rst",
-    "docs/executions_v1beta/services.rst",
-    "docs/executions_v1beta/types.rst",
-    "docs/multiprocessing.rst",
-    "docs/workflows_v1beta/services.rst",
-    "docs/workflows_v1beta/types.rst",
-    "docs/workflows_v1beta/workflows.rst",
-    "google/cloud/workflows/__init__.py",
-    "google/cloud/workflows/executions/__init__.py",
-    "google/cloud/workflows/executions/py.typed",
-    "google/cloud/workflows/executions_v1beta/__init__.py",
-    "google/cloud/workflows/executions_v1beta/py.typed",
-    "google/cloud/workflows/executions_v1beta/services/__init__.py",
-    "google/cloud/workflows/executions_v1beta/services/executions/__init__.py",
-    "google/cloud/workflows/executions_v1beta/services/executions/async_client.py",
-    "google/cloud/workflows/executions_v1beta/services/executions/client.py",
-    "google/cloud/workflows/executions_v1beta/services/executions/pagers.py",
-    "google/cloud/workflows/executions_v1beta/services/executions/transports/__init__.py",
-    "google/cloud/workflows/executions_v1beta/services/executions/transports/base.py",
-    "google/cloud/workflows/executions_v1beta/services/executions/transports/grpc.py",
-    "google/cloud/workflows/executions_v1beta/services/executions/transports/grpc_asyncio.py",
-    "google/cloud/workflows/executions_v1beta/types/__init__.py",
-    "google/cloud/workflows/executions_v1beta/types/executions.py",
-    "google/cloud/workflows/py.typed",
-    "google/cloud/workflows_v1beta/__init__.py",
-    "google/cloud/workflows_v1beta/py.typed",
-    "google/cloud/workflows_v1beta/services/__init__.py",
-    "google/cloud/workflows_v1beta/services/workflows/__init__.py",
-    "google/cloud/workflows_v1beta/services/workflows/async_client.py",
-    "google/cloud/workflows_v1beta/services/workflows/client.py",
-    "google/cloud/workflows_v1beta/services/workflows/pagers.py",
-    "google/cloud/workflows_v1beta/services/workflows/transports/__init__.py",
-    "google/cloud/workflows_v1beta/services/workflows/transports/base.py",
-    "google/cloud/workflows_v1beta/services/workflows/transports/grpc.py",
-    "google/cloud/workflows_v1beta/services/workflows/transports/grpc_asyncio.py",
-    "google/cloud/workflows_v1beta/types/__init__.py",
-    "google/cloud/workflows_v1beta/types/workflows.py",
-    "mypy.ini",
-    "noxfile.py",
-    "renovate.json",
-    "scripts/decrypt-secrets.sh",
-    "scripts/readme-gen/readme_gen.py",
-    "scripts/readme-gen/templates/README.tmpl.rst",
-    "scripts/readme-gen/templates/auth.tmpl.rst",
-    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
-    "scripts/readme-gen/templates/install_deps.tmpl.rst",
-    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
-    "setup.cfg",
-    "testing/.gitignore",
-    "tests/unit/gapic/executions_v1beta/__init__.py",
-    "tests/unit/gapic/executions_v1beta/test_executions.py",
-    "tests/unit/gapic/workflows_v1beta/__init__.py",
-    "tests/unit/gapic/workflows_v1beta/test_workflows.py"
   ]
 }
