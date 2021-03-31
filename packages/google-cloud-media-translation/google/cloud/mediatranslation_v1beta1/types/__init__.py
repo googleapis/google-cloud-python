@@ -16,17 +16,17 @@
 #
 
 from .media_translation import (
-    TranslateSpeechConfig,
     StreamingTranslateSpeechConfig,
     StreamingTranslateSpeechRequest,
-    StreamingTranslateSpeechResult,
     StreamingTranslateSpeechResponse,
+    StreamingTranslateSpeechResult,
+    TranslateSpeechConfig,
 )
 
 __all__ = (
-    "TranslateSpeechConfig",
     "StreamingTranslateSpeechConfig",
     "StreamingTranslateSpeechRequest",
-    "StreamingTranslateSpeechResult",
     "StreamingTranslateSpeechResponse",
+    "StreamingTranslateSpeechResult",
+    "TranslateSpeechConfig",
 )

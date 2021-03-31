@@ -49,7 +49,7 @@ s.replace(
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=100, microgenerator=True)
+templated_files = common.py_library(cov_level=99, microgenerator=True)
 s.move(
     templated_files, excludes=[".coveragerc"]
 )  # the microgenerator has a good coveragerc file
