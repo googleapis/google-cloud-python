@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.1.0](https://www.github.com/googleapis/python-translate/compare/v3.0.2...v3.1.0) (2021-03-31)
+
+
+### Features
+
+* add `from_service_account_info` ([a397eff](https://www.github.com/googleapis/python-translate/commit/a397effb87f74f579605bcf261bf2b00d5e9fa5b))
+* **v3beta1:** add online and batch document translation ([a397eff](https://www.github.com/googleapis/python-translate/commit/a397effb87f74f579605bcf261bf2b00d5e9fa5b))
+* **v3beta1:** add online and batch document translation  ([#121](https://www.github.com/googleapis/python-translate/issues/121)) ([a397eff](https://www.github.com/googleapis/python-translate/commit/a397effb87f74f579605bcf261bf2b00d5e9fa5b))
+
+
+### Bug Fixes
+
+* moves region tags ([#103](https://www.github.com/googleapis/python-translate/issues/103)) ([e161eb5](https://www.github.com/googleapis/python-translate/commit/e161eb5e9cdc3124aa7efe2d535bae67812ae93c))
+* use correct retry deadlines ([a397eff](https://www.github.com/googleapis/python-translate/commit/a397effb87f74f579605bcf261bf2b00d5e9fa5b))
+
 ### [3.0.2](https://www.github.com/googleapis/python-translate/compare/v3.0.1...v3.0.2) (2020-12-09)
 
 
