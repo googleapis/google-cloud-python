@@ -3,6 +3,13 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.2.0](https://www.github.com/googleapis/python-webrisk/compare/v1.1.0...v1.2.0) (2021-03-31)
+
+
+### Features
+
+* add `from_service_account_info` ([#55](https://www.github.com/googleapis/python-webrisk/issues/55)) ([1e9e2c0](https://www.github.com/googleapis/python-webrisk/commit/1e9e2c0dba40a439727644d623b30ad5f63a0602))
+
 ## [1.1.0](https://www.github.com/googleapis/python-webrisk/compare/v1.0.1...v1.1.0) (2021-02-11)
 
 
