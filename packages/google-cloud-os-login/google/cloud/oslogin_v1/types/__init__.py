@@ -16,23 +16,23 @@
 #
 
 from .oslogin import (
-    LoginProfile,
     DeletePosixAccountRequest,
     DeleteSshPublicKeyRequest,
     GetLoginProfileRequest,
     GetSshPublicKeyRequest,
     ImportSshPublicKeyRequest,
     ImportSshPublicKeyResponse,
+    LoginProfile,
     UpdateSshPublicKeyRequest,
 )
 
 __all__ = (
-    "LoginProfile",
     "DeletePosixAccountRequest",
     "DeleteSshPublicKeyRequest",
     "GetLoginProfileRequest",
     "GetSshPublicKeyRequest",
     "ImportSshPublicKeyRequest",
     "ImportSshPublicKeyResponse",
+    "LoginProfile",
     "UpdateSshPublicKeyRequest",
 )
