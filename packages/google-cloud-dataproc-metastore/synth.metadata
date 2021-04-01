@@ -1,0 +1,53 @@
+{
+  "sources": [
+    {
+      "git": {
+        "name": ".",
+        "remote": "git@github.com:googleapis/python-dataproc-metastore",
+        "sha": "56a50f3ddf87d53d9d17306e459b10701b19cebe"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "915925089600094e72e4bfa8cf586c170e6b7109",
+        "internalRef": "366152684"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "6d76df2138f8f841e5a5b9ac427f81def520c15f"
+      }
+    },
+    {
+      "git": {
+        "name": "synthtool",
+        "remote": "https://github.com/googleapis/synthtool.git",
+        "sha": "6d76df2138f8f841e5a5b9ac427f81def520c15f"
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "metastore",
+        "apiVersion": "v1alpha",
+        "language": "python",
+        "generator": "bazel"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "metastore",
+        "apiVersion": "v1beta",
+        "language": "python",
+        "generator": "bazel"
+      }
+    }
+  ]
+}
