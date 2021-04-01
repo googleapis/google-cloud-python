@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.billing_v1.types import cloud_catalog
 
@@ -24,7 +33,7 @@ class ListServicesPager:
     """A pager for iterating through ``list_services`` requests.
 
     This class thinly wraps an initial
-    :class:`~.cloud_catalog.ListServicesResponse` object, and
+    :class:`google.cloud.billing_v1.types.ListServicesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``services`` field.
 
@@ -33,7 +42,7 @@ class ListServicesPager:
     through the ``services`` field on the
     corresponding responses.
 
-    All the usual :class:`~.cloud_catalog.ListServicesResponse`
+    All the usual :class:`google.cloud.billing_v1.types.ListServicesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListServicesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.cloud_catalog.ListServicesRequest`):
+            request (google.cloud.billing_v1.types.ListServicesRequest):
                 The initial request object.
-            response (:class:`~.cloud_catalog.ListServicesResponse`):
+            response (google.cloud.billing_v1.types.ListServicesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListServicesAsyncPager:
     """A pager for iterating through ``list_services`` requests.
 
     This class thinly wraps an initial
-    :class:`~.cloud_catalog.ListServicesResponse` object, and
+    :class:`google.cloud.billing_v1.types.ListServicesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``services`` field.
 
@@ -95,7 +104,7 @@ class ListServicesAsyncPager:
     through the ``services`` field on the
     corresponding responses.
 
-    All the usual :class:`~.cloud_catalog.ListServicesResponse`
+    All the usual :class:`google.cloud.billing_v1.types.ListServicesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListServicesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.cloud_catalog.ListServicesRequest`):
+            request (google.cloud.billing_v1.types.ListServicesRequest):
                 The initial request object.
-            response (:class:`~.cloud_catalog.ListServicesResponse`):
+            response (google.cloud.billing_v1.types.ListServicesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -152,7 +161,7 @@ class ListSkusPager:
     """A pager for iterating through ``list_skus`` requests.
 
     This class thinly wraps an initial
-    :class:`~.cloud_catalog.ListSkusResponse` object, and
+    :class:`google.cloud.billing_v1.types.ListSkusResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``skus`` field.
 
@@ -161,7 +170,7 @@ class ListSkusPager:
     through the ``skus`` field on the
     corresponding responses.
 
-    All the usual :class:`~.cloud_catalog.ListSkusResponse`
+    All the usual :class:`google.cloud.billing_v1.types.ListSkusResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -179,9 +188,9 @@ class ListSkusPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.cloud_catalog.ListSkusRequest`):
+            request (google.cloud.billing_v1.types.ListSkusRequest):
                 The initial request object.
-            response (:class:`~.cloud_catalog.ListSkusResponse`):
+            response (google.cloud.billing_v1.types.ListSkusResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -214,7 +223,7 @@ class ListSkusAsyncPager:
     """A pager for iterating through ``list_skus`` requests.
 
     This class thinly wraps an initial
-    :class:`~.cloud_catalog.ListSkusResponse` object, and
+    :class:`google.cloud.billing_v1.types.ListSkusResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``skus`` field.
 
@@ -223,7 +232,7 @@ class ListSkusAsyncPager:
     through the ``skus`` field on the
     corresponding responses.
 
-    All the usual :class:`~.cloud_catalog.ListSkusResponse`
+    All the usual :class:`google.cloud.billing_v1.types.ListSkusResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -241,9 +250,9 @@ class ListSkusAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.cloud_catalog.ListSkusRequest`):
+            request (google.cloud.billing_v1.types.ListSkusRequest):
                 The initial request object.
-            response (:class:`~.cloud_catalog.ListSkusResponse`):
+            response (google.cloud.billing_v1.types.ListSkusResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

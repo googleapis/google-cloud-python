@@ -1,9 +1,7 @@
 Services for Google Cloud Billing v1 API
 ========================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.billing_v1.services.cloud_billing
-    :members:
-    :inherited-members:
-.. automodule:: google.cloud.billing_v1.services.cloud_catalog
-    :members:
-    :inherited-members:
+    cloud_billing
+    cloud_catalog

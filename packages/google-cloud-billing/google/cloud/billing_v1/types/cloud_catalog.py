@@ -81,7 +81,7 @@ class Sku(proto.Message):
         description (str):
             A human readable description of the SKU, has
             a maximum length of 256 characters.
-        category (~.cloud_catalog.Category):
+        category (google.cloud.billing_v1.types.Category):
             The category hierarchy of this SKU, purely
             for organizational purpose.
         service_regions (Sequence[str]):
@@ -89,7 +89,7 @@ class Sku(proto.Message):
             at. Example: "asia-east1"
             Service regions can be found at
             https://cloud.google.com/about/locations/
-        pricing_info (Sequence[~.cloud_catalog.PricingInfo]):
+        pricing_info (Sequence[google.cloud.billing_v1.types.PricingInfo]):
             A timeline of pricing info for this SKU in
             chronological order.
         service_provider_name (str):
@@ -148,7 +148,7 @@ class PricingInfo(proto.Message):
     point of time.
 
     Attributes:
-        effective_time (~.timestamp.Timestamp):
+        effective_time (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp from which this pricing was effective within
             the requested time range. This is guaranteed to be greater
             than or equal to the start_time field in the request and
@@ -160,10 +160,10 @@ class PricingInfo(proto.Message):
             An optional human readable summary of the
             pricing information, has a maximum length of 256
             characters.
-        pricing_expression (~.cloud_catalog.PricingExpression):
+        pricing_expression (google.cloud.billing_v1.types.PricingExpression):
             Expresses the pricing formula. See ``PricingExpression`` for
             an example.
-        aggregation_info (~.cloud_catalog.AggregationInfo):
+        aggregation_info (google.cloud.billing_v1.types.AggregationInfo):
             Aggregation Info. This can be left
             unspecified if the pricing expression doesn't
             require aggregation.
@@ -229,7 +229,7 @@ class PricingExpression(proto.Message):
             If the unit_price is "0.0001 USD", the usage_unit is "GB"
             and the display_quantity is "1000" then the recommended way
             of displaying the pricing info is "0.10 USD per 1000 GB".
-        tiered_rates (Sequence[~.cloud_catalog.PricingExpression.TierRate]):
+        tiered_rates (Sequence[google.cloud.billing_v1.types.PricingExpression.TierRate]):
             The list of tiered rates for this pricing. The total cost is
             computed by applying each of the tiered rates on usage. This
             repeated list is sorted by ascending order of
@@ -246,7 +246,7 @@ class PricingExpression(proto.Message):
                 Example: start_usage_amount of 10 indicates that the usage
                 will be priced at the unit_price after the first 10
                 usage_units.
-            unit_price (~.money.Money):
+            unit_price (google.type.money_pb2.Money):
                 The price per unit of usage. Example: unit_price of amount
                 $10 indicates that each unit will cost $10.
         """
@@ -275,9 +275,9 @@ class AggregationInfo(proto.Message):
     a single SKU.
 
     Attributes:
-        aggregation_level (~.cloud_catalog.AggregationInfo.AggregationLevel):
+        aggregation_level (google.cloud.billing_v1.types.AggregationInfo.AggregationLevel):
 
-        aggregation_interval (~.cloud_catalog.AggregationInfo.AggregationInterval):
+        aggregation_interval (google.cloud.billing_v1.types.AggregationInfo.AggregationInterval):
 
         aggregation_count (int):
             The number of intervals to aggregate over. Example: If
@@ -333,7 +333,7 @@ class ListServicesResponse(proto.Message):
     r"""Response message for ``ListServices``.
 
     Attributes:
-        services (Sequence[~.cloud_catalog.Service]):
+        services (Sequence[google.cloud.billing_v1.types.Service]):
             A list of services.
         next_page_token (str):
             A token to retrieve the next page of results. To retrieve
@@ -358,14 +358,14 @@ class ListSkusRequest(proto.Message):
         parent (str):
             Required. The name of the service.
             Example: "services/DA34-426B-A397".
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional inclusive start time of the time range for which
             the pricing versions will be returned. Timestamps in the
             future are not allowed. The time range has to be within a
             single calendar month in America/Los_Angeles timezone. Time
             range as a whole is optional. If not specified, the latest
             pricing will be returned (up to 12 hours old at most).
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional exclusive end time of the time range for which the
             pricing versions will be returned. Timestamps in the future
             are not allowed. The time range has to be within a single
@@ -402,7 +402,7 @@ class ListSkusResponse(proto.Message):
     r"""Response message for ``ListSkus``.
 
     Attributes:
-        skus (Sequence[~.cloud_catalog.Sku]):
+        skus (Sequence[google.cloud.billing_v1.types.Sku]):
             The list of public SKUs of the given service.
         next_page_token (str):
             A token to retrieve the next page of results. To retrieve

@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.billing_v1.types import cloud_billing
 
@@ -24,7 +33,7 @@ class ListBillingAccountsPager:
     """A pager for iterating through ``list_billing_accounts`` requests.
 
     This class thinly wraps an initial
-    :class:`~.cloud_billing.ListBillingAccountsResponse` object, and
+    :class:`google.cloud.billing_v1.types.ListBillingAccountsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``billing_accounts`` field.
 
@@ -33,7 +42,7 @@ class ListBillingAccountsPager:
     through the ``billing_accounts`` field on the
     corresponding responses.
 
-    All the usual :class:`~.cloud_billing.ListBillingAccountsResponse`
+    All the usual :class:`google.cloud.billing_v1.types.ListBillingAccountsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListBillingAccountsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.cloud_billing.ListBillingAccountsRequest`):
+            request (google.cloud.billing_v1.types.ListBillingAccountsRequest):
                 The initial request object.
-            response (:class:`~.cloud_billing.ListBillingAccountsResponse`):
+            response (google.cloud.billing_v1.types.ListBillingAccountsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListBillingAccountsAsyncPager:
     """A pager for iterating through ``list_billing_accounts`` requests.
 
     This class thinly wraps an initial
-    :class:`~.cloud_billing.ListBillingAccountsResponse` object, and
+    :class:`google.cloud.billing_v1.types.ListBillingAccountsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``billing_accounts`` field.
 
@@ -95,7 +104,7 @@ class ListBillingAccountsAsyncPager:
     through the ``billing_accounts`` field on the
     corresponding responses.
 
-    All the usual :class:`~.cloud_billing.ListBillingAccountsResponse`
+    All the usual :class:`google.cloud.billing_v1.types.ListBillingAccountsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListBillingAccountsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.cloud_billing.ListBillingAccountsRequest`):
+            request (google.cloud.billing_v1.types.ListBillingAccountsRequest):
                 The initial request object.
-            response (:class:`~.cloud_billing.ListBillingAccountsResponse`):
+            response (google.cloud.billing_v1.types.ListBillingAccountsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -152,7 +161,7 @@ class ListProjectBillingInfoPager:
     """A pager for iterating through ``list_project_billing_info`` requests.
 
     This class thinly wraps an initial
-    :class:`~.cloud_billing.ListProjectBillingInfoResponse` object, and
+    :class:`google.cloud.billing_v1.types.ListProjectBillingInfoResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``project_billing_info`` field.
 
@@ -161,7 +170,7 @@ class ListProjectBillingInfoPager:
     through the ``project_billing_info`` field on the
     corresponding responses.
 
-    All the usual :class:`~.cloud_billing.ListProjectBillingInfoResponse`
+    All the usual :class:`google.cloud.billing_v1.types.ListProjectBillingInfoResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -179,9 +188,9 @@ class ListProjectBillingInfoPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.cloud_billing.ListProjectBillingInfoRequest`):
+            request (google.cloud.billing_v1.types.ListProjectBillingInfoRequest):
                 The initial request object.
-            response (:class:`~.cloud_billing.ListProjectBillingInfoResponse`):
+            response (google.cloud.billing_v1.types.ListProjectBillingInfoResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -214,7 +223,7 @@ class ListProjectBillingInfoAsyncPager:
     """A pager for iterating through ``list_project_billing_info`` requests.
 
     This class thinly wraps an initial
-    :class:`~.cloud_billing.ListProjectBillingInfoResponse` object, and
+    :class:`google.cloud.billing_v1.types.ListProjectBillingInfoResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``project_billing_info`` field.
 
@@ -223,7 +232,7 @@ class ListProjectBillingInfoAsyncPager:
     through the ``project_billing_info`` field on the
     corresponding responses.
 
-    All the usual :class:`~.cloud_billing.ListProjectBillingInfoResponse`
+    All the usual :class:`google.cloud.billing_v1.types.ListProjectBillingInfoResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -241,9 +250,9 @@ class ListProjectBillingInfoAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.cloud_billing.ListProjectBillingInfoRequest`):
+            request (google.cloud.billing_v1.types.ListProjectBillingInfoRequest):
                 The initial request object.
-            response (:class:`~.cloud_billing.ListProjectBillingInfoResponse`):
+            response (google.cloud.billing_v1.types.ListProjectBillingInfoResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

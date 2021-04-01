@@ -167,7 +167,7 @@ class ListBillingAccountsResponse(proto.Message):
     r"""Response message for ``ListBillingAccounts``.
 
     Attributes:
-        billing_accounts (Sequence[~.cloud_billing.BillingAccount]):
+        billing_accounts (Sequence[google.cloud.billing_v1.types.BillingAccount]):
             A list of billing accounts.
         next_page_token (str):
             A token to retrieve the next page of results. To retrieve
@@ -191,7 +191,7 @@ class CreateBillingAccountRequest(proto.Message):
     r"""Request message for ``CreateBillingAccount``.
 
     Attributes:
-        billing_account (~.cloud_billing.BillingAccount):
+        billing_account (google.cloud.billing_v1.types.BillingAccount):
             Required. The billing account resource to
             create. Currently CreateBillingAccount only
             supports subaccount creation, so any created
@@ -209,10 +209,10 @@ class UpdateBillingAccountRequest(proto.Message):
         name (str):
             Required. The name of the billing account
             resource to be updated.
-        account (~.cloud_billing.BillingAccount):
+        account (google.cloud.billing_v1.types.BillingAccount):
             Required. The billing account resource to
             replace the resource on the server.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The update mask applied to the resource. Only "display_name"
             is currently supported.
     """
@@ -253,7 +253,7 @@ class ListProjectBillingInfoResponse(proto.Message):
     r"""Request message for ``ListProjectBillingInfoResponse``.
 
     Attributes:
-        project_billing_info (Sequence[~.cloud_billing.ProjectBillingInfo]):
+        project_billing_info (Sequence[google.cloud.billing_v1.types.ProjectBillingInfo]):
             A list of ``ProjectBillingInfo`` resources representing the
             projects associated with the billing account.
         next_page_token (str):
@@ -295,7 +295,7 @@ class UpdateProjectBillingInfoRequest(proto.Message):
             Required. The resource name of the project associated with
             the billing information that you want to update. For
             example, ``projects/tokyo-rain-123``.
-        project_billing_info (~.cloud_billing.ProjectBillingInfo):
+        project_billing_info (google.cloud.billing_v1.types.ProjectBillingInfo):
             The new billing information for the project. Read-only
             fields are ignored; thus, you can leave empty all fields
             except ``billing_account_name``.

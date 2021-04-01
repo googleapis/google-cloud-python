@@ -77,7 +77,36 @@ class CloudCatalogAsyncClient:
         CloudCatalogClient.parse_common_location_path
     )
 
-    from_service_account_file = CloudCatalogClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            CloudCatalogAsyncClient: The constructed client.
+        """
+        return CloudCatalogClient.from_service_account_info.__func__(CloudCatalogAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            CloudCatalogAsyncClient: The constructed client.
+        """
+        return CloudCatalogClient.from_service_account_file.__func__(CloudCatalogAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -152,7 +181,7 @@ class CloudCatalogAsyncClient:
         r"""Lists all public cloud services.
 
         Args:
-            request (:class:`~.cloud_catalog.ListServicesRequest`):
+            request (:class:`google.cloud.billing_v1.types.ListServicesRequest`):
                 The request object. Request message for `ListServices`.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -162,8 +191,8 @@ class CloudCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListServicesAsyncPager:
-                Response message for ``ListServices``.
+            google.cloud.billing_v1.services.cloud_catalog.pagers.ListServicesAsyncPager:
+                Response message for ListServices.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -206,11 +235,12 @@ class CloudCatalogAsyncClient:
         service.
 
         Args:
-            request (:class:`~.cloud_catalog.ListSkusRequest`):
+            request (:class:`google.cloud.billing_v1.types.ListSkusRequest`):
                 The request object. Request message for `ListSkus`.
             parent (:class:`str`):
                 Required. The name of the service.
-                Example: "services/DA34-426B-A397".
+                Example: "services/DA34-426B-A397"
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -222,8 +252,8 @@ class CloudCatalogAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListSkusAsyncPager:
-                Response message for ``ListSkus``.
+            google.cloud.billing_v1.services.cloud_catalog.pagers.ListSkusAsyncPager:
+                Response message for ListSkus.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.

@@ -31,13 +31,13 @@ library = gapic.py_library(
     bazel_target="//google/cloud/billing/v1:billing-v1-py",
 )
 
-excludes = ["setup.py", "docs/index.rst", "scripts/fixup_biling_v1_keywords.py"] 
+excludes = ["setup.py", "docs/index.rst", "scripts/fixup*"]
 s.move(library, excludes=excludes)
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=99, microgenerator=True)
+templated_files = common.py_library(cov_level=98, microgenerator=True)
 s.move(templated_files, excludes=[".coveragerc"])  # the microgenerator has a good coveragerc file
 s.replace(".gitignore", "bigquery/docs/generated", "htmlcov")  # temporary hack to ignore htmlcov
 
