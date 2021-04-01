@@ -13,10 +13,10 @@ The 2.0.0 release requires Python 3.6+.
 
 > **WARNING**: Breaking change
 Methods expect request objects. We provide a script that will convert most common use cases.
-* Install the library
+* Install the library and `libcst`.
 
 ```py
-python3 -m pip install google-cloud-language
+python3 -m pip install google-cloud-language[libcst]
 ```
 
 * The script `fixup_language_v1_keywords.py` is shipped with the library. It expects
@@ -54,7 +54,7 @@ In `google-cloud-language<2.0.0`, parameters required by the API were positional
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
         metadata=None,
-    ):    
+    ):
 ```
 
 In the 2.0.0 release, all methods have a single positional parameter `request`. Method docstrings indicate whether a parameter is required or optional.
@@ -84,14 +84,14 @@ Both of these calls are valid:
 response = client.analyze_sentiment(
     request={
         "document": document,
-        "encoding_type": encoding_type        
+        "encoding_type": encoding_type
     }
 )
 ```
 
 ```py
 response = client.analyze_sentiment(
-    document=document, 
+    document=document,
     encoding_type=encoding_type
     )  # Make an API request.
 ```
@@ -102,7 +102,7 @@ will result in an error.
 ```py
 response = client.analyze_sentiment(
     request={
-        "document": document        
+        "document": document
     },
     encoding_type=encoding_type
 )

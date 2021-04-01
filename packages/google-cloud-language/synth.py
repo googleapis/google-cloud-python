@@ -33,12 +33,12 @@ for version in versions:
         bazel_target=f"//google/cloud/language/{version}:language-{version}-py",
         include_protos=True,
     )
-    s.move(library, excludes=["docs/index.rst", "README.rst", "setup.py"])    
+    s.move(library, excludes=["docs/index.rst", "README.rst", "setup.py"])
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=99, samples=True, microgenerator=True,)
+templated_files = common.py_library(cov_level=98, samples=True, microgenerator=True,)
 
 s.move(templated_files, excludes=['.coveragerc'])
 
