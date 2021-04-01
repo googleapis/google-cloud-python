@@ -72,16 +72,19 @@ class CloudBuildTransport(abc.ABC):
             scope (Optional[Sequence[str]]): A list of scopes.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
             host += ":443"
         self._host = host
+
+        # Save the scopes.
+        self._scopes = scopes or self.AUTH_SCOPES
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
@@ -92,19 +95,16 @@ class CloudBuildTransport(abc.ABC):
 
         if credentials_file is not None:
             credentials, _ = auth.load_credentials_from_file(
-                credentials_file, scopes=scopes, quota_project_id=quota_project_id
+                credentials_file, scopes=self._scopes, quota_project_id=quota_project_id
             )
 
         elif credentials is None:
             credentials, _ = auth.default(
-                scopes=scopes, quota_project_id=quota_project_id
+                scopes=self._scopes, quota_project_id=quota_project_id
             )
 
         # Save the credentials.
         self._credentials = credentials
-
-        # Lifted into its own function so it can be stubbed out during tests.
-        self._prep_wrapped_messages(client_info)
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
@@ -121,6 +121,7 @@ class CloudBuildTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=600.0,
                 ),
                 default_timeout=600.0,
                 client_info=client_info,
@@ -134,6 +135,7 @@ class CloudBuildTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=600.0,
                 ),
                 default_timeout=600.0,
                 client_info=client_info,
@@ -158,6 +160,7 @@ class CloudBuildTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=600.0,
                 ),
                 default_timeout=600.0,
                 client_info=client_info,
@@ -171,6 +174,7 @@ class CloudBuildTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=600.0,
                 ),
                 default_timeout=600.0,
                 client_info=client_info,
@@ -184,6 +188,7 @@ class CloudBuildTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=600.0,
                 ),
                 default_timeout=600.0,
                 client_info=client_info,
@@ -195,6 +200,11 @@ class CloudBuildTransport(abc.ABC):
             ),
             self.run_build_trigger: gapic_v1.method.wrap_method(
                 self.run_build_trigger, default_timeout=600.0, client_info=client_info,
+            ),
+            self.receive_trigger_webhook: gapic_v1.method.wrap_method(
+                self.receive_trigger_webhook,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_worker_pool: gapic_v1.method.wrap_method(
                 self.create_worker_pool, default_timeout=600.0, client_info=client_info,
@@ -208,6 +218,7 @@ class CloudBuildTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=600.0,
                 ),
                 default_timeout=600.0,
                 client_info=client_info,
@@ -227,6 +238,7 @@ class CloudBuildTransport(abc.ABC):
                     predicate=retries.if_exception_type(
                         exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                     ),
+                    deadline=600.0,
                 ),
                 default_timeout=600.0,
                 client_info=client_info,
@@ -346,6 +358,18 @@ class CloudBuildTransport(abc.ABC):
     ) -> typing.Callable[
         [cloudbuild.RunBuildTriggerRequest],
         typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def receive_trigger_webhook(
+        self,
+    ) -> typing.Callable[
+        [cloudbuild.ReceiveTriggerWebhookRequest],
+        typing.Union[
+            cloudbuild.ReceiveTriggerWebhookResponse,
+            typing.Awaitable[cloudbuild.ReceiveTriggerWebhookResponse],
+        ],
     ]:
         raise NotImplementedError()
 

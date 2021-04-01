@@ -53,6 +53,7 @@ class cloudbuildCallTransformer(cst.CSTTransformer):
     'list_builds': ('project_id', 'parent', 'page_size', 'page_token', 'filter', ),
     'list_build_triggers': ('project_id', 'page_size', 'page_token', ),
     'list_worker_pools': ('parent', ),
+    'receive_trigger_webhook': ('body', 'project_id', 'trigger', 'secret', ),
     'retry_build': ('project_id', 'id', 'name', ),
     'run_build_trigger': ('project_id', 'trigger_id', 'source', ),
     'update_build_trigger': ('project_id', 'trigger_id', 'trigger', ),

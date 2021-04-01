@@ -36,6 +36,7 @@ from .types.cloudbuild import GetBuildTriggerRequest
 from .types.cloudbuild import GetWorkerPoolRequest
 from .types.cloudbuild import GitHubEventsConfig
 from .types.cloudbuild import Hash
+from .types.cloudbuild import InlineSecret
 from .types.cloudbuild import ListBuildTriggersRequest
 from .types.cloudbuild import ListBuildTriggersResponse
 from .types.cloudbuild import ListBuildsRequest
@@ -45,11 +46,15 @@ from .types.cloudbuild import ListWorkerPoolsResponse
 from .types.cloudbuild import Network
 from .types.cloudbuild import PullRequestFilter
 from .types.cloudbuild import PushFilter
+from .types.cloudbuild import ReceiveTriggerWebhookRequest
+from .types.cloudbuild import ReceiveTriggerWebhookResponse
 from .types.cloudbuild import RepoSource
 from .types.cloudbuild import Results
 from .types.cloudbuild import RetryBuildRequest
 from .types.cloudbuild import RunBuildTriggerRequest
 from .types.cloudbuild import Secret
+from .types.cloudbuild import SecretManagerSecret
+from .types.cloudbuild import Secrets
 from .types.cloudbuild import Source
 from .types.cloudbuild import SourceProvenance
 from .types.cloudbuild import StorageSource
@@ -82,6 +87,7 @@ __all__ = (
     "GetWorkerPoolRequest",
     "GitHubEventsConfig",
     "Hash",
+    "InlineSecret",
     "ListBuildTriggersRequest",
     "ListBuildTriggersResponse",
     "ListBuildsRequest",
@@ -91,11 +97,15 @@ __all__ = (
     "Network",
     "PullRequestFilter",
     "PushFilter",
+    "ReceiveTriggerWebhookRequest",
+    "ReceiveTriggerWebhookResponse",
     "RepoSource",
     "Results",
     "RetryBuildRequest",
     "RunBuildTriggerRequest",
     "Secret",
+    "SecretManagerSecret",
+    "Secrets",
     "Source",
     "SourceProvenance",
     "StorageSource",

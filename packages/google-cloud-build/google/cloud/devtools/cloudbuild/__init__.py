@@ -45,6 +45,7 @@ from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import GetBuildTrigger
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import GetWorkerPoolRequest
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import GitHubEventsConfig
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Hash
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import InlineSecret
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
     ListBuildTriggersRequest,
 )
@@ -58,11 +59,19 @@ from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import ListWorkerPools
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Network
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import PullRequestFilter
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import PushFilter
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
+    ReceiveTriggerWebhookRequest,
+)
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
+    ReceiveTriggerWebhookResponse,
+)
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import RepoSource
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Results
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import RetryBuildRequest
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import RunBuildTriggerRequest
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Secret
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import SecretManagerSecret
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Secrets
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Source
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import SourceProvenance
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import StorageSource
@@ -98,6 +107,7 @@ __all__ = (
     "GetWorkerPoolRequest",
     "GitHubEventsConfig",
     "Hash",
+    "InlineSecret",
     "ListBuildTriggersRequest",
     "ListBuildTriggersResponse",
     "ListBuildsRequest",
@@ -107,11 +117,15 @@ __all__ = (
     "Network",
     "PullRequestFilter",
     "PushFilter",
+    "ReceiveTriggerWebhookRequest",
+    "ReceiveTriggerWebhookResponse",
     "RepoSource",
     "Results",
     "RetryBuildRequest",
     "RunBuildTriggerRequest",
     "Secret",
+    "SecretManagerSecret",
+    "Secrets",
     "Source",
     "SourceProvenance",
     "StorageSource",
