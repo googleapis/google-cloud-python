@@ -3,30 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-org-policy.git",
-        "sha": "3f311b3105c60324bf64219d1402713d33f62fb9"
+        "remote": "https://github.com/googleapis/python-org-policy.git",
+        "sha": "5d1f86c3121c778f71205364af43e1f26f4c12c9"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "95dd24960cf9f794ef583e59ad9f1fabe1c4a924",
-        "internalRef": "365882072"
+        "sha": "915925089600094e72e4bfa8cf586c170e6b7109",
+        "internalRef": "366152684"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "551dd78ca04f7989abc9e63e392f8b8cfa1a0ef9"
+        "sha": "a22531f8364582f51485e4e9db85872d93514ab1"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "551dd78ca04f7989abc9e63e392f8b8cfa1a0ef9"
+        "sha": "a22531f8364582f51485e4e9db85872d93514ab1"
       }
     }
   ],
@@ -40,5 +40,101 @@
         "generator": "bazel"
       }
     }
+  ],
+  "generatedFiles": [
+    ".coveragerc",
+    ".flake8",
+    ".github/CONTRIBUTING.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/support_request.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/header-checker-lint.yml",
+    ".github/release-please.yml",
+    ".github/snippet-bot.yml",
+    ".gitignore",
+    ".kokoro/build.sh",
+    ".kokoro/continuous/common.cfg",
+    ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
+    ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
+    ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
+    ".kokoro/presubmit/common.cfg",
+    ".kokoro/presubmit/presubmit.cfg",
+    ".kokoro/publish-docs.sh",
+    ".kokoro/release.sh",
+    ".kokoro/release/common.cfg",
+    ".kokoro/release/release.cfg",
+    ".kokoro/samples/lint/common.cfg",
+    ".kokoro/samples/lint/continuous.cfg",
+    ".kokoro/samples/lint/periodic.cfg",
+    ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.6/common.cfg",
+    ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic-head.cfg",
+    ".kokoro/samples/python3.6/periodic.cfg",
+    ".kokoro/samples/python3.6/presubmit.cfg",
+    ".kokoro/samples/python3.7/common.cfg",
+    ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic-head.cfg",
+    ".kokoro/samples/python3.7/periodic.cfg",
+    ".kokoro/samples/python3.7/presubmit.cfg",
+    ".kokoro/samples/python3.8/common.cfg",
+    ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic-head.cfg",
+    ".kokoro/samples/python3.8/periodic.cfg",
+    ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples-against-head.sh",
+    ".kokoro/test-samples-impl.sh",
+    ".kokoro/test-samples.sh",
+    ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
+    ".trampolinerc",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "MANIFEST.in",
+    "docs/_static/custom.css",
+    "docs/_templates/layout.html",
+    "docs/conf.py",
+    "docs/multiprocessing.rst",
+    "docs/orgpolicy_v2/org_policy.rst",
+    "docs/orgpolicy_v2/services.rst",
+    "docs/orgpolicy_v2/types.rst",
+    "google/cloud/orgpolicy/__init__.py",
+    "google/cloud/orgpolicy/py.typed",
+    "google/cloud/orgpolicy_v2/__init__.py",
+    "google/cloud/orgpolicy_v2/py.typed",
+    "google/cloud/orgpolicy_v2/services/__init__.py",
+    "google/cloud/orgpolicy_v2/services/org_policy/__init__.py",
+    "google/cloud/orgpolicy_v2/services/org_policy/async_client.py",
+    "google/cloud/orgpolicy_v2/services/org_policy/client.py",
+    "google/cloud/orgpolicy_v2/services/org_policy/pagers.py",
+    "google/cloud/orgpolicy_v2/services/org_policy/transports/__init__.py",
+    "google/cloud/orgpolicy_v2/services/org_policy/transports/base.py",
+    "google/cloud/orgpolicy_v2/services/org_policy/transports/grpc.py",
+    "google/cloud/orgpolicy_v2/services/org_policy/transports/grpc_asyncio.py",
+    "google/cloud/orgpolicy_v2/types/__init__.py",
+    "google/cloud/orgpolicy_v2/types/constraint.py",
+    "google/cloud/orgpolicy_v2/types/orgpolicy.py",
+    "mypy.ini",
+    "noxfile.py",
+    "renovate.json",
+    "scripts/decrypt-secrets.sh",
+    "scripts/fixup_orgpolicy_v2_keywords.py",
+    "scripts/readme-gen/readme_gen.py",
+    "scripts/readme-gen/templates/README.tmpl.rst",
+    "scripts/readme-gen/templates/auth.tmpl.rst",
+    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "setup.cfg",
+    "testing/.gitignore",
+    "tests/unit/gapic/orgpolicy_v2/__init__.py",
+    "tests/unit/gapic/orgpolicy_v2/test_org_policy.py"
   ]
 }
