@@ -82,8 +82,7 @@ class ManagedIdentitiesServiceClientMeta(type):
 
 
 class ManagedIdentitiesServiceClient(metaclass=ManagedIdentitiesServiceClientMeta):
-    """
-    API Overview
+    """API Overview
 
     The ``managedidentites.googleapis.com`` service implements the
     Google Cloud Managed Identites API for identity services (e.g.

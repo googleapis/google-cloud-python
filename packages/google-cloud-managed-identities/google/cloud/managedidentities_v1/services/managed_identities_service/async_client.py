@@ -43,8 +43,7 @@ from .client import ManagedIdentitiesServiceClient
 
 
 class ManagedIdentitiesServiceAsyncClient:
-    """
-    API Overview
+    """API Overview
 
     The ``managedidentites.googleapis.com`` service implements the
     Google Cloud Managed Identites API for identity services (e.g.
