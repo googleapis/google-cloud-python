@@ -25,6 +25,7 @@ from __future__ import unicode_literals
 import operator
 
 from google import auth
+import google.api_core.exceptions
 from google.cloud.bigquery import dbapi
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import TableReference
@@ -391,10 +392,17 @@ class BigQueryDialect(DefaultDialect):
             if current_schema is not None and current_schema != dataset.dataset_id:
                 continue
 
-            tables = client.list_tables(dataset.reference)
-            for table in tables:
-                if table_type == table.table_type:
-                    result.append(get_table_name(table))
+            try:
+                tables = client.list_tables(dataset.reference)
+                for table in tables:
+                    if table_type == table.table_type:
+                        result.append(get_table_name(table))
+            except google.api_core.exceptions.NotFound:
+                # It's possible that the dataset was deleted between when we
+                # fetched the list of datasets and when we try to list the
+                # tables from it. See:
+                # https://github.com/googleapis/python-bigquery-sqlalchemy/issues/105
+                pass
         return result
 
     @staticmethod
