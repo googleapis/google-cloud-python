@@ -110,7 +110,7 @@ messages to it
         project_id=os.getenv('GOOGLE_CLOUD_PROJECT'),
         topic='MY_TOPIC_NAME',  # Set this to something appropriate.
     )
-    publisher.create_topic(topic_name)
+    publisher.create_topic(name=topic_name)
     future = publisher.publish(topic_name, b'My first message!', spam='eggs')
     future.result()
 
