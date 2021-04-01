@@ -661,7 +661,6 @@ class CloudMemcacheClient(metaclass=CloudMemcacheClientMeta):
 
                 -  ``displayName``
 
-
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

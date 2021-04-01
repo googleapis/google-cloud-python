@@ -38,14 +38,9 @@ for version in versions:
     excludes = [
         "setup.py",
         "docs/index.rst",
+        "README.rst"
     ]
     s.move(library, excludes=excludes)
-
-# Add extra linebreak after bulleted list to appease sphinx
-s.replace("google/**/*client.py", """-  Must be unique within the user project / location""",
-"""-  Must be unique within the user project / location\n""")
-s.replace("google/**/*client.py", "-  ``displayName``", "-  ``displayName``\n")
-
 
 # ----------------------------------------------------------------------------
 # Add templated files

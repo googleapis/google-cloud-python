@@ -4,21 +4,29 @@
       "git": {
         "name": ".",
         "remote": "git@github.com:googleapis/python-memcache",
-        "sha": "b068bfca843c0d792bb2b79f5b6b28fcc80ae7c8"
+        "sha": "0f8357803b2ae2e06115d36ef4e84967a8ba1256"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "95dd24960cf9f794ef583e59ad9f1fabe1c4a924",
+        "internalRef": "365882072"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "6b026e1443948dcfc0b9e3289c85e940eb70f694"
+        "sha": "551dd78ca04f7989abc9e63e392f8b8cfa1a0ef9"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "6b026e1443948dcfc0b9e3289c85e940eb70f694"
+        "sha": "551dd78ca04f7989abc9e63e392f8b8cfa1a0ef9"
       }
     }
   ],
@@ -28,6 +36,15 @@
         "source": "googleapis",
         "apiName": "memcache",
         "apiVersion": "v1beta2",
+        "language": "python",
+        "generator": "bazel"
+      }
+    },
+    {
+      "client": {
+        "source": "googleapis",
+        "apiName": "memcache",
+        "apiVersion": "v1",
         "language": "python",
         "generator": "bazel"
       }

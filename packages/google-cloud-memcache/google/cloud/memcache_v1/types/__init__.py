@@ -16,31 +16,31 @@
 #
 
 from .cloud_memcache import (
+    ApplyParametersRequest,
+    CreateInstanceRequest,
+    DeleteInstanceRequest,
+    GetInstanceRequest,
     Instance,
     ListInstancesRequest,
     ListInstancesResponse,
-    GetInstanceRequest,
-    CreateInstanceRequest,
-    UpdateInstanceRequest,
-    DeleteInstanceRequest,
-    ApplyParametersRequest,
-    UpdateParametersRequest,
     MemcacheParameters,
     OperationMetadata,
+    UpdateInstanceRequest,
+    UpdateParametersRequest,
     MemcacheVersion,
 )
 
 __all__ = (
+    "ApplyParametersRequest",
+    "CreateInstanceRequest",
+    "DeleteInstanceRequest",
+    "GetInstanceRequest",
     "Instance",
     "ListInstancesRequest",
     "ListInstancesResponse",
-    "GetInstanceRequest",
-    "CreateInstanceRequest",
-    "UpdateInstanceRequest",
-    "DeleteInstanceRequest",
-    "ApplyParametersRequest",
-    "UpdateParametersRequest",
     "MemcacheParameters",
     "OperationMetadata",
+    "UpdateInstanceRequest",
+    "UpdateParametersRequest",
     "MemcacheVersion",
 )
