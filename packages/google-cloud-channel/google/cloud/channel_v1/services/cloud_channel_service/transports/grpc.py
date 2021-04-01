@@ -140,7 +140,10 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
+        self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
+        self._stubs: Dict[str, Callable] = {}
+        self._operations_client = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -148,89 +151,59 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
         if channel:
-            # Sanity check: Ensure that channel and credentials are not both
-            # provided.
+            # Ignore credentials if a channel was passed.
             credentials = False
-
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-        elif api_mtls_endpoint:
-            host = (
-                api_mtls_endpoint
-                if ":" in api_mtls_endpoint
-                else api_mtls_endpoint + ":443"
-            )
 
-            if credentials is None:
-                credentials, _ = auth.default(
-                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
-                )
-
-            # Create SSL credentials with client_cert_source or application
-            # default SSL credentials.
-            if client_cert_source:
-                cert, key = client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
-            else:
-                ssl_credentials = SslCredentials().ssl_credentials
-
-            # create a new channel. The provided one is ignored.
-            self._grpc_channel = type(self).create_channel(
-                host,
-                credentials=credentials,
-                credentials_file=credentials_file,
-                ssl_credentials=ssl_credentials,
-                scopes=scopes or self.AUTH_SCOPES,
-                quota_project_id=quota_project_id,
-                options=[
-                    ("grpc.max_send_message_length", -1),
-                    ("grpc.max_receive_message_length", -1),
-                ],
-            )
-            self._ssl_channel_credentials = ssl_credentials
         else:
-            host = host if ":" in host else host + ":443"
+            if api_mtls_endpoint:
+                host = api_mtls_endpoint
 
-            if credentials is None:
-                credentials, _ = auth.default(
-                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
-                )
+                # Create SSL credentials with client_cert_source or application
+                # default SSL credentials.
+                if client_cert_source:
+                    cert, key = client_cert_source()
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                        certificate_chain=cert, private_key=key
+                    )
+                else:
+                    self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
-            if client_cert_source_for_mtls and not ssl_channel_credentials:
-                cert, key = client_cert_source_for_mtls()
-                self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
+            else:
+                if client_cert_source_for_mtls and not ssl_channel_credentials:
+                    cert, key = client_cert_source_for_mtls()
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                        certificate_chain=cert, private_key=key
+                    )
 
-            # create a new channel. The provided one is ignored.
-            self._grpc_channel = type(self).create_channel(
-                host,
-                credentials=credentials,
-                credentials_file=credentials_file,
-                ssl_credentials=self._ssl_channel_credentials,
-                scopes=scopes or self.AUTH_SCOPES,
-                quota_project_id=quota_project_id,
-                options=[
-                    ("grpc.max_send_message_length", -1),
-                    ("grpc.max_receive_message_length", -1),
-                ],
-            )
-
-        self._stubs = {}  # type: Dict[str, Callable]
-        self._operations_client = None
-
-        # Run the base constructor.
+        # The base transport sets the host, credentials and scopes
         super().__init__(
             host=host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes or self.AUTH_SCOPES,
+            scopes=scopes,
             quota_project_id=quota_project_id,
             client_info=client_info,
         )
+
+        if not self._grpc_channel:
+            self._grpc_channel = type(self).create_channel(
+                self._host,
+                credentials=self._credentials,
+                credentials_file=credentials_file,
+                scopes=self._scopes,
+                ssl_credentials=self._ssl_channel_credentials,
+                quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+
+        # Wrap messages. This must be done after self._grpc_channel exists
+        self._prep_wrapped_messages(client_info)
 
     @classmethod
     def create_channel(
@@ -244,7 +217,7 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
     ) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
-            address (Optional[str]): The host for the channel to use.
+            host (Optional[str]): The host for the channel to use.
             credentials (Optional[~.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If
@@ -394,14 +367,15 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
         -  INVALID_ARGUMENT: Missing or invalid required parameters in
            the request.
         -  INVALID_VALUE: Invalid domain value in the request.
-        -  NOT_FOUND: If there is no
-           [CloudIdentityCustomerAccount][google.cloud.channel.v1.CloudIdentityCustomerAccount]
-           customer for the domain specified in the request.
 
         Return Value: List of
         [CloudIdentityCustomerAccount][google.cloud.channel.v1.CloudIdentityCustomerAccount]
-        resources if any exist for the domain, otherwise an error is
-        returned.
+        resources for the domain. List may be empty.
+
+        Note: in the v1alpha1 version of the API, a NOT_FOUND error is
+        returned if no
+        [CloudIdentityCustomerAccount][google.cloud.channel.v1.CloudIdentityCustomerAccount]
+        resources match the domain.
 
         Returns:
             Callable[[~.CheckCloudIdentityAccountsExistRequest],
@@ -434,19 +408,13 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
 
         Possible Error Codes:
 
-        .. raw:: html
+        -  PERMISSION_DENIED: If the reseller account making the request
+           and the reseller account being queried for are different.
+        -  INVALID_ARGUMENT: It can happen in following scenarios -
 
-            <ul>
-            <li>PERMISSION_DENIED: If the reseller account making the request and the
-            reseller account being queried for are different.</li>
-            <li> INVALID_ARGUMENT:
-            <ul>
-             <li> Missing or invalid required parameters in the request. </li>
-             <li> Domain field value doesn't match the domain specified in primary
-             email.</li>
-            </ul>
-            </li>
-            </ul>
+           -  Missing or invalid required parameters in the request.
+           -  Domain field value doesn't match the domain specified in
+              primary email.
 
         Return Value: If successful, the newly created
         [Customer][google.cloud.channel.v1.Customer] resource, otherwise
@@ -652,20 +620,16 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
 
         Possible Error Codes:
 
-        .. raw:: html
+        -  PERMISSION_DENIED: Appears because of one of the following -
 
-            <ul>
-            <li>PERMISSION_DENIED, due to one of the following reasons:
-            <ul>
-               <li> If the customer doesn't belong to the reseller and no auth token,
-               or an invalid auth token is supplied. </li> <li> If the reseller account
-               making the request and the reseller account being queried for are
-               different. </li>
-            </ul>
-            </li>
-            <li> INVALID_ARGUMENT: Missing or invalid required parameters in the
-            request.</li>
-            </ul>
+           -  The customer doesn't belong to the reseller and no auth
+              token.
+           -  The supplied auth token is invalid.
+           -  The reseller account making the request and the queries
+              reseller account are different.
+
+        -  INVALID_ARGUMENT: Missing or invalid required parameters in
+           the request.
 
         Return Value: List of
         [TransferableSku][google.cloud.channel.v1.TransferableSku] for
@@ -708,11 +672,13 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
 
         Possible Error Codes:
 
-        -  PERMISSION_DENIED, due to one of the following reasons: (a)
-           If the customer doesn't belong to the reseller and no auth
-           token or invalid auth token is supplied. (b) If the reseller
-           account making the request and the reseller account being
-           queried for are different.
+        -  PERMISSION_DENIED: Appears because of one of the following:
+
+           -  If the customer doesn't belong to the reseller and no auth
+              token or invalid auth token is supplied.
+           -  If the reseller account making the request and the
+              reseller account being queried for are different.
+
         -  INVALID_ARGUMENT: Missing or invalid required parameters in
            the request.
 
@@ -787,50 +753,47 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
 
         Possible Error Codes:
 
-        .. raw:: html
+        -  PERMISSION_DENIED: If the customer doesn't belong to the
+           reseller.
+        -  INVALID_ARGUMENT: It can happen in below scenarios -
 
-            <ul>
-            <li> PERMISSION_DENIED: If the customer doesn't belong to the reseller.
-            </li> <li> INVALID_ARGUMENT: <ul>
-              <li> Missing or invalid required parameters in the request. </li>
-              <li> Cannot purchase an entitlement if there is already an
-               entitlement for customer, for a SKU from the same product family. </li>
-              <li> INVALID_VALUE: Offer passed in isn't valid. Make sure OfferId is
-            valid. If it is valid, then contact Google Channel support for further
-            troubleshooting. </li>
-            </ul>
-            </li>
-            <li> NOT_FOUND: If the customer or offer resource is not found for the
-            reseller. </li>
-            <li> ALREADY_EXISTS: This failure can happen in the following cases:
-              <ul>
-                <li>If the SKU has been already purchased for the customer.</li>
-                <li>If the customer's primary email already exists. In this case retry
-                    after changing the customer's primary contact email.
-                </li>
-              </ul>
-            </li>
-            <li> CONDITION_NOT_MET or FAILED_PRECONDITION: This
-            failure can happen in the following cases:
-            <ul>
-               <li> Purchasing a SKU that requires domain verification and the
-               domain has not been verified. </li>
-               <li> Purchasing an Add-On SKU like Vault or Drive without purchasing
-               the pre-requisite SKU, such as Google Workspace Business Starter. </li>
-               <li> Applicable only for developer accounts: reseller and resold
-               domain. Must meet the following domain naming requirements:
-                <ul>
-                  <li> Domain names must start with goog-test. </li>
-                  <li> Resold domain names must include the reseller domain. </li>
-                </ul>
-               </li>
-            </ul>
-            </li>
-            <li> INTERNAL: Any non-user error related to a technical issue in the
-            backend. Contact Cloud Channel Support in this case. </li>
-            <li> UNKNOWN: Any non-user error related to a technical issue in the
-            backend. Contact Cloud Channel Support in this case. </li>
-            </ul>
+           -  Missing or invalid required parameters in the request.
+           -  Cannot purchase an entitlement if there is already an
+              entitlement for customer, for a SKU from the same product
+              family.
+           -  INVALID_VALUE: Offer passed in isn't valid. Make sure
+              OfferId is valid. If it is valid, then contact Google
+              Channel support for further troubleshooting.
+
+        -  NOT_FOUND: If the customer or offer resource is not found for
+           the reseller.
+        -  ALREADY_EXISTS: This failure can happen in the following
+           cases:
+
+           -  If the SKU has been already purchased for the customer.
+           -  If the customer's primary email already exists. In this
+              case retry after changing the customer's primary contact
+              email.
+
+        -  CONDITION_NOT_MET or FAILED_PRECONDITION: This failure can
+           happen in the following cases:
+
+           -  Purchasing a SKU that requires domain verification and the
+              domain has not been verified.
+           -  Purchasing an Add-On SKU like Vault or Drive without
+              purchasing the pre-requisite SKU, such as Google Workspace
+              Business Starter.
+           -  Applicable only for developer accounts: reseller and
+              resold domain. Must meet the following domain naming
+              requirements:
+
+              -  Domain names must start with goog-test.
+              -  Resold domain names must include the reseller domain.
+
+        -  INTERNAL: Any non-user error related to a technical issue in
+           the backend. Contact Cloud Channel Support in this case.
+        -  UNKNOWN: Any non-user error related to a technical issue in
+           the backend. Contact Cloud Channel Support in this case.
 
         Return Value: Long Running Operation ID.
 
@@ -1227,35 +1190,36 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
 
         Possible Error Codes:
 
-        .. raw:: html
+        -  PERMISSION_DENIED: If the customer doesn't belong to the
+           reseller.
+        -  INVALID_ARGUMENT: Missing or invalid required parameters in
+           the request.
+        -  NOT_FOUND: If the customer or offer resource is not found for
+           the reseller.
+        -  ALREADY_EXISTS: If the SKU has been already transferred for
+           the customer.
+        -  CONDITION_NOT_MET or FAILED_PRECONDITION: This failure can
+           happen in the following cases:
 
-            <ul>
-            <li> PERMISSION_DENIED: If the customer doesn't belong to the
-            reseller.</li> <li> INVALID_ARGUMENT: Missing or invalid required
-            parameters in the request. </li> <li> NOT_FOUND: If the customer or offer
-            resource is not found for the reseller. </li> <li> ALREADY_EXISTS: If the
-            SKU has been already transferred for the customer. </li> <li>
-            CONDITION_NOT_MET or FAILED_PRECONDITION: This failure can happen in the
-            following cases: <ul>
-               <li> Transferring a SKU that requires domain verification and the
-            domain has not been verified. </li>
-               <li> Transferring an Add-On SKU like Vault or Drive without transferring
-            the pre-requisite SKU, such as G Suite Basic </li> <li> Applicable only for
-            developer accounts: reseller and resold domain must follow the domain
-            naming convention as follows:
-                 <ul>
-                    <li> Domain names must start with goog-test. </li>
-                    <li> Resold domain names must include the reseller domain. </li>
-                 </ul>
-              </li>
-              <li> All transferring entitlements must be specified. </li>
-            </ul>
-            </li>
-            <li> INTERNAL: Any non-user error related to a technical issue in the
-            backend. Please contact Cloud Channel Support in this case. </li>
-            <li> UNKNOWN: Any non-user error related to a technical issue in the
-            backend. Please contact Cloud Channel Support in this case. </li>
-            </ul>
+           -  Transferring a SKU that requires domain verification and
+              the domain has not been verified.
+           -  Transferring an Add-On SKU like Vault or Drive without
+              transferring the pre-requisite SKU, such as G Suite Basic.
+           -  Applicable only for developer accounts: reseller and
+              resold domain must follow the domain naming convention as
+              follows:
+
+              -  Domain names must start with goog-test.
+              -  Resold domain names must include the reseller domain.
+
+           -  All transferring entitlements must be specified.
+
+        -  INTERNAL: Any non-user error related to a technical issue in
+           the backend. Please contact Cloud Channel Support in this
+           case.
+        -  UNKNOWN: Any non-user error related to a technical issue in
+           the backend. Please contact Cloud Channel Support in this
+           case.
 
         Return Value: Long Running Operation ID.
 
@@ -1293,37 +1257,34 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
 
         Possible Error Codes:
 
-        .. raw:: html
+        -  PERMISSION_DENIED: If the customer doesn't belong to the
+           reseller.
+        -  INVALID_ARGUMENT: Missing or invalid required parameters in
+           the request.
+        -  NOT_FOUND: If the customer or offer resource is not found for
+           the reseller.
+        -  ALREADY_EXISTS: If the SKU has been already transferred for
+           the customer.
+        -  CONDITION_NOT_MET or FAILED_PRECONDITION: This failure can
+           happen in the following cases:
 
-            <ul>
-            <li> PERMISSION_DENIED: If the customer doesn't belong to the reseller.
-            </li> <li> INVALID_ARGUMENT: Missing or invalid required parameters in the
-            request. </li>
-            <li> NOT_FOUND: If the customer or offer resource is not found
-            for the reseller. </li>
-            <li> ALREADY_EXISTS: If the SKU has been already
-            transferred for the customer. </li>
-            <li> CONDITION_NOT_MET or FAILED_PRECONDITION: This failure can happen in
-            the following cases:
-            <ul>
-               <li> Transferring a SKU that requires domain verification and the
-            domain has not been verified. </li>
-               <li> Transferring an Add-On SKU like Vault or Drive without purchasing
-            the pre-requisite SKU, such as G Suite Basic </li> <li> Applicable only for
-            developer accounts: reseller and resold domain must follow the domain
-            naming convention as follows:
-                 <ul>
-                    <li> Domain names must start with goog-test. </li>
-                    <li> Resold domain names must include the reseller domain. </li>
-                 </ul>
-               </li>
-            </ul>
-            </li>
-            <li> INTERNAL: Any non-user error related to a technical issue in the
-            backend. Please contact Cloud Channel Support in this case. </li>
-            <li> UNKNOWN: Any non-user error related to a technical issue in the
-            backend. Please contact Cloud Channel Support in this case.</li>
-            </ul>
+           -  Transferring a SKU that requires domain verification and
+              the domain has not been verified.
+           -  Transferring an Add-On SKU like Vault or Drive without
+              purchasing the pre-requisite SKU, such as G Suite Basic.
+           -  Applicable only for developer accounts: reseller and
+              resold domain must follow the domain naming convention as
+              follows:
+
+              -  Domain names must start with goog-test.
+              -  Resold domain names must include the reseller domain.
+
+        -  INTERNAL: Any non-user error related to a technical issue in
+           the backend. Please contact Cloud Channel Support in this
+           case.
+        -  UNKNOWN: Any non-user error related to a technical issue in
+           the backend. Please contact Cloud Channel Support in this
+           case.
 
         Return Value: Long Running Operation ID.
 
@@ -1508,25 +1469,20 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
 
         Possible Error Codes:
 
-        .. raw:: html
+        -  PERMISSION_DENIED: If the reseller account making the request
+           and the reseller account being queried for are different.
+        -  INVALID_ARGUMENT: It can happen in following scenarios -
 
-            <ul>
-            <li> PERMISSION_DENIED: If the reseller account making the request and the
-            reseller account being queried for are different. </li>
-            <li> INVALID_ARGUMENT:
-            <ul>
-              <li> Missing or invalid required parameters in the request. </li>
-              <li> Updating link state from invited to active or suspended. </li>
-              <li> Sending reseller_cloud_identity_id, invite_url or name in update
-              mask. </li>
-            </ul>
-            </li>
-            <li> NOT_FOUND: ChannelPartnerLink resource not found.</li>
-            <li> INTERNAL: Any non-user error related to a technical issue in the
-            backend. In this case, contact Cloud Channel support. </li>
-            <li> UNKNOWN: Any non-user error related to a technical issue in the
-            backend. In this case, contact Cloud Channel support.</li>
-            </ul>
+           -  Missing or invalid required parameters in the request.
+           -  Updating link state from invited to active or suspended.
+           -  Sending reseller_cloud_identity_id, invite_url or name in
+              update mask.
+
+        -  NOT_FOUND: ChannelPartnerLink resource not found.
+        -  INTERNAL: Any non-user error related to a technical issue in
+           the backend. In this case, contact Cloud Channel support.
+        -  UNKNOWN: Any non-user error related to a technical issue in
+           the backend. In this case, contact Cloud Channel support.
 
         Return Value: If successful, the updated
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]

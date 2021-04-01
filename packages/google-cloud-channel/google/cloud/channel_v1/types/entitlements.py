@@ -22,7 +22,6 @@ from google.cloud.channel_v1.types import common
 from google.cloud.channel_v1.types import offers
 from google.cloud.channel_v1.types import products
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -270,23 +269,12 @@ class TransferableSku(proto.Message):
     not own. Read-only.
 
     Attributes:
-        is_commitment (google.protobuf.wrappers_pb2.BoolValue):
-            Whether a transferable SKU is commitment-
-            ased or not.
-        commitment_end_timestamp (google.protobuf.timestamp_pb2.Timestamp):
-            Commitment end timestamp.
         transfer_eligibility (google.cloud.channel_v1.types.TransferEligibility):
             Describes the transfer eligibility of a SKU.
         sku (google.cloud.channel_v1.types.Sku):
             The SKU pertaining to the provisioning
             resource as specified in the Offer.
     """
-
-    is_commitment = proto.Field(proto.MESSAGE, number=6, message=wrappers.BoolValue,)
-
-    commitment_end_timestamp = proto.Field(
-        proto.MESSAGE, number=7, message=timestamp.Timestamp,
-    )
 
     transfer_eligibility = proto.Field(
         proto.MESSAGE, number=9, message="TransferEligibility",

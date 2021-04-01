@@ -47,7 +47,7 @@ class channelCallTransformer(cst.CSTTransformer):
     'change_parameters': ('name', 'parameters', 'request_id', 'purchase_order_id', ),
     'change_renewal_settings': ('name', 'renewal_settings', 'request_id', ),
     'check_cloud_identity_accounts_exist': ('parent', 'domain', ),
-    'create_channel_partner_link': ('parent', 'channel_partner_link', 'domain', ),
+    'create_channel_partner_link': ('parent', 'channel_partner_link', ),
     'create_customer': ('parent', 'customer', ),
     'create_entitlement': ('parent', 'entitlement', 'request_id', ),
     'delete_customer': ('name', ),
