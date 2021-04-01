@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+### [2.3.1](https://www.github.com/googleapis/python-dataproc/compare/v2.3.0...v2.3.1) (2021-03-27)
+
+
+### Bug Fixes
+
+* (samples) fixing samples for new machine types ([#150](https://www.github.com/googleapis/python-dataproc/issues/150)) ([3343665](https://www.github.com/googleapis/python-dataproc/commit/334366546501833149479556b55bfbc3c9562236))
+
+
+### Documentation
+
+* adding backoff to quickstart test ([#135](https://www.github.com/googleapis/python-dataproc/issues/135)) ([a22df4c](https://www.github.com/googleapis/python-dataproc/commit/a22df4c0a15b2fa51cbe0f0cc2782def1a74c198))
+
 ## [2.3.0](https://www.github.com/googleapis/python-dataproc/compare/v2.2.0...v2.3.0) (2021-03-01)
 
 
