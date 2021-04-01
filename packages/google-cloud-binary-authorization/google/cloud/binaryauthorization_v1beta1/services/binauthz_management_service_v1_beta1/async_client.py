@@ -104,12 +104,36 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
         BinauthzManagementServiceV1Beta1Client.parse_common_location_path
     )
 
-    from_service_account_info = (
-        BinauthzManagementServiceV1Beta1Client.from_service_account_info
-    )
-    from_service_account_file = (
-        BinauthzManagementServiceV1Beta1Client.from_service_account_file
-    )
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            BinauthzManagementServiceV1Beta1AsyncClient: The constructed client.
+        """
+        return BinauthzManagementServiceV1Beta1Client.from_service_account_info.__func__(BinauthzManagementServiceV1Beta1AsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            BinauthzManagementServiceV1Beta1AsyncClient: The constructed client.
+        """
+        return BinauthzManagementServiceV1Beta1Client.from_service_account_file.__func__(BinauthzManagementServiceV1Beta1AsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -220,9 +244,8 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         Returns:
             google.cloud.binaryauthorization_v1beta1.types.Policy:
-                A
-                [policy][google.cloud.binaryauthorization.v1beta1.Policy]
-                for container image binary authorization.
+                A [policy][google.cloud.binaryauthorization.v1beta1.Policy] for container
+                   image binary authorization.
 
         """
         # Create or coerce a protobuf request object.
@@ -254,6 +277,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=600.0,
             ),
             default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -313,9 +337,8 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         Returns:
             google.cloud.binaryauthorization_v1beta1.types.Policy:
-                A
-                [policy][google.cloud.binaryauthorization.v1beta1.Policy]
-                for container image binary authorization.
+                A [policy][google.cloud.binaryauthorization.v1beta1.Policy] for container
+                   image binary authorization.
 
         """
         # Create or coerce a protobuf request object.
@@ -347,6 +370,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=600.0,
             ),
             default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -426,9 +450,9 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         Returns:
             google.cloud.binaryauthorization_v1beta1.types.Attestor:
-                An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests to container image
-                   artifacts. An existing attestor cannot be modified
-                   except where indicated.
+                An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests
+                   to container image artifacts. An existing attestor
+                   cannot be modified except where indicated.
 
         """
         # Create or coerce a protobuf request object.
@@ -509,9 +533,9 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         Returns:
             google.cloud.binaryauthorization_v1beta1.types.Attestor:
-                An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests to container image
-                   artifacts. An existing attestor cannot be modified
-                   except where indicated.
+                An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests
+                   to container image artifacts. An existing attestor
+                   cannot be modified except where indicated.
 
         """
         # Create or coerce a protobuf request object.
@@ -543,6 +567,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=600.0,
             ),
             default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -599,9 +624,9 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
 
         Returns:
             google.cloud.binaryauthorization_v1beta1.types.Attestor:
-                An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests to container image
-                   artifacts. An existing attestor cannot be modified
-                   except where indicated.
+                An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests
+                   to container image artifacts. An existing attestor
+                   cannot be modified except where indicated.
 
         """
         # Create or coerce a protobuf request object.
@@ -633,6 +658,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=600.0,
             ),
             default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -723,6 +749,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=600.0,
             ),
             default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -809,6 +836,7 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=600.0,
             ),
             default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,

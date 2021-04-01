@@ -315,21 +315,17 @@ class BinauthzManagementServiceV1Beta1Client(
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -372,7 +368,7 @@ class BinauthzManagementServiceV1Beta1Client(
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -421,9 +417,8 @@ class BinauthzManagementServiceV1Beta1Client(
 
         Returns:
             google.cloud.binaryauthorization_v1beta1.types.Policy:
-                A
-                [policy][google.cloud.binaryauthorization.v1beta1.Policy]
-                for container image binary authorization.
+                A [policy][google.cloud.binaryauthorization.v1beta1.Policy] for container
+                   image binary authorization.
 
         """
         # Create or coerce a protobuf request object.
@@ -507,9 +502,8 @@ class BinauthzManagementServiceV1Beta1Client(
 
         Returns:
             google.cloud.binaryauthorization_v1beta1.types.Policy:
-                A
-                [policy][google.cloud.binaryauthorization.v1beta1.Policy]
-                for container image binary authorization.
+                A [policy][google.cloud.binaryauthorization.v1beta1.Policy] for container
+                   image binary authorization.
 
         """
         # Create or coerce a protobuf request object.
@@ -613,9 +607,9 @@ class BinauthzManagementServiceV1Beta1Client(
 
         Returns:
             google.cloud.binaryauthorization_v1beta1.types.Attestor:
-                An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests to container image
-                   artifacts. An existing attestor cannot be modified
-                   except where indicated.
+                An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests
+                   to container image artifacts. An existing attestor
+                   cannot be modified except where indicated.
 
         """
         # Create or coerce a protobuf request object.
@@ -697,9 +691,9 @@ class BinauthzManagementServiceV1Beta1Client(
 
         Returns:
             google.cloud.binaryauthorization_v1beta1.types.Attestor:
-                An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests to container image
-                   artifacts. An existing attestor cannot be modified
-                   except where indicated.
+                An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests
+                   to container image artifacts. An existing attestor
+                   cannot be modified except where indicated.
 
         """
         # Create or coerce a protobuf request object.
@@ -780,9 +774,9 @@ class BinauthzManagementServiceV1Beta1Client(
 
         Returns:
             google.cloud.binaryauthorization_v1beta1.types.Attestor:
-                An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests to container image
-                   artifacts. An existing attestor cannot be modified
-                   except where indicated.
+                An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests
+                   to container image artifacts. An existing attestor
+                   cannot be modified except where indicated.
 
         """
         # Create or coerce a protobuf request object.

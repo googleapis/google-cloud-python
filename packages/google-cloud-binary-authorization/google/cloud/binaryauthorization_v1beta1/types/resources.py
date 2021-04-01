@@ -55,7 +55,7 @@ class Policy(proto.Message):
             effect when specified inside a global admission
             policy.
         admission_whitelist_patterns (Sequence[google.cloud.binaryauthorization_v1beta1.types.AdmissionWhitelistPattern]):
-            Optional. Admission policy whitelisting. A
+            Optional. Admission policy allowlisting. A
             matching admission request will always be
             permitted. This feature is typically used to
             exclude Google or third-party infrastructure
@@ -107,14 +107,14 @@ class Policy(proto.Message):
 
 
 class AdmissionWhitelistPattern(proto.Message):
-    r"""An [admission whitelist
+    r"""An [admission allowlist
     pattern][google.cloud.binaryauthorization.v1beta1.AdmissionWhitelistPattern]
     exempts images from checks by [admission
     rules][google.cloud.binaryauthorization.v1beta1.AdmissionRule].
 
     Attributes:
         name_pattern (str):
-            An image name pattern to whitelist, in the form
+            An image name pattern to allow, in the form
             ``registry/path/to/image``. This supports a trailing ``*``
             as a wildcard, but this is allowed only in text after the
             ``registry/`` part.
@@ -132,7 +132,7 @@ class AdmissionRule(proto.Message):
     all pod creations will be allowed, or that all pod creations will be
     denied.
 
-    Images matching an [admission whitelist
+    Images matching an [admission allowlist
     pattern][google.cloud.binaryauthorization.v1beta1.AdmissionWhitelistPattern]
     are exempted from admission rules and will never block a pod
     creation.
