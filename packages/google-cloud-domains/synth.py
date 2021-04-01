@@ -40,7 +40,7 @@ for version in versions:
 # Add templated files
 # ----------------------------------------------------------------------------
 
-templated_files = common.py_library(microgenerator=True)
+templated_files = common.py_library(microgenerator=True, cov_level=99)
 
 # the microgenerator has a good coveragerc file
 excludes = [".coveragerc"]
