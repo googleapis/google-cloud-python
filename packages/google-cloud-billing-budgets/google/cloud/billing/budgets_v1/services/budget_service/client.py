@@ -114,6 +114,22 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            BudgetServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -125,7 +141,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            BudgetServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -232,10 +248,10 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.BudgetServiceTransport]): The
+            transport (Union[str, BudgetServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -271,21 +287,17 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -328,7 +340,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -349,16 +361,17 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         create.
 
         Args:
-            request (:class:`~.budget_service.CreateBudgetRequest`):
+            request (google.cloud.billing.budgets_v1.types.CreateBudgetRequest):
                 The request object. Request for CreateBudget
-            parent (:class:`str`):
+            parent (str):
                 Required. The name of the billing account to create the
                 budget in. Values are of the form
                 ``billingAccounts/{billingAccountId}``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            budget (:class:`~.budget_model.Budget`):
+            budget (google.cloud.billing.budgets_v1.types.Budget):
                 Required. Budget to create.
                 This corresponds to the ``budget`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -371,7 +384,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.budget_model.Budget:
+            google.cloud.billing.budgets_v1.types.Budget:
                 A budget is a plan that describes
                 what you expect to spend on Cloud
                 projects, plus the rules to execute as
@@ -441,22 +454,24 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         changed by this method.
 
         Args:
-            request (:class:`~.budget_service.UpdateBudgetRequest`):
+            request (google.cloud.billing.budgets_v1.types.UpdateBudgetRequest):
                 The request object. Request for UpdateBudget
-            budget (:class:`~.budget_model.Budget`):
+            budget (google.cloud.billing.budgets_v1.types.Budget):
                 Required. The updated budget object.
                 The budget to update is specified by the
                 budget name in the budget.
+
                 This corresponds to the ``budget`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Optional. Indicates which fields in the provided budget
                 to update. Read-only fields (such as ``name``) cannot be
                 changed. If this is not provided, then only fields with
                 non-default values from the request are updated. See
                 https://developers.google.com/protocol-buffers/docs/proto3#default
                 for more details about default values.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -468,7 +483,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.budget_model.Budget:
+            google.cloud.billing.budgets_v1.types.Budget:
                 A budget is a plan that describes
                 what you expect to spend on Cloud
                 projects, plus the rules to execute as
@@ -540,11 +555,12 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         Cloud Console.
 
         Args:
-            request (:class:`~.budget_service.GetBudgetRequest`):
+            request (google.cloud.billing.budgets_v1.types.GetBudgetRequest):
                 The request object. Request for GetBudget
-            name (:class:`str`):
+            name (str):
                 Required. Name of budget to get. Values are of the form
                 ``billingAccounts/{billingAccountId}/budgets/{budgetId}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -556,7 +572,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.budget_model.Budget:
+            google.cloud.billing.budgets_v1.types.Budget:
                 A budget is a plan that describes
                 what you expect to spend on Cloud
                 projects, plus the rules to execute as
@@ -624,12 +640,13 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         Cloud Console.
 
         Args:
-            request (:class:`~.budget_service.ListBudgetsRequest`):
+            request (google.cloud.billing.budgets_v1.types.ListBudgetsRequest):
                 The request object. Request for ListBudgets
-            parent (:class:`str`):
+            parent (str):
                 Required. Name of billing account to list budgets under.
                 Values are of the form
                 ``billingAccounts/{billingAccountId}``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -641,7 +658,7 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListBudgetsPager:
+            google.cloud.billing.budgets_v1.services.budget_service.pagers.ListBudgetsPager:
                 Response for ListBudgets
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -706,12 +723,13 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         deleted.
 
         Args:
-            request (:class:`~.budget_service.DeleteBudgetRequest`):
+            request (google.cloud.billing.budgets_v1.types.DeleteBudgetRequest):
                 The request object. Request for DeleteBudget
-            name (:class:`str`):
+            name (str):
                 Required. Name of the budget to delete. Values are of
                 the form
                 ``billingAccounts/{billingAccountId}/budgets/{budgetId}``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

@@ -1,6 +1,6 @@
 Services for Google Cloud Billing Budgets v1 API
 ================================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.billing.budgets_v1.services.budget_service
-    :members:
-    :inherited-members:
+    budget_service

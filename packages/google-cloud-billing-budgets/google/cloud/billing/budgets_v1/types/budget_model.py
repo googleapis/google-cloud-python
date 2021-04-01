@@ -51,18 +51,18 @@ class Budget(proto.Message):
         display_name (str):
             User data for display name in UI. The name
             must be less than or equal to 60 characters.
-        budget_filter (~.budget_model.Filter):
+        budget_filter (google.cloud.billing.budgets_v1.types.Filter):
             Optional. Filters that define which resources
             are used to compute the actual spend against the
             budget.
-        amount (~.budget_model.BudgetAmount):
+        amount (google.cloud.billing.budgets_v1.types.BudgetAmount):
             Required. Budgeted amount.
-        threshold_rules (Sequence[~.budget_model.ThresholdRule]):
+        threshold_rules (Sequence[google.cloud.billing.budgets_v1.types.ThresholdRule]):
             Optional. Rules that trigger alerts
             (notifications of thresholds being crossed) when
             spend exceeds the specified percentages of the
             budget.
-        notifications_rule (~.budget_model.NotificationsRule):
+        notifications_rule (google.cloud.billing.budgets_v1.types.NotificationsRule):
             Optional. Rules to apply to notifications
             sent based on budget spend and thresholds.
         etag (str):
@@ -95,12 +95,14 @@ class BudgetAmount(proto.Message):
     r"""The budgeted amount for each usage period.
 
     Attributes:
-        specified_amount (~.money.Money):
+        specified_amount (google.type.money_pb2.Money):
             A specified amount to use as the budget. ``currency_code``
-            is optional. If specified, it must match the currency of the
-            billing account. The ``currency_code`` is provided on
+            is optional. If specified when creating a budget, it must
+            match the currency of the billing account. If specified when
+            updating a budget, it must match the currency_code of the
+            existing budget. The ``currency_code`` is provided on
             output.
-        last_period_amount (~.budget_model.LastPeriodAmount):
+        last_period_amount (google.cloud.billing.budgets_v1.types.LastPeriodAmount):
             Use the last period's actual spend as the
             budget for the present period.
     """
@@ -137,7 +139,7 @@ class ThresholdRule(proto.Message):
             Required. Send an alert when this threshold
             is exceeded. This is a 1.0-based percentage, so
             0.5 = 50%. Validation: non-negative number.
-        spend_basis (~.budget_model.ThresholdRule.Basis):
+        spend_basis (google.cloud.billing.budgets_v1.types.ThresholdRule.Basis):
             Optional. The type of basis used to determine if spend has
             passed the threshold. Behavior defaults to CURRENT_SPEND if
             not set.
@@ -175,10 +177,13 @@ class NotificationsRule(proto.Message):
             https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications
             for more details on Pub/Sub roles and permissions.
         schema_version (str):
-            Optional. The schema version of the notification sent to
-            ``pubsub_topic``. Only "1.0" is accepted. It represents the
-            JSON schema as defined in
-            https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format
+            Optional. Required when
+            [NotificationsRule.pubsub_topic][google.cloud.billing.budgets.v1.NotificationsRule.pubsub_topic]
+            is set. The schema version of the notification sent to
+            [NotificationsRule.pubsub_topic][google.cloud.billing.budgets.v1.NotificationsRule.pubsub_topic].
+            Only "1.0" is accepted. It represents the JSON schema as
+            defined in
+            https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format.
         monitoring_notification_channels (Sequence[str]):
             Optional. Targets to send notifications to when a threshold
             is exceeded. This is in addition to default recipients who
@@ -230,7 +235,7 @@ class Filter(proto.Message):
             is **not** INCLUDE_SPECIFIED_CREDITS, this field must be
             empty. See `a list of acceptable credit type
             values <https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type>`__.
-        credit_types_treatment (~.budget_model.Filter.CreditTypesTreatment):
+        credit_types_treatment (google.cloud.billing.budgets_v1.types.Filter.CreditTypesTreatment):
             Optional. If not set, default behavior is
             ``INCLUDE_ALL_CREDITS``.
         services (Sequence[str]):
@@ -248,7 +253,7 @@ class Filter(proto.Message):
             account, usage from the parent account will be included. If
             the field is omitted, the report will include usage from the
             parent account and all subaccounts, if they exist.
-        labels (Sequence[~.budget_model.Filter.LabelsEntry]):
+        labels (Sequence[google.cloud.billing.budgets_v1.types.Filter.LabelsEntry]):
             Optional. A single label and value pair
             specifying that usage from only this set of
             labeled resources should be included in the

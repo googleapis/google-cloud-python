@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.billing.budgets_v1beta1.types import budget_model
 from google.cloud.billing.budgets_v1beta1.types import budget_service
@@ -25,7 +34,7 @@ class ListBudgetsPager:
     """A pager for iterating through ``list_budgets`` requests.
 
     This class thinly wraps an initial
-    :class:`~.budget_service.ListBudgetsResponse` object, and
+    :class:`google.cloud.billing.budgets_v1beta1.types.ListBudgetsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``budgets`` field.
 
@@ -34,7 +43,7 @@ class ListBudgetsPager:
     through the ``budgets`` field on the
     corresponding responses.
 
-    All the usual :class:`~.budget_service.ListBudgetsResponse`
+    All the usual :class:`google.cloud.billing.budgets_v1beta1.types.ListBudgetsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -52,9 +61,9 @@ class ListBudgetsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.budget_service.ListBudgetsRequest`):
+            request (google.cloud.billing.budgets_v1beta1.types.ListBudgetsRequest):
                 The initial request object.
-            response (:class:`~.budget_service.ListBudgetsResponse`):
+            response (google.cloud.billing.budgets_v1beta1.types.ListBudgetsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -87,7 +96,7 @@ class ListBudgetsAsyncPager:
     """A pager for iterating through ``list_budgets`` requests.
 
     This class thinly wraps an initial
-    :class:`~.budget_service.ListBudgetsResponse` object, and
+    :class:`google.cloud.billing.budgets_v1beta1.types.ListBudgetsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``budgets`` field.
 
@@ -96,7 +105,7 @@ class ListBudgetsAsyncPager:
     through the ``budgets`` field on the
     corresponding responses.
 
-    All the usual :class:`~.budget_service.ListBudgetsResponse`
+    All the usual :class:`google.cloud.billing.budgets_v1beta1.types.ListBudgetsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -114,9 +123,9 @@ class ListBudgetsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.budget_service.ListBudgetsRequest`):
+            request (google.cloud.billing.budgets_v1beta1.types.ListBudgetsRequest):
                 The initial request object.
-            response (:class:`~.budget_service.ListBudgetsResponse`):
+            response (google.cloud.billing.budgets_v1beta1.types.ListBudgetsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

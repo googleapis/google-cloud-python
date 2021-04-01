@@ -43,7 +43,7 @@ class CreateBudgetRequest(proto.Message):
             Required. The name of the billing account to create the
             budget in. Values are of the form
             ``billingAccounts/{billingAccountId}``.
-        budget (~.budget_model.Budget):
+        budget (google.cloud.billing.budgets_v1beta1.types.Budget):
             Required. Budget to create.
     """
 
@@ -56,11 +56,11 @@ class UpdateBudgetRequest(proto.Message):
     r"""Request for UpdateBudget
 
     Attributes:
-        budget (~.budget_model.Budget):
+        budget (google.cloud.billing.budgets_v1beta1.types.Budget):
             Required. The updated budget object.
             The budget to update is specified by the budget
             name in the budget.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Indicates which fields in the provided budget to
             update. Read-only fields (such as ``name``) cannot be
             changed. If this is not provided, then only fields with
@@ -116,7 +116,7 @@ class ListBudgetsResponse(proto.Message):
     r"""Response for ListBudgets
 
     Attributes:
-        budgets (Sequence[~.budget_model.Budget]):
+        budgets (Sequence[google.cloud.billing.budgets_v1beta1.types.Budget]):
             List of the budgets owned by the requested
             billing account.
         next_page_token (str):

@@ -25,11 +25,11 @@ description = "Cloud Billing Budget API API client library"
 version = "1.1.1"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "google-api-core[grpc] >= 1.22.0, < 2.0.0dev",
+    "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
     "proto-plus >= 1.10.0",
-    "libcst >= 0.2.5",
 ]
 
+extras = {"libcst": "libcst >= 0.2.5"}
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -75,6 +75,7 @@ setuptools.setup(
     scripts=["scripts/fixup_budgets_v1beta1_keywords.py"],
     namespace_packages=namespaces,
     install_requires=dependencies,
+    extras_requires=extras,
     include_package_data=True,
     zip_safe=False,
 )
