@@ -25,11 +25,9 @@ from __future__ import unicode_literals
 import operator
 
 from google import auth
-from google.cloud import bigquery
 from google.cloud.bigquery import dbapi
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import TableReference
-from google.oauth2 import service_account
 from google.api_core.exceptions import NotFound
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy import types, util
@@ -46,6 +44,7 @@ from sqlalchemy.sql import elements
 import re
 
 from .parse_url import parse_url
+from pybigquery import _helpers
 
 FIELD_ILLEGAL_CHARACTERS = re.compile(r"[^\w]+")
 
@@ -342,30 +341,6 @@ class BigQueryDialect(DefaultDialect):
 
             job_config.default_dataset = "{}.{}".format(project_id, dataset_id)
 
-    def _create_client_from_credentials(
-        self, credentials, default_query_job_config, project_id
-    ):
-        if project_id is None:
-            project_id = credentials.project_id
-
-        scopes = (
-            "https://www.googleapis.com/auth/bigquery",
-            "https://www.googleapis.com/auth/cloud-platform",
-            "https://www.googleapis.com/auth/drive",
-        )
-        credentials = credentials.with_scopes(scopes)
-
-        self._add_default_dataset_to_job_config(
-            default_query_job_config, project_id, self.dataset_id
-        )
-
-        return bigquery.Client(
-            project=project_id,
-            credentials=credentials,
-            location=self.location,
-            default_query_job_config=default_query_job_config,
-        )
-
     def create_connect_args(self, url):
         (
             project_id,
@@ -380,34 +355,16 @@ class BigQueryDialect(DefaultDialect):
         self.location = location or self.location
         self.credentials_path = credentials_path or self.credentials_path
         self.dataset_id = dataset_id
-
-        if self.credentials_path:
-            credentials = service_account.Credentials.from_service_account_file(
-                self.credentials_path
-            )
-            client = self._create_client_from_credentials(
-                credentials, default_query_job_config, project_id
-            )
-
-        elif self.credentials_info:
-            credentials = service_account.Credentials.from_service_account_info(
-                self.credentials_info
-            )
-            client = self._create_client_from_credentials(
-                credentials, default_query_job_config, project_id
-            )
-
-        else:
-            self._add_default_dataset_to_job_config(
-                default_query_job_config, project_id, dataset_id
-            )
-
-            client = bigquery.Client(
-                project=project_id,
-                location=self.location,
-                default_query_job_config=default_query_job_config,
-            )
-
+        self._add_default_dataset_to_job_config(
+            default_query_job_config, project_id, dataset_id
+        )
+        client = _helpers.create_bigquery_client(
+            credentials_path=self.credentials_path,
+            credentials_info=self.credentials_info,
+            project_id=project_id,
+            location=self.location,
+            default_query_job_config=default_query_job_config,
+        )
         return ([client], {})
 
     def _json_deserializer(self, row):
