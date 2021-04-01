@@ -123,6 +123,22 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            CloudFunctionsServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -134,7 +150,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            CloudFunctionsServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -242,10 +258,10 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.CloudFunctionsServiceTransport]): The
+            transport (Union[str, CloudFunctionsServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -281,21 +297,17 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -338,7 +350,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -355,7 +367,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         requested project.
 
         Args:
-            request (:class:`~.functions.ListFunctionsRequest`):
+            request (google.cloud.functions_v1.types.ListFunctionsRequest):
                 The request object. Request for the `ListFunctions`
                 method.
 
@@ -366,8 +378,8 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListFunctionsPager:
-                Response for the ``ListFunctions`` method.
+            google.cloud.functions_v1.services.cloud_functions_service.pagers.ListFunctionsPager:
+                Response for the ListFunctions method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -417,12 +429,13 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         requested project.
 
         Args:
-            request (:class:`~.functions.GetFunctionRequest`):
+            request (google.cloud.functions_v1.types.GetFunctionRequest):
                 The request object. Request for the `GetFunction`
                 method.
-            name (:class:`str`):
+            name (str):
                 Required. The name of the function
                 which details should be obtained.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -434,7 +447,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.functions.CloudFunction:
+            google.cloud.functions_v1.types.CloudFunction:
                 Describes a Cloud Function that
                 contains user computation executed in
                 response to an event. It encapsulate
@@ -495,17 +508,18 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         operation will return ``ALREADY_EXISTS`` error.
 
         Args:
-            request (:class:`~.functions.CreateFunctionRequest`):
+            request (google.cloud.functions_v1.types.CreateFunctionRequest):
                 The request object. Request for the `CreateFunction`
                 method.
-            location (:class:`str`):
+            location (str):
                 Required. The project and location in which the function
                 should be created, specified in the format
                 ``projects/*/locations/*``
+
                 This corresponds to the ``location`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            function (:class:`~.functions.CloudFunction`):
+            function (google.cloud.functions_v1.types.CloudFunction):
                 Required. Function to be created.
                 This corresponds to the ``function`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -518,14 +532,12 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.functions.CloudFunction``: Describes a Cloud
-                Function that contains user computation executed in
-                response to an event. It encapsulate function and
-                triggers configurations.
+                The result type for the operation will be :class:`google.cloud.functions_v1.types.CloudFunction` Describes a Cloud Function that contains user computation executed in
+                   response to an event. It encapsulate function and
+                   triggers configurations.
 
         """
         # Create or coerce a protobuf request object.
@@ -589,12 +601,13 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         r"""Updates existing function.
 
         Args:
-            request (:class:`~.functions.UpdateFunctionRequest`):
+            request (google.cloud.functions_v1.types.UpdateFunctionRequest):
                 The request object. Request for the `UpdateFunction`
                 method.
-            function (:class:`~.functions.CloudFunction`):
+            function (google.cloud.functions_v1.types.CloudFunction):
                 Required. New version of the
                 function.
+
                 This corresponds to the ``function`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -606,14 +619,12 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.functions.CloudFunction``: Describes a Cloud
-                Function that contains user computation executed in
-                response to an event. It encapsulate function and
-                triggers configurations.
+                The result type for the operation will be :class:`google.cloud.functions_v1.types.CloudFunction` Describes a Cloud Function that contains user computation executed in
+                   response to an event. It encapsulate function and
+                   triggers configurations.
 
         """
         # Create or coerce a protobuf request object.
@@ -680,12 +691,13 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         function.
 
         Args:
-            request (:class:`~.functions.DeleteFunctionRequest`):
+            request (google.cloud.functions_v1.types.DeleteFunctionRequest):
                 The request object. Request for the `DeleteFunction`
                 method.
-            name (:class:`str`):
+            name (str):
                 Required. The name of the function
                 which should be deleted.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -697,24 +709,22 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                ::
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
+                      }
 
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -780,18 +790,20 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         Limits <https://cloud.google.com/functions/quotas#rate_limits>`__.
 
         Args:
-            request (:class:`~.functions.CallFunctionRequest`):
+            request (google.cloud.functions_v1.types.CallFunctionRequest):
                 The request object. Request for the `CallFunction`
                 method.
-            name (:class:`str`):
+            name (str):
                 Required. The name of the function to
                 be called.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            data (:class:`str`):
+            data (str):
                 Required. Input to be passed to the
                 function.
+
                 This corresponds to the ``data`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -803,8 +815,8 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.functions.CallFunctionResponse:
-                Response of ``CallFunction`` method.
+            google.cloud.functions_v1.types.CallFunctionResponse:
+                Response of CallFunction method.
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -885,7 +897,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         -  ``Authorization: Bearer YOUR_TOKEN``
 
         Args:
-            request (:class:`~.functions.GenerateUploadUrlRequest`):
+            request (google.cloud.functions_v1.types.GenerateUploadUrlRequest):
                 The request object. Request of `GenerateSourceUploadUrl`
                 method.
 
@@ -896,8 +908,8 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.functions.GenerateUploadUrlResponse:
-                Response of ``GenerateSourceUploadUrl`` method.
+            google.cloud.functions_v1.types.GenerateUploadUrlResponse:
+                Response of GenerateSourceUploadUrl method.
         """
         # Create or coerce a protobuf request object.
 
@@ -941,7 +953,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         control/signed-urls
 
         Args:
-            request (:class:`~.functions.GenerateDownloadUrlRequest`):
+            request (google.cloud.functions_v1.types.GenerateDownloadUrlRequest):
                 The request object. Request of `GenerateDownloadUrl`
                 method.
 
@@ -952,8 +964,8 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.functions.GenerateDownloadUrlResponse:
-                Response of ``GenerateDownloadUrl`` method.
+            google.cloud.functions_v1.types.GenerateDownloadUrlResponse:
+                Response of GenerateDownloadUrl method.
         """
         # Create or coerce a protobuf request object.
 
@@ -992,7 +1004,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         function. Replaces any existing policy.
 
         Args:
-            request (:class:`~.iam_policy.SetIamPolicyRequest`):
+            request (google.iam.v1.iam_policy_pb2.SetIamPolicyRequest):
                 The request object. Request message for `SetIamPolicy`
                 method.
 
@@ -1003,80 +1015,73 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.policy.Policy:
-                Defines an Identity and Access Management (IAM) policy.
-                It is used to specify access control policies for Cloud
-                Platform resources.
+            google.iam.v1.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy. It is used to
+                   specify access control policies for Cloud Platform
+                   resources.
 
-                A ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions (defined by
-                IAM or configured by users). A ``binding`` can
-                optionally specify a ``condition``, which is a logic
-                expression that further constrains the role binding
-                based on attributes about the request and/or target
-                resource.
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members to a single role. Members can be
+                   user accounts, service accounts, Google groups, and
+                   domains (such as G Suite). A role is a named list of
+                   permissions (defined by IAM or configured by users).
+                   A binding can optionally specify a condition, which
+                   is a logic expression that further constrains the
+                   role binding based on attributes about the request
+                   and/or target resource.
 
-                **JSON Example**
+                   **JSON Example**
 
-                ::
+                      {
+                         "bindings": [
+                            {
+                               "role":
+                               "roles/resourcemanager.organizationAdmin",
+                               "members": [ "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                               ]
 
-                    {
-                      "bindings": [
-                        {
-                          "role": "roles/resourcemanager.organizationAdmin",
-                          "members": [
-                            "user:mike@example.com",
-                            "group:admins@example.com",
-                            "domain:google.com",
-                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                          ]
-                        },
-                        {
-                          "role": "roles/resourcemanager.organizationViewer",
-                          "members": ["user:eve@example.com"],
-                          "condition": {
-                            "title": "expirable access",
-                            "description": "Does not grant access after Sep 2020",
-                            "expression": "request.time <
-                            timestamp('2020-10-01T00:00:00.000Z')",
-                          }
-                        }
-                      ]
-                    }
+                            }, { "role":
+                            "roles/resourcemanager.organizationViewer",
+                            "members": ["user:eve@example.com"],
+                            "condition": { "title": "expirable access",
+                            "description": "Does not grant access after
+                            Sep 2020", "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                **YAML Example**
+                         ]
 
-                ::
+                      }
 
-                    bindings:
-                    - members:
-                      - user:mike@example.com
-                      - group:admins@example.com
-                      - domain:google.com
-                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
-                      role: roles/resourcemanager.organizationAdmin
-                    - members:
-                      - user:eve@example.com
-                      role: roles/resourcemanager.organizationViewer
-                      condition:
-                        title: expirable access
-                        description: Does not grant access after Sep 2020
-                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                   **YAML Example**
 
-                For a description of IAM and its features, see the `IAM
-                developer's
-                guide <https://cloud.google.com/iam/docs>`__.
+                      bindings: - members: - user:\ mike@example.com -
+                      group:\ admins@example.com - domain:google.com -
+                      serviceAccount:\ my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin -
+                      members: - user:\ eve@example.com role:
+                      roles/resourcemanager.organizationViewer
+                      condition: title: expirable access description:
+                      Does not grant access after Sep 2020 expression:
+                      request.time <
+                      timestamp('2020-10-01T00:00:00.000Z')
+
+                   For a description of IAM and its features, see the
+                   [IAM developer's
+                   guide](\ https://cloud.google.com/iam/docs).
 
         """
         # Create or coerce a protobuf request object.
 
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
+            # The request isn't a proto-plus wrapped type,
+            # so it must be constructed via keyword expansion.
             request = iam_policy.SetIamPolicyRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = iam_policy.SetIamPolicyRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1107,7 +1112,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         not have a policy set.
 
         Args:
-            request (:class:`~.iam_policy.GetIamPolicyRequest`):
+            request (google.iam.v1.iam_policy_pb2.GetIamPolicyRequest):
                 The request object. Request message for `GetIamPolicy`
                 method.
 
@@ -1118,80 +1123,73 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.policy.Policy:
-                Defines an Identity and Access Management (IAM) policy.
-                It is used to specify access control policies for Cloud
-                Platform resources.
+            google.iam.v1.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy. It is used to
+                   specify access control policies for Cloud Platform
+                   resources.
 
-                A ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions (defined by
-                IAM or configured by users). A ``binding`` can
-                optionally specify a ``condition``, which is a logic
-                expression that further constrains the role binding
-                based on attributes about the request and/or target
-                resource.
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members to a single role. Members can be
+                   user accounts, service accounts, Google groups, and
+                   domains (such as G Suite). A role is a named list of
+                   permissions (defined by IAM or configured by users).
+                   A binding can optionally specify a condition, which
+                   is a logic expression that further constrains the
+                   role binding based on attributes about the request
+                   and/or target resource.
 
-                **JSON Example**
+                   **JSON Example**
 
-                ::
+                      {
+                         "bindings": [
+                            {
+                               "role":
+                               "roles/resourcemanager.organizationAdmin",
+                               "members": [ "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                               ]
 
-                    {
-                      "bindings": [
-                        {
-                          "role": "roles/resourcemanager.organizationAdmin",
-                          "members": [
-                            "user:mike@example.com",
-                            "group:admins@example.com",
-                            "domain:google.com",
-                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                          ]
-                        },
-                        {
-                          "role": "roles/resourcemanager.organizationViewer",
-                          "members": ["user:eve@example.com"],
-                          "condition": {
-                            "title": "expirable access",
-                            "description": "Does not grant access after Sep 2020",
-                            "expression": "request.time <
-                            timestamp('2020-10-01T00:00:00.000Z')",
-                          }
-                        }
-                      ]
-                    }
+                            }, { "role":
+                            "roles/resourcemanager.organizationViewer",
+                            "members": ["user:eve@example.com"],
+                            "condition": { "title": "expirable access",
+                            "description": "Does not grant access after
+                            Sep 2020", "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                **YAML Example**
+                         ]
 
-                ::
+                      }
 
-                    bindings:
-                    - members:
-                      - user:mike@example.com
-                      - group:admins@example.com
-                      - domain:google.com
-                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
-                      role: roles/resourcemanager.organizationAdmin
-                    - members:
-                      - user:eve@example.com
-                      role: roles/resourcemanager.organizationViewer
-                      condition:
-                        title: expirable access
-                        description: Does not grant access after Sep 2020
-                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                   **YAML Example**
 
-                For a description of IAM and its features, see the `IAM
-                developer's
-                guide <https://cloud.google.com/iam/docs>`__.
+                      bindings: - members: - user:\ mike@example.com -
+                      group:\ admins@example.com - domain:google.com -
+                      serviceAccount:\ my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin -
+                      members: - user:\ eve@example.com role:
+                      roles/resourcemanager.organizationViewer
+                      condition: title: expirable access description:
+                      Does not grant access after Sep 2020 expression:
+                      request.time <
+                      timestamp('2020-10-01T00:00:00.000Z')
+
+                   For a description of IAM and its features, see the
+                   [IAM developer's
+                   guide](\ https://cloud.google.com/iam/docs).
 
         """
         # Create or coerce a protobuf request object.
 
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
+            # The request isn't a proto-plus wrapped type,
+            # so it must be constructed via keyword expansion.
             request = iam_policy.GetIamPolicyRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = iam_policy.GetIamPolicyRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1222,7 +1220,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         return an empty set of permissions, not a NOT_FOUND error.
 
         Args:
-            request (:class:`~.iam_policy.TestIamPermissionsRequest`):
+            request (google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest):
                 The request object. Request message for
                 `TestIamPermissions` method.
 
@@ -1233,15 +1231,18 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.iam_policy.TestIamPermissionsResponse:
-                Response message for ``TestIamPermissions`` method.
+            google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse:
+                Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
 
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
+            # The request isn't a proto-plus wrapped type,
+            # so it must be constructed via keyword expansion.
             request = iam_policy.TestIamPermissionsRequest(**request)
+        elif not request:
+            # Null request, just make one.
+            request = iam_policy.TestIamPermissionsRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

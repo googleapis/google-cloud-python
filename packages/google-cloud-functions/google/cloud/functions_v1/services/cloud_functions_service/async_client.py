@@ -90,7 +90,36 @@ class CloudFunctionsServiceAsyncClient:
         CloudFunctionsServiceClient.parse_common_location_path
     )
 
-    from_service_account_file = CloudFunctionsServiceClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            CloudFunctionsServiceAsyncClient: The constructed client.
+        """
+        return CloudFunctionsServiceClient.from_service_account_info.__func__(CloudFunctionsServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            CloudFunctionsServiceAsyncClient: The constructed client.
+        """
+        return CloudFunctionsServiceClient.from_service_account_file.__func__(CloudFunctionsServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -167,7 +196,7 @@ class CloudFunctionsServiceAsyncClient:
         requested project.
 
         Args:
-            request (:class:`~.functions.ListFunctionsRequest`):
+            request (:class:`google.cloud.functions_v1.types.ListFunctionsRequest`):
                 The request object. Request for the `ListFunctions`
                 method.
 
@@ -178,8 +207,8 @@ class CloudFunctionsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListFunctionsAsyncPager:
-                Response for the ``ListFunctions`` method.
+            google.cloud.functions_v1.services.cloud_functions_service.pagers.ListFunctionsAsyncPager:
+                Response for the ListFunctions method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -193,7 +222,16 @@ class CloudFunctionsServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.list_functions,
-            default_timeout=None,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                ),
+                deadline=600.0,
+            ),
+            default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -228,12 +266,13 @@ class CloudFunctionsServiceAsyncClient:
         requested project.
 
         Args:
-            request (:class:`~.functions.GetFunctionRequest`):
+            request (:class:`google.cloud.functions_v1.types.GetFunctionRequest`):
                 The request object. Request for the `GetFunction`
                 method.
             name (:class:`str`):
                 Required. The name of the function
                 which details should be obtained.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -245,7 +284,7 @@ class CloudFunctionsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.functions.CloudFunction:
+            google.cloud.functions_v1.types.CloudFunction:
                 Describes a Cloud Function that
                 contains user computation executed in
                 response to an event. It encapsulate
@@ -274,7 +313,16 @@ class CloudFunctionsServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.get_function,
-            default_timeout=None,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                ),
+                deadline=600.0,
+            ),
+            default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -305,17 +353,18 @@ class CloudFunctionsServiceAsyncClient:
         operation will return ``ALREADY_EXISTS`` error.
 
         Args:
-            request (:class:`~.functions.CreateFunctionRequest`):
+            request (:class:`google.cloud.functions_v1.types.CreateFunctionRequest`):
                 The request object. Request for the `CreateFunction`
                 method.
             location (:class:`str`):
                 Required. The project and location in which the function
                 should be created, specified in the format
                 ``projects/*/locations/*``
+
                 This corresponds to the ``location`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            function (:class:`~.functions.CloudFunction`):
+            function (:class:`google.cloud.functions_v1.types.CloudFunction`):
                 Required. Function to be created.
                 This corresponds to the ``function`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -328,14 +377,12 @@ class CloudFunctionsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.functions.CloudFunction``: Describes a Cloud
-                Function that contains user computation executed in
-                response to an event. It encapsulate function and
-                triggers configurations.
+                The result type for the operation will be :class:`google.cloud.functions_v1.types.CloudFunction` Describes a Cloud Function that contains user computation executed in
+                   response to an event. It encapsulate function and
+                   triggers configurations.
 
         """
         # Create or coerce a protobuf request object.
@@ -362,7 +409,7 @@ class CloudFunctionsServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_function,
-            default_timeout=None,
+            default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -398,12 +445,13 @@ class CloudFunctionsServiceAsyncClient:
         r"""Updates existing function.
 
         Args:
-            request (:class:`~.functions.UpdateFunctionRequest`):
+            request (:class:`google.cloud.functions_v1.types.UpdateFunctionRequest`):
                 The request object. Request for the `UpdateFunction`
                 method.
-            function (:class:`~.functions.CloudFunction`):
+            function (:class:`google.cloud.functions_v1.types.CloudFunction`):
                 Required. New version of the
                 function.
+
                 This corresponds to the ``function`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -415,14 +463,12 @@ class CloudFunctionsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.functions.CloudFunction``: Describes a Cloud
-                Function that contains user computation executed in
-                response to an event. It encapsulate function and
-                triggers configurations.
+                The result type for the operation will be :class:`google.cloud.functions_v1.types.CloudFunction` Describes a Cloud Function that contains user computation executed in
+                   response to an event. It encapsulate function and
+                   triggers configurations.
 
         """
         # Create or coerce a protobuf request object.
@@ -447,7 +493,16 @@ class CloudFunctionsServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_function,
-            default_timeout=None,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                ),
+                deadline=600.0,
+            ),
+            default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -488,12 +543,13 @@ class CloudFunctionsServiceAsyncClient:
         function.
 
         Args:
-            request (:class:`~.functions.DeleteFunctionRequest`):
+            request (:class:`google.cloud.functions_v1.types.DeleteFunctionRequest`):
                 The request object. Request for the `DeleteFunction`
                 method.
             name (:class:`str`):
                 Required. The name of the function
                 which should be deleted.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -505,24 +561,22 @@ class CloudFunctionsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                ::
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
+                      }
 
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -547,7 +601,16 @@ class CloudFunctionsServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.delete_function,
-            default_timeout=None,
+            default_retry=retries.Retry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                ),
+                deadline=600.0,
+            ),
+            default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -587,18 +650,20 @@ class CloudFunctionsServiceAsyncClient:
         Limits <https://cloud.google.com/functions/quotas#rate_limits>`__.
 
         Args:
-            request (:class:`~.functions.CallFunctionRequest`):
+            request (:class:`google.cloud.functions_v1.types.CallFunctionRequest`):
                 The request object. Request for the `CallFunction`
                 method.
             name (:class:`str`):
                 Required. The name of the function to
                 be called.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             data (:class:`str`):
                 Required. Input to be passed to the
                 function.
+
                 This corresponds to the ``data`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -610,8 +675,8 @@ class CloudFunctionsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.functions.CallFunctionResponse:
-                Response of ``CallFunction`` method.
+            google.cloud.functions_v1.types.CallFunctionResponse:
+                Response of CallFunction method.
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -637,7 +702,7 @@ class CloudFunctionsServiceAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.call_function,
-            default_timeout=None,
+            default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -691,7 +756,7 @@ class CloudFunctionsServiceAsyncClient:
         -  ``Authorization: Bearer YOUR_TOKEN``
 
         Args:
-            request (:class:`~.functions.GenerateUploadUrlRequest`):
+            request (:class:`google.cloud.functions_v1.types.GenerateUploadUrlRequest`):
                 The request object. Request of `GenerateSourceUploadUrl`
                 method.
 
@@ -702,8 +767,8 @@ class CloudFunctionsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.functions.GenerateUploadUrlResponse:
-                Response of ``GenerateSourceUploadUrl`` method.
+            google.cloud.functions_v1.types.GenerateUploadUrlResponse:
+                Response of GenerateSourceUploadUrl method.
         """
         # Create or coerce a protobuf request object.
 
@@ -746,7 +811,7 @@ class CloudFunctionsServiceAsyncClient:
         control/signed-urls
 
         Args:
-            request (:class:`~.functions.GenerateDownloadUrlRequest`):
+            request (:class:`google.cloud.functions_v1.types.GenerateDownloadUrlRequest`):
                 The request object. Request of `GenerateDownloadUrl`
                 method.
 
@@ -757,8 +822,8 @@ class CloudFunctionsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.functions.GenerateDownloadUrlResponse:
-                Response of ``GenerateDownloadUrl`` method.
+            google.cloud.functions_v1.types.GenerateDownloadUrlResponse:
+                Response of GenerateDownloadUrl method.
         """
         # Create or coerce a protobuf request object.
 
@@ -796,7 +861,7 @@ class CloudFunctionsServiceAsyncClient:
         function. Replaces any existing policy.
 
         Args:
-            request (:class:`~.iam_policy.SetIamPolicyRequest`):
+            request (:class:`google.iam.v1.iam_policy_pb2.SetIamPolicyRequest`):
                 The request object. Request message for `SetIamPolicy`
                 method.
 
@@ -807,72 +872,62 @@ class CloudFunctionsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.policy.Policy:
-                Defines an Identity and Access Management (IAM) policy.
-                It is used to specify access control policies for Cloud
-                Platform resources.
+            google.iam.v1.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy. It is used to
+                   specify access control policies for Cloud Platform
+                   resources.
 
-                A ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions (defined by
-                IAM or configured by users). A ``binding`` can
-                optionally specify a ``condition``, which is a logic
-                expression that further constrains the role binding
-                based on attributes about the request and/or target
-                resource.
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members to a single role. Members can be
+                   user accounts, service accounts, Google groups, and
+                   domains (such as G Suite). A role is a named list of
+                   permissions (defined by IAM or configured by users).
+                   A binding can optionally specify a condition, which
+                   is a logic expression that further constrains the
+                   role binding based on attributes about the request
+                   and/or target resource.
 
-                **JSON Example**
+                   **JSON Example**
 
-                ::
+                      {
+                         "bindings": [
+                            {
+                               "role":
+                               "roles/resourcemanager.organizationAdmin",
+                               "members": [ "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                               ]
 
-                    {
-                      "bindings": [
-                        {
-                          "role": "roles/resourcemanager.organizationAdmin",
-                          "members": [
-                            "user:mike@example.com",
-                            "group:admins@example.com",
-                            "domain:google.com",
-                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                          ]
-                        },
-                        {
-                          "role": "roles/resourcemanager.organizationViewer",
-                          "members": ["user:eve@example.com"],
-                          "condition": {
-                            "title": "expirable access",
-                            "description": "Does not grant access after Sep 2020",
-                            "expression": "request.time <
-                            timestamp('2020-10-01T00:00:00.000Z')",
-                          }
-                        }
-                      ]
-                    }
+                            }, { "role":
+                            "roles/resourcemanager.organizationViewer",
+                            "members": ["user:eve@example.com"],
+                            "condition": { "title": "expirable access",
+                            "description": "Does not grant access after
+                            Sep 2020", "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                **YAML Example**
+                         ]
 
-                ::
+                      }
 
-                    bindings:
-                    - members:
-                      - user:mike@example.com
-                      - group:admins@example.com
-                      - domain:google.com
-                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
-                      role: roles/resourcemanager.organizationAdmin
-                    - members:
-                      - user:eve@example.com
-                      role: roles/resourcemanager.organizationViewer
-                      condition:
-                        title: expirable access
-                        description: Does not grant access after Sep 2020
-                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                   **YAML Example**
 
-                For a description of IAM and its features, see the `IAM
-                developer's
-                guide <https://cloud.google.com/iam/docs>`__.
+                      bindings: - members: - user:\ mike@example.com -
+                      group:\ admins@example.com - domain:google.com -
+                      serviceAccount:\ my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin -
+                      members: - user:\ eve@example.com role:
+                      roles/resourcemanager.organizationViewer
+                      condition: title: expirable access description:
+                      Does not grant access after Sep 2020 expression:
+                      request.time <
+                      timestamp('2020-10-01T00:00:00.000Z')
+
+                   For a description of IAM and its features, see the
+                   [IAM developer's
+                   guide](\ https://cloud.google.com/iam/docs).
 
         """
         # Create or coerce a protobuf request object.
@@ -915,7 +970,7 @@ class CloudFunctionsServiceAsyncClient:
         not have a policy set.
 
         Args:
-            request (:class:`~.iam_policy.GetIamPolicyRequest`):
+            request (:class:`google.iam.v1.iam_policy_pb2.GetIamPolicyRequest`):
                 The request object. Request message for `GetIamPolicy`
                 method.
 
@@ -926,72 +981,62 @@ class CloudFunctionsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.policy.Policy:
-                Defines an Identity and Access Management (IAM) policy.
-                It is used to specify access control policies for Cloud
-                Platform resources.
+            google.iam.v1.policy_pb2.Policy:
+                Defines an Identity and Access Management (IAM) policy. It is used to
+                   specify access control policies for Cloud Platform
+                   resources.
 
-                A ``Policy`` is a collection of ``bindings``. A
-                ``binding`` binds one or more ``members`` to a single
-                ``role``. Members can be user accounts, service
-                accounts, Google groups, and domains (such as G Suite).
-                A ``role`` is a named list of permissions (defined by
-                IAM or configured by users). A ``binding`` can
-                optionally specify a ``condition``, which is a logic
-                expression that further constrains the role binding
-                based on attributes about the request and/or target
-                resource.
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members to a single role. Members can be
+                   user accounts, service accounts, Google groups, and
+                   domains (such as G Suite). A role is a named list of
+                   permissions (defined by IAM or configured by users).
+                   A binding can optionally specify a condition, which
+                   is a logic expression that further constrains the
+                   role binding based on attributes about the request
+                   and/or target resource.
 
-                **JSON Example**
+                   **JSON Example**
 
-                ::
+                      {
+                         "bindings": [
+                            {
+                               "role":
+                               "roles/resourcemanager.organizationAdmin",
+                               "members": [ "user:mike@example.com",
+                               "group:admins@example.com",
+                               "domain:google.com",
+                               "serviceAccount:my-project-id@appspot.gserviceaccount.com"
+                               ]
 
-                    {
-                      "bindings": [
-                        {
-                          "role": "roles/resourcemanager.organizationAdmin",
-                          "members": [
-                            "user:mike@example.com",
-                            "group:admins@example.com",
-                            "domain:google.com",
-                            "serviceAccount:my-project-id@appspot.gserviceaccount.com"
-                          ]
-                        },
-                        {
-                          "role": "roles/resourcemanager.organizationViewer",
-                          "members": ["user:eve@example.com"],
-                          "condition": {
-                            "title": "expirable access",
-                            "description": "Does not grant access after Sep 2020",
-                            "expression": "request.time <
-                            timestamp('2020-10-01T00:00:00.000Z')",
-                          }
-                        }
-                      ]
-                    }
+                            }, { "role":
+                            "roles/resourcemanager.organizationViewer",
+                            "members": ["user:eve@example.com"],
+                            "condition": { "title": "expirable access",
+                            "description": "Does not grant access after
+                            Sep 2020", "expression": "request.time <
+                            timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                **YAML Example**
+                         ]
 
-                ::
+                      }
 
-                    bindings:
-                    - members:
-                      - user:mike@example.com
-                      - group:admins@example.com
-                      - domain:google.com
-                      - serviceAccount:my-project-id@appspot.gserviceaccount.com
-                      role: roles/resourcemanager.organizationAdmin
-                    - members:
-                      - user:eve@example.com
-                      role: roles/resourcemanager.organizationViewer
-                      condition:
-                        title: expirable access
-                        description: Does not grant access after Sep 2020
-                        expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
+                   **YAML Example**
 
-                For a description of IAM and its features, see the `IAM
-                developer's
-                guide <https://cloud.google.com/iam/docs>`__.
+                      bindings: - members: - user:\ mike@example.com -
+                      group:\ admins@example.com - domain:google.com -
+                      serviceAccount:\ my-project-id@appspot.gserviceaccount.com
+                      role: roles/resourcemanager.organizationAdmin -
+                      members: - user:\ eve@example.com role:
+                      roles/resourcemanager.organizationViewer
+                      condition: title: expirable access description:
+                      Does not grant access after Sep 2020 expression:
+                      request.time <
+                      timestamp('2020-10-01T00:00:00.000Z')
+
+                   For a description of IAM and its features, see the
+                   [IAM developer's
+                   guide](\ https://cloud.google.com/iam/docs).
 
         """
         # Create or coerce a protobuf request object.
@@ -1034,7 +1079,7 @@ class CloudFunctionsServiceAsyncClient:
         return an empty set of permissions, not a NOT_FOUND error.
 
         Args:
-            request (:class:`~.iam_policy.TestIamPermissionsRequest`):
+            request (:class:`google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest`):
                 The request object. Request message for
                 `TestIamPermissions` method.
 
@@ -1045,8 +1090,8 @@ class CloudFunctionsServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.iam_policy.TestIamPermissionsResponse:
-                Response message for ``TestIamPermissions`` method.
+            google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse:
+                Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
 

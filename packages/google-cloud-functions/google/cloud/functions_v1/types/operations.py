@@ -43,16 +43,16 @@ class OperationMetadataV1(proto.Message):
         target (str):
             Target of the operation - for example
             projects/project-1/locations/region-1/functions/function-1
-        type_ (~.operations.OperationType):
+        type_ (google.cloud.functions_v1.types.OperationType):
             Type of operation.
-        request (~.gp_any.Any):
+        request (google.protobuf.any_pb2.Any):
             The original request that started the
             operation.
         version_id (int):
             Version id of the function created or updated
             by an API call. This field is only populated for
             Create and Update operations.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             The last update timestamp of the operation.
         build_id (str):
             The Cloud Build ID of the function created or
