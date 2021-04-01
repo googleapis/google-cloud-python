@@ -60,7 +60,7 @@ class KeyRing(proto.Message):
             Output only. The resource name for the
             [KeyRing][google.cloud.kms.v1.KeyRing] in the format
             ``projects/*/locations/*/keyRings/*``.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             [KeyRing][google.cloud.kms.v1.KeyRing] was created.
     """
@@ -83,7 +83,7 @@ class CryptoKey(proto.Message):
             Output only. The resource name for this
             [CryptoKey][google.cloud.kms.v1.CryptoKey] in the format
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
-        primary (~.resources.CryptoKeyVersion):
+        primary (google.cloud.kms_v1.types.CryptoKeyVersion):
             Output only. A copy of the "primary"
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
             that will be used by
@@ -100,13 +100,13 @@ class CryptoKey(proto.Message):
             [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT]
             may have a primary. For other keys, this field will be
             omitted.
-        purpose (~.resources.CryptoKey.CryptoKeyPurpose):
+        purpose (google.cloud.kms_v1.types.CryptoKey.CryptoKeyPurpose):
             Immutable. The immutable purpose of this
             [CryptoKey][google.cloud.kms.v1.CryptoKey].
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             [CryptoKey][google.cloud.kms.v1.CryptoKey] was created.
-        next_rotation_time (~.timestamp.Timestamp):
+        next_rotation_time (google.protobuf.timestamp_pb2.Timestamp):
             At
             [next_rotation_time][google.cloud.kms.v1.CryptoKey.next_rotation_time],
             the Key Management Service will automatically:
@@ -126,7 +126,7 @@ class CryptoKey(proto.Message):
             [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT]
             support automatic rotation. For other keys, this field must
             be omitted.
-        rotation_period (~.duration.Duration):
+        rotation_period (google.protobuf.duration_pb2.Duration):
             [next_rotation_time][google.cloud.kms.v1.CryptoKey.next_rotation_time]
             will be advanced by this period when the service
             automatically rotates a key. Must be at least 24 hours and
@@ -142,7 +142,7 @@ class CryptoKey(proto.Message):
             [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT]
             support automatic rotation. For other keys, this field must
             be omitted.
-        version_template (~.resources.CryptoKeyVersionTemplate):
+        version_template (google.cloud.kms_v1.types.CryptoKeyVersionTemplate):
             A template describing settings for new
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
             instances. The properties of new
@@ -150,7 +150,7 @@ class CryptoKey(proto.Message):
             instances created by either
             [CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion]
             or auto-rotation are controlled by this template.
-        labels (Sequence[~.resources.CryptoKey.LabelsEntry]):
+        labels (Sequence[google.cloud.kms_v1.types.CryptoKey.LabelsEntry]):
             Labels with user-defined metadata. For more information, see
             `Labeling
             Keys <https://cloud.google.com/kms/docs/labeling-keys>`__.
@@ -202,13 +202,13 @@ class CryptoKeyVersionTemplate(proto.Message):
     or automatically as a result of auto-rotation.
 
     Attributes:
-        protection_level (~.resources.ProtectionLevel):
+        protection_level (google.cloud.kms_v1.types.ProtectionLevel):
             [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] to
             use when creating a
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
             based on this template. Immutable. Defaults to
             [SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE].
-        algorithm (~.resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm):
+        algorithm (google.cloud.kms_v1.types.CryptoKeyVersion.CryptoKeyVersionAlgorithm):
             Required.
             [Algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
             to use when creating a
@@ -235,7 +235,7 @@ class KeyOperationAttestation(proto.Message):
     (https://cloud.google.com/kms/docs/attest-key).
 
     Attributes:
-        format (~.resources.KeyOperationAttestation.AttestationFormat):
+        format (google.cloud.kms_v1.types.KeyOperationAttestation.AttestationFormat):
             Output only. The format of the attestation
             data.
         content (bytes):
@@ -275,42 +275,42 @@ class CryptoKeyVersion(proto.Message):
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] in
             the format
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*``.
-        state (~.resources.CryptoKeyVersion.CryptoKeyVersionState):
+        state (google.cloud.kms_v1.types.CryptoKeyVersion.CryptoKeyVersionState):
             The current state of the
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
-        protection_level (~.resources.ProtectionLevel):
+        protection_level (google.cloud.kms_v1.types.ProtectionLevel):
             Output only. The
             [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel]
             describing how crypto operations are performed with this
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
-        algorithm (~.resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm):
+        algorithm (google.cloud.kms_v1.types.CryptoKeyVersion.CryptoKeyVersionAlgorithm):
             Output only. The
             [CryptoKeyVersionAlgorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
             that this
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
             supports.
-        attestation (~.resources.KeyOperationAttestation):
+        attestation (google.cloud.kms_v1.types.KeyOperationAttestation):
             Output only. Statement that was generated and signed by the
             HSM at key creation time. Use this statement to verify
             attributes of the key as stored on the HSM, independently of
             Google. Only provided for key versions with
             [protection_level][google.cloud.kms.v1.CryptoKeyVersion.protection_level]
             [HSM][google.cloud.kms.v1.ProtectionLevel.HSM].
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] was
             created.
-        generate_time (~.timestamp.Timestamp):
+        generate_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time this
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s
             key material was generated.
-        destroy_time (~.timestamp.Timestamp):
+        destroy_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time this
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s
             key material is scheduled for destruction. Only present if
             [state][google.cloud.kms.v1.CryptoKeyVersion.state] is
             [DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED].
-        destroy_event_time (~.timestamp.Timestamp):
+        destroy_event_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time this CryptoKeyVersion's key material
             was destroyed. Only present if
             [state][google.cloud.kms.v1.CryptoKeyVersion.state] is
@@ -321,7 +321,7 @@ class CryptoKeyVersion(proto.Message):
             this
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
             Only present if the underlying key material was imported.
-        import_time (~.timestamp.Timestamp):
+        import_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s
             key material was imported.
@@ -330,7 +330,7 @@ class CryptoKeyVersion(proto.Message):
             present if
             [state][google.cloud.kms.v1.CryptoKeyVersion.state] is
             [IMPORT_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.IMPORT_FAILED].
-        external_protection_level_options (~.resources.ExternalProtectionLevelOptions):
+        external_protection_level_options (google.cloud.kms_v1.types.ExternalProtectionLevelOptions):
             ExternalProtectionLevelOptions stores a group of additional
             fields for configuring a
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
@@ -433,7 +433,9 @@ class CryptoKeyVersion(proto.Message):
 
     algorithm = proto.Field(proto.ENUM, number=10, enum=CryptoKeyVersionAlgorithm,)
 
-    attestation = proto.Field(proto.MESSAGE, number=8, message=KeyOperationAttestation,)
+    attestation = proto.Field(
+        proto.MESSAGE, number=8, message="KeyOperationAttestation",
+    )
 
     create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
 
@@ -470,11 +472,11 @@ class PublicKey(proto.Message):
             Considerations <https://tools.ietf.org/html/rfc7468#section-2>`__
             and [Textual Encoding of Subject Public Key Info]
             (https://tools.ietf.org/html/rfc7468#section-13).
-        algorithm (~.resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm):
+        algorithm (google.cloud.kms_v1.types.CryptoKeyVersion.CryptoKeyVersionAlgorithm):
             The
             [Algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
             associated with this key.
-        pem_crc32c (~.wrappers.Int64Value):
+        pem_crc32c (google.protobuf.wrappers_pb2.Int64Value):
             Integrity verification field. A CRC32C checksum of the
             returned [PublicKey.pem][google.cloud.kms.v1.PublicKey.pem].
             An integrity check of
@@ -503,7 +505,7 @@ class PublicKey(proto.Message):
     pem = proto.Field(proto.STRING, number=1)
 
     algorithm = proto.Field(
-        proto.ENUM, number=2, enum=CryptoKeyVersion.CryptoKeyVersionAlgorithm,
+        proto.ENUM, number=2, enum="CryptoKeyVersion.CryptoKeyVersionAlgorithm",
     )
 
     pem_crc32c = proto.Field(proto.MESSAGE, number=3, message=wrappers.Int64Value,)
@@ -553,10 +555,10 @@ class ImportJob(proto.Message):
             Output only. The resource name for this
             [ImportJob][google.cloud.kms.v1.ImportJob] in the format
             ``projects/*/locations/*/keyRings/*/importJobs/*``.
-        import_method (~.resources.ImportJob.ImportMethod):
+        import_method (google.cloud.kms_v1.types.ImportJob.ImportMethod):
             Required. Immutable. The wrapping method to
             be used for incoming key material.
-        protection_level (~.resources.ProtectionLevel):
+        protection_level (google.cloud.kms_v1.types.ProtectionLevel):
             Required. Immutable. The protection level of the
             [ImportJob][google.cloud.kms.v1.ImportJob]. This must match
             the
@@ -565,32 +567,32 @@ class ImportJob(proto.Message):
             [version_template][google.cloud.kms.v1.CryptoKey.version_template]
             on the [CryptoKey][google.cloud.kms.v1.CryptoKey] you
             attempt to import into.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             [ImportJob][google.cloud.kms.v1.ImportJob] was created.
-        generate_time (~.timestamp.Timestamp):
+        generate_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time this
             [ImportJob][google.cloud.kms.v1.ImportJob]'s key material
             was generated.
-        expire_time (~.timestamp.Timestamp):
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             [ImportJob][google.cloud.kms.v1.ImportJob] is scheduled for
             expiration and can no longer be used to import key material.
-        expire_event_time (~.timestamp.Timestamp):
+        expire_event_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time this
             [ImportJob][google.cloud.kms.v1.ImportJob] expired. Only
             present if [state][google.cloud.kms.v1.ImportJob.state] is
             [EXPIRED][google.cloud.kms.v1.ImportJob.ImportJobState.EXPIRED].
-        state (~.resources.ImportJob.ImportJobState):
+        state (google.cloud.kms_v1.types.ImportJob.ImportJobState):
             Output only. The current state of the
             [ImportJob][google.cloud.kms.v1.ImportJob], indicating if it
             can be used.
-        public_key (~.resources.ImportJob.WrappingPublicKey):
+        public_key (google.cloud.kms_v1.types.ImportJob.WrappingPublicKey):
             Output only. The public key with which to wrap key material
             prior to import. Only returned if
             [state][google.cloud.kms.v1.ImportJob.state] is
             [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE].
-        attestation (~.resources.KeyOperationAttestation):
+        attestation (google.cloud.kms_v1.types.KeyOperationAttestation):
             Output only. Statement that was generated and signed by the
             key creator (for example, an HSM) at key creation time. Use
             this statement to verify attributes of the key as stored on
@@ -655,7 +657,9 @@ class ImportJob(proto.Message):
 
     public_key = proto.Field(proto.MESSAGE, number=7, message=WrappingPublicKey,)
 
-    attestation = proto.Field(proto.MESSAGE, number=8, message=KeyOperationAttestation,)
+    attestation = proto.Field(
+        proto.MESSAGE, number=8, message="KeyOperationAttestation",
+    )
 
 
 class ExternalProtectionLevelOptions(proto.Message):

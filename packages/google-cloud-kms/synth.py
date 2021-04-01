@@ -65,29 +65,18 @@ s.replace(
     "\n\g<0>",
 )
 
-# TODO(busunkim): Remove once https://github.com/googleapis/gapic-generator-python/pull/555 is merged
+# Rename `format_` to `format` to avoid breaking change
 s.replace(
-    "google/**/base.py",
-    """from google\.api_core import gapic_v1\s+# type: ignore""",
-    """from google.api_core import gapic_v1  # type: ignore
-from google.api_core import retry as retries  # type: ignore""",
+    "google/**/types/*.py",
+    "format_",
+    "format"
 )
-
-# fix bad indentation
-s.replace(
-    "google/**/*service.py",
-    """(\s+)settings resource.
-\s+If empty all mutable fields will be updated.""",
-    """\g<1>settings resource.
-\g<1>If empty all mutable fields will be updated.""",
-)
-
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    cov_level=99,
+    cov_level=98,
     samples=True,
     microgenerator=True,
 )

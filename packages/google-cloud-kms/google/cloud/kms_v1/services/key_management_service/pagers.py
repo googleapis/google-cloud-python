@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.kms_v1.types import resources
 from google.cloud.kms_v1.types import service
@@ -25,7 +34,7 @@ class ListKeyRingsPager:
     """A pager for iterating through ``list_key_rings`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListKeyRingsResponse` object, and
+    :class:`google.cloud.kms_v1.types.ListKeyRingsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``key_rings`` field.
 
@@ -34,7 +43,7 @@ class ListKeyRingsPager:
     through the ``key_rings`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListKeyRingsResponse`
+    All the usual :class:`google.cloud.kms_v1.types.ListKeyRingsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -52,9 +61,9 @@ class ListKeyRingsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListKeyRingsRequest`):
+            request (google.cloud.kms_v1.types.ListKeyRingsRequest):
                 The initial request object.
-            response (:class:`~.service.ListKeyRingsResponse`):
+            response (google.cloud.kms_v1.types.ListKeyRingsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -87,7 +96,7 @@ class ListKeyRingsAsyncPager:
     """A pager for iterating through ``list_key_rings`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListKeyRingsResponse` object, and
+    :class:`google.cloud.kms_v1.types.ListKeyRingsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``key_rings`` field.
 
@@ -96,7 +105,7 @@ class ListKeyRingsAsyncPager:
     through the ``key_rings`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListKeyRingsResponse`
+    All the usual :class:`google.cloud.kms_v1.types.ListKeyRingsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -114,9 +123,9 @@ class ListKeyRingsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListKeyRingsRequest`):
+            request (google.cloud.kms_v1.types.ListKeyRingsRequest):
                 The initial request object.
-            response (:class:`~.service.ListKeyRingsResponse`):
+            response (google.cloud.kms_v1.types.ListKeyRingsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -153,7 +162,7 @@ class ListCryptoKeysPager:
     """A pager for iterating through ``list_crypto_keys`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListCryptoKeysResponse` object, and
+    :class:`google.cloud.kms_v1.types.ListCryptoKeysResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``crypto_keys`` field.
 
@@ -162,7 +171,7 @@ class ListCryptoKeysPager:
     through the ``crypto_keys`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListCryptoKeysResponse`
+    All the usual :class:`google.cloud.kms_v1.types.ListCryptoKeysResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -180,9 +189,9 @@ class ListCryptoKeysPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListCryptoKeysRequest`):
+            request (google.cloud.kms_v1.types.ListCryptoKeysRequest):
                 The initial request object.
-            response (:class:`~.service.ListCryptoKeysResponse`):
+            response (google.cloud.kms_v1.types.ListCryptoKeysResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -215,7 +224,7 @@ class ListCryptoKeysAsyncPager:
     """A pager for iterating through ``list_crypto_keys`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListCryptoKeysResponse` object, and
+    :class:`google.cloud.kms_v1.types.ListCryptoKeysResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``crypto_keys`` field.
 
@@ -224,7 +233,7 @@ class ListCryptoKeysAsyncPager:
     through the ``crypto_keys`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListCryptoKeysResponse`
+    All the usual :class:`google.cloud.kms_v1.types.ListCryptoKeysResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -242,9 +251,9 @@ class ListCryptoKeysAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListCryptoKeysRequest`):
+            request (google.cloud.kms_v1.types.ListCryptoKeysRequest):
                 The initial request object.
-            response (:class:`~.service.ListCryptoKeysResponse`):
+            response (google.cloud.kms_v1.types.ListCryptoKeysResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -281,7 +290,7 @@ class ListCryptoKeyVersionsPager:
     """A pager for iterating through ``list_crypto_key_versions`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListCryptoKeyVersionsResponse` object, and
+    :class:`google.cloud.kms_v1.types.ListCryptoKeyVersionsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``crypto_key_versions`` field.
 
@@ -290,7 +299,7 @@ class ListCryptoKeyVersionsPager:
     through the ``crypto_key_versions`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListCryptoKeyVersionsResponse`
+    All the usual :class:`google.cloud.kms_v1.types.ListCryptoKeyVersionsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -308,9 +317,9 @@ class ListCryptoKeyVersionsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListCryptoKeyVersionsRequest`):
+            request (google.cloud.kms_v1.types.ListCryptoKeyVersionsRequest):
                 The initial request object.
-            response (:class:`~.service.ListCryptoKeyVersionsResponse`):
+            response (google.cloud.kms_v1.types.ListCryptoKeyVersionsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -343,7 +352,7 @@ class ListCryptoKeyVersionsAsyncPager:
     """A pager for iterating through ``list_crypto_key_versions`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListCryptoKeyVersionsResponse` object, and
+    :class:`google.cloud.kms_v1.types.ListCryptoKeyVersionsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``crypto_key_versions`` field.
 
@@ -352,7 +361,7 @@ class ListCryptoKeyVersionsAsyncPager:
     through the ``crypto_key_versions`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListCryptoKeyVersionsResponse`
+    All the usual :class:`google.cloud.kms_v1.types.ListCryptoKeyVersionsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -370,9 +379,9 @@ class ListCryptoKeyVersionsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListCryptoKeyVersionsRequest`):
+            request (google.cloud.kms_v1.types.ListCryptoKeyVersionsRequest):
                 The initial request object.
-            response (:class:`~.service.ListCryptoKeyVersionsResponse`):
+            response (google.cloud.kms_v1.types.ListCryptoKeyVersionsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -409,7 +418,7 @@ class ListImportJobsPager:
     """A pager for iterating through ``list_import_jobs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListImportJobsResponse` object, and
+    :class:`google.cloud.kms_v1.types.ListImportJobsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``import_jobs`` field.
 
@@ -418,7 +427,7 @@ class ListImportJobsPager:
     through the ``import_jobs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListImportJobsResponse`
+    All the usual :class:`google.cloud.kms_v1.types.ListImportJobsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -436,9 +445,9 @@ class ListImportJobsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListImportJobsRequest`):
+            request (google.cloud.kms_v1.types.ListImportJobsRequest):
                 The initial request object.
-            response (:class:`~.service.ListImportJobsResponse`):
+            response (google.cloud.kms_v1.types.ListImportJobsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -471,7 +480,7 @@ class ListImportJobsAsyncPager:
     """A pager for iterating through ``list_import_jobs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListImportJobsResponse` object, and
+    :class:`google.cloud.kms_v1.types.ListImportJobsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``import_jobs`` field.
 
@@ -480,7 +489,7 @@ class ListImportJobsAsyncPager:
     through the ``import_jobs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListImportJobsResponse`
+    All the usual :class:`google.cloud.kms_v1.types.ListImportJobsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -498,9 +507,9 @@ class ListImportJobsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListImportJobsRequest`):
+            request (google.cloud.kms_v1.types.ListImportJobsRequest):
                 The initial request object.
-            response (:class:`~.service.ListImportJobsResponse`):
+            response (google.cloud.kms_v1.types.ListImportJobsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

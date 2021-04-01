@@ -127,7 +127,7 @@ class ListCryptoKeysRequest(proto.Message):
         page_token (str):
             Optional. Optional pagination token, returned earlier via
             [ListCryptoKeysResponse.next_page_token][google.cloud.kms.v1.ListCryptoKeysResponse.next_page_token].
-        version_view (~.resources.CryptoKeyVersion.CryptoKeyVersionView):
+        version_view (google.cloud.kms_v1.types.CryptoKeyVersion.CryptoKeyVersionView):
             The fields of the primary version to include
             in the response.
         filter (str):
@@ -178,7 +178,7 @@ class ListCryptoKeyVersionsRequest(proto.Message):
         page_token (str):
             Optional. Optional pagination token, returned earlier via
             [ListCryptoKeyVersionsResponse.next_page_token][google.cloud.kms.v1.ListCryptoKeyVersionsResponse.next_page_token].
-        view (~.resources.CryptoKeyVersion.CryptoKeyVersionView):
+        view (google.cloud.kms_v1.types.CryptoKeyVersion.CryptoKeyVersionView):
             The fields to include in the response.
         filter (str):
             Optional. Only include resources that match the filter in
@@ -256,7 +256,7 @@ class ListKeyRingsResponse(proto.Message):
     [KeyManagementService.ListKeyRings][google.cloud.kms.v1.KeyManagementService.ListKeyRings].
 
     Attributes:
-        key_rings (Sequence[~.resources.KeyRing]):
+        key_rings (Sequence[google.cloud.kms_v1.types.KeyRing]):
             The list of [KeyRings][google.cloud.kms.v1.KeyRing].
         next_page_token (str):
             A token to retrieve next page of results. Pass this value in
@@ -283,7 +283,7 @@ class ListCryptoKeysResponse(proto.Message):
     [KeyManagementService.ListCryptoKeys][google.cloud.kms.v1.KeyManagementService.ListCryptoKeys].
 
     Attributes:
-        crypto_keys (Sequence[~.resources.CryptoKey]):
+        crypto_keys (Sequence[google.cloud.kms_v1.types.CryptoKey]):
             The list of [CryptoKeys][google.cloud.kms.v1.CryptoKey].
         next_page_token (str):
             A token to retrieve next page of results. Pass this value in
@@ -313,7 +313,7 @@ class ListCryptoKeyVersionsResponse(proto.Message):
     [KeyManagementService.ListCryptoKeyVersions][google.cloud.kms.v1.KeyManagementService.ListCryptoKeyVersions].
 
     Attributes:
-        crypto_key_versions (Sequence[~.resources.CryptoKeyVersion]):
+        crypto_key_versions (Sequence[google.cloud.kms_v1.types.CryptoKeyVersion]):
             The list of
             [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
         next_page_token (str):
@@ -344,7 +344,7 @@ class ListImportJobsResponse(proto.Message):
     [KeyManagementService.ListImportJobs][google.cloud.kms.v1.KeyManagementService.ListImportJobs].
 
     Attributes:
-        import_jobs (Sequence[~.resources.ImportJob]):
+        import_jobs (Sequence[google.cloud.kms_v1.types.ImportJob]):
             The list of [ImportJobs][google.cloud.kms.v1.ImportJob].
         next_page_token (str):
             A token to retrieve next page of results. Pass this value in
@@ -450,7 +450,7 @@ class CreateKeyRingRequest(proto.Message):
         key_ring_id (str):
             Required. It must be unique within a location and match the
             regular expression ``[a-zA-Z0-9_-]{1,63}``
-        key_ring (~.resources.KeyRing):
+        key_ring (google.cloud.kms_v1.types.KeyRing):
             Required. A [KeyRing][google.cloud.kms.v1.KeyRing] with
             initial field values.
     """
@@ -474,7 +474,7 @@ class CreateCryptoKeyRequest(proto.Message):
         crypto_key_id (str):
             Required. It must be unique within a KeyRing and match the
             regular expression ``[a-zA-Z0-9_-]{1,63}``
-        crypto_key (~.resources.CryptoKey):
+        crypto_key (google.cloud.kms_v1.types.CryptoKey):
             Required. A [CryptoKey][google.cloud.kms.v1.CryptoKey] with
             initial field values.
         skip_initial_version_creation (bool):
@@ -508,7 +508,7 @@ class CreateCryptoKeyVersionRequest(proto.Message):
             the [CryptoKey][google.cloud.kms.v1.CryptoKey] associated
             with the
             [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
-        crypto_key_version (~.resources.CryptoKeyVersion):
+        crypto_key_version (google.cloud.kms_v1.types.CryptoKeyVersion):
             Required. A
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
             with initial field values.
@@ -530,7 +530,7 @@ class ImportCryptoKeyVersionRequest(proto.Message):
             Required. The [name][google.cloud.kms.v1.CryptoKey.name] of
             the [CryptoKey][google.cloud.kms.v1.CryptoKey] to be
             imported into.
-        algorithm (~.resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm):
+        algorithm (google.cloud.kms_v1.types.CryptoKeyVersion.CryptoKeyVersionAlgorithm):
             Required. The
             [algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
             of the key being imported. This does not need to match the
@@ -596,7 +596,7 @@ class CreateImportJobRequest(proto.Message):
         import_job_id (str):
             Required. It must be unique within a KeyRing and match the
             regular expression ``[a-zA-Z0-9_-]{1,63}``
-        import_job (~.resources.ImportJob):
+        import_job (google.cloud.kms_v1.types.ImportJob):
             Required. An [ImportJob][google.cloud.kms.v1.ImportJob] with
             initial field values.
     """
@@ -613,10 +613,10 @@ class UpdateCryptoKeyRequest(proto.Message):
     [KeyManagementService.UpdateCryptoKey][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKey].
 
     Attributes:
-        crypto_key (~.resources.CryptoKey):
+        crypto_key (google.cloud.kms_v1.types.CryptoKey):
             Required. [CryptoKey][google.cloud.kms.v1.CryptoKey] with
             updated values.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. List of fields to be updated in
             this request.
     """
@@ -631,11 +631,11 @@ class UpdateCryptoKeyVersionRequest(proto.Message):
     [KeyManagementService.UpdateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyVersion].
 
     Attributes:
-        crypto_key_version (~.resources.CryptoKeyVersion):
+        crypto_key_version (google.cloud.kms_v1.types.CryptoKeyVersion):
             Required.
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
             with updated values.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. List of fields to be updated in
             this request.
     """
@@ -685,7 +685,7 @@ class EncryptRequest(proto.Message):
             combined length of the plaintext and
             additional_authenticated_data fields must be no larger than
             8KiB.
-        plaintext_crc32c (~.wrappers.Int64Value):
+        plaintext_crc32c (google.protobuf.wrappers_pb2.Int64Value):
             Optional. An optional CRC32C checksum of the
             [EncryptRequest.plaintext][google.cloud.kms.v1.EncryptRequest.plaintext].
             If specified,
@@ -708,7 +708,7 @@ class EncryptRequest(proto.Message):
             languages that support this type.
 
             NOTE: This field is in Beta.
-        additional_authenticated_data_crc32c (~.wrappers.Int64Value):
+        additional_authenticated_data_crc32c (google.protobuf.wrappers_pb2.Int64Value):
             Optional. An optional CRC32C checksum of the
             [EncryptRequest.additional_authenticated_data][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data].
             If specified,
@@ -764,7 +764,7 @@ class DecryptRequest(proto.Message):
             Optional. Optional data that must match the data originally
             supplied in
             [EncryptRequest.additional_authenticated_data][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data].
-        ciphertext_crc32c (~.wrappers.Int64Value):
+        ciphertext_crc32c (google.protobuf.wrappers_pb2.Int64Value):
             Optional. An optional CRC32C checksum of the
             [DecryptRequest.ciphertext][google.cloud.kms.v1.DecryptRequest.ciphertext].
             If specified,
@@ -787,7 +787,7 @@ class DecryptRequest(proto.Message):
             languages that support this type.
 
             NOTE: This field is in Beta.
-        additional_authenticated_data_crc32c (~.wrappers.Int64Value):
+        additional_authenticated_data_crc32c (google.protobuf.wrappers_pb2.Int64Value):
             Optional. An optional CRC32C checksum of the
             [DecryptRequest.additional_authenticated_data][google.cloud.kms.v1.DecryptRequest.additional_authenticated_data].
             If specified,
@@ -836,12 +836,12 @@ class AsymmetricSignRequest(proto.Message):
             Required. The resource name of the
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] to
             use for signing.
-        digest (~.service.Digest):
+        digest (google.cloud.kms_v1.types.Digest):
             Required. The digest of the data to sign. The digest must be
             produced with the same digest algorithm as specified by the
             key version's
             [algorithm][google.cloud.kms.v1.CryptoKeyVersion.algorithm].
-        digest_crc32c (~.wrappers.Int64Value):
+        digest_crc32c (google.protobuf.wrappers_pb2.Int64Value):
             Optional. An optional CRC32C checksum of the
             [AsymmetricSignRequest.digest][google.cloud.kms.v1.AsymmetricSignRequest.digest].
             If specified,
@@ -886,7 +886,7 @@ class AsymmetricDecryptRequest(proto.Message):
             Required. The data encrypted with the named
             [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s
             public key using OAEP.
-        ciphertext_crc32c (~.wrappers.Int64Value):
+        ciphertext_crc32c (google.protobuf.wrappers_pb2.Int64Value):
             Optional. An optional CRC32C checksum of the
             [AsymmetricDecryptRequest.ciphertext][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext].
             If specified,
@@ -928,7 +928,7 @@ class DecryptResponse(proto.Message):
         plaintext (bytes):
             The decrypted data originally supplied in
             [EncryptRequest.plaintext][google.cloud.kms.v1.EncryptRequest.plaintext].
-        plaintext_crc32c (~.wrappers.Int64Value):
+        plaintext_crc32c (google.protobuf.wrappers_pb2.Int64Value):
             Integrity verification field. A CRC32C checksum of the
             returned
             [DecryptResponse.plaintext][google.cloud.kms.v1.DecryptResponse.plaintext].
@@ -973,7 +973,7 @@ class EncryptResponse(proto.Message):
             intended resource was used for encryption.
         ciphertext (bytes):
             The encrypted data.
-        ciphertext_crc32c (~.wrappers.Int64Value):
+        ciphertext_crc32c (google.protobuf.wrappers_pb2.Int64Value):
             Integrity verification field. A CRC32C checksum of the
             returned
             [EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext].
@@ -1048,7 +1048,7 @@ class AsymmetricSignResponse(proto.Message):
     Attributes:
         signature (bytes):
             The created signature.
-        signature_crc32c (~.wrappers.Int64Value):
+        signature_crc32c (google.protobuf.wrappers_pb2.Int64Value):
             Integrity verification field. A CRC32C checksum of the
             returned
             [AsymmetricSignResponse.signature][google.cloud.kms.v1.AsymmetricSignResponse.signature].
@@ -1112,7 +1112,7 @@ class AsymmetricDecryptResponse(proto.Message):
         plaintext (bytes):
             The decrypted data originally encrypted with
             the matching public key.
-        plaintext_crc32c (~.wrappers.Int64Value):
+        plaintext_crc32c (google.protobuf.wrappers_pb2.Int64Value):
             Integrity verification field. A CRC32C checksum of the
             returned
             [AsymmetricDecryptResponse.plaintext][google.cloud.kms.v1.AsymmetricDecryptResponse.plaintext].

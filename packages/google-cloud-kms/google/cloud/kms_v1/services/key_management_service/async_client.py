@@ -79,9 +79,82 @@ class KeyManagementServiceAsyncClient:
     )
     key_ring_path = staticmethod(KeyManagementServiceClient.key_ring_path)
     parse_key_ring_path = staticmethod(KeyManagementServiceClient.parse_key_ring_path)
+    public_key_path = staticmethod(KeyManagementServiceClient.public_key_path)
+    parse_public_key_path = staticmethod(
+        KeyManagementServiceClient.parse_public_key_path
+    )
 
-    from_service_account_file = KeyManagementServiceClient.from_service_account_file
+    common_billing_account_path = staticmethod(
+        KeyManagementServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        KeyManagementServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(KeyManagementServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        KeyManagementServiceClient.parse_common_folder_path
+    )
+
+    common_organization_path = staticmethod(
+        KeyManagementServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        KeyManagementServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(KeyManagementServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        KeyManagementServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(KeyManagementServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        KeyManagementServiceClient.parse_common_location_path
+    )
+
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            KeyManagementServiceAsyncClient: The constructed client.
+        """
+        return KeyManagementServiceClient.from_service_account_info.__func__(KeyManagementServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            KeyManagementServiceAsyncClient: The constructed client.
+        """
+        return KeyManagementServiceClient.from_service_account_file.__func__(KeyManagementServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> KeyManagementServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            KeyManagementServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(KeyManagementServiceClient).get_transport_class,
@@ -150,13 +223,14 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.ListKeyRingsRequest`):
+            request (:class:`google.cloud.kms_v1.types.ListKeyRingsRequest`):
                 The request object. Request message for
                 [KeyManagementService.ListKeyRings][google.cloud.kms.v1.KeyManagementService.ListKeyRings].
             parent (:class:`str`):
                 Required. The resource name of the location associated
                 with the [KeyRings][google.cloud.kms.v1.KeyRing], in the
                 format ``projects/*/locations/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -168,7 +242,7 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListKeyRingsAsyncPager:
+            google.cloud.kms_v1.services.key_management_service.pagers.ListKeyRingsAsyncPager:
                 Response message for
                 [KeyManagementService.ListKeyRings][google.cloud.kms.v1.KeyManagementService.ListKeyRings].
 
@@ -179,7 +253,8 @@ class KeyManagementServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -202,10 +277,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -242,13 +316,14 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.ListCryptoKeysRequest`):
+            request (:class:`google.cloud.kms_v1.types.ListCryptoKeysRequest`):
                 The request object. Request message for
                 [KeyManagementService.ListCryptoKeys][google.cloud.kms.v1.KeyManagementService.ListCryptoKeys].
             parent (:class:`str`):
                 Required. The resource name of the
                 [KeyRing][google.cloud.kms.v1.KeyRing] to list, in the
                 format ``projects/*/locations/*/keyRings/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -260,7 +335,7 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListCryptoKeysAsyncPager:
+            google.cloud.kms_v1.services.key_management_service.pagers.ListCryptoKeysAsyncPager:
                 Response message for
                 [KeyManagementService.ListCryptoKeys][google.cloud.kms.v1.KeyManagementService.ListCryptoKeys].
 
@@ -271,7 +346,8 @@ class KeyManagementServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -294,10 +370,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -334,7 +409,7 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.ListCryptoKeyVersionsRequest`):
+            request (:class:`google.cloud.kms_v1.types.ListCryptoKeyVersionsRequest`):
                 The request object. Request message for
                 [KeyManagementService.ListCryptoKeyVersions][google.cloud.kms.v1.KeyManagementService.ListCryptoKeyVersions].
             parent (:class:`str`):
@@ -342,6 +417,7 @@ class KeyManagementServiceAsyncClient:
                 [CryptoKey][google.cloud.kms.v1.CryptoKey] to list, in
                 the format
                 ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -353,7 +429,7 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListCryptoKeyVersionsAsyncPager:
+            google.cloud.kms_v1.services.key_management_service.pagers.ListCryptoKeyVersionsAsyncPager:
                 Response message for
                 [KeyManagementService.ListCryptoKeyVersions][google.cloud.kms.v1.KeyManagementService.ListCryptoKeyVersions].
 
@@ -364,7 +440,8 @@ class KeyManagementServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -387,10 +464,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -427,13 +503,14 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.ListImportJobsRequest`):
+            request (:class:`google.cloud.kms_v1.types.ListImportJobsRequest`):
                 The request object. Request message for
                 [KeyManagementService.ListImportJobs][google.cloud.kms.v1.KeyManagementService.ListImportJobs].
             parent (:class:`str`):
                 Required. The resource name of the
                 [KeyRing][google.cloud.kms.v1.KeyRing] to list, in the
                 format ``projects/*/locations/*/keyRings/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -445,7 +522,7 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListImportJobsAsyncPager:
+            google.cloud.kms_v1.services.key_management_service.pagers.ListImportJobsAsyncPager:
                 Response message for
                 [KeyManagementService.ListImportJobs][google.cloud.kms.v1.KeyManagementService.ListImportJobs].
 
@@ -456,7 +533,8 @@ class KeyManagementServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent]):
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -479,10 +557,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -520,12 +597,13 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.GetKeyRingRequest`):
+            request (:class:`google.cloud.kms_v1.types.GetKeyRingRequest`):
                 The request object. Request message for
                 [KeyManagementService.GetKeyRing][google.cloud.kms.v1.KeyManagementService.GetKeyRing].
             name (:class:`str`):
                 Required. The [name][google.cloud.kms.v1.KeyRing.name]
                 of the [KeyRing][google.cloud.kms.v1.KeyRing] to get.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -537,7 +615,7 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.KeyRing:
+            google.cloud.kms_v1.types.KeyRing:
                 A [KeyRing][google.cloud.kms.v1.KeyRing] is a toplevel
                 logical grouping of
                 [CryptoKeys][google.cloud.kms.v1.CryptoKey].
@@ -546,7 +624,8 @@ class KeyManagementServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -569,10 +648,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -606,13 +684,14 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.GetCryptoKeyRequest`):
+            request (:class:`google.cloud.kms_v1.types.GetCryptoKeyRequest`):
                 The request object. Request message for
                 [KeyManagementService.GetCryptoKey][google.cloud.kms.v1.KeyManagementService.GetCryptoKey].
             name (:class:`str`):
                 Required. The [name][google.cloud.kms.v1.CryptoKey.name]
                 of the [CryptoKey][google.cloud.kms.v1.CryptoKey] to
                 get.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -624,22 +703,22 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKey:
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents
-                a logical key that can be used for cryptographic
-                operations.
+            google.cloud.kms_v1.types.CryptoKey:
+                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a logical key that can be used for cryptographic
+                   operations.
 
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up
-                of zero or more
-                [versions][google.cloud.kms.v1.CryptoKeyVersion], which
-                represent the actual key material used in cryptographic
-                operations.
+                   A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made
+                   up of zero or more
+                   [versions][google.cloud.kms.v1.CryptoKeyVersion],
+                   which represent the actual key material used in
+                   cryptographic operations.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -662,10 +741,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -697,7 +775,7 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.GetCryptoKeyVersionRequest`):
+            request (:class:`google.cloud.kms_v1.types.GetCryptoKeyVersionRequest`):
                 The request object. Request message for
                 [KeyManagementService.GetCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.GetCryptoKeyVersion].
             name (:class:`str`):
@@ -705,6 +783,7 @@ class KeyManagementServiceAsyncClient:
                 [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 to get.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -716,28 +795,27 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKeyVersion:
-                A
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                represents an individual cryptographic key, and the
-                associated key material.
+            google.cloud.kms_v1.types.CryptoKeyVersion:
+                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an individual cryptographic key, and the
+                   associated key material.
 
-                An
-                [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
-                version can be used for cryptographic operations.
+                   An
+                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                   version can be used for cryptographic operations.
 
-                For security reasons, the raw cryptographic key material
-                represented by a
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                can never be viewed or exported. It can only be used to
-                encrypt, decrypt, or sign data when an authorized user
-                or application invokes Cloud KMS.
+                   For security reasons, the raw cryptographic key
+                   material represented by a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   can never be viewed or exported. It can only be used
+                   to encrypt, decrypt, or sign data when an authorized
+                   user or application invokes Cloud KMS.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -760,10 +838,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -800,7 +877,7 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.GetPublicKeyRequest`):
+            request (:class:`google.cloud.kms_v1.types.GetPublicKeyRequest`):
                 The request object. Request message for
                 [KeyManagementService.GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
             name (:class:`str`):
@@ -808,6 +885,7 @@ class KeyManagementServiceAsyncClient:
                 [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 public key to get.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -819,17 +897,16 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.PublicKey:
-                The public key for a given
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
-                Obtained via
-                [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
+            google.cloud.kms_v1.types.PublicKey:
+                The public key for a given [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]. Obtained via
+                   [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -852,10 +929,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -887,13 +963,14 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.GetImportJobRequest`):
+            request (:class:`google.cloud.kms_v1.types.GetImportJobRequest`):
                 The request object. Request message for
                 [KeyManagementService.GetImportJob][google.cloud.kms.v1.KeyManagementService.GetImportJob].
             name (:class:`str`):
                 Required. The [name][google.cloud.kms.v1.ImportJob.name]
                 of the [ImportJob][google.cloud.kms.v1.ImportJob] to
                 get.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -905,58 +982,59 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.ImportJob:
-                An [ImportJob][google.cloud.kms.v1.ImportJob] can be
-                used to create
-                [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
-                [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
-                using pre-existing key material, generated outside of
-                Cloud KMS.
+            google.cloud.kms_v1.types.ImportJob:
+                An [ImportJob][google.cloud.kms.v1.ImportJob] can be used to create [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
+                   [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
+                   using pre-existing key material, generated outside of
+                   Cloud KMS.
 
-                When an [ImportJob][google.cloud.kms.v1.ImportJob] is
-                created, Cloud KMS will generate a "wrapping key", which
-                is a public/private key pair. You use the wrapping key
-                to encrypt (also known as wrap) the pre-existing key
-                material to protect it during the import process. The
-                nature of the wrapping key depends on the choice of
-                [import_method][google.cloud.kms.v1.ImportJob.import_method].
-                When the wrapping key generation is complete, the
-                [state][google.cloud.kms.v1.ImportJob.state] will be set
-                to
-                [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE]
-                and the
-                [public_key][google.cloud.kms.v1.ImportJob.public_key]
-                can be fetched. The fetched public key can then be used
-                to wrap your pre-existing key material.
+                   When an [ImportJob][google.cloud.kms.v1.ImportJob] is
+                   created, Cloud KMS will generate a "wrapping key",
+                   which is a public/private key pair. You use the
+                   wrapping key to encrypt (also known as wrap) the
+                   pre-existing key material to protect it during the
+                   import process. The nature of the wrapping key
+                   depends on the choice of
+                   [import_method][google.cloud.kms.v1.ImportJob.import_method].
+                   When the wrapping key generation is complete, the
+                   [state][google.cloud.kms.v1.ImportJob.state] will be
+                   set to
+                   [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE]
+                   and the
+                   [public_key][google.cloud.kms.v1.ImportJob.public_key]
+                   can be fetched. The fetched public key can then be
+                   used to wrap your pre-existing key material.
 
-                Once the key material is wrapped, it can be imported
-                into a new
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                in an existing
-                [CryptoKey][google.cloud.kms.v1.CryptoKey] by calling
-                [ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
-                Multiple
-                [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
-                can be imported with a single
-                [ImportJob][google.cloud.kms.v1.ImportJob]. Cloud KMS
-                uses the private key portion of the wrapping key to
-                unwrap the key material. Only Cloud KMS has access to
-                the private key.
+                   Once the key material is wrapped, it can be imported
+                   into a new
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   in an existing
+                   [CryptoKey][google.cloud.kms.v1.CryptoKey] by calling
+                   [ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
+                   Multiple
+                   [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
+                   can be imported with a single
+                   [ImportJob][google.cloud.kms.v1.ImportJob]. Cloud KMS
+                   uses the private key portion of the wrapping key to
+                   unwrap the key material. Only Cloud KMS has access to
+                   the private key.
 
-                An [ImportJob][google.cloud.kms.v1.ImportJob] expires 3
-                days after it is created. Once expired, Cloud KMS will
-                no longer be able to import or unwrap any key material
-                that was wrapped with the
-                [ImportJob][google.cloud.kms.v1.ImportJob]'s public key.
+                   An [ImportJob][google.cloud.kms.v1.ImportJob] expires
+                   3 days after it is created. Once expired, Cloud KMS
+                   will no longer be able to import or unwrap any key
+                   material that was wrapped with the
+                   [ImportJob][google.cloud.kms.v1.ImportJob]'s public
+                   key.
 
-                For more information, see `Importing a
-                key <https://cloud.google.com/kms/docs/importing-a-key>`__.
+                   For more information, see [Importing a
+                   key](\ https://cloud.google.com/kms/docs/importing-a-key).
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -979,10 +1057,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1016,25 +1093,28 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.CreateKeyRingRequest`):
+            request (:class:`google.cloud.kms_v1.types.CreateKeyRingRequest`):
                 The request object. Request message for
                 [KeyManagementService.CreateKeyRing][google.cloud.kms.v1.KeyManagementService.CreateKeyRing].
             parent (:class:`str`):
                 Required. The resource name of the location associated
                 with the [KeyRings][google.cloud.kms.v1.KeyRing], in the
                 format ``projects/*/locations/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             key_ring_id (:class:`str`):
                 Required. It must be unique within a location and match
                 the regular expression ``[a-zA-Z0-9_-]{1,63}``
+
                 This corresponds to the ``key_ring_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            key_ring (:class:`~.resources.KeyRing`):
+            key_ring (:class:`google.cloud.kms_v1.types.KeyRing`):
                 Required. A [KeyRing][google.cloud.kms.v1.KeyRing] with
                 initial field values.
+
                 This corresponds to the ``key_ring`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1046,7 +1126,7 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.KeyRing:
+            google.cloud.kms_v1.types.KeyRing:
                 A [KeyRing][google.cloud.kms.v1.KeyRing] is a toplevel
                 logical grouping of
                 [CryptoKeys][google.cloud.kms.v1.CryptoKey].
@@ -1055,7 +1135,8 @@ class KeyManagementServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, key_ring_id, key_ring]):
+        has_flattened_params = any([parent, key_ring_id, key_ring])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1082,10 +1163,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1123,25 +1203,28 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.CreateCryptoKeyRequest`):
+            request (:class:`google.cloud.kms_v1.types.CreateCryptoKeyRequest`):
                 The request object. Request message for
                 [KeyManagementService.CreateCryptoKey][google.cloud.kms.v1.KeyManagementService.CreateCryptoKey].
             parent (:class:`str`):
                 Required. The [name][google.cloud.kms.v1.KeyRing.name]
                 of the KeyRing associated with the
                 [CryptoKeys][google.cloud.kms.v1.CryptoKey].
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             crypto_key_id (:class:`str`):
                 Required. It must be unique within a KeyRing and match
                 the regular expression ``[a-zA-Z0-9_-]{1,63}``
+
                 This corresponds to the ``crypto_key_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            crypto_key (:class:`~.resources.CryptoKey`):
+            crypto_key (:class:`google.cloud.kms_v1.types.CryptoKey`):
                 Required. A [CryptoKey][google.cloud.kms.v1.CryptoKey]
                 with initial field values.
+
                 This corresponds to the ``crypto_key`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1153,22 +1236,22 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKey:
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents
-                a logical key that can be used for cryptographic
-                operations.
+            google.cloud.kms_v1.types.CryptoKey:
+                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a logical key that can be used for cryptographic
+                   operations.
 
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up
-                of zero or more
-                [versions][google.cloud.kms.v1.CryptoKeyVersion], which
-                represent the actual key material used in cryptographic
-                operations.
+                   A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made
+                   up of zero or more
+                   [versions][google.cloud.kms.v1.CryptoKeyVersion],
+                   which represent the actual key material used in
+                   cryptographic operations.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, crypto_key_id, crypto_key]):
+        has_flattened_params = any([parent, crypto_key_id, crypto_key])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1195,10 +1278,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1237,7 +1319,7 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.CreateCryptoKeyVersionRequest`):
+            request (:class:`google.cloud.kms_v1.types.CreateCryptoKeyVersionRequest`):
                 The request object. Request message for
                 [KeyManagementService.CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion].
             parent (:class:`str`):
@@ -1245,13 +1327,15 @@ class KeyManagementServiceAsyncClient:
                 of the [CryptoKey][google.cloud.kms.v1.CryptoKey]
                 associated with the
                 [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            crypto_key_version (:class:`~.resources.CryptoKeyVersion`):
+            crypto_key_version (:class:`google.cloud.kms_v1.types.CryptoKeyVersion`):
                 Required. A
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 with initial field values.
+
                 This corresponds to the ``crypto_key_version`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1263,28 +1347,27 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKeyVersion:
-                A
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                represents an individual cryptographic key, and the
-                associated key material.
+            google.cloud.kms_v1.types.CryptoKeyVersion:
+                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an individual cryptographic key, and the
+                   associated key material.
 
-                An
-                [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
-                version can be used for cryptographic operations.
+                   An
+                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                   version can be used for cryptographic operations.
 
-                For security reasons, the raw cryptographic key material
-                represented by a
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                can never be viewed or exported. It can only be used to
-                encrypt, decrypt, or sign data when an authorized user
-                or application invokes Cloud KMS.
+                   For security reasons, the raw cryptographic key
+                   material represented by a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   can never be viewed or exported. It can only be used
+                   to encrypt, decrypt, or sign data when an authorized
+                   user or application invokes Cloud KMS.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, crypto_key_version]):
+        has_flattened_params = any([parent, crypto_key_version])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1338,7 +1421,7 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.ImportCryptoKeyVersionRequest`):
+            request (:class:`google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest`):
                 The request object. Request message for
                 [KeyManagementService.ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
 
@@ -1349,22 +1432,20 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKeyVersion:
-                A
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                represents an individual cryptographic key, and the
-                associated key material.
+            google.cloud.kms_v1.types.CryptoKeyVersion:
+                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an individual cryptographic key, and the
+                   associated key material.
 
-                An
-                [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
-                version can be used for cryptographic operations.
+                   An
+                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                   version can be used for cryptographic operations.
 
-                For security reasons, the raw cryptographic key material
-                represented by a
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                can never be viewed or exported. It can only be used to
-                encrypt, decrypt, or sign data when an authorized user
-                or application invokes Cloud KMS.
+                   For security reasons, the raw cryptographic key
+                   material represented by a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   can never be viewed or exported. It can only be used
+                   to encrypt, decrypt, or sign data when an authorized
+                   user or application invokes Cloud KMS.
 
         """
         # Create or coerce a protobuf request object.
@@ -1410,25 +1491,28 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.CreateImportJobRequest`):
+            request (:class:`google.cloud.kms_v1.types.CreateImportJobRequest`):
                 The request object. Request message for
                 [KeyManagementService.CreateImportJob][google.cloud.kms.v1.KeyManagementService.CreateImportJob].
             parent (:class:`str`):
                 Required. The [name][google.cloud.kms.v1.KeyRing.name]
                 of the [KeyRing][google.cloud.kms.v1.KeyRing] associated
                 with the [ImportJobs][google.cloud.kms.v1.ImportJob].
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             import_job_id (:class:`str`):
                 Required. It must be unique within a KeyRing and match
                 the regular expression ``[a-zA-Z0-9_-]{1,63}``
+
                 This corresponds to the ``import_job_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            import_job (:class:`~.resources.ImportJob`):
+            import_job (:class:`google.cloud.kms_v1.types.ImportJob`):
                 Required. An [ImportJob][google.cloud.kms.v1.ImportJob]
                 with initial field values.
+
                 This corresponds to the ``import_job`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1440,58 +1524,59 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.ImportJob:
-                An [ImportJob][google.cloud.kms.v1.ImportJob] can be
-                used to create
-                [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
-                [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
-                using pre-existing key material, generated outside of
-                Cloud KMS.
+            google.cloud.kms_v1.types.ImportJob:
+                An [ImportJob][google.cloud.kms.v1.ImportJob] can be used to create [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
+                   [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
+                   using pre-existing key material, generated outside of
+                   Cloud KMS.
 
-                When an [ImportJob][google.cloud.kms.v1.ImportJob] is
-                created, Cloud KMS will generate a "wrapping key", which
-                is a public/private key pair. You use the wrapping key
-                to encrypt (also known as wrap) the pre-existing key
-                material to protect it during the import process. The
-                nature of the wrapping key depends on the choice of
-                [import_method][google.cloud.kms.v1.ImportJob.import_method].
-                When the wrapping key generation is complete, the
-                [state][google.cloud.kms.v1.ImportJob.state] will be set
-                to
-                [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE]
-                and the
-                [public_key][google.cloud.kms.v1.ImportJob.public_key]
-                can be fetched. The fetched public key can then be used
-                to wrap your pre-existing key material.
+                   When an [ImportJob][google.cloud.kms.v1.ImportJob] is
+                   created, Cloud KMS will generate a "wrapping key",
+                   which is a public/private key pair. You use the
+                   wrapping key to encrypt (also known as wrap) the
+                   pre-existing key material to protect it during the
+                   import process. The nature of the wrapping key
+                   depends on the choice of
+                   [import_method][google.cloud.kms.v1.ImportJob.import_method].
+                   When the wrapping key generation is complete, the
+                   [state][google.cloud.kms.v1.ImportJob.state] will be
+                   set to
+                   [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE]
+                   and the
+                   [public_key][google.cloud.kms.v1.ImportJob.public_key]
+                   can be fetched. The fetched public key can then be
+                   used to wrap your pre-existing key material.
 
-                Once the key material is wrapped, it can be imported
-                into a new
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                in an existing
-                [CryptoKey][google.cloud.kms.v1.CryptoKey] by calling
-                [ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
-                Multiple
-                [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
-                can be imported with a single
-                [ImportJob][google.cloud.kms.v1.ImportJob]. Cloud KMS
-                uses the private key portion of the wrapping key to
-                unwrap the key material. Only Cloud KMS has access to
-                the private key.
+                   Once the key material is wrapped, it can be imported
+                   into a new
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   in an existing
+                   [CryptoKey][google.cloud.kms.v1.CryptoKey] by calling
+                   [ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
+                   Multiple
+                   [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
+                   can be imported with a single
+                   [ImportJob][google.cloud.kms.v1.ImportJob]. Cloud KMS
+                   uses the private key portion of the wrapping key to
+                   unwrap the key material. Only Cloud KMS has access to
+                   the private key.
 
-                An [ImportJob][google.cloud.kms.v1.ImportJob] expires 3
-                days after it is created. Once expired, Cloud KMS will
-                no longer be able to import or unwrap any key material
-                that was wrapped with the
-                [ImportJob][google.cloud.kms.v1.ImportJob]'s public key.
+                   An [ImportJob][google.cloud.kms.v1.ImportJob] expires
+                   3 days after it is created. Once expired, Cloud KMS
+                   will no longer be able to import or unwrap any key
+                   material that was wrapped with the
+                   [ImportJob][google.cloud.kms.v1.ImportJob]'s public
+                   key.
 
-                For more information, see `Importing a
-                key <https://cloud.google.com/kms/docs/importing-a-key>`__.
+                   For more information, see [Importing a
+                   key](\ https://cloud.google.com/kms/docs/importing-a-key).
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, import_job_id, import_job]):
+        has_flattened_params = any([parent, import_job_id, import_job])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1518,10 +1603,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1553,18 +1637,20 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.UpdateCryptoKeyRequest`):
+            request (:class:`google.cloud.kms_v1.types.UpdateCryptoKeyRequest`):
                 The request object. Request message for
                 [KeyManagementService.UpdateCryptoKey][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKey].
-            crypto_key (:class:`~.resources.CryptoKey`):
+            crypto_key (:class:`google.cloud.kms_v1.types.CryptoKey`):
                 Required. [CryptoKey][google.cloud.kms.v1.CryptoKey]
                 with updated values.
+
                 This corresponds to the ``crypto_key`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. List of fields to be
                 updated in this request.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1576,22 +1662,22 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKey:
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents
-                a logical key that can be used for cryptographic
-                operations.
+            google.cloud.kms_v1.types.CryptoKey:
+                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a logical key that can be used for cryptographic
+                   operations.
 
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up
-                of zero or more
-                [versions][google.cloud.kms.v1.CryptoKeyVersion], which
-                represent the actual key material used in cryptographic
-                operations.
+                   A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made
+                   up of zero or more
+                   [versions][google.cloud.kms.v1.CryptoKeyVersion],
+                   which represent the actual key material used in
+                   cryptographic operations.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([crypto_key, update_mask]):
+        has_flattened_params = any([crypto_key, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1616,10 +1702,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1666,19 +1751,21 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.UpdateCryptoKeyVersionRequest`):
+            request (:class:`google.cloud.kms_v1.types.UpdateCryptoKeyVersionRequest`):
                 The request object. Request message for
                 [KeyManagementService.UpdateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyVersion].
-            crypto_key_version (:class:`~.resources.CryptoKeyVersion`):
+            crypto_key_version (:class:`google.cloud.kms_v1.types.CryptoKeyVersion`):
                 Required.
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 with updated values.
+
                 This corresponds to the ``crypto_key_version`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. List of fields to be
                 updated in this request.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1690,28 +1777,27 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKeyVersion:
-                A
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                represents an individual cryptographic key, and the
-                associated key material.
+            google.cloud.kms_v1.types.CryptoKeyVersion:
+                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an individual cryptographic key, and the
+                   associated key material.
 
-                An
-                [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
-                version can be used for cryptographic operations.
+                   An
+                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                   version can be used for cryptographic operations.
 
-                For security reasons, the raw cryptographic key material
-                represented by a
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                can never be viewed or exported. It can only be used to
-                encrypt, decrypt, or sign data when an authorized user
-                or application invokes Cloud KMS.
+                   For security reasons, the raw cryptographic key
+                   material represented by a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   can never be viewed or exported. It can only be used
+                   to encrypt, decrypt, or sign data when an authorized
+                   user or application invokes Cloud KMS.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([crypto_key_version, update_mask]):
+        has_flattened_params = any([crypto_key_version, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1736,10 +1822,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1777,7 +1862,7 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.EncryptRequest`):
+            request (:class:`google.cloud.kms_v1.types.EncryptRequest`):
                 The request object. Request message for
                 [KeyManagementService.Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
             name (:class:`str`):
@@ -1789,6 +1874,7 @@ class KeyManagementServiceAsyncClient:
                 If a [CryptoKey][google.cloud.kms.v1.CryptoKey] is
                 specified, the server will use its [primary
                 version][google.cloud.kms.v1.CryptoKey.primary].
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1805,6 +1891,7 @@ class KeyManagementServiceAsyncClient:
                 combined length of the plaintext and
                 additional_authenticated_data fields must be no larger
                 than 8KiB.
+
                 This corresponds to the ``plaintext`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1816,7 +1903,7 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.service.EncryptResponse:
+            google.cloud.kms_v1.types.EncryptResponse:
                 Response message for
                 [KeyManagementService.Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
 
@@ -1824,7 +1911,8 @@ class KeyManagementServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, plaintext]):
+        has_flattened_params = any([name, plaintext])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1849,10 +1937,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1888,7 +1975,7 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.DecryptRequest`):
+            request (:class:`google.cloud.kms_v1.types.DecryptRequest`):
                 The request object. Request message for
                 [KeyManagementService.Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt].
             name (:class:`str`):
@@ -1896,12 +1983,14 @@ class KeyManagementServiceAsyncClient:
                 [CryptoKey][google.cloud.kms.v1.CryptoKey] to use for
                 decryption. The server will choose the appropriate
                 version.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             ciphertext (:class:`bytes`):
                 Required. The encrypted data originally returned in
                 [EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext].
+
                 This corresponds to the ``ciphertext`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1913,7 +2002,7 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.service.DecryptResponse:
+            google.cloud.kms_v1.types.DecryptResponse:
                 Response message for
                 [KeyManagementService.Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt].
 
@@ -1921,7 +2010,8 @@ class KeyManagementServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, ciphertext]):
+        has_flattened_params = any([name, ciphertext])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1946,10 +2036,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1986,21 +2075,23 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.AsymmetricSignRequest`):
+            request (:class:`google.cloud.kms_v1.types.AsymmetricSignRequest`):
                 The request object. Request message for
                 [KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign].
             name (:class:`str`):
                 Required. The resource name of the
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 to use for signing.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            digest (:class:`~.service.Digest`):
+            digest (:class:`google.cloud.kms_v1.types.Digest`):
                 Required. The digest of the data to sign. The digest
                 must be produced with the same digest algorithm as
                 specified by the key version's
                 [algorithm][google.cloud.kms.v1.CryptoKeyVersion.algorithm].
+
                 This corresponds to the ``digest`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2012,7 +2103,7 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.service.AsymmetricSignResponse:
+            google.cloud.kms_v1.types.AsymmetricSignResponse:
                 Response message for
                 [KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign].
 
@@ -2020,7 +2111,8 @@ class KeyManagementServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, digest]):
+        has_flattened_params = any([name, digest])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2045,10 +2137,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -2086,13 +2177,14 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.AsymmetricDecryptRequest`):
+            request (:class:`google.cloud.kms_v1.types.AsymmetricDecryptRequest`):
                 The request object. Request message for
                 [KeyManagementService.AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt].
             name (:class:`str`):
                 Required. The resource name of the
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 to use for decryption.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2100,6 +2192,7 @@ class KeyManagementServiceAsyncClient:
                 Required. The data encrypted with the named
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s
                 public key using OAEP.
+
                 This corresponds to the ``ciphertext`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2111,7 +2204,7 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.service.AsymmetricDecryptResponse:
+            google.cloud.kms_v1.types.AsymmetricDecryptResponse:
                 Response message for
                 [KeyManagementService.AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt].
 
@@ -2119,7 +2212,8 @@ class KeyManagementServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, ciphertext]):
+        has_flattened_params = any([name, ciphertext])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2144,10 +2238,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -2183,12 +2276,13 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.UpdateCryptoKeyPrimaryVersionRequest`):
+            request (:class:`google.cloud.kms_v1.types.UpdateCryptoKeyPrimaryVersionRequest`):
                 The request object. Request message for
                 [KeyManagementService.UpdateCryptoKeyPrimaryVersion][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyPrimaryVersion].
             name (:class:`str`):
                 Required. The resource name of the
                 [CryptoKey][google.cloud.kms.v1.CryptoKey] to update.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2196,6 +2290,7 @@ class KeyManagementServiceAsyncClient:
                 Required. The id of the child
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 to use as primary.
+
                 This corresponds to the ``crypto_key_version_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2207,22 +2302,22 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKey:
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents
-                a logical key that can be used for cryptographic
-                operations.
+            google.cloud.kms_v1.types.CryptoKey:
+                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a logical key that can be used for cryptographic
+                   operations.
 
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up
-                of zero or more
-                [versions][google.cloud.kms.v1.CryptoKeyVersion], which
-                represent the actual key material used in cryptographic
-                operations.
+                   A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made
+                   up of zero or more
+                   [versions][google.cloud.kms.v1.CryptoKeyVersion],
+                   which represent the actual key material used in
+                   cryptographic operations.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, crypto_key_version_id]):
+        has_flattened_params = any([name, crypto_key_version_id])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2247,10 +2342,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -2301,13 +2395,14 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.DestroyCryptoKeyVersionRequest`):
+            request (:class:`google.cloud.kms_v1.types.DestroyCryptoKeyVersionRequest`):
                 The request object. Request message for
                 [KeyManagementService.DestroyCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.DestroyCryptoKeyVersion].
             name (:class:`str`):
                 Required. The resource name of the
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 to destroy.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2319,28 +2414,27 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKeyVersion:
-                A
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                represents an individual cryptographic key, and the
-                associated key material.
+            google.cloud.kms_v1.types.CryptoKeyVersion:
+                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an individual cryptographic key, and the
+                   associated key material.
 
-                An
-                [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
-                version can be used for cryptographic operations.
+                   An
+                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                   version can be used for cryptographic operations.
 
-                For security reasons, the raw cryptographic key material
-                represented by a
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                can never be viewed or exported. It can only be used to
-                encrypt, decrypt, or sign data when an authorized user
-                or application invokes Cloud KMS.
+                   For security reasons, the raw cryptographic key
+                   material represented by a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   can never be viewed or exported. It can only be used
+                   to encrypt, decrypt, or sign data when an authorized
+                   user or application invokes Cloud KMS.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2363,10 +2457,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -2408,13 +2501,14 @@ class KeyManagementServiceAsyncClient:
 
 
         Args:
-            request (:class:`~.service.RestoreCryptoKeyVersionRequest`):
+            request (:class:`google.cloud.kms_v1.types.RestoreCryptoKeyVersionRequest`):
                 The request object. Request message for
                 [KeyManagementService.RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion].
             name (:class:`str`):
                 Required. The resource name of the
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 to restore.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2426,28 +2520,27 @@ class KeyManagementServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKeyVersion:
-                A
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                represents an individual cryptographic key, and the
-                associated key material.
+            google.cloud.kms_v1.types.CryptoKeyVersion:
+                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an individual cryptographic key, and the
+                   associated key material.
 
-                An
-                [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
-                version can be used for cryptographic operations.
+                   An
+                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                   version can be used for cryptographic operations.
 
-                For security reasons, the raw cryptographic key material
-                represented by a
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                can never be viewed or exported. It can only be used to
-                encrypt, decrypt, or sign data when an authorized user
-                or application invokes Cloud KMS.
+                   For security reasons, the raw cryptographic key
+                   material represented by a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   can never be viewed or exported. It can only be used
+                   to encrypt, decrypt, or sign data when an authorized
+                   user or application invokes Cloud KMS.
 
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -2470,10 +2563,9 @@ class KeyManagementServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,

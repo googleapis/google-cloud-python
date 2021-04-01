@@ -19,10 +19,10 @@ from collections import OrderedDict
 from distutils import util
 import os
 import re
-from typing import Callable, Dict, Sequence, Tuple, Type, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
@@ -134,6 +134,23 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            KeyManagementServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -146,13 +163,22 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            KeyManagementServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
         return cls(*args, **kwargs)
 
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> KeyManagementServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            KeyManagementServiceTransport: The transport used by the client instance.
+        """
+        return self._transport
 
     @staticmethod
     def crypto_key_path(
@@ -238,12 +264,97 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         )
         return m.groupdict() if m else {}
 
+    @staticmethod
+    def public_key_path(
+        project: str,
+        location: str,
+        key_ring: str,
+        crypto_key: str,
+        crypto_key_version: str,
+    ) -> str:
+        """Return a fully-qualified public_key string."""
+        return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}/publicKey".format(
+            project=project,
+            location=location,
+            key_ring=key_ring,
+            crypto_key=crypto_key,
+            crypto_key_version=crypto_key_version,
+        )
+
+    @staticmethod
+    def parse_public_key_path(path: str) -> Dict[str, str]:
+        """Parse a public_key path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)/cryptoKeyVersions/(?P<crypto_key_version>.+?)/publicKey$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_billing_account_path(billing_account: str,) -> str:
+        """Return a fully-qualified billing_account string."""
+        return "billingAccounts/{billing_account}".format(
+            billing_account=billing_account,
+        )
+
+    @staticmethod
+    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
+        """Parse a billing_account path into its component segments."""
+        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_folder_path(folder: str,) -> str:
+        """Return a fully-qualified folder string."""
+        return "folders/{folder}".format(folder=folder,)
+
+    @staticmethod
+    def parse_common_folder_path(path: str) -> Dict[str, str]:
+        """Parse a folder path into its component segments."""
+        m = re.match(r"^folders/(?P<folder>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_organization_path(organization: str,) -> str:
+        """Return a fully-qualified organization string."""
+        return "organizations/{organization}".format(organization=organization,)
+
+    @staticmethod
+    def parse_common_organization_path(path: str) -> Dict[str, str]:
+        """Parse a organization path into its component segments."""
+        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_project_path(project: str,) -> str:
+        """Return a fully-qualified project string."""
+        return "projects/{project}".format(project=project,)
+
+    @staticmethod
+    def parse_common_project_path(path: str) -> Dict[str, str]:
+        """Parse a project path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def common_location_path(project: str, location: str,) -> str:
+        """Return a fully-qualified location string."""
+        return "projects/{project}/locations/{location}".format(
+            project=project, location=location,
+        )
+
+    @staticmethod
+    def parse_common_location_path(path: str) -> Dict[str, str]:
+        """Parse a location path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
+        return m.groupdict() if m else {}
+
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
-        transport: Union[str, KeyManagementServiceTransport] = None,
-        client_options: ClientOptions = None,
+        credentials: Optional[credentials.Credentials] = None,
+        transport: Union[str, KeyManagementServiceTransport, None] = None,
+        client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the key management service client.
@@ -255,11 +366,11 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.KeyManagementServiceTransport]): The
+            transport (Union[str, KeyManagementServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (ClientOptions): Custom options for the client. It
-                won't take effect if a ``transport`` instance is provided.
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
+                client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
@@ -274,10 +385,10 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:
@@ -285,30 +396,26 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 creation failed for any reason.
         """
         if isinstance(client_options, dict):
-            client_options = ClientOptions.from_dict(client_options)
+            client_options = client_options_lib.from_dict(client_options)
         if client_options is None:
-            client_options = ClientOptions.ClientOptions()
+            client_options = client_options_lib.ClientOptions()
 
         # Create SSL credentials for mutual TLS if needed.
         use_client_cert = bool(
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -351,7 +458,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -369,13 +476,14 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.ListKeyRingsRequest`):
+            request (google.cloud.kms_v1.types.ListKeyRingsRequest):
                 The request object. Request message for
                 [KeyManagementService.ListKeyRings][google.cloud.kms.v1.KeyManagementService.ListKeyRings].
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the location associated
                 with the [KeyRings][google.cloud.kms.v1.KeyRing], in the
                 format ``projects/*/locations/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -387,7 +495,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListKeyRingsPager:
+            google.cloud.kms_v1.services.key_management_service.pagers.ListKeyRingsPager:
                 Response message for
                 [KeyManagementService.ListKeyRings][google.cloud.kms.v1.KeyManagementService.ListKeyRings].
 
@@ -453,13 +561,14 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.ListCryptoKeysRequest`):
+            request (google.cloud.kms_v1.types.ListCryptoKeysRequest):
                 The request object. Request message for
                 [KeyManagementService.ListCryptoKeys][google.cloud.kms.v1.KeyManagementService.ListCryptoKeys].
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the
                 [KeyRing][google.cloud.kms.v1.KeyRing] to list, in the
                 format ``projects/*/locations/*/keyRings/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -471,7 +580,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListCryptoKeysPager:
+            google.cloud.kms_v1.services.key_management_service.pagers.ListCryptoKeysPager:
                 Response message for
                 [KeyManagementService.ListCryptoKeys][google.cloud.kms.v1.KeyManagementService.ListCryptoKeys].
 
@@ -537,14 +646,15 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.ListCryptoKeyVersionsRequest`):
+            request (google.cloud.kms_v1.types.ListCryptoKeyVersionsRequest):
                 The request object. Request message for
                 [KeyManagementService.ListCryptoKeyVersions][google.cloud.kms.v1.KeyManagementService.ListCryptoKeyVersions].
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the
                 [CryptoKey][google.cloud.kms.v1.CryptoKey] to list, in
                 the format
                 ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -556,7 +666,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListCryptoKeyVersionsPager:
+            google.cloud.kms_v1.services.key_management_service.pagers.ListCryptoKeyVersionsPager:
                 Response message for
                 [KeyManagementService.ListCryptoKeyVersions][google.cloud.kms.v1.KeyManagementService.ListCryptoKeyVersions].
 
@@ -622,13 +732,14 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.ListImportJobsRequest`):
+            request (google.cloud.kms_v1.types.ListImportJobsRequest):
                 The request object. Request message for
                 [KeyManagementService.ListImportJobs][google.cloud.kms.v1.KeyManagementService.ListImportJobs].
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the
                 [KeyRing][google.cloud.kms.v1.KeyRing] to list, in the
                 format ``projects/*/locations/*/keyRings/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -640,7 +751,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListImportJobsPager:
+            google.cloud.kms_v1.services.key_management_service.pagers.ListImportJobsPager:
                 Response message for
                 [KeyManagementService.ListImportJobs][google.cloud.kms.v1.KeyManagementService.ListImportJobs].
 
@@ -707,12 +818,13 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.GetKeyRingRequest`):
+            request (google.cloud.kms_v1.types.GetKeyRingRequest):
                 The request object. Request message for
                 [KeyManagementService.GetKeyRing][google.cloud.kms.v1.KeyManagementService.GetKeyRing].
-            name (:class:`str`):
+            name (str):
                 Required. The [name][google.cloud.kms.v1.KeyRing.name]
                 of the [KeyRing][google.cloud.kms.v1.KeyRing] to get.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -724,7 +836,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.KeyRing:
+            google.cloud.kms_v1.types.KeyRing:
                 A [KeyRing][google.cloud.kms.v1.KeyRing] is a toplevel
                 logical grouping of
                 [CryptoKeys][google.cloud.kms.v1.CryptoKey].
@@ -785,13 +897,14 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.GetCryptoKeyRequest`):
+            request (google.cloud.kms_v1.types.GetCryptoKeyRequest):
                 The request object. Request message for
                 [KeyManagementService.GetCryptoKey][google.cloud.kms.v1.KeyManagementService.GetCryptoKey].
-            name (:class:`str`):
+            name (str):
                 Required. The [name][google.cloud.kms.v1.CryptoKey.name]
                 of the [CryptoKey][google.cloud.kms.v1.CryptoKey] to
                 get.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -803,16 +916,15 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKey:
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents
-                a logical key that can be used for cryptographic
-                operations.
+            google.cloud.kms_v1.types.CryptoKey:
+                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a logical key that can be used for cryptographic
+                   operations.
 
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up
-                of zero or more
-                [versions][google.cloud.kms.v1.CryptoKeyVersion], which
-                represent the actual key material used in cryptographic
-                operations.
+                   A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made
+                   up of zero or more
+                   [versions][google.cloud.kms.v1.CryptoKeyVersion],
+                   which represent the actual key material used in
+                   cryptographic operations.
 
         """
         # Create or coerce a protobuf request object.
@@ -868,14 +980,15 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.GetCryptoKeyVersionRequest`):
+            request (google.cloud.kms_v1.types.GetCryptoKeyVersionRequest):
                 The request object. Request message for
                 [KeyManagementService.GetCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.GetCryptoKeyVersion].
-            name (:class:`str`):
+            name (str):
                 Required. The
                 [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 to get.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -887,22 +1000,20 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKeyVersion:
-                A
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                represents an individual cryptographic key, and the
-                associated key material.
+            google.cloud.kms_v1.types.CryptoKeyVersion:
+                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an individual cryptographic key, and the
+                   associated key material.
 
-                An
-                [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
-                version can be used for cryptographic operations.
+                   An
+                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                   version can be used for cryptographic operations.
 
-                For security reasons, the raw cryptographic key material
-                represented by a
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                can never be viewed or exported. It can only be used to
-                encrypt, decrypt, or sign data when an authorized user
-                or application invokes Cloud KMS.
+                   For security reasons, the raw cryptographic key
+                   material represented by a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   can never be viewed or exported. It can only be used
+                   to encrypt, decrypt, or sign data when an authorized
+                   user or application invokes Cloud KMS.
 
         """
         # Create or coerce a protobuf request object.
@@ -963,14 +1074,15 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.GetPublicKeyRequest`):
+            request (google.cloud.kms_v1.types.GetPublicKeyRequest):
                 The request object. Request message for
                 [KeyManagementService.GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
-            name (:class:`str`):
+            name (str):
                 Required. The
                 [name][google.cloud.kms.v1.CryptoKeyVersion.name] of the
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 public key to get.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -982,11 +1094,9 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.PublicKey:
-                The public key for a given
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
-                Obtained via
-                [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
+            google.cloud.kms_v1.types.PublicKey:
+                The public key for a given [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]. Obtained via
+                   [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
 
         """
         # Create or coerce a protobuf request object.
@@ -1042,13 +1152,14 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.GetImportJobRequest`):
+            request (google.cloud.kms_v1.types.GetImportJobRequest):
                 The request object. Request message for
                 [KeyManagementService.GetImportJob][google.cloud.kms.v1.KeyManagementService.GetImportJob].
-            name (:class:`str`):
+            name (str):
                 Required. The [name][google.cloud.kms.v1.ImportJob.name]
                 of the [ImportJob][google.cloud.kms.v1.ImportJob] to
                 get.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1060,52 +1171,52 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.ImportJob:
-                An [ImportJob][google.cloud.kms.v1.ImportJob] can be
-                used to create
-                [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
-                [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
-                using pre-existing key material, generated outside of
-                Cloud KMS.
+            google.cloud.kms_v1.types.ImportJob:
+                An [ImportJob][google.cloud.kms.v1.ImportJob] can be used to create [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
+                   [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
+                   using pre-existing key material, generated outside of
+                   Cloud KMS.
 
-                When an [ImportJob][google.cloud.kms.v1.ImportJob] is
-                created, Cloud KMS will generate a "wrapping key", which
-                is a public/private key pair. You use the wrapping key
-                to encrypt (also known as wrap) the pre-existing key
-                material to protect it during the import process. The
-                nature of the wrapping key depends on the choice of
-                [import_method][google.cloud.kms.v1.ImportJob.import_method].
-                When the wrapping key generation is complete, the
-                [state][google.cloud.kms.v1.ImportJob.state] will be set
-                to
-                [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE]
-                and the
-                [public_key][google.cloud.kms.v1.ImportJob.public_key]
-                can be fetched. The fetched public key can then be used
-                to wrap your pre-existing key material.
+                   When an [ImportJob][google.cloud.kms.v1.ImportJob] is
+                   created, Cloud KMS will generate a "wrapping key",
+                   which is a public/private key pair. You use the
+                   wrapping key to encrypt (also known as wrap) the
+                   pre-existing key material to protect it during the
+                   import process. The nature of the wrapping key
+                   depends on the choice of
+                   [import_method][google.cloud.kms.v1.ImportJob.import_method].
+                   When the wrapping key generation is complete, the
+                   [state][google.cloud.kms.v1.ImportJob.state] will be
+                   set to
+                   [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE]
+                   and the
+                   [public_key][google.cloud.kms.v1.ImportJob.public_key]
+                   can be fetched. The fetched public key can then be
+                   used to wrap your pre-existing key material.
 
-                Once the key material is wrapped, it can be imported
-                into a new
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                in an existing
-                [CryptoKey][google.cloud.kms.v1.CryptoKey] by calling
-                [ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
-                Multiple
-                [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
-                can be imported with a single
-                [ImportJob][google.cloud.kms.v1.ImportJob]. Cloud KMS
-                uses the private key portion of the wrapping key to
-                unwrap the key material. Only Cloud KMS has access to
-                the private key.
+                   Once the key material is wrapped, it can be imported
+                   into a new
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   in an existing
+                   [CryptoKey][google.cloud.kms.v1.CryptoKey] by calling
+                   [ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
+                   Multiple
+                   [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
+                   can be imported with a single
+                   [ImportJob][google.cloud.kms.v1.ImportJob]. Cloud KMS
+                   uses the private key portion of the wrapping key to
+                   unwrap the key material. Only Cloud KMS has access to
+                   the private key.
 
-                An [ImportJob][google.cloud.kms.v1.ImportJob] expires 3
-                days after it is created. Once expired, Cloud KMS will
-                no longer be able to import or unwrap any key material
-                that was wrapped with the
-                [ImportJob][google.cloud.kms.v1.ImportJob]'s public key.
+                   An [ImportJob][google.cloud.kms.v1.ImportJob] expires
+                   3 days after it is created. Once expired, Cloud KMS
+                   will no longer be able to import or unwrap any key
+                   material that was wrapped with the
+                   [ImportJob][google.cloud.kms.v1.ImportJob]'s public
+                   key.
 
-                For more information, see `Importing a
-                key <https://cloud.google.com/kms/docs/importing-a-key>`__.
+                   For more information, see [Importing a
+                   key](\ https://cloud.google.com/kms/docs/importing-a-key).
 
         """
         # Create or coerce a protobuf request object.
@@ -1163,25 +1274,28 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.CreateKeyRingRequest`):
+            request (google.cloud.kms_v1.types.CreateKeyRingRequest):
                 The request object. Request message for
                 [KeyManagementService.CreateKeyRing][google.cloud.kms.v1.KeyManagementService.CreateKeyRing].
-            parent (:class:`str`):
+            parent (str):
                 Required. The resource name of the location associated
                 with the [KeyRings][google.cloud.kms.v1.KeyRing], in the
                 format ``projects/*/locations/*``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            key_ring_id (:class:`str`):
+            key_ring_id (str):
                 Required. It must be unique within a location and match
                 the regular expression ``[a-zA-Z0-9_-]{1,63}``
+
                 This corresponds to the ``key_ring_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            key_ring (:class:`~.resources.KeyRing`):
+            key_ring (google.cloud.kms_v1.types.KeyRing):
                 Required. A [KeyRing][google.cloud.kms.v1.KeyRing] with
                 initial field values.
+
                 This corresponds to the ``key_ring`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1193,7 +1307,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.KeyRing:
+            google.cloud.kms_v1.types.KeyRing:
                 A [KeyRing][google.cloud.kms.v1.KeyRing] is a toplevel
                 logical grouping of
                 [CryptoKeys][google.cloud.kms.v1.CryptoKey].
@@ -1262,25 +1376,28 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.CreateCryptoKeyRequest`):
+            request (google.cloud.kms_v1.types.CreateCryptoKeyRequest):
                 The request object. Request message for
                 [KeyManagementService.CreateCryptoKey][google.cloud.kms.v1.KeyManagementService.CreateCryptoKey].
-            parent (:class:`str`):
+            parent (str):
                 Required. The [name][google.cloud.kms.v1.KeyRing.name]
                 of the KeyRing associated with the
                 [CryptoKeys][google.cloud.kms.v1.CryptoKey].
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            crypto_key_id (:class:`str`):
+            crypto_key_id (str):
                 Required. It must be unique within a KeyRing and match
                 the regular expression ``[a-zA-Z0-9_-]{1,63}``
+
                 This corresponds to the ``crypto_key_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            crypto_key (:class:`~.resources.CryptoKey`):
+            crypto_key (google.cloud.kms_v1.types.CryptoKey):
                 Required. A [CryptoKey][google.cloud.kms.v1.CryptoKey]
                 with initial field values.
+
                 This corresponds to the ``crypto_key`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1292,16 +1409,15 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKey:
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents
-                a logical key that can be used for cryptographic
-                operations.
+            google.cloud.kms_v1.types.CryptoKey:
+                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a logical key that can be used for cryptographic
+                   operations.
 
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up
-                of zero or more
-                [versions][google.cloud.kms.v1.CryptoKeyVersion], which
-                represent the actual key material used in cryptographic
-                operations.
+                   A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made
+                   up of zero or more
+                   [versions][google.cloud.kms.v1.CryptoKeyVersion],
+                   which represent the actual key material used in
+                   cryptographic operations.
 
         """
         # Create or coerce a protobuf request object.
@@ -1368,21 +1484,23 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.CreateCryptoKeyVersionRequest`):
+            request (google.cloud.kms_v1.types.CreateCryptoKeyVersionRequest):
                 The request object. Request message for
                 [KeyManagementService.CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion].
-            parent (:class:`str`):
+            parent (str):
                 Required. The [name][google.cloud.kms.v1.CryptoKey.name]
                 of the [CryptoKey][google.cloud.kms.v1.CryptoKey]
                 associated with the
                 [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            crypto_key_version (:class:`~.resources.CryptoKeyVersion`):
+            crypto_key_version (google.cloud.kms_v1.types.CryptoKeyVersion):
                 Required. A
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 with initial field values.
+
                 This corresponds to the ``crypto_key_version`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1394,22 +1512,20 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKeyVersion:
-                A
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                represents an individual cryptographic key, and the
-                associated key material.
+            google.cloud.kms_v1.types.CryptoKeyVersion:
+                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an individual cryptographic key, and the
+                   associated key material.
 
-                An
-                [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
-                version can be used for cryptographic operations.
+                   An
+                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                   version can be used for cryptographic operations.
 
-                For security reasons, the raw cryptographic key material
-                represented by a
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                can never be viewed or exported. It can only be used to
-                encrypt, decrypt, or sign data when an authorized user
-                or application invokes Cloud KMS.
+                   For security reasons, the raw cryptographic key
+                   material represented by a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   can never be viewed or exported. It can only be used
+                   to encrypt, decrypt, or sign data when an authorized
+                   user or application invokes Cloud KMS.
 
         """
         # Create or coerce a protobuf request object.
@@ -1473,7 +1589,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.ImportCryptoKeyVersionRequest`):
+            request (google.cloud.kms_v1.types.ImportCryptoKeyVersionRequest):
                 The request object. Request message for
                 [KeyManagementService.ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
 
@@ -1484,22 +1600,20 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKeyVersion:
-                A
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                represents an individual cryptographic key, and the
-                associated key material.
+            google.cloud.kms_v1.types.CryptoKeyVersion:
+                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an individual cryptographic key, and the
+                   associated key material.
 
-                An
-                [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
-                version can be used for cryptographic operations.
+                   An
+                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                   version can be used for cryptographic operations.
 
-                For security reasons, the raw cryptographic key material
-                represented by a
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                can never be viewed or exported. It can only be used to
-                encrypt, decrypt, or sign data when an authorized user
-                or application invokes Cloud KMS.
+                   For security reasons, the raw cryptographic key
+                   material represented by a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   can never be viewed or exported. It can only be used
+                   to encrypt, decrypt, or sign data when an authorized
+                   user or application invokes Cloud KMS.
 
         """
         # Create or coerce a protobuf request object.
@@ -1548,25 +1662,28 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.CreateImportJobRequest`):
+            request (google.cloud.kms_v1.types.CreateImportJobRequest):
                 The request object. Request message for
                 [KeyManagementService.CreateImportJob][google.cloud.kms.v1.KeyManagementService.CreateImportJob].
-            parent (:class:`str`):
+            parent (str):
                 Required. The [name][google.cloud.kms.v1.KeyRing.name]
                 of the [KeyRing][google.cloud.kms.v1.KeyRing] associated
                 with the [ImportJobs][google.cloud.kms.v1.ImportJob].
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            import_job_id (:class:`str`):
+            import_job_id (str):
                 Required. It must be unique within a KeyRing and match
                 the regular expression ``[a-zA-Z0-9_-]{1,63}``
+
                 This corresponds to the ``import_job_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            import_job (:class:`~.resources.ImportJob`):
+            import_job (google.cloud.kms_v1.types.ImportJob):
                 Required. An [ImportJob][google.cloud.kms.v1.ImportJob]
                 with initial field values.
+
                 This corresponds to the ``import_job`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1578,52 +1695,52 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.ImportJob:
-                An [ImportJob][google.cloud.kms.v1.ImportJob] can be
-                used to create
-                [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
-                [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
-                using pre-existing key material, generated outside of
-                Cloud KMS.
+            google.cloud.kms_v1.types.ImportJob:
+                An [ImportJob][google.cloud.kms.v1.ImportJob] can be used to create [CryptoKeys][google.cloud.kms.v1.CryptoKey] and
+                   [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
+                   using pre-existing key material, generated outside of
+                   Cloud KMS.
 
-                When an [ImportJob][google.cloud.kms.v1.ImportJob] is
-                created, Cloud KMS will generate a "wrapping key", which
-                is a public/private key pair. You use the wrapping key
-                to encrypt (also known as wrap) the pre-existing key
-                material to protect it during the import process. The
-                nature of the wrapping key depends on the choice of
-                [import_method][google.cloud.kms.v1.ImportJob.import_method].
-                When the wrapping key generation is complete, the
-                [state][google.cloud.kms.v1.ImportJob.state] will be set
-                to
-                [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE]
-                and the
-                [public_key][google.cloud.kms.v1.ImportJob.public_key]
-                can be fetched. The fetched public key can then be used
-                to wrap your pre-existing key material.
+                   When an [ImportJob][google.cloud.kms.v1.ImportJob] is
+                   created, Cloud KMS will generate a "wrapping key",
+                   which is a public/private key pair. You use the
+                   wrapping key to encrypt (also known as wrap) the
+                   pre-existing key material to protect it during the
+                   import process. The nature of the wrapping key
+                   depends on the choice of
+                   [import_method][google.cloud.kms.v1.ImportJob.import_method].
+                   When the wrapping key generation is complete, the
+                   [state][google.cloud.kms.v1.ImportJob.state] will be
+                   set to
+                   [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE]
+                   and the
+                   [public_key][google.cloud.kms.v1.ImportJob.public_key]
+                   can be fetched. The fetched public key can then be
+                   used to wrap your pre-existing key material.
 
-                Once the key material is wrapped, it can be imported
-                into a new
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                in an existing
-                [CryptoKey][google.cloud.kms.v1.CryptoKey] by calling
-                [ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
-                Multiple
-                [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
-                can be imported with a single
-                [ImportJob][google.cloud.kms.v1.ImportJob]. Cloud KMS
-                uses the private key portion of the wrapping key to
-                unwrap the key material. Only Cloud KMS has access to
-                the private key.
+                   Once the key material is wrapped, it can be imported
+                   into a new
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   in an existing
+                   [CryptoKey][google.cloud.kms.v1.CryptoKey] by calling
+                   [ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
+                   Multiple
+                   [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
+                   can be imported with a single
+                   [ImportJob][google.cloud.kms.v1.ImportJob]. Cloud KMS
+                   uses the private key portion of the wrapping key to
+                   unwrap the key material. Only Cloud KMS has access to
+                   the private key.
 
-                An [ImportJob][google.cloud.kms.v1.ImportJob] expires 3
-                days after it is created. Once expired, Cloud KMS will
-                no longer be able to import or unwrap any key material
-                that was wrapped with the
-                [ImportJob][google.cloud.kms.v1.ImportJob]'s public key.
+                   An [ImportJob][google.cloud.kms.v1.ImportJob] expires
+                   3 days after it is created. Once expired, Cloud KMS
+                   will no longer be able to import or unwrap any key
+                   material that was wrapped with the
+                   [ImportJob][google.cloud.kms.v1.ImportJob]'s public
+                   key.
 
-                For more information, see `Importing a
-                key <https://cloud.google.com/kms/docs/importing-a-key>`__.
+                   For more information, see [Importing a
+                   key](\ https://cloud.google.com/kms/docs/importing-a-key).
 
         """
         # Create or coerce a protobuf request object.
@@ -1683,18 +1800,20 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.UpdateCryptoKeyRequest`):
+            request (google.cloud.kms_v1.types.UpdateCryptoKeyRequest):
                 The request object. Request message for
                 [KeyManagementService.UpdateCryptoKey][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKey].
-            crypto_key (:class:`~.resources.CryptoKey`):
+            crypto_key (google.cloud.kms_v1.types.CryptoKey):
                 Required. [CryptoKey][google.cloud.kms.v1.CryptoKey]
                 with updated values.
+
                 This corresponds to the ``crypto_key`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. List of fields to be
                 updated in this request.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1706,16 +1825,15 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKey:
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents
-                a logical key that can be used for cryptographic
-                operations.
+            google.cloud.kms_v1.types.CryptoKey:
+                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a logical key that can be used for cryptographic
+                   operations.
 
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up
-                of zero or more
-                [versions][google.cloud.kms.v1.CryptoKeyVersion], which
-                represent the actual key material used in cryptographic
-                operations.
+                   A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made
+                   up of zero or more
+                   [versions][google.cloud.kms.v1.CryptoKeyVersion],
+                   which represent the actual key material used in
+                   cryptographic operations.
 
         """
         # Create or coerce a protobuf request object.
@@ -1788,19 +1906,21 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.UpdateCryptoKeyVersionRequest`):
+            request (google.cloud.kms_v1.types.UpdateCryptoKeyVersionRequest):
                 The request object. Request message for
                 [KeyManagementService.UpdateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyVersion].
-            crypto_key_version (:class:`~.resources.CryptoKeyVersion`):
+            crypto_key_version (google.cloud.kms_v1.types.CryptoKeyVersion):
                 Required.
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 with updated values.
+
                 This corresponds to the ``crypto_key_version`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Required. List of fields to be
                 updated in this request.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1812,22 +1932,20 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKeyVersion:
-                A
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                represents an individual cryptographic key, and the
-                associated key material.
+            google.cloud.kms_v1.types.CryptoKeyVersion:
+                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an individual cryptographic key, and the
+                   associated key material.
 
-                An
-                [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
-                version can be used for cryptographic operations.
+                   An
+                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                   version can be used for cryptographic operations.
 
-                For security reasons, the raw cryptographic key material
-                represented by a
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                can never be viewed or exported. It can only be used to
-                encrypt, decrypt, or sign data when an authorized user
-                or application invokes Cloud KMS.
+                   For security reasons, the raw cryptographic key
+                   material represented by a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   can never be viewed or exported. It can only be used
+                   to encrypt, decrypt, or sign data when an authorized
+                   user or application invokes Cloud KMS.
 
         """
         # Create or coerce a protobuf request object.
@@ -1893,10 +2011,10 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.EncryptRequest`):
+            request (google.cloud.kms_v1.types.EncryptRequest):
                 The request object. Request message for
                 [KeyManagementService.Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 [CryptoKey][google.cloud.kms.v1.CryptoKey] or
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
@@ -1905,10 +2023,11 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 If a [CryptoKey][google.cloud.kms.v1.CryptoKey] is
                 specified, the server will use its [primary
                 version][google.cloud.kms.v1.CryptoKey.primary].
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            plaintext (:class:`bytes`):
+            plaintext (bytes):
                 Required. The data to encrypt. Must be no larger than
                 64KiB.
 
@@ -1921,6 +2040,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 combined length of the plaintext and
                 additional_authenticated_data fields must be no larger
                 than 8KiB.
+
                 This corresponds to the ``plaintext`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1932,7 +2052,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.service.EncryptResponse:
+            google.cloud.kms_v1.types.EncryptResponse:
                 Response message for
                 [KeyManagementService.Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
 
@@ -1996,20 +2116,22 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.DecryptRequest`):
+            request (google.cloud.kms_v1.types.DecryptRequest):
                 The request object. Request message for
                 [KeyManagementService.Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt].
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 [CryptoKey][google.cloud.kms.v1.CryptoKey] to use for
                 decryption. The server will choose the appropriate
                 version.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ciphertext (:class:`bytes`):
+            ciphertext (bytes):
                 Required. The encrypted data originally returned in
                 [EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext].
+
                 This corresponds to the ``ciphertext`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2021,7 +2143,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.service.DecryptResponse:
+            google.cloud.kms_v1.types.DecryptResponse:
                 Response message for
                 [KeyManagementService.Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt].
 
@@ -2086,21 +2208,23 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.AsymmetricSignRequest`):
+            request (google.cloud.kms_v1.types.AsymmetricSignRequest):
                 The request object. Request message for
                 [KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign].
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 to use for signing.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            digest (:class:`~.service.Digest`):
+            digest (google.cloud.kms_v1.types.Digest):
                 Required. The digest of the data to sign. The digest
                 must be produced with the same digest algorithm as
                 specified by the key version's
                 [algorithm][google.cloud.kms.v1.CryptoKeyVersion.algorithm].
+
                 This corresponds to the ``digest`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2112,7 +2236,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.service.AsymmetricSignResponse:
+            google.cloud.kms_v1.types.AsymmetricSignResponse:
                 Response message for
                 [KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign].
 
@@ -2178,20 +2302,22 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.AsymmetricDecryptRequest`):
+            request (google.cloud.kms_v1.types.AsymmetricDecryptRequest):
                 The request object. Request message for
                 [KeyManagementService.AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt].
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 to use for decryption.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ciphertext (:class:`bytes`):
+            ciphertext (bytes):
                 Required. The data encrypted with the named
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]'s
                 public key using OAEP.
+
                 This corresponds to the ``ciphertext`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2203,7 +2329,7 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.service.AsymmetricDecryptResponse:
+            google.cloud.kms_v1.types.AsymmetricDecryptResponse:
                 Response message for
                 [KeyManagementService.AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt].
 
@@ -2267,19 +2393,21 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.UpdateCryptoKeyPrimaryVersionRequest`):
+            request (google.cloud.kms_v1.types.UpdateCryptoKeyPrimaryVersionRequest):
                 The request object. Request message for
                 [KeyManagementService.UpdateCryptoKeyPrimaryVersion][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyPrimaryVersion].
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 [CryptoKey][google.cloud.kms.v1.CryptoKey] to update.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            crypto_key_version_id (:class:`str`):
+            crypto_key_version_id (str):
                 Required. The id of the child
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 to use as primary.
+
                 This corresponds to the ``crypto_key_version_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2291,16 +2419,15 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKey:
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents
-                a logical key that can be used for cryptographic
-                operations.
+            google.cloud.kms_v1.types.CryptoKey:
+                A [CryptoKey][google.cloud.kms.v1.CryptoKey] represents a logical key that can be used for cryptographic
+                   operations.
 
-                A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made up
-                of zero or more
-                [versions][google.cloud.kms.v1.CryptoKeyVersion], which
-                represent the actual key material used in cryptographic
-                operations.
+                   A [CryptoKey][google.cloud.kms.v1.CryptoKey] is made
+                   up of zero or more
+                   [versions][google.cloud.kms.v1.CryptoKeyVersion],
+                   which represent the actual key material used in
+                   cryptographic operations.
 
         """
         # Create or coerce a protobuf request object.
@@ -2379,13 +2506,14 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.DestroyCryptoKeyVersionRequest`):
+            request (google.cloud.kms_v1.types.DestroyCryptoKeyVersionRequest):
                 The request object. Request message for
                 [KeyManagementService.DestroyCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.DestroyCryptoKeyVersion].
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 to destroy.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2397,22 +2525,20 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKeyVersion:
-                A
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                represents an individual cryptographic key, and the
-                associated key material.
+            google.cloud.kms_v1.types.CryptoKeyVersion:
+                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an individual cryptographic key, and the
+                   associated key material.
 
-                An
-                [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
-                version can be used for cryptographic operations.
+                   An
+                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                   version can be used for cryptographic operations.
 
-                For security reasons, the raw cryptographic key material
-                represented by a
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                can never be viewed or exported. It can only be used to
-                encrypt, decrypt, or sign data when an authorized user
-                or application invokes Cloud KMS.
+                   For security reasons, the raw cryptographic key
+                   material represented by a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   can never be viewed or exported. It can only be used
+                   to encrypt, decrypt, or sign data when an authorized
+                   user or application invokes Cloud KMS.
 
         """
         # Create or coerce a protobuf request object.
@@ -2480,13 +2606,14 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
 
         Args:
-            request (:class:`~.service.RestoreCryptoKeyVersionRequest`):
+            request (google.cloud.kms_v1.types.RestoreCryptoKeyVersionRequest):
                 The request object. Request message for
                 [KeyManagementService.RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion].
-            name (:class:`str`):
+            name (str):
                 Required. The resource name of the
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
                 to restore.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -2498,22 +2625,20 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.resources.CryptoKeyVersion:
-                A
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                represents an individual cryptographic key, and the
-                associated key material.
+            google.cloud.kms_v1.types.CryptoKeyVersion:
+                A [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion] represents an individual cryptographic key, and the
+                   associated key material.
 
-                An
-                [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
-                version can be used for cryptographic operations.
+                   An
+                   [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED]
+                   version can be used for cryptographic operations.
 
-                For security reasons, the raw cryptographic key material
-                represented by a
-                [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
-                can never be viewed or exported. It can only be used to
-                encrypt, decrypt, or sign data when an authorized user
-                or application invokes Cloud KMS.
+                   For security reasons, the raw cryptographic key
+                   material represented by a
+                   [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]
+                   can never be viewed or exported. It can only be used
+                   to encrypt, decrypt, or sign data when an authorized
+                   user or application invokes Cloud KMS.
 
         """
         # Create or coerce a protobuf request object.

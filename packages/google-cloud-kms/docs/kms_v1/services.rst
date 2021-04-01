@@ -1,6 +1,6 @@
 Services for Google Cloud Kms v1 API
 ====================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.kms_v1.services.key_management_service
-    :members:
-    :inherited-members:
+    key_management_service
