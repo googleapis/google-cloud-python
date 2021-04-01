@@ -30,9 +30,8 @@ version = "1.1.1"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
     "google-cloud-logging>=1.14.0, <2.4",
-    "google-api-core[grpc] >= 1.22.0, < 2.0.0dev",
+    "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
     "proto-plus >= 1.4.0",
-    "libcst >= 0.2.5",
 ]
 extras = {}
 

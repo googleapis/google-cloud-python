@@ -37,7 +37,8 @@ s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst", 
 templated_files = common.py_library(
     samples=True,  # set to True only if there are samples
     microgenerator=True,
-    system_test_dependencies=["test_utils"]
+    system_test_dependencies=["test_utils"],
+    cov_level=98,
 )
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
@@ -45,9 +46,6 @@ s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .
 # Samples templates
 # ----------------------------------------------------------------------------
 python.py_samples(skip_readmes=True)
-
-# TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
