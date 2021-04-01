@@ -3,30 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-notebooks",
-        "sha": "8d668f883761f7c77d6aeeb5ef5834cd097f1ceb"
+        "remote": "https://github.com/googleapis/python-notebooks.git",
+        "sha": "4999922dc0f6eaebc8aec58929176ab6b87cfdca"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "95dd24960cf9f794ef583e59ad9f1fabe1c4a924",
-        "internalRef": "365882072"
+        "sha": "915925089600094e72e4bfa8cf586c170e6b7109",
+        "internalRef": "366152684"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "551dd78ca04f7989abc9e63e392f8b8cfa1a0ef9"
+        "sha": "a22531f8364582f51485e4e9db85872d93514ab1"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "551dd78ca04f7989abc9e63e392f8b8cfa1a0ef9"
+        "sha": "a22531f8364582f51485e4e9db85872d93514ab1"
       }
     }
   ],
@@ -40,5 +40,101 @@
         "generator": "bazel"
       }
     }
+  ],
+  "generatedFiles": [
+    ".coveragerc",
+    ".flake8",
+    ".github/CONTRIBUTING.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/support_request.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/header-checker-lint.yml",
+    ".github/release-please.yml",
+    ".github/snippet-bot.yml",
+    ".gitignore",
+    ".kokoro/build.sh",
+    ".kokoro/continuous/common.cfg",
+    ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
+    ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
+    ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
+    ".kokoro/presubmit/common.cfg",
+    ".kokoro/presubmit/presubmit.cfg",
+    ".kokoro/publish-docs.sh",
+    ".kokoro/release.sh",
+    ".kokoro/release/common.cfg",
+    ".kokoro/release/release.cfg",
+    ".kokoro/samples/lint/common.cfg",
+    ".kokoro/samples/lint/continuous.cfg",
+    ".kokoro/samples/lint/periodic.cfg",
+    ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.6/common.cfg",
+    ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic-head.cfg",
+    ".kokoro/samples/python3.6/periodic.cfg",
+    ".kokoro/samples/python3.6/presubmit.cfg",
+    ".kokoro/samples/python3.7/common.cfg",
+    ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic-head.cfg",
+    ".kokoro/samples/python3.7/periodic.cfg",
+    ".kokoro/samples/python3.7/presubmit.cfg",
+    ".kokoro/samples/python3.8/common.cfg",
+    ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic-head.cfg",
+    ".kokoro/samples/python3.8/periodic.cfg",
+    ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples-against-head.sh",
+    ".kokoro/test-samples-impl.sh",
+    ".kokoro/test-samples.sh",
+    ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
+    ".trampolinerc",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "MANIFEST.in",
+    "docs/_static/custom.css",
+    "docs/_templates/layout.html",
+    "docs/conf.py",
+    "docs/multiprocessing.rst",
+    "docs/notebooks_v1beta1/notebook_service.rst",
+    "docs/notebooks_v1beta1/services.rst",
+    "docs/notebooks_v1beta1/types.rst",
+    "google/cloud/notebooks/__init__.py",
+    "google/cloud/notebooks/py.typed",
+    "google/cloud/notebooks_v1beta1/__init__.py",
+    "google/cloud/notebooks_v1beta1/py.typed",
+    "google/cloud/notebooks_v1beta1/services/__init__.py",
+    "google/cloud/notebooks_v1beta1/services/notebook_service/__init__.py",
+    "google/cloud/notebooks_v1beta1/services/notebook_service/async_client.py",
+    "google/cloud/notebooks_v1beta1/services/notebook_service/client.py",
+    "google/cloud/notebooks_v1beta1/services/notebook_service/pagers.py",
+    "google/cloud/notebooks_v1beta1/services/notebook_service/transports/__init__.py",
+    "google/cloud/notebooks_v1beta1/services/notebook_service/transports/base.py",
+    "google/cloud/notebooks_v1beta1/services/notebook_service/transports/grpc.py",
+    "google/cloud/notebooks_v1beta1/services/notebook_service/transports/grpc_asyncio.py",
+    "google/cloud/notebooks_v1beta1/types/__init__.py",
+    "google/cloud/notebooks_v1beta1/types/environment.py",
+    "google/cloud/notebooks_v1beta1/types/instance.py",
+    "google/cloud/notebooks_v1beta1/types/service.py",
+    "mypy.ini",
+    "noxfile.py",
+    "renovate.json",
+    "scripts/decrypt-secrets.sh",
+    "scripts/readme-gen/readme_gen.py",
+    "scripts/readme-gen/templates/README.tmpl.rst",
+    "scripts/readme-gen/templates/auth.tmpl.rst",
+    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "setup.cfg",
+    "testing/.gitignore",
+    "tests/unit/gapic/notebooks_v1beta1/__init__.py",
+    "tests/unit/gapic/notebooks_v1beta1/test_notebook_service.py"
   ]
 }
