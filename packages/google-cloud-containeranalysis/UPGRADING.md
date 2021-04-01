@@ -20,7 +20,7 @@ Methods expect request objects. We provide a script that will convert most commo
 * Install the library
 
 ```py
-python3 -m pip install google-cloud-containeranalysis
+python3 -m pip install google-cloud-containeranalysis[libcst]
 ```
 
 * The script `fixup_containeranalysis_v1_keywords.py` is shipped with the library. It expects
