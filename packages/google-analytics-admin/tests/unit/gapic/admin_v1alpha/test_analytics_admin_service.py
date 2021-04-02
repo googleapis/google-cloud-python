@@ -93,15 +93,19 @@ def test__get_default_mtls_endpoint():
     )
 
 
-def test_analytics_admin_service_client_from_service_account_info():
+@pytest.mark.parametrize(
+    "client_class", [AnalyticsAdminServiceClient, AnalyticsAdminServiceAsyncClient,]
+)
+def test_analytics_admin_service_client_from_service_account_info(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = AnalyticsAdminServiceClient.from_service_account_info(info)
+        client = client_class.from_service_account_info(info)
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "analyticsadmin.googleapis.com:443"
 
@@ -117,9 +121,11 @@ def test_analytics_admin_service_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "analyticsadmin.googleapis.com:443"
 
@@ -184,7 +190,7 @@ def test_analytics_admin_service_client_client_options(
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -200,7 +206,7 @@ def test_analytics_admin_service_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_ENDPOINT,
                 scopes=None,
-                ssl_channel_credentials=None,
+                client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
@@ -216,7 +222,7 @@ def test_analytics_admin_service_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_MTLS_ENDPOINT,
                 scopes=None,
-                ssl_channel_credentials=None,
+                client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
@@ -244,7 +250,7 @@ def test_analytics_admin_service_client_client_options(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -305,29 +311,25 @@ def test_analytics_admin_service_client_mtls_env_auto(
             client_cert_source=client_cert_source_callback
         )
         with mock.patch.object(transport_class, "__init__") as patched:
-            ssl_channel_creds = mock.Mock()
-            with mock.patch(
-                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
-            ):
-                patched.return_value = None
-                client = client_class(client_options=options)
+            patched.return_value = None
+            client = client_class(client_options=options)
 
-                if use_client_cert_env == "false":
-                    expected_ssl_channel_creds = None
-                    expected_host = client.DEFAULT_ENDPOINT
-                else:
-                    expected_ssl_channel_creds = ssl_channel_creds
-                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+            if use_client_cert_env == "false":
+                expected_client_cert_source = None
+                expected_host = client.DEFAULT_ENDPOINT
+            else:
+                expected_client_cert_source = client_cert_source_callback
+                expected_host = client.DEFAULT_MTLS_ENDPOINT
 
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=expected_host,
-                    scopes=None,
-                    ssl_channel_credentials=expected_ssl_channel_creds,
-                    quota_project_id=None,
-                    client_info=transports.base.DEFAULT_CLIENT_INFO,
-                )
+            patched.assert_called_once_with(
+                credentials=None,
+                credentials_file=None,
+                host=expected_host,
+                scopes=None,
+                client_cert_source_for_mtls=expected_client_cert_source,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+            )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
@@ -336,40 +338,31 @@ def test_analytics_admin_service_client_mtls_env_auto(
     ):
         with mock.patch.object(transport_class, "__init__") as patched:
             with mock.patch(
-                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=True,
             ):
                 with mock.patch(
-                    "google.auth.transport.grpc.SslCredentials.is_mtls",
-                    new_callable=mock.PropertyMock,
-                ) as is_mtls_mock:
-                    with mock.patch(
-                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
-                        new_callable=mock.PropertyMock,
-                    ) as ssl_credentials_mock:
-                        if use_client_cert_env == "false":
-                            is_mtls_mock.return_value = False
-                            ssl_credentials_mock.return_value = None
-                            expected_host = client.DEFAULT_ENDPOINT
-                            expected_ssl_channel_creds = None
-                        else:
-                            is_mtls_mock.return_value = True
-                            ssl_credentials_mock.return_value = mock.Mock()
-                            expected_host = client.DEFAULT_MTLS_ENDPOINT
-                            expected_ssl_channel_creds = (
-                                ssl_credentials_mock.return_value
-                            )
+                    "google.auth.transport.mtls.default_client_cert_source",
+                    return_value=client_cert_source_callback,
+                ):
+                    if use_client_cert_env == "false":
+                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_client_cert_source = None
+                    else:
+                        expected_host = client.DEFAULT_MTLS_ENDPOINT
+                        expected_client_cert_source = client_cert_source_callback
 
-                        patched.return_value = None
-                        client = client_class()
-                        patched.assert_called_once_with(
-                            credentials=None,
-                            credentials_file=None,
-                            host=expected_host,
-                            scopes=None,
-                            ssl_channel_credentials=expected_ssl_channel_creds,
-                            quota_project_id=None,
-                            client_info=transports.base.DEFAULT_CLIENT_INFO,
-                        )
+                    patched.return_value = None
+                    client = client_class()
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=expected_host,
+                        scopes=None,
+                        client_cert_source_for_mtls=expected_client_cert_source,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    )
 
     # Check the case client_cert_source and ADC client cert are not provided.
     with mock.patch.dict(
@@ -377,24 +370,20 @@ def test_analytics_admin_service_client_mtls_env_auto(
     ):
         with mock.patch.object(transport_class, "__init__") as patched:
             with mock.patch(
-                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=False,
             ):
-                with mock.patch(
-                    "google.auth.transport.grpc.SslCredentials.is_mtls",
-                    new_callable=mock.PropertyMock,
-                ) as is_mtls_mock:
-                    is_mtls_mock.return_value = False
-                    patched.return_value = None
-                    client = client_class()
-                    patched.assert_called_once_with(
-                        credentials=None,
-                        credentials_file=None,
-                        host=client.DEFAULT_ENDPOINT,
-                        scopes=None,
-                        ssl_channel_credentials=None,
-                        quota_project_id=None,
-                        client_info=transports.base.DEFAULT_CLIENT_INFO,
-                    )
+                patched.return_value = None
+                client = client_class()
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=client.DEFAULT_ENDPOINT,
+                    scopes=None,
+                    client_cert_source_for_mtls=None,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                )
 
 
 @pytest.mark.parametrize(
@@ -425,7 +414,7 @@ def test_analytics_admin_service_client_client_options_scopes(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -459,7 +448,7 @@ def test_analytics_admin_service_client_client_options_credentials_file(
             credentials_file="credentials.json",
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -478,7 +467,7 @@ def test_analytics_admin_service_client_client_options_from_dict():
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -528,6 +517,22 @@ def test_get_account(
 
 def test_get_account_from_dict():
     test_get_account(request_type=dict)
+
+
+def test_get_account_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_account), "__call__") as call:
+        client.get_account()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.GetAccountRequest()
 
 
 @pytest.mark.asyncio
@@ -742,6 +747,22 @@ def test_list_accounts_from_dict():
     test_list_accounts(request_type=dict)
 
 
+def test_list_accounts_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_accounts), "__call__") as call:
+        client.list_accounts()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.ListAccountsRequest()
+
+
 @pytest.mark.asyncio
 async def test_list_accounts_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.ListAccountsRequest
@@ -953,6 +974,22 @@ def test_delete_account_from_dict():
     test_delete_account(request_type=dict)
 
 
+def test_delete_account_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_account), "__call__") as call:
+        client.delete_account()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.DeleteAccountRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_account_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.DeleteAccountRequest
@@ -1157,6 +1194,22 @@ def test_update_account(
 
 def test_update_account_from_dict():
     test_update_account(request_type=dict)
+
+
+def test_update_account_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_account), "__call__") as call:
+        client.update_account()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.UpdateAccountRequest()
 
 
 @pytest.mark.asyncio
@@ -1391,6 +1444,24 @@ def test_provision_account_ticket_from_dict():
     test_provision_account_ticket(request_type=dict)
 
 
+def test_provision_account_ticket_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.provision_account_ticket), "__call__"
+    ) as call:
+        client.provision_account_ticket()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.ProvisionAccountTicketRequest()
+
+
 @pytest.mark.asyncio
 async def test_provision_account_ticket_async(
     transport: str = "grpc_asyncio",
@@ -1471,6 +1542,24 @@ def test_list_account_summaries(
 
 def test_list_account_summaries_from_dict():
     test_list_account_summaries(request_type=dict)
+
+
+def test_list_account_summaries_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_account_summaries), "__call__"
+    ) as call:
+        client.list_account_summaries()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.ListAccountSummariesRequest()
 
 
 @pytest.mark.asyncio
@@ -1738,6 +1827,22 @@ def test_get_property_from_dict():
     test_get_property(request_type=dict)
 
 
+def test_get_property_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_property), "__call__") as call:
+        client.get_property()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.GetPropertyRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_property_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.GetPropertyRequest
@@ -1957,6 +2062,22 @@ def test_list_properties(
 
 def test_list_properties_from_dict():
     test_list_properties(request_type=dict)
+
+
+def test_list_properties_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_properties), "__call__") as call:
+        client.list_properties()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.ListPropertiesRequest()
 
 
 @pytest.mark.asyncio
@@ -2201,6 +2322,22 @@ def test_create_property_from_dict():
     test_create_property(request_type=dict)
 
 
+def test_create_property_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_property), "__call__") as call:
+        client.create_property()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.CreatePropertyRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_property_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.CreatePropertyRequest
@@ -2366,6 +2503,22 @@ def test_delete_property(
 
 def test_delete_property_from_dict():
     test_delete_property(request_type=dict)
+
+
+def test_delete_property_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_property), "__call__") as call:
+        client.delete_property()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.DeletePropertyRequest()
 
 
 @pytest.mark.asyncio
@@ -2581,6 +2734,22 @@ def test_update_property(
 
 def test_update_property_from_dict():
     test_update_property(request_type=dict)
+
+
+def test_update_property_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_property), "__call__") as call:
+        client.update_property()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.UpdatePropertyRequest()
 
 
 @pytest.mark.asyncio
@@ -2828,6 +2997,22 @@ def test_get_user_link_from_dict():
     test_get_user_link(request_type=dict)
 
 
+def test_get_user_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_user_link), "__call__") as call:
+        client.get_user_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.GetUserLinkRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_user_link_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.GetUserLinkRequest
@@ -3035,6 +3220,24 @@ def test_batch_get_user_links_from_dict():
     test_batch_get_user_links(request_type=dict)
 
 
+def test_batch_get_user_links_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_get_user_links), "__call__"
+    ) as call:
+        client.batch_get_user_links()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.BatchGetUserLinksRequest()
+
+
 @pytest.mark.asyncio
 async def test_batch_get_user_links_async(
     transport: str = "grpc_asyncio",
@@ -3168,6 +3371,22 @@ def test_list_user_links(
 
 def test_list_user_links_from_dict():
     test_list_user_links(request_type=dict)
+
+
+def test_list_user_links_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_user_links), "__call__") as call:
+        client.list_user_links()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.ListUserLinksRequest()
 
 
 @pytest.mark.asyncio
@@ -3527,6 +3746,22 @@ def test_audit_user_links_from_dict():
     test_audit_user_links(request_type=dict)
 
 
+def test_audit_user_links_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.audit_user_links), "__call__") as call:
+        client.audit_user_links()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.AuditUserLinksRequest()
+
+
 @pytest.mark.asyncio
 async def test_audit_user_links_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.AuditUserLinksRequest
@@ -3815,6 +4050,22 @@ def test_create_user_link_from_dict():
     test_create_user_link(request_type=dict)
 
 
+def test_create_user_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_user_link), "__call__") as call:
+        client.create_user_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.CreateUserLinkRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_user_link_async(
     transport: str = "grpc_asyncio", request_type=analytics_admin.CreateUserLinkRequest
@@ -4034,6 +4285,24 @@ def test_batch_create_user_links_from_dict():
     test_batch_create_user_links(request_type=dict)
 
 
+def test_batch_create_user_links_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_user_links), "__call__"
+    ) as call:
+        client.batch_create_user_links()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.BatchCreateUserLinksRequest()
+
+
 @pytest.mark.asyncio
 async def test_batch_create_user_links_async(
     transport: str = "grpc_asyncio",
@@ -4173,6 +4442,22 @@ def test_update_user_link(
 
 def test_update_user_link_from_dict():
     test_update_user_link(request_type=dict)
+
+
+def test_update_user_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_user_link), "__call__") as call:
+        client.update_user_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.UpdateUserLinkRequest()
 
 
 @pytest.mark.asyncio
@@ -4390,6 +4675,24 @@ def test_batch_update_user_links_from_dict():
     test_batch_update_user_links(request_type=dict)
 
 
+def test_batch_update_user_links_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_update_user_links), "__call__"
+    ) as call:
+        client.batch_update_user_links()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.BatchUpdateUserLinksRequest()
+
+
 @pytest.mark.asyncio
 async def test_batch_update_user_links_async(
     transport: str = "grpc_asyncio",
@@ -4518,6 +4821,22 @@ def test_delete_user_link(
 
 def test_delete_user_link_from_dict():
     test_delete_user_link(request_type=dict)
+
+
+def test_delete_user_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_user_link), "__call__") as call:
+        client.delete_user_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.DeleteUserLinkRequest()
 
 
 @pytest.mark.asyncio
@@ -4714,6 +5033,24 @@ def test_batch_delete_user_links_from_dict():
     test_batch_delete_user_links(request_type=dict)
 
 
+def test_batch_delete_user_links_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_delete_user_links), "__call__"
+    ) as call:
+        client.batch_delete_user_links()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.BatchDeleteUserLinksRequest()
+
+
 @pytest.mark.asyncio
 async def test_batch_delete_user_links_async(
     transport: str = "grpc_asyncio",
@@ -4857,6 +5194,24 @@ def test_get_web_data_stream(
 
 def test_get_web_data_stream_from_dict():
     test_get_web_data_stream(request_type=dict)
+
+
+def test_get_web_data_stream_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_web_data_stream), "__call__"
+    ) as call:
+        client.get_web_data_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.GetWebDataStreamRequest()
 
 
 @pytest.mark.asyncio
@@ -5086,6 +5441,24 @@ def test_delete_web_data_stream_from_dict():
     test_delete_web_data_stream(request_type=dict)
 
 
+def test_delete_web_data_stream_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_web_data_stream), "__call__"
+    ) as call:
+        client.delete_web_data_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.DeleteWebDataStreamRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_web_data_stream_async(
     transport: str = "grpc_asyncio",
@@ -5306,6 +5679,24 @@ def test_update_web_data_stream(
 
 def test_update_web_data_stream_from_dict():
     test_update_web_data_stream(request_type=dict)
+
+
+def test_update_web_data_stream_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_web_data_stream), "__call__"
+    ) as call:
+        client.update_web_data_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.UpdateWebDataStreamRequest()
 
 
 @pytest.mark.asyncio
@@ -5572,6 +5963,24 @@ def test_create_web_data_stream_from_dict():
     test_create_web_data_stream(request_type=dict)
 
 
+def test_create_web_data_stream_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_web_data_stream), "__call__"
+    ) as call:
+        client.create_web_data_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.CreateWebDataStreamRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_web_data_stream_async(
     transport: str = "grpc_asyncio",
@@ -5816,6 +6225,24 @@ def test_list_web_data_streams(
 
 def test_list_web_data_streams_from_dict():
     test_list_web_data_streams(request_type=dict)
+
+
+def test_list_web_data_streams_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_web_data_streams), "__call__"
+    ) as call:
+        client.list_web_data_streams()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.ListWebDataStreamsRequest()
 
 
 @pytest.mark.asyncio
@@ -6217,6 +6644,24 @@ def test_get_ios_app_data_stream_from_dict():
     test_get_ios_app_data_stream(request_type=dict)
 
 
+def test_get_ios_app_data_stream_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_ios_app_data_stream), "__call__"
+    ) as call:
+        client.get_ios_app_data_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.GetIosAppDataStreamRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_ios_app_data_stream_async(
     transport: str = "grpc_asyncio",
@@ -6441,6 +6886,24 @@ def test_delete_ios_app_data_stream_from_dict():
     test_delete_ios_app_data_stream(request_type=dict)
 
 
+def test_delete_ios_app_data_stream_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_ios_app_data_stream), "__call__"
+    ) as call:
+        client.delete_ios_app_data_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.DeleteIosAppDataStreamRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_ios_app_data_stream_async(
     transport: str = "grpc_asyncio",
@@ -6658,6 +7121,24 @@ def test_update_ios_app_data_stream(
 
 def test_update_ios_app_data_stream_from_dict():
     test_update_ios_app_data_stream(request_type=dict)
+
+
+def test_update_ios_app_data_stream_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_ios_app_data_stream), "__call__"
+    ) as call:
+        client.update_ios_app_data_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.UpdateIosAppDataStreamRequest()
 
 
 @pytest.mark.asyncio
@@ -6922,6 +7403,24 @@ def test_create_ios_app_data_stream_from_dict():
     test_create_ios_app_data_stream(request_type=dict)
 
 
+def test_create_ios_app_data_stream_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_ios_app_data_stream), "__call__"
+    ) as call:
+        client.create_ios_app_data_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.CreateIosAppDataStreamRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_ios_app_data_stream_async(
     transport: str = "grpc_asyncio",
@@ -7167,6 +7666,24 @@ def test_list_ios_app_data_streams(
 
 def test_list_ios_app_data_streams_from_dict():
     test_list_ios_app_data_streams(request_type=dict)
+
+
+def test_list_ios_app_data_streams_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_ios_app_data_streams), "__call__"
+    ) as call:
+        client.list_ios_app_data_streams()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.ListIosAppDataStreamsRequest()
 
 
 @pytest.mark.asyncio
@@ -7572,6 +8089,24 @@ def test_get_android_app_data_stream_from_dict():
     test_get_android_app_data_stream(request_type=dict)
 
 
+def test_get_android_app_data_stream_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_android_app_data_stream), "__call__"
+    ) as call:
+        client.get_android_app_data_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.GetAndroidAppDataStreamRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_android_app_data_stream_async(
     transport: str = "grpc_asyncio",
@@ -7797,6 +8332,24 @@ def test_delete_android_app_data_stream_from_dict():
     test_delete_android_app_data_stream(request_type=dict)
 
 
+def test_delete_android_app_data_stream_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_android_app_data_stream), "__call__"
+    ) as call:
+        client.delete_android_app_data_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.DeleteAndroidAppDataStreamRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_android_app_data_stream_async(
     transport: str = "grpc_asyncio",
@@ -8015,6 +8568,24 @@ def test_update_android_app_data_stream(
 
 def test_update_android_app_data_stream_from_dict():
     test_update_android_app_data_stream(request_type=dict)
+
+
+def test_update_android_app_data_stream_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_android_app_data_stream), "__call__"
+    ) as call:
+        client.update_android_app_data_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.UpdateAndroidAppDataStreamRequest()
 
 
 @pytest.mark.asyncio
@@ -8280,6 +8851,24 @@ def test_create_android_app_data_stream_from_dict():
     test_create_android_app_data_stream(request_type=dict)
 
 
+def test_create_android_app_data_stream_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_android_app_data_stream), "__call__"
+    ) as call:
+        client.create_android_app_data_stream()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.CreateAndroidAppDataStreamRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_android_app_data_stream_async(
     transport: str = "grpc_asyncio",
@@ -8526,6 +9115,24 @@ def test_list_android_app_data_streams(
 
 def test_list_android_app_data_streams_from_dict():
     test_list_android_app_data_streams(request_type=dict)
+
+
+def test_list_android_app_data_streams_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_android_app_data_streams), "__call__"
+    ) as call:
+        client.list_android_app_data_streams()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.ListAndroidAppDataStreamsRequest()
 
 
 @pytest.mark.asyncio
@@ -8958,6 +9565,24 @@ def test_get_enhanced_measurement_settings_from_dict():
     test_get_enhanced_measurement_settings(request_type=dict)
 
 
+def test_get_enhanced_measurement_settings_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_enhanced_measurement_settings), "__call__"
+    ) as call:
+        client.get_enhanced_measurement_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.GetEnhancedMeasurementSettingsRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_enhanced_measurement_settings_async(
     transport: str = "grpc_asyncio",
@@ -9243,6 +9868,24 @@ def test_update_enhanced_measurement_settings(
 
 def test_update_enhanced_measurement_settings_from_dict():
     test_update_enhanced_measurement_settings(request_type=dict)
+
+
+def test_update_enhanced_measurement_settings_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_enhanced_measurement_settings), "__call__"
+    ) as call:
+        client.update_enhanced_measurement_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.UpdateEnhancedMeasurementSettingsRequest()
 
 
 @pytest.mark.asyncio
@@ -9544,6 +10187,24 @@ def test_create_firebase_link_from_dict():
     test_create_firebase_link(request_type=dict)
 
 
+def test_create_firebase_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_firebase_link), "__call__"
+    ) as call:
+        client.create_firebase_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.CreateFirebaseLinkRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_firebase_link_async(
     transport: str = "grpc_asyncio",
@@ -9790,6 +10451,24 @@ def test_update_firebase_link_from_dict():
     test_update_firebase_link(request_type=dict)
 
 
+def test_update_firebase_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_firebase_link), "__call__"
+    ) as call:
+        client.update_firebase_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.UpdateFirebaseLinkRequest()
+
+
 @pytest.mark.asyncio
 async def test_update_firebase_link_async(
     transport: str = "grpc_asyncio",
@@ -10031,6 +10710,24 @@ def test_delete_firebase_link_from_dict():
     test_delete_firebase_link(request_type=dict)
 
 
+def test_delete_firebase_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_firebase_link), "__call__"
+    ) as call:
+        client.delete_firebase_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.DeleteFirebaseLinkRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_firebase_link_async(
     transport: str = "grpc_asyncio",
@@ -10239,6 +10936,24 @@ def test_list_firebase_links(
 
 def test_list_firebase_links_from_dict():
     test_list_firebase_links(request_type=dict)
+
+
+def test_list_firebase_links_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_firebase_links), "__call__"
+    ) as call:
+        client.list_firebase_links()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.ListFirebaseLinksRequest()
 
 
 @pytest.mark.asyncio
@@ -10621,6 +11336,24 @@ def test_get_global_site_tag_from_dict():
     test_get_global_site_tag(request_type=dict)
 
 
+def test_get_global_site_tag_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_global_site_tag), "__call__"
+    ) as call:
+        client.get_global_site_tag()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.GetGlobalSiteTagRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_global_site_tag_async(
     transport: str = "grpc_asyncio",
@@ -10848,6 +11581,24 @@ def test_create_google_ads_link(
 
 def test_create_google_ads_link_from_dict():
     test_create_google_ads_link(request_type=dict)
+
+
+def test_create_google_ads_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_google_ads_link), "__call__"
+    ) as call:
+        client.create_google_ads_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.CreateGoogleAdsLinkRequest()
 
 
 @pytest.mark.asyncio
@@ -11102,6 +11853,24 @@ def test_update_google_ads_link_from_dict():
     test_update_google_ads_link(request_type=dict)
 
 
+def test_update_google_ads_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_google_ads_link), "__call__"
+    ) as call:
+        client.update_google_ads_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.UpdateGoogleAdsLinkRequest()
+
+
 @pytest.mark.asyncio
 async def test_update_google_ads_link_async(
     transport: str = "grpc_asyncio",
@@ -11346,6 +12115,24 @@ def test_delete_google_ads_link_from_dict():
     test_delete_google_ads_link(request_type=dict)
 
 
+def test_delete_google_ads_link_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_google_ads_link), "__call__"
+    ) as call:
+        client.delete_google_ads_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.DeleteGoogleAdsLinkRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_google_ads_link_async(
     transport: str = "grpc_asyncio",
@@ -11554,6 +12341,24 @@ def test_list_google_ads_links(
 
 def test_list_google_ads_links_from_dict():
     test_list_google_ads_links(request_type=dict)
+
+
+def test_list_google_ads_links_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_google_ads_links), "__call__"
+    ) as call:
+        client.list_google_ads_links()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.ListGoogleAdsLinksRequest()
 
 
 @pytest.mark.asyncio
@@ -11959,6 +12764,24 @@ def test_get_data_sharing_settings(
 
 def test_get_data_sharing_settings_from_dict():
     test_get_data_sharing_settings(request_type=dict)
+
+
+def test_get_data_sharing_settings_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AnalyticsAdminServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_data_sharing_settings), "__call__"
+    ) as call:
+        client.get_data_sharing_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == analytics_admin.GetDataSharingSettingsRequest()
 
 
 @pytest.mark.asyncio
@@ -12380,6 +13203,58 @@ def test_analytics_admin_service_transport_auth_adc():
         )
 
 
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.AnalyticsAdminServiceGrpcTransport,
+        transports.AnalyticsAdminServiceGrpcAsyncIOTransport,
+    ],
+)
+def test_analytics_admin_service_grpc_transport_client_cert_source_for_mtls(
+    transport_class,
+):
+    cred = credentials.AnonymousCredentials()
+
+    # Check ssl_channel_credentials is used if provided.
+    with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
+        mock_ssl_channel_creds = mock.Mock()
+        transport_class(
+            host="squid.clam.whelk",
+            credentials=cred,
+            ssl_channel_credentials=mock_ssl_channel_creds,
+        )
+        mock_create_channel.assert_called_once_with(
+            "squid.clam.whelk:443",
+            credentials=cred,
+            credentials_file=None,
+            scopes=(
+                "https://www.googleapis.com/auth/analytics.edit",
+                "https://www.googleapis.com/auth/analytics.manage.users",
+                "https://www.googleapis.com/auth/analytics.manage.users.readonly",
+                "https://www.googleapis.com/auth/analytics.readonly",
+            ),
+            ssl_credentials=mock_ssl_channel_creds,
+            quota_project_id=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+    # Check if ssl_channel_credentials is not provided, then client_cert_source_for_mtls
+    # is used.
+    with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
+        with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
+            transport_class(
+                credentials=cred,
+                client_cert_source_for_mtls=client_cert_source_callback,
+            )
+            expected_cert, expected_key = client_cert_source_callback()
+            mock_ssl_cred.assert_called_once_with(
+                certificate_chain=expected_cert, private_key=expected_key
+            )
+
+
 def test_analytics_admin_service_host_no_port():
     client = AnalyticsAdminServiceClient(
         credentials=credentials.AnonymousCredentials(),
@@ -12424,6 +13299,8 @@ def test_analytics_admin_service_grpc_asyncio_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
     [
@@ -12481,6 +13358,8 @@ def test_analytics_admin_service_transport_channel_mtls_with_client_cert_source(
             assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
     [

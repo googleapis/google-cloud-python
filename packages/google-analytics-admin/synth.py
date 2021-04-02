@@ -37,17 +37,15 @@ s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=99, microgenerator=True)
+templated_files = common.py_library(cov_level=98, microgenerator=True)
 s.move(
     templated_files, excludes=[".coveragerc"]
 )  # the microgenerator has a good coveragerc file
 
 # fix coverage statement
 s.replace("noxfile.py",
-'''["']--cov=google\.cloud\.analyticsadmin["'],
-(\s+)"--cov=google\.cloud",''',
-'''"--cov=google.analytics.admin",
-\g<1>"--cov=google.analytics",''')
+'''["']--cov=google/cloud["'],''',
+'''"--cov=google.analytics",''')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 

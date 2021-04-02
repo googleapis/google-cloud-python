@@ -140,8 +140,36 @@ class AnalyticsAdminServiceAsyncClient:
         AnalyticsAdminServiceClient.parse_common_location_path
     )
 
-    from_service_account_info = AnalyticsAdminServiceClient.from_service_account_info
-    from_service_account_file = AnalyticsAdminServiceClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            AnalyticsAdminServiceAsyncClient: The constructed client.
+        """
+        return AnalyticsAdminServiceClient.from_service_account_info.__func__(AnalyticsAdminServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            AnalyticsAdminServiceAsyncClient: The constructed client.
+        """
+        return AnalyticsAdminServiceClient.from_service_account_file.__func__(AnalyticsAdminServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -437,7 +465,8 @@ class AnalyticsAdminServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. The list of fields to be updated. Omitted
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
                 fields will not be updated. To replace the entire
                 entity, use one path with the string "*" to match all
                 fields.
@@ -904,7 +933,8 @@ class AnalyticsAdminServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. The list of fields to be updated. Omitted
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
                 fields will not be updated. To replace the entire
                 entity, use one path with the string "*" to match all
                 fields.
@@ -1797,7 +1827,8 @@ class AnalyticsAdminServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. The list of fields to be updated. Omitted
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
                 fields will not be updated. To replace the entire
                 entity, use one path with the string "*" to match all
                 fields.
@@ -2199,7 +2230,8 @@ class AnalyticsAdminServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. The list of fields to be updated. Omitted
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
                 fields will not be updated. To replace the entire
                 entity, use one path with the string "*" to match all
                 fields.
@@ -2272,8 +2304,16 @@ class AnalyticsAdminServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.IosAppDataStream:
-        r"""Creates an iOS app data stream with the specified
-        location and attributes.
+        r"""Creates an iOS app stream with the specified location
+        and attributes.
+        Note that an iOS app stream must be linked to a Firebase
+        app to receive traffic.
+
+        To create a working app stream, make sure your property
+        is linked to a Firebase project. Then, use the Firebase
+        API to create a Firebase app, which will also create an
+        appropriate data stream in Analytics (may take up to 24
+        hours).
 
         Args:
             request (:class:`google.analytics.admin_v1alpha.types.CreateIosAppDataStreamRequest`):
@@ -2603,7 +2643,8 @@ class AnalyticsAdminServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. The list of fields to be updated. Omitted
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
                 fields will not be updated. To replace the entire
                 entity, use one path with the string "*" to match all
                 fields.
@@ -2681,8 +2722,16 @@ class AnalyticsAdminServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> resources.AndroidAppDataStream:
-        r"""Creates an android app stream with the specified
+        r"""Creates an Android app stream with the specified
         location and attributes.
+        Note that an Android app stream must be linked to a
+        Firebase app to receive traffic.
+
+        To create a working app stream, make sure your property
+        is linked to a Firebase project. Then, use the Firebase
+        API to create a Firebase app, which will also create an
+        appropriate data stream in Analytics (may take up to 24
+        hours).
 
         Args:
             request (:class:`google.analytics.admin_v1alpha.types.CreateAndroidAppDataStreamRequest`):
@@ -2949,7 +2998,8 @@ class AnalyticsAdminServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. The list of fields to be updated. Omitted
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
                 fields will not be updated. To replace the entire
                 entity, use one path with the string "*" to match all
                 fields.
@@ -3127,7 +3177,8 @@ class AnalyticsAdminServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. The list of fields to be updated. Omitted
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
                 fields will not be updated. To replace the entire
                 entity, use one path with the string "*" to match all
                 fields.
@@ -3524,7 +3575,8 @@ class AnalyticsAdminServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
-                Required. The list of fields to be updated. Omitted
+                Required. The list of fields to be updated. Field names
+                must be in snake case (e.g., "field_to_update"). Omitted
                 fields will not be updated. To replace the entire
                 entity, use one path with the string "*" to match all
                 fields.
