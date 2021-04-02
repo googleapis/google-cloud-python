@@ -88,10 +88,10 @@ class VideoClassificationAnnotation(proto.Message):
                done for this classification type, the quality of it
                depends on training data, but there are no metrics
                provided to describe that quality.
-        classification_annotation (~.classification.ClassificationAnnotation):
+        classification_annotation (google.cloud.automl_v1beta1.types.ClassificationAnnotation):
             Output only . The classification details of
             this annotation.
-        time_segment (~.temporal.TimeSegment):
+        time_segment (google.cloud.automl_v1beta1.types.TimeSegment):
             Output only . The time segment of the video
             to which the annotation applies.
     """
@@ -125,7 +125,7 @@ class ClassificationEvaluationMetrics(proto.Message):
             averaged for the overall evaluation.
         log_loss (float):
             Output only. The Log Loss metric.
-        confidence_metrics_entry (Sequence[~.classification.ClassificationEvaluationMetrics.ConfidenceMetricsEntry]):
+        confidence_metrics_entry (Sequence[google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfidenceMetricsEntry]):
             Output only. Metrics for each confidence_threshold in
             0.00,0.05,0.10,...,0.95,0.96,0.97,0.98,0.99 and
             position_threshold = INT32_MAX_VALUE. ROC and
@@ -133,7 +133,7 @@ class ClassificationEvaluationMetrics(proto.Message):
             derived from them. The confidence metrics entries may also
             be supplied for additional values of position_threshold, but
             from these no aggregated metrics are computed.
-        confusion_matrix (~.classification.ClassificationEvaluationMetrics.ConfusionMatrix):
+        confusion_matrix (google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfusionMatrix):
             Output only. Confusion matrix of the
             evaluation. Only set for MULTICLASS
             classification problems where number of labels
@@ -253,7 +253,7 @@ class ClassificationEvaluationMetrics(proto.Message):
                 [prediction_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type],
                 distinct values of the target column at the moment of the
                 model evaluation are populated here.
-            row (Sequence[~.classification.ClassificationEvaluationMetrics.ConfusionMatrix.Row]):
+            row (Sequence[google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics.ConfusionMatrix.Row]):
                 Output only. Rows in the confusion matrix. The number of
                 rows is equal to the size of ``annotation_spec_id``.
                 ``row[i].example_count[j]`` is the number of examples that

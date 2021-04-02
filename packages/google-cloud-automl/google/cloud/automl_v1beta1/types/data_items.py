@@ -46,7 +46,7 @@ class Image(proto.Message):
             Image content represented as a stream of bytes. Note: As
             with all ``bytes`` fields, protobuffers use a pure binary
             representation, whereas JSON representations use base64.
-        input_config (~.io.InputConfig):
+        input_config (google.cloud.automl_v1beta1.types.InputConfig):
             An input config specifying the content of the
             image.
         thumbnail_uri (str):
@@ -92,7 +92,7 @@ class DocumentDimensions(proto.Message):
     r"""Message that describes dimension of a document.
 
     Attributes:
-        unit (~.data_items.DocumentDimensions.DocumentDimensionUnit):
+        unit (google.cloud.automl_v1beta1.types.DocumentDimensions.DocumentDimensionUnit):
             Unit of the dimension.
         width (float):
             Width value of the document, works together
@@ -120,15 +120,15 @@ class Document(proto.Message):
     r"""A structured text document e.g. a PDF.
 
     Attributes:
-        input_config (~.io.DocumentInputConfig):
+        input_config (google.cloud.automl_v1beta1.types.DocumentInputConfig):
             An input config specifying the content of the
             document.
-        document_text (~.data_items.TextSnippet):
+        document_text (google.cloud.automl_v1beta1.types.TextSnippet):
             The plain text version of this document.
-        layout (Sequence[~.data_items.Document.Layout]):
+        layout (Sequence[google.cloud.automl_v1beta1.types.Document.Layout]):
             Describes the layout of the document. Sorted by
             [page_number][].
-        document_dimensions (~.data_items.DocumentDimensions):
+        document_dimensions (google.cloud.automl_v1beta1.types.DocumentDimensions):
             The dimensions of the page in the document.
         page_count (int):
             Number of pages in the document.
@@ -140,14 +140,14 @@ class Document(proto.Message):
         in the document.
 
         Attributes:
-            text_segment (~.gca_text_segment.TextSegment):
+            text_segment (google.cloud.automl_v1beta1.types.TextSegment):
                 Text Segment that represents a segment in
                 [document_text][google.cloud.automl.v1beta1.Document.document_text].
             page_number (int):
                 Page number of the
                 [text_segment][google.cloud.automl.v1beta1.Document.Layout.text_segment]
                 in the original document, starts from 1.
-            bounding_poly (~.geometry.BoundingPoly):
+            bounding_poly (google.cloud.automl_v1beta1.types.BoundingPoly):
                 The position of the
                 [text_segment][google.cloud.automl.v1beta1.Document.Layout.text_segment]
                 in the page. Contains exactly 4
@@ -158,7 +158,7 @@ class Document(proto.Message):
                 [NormalizedVertex-s][google.cloud.automl.v1beta1.NormalizedVertex]
                 are relative to the page. Coordinates are based on top-left
                 as point (0,0).
-            text_segment_type (~.data_items.Document.Layout.TextSegmentType):
+            text_segment_type (google.cloud.automl_v1beta1.types.Document.Layout.TextSegmentType):
                 The type of the
                 [text_segment][google.cloud.automl.v1beta1.Document.Layout.text_segment]
                 in document.
@@ -219,7 +219,7 @@ class Row(proto.Message):
             of the Model this row is being passed to. Note: The below
             ``values`` field must match order of this field, if this
             field is set.
-        values (Sequence[~.struct.Value]):
+        values (Sequence[google.protobuf.struct_pb2.Value]):
             Required. The values of the row cells, given in the same
             order as the column_spec_ids, or, if not set, then in the
             same order as input feature
@@ -237,13 +237,13 @@ class ExamplePayload(proto.Message):
     r"""Example data used for training or prediction.
 
     Attributes:
-        image (~.data_items.Image):
+        image (google.cloud.automl_v1beta1.types.Image):
             Example image.
-        text_snippet (~.data_items.TextSnippet):
+        text_snippet (google.cloud.automl_v1beta1.types.TextSnippet):
             Example text.
-        document (~.data_items.Document):
+        document (google.cloud.automl_v1beta1.types.Document):
             Example document.
-        row (~.data_items.Row):
+        row (google.cloud.automl_v1beta1.types.Row):
             Example relational table row.
     """
 

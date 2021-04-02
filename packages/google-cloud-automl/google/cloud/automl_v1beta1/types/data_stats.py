@@ -38,17 +38,17 @@ class DataStats(proto.Message):
     DataType.
 
     Attributes:
-        float64_stats (~.data_stats.Float64Stats):
+        float64_stats (google.cloud.automl_v1beta1.types.Float64Stats):
             The statistics for FLOAT64 DataType.
-        string_stats (~.data_stats.StringStats):
+        string_stats (google.cloud.automl_v1beta1.types.StringStats):
             The statistics for STRING DataType.
-        timestamp_stats (~.data_stats.TimestampStats):
+        timestamp_stats (google.cloud.automl_v1beta1.types.TimestampStats):
             The statistics for TIMESTAMP DataType.
-        array_stats (~.data_stats.ArrayStats):
+        array_stats (google.cloud.automl_v1beta1.types.ArrayStats):
             The statistics for ARRAY DataType.
-        struct_stats (~.data_stats.StructStats):
+        struct_stats (google.cloud.automl_v1beta1.types.StructStats):
             The statistics for STRUCT DataType.
-        category_stats (~.data_stats.CategoryStats):
+        category_stats (google.cloud.automl_v1beta1.types.CategoryStats):
             The statistics for CATEGORY DataType.
         distinct_value_count (int):
             The number of distinct values.
@@ -102,7 +102,7 @@ class Float64Stats(proto.Message):
             n values. The value at index i is, approximately, the
             i*n/k-th smallest value in the series; for i = 0 and i = k
             these are, respectively, the min and max values.
-        histogram_buckets (Sequence[~.data_stats.Float64Stats.HistogramBucket]):
+        histogram_buckets (Sequence[google.cloud.automl_v1beta1.types.Float64Stats.HistogramBucket]):
             Histogram buckets of the data series. Sorted by the min
             value of the bucket, ascendingly, and the number of the
             buckets is dynamically generated. The buckets are
@@ -146,7 +146,7 @@ class StringStats(proto.Message):
     r"""The data statistics of a series of STRING values.
 
     Attributes:
-        top_unigram_stats (Sequence[~.data_stats.StringStats.UnigramStats]):
+        top_unigram_stats (Sequence[google.cloud.automl_v1beta1.types.StringStats.UnigramStats]):
             The statistics of the top 20 unigrams, ordered by
             [count][google.cloud.automl.v1beta1.StringStats.UnigramStats.count].
     """
@@ -175,7 +175,7 @@ class TimestampStats(proto.Message):
     r"""The data statistics of a series of TIMESTAMP values.
 
     Attributes:
-        granular_stats (Sequence[~.data_stats.TimestampStats.GranularStatsEntry]):
+        granular_stats (Sequence[google.cloud.automl_v1beta1.types.TimestampStats.GranularStatsEntry]):
             The string key is the pre-defined granularity. Currently
             supported: hour_of_day, day_of_week, month_of_year.
             Granularities finer that the granularity of timestamp data
@@ -187,7 +187,7 @@ class TimestampStats(proto.Message):
         r"""Stats split by a defined in context granularity.
 
         Attributes:
-            buckets (Sequence[~.data_stats.TimestampStats.GranularStats.BucketsEntry]):
+            buckets (Sequence[google.cloud.automl_v1beta1.types.TimestampStats.GranularStats.BucketsEntry]):
                 A map from granularity key to example count for that key.
                 E.g. for hour_of_day ``13`` means 1pm, or for month_of_year
                 ``5`` means May).
@@ -204,7 +204,7 @@ class ArrayStats(proto.Message):
     r"""The data statistics of a series of ARRAY values.
 
     Attributes:
-        member_stats (~.data_stats.DataStats):
+        member_stats (google.cloud.automl_v1beta1.types.DataStats):
             Stats of all the values of all arrays, as if
             they were a single long series of data. The type
             depends on the element type of the array.
@@ -217,7 +217,7 @@ class StructStats(proto.Message):
     r"""The data statistics of a series of STRUCT values.
 
     Attributes:
-        field_stats (Sequence[~.data_stats.StructStats.FieldStatsEntry]):
+        field_stats (Sequence[google.cloud.automl_v1beta1.types.StructStats.FieldStatsEntry]):
             Map from a field name of the struct to data
             stats aggregated over series of all data in that
             field across all the structs.
@@ -232,7 +232,7 @@ class CategoryStats(proto.Message):
     r"""The data statistics of a series of CATEGORY values.
 
     Attributes:
-        top_category_stats (Sequence[~.data_stats.CategoryStats.SingleCategoryStats]):
+        top_category_stats (Sequence[google.cloud.automl_v1beta1.types.CategoryStats.SingleCategoryStats]):
             The statistics of the top 20 CATEGORY values, ordered by
 
             [count][google.cloud.automl.v1beta1.CategoryStats.SingleCategoryStats.count].

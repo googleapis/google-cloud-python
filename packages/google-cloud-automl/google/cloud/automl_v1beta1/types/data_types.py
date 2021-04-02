@@ -42,12 +42,12 @@ class DataType(proto.Message):
     data entity (e.g. a table).
 
     Attributes:
-        list_element_type (~.data_types.DataType):
+        list_element_type (google.cloud.automl_v1beta1.types.DataType):
             If
             [type_code][google.cloud.automl.v1beta1.DataType.type_code]
             == [ARRAY][google.cloud.automl.v1beta1.TypeCode.ARRAY], then
             ``list_element_type`` is the type of the elements.
-        struct_type (~.data_types.StructType):
+        struct_type (google.cloud.automl_v1beta1.types.StructType):
             If
             [type_code][google.cloud.automl.v1beta1.DataType.type_code]
             == [STRUCT][google.cloud.automl.v1beta1.TypeCode.STRUCT],
@@ -69,7 +69,7 @@ class DataType(proto.Message):
                the Unix epoch); or be written in ``strftime`` syntax. If
                time_format is not set, then the default format as
                described on the type_code is used.
-        type_code (~.data_types.TypeCode):
+        type_code (google.cloud.automl_v1beta1.types.TypeCode):
             Required. The
             [TypeCode][google.cloud.automl.v1beta1.TypeCode] for this
             type.
@@ -98,7 +98,7 @@ class StructType(proto.Message):
     [STRUCT][google.cloud.automl.v1beta1.TypeCode.STRUCT] type.
 
     Attributes:
-        fields (Sequence[~.data_types.StructType.FieldsEntry]):
+        fields (Sequence[google.cloud.automl_v1beta1.types.StructType.FieldsEntry]):
             Unordered map of struct field names to their
             data types. Fields cannot be added or removed
             via Update. Their names and data types are still

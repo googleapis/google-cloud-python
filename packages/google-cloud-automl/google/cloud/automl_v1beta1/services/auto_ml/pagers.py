@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.automl_v1beta1.types import column_spec
 from google.cloud.automl_v1beta1.types import dataset
@@ -29,7 +38,7 @@ class ListDatasetsPager:
     """A pager for iterating through ``list_datasets`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListDatasetsResponse` object, and
+    :class:`google.cloud.automl_v1beta1.types.ListDatasetsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``datasets`` field.
 
@@ -38,7 +47,7 @@ class ListDatasetsPager:
     through the ``datasets`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListDatasetsResponse`
+    All the usual :class:`google.cloud.automl_v1beta1.types.ListDatasetsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -56,9 +65,9 @@ class ListDatasetsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListDatasetsRequest`):
+            request (google.cloud.automl_v1beta1.types.ListDatasetsRequest):
                 The initial request object.
-            response (:class:`~.service.ListDatasetsResponse`):
+            response (google.cloud.automl_v1beta1.types.ListDatasetsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -91,7 +100,7 @@ class ListDatasetsAsyncPager:
     """A pager for iterating through ``list_datasets`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListDatasetsResponse` object, and
+    :class:`google.cloud.automl_v1beta1.types.ListDatasetsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``datasets`` field.
 
@@ -100,7 +109,7 @@ class ListDatasetsAsyncPager:
     through the ``datasets`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListDatasetsResponse`
+    All the usual :class:`google.cloud.automl_v1beta1.types.ListDatasetsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -118,9 +127,9 @@ class ListDatasetsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListDatasetsRequest`):
+            request (google.cloud.automl_v1beta1.types.ListDatasetsRequest):
                 The initial request object.
-            response (:class:`~.service.ListDatasetsResponse`):
+            response (google.cloud.automl_v1beta1.types.ListDatasetsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -157,7 +166,7 @@ class ListTableSpecsPager:
     """A pager for iterating through ``list_table_specs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListTableSpecsResponse` object, and
+    :class:`google.cloud.automl_v1beta1.types.ListTableSpecsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``table_specs`` field.
 
@@ -166,7 +175,7 @@ class ListTableSpecsPager:
     through the ``table_specs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListTableSpecsResponse`
+    All the usual :class:`google.cloud.automl_v1beta1.types.ListTableSpecsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -184,9 +193,9 @@ class ListTableSpecsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListTableSpecsRequest`):
+            request (google.cloud.automl_v1beta1.types.ListTableSpecsRequest):
                 The initial request object.
-            response (:class:`~.service.ListTableSpecsResponse`):
+            response (google.cloud.automl_v1beta1.types.ListTableSpecsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -219,7 +228,7 @@ class ListTableSpecsAsyncPager:
     """A pager for iterating through ``list_table_specs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListTableSpecsResponse` object, and
+    :class:`google.cloud.automl_v1beta1.types.ListTableSpecsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``table_specs`` field.
 
@@ -228,7 +237,7 @@ class ListTableSpecsAsyncPager:
     through the ``table_specs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListTableSpecsResponse`
+    All the usual :class:`google.cloud.automl_v1beta1.types.ListTableSpecsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -246,9 +255,9 @@ class ListTableSpecsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListTableSpecsRequest`):
+            request (google.cloud.automl_v1beta1.types.ListTableSpecsRequest):
                 The initial request object.
-            response (:class:`~.service.ListTableSpecsResponse`):
+            response (google.cloud.automl_v1beta1.types.ListTableSpecsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -285,7 +294,7 @@ class ListColumnSpecsPager:
     """A pager for iterating through ``list_column_specs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListColumnSpecsResponse` object, and
+    :class:`google.cloud.automl_v1beta1.types.ListColumnSpecsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``column_specs`` field.
 
@@ -294,7 +303,7 @@ class ListColumnSpecsPager:
     through the ``column_specs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListColumnSpecsResponse`
+    All the usual :class:`google.cloud.automl_v1beta1.types.ListColumnSpecsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -312,9 +321,9 @@ class ListColumnSpecsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListColumnSpecsRequest`):
+            request (google.cloud.automl_v1beta1.types.ListColumnSpecsRequest):
                 The initial request object.
-            response (:class:`~.service.ListColumnSpecsResponse`):
+            response (google.cloud.automl_v1beta1.types.ListColumnSpecsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -347,7 +356,7 @@ class ListColumnSpecsAsyncPager:
     """A pager for iterating through ``list_column_specs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListColumnSpecsResponse` object, and
+    :class:`google.cloud.automl_v1beta1.types.ListColumnSpecsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``column_specs`` field.
 
@@ -356,7 +365,7 @@ class ListColumnSpecsAsyncPager:
     through the ``column_specs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListColumnSpecsResponse`
+    All the usual :class:`google.cloud.automl_v1beta1.types.ListColumnSpecsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -374,9 +383,9 @@ class ListColumnSpecsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListColumnSpecsRequest`):
+            request (google.cloud.automl_v1beta1.types.ListColumnSpecsRequest):
                 The initial request object.
-            response (:class:`~.service.ListColumnSpecsResponse`):
+            response (google.cloud.automl_v1beta1.types.ListColumnSpecsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -413,7 +422,7 @@ class ListModelsPager:
     """A pager for iterating through ``list_models`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListModelsResponse` object, and
+    :class:`google.cloud.automl_v1beta1.types.ListModelsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``model`` field.
 
@@ -422,7 +431,7 @@ class ListModelsPager:
     through the ``model`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListModelsResponse`
+    All the usual :class:`google.cloud.automl_v1beta1.types.ListModelsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -440,9 +449,9 @@ class ListModelsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListModelsRequest`):
+            request (google.cloud.automl_v1beta1.types.ListModelsRequest):
                 The initial request object.
-            response (:class:`~.service.ListModelsResponse`):
+            response (google.cloud.automl_v1beta1.types.ListModelsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -475,7 +484,7 @@ class ListModelsAsyncPager:
     """A pager for iterating through ``list_models`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListModelsResponse` object, and
+    :class:`google.cloud.automl_v1beta1.types.ListModelsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``model`` field.
 
@@ -484,7 +493,7 @@ class ListModelsAsyncPager:
     through the ``model`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListModelsResponse`
+    All the usual :class:`google.cloud.automl_v1beta1.types.ListModelsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -502,9 +511,9 @@ class ListModelsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListModelsRequest`):
+            request (google.cloud.automl_v1beta1.types.ListModelsRequest):
                 The initial request object.
-            response (:class:`~.service.ListModelsResponse`):
+            response (google.cloud.automl_v1beta1.types.ListModelsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -541,7 +550,7 @@ class ListModelEvaluationsPager:
     """A pager for iterating through ``list_model_evaluations`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListModelEvaluationsResponse` object, and
+    :class:`google.cloud.automl_v1beta1.types.ListModelEvaluationsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``model_evaluation`` field.
 
@@ -550,7 +559,7 @@ class ListModelEvaluationsPager:
     through the ``model_evaluation`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListModelEvaluationsResponse`
+    All the usual :class:`google.cloud.automl_v1beta1.types.ListModelEvaluationsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -568,9 +577,9 @@ class ListModelEvaluationsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListModelEvaluationsRequest`):
+            request (google.cloud.automl_v1beta1.types.ListModelEvaluationsRequest):
                 The initial request object.
-            response (:class:`~.service.ListModelEvaluationsResponse`):
+            response (google.cloud.automl_v1beta1.types.ListModelEvaluationsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -603,7 +612,7 @@ class ListModelEvaluationsAsyncPager:
     """A pager for iterating through ``list_model_evaluations`` requests.
 
     This class thinly wraps an initial
-    :class:`~.service.ListModelEvaluationsResponse` object, and
+    :class:`google.cloud.automl_v1beta1.types.ListModelEvaluationsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``model_evaluation`` field.
 
@@ -612,7 +621,7 @@ class ListModelEvaluationsAsyncPager:
     through the ``model_evaluation`` field on the
     corresponding responses.
 
-    All the usual :class:`~.service.ListModelEvaluationsResponse`
+    All the usual :class:`google.cloud.automl_v1beta1.types.ListModelEvaluationsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -630,9 +639,9 @@ class ListModelEvaluationsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.service.ListModelEvaluationsRequest`):
+            request (google.cloud.automl_v1beta1.types.ListModelEvaluationsRequest):
                 The initial request object.
-            response (:class:`~.service.ListModelEvaluationsResponse`):
+            response (google.cloud.automl_v1beta1.types.ListModelEvaluationsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

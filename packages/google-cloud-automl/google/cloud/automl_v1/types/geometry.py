@@ -49,7 +49,7 @@ class BoundingPoly(proto.Message):
     by connecting vertices in the order they are listed.
 
     Attributes:
-        normalized_vertices (Sequence[~.geometry.NormalizedVertex]):
+        normalized_vertices (Sequence[google.cloud.automl_v1.types.NormalizedVertex]):
             Output only . The bounding polygon normalized
             vertices.
     """

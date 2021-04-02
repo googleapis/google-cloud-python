@@ -38,7 +38,7 @@ class TextClassificationDatasetMetadata(proto.Message):
     r"""Dataset metadata for classification.
 
     Attributes:
-        classification_type (~.classification.ClassificationType):
+        classification_type (google.cloud.automl_v1beta1.types.ClassificationType):
             Required. Type of the classification problem.
     """
 
@@ -51,7 +51,7 @@ class TextClassificationModelMetadata(proto.Message):
     r"""Model metadata that is specific to text classification.
 
     Attributes:
-        classification_type (~.classification.ClassificationType):
+        classification_type (google.cloud.automl_v1beta1.types.ClassificationType):
             Output only. Classification type of the
             dataset used to train this model.
     """

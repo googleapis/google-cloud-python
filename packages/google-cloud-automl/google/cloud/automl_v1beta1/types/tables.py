@@ -83,7 +83,7 @@ class TablesDatasetMetadata(proto.Message):
             as ``UNASSIGNED``. NOTE: Updates of this field will
             instantly affect any other users concurrently working with
             the dataset.
-        target_column_correlations (Sequence[~.tables.TablesDatasetMetadata.TargetColumnCorrelationsEntry]):
+        target_column_correlations (Sequence[google.cloud.automl_v1beta1.types.TablesDatasetMetadata.TargetColumnCorrelationsEntry]):
             Output only. Correlations between
 
             [TablesDatasetMetadata.target_column_spec_id][google.cloud.automl.v1beta1.TablesDatasetMetadata.target_column_spec_id],
@@ -95,7 +95,7 @@ class TablesDatasetMetadata(proto.Message):
             column. This field may be stale, see the stats_update_time
             field for for the timestamp at which these stats were last
             updated.
-        stats_update_time (~.timestamp.Timestamp):
+        stats_update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The most recent timestamp when
             target_column_correlations field and all descendant
             ColumnSpec.data_stats and ColumnSpec.top_correlated_columns
@@ -134,7 +134,7 @@ class TablesModelMetadata(proto.Message):
             Required when optimization_objective is
             "MAXIMIZE_RECALL_AT_PRECISION". Must be between 0 and 1,
             inclusive.
-        target_column_spec (~.column_spec.ColumnSpec):
+        target_column_spec (google.cloud.automl_v1beta1.types.ColumnSpec):
             Column spec of the dataset's primary table's column the
             model is predicting. Snapshotted when model creation
             started. Only 3 fields are used: name - May be set on
@@ -143,7 +143,7 @@ class TablesModelMetadata(proto.Message):
             model is trained from is used. If neither is set,
             CreateModel will error. display_name - Output only.
             data_type - Output only.
-        input_feature_column_specs (Sequence[~.column_spec.ColumnSpec]):
+        input_feature_column_specs (Sequence[google.cloud.automl_v1beta1.types.ColumnSpec]):
             Column specs of the dataset's primary table's columns, on
             which the model is trained and which are used as the input
             for predictions. The
@@ -193,7 +193,7 @@ class TablesModelMetadata(proto.Message):
             root-mean-squared error (RMSE). "MINIMIZE_MAE" - Minimize
             mean-absolute error (MAE). "MINIMIZE_RMSLE" - Minimize
             root-mean-squared log error (RMSLE).
-        tables_model_column_info (Sequence[~.tables.TablesModelColumnInfo]):
+        tables_model_column_info (Sequence[google.cloud.automl_v1beta1.types.TablesModelColumnInfo]):
             Output only. Auxiliary information for each of the
             input_feature_column_specs with respect to this particular
             model.
@@ -268,13 +268,13 @@ class TablesAnnotation(proto.Message):
 
             [target_column_spec][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]
             of FLOAT64 data type the score is not populated.
-        prediction_interval (~.ranges.DoubleRange):
+        prediction_interval (google.cloud.automl_v1beta1.types.DoubleRange):
             Output only. Only populated when
 
             [target_column_spec][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]
             has FLOAT64 data type. An interval in which the exactly
             correct target value has 95% chance to be in.
-        value (~.struct.Value):
+        value (google.protobuf.struct_pb2.Value):
             The predicted value of the row's
 
             [target_column][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec].
@@ -285,7 +285,7 @@ class TablesAnnotation(proto.Message):
 
             -  FLOAT64 - the predicted (with above
                ``prediction_interval``) FLOAT64 value.
-        tables_model_column_info (Sequence[~.tables.TablesModelColumnInfo]):
+        tables_model_column_info (Sequence[google.cloud.automl_v1beta1.types.TablesModelColumnInfo]):
             Output only. Auxiliary information for each of the model's
 
             [input_feature_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs]

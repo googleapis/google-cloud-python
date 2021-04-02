@@ -714,13 +714,13 @@ class InputConfig(proto.Message):
     in Operation.metadata.partial_failures.
 
     Attributes:
-        gcs_source (~.io.GcsSource):
+        gcs_source (google.cloud.automl_v1.types.GcsSource):
             The Google Cloud Storage location for the input content. For
             [AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData],
             ``gcs_source`` points to a CSV file with a structure
             described in
             [InputConfig][google.cloud.automl.v1.InputConfig].
-        params (Sequence[~.io.InputConfig.ParamsEntry]):
+        params (Sequence[google.cloud.automl_v1.types.InputConfig.ParamsEntry]):
             Additional domain-specific parameters describing the
             semantic of the imported data, any string must be up to
             25000 characters long.
@@ -1075,7 +1075,7 @@ class BatchPredictInputConfig(proto.Message):
     listed in Operation.metadata.partial_failures.
 
     Attributes:
-        gcs_source (~.io.GcsSource):
+        gcs_source (google.cloud.automl_v1.types.GcsSource):
             Required. The Google Cloud Storage location
             for the input content.
     """
@@ -1090,7 +1090,7 @@ class DocumentInputConfig(proto.Message):
     [Document][google.cloud.automl.v1.Document].
 
     Attributes:
-        gcs_source (~.io.GcsSource):
+        gcs_source (google.cloud.automl_v1.types.GcsSource):
             The Google Cloud Storage location of the
             document file. Only a single path should be
             given.
@@ -1131,7 +1131,7 @@ class OutputConfig(proto.Message):
     filled with precisely the same data as this obtained on import.
 
     Attributes:
-        gcs_destination (~.io.GcsDestination):
+        gcs_destination (google.cloud.automl_v1.types.GcsDestination):
             Required. The Google Cloud Storage location where the output
             is to be written to. For Image Object Detection, Text
             Extraction, Video Classification and Tables, in the given
@@ -1436,7 +1436,7 @@ class BatchPredictOutputConfig(proto.Message):
     ``message``.
 
     Attributes:
-        gcs_destination (~.io.GcsDestination):
+        gcs_destination (google.cloud.automl_v1.types.GcsDestination):
             Required. The Google Cloud Storage location
             of the directory where the output is to be
             written to.
@@ -1451,7 +1451,7 @@ class ModelExportOutputConfig(proto.Message):
     r"""Output configuration for ModelExport Action.
 
     Attributes:
-        gcs_destination (~.io.GcsDestination):
+        gcs_destination (google.cloud.automl_v1.types.GcsDestination):
             Required. The Google Cloud Storage location where the model
             is to be written to. This location may only be set for the
             following model formats: "tflite", "edgetpu_tflite",
@@ -1503,7 +1503,7 @@ class ModelExportOutputConfig(proto.Message):
             //cloud.google.com/vision/automl/docs/containers-gcs-quickstart)
 
             -  core_ml - Used for iOS mobile devices.
-        params (Sequence[~.io.ModelExportOutputConfig.ParamsEntry]):
+        params (Sequence[google.cloud.automl_v1.types.ModelExportOutputConfig.ParamsEntry]):
             Additional model-type and format specific parameters
             describing the requirements for the to be exported model
             files, any string must be up to 25000 characters long.

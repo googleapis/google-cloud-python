@@ -33,23 +33,23 @@ class Model(proto.Message):
     r"""API proto representing a trained machine learning model.
 
     Attributes:
-        translation_model_metadata (~.translation.TranslationModelMetadata):
+        translation_model_metadata (google.cloud.automl_v1beta1.types.TranslationModelMetadata):
             Metadata for translation models.
-        image_classification_model_metadata (~.image.ImageClassificationModelMetadata):
+        image_classification_model_metadata (google.cloud.automl_v1beta1.types.ImageClassificationModelMetadata):
             Metadata for image classification models.
-        text_classification_model_metadata (~.text.TextClassificationModelMetadata):
+        text_classification_model_metadata (google.cloud.automl_v1beta1.types.TextClassificationModelMetadata):
             Metadata for text classification models.
-        image_object_detection_model_metadata (~.image.ImageObjectDetectionModelMetadata):
+        image_object_detection_model_metadata (google.cloud.automl_v1beta1.types.ImageObjectDetectionModelMetadata):
             Metadata for image object detection models.
-        video_classification_model_metadata (~.video.VideoClassificationModelMetadata):
+        video_classification_model_metadata (google.cloud.automl_v1beta1.types.VideoClassificationModelMetadata):
             Metadata for video classification models.
-        video_object_tracking_model_metadata (~.video.VideoObjectTrackingModelMetadata):
+        video_object_tracking_model_metadata (google.cloud.automl_v1beta1.types.VideoObjectTrackingModelMetadata):
             Metadata for video object tracking models.
-        text_extraction_model_metadata (~.text.TextExtractionModelMetadata):
+        text_extraction_model_metadata (google.cloud.automl_v1beta1.types.TextExtractionModelMetadata):
             Metadata for text extraction models.
-        tables_model_metadata (~.tables.TablesModelMetadata):
+        tables_model_metadata (google.cloud.automl_v1beta1.types.TablesModelMetadata):
             Metadata for Tables models.
-        text_sentiment_model_metadata (~.text.TextSentimentModelMetadata):
+        text_sentiment_model_metadata (google.cloud.automl_v1beta1.types.TextSentimentModelMetadata):
             Metadata for text sentiment models.
         name (str):
             Output only. Resource name of the model. Format:
@@ -63,14 +63,14 @@ class Model(proto.Message):
             Required. The resource ID of the dataset used
             to create the model. The dataset must come from
             the same ancestor project and location.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when the model
             training finished  and can be used for
             prediction.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when this model was
             last updated.
-        deployment_state (~.model.Model.DeploymentState):
+        deployment_state (google.cloud.automl_v1beta1.types.Model.DeploymentState):
             Output only. Deployment state of the model. A
             model can only serve prediction requests after
             it gets deployed.

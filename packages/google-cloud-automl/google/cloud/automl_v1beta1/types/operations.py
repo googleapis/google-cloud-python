@@ -45,37 +45,37 @@ class OperationMetadata(proto.Message):
     AutoML API.
 
     Attributes:
-        delete_details (~.operations.DeleteOperationMetadata):
+        delete_details (google.cloud.automl_v1beta1.types.DeleteOperationMetadata):
             Details of a Delete operation.
-        deploy_model_details (~.operations.DeployModelOperationMetadata):
+        deploy_model_details (google.cloud.automl_v1beta1.types.DeployModelOperationMetadata):
             Details of a DeployModel operation.
-        undeploy_model_details (~.operations.UndeployModelOperationMetadata):
+        undeploy_model_details (google.cloud.automl_v1beta1.types.UndeployModelOperationMetadata):
             Details of an UndeployModel operation.
-        create_model_details (~.operations.CreateModelOperationMetadata):
+        create_model_details (google.cloud.automl_v1beta1.types.CreateModelOperationMetadata):
             Details of CreateModel operation.
-        import_data_details (~.operations.ImportDataOperationMetadata):
+        import_data_details (google.cloud.automl_v1beta1.types.ImportDataOperationMetadata):
             Details of ImportData operation.
-        batch_predict_details (~.operations.BatchPredictOperationMetadata):
+        batch_predict_details (google.cloud.automl_v1beta1.types.BatchPredictOperationMetadata):
             Details of BatchPredict operation.
-        export_data_details (~.operations.ExportDataOperationMetadata):
+        export_data_details (google.cloud.automl_v1beta1.types.ExportDataOperationMetadata):
             Details of ExportData operation.
-        export_model_details (~.operations.ExportModelOperationMetadata):
+        export_model_details (google.cloud.automl_v1beta1.types.ExportModelOperationMetadata):
             Details of ExportModel operation.
-        export_evaluated_examples_details (~.operations.ExportEvaluatedExamplesOperationMetadata):
+        export_evaluated_examples_details (google.cloud.automl_v1beta1.types.ExportEvaluatedExamplesOperationMetadata):
             Details of ExportEvaluatedExamples operation.
         progress_percent (int):
             Output only. Progress of operation. Range: [0, 100]. Not
             used currently.
-        partial_failures (Sequence[~.status.Status]):
+        partial_failures (Sequence[google.rpc.status_pb2.Status]):
             Output only. Partial failures encountered.
             E.g. single files that couldn't be read.
             This field should never exceed 20 entries.
             Status details field will contain standard GCP
             error details.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the operation was
             created.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when the operation was
             updated for the last time.
     """
@@ -175,7 +175,7 @@ class ExportDataOperationMetadata(proto.Message):
     r"""Details of ExportData operation.
 
     Attributes:
-        output_info (~.operations.ExportDataOperationMetadata.ExportDataOutputInfo):
+        output_info (google.cloud.automl_v1beta1.types.ExportDataOperationMetadata.ExportDataOutputInfo):
             Output only. Information further describing
             this export data's output.
     """
@@ -210,10 +210,10 @@ class BatchPredictOperationMetadata(proto.Message):
     r"""Details of BatchPredict operation.
 
     Attributes:
-        input_config (~.io.BatchPredictInputConfig):
+        input_config (google.cloud.automl_v1beta1.types.BatchPredictInputConfig):
             Output only. The input config that was given
             upon starting this batch predict operation.
-        output_info (~.operations.BatchPredictOperationMetadata.BatchPredictOutputInfo):
+        output_info (google.cloud.automl_v1beta1.types.BatchPredictOperationMetadata.BatchPredictOutputInfo):
             Output only. Information further describing
             this batch predict's output.
     """
@@ -253,7 +253,7 @@ class ExportModelOperationMetadata(proto.Message):
     r"""Details of ExportModel operation.
 
     Attributes:
-        output_info (~.operations.ExportModelOperationMetadata.ExportModelOutputInfo):
+        output_info (google.cloud.automl_v1beta1.types.ExportModelOperationMetadata.ExportModelOutputInfo):
             Output only. Information further describing
             the output of this model export.
     """
@@ -279,7 +279,7 @@ class ExportEvaluatedExamplesOperationMetadata(proto.Message):
     r"""Details of EvaluatedExamples operation.
 
     Attributes:
-        output_info (~.operations.ExportEvaluatedExamplesOperationMetadata.ExportEvaluatedExamplesOutputInfo):
+        output_info (google.cloud.automl_v1beta1.types.ExportEvaluatedExamplesOperationMetadata.ExportEvaluatedExamplesOutputInfo):
             Output only. Information further describing
             the output of this evaluated examples export.
     """

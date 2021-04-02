@@ -37,30 +37,30 @@ class Dataset(proto.Message):
     annotated.
 
     Attributes:
-        translation_dataset_metadata (~.translation.TranslationDatasetMetadata):
+        translation_dataset_metadata (google.cloud.automl_v1beta1.types.TranslationDatasetMetadata):
             Metadata for a dataset used for translation.
-        image_classification_dataset_metadata (~.image.ImageClassificationDatasetMetadata):
+        image_classification_dataset_metadata (google.cloud.automl_v1beta1.types.ImageClassificationDatasetMetadata):
             Metadata for a dataset used for image
             classification.
-        text_classification_dataset_metadata (~.text.TextClassificationDatasetMetadata):
+        text_classification_dataset_metadata (google.cloud.automl_v1beta1.types.TextClassificationDatasetMetadata):
             Metadata for a dataset used for text
             classification.
-        image_object_detection_dataset_metadata (~.image.ImageObjectDetectionDatasetMetadata):
+        image_object_detection_dataset_metadata (google.cloud.automl_v1beta1.types.ImageObjectDetectionDatasetMetadata):
             Metadata for a dataset used for image object
             detection.
-        video_classification_dataset_metadata (~.video.VideoClassificationDatasetMetadata):
+        video_classification_dataset_metadata (google.cloud.automl_v1beta1.types.VideoClassificationDatasetMetadata):
             Metadata for a dataset used for video
             classification.
-        video_object_tracking_dataset_metadata (~.video.VideoObjectTrackingDatasetMetadata):
+        video_object_tracking_dataset_metadata (google.cloud.automl_v1beta1.types.VideoObjectTrackingDatasetMetadata):
             Metadata for a dataset used for video object
             tracking.
-        text_extraction_dataset_metadata (~.text.TextExtractionDatasetMetadata):
+        text_extraction_dataset_metadata (google.cloud.automl_v1beta1.types.TextExtractionDatasetMetadata):
             Metadata for a dataset used for text
             extraction.
-        text_sentiment_dataset_metadata (~.text.TextSentimentDatasetMetadata):
+        text_sentiment_dataset_metadata (google.cloud.automl_v1beta1.types.TextSentimentDatasetMetadata):
             Metadata for a dataset used for text
             sentiment.
-        tables_dataset_metadata (~.tables.TablesDatasetMetadata):
+        tables_dataset_metadata (google.cloud.automl_v1beta1.types.TablesDatasetMetadata):
             Metadata for a dataset used for Tables.
         name (str):
             Output only. The resource name of the dataset. Form:
@@ -76,7 +76,7 @@ class Dataset(proto.Message):
         example_count (int):
             Output only. The number of examples in the
             dataset.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when this dataset was
             created.
         etag (str):

@@ -338,13 +338,13 @@ class InputConfig(proto.Message):
     is listed in Operation.metadata.partial_failures.
 
     Attributes:
-        gcs_source (~.io.GcsSource):
+        gcs_source (google.cloud.automl_v1beta1.types.GcsSource):
             The Google Cloud Storage location for the input content. In
             ImportData, the gcs_source points to a csv with structure
             described in the comment.
-        bigquery_source (~.io.BigQuerySource):
+        bigquery_source (google.cloud.automl_v1beta1.types.BigQuerySource):
             The BigQuery location for the input content.
-        params (Sequence[~.io.InputConfig.ParamsEntry]):
+        params (Sequence[google.cloud.automl_v1beta1.types.InputConfig.ParamsEntry]):
             Additional domain-specific parameters describing the
             semantic of the imported data, any string must be up to
             25000 characters long.
@@ -521,10 +521,10 @@ class BatchPredictInputConfig(proto.Message):
     count cap, will be listed in Operation.metadata.partial_failures.
 
     Attributes:
-        gcs_source (~.io.GcsSource):
+        gcs_source (google.cloud.automl_v1beta1.types.GcsSource):
             The Google Cloud Storage location for the
             input content.
-        bigquery_source (~.io.BigQuerySource):
+        bigquery_source (google.cloud.automl_v1beta1.types.BigQuerySource):
             The BigQuery location for the input content.
     """
 
@@ -542,7 +542,7 @@ class DocumentInputConfig(proto.Message):
     [Document][google.cloud.automl.v1beta1.Document].
 
     Attributes:
-        gcs_source (~.io.GcsSource):
+        gcs_source (google.cloud.automl_v1beta1.types.GcsSource):
             The Google Cloud Storage location of the
             document file. Only a single path should be
             given. Max supported size: 512MB.
@@ -580,14 +580,14 @@ class OutputConfig(proto.Message):
     filled with precisely the same data as this obtained on import.
 
     Attributes:
-        gcs_destination (~.io.GcsDestination):
+        gcs_destination (google.cloud.automl_v1beta1.types.GcsDestination):
             The Google Cloud Storage location where the output is to be
             written to. For Image Object Detection, Text Extraction,
             Video Classification and Tables, in the given directory a
             new directory will be created with name: export_data-- where
             timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format.
             All export output will be written into that directory.
-        bigquery_destination (~.io.BigQueryDestination):
+        bigquery_destination (google.cloud.automl_v1beta1.types.BigQueryDestination):
             The BigQuery location where the output is to
             be written to.
     """
@@ -890,10 +890,10 @@ class BatchPredictOutputConfig(proto.Message):
     ``message``.
 
     Attributes:
-        gcs_destination (~.io.GcsDestination):
+        gcs_destination (google.cloud.automl_v1beta1.types.GcsDestination):
             The Google Cloud Storage location of the
             directory where the output is to be written to.
-        bigquery_destination (~.io.BigQueryDestination):
+        bigquery_destination (google.cloud.automl_v1beta1.types.BigQueryDestination):
             The BigQuery location where the output is to
             be written to.
     """
@@ -911,7 +911,7 @@ class ModelExportOutputConfig(proto.Message):
     r"""Output configuration for ModelExport Action.
 
     Attributes:
-        gcs_destination (~.io.GcsDestination):
+        gcs_destination (google.cloud.automl_v1beta1.types.GcsDestination):
             The Google Cloud Storage location where the model is to be
             written to. This location may only be set for the following
             model formats: "tflite", "edgetpu_tflite", "tf_saved_model",
@@ -922,7 +922,7 @@ class ModelExportOutputConfig(proto.Message):
             YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format, will be created.
             Inside the model and any of its supporting files will be
             written.
-        gcr_destination (~.io.GcrDestination):
+        gcr_destination (google.cloud.automl_v1beta1.types.GcrDestination):
             The GCR location where model image is to be
             pushed to. This location may only be set for the
             following model formats:   "docker".
@@ -986,7 +986,7 @@ class ModelExportOutputConfig(proto.Message):
             //cloud.google.com/vision/automl/docs/containers-gcs-quickstart)
 
             -  core_ml - Used for iOS mobile devices.
-        params (Sequence[~.io.ModelExportOutputConfig.ParamsEntry]):
+        params (Sequence[google.cloud.automl_v1beta1.types.ModelExportOutputConfig.ParamsEntry]):
             Additional model-type and format specific parameters
             describing the requirements for the to be exported model
             files, any string must be up to 25000 characters long.
@@ -1040,7 +1040,7 @@ class ExportEvaluatedExamplesOutputConfig(proto.Message):
     [TablesAnnotation][google.cloud.automl.v1beta1.TablesAnnotation].
 
     Attributes:
-        bigquery_destination (~.io.BigQueryDestination):
+        bigquery_destination (google.cloud.automl_v1beta1.types.BigQueryDestination):
             The BigQuery location where the output is to
             be written to.
     """

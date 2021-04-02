@@ -38,7 +38,7 @@ class ImageObjectDetectionAnnotation(proto.Message):
     r"""Annotation details for image object detection.
 
     Attributes:
-        bounding_box (~.geometry.BoundingPoly):
+        bounding_box (google.cloud.automl_v1beta1.types.BoundingPoly):
             Output only. The rectangle representing the
             object location.
         score (float):
@@ -67,11 +67,11 @@ class VideoObjectTrackingAnnotation(proto.Message):
             effort. Especially in cases when an entity goes
             off-screen for a longer time (minutes), when it
             comes back it may be given a new instance ID.
-        time_offset (~.duration.Duration):
+        time_offset (google.protobuf.duration_pb2.Duration):
             Required. A time (frame) of a video to which
             this annotation pertains. Represented as the
             duration since the video's start.
-        bounding_box (~.geometry.BoundingPoly):
+        bounding_box (google.cloud.automl_v1beta1.types.BoundingPoly):
             Required. The rectangle representing the object location on
             the frame (i.e. at the time_offset of the video).
         score (float):
@@ -105,7 +105,7 @@ class BoundingBoxMetricsEntry(proto.Message):
         mean_average_precision (float):
             Output only. The mean average precision, most often close to
             au_prc.
-        confidence_metrics_entries (Sequence[~.detection.BoundingBoxMetricsEntry.ConfidenceMetricsEntry]):
+        confidence_metrics_entries (Sequence[google.cloud.automl_v1beta1.types.BoundingBoxMetricsEntry.ConfidenceMetricsEntry]):
             Output only. Metrics for each label-match
             confidence_threshold from
             0.05,0.10,...,0.95,0.96,0.97,0.98,0.99. Precision-recall
@@ -156,7 +156,7 @@ class ImageObjectDetectionEvaluationMetrics(proto.Message):
             Output only. The total number of bounding
             boxes (i.e. summed over all images) the ground
             truth used to create this evaluation had.
-        bounding_box_metrics_entries (Sequence[~.detection.BoundingBoxMetricsEntry]):
+        bounding_box_metrics_entries (Sequence[google.cloud.automl_v1beta1.types.BoundingBoxMetricsEntry]):
             Output only. The bounding boxes match metrics
             for each Intersection-over-union threshold
             0.05,0.10,...,0.95,0.96,0.97,0.98,0.99 and each
@@ -191,7 +191,7 @@ class VideoObjectTrackingEvaluationMetrics(proto.Message):
             Output only. The total number of bounding
             boxes (i.e. summed over all frames) the ground
             truth used to create this evaluation had.
-        bounding_box_metrics_entries (Sequence[~.detection.BoundingBoxMetricsEntry]):
+        bounding_box_metrics_entries (Sequence[google.cloud.automl_v1beta1.types.BoundingBoxMetricsEntry]):
             Output only. The bounding boxes match metrics
             for each Intersection-over-union threshold
             0.05,0.10,...,0.95,0.96,0.97,0.98,0.99 and each

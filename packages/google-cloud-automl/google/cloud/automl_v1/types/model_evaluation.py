@@ -35,19 +35,19 @@ class ModelEvaluation(proto.Message):
     r"""Evaluation results of a model.
 
     Attributes:
-        classification_evaluation_metrics (~.classification.ClassificationEvaluationMetrics):
+        classification_evaluation_metrics (google.cloud.automl_v1.types.ClassificationEvaluationMetrics):
             Model evaluation metrics for image, text,
             video and tables classification.
             Tables problem is considered a classification
             when the target column is CATEGORY DataType.
-        translation_evaluation_metrics (~.translation.TranslationEvaluationMetrics):
+        translation_evaluation_metrics (google.cloud.automl_v1.types.TranslationEvaluationMetrics):
             Model evaluation metrics for translation.
-        image_object_detection_evaluation_metrics (~.detection.ImageObjectDetectionEvaluationMetrics):
+        image_object_detection_evaluation_metrics (google.cloud.automl_v1.types.ImageObjectDetectionEvaluationMetrics):
             Model evaluation metrics for image object
             detection.
-        text_sentiment_evaluation_metrics (~.text_sentiment.TextSentimentEvaluationMetrics):
+        text_sentiment_evaluation_metrics (google.cloud.automl_v1.types.TextSentimentEvaluationMetrics):
             Evaluation metrics for text sentiment models.
-        text_extraction_evaluation_metrics (~.text_extraction.TextExtractionEvaluationMetrics):
+        text_extraction_evaluation_metrics (google.cloud.automl_v1.types.TextExtractionEvaluationMetrics):
             Evaluation metrics for text extraction
             models.
         name (str):
@@ -78,7 +78,7 @@ class ModelEvaluation(proto.Message):
             distinct values of the target column at the moment of the
             model evaluation are populated here. The display_name is
             empty for the overall model evaluation.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when this model
             evaluation was created.
         evaluated_example_count (int):

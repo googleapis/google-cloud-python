@@ -31,17 +31,17 @@ class Model(proto.Message):
     r"""API proto representing a trained machine learning model.
 
     Attributes:
-        translation_model_metadata (~.translation.TranslationModelMetadata):
+        translation_model_metadata (google.cloud.automl_v1.types.TranslationModelMetadata):
             Metadata for translation models.
-        image_classification_model_metadata (~.image.ImageClassificationModelMetadata):
+        image_classification_model_metadata (google.cloud.automl_v1.types.ImageClassificationModelMetadata):
             Metadata for image classification models.
-        text_classification_model_metadata (~.text.TextClassificationModelMetadata):
+        text_classification_model_metadata (google.cloud.automl_v1.types.TextClassificationModelMetadata):
             Metadata for text classification models.
-        image_object_detection_model_metadata (~.image.ImageObjectDetectionModelMetadata):
+        image_object_detection_model_metadata (google.cloud.automl_v1.types.ImageObjectDetectionModelMetadata):
             Metadata for image object detection models.
-        text_extraction_model_metadata (~.text.TextExtractionModelMetadata):
+        text_extraction_model_metadata (google.cloud.automl_v1.types.TextExtractionModelMetadata):
             Metadata for text extraction models.
-        text_sentiment_model_metadata (~.text.TextSentimentModelMetadata):
+        text_sentiment_model_metadata (google.cloud.automl_v1.types.TextSentimentModelMetadata):
             Metadata for text sentiment models.
         name (str):
             Output only. Resource name of the model. Format:
@@ -55,14 +55,14 @@ class Model(proto.Message):
             Required. The resource ID of the dataset used
             to create the model. The dataset must come from
             the same ancestor project and location.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when the model
             training finished  and can be used for
             prediction.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when this model was
             last updated.
-        deployment_state (~.model.Model.DeploymentState):
+        deployment_state (google.cloud.automl_v1.types.Model.DeploymentState):
             Output only. Deployment state of the model. A
             model can only serve prediction requests after
             it gets deployed.
@@ -70,7 +70,7 @@ class Model(proto.Message):
             Used to perform a consistent read-modify-
             rite updates. If not set, a blind "overwrite"
             update happens.
-        labels (Sequence[~.model.Model.LabelsEntry]):
+        labels (Sequence[google.cloud.automl_v1.types.Model.LabelsEntry]):
             Optional. The labels with user-defined
             metadata to organize your model.
             Label keys and values can be no longer than 64

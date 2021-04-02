@@ -122,6 +122,22 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            PredictionServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -133,7 +149,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            PredictionServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -241,10 +257,10 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.PredictionServiceTransport]): The
+            transport (Union[str, PredictionServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -280,21 +296,17 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -337,7 +349,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -392,24 +404,26 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
            up to 5MB. Not available for FORECASTING ``prediction_type``.
 
         Args:
-            request (:class:`~.prediction_service.PredictRequest`):
+            request (google.cloud.automl_v1.types.PredictRequest):
                 The request object. Request message for
                 [PredictionService.Predict][google.cloud.automl.v1.PredictionService.Predict].
-            name (:class:`str`):
+            name (str):
                 Required. Name of the model requested
                 to serve the prediction.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            payload (:class:`~.data_items.ExamplePayload`):
+            payload (google.cloud.automl_v1.types.ExamplePayload):
                 Required. Payload to perform a
                 prediction on. The payload must match
                 the problem type that the model was
                 trained to solve.
+
                 This corresponds to the ``payload`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            params (:class:`Sequence[~.prediction_service.PredictRequest.ParamsEntry]`):
+            params (Sequence[google.cloud.automl_v1.types.PredictRequest.ParamsEntry]):
                 Additional domain-specific parameters, any string must
                 be up to 25000 characters long.
 
@@ -440,6 +454,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
                 is populated in the returned list of
                 [TablesAnnotation][google.cloud.automl.v1.TablesAnnotation]
                 objects. The default is false.
+
                 This corresponds to the ``params`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -451,7 +466,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.prediction_service.PredictResponse:
+            google.cloud.automl_v1.types.PredictResponse:
                 Response message for
                 [PredictionService.Predict][google.cloud.automl.v1.PredictionService.Predict].
 
@@ -480,9 +495,8 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
                 request.name = name
             if payload is not None:
                 request.payload = payload
-
-            if params:
-                request.params.update(params)
+            if params is not None:
+                request.params = params
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -534,29 +548,32 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         -  AutoML Tables
 
         Args:
-            request (:class:`~.prediction_service.BatchPredictRequest`):
+            request (google.cloud.automl_v1.types.BatchPredictRequest):
                 The request object. Request message for
                 [PredictionService.BatchPredict][google.cloud.automl.v1.PredictionService.BatchPredict].
-            name (:class:`str`):
+            name (str):
                 Required. Name of the model requested
                 to serve the batch prediction.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            input_config (:class:`~.io.BatchPredictInputConfig`):
+            input_config (google.cloud.automl_v1.types.BatchPredictInputConfig):
                 Required. The input configuration for
                 batch prediction.
+
                 This corresponds to the ``input_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            output_config (:class:`~.io.BatchPredictOutputConfig`):
+            output_config (google.cloud.automl_v1.types.BatchPredictOutputConfig):
                 Required. The Configuration
                 specifying where output predictions
                 should be written.
+
                 This corresponds to the ``output_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            params (:class:`Sequence[~.prediction_service.BatchPredictRequest.ParamsEntry]`):
+            params (Sequence[google.cloud.automl_v1.types.BatchPredictRequest.ParamsEntry]):
                 Additional domain-specific parameters for the
                 predictions, any string must be up to 25000 characters
                 long.
@@ -641,6 +658,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
                 with shortest edge at least that long as a relative
                 value of video frame size are returned. Value in 0 to 1
                 range. Default is 0.
+
                 This corresponds to the ``params`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -652,15 +670,13 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.prediction_service.BatchPredictResult``:
-                Result of the Batch Predict. This message is returned in
-                [response][google.longrunning.Operation.response] of the
-                operation returned by the
-                [PredictionService.BatchPredict][google.cloud.automl.v1.PredictionService.BatchPredict].
+                The result type for the operation will be :class:`google.cloud.automl_v1.types.BatchPredictResult` Result of the Batch Predict. This message is returned in
+                   [response][google.longrunning.Operation.response] of
+                   the operation returned by the
+                   [PredictionService.BatchPredict][google.cloud.automl.v1.PredictionService.BatchPredict].
 
         """
         # Create or coerce a protobuf request object.
@@ -689,9 +705,8 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
                 request.input_config = input_config
             if output_config is not None:
                 request.output_config = output_config
-
-            if params:
-                request.params.update(params)
+            if params is not None:
+                request.params = params
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

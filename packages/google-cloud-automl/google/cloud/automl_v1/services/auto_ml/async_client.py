@@ -107,7 +107,36 @@ class AutoMlAsyncClient:
     common_location_path = staticmethod(AutoMlClient.common_location_path)
     parse_common_location_path = staticmethod(AutoMlClient.parse_common_location_path)
 
-    from_service_account_file = AutoMlClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            AutoMlAsyncClient: The constructed client.
+        """
+        return AutoMlClient.from_service_account_info.__func__(AutoMlAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            AutoMlAsyncClient: The constructed client.
+        """
+        return AutoMlClient.from_service_account_file.__func__(AutoMlAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -184,16 +213,17 @@ class AutoMlAsyncClient:
         r"""Creates a dataset.
 
         Args:
-            request (:class:`~.service.CreateDatasetRequest`):
+            request (:class:`google.cloud.automl_v1.types.CreateDatasetRequest`):
                 The request object. Request message for
                 [AutoMl.CreateDataset][google.cloud.automl.v1.AutoMl.CreateDataset].
             parent (:class:`str`):
                 Required. The resource name of the
                 project to create the dataset for.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            dataset (:class:`~.gca_dataset.Dataset`):
+            dataset (:class:`google.cloud.automl_v1.types.Dataset`):
                 Required. The dataset to create.
                 This corresponds to the ``dataset`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -206,14 +236,11 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.gca_dataset.Dataset``: A workspace for
-                solving a single, particular machine learning (ML)
-                problem. A workspace contains examples that may be
-                annotated.
+                The result type for the operation will be :class:`google.cloud.automl_v1.types.Dataset` A workspace for solving a single, particular machine learning (ML) problem.
+                   A workspace contains examples that may be annotated.
 
         """
         # Create or coerce a protobuf request object.
@@ -276,12 +303,13 @@ class AutoMlAsyncClient:
         r"""Gets a dataset.
 
         Args:
-            request (:class:`~.service.GetDatasetRequest`):
+            request (:class:`google.cloud.automl_v1.types.GetDatasetRequest`):
                 The request object. Request message for
                 [AutoMl.GetDataset][google.cloud.automl.v1.AutoMl.GetDataset].
             name (:class:`str`):
                 Required. The resource name of the
                 dataset to retrieve.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -293,7 +321,7 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.dataset.Dataset:
+            google.cloud.automl_v1.types.Dataset:
                 A workspace for solving a single,
                 particular machine learning (ML)
                 problem. A workspace contains examples
@@ -329,6 +357,7 @@ class AutoMlAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=5.0,
             ),
             default_timeout=5.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -358,12 +387,13 @@ class AutoMlAsyncClient:
         r"""Lists datasets in a project.
 
         Args:
-            request (:class:`~.service.ListDatasetsRequest`):
+            request (:class:`google.cloud.automl_v1.types.ListDatasetsRequest`):
                 The request object. Request message for
                 [AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets].
             parent (:class:`str`):
                 Required. The resource name of the
                 project from which to list datasets.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -375,7 +405,7 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListDatasetsAsyncPager:
+            google.cloud.automl_v1.services.auto_ml.pagers.ListDatasetsAsyncPager:
                 Response message for
                 [AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets].
 
@@ -412,6 +442,7 @@ class AutoMlAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=5.0,
             ),
             default_timeout=5.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -448,18 +479,20 @@ class AutoMlAsyncClient:
         r"""Updates a dataset.
 
         Args:
-            request (:class:`~.service.UpdateDatasetRequest`):
+            request (:class:`google.cloud.automl_v1.types.UpdateDatasetRequest`):
                 The request object. Request message for
                 [AutoMl.UpdateDataset][google.cloud.automl.v1.AutoMl.UpdateDataset]
-            dataset (:class:`~.gca_dataset.Dataset`):
+            dataset (:class:`google.cloud.automl_v1.types.Dataset`):
                 Required. The dataset which replaces
                 the resource on the server.
+
                 This corresponds to the ``dataset`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. The update mask applies to
                 the resource.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -471,7 +504,7 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gca_dataset.Dataset:
+            google.cloud.automl_v1.types.Dataset:
                 A workspace for solving a single,
                 particular machine learning (ML)
                 problem. A workspace contains examples
@@ -536,12 +569,13 @@ class AutoMlAsyncClient:
         [metadata][google.longrunning.Operation.metadata] field.
 
         Args:
-            request (:class:`~.service.DeleteDatasetRequest`):
+            request (:class:`google.cloud.automl_v1.types.DeleteDatasetRequest`):
                 The request object. Request message for
                 [AutoMl.DeleteDataset][google.cloud.automl.v1.AutoMl.DeleteDataset].
             name (:class:`str`):
                 Required. The resource name of the
                 dataset to delete.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -553,24 +587,22 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                ::
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
+                      }
 
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -602,6 +634,7 @@ class AutoMlAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=5.0,
             ),
             default_timeout=5.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -649,20 +682,22 @@ class AutoMlAsyncClient:
            field when it completes.
 
         Args:
-            request (:class:`~.service.ImportDataRequest`):
+            request (:class:`google.cloud.automl_v1.types.ImportDataRequest`):
                 The request object. Request message for
                 [AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData].
             name (:class:`str`):
                 Required. Dataset name. Dataset must
                 already exist. All imported annotations
                 and examples will be added.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            input_config (:class:`~.io.InputConfig`):
+            input_config (:class:`google.cloud.automl_v1.types.InputConfig`):
                 Required. The desired input location
                 and its domain specific semantics, if
                 any.
+
                 This corresponds to the ``input_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -674,24 +709,22 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                ::
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
+                      }
 
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -758,18 +791,20 @@ class AutoMlAsyncClient:
         completes.
 
         Args:
-            request (:class:`~.service.ExportDataRequest`):
+            request (:class:`google.cloud.automl_v1.types.ExportDataRequest`):
                 The request object. Request message for
                 [AutoMl.ExportData][google.cloud.automl.v1.AutoMl.ExportData].
             name (:class:`str`):
                 Required. The resource name of the
                 dataset.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            output_config (:class:`~.io.OutputConfig`):
+            output_config (:class:`google.cloud.automl_v1.types.OutputConfig`):
                 Required. The desired output
                 location.
+
                 This corresponds to the ``output_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -781,24 +816,22 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                ::
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
+                      }
 
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -861,12 +894,13 @@ class AutoMlAsyncClient:
         r"""Gets an annotation spec.
 
         Args:
-            request (:class:`~.service.GetAnnotationSpecRequest`):
+            request (:class:`google.cloud.automl_v1.types.GetAnnotationSpecRequest`):
                 The request object. Request message for
                 [AutoMl.GetAnnotationSpec][google.cloud.automl.v1.AutoMl.GetAnnotationSpec].
             name (:class:`str`):
                 Required. The resource name of the
                 annotation spec to retrieve.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -878,7 +912,7 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.annotation_spec.AnnotationSpec:
+            google.cloud.automl_v1.types.AnnotationSpec:
                 A definition of an annotation spec.
         """
         # Create or coerce a protobuf request object.
@@ -910,6 +944,7 @@ class AutoMlAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=5.0,
             ),
             default_timeout=5.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -944,17 +979,18 @@ class AutoMlAsyncClient:
         each annotation spec.
 
         Args:
-            request (:class:`~.service.CreateModelRequest`):
+            request (:class:`google.cloud.automl_v1.types.CreateModelRequest`):
                 The request object. Request message for
                 [AutoMl.CreateModel][google.cloud.automl.v1.AutoMl.CreateModel].
             parent (:class:`str`):
                 Required. Resource name of the parent
                 project where the model is being
                 created.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            model (:class:`~.gca_model.Model`):
+            model (:class:`google.cloud.automl_v1.types.Model`):
                 Required. The model to create.
                 This corresponds to the ``model`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -967,12 +1003,12 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.gca_model.Model``: API proto representing a
-                trained machine learning model.
+                :class:`google.cloud.automl_v1.types.Model` API proto
+                representing a trained machine learning model.
 
         """
         # Create or coerce a protobuf request object.
@@ -1035,7 +1071,7 @@ class AutoMlAsyncClient:
         r"""Gets a model.
 
         Args:
-            request (:class:`~.service.GetModelRequest`):
+            request (:class:`google.cloud.automl_v1.types.GetModelRequest`):
                 The request object. Request message for
                 [AutoMl.GetModel][google.cloud.automl.v1.AutoMl.GetModel].
             name (:class:`str`):
@@ -1051,7 +1087,7 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.model.Model:
+            google.cloud.automl_v1.types.Model:
                 API proto representing a trained
                 machine learning model.
 
@@ -1085,6 +1121,7 @@ class AutoMlAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=5.0,
             ),
             default_timeout=5.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1114,12 +1151,13 @@ class AutoMlAsyncClient:
         r"""Lists models.
 
         Args:
-            request (:class:`~.service.ListModelsRequest`):
+            request (:class:`google.cloud.automl_v1.types.ListModelsRequest`):
                 The request object. Request message for
                 [AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels].
             parent (:class:`str`):
                 Required. Resource name of the
                 project, from which to list the models.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1131,7 +1169,7 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListModelsAsyncPager:
+            google.cloud.automl_v1.services.auto_ml.pagers.ListModelsAsyncPager:
                 Response message for
                 [AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels].
 
@@ -1168,6 +1206,7 @@ class AutoMlAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=5.0,
             ),
             default_timeout=5.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1206,12 +1245,13 @@ class AutoMlAsyncClient:
         [metadata][google.longrunning.Operation.metadata] field.
 
         Args:
-            request (:class:`~.service.DeleteModelRequest`):
+            request (:class:`google.cloud.automl_v1.types.DeleteModelRequest`):
                 The request object. Request message for
                 [AutoMl.DeleteModel][google.cloud.automl.v1.AutoMl.DeleteModel].
             name (:class:`str`):
                 Required. Resource name of the model
                 being deleted.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1223,24 +1263,22 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                ::
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
+                      }
 
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -1272,6 +1310,7 @@ class AutoMlAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=5.0,
             ),
             default_timeout=5.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1310,18 +1349,20 @@ class AutoMlAsyncClient:
         r"""Updates a model.
 
         Args:
-            request (:class:`~.service.UpdateModelRequest`):
+            request (:class:`google.cloud.automl_v1.types.UpdateModelRequest`):
                 The request object. Request message for
                 [AutoMl.UpdateModel][google.cloud.automl.v1.AutoMl.UpdateModel]
-            model (:class:`~.gca_model.Model`):
+            model (:class:`google.cloud.automl_v1.types.Model`):
                 Required. The model which replaces
                 the resource on the server.
+
                 This corresponds to the ``model`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. The update mask applies to
                 the resource.
+
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1333,7 +1374,7 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.gca_model.Model:
+            google.cloud.automl_v1.types.Model:
                 API proto representing a trained
                 machine learning model.
 
@@ -1406,12 +1447,13 @@ class AutoMlAsyncClient:
         completes.
 
         Args:
-            request (:class:`~.service.DeployModelRequest`):
+            request (:class:`google.cloud.automl_v1.types.DeployModelRequest`):
                 The request object. Request message for
                 [AutoMl.DeployModel][google.cloud.automl.v1.AutoMl.DeployModel].
             name (:class:`str`):
                 Required. Resource name of the model
                 to deploy.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1423,24 +1465,22 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                ::
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
+                      }
 
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -1509,12 +1549,13 @@ class AutoMlAsyncClient:
         completes.
 
         Args:
-            request (:class:`~.service.UndeployModelRequest`):
+            request (:class:`google.cloud.automl_v1.types.UndeployModelRequest`):
                 The request object. Request message for
                 [AutoMl.UndeployModel][google.cloud.automl.v1.AutoMl.UndeployModel].
             name (:class:`str`):
                 Required. Resource name of the model
                 to undeploy.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1526,24 +1567,22 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                ::
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
+                      }
 
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -1612,7 +1651,7 @@ class AutoMlAsyncClient:
         completes.
 
         Args:
-            request (:class:`~.service.ExportModelRequest`):
+            request (:class:`google.cloud.automl_v1.types.ExportModelRequest`):
                 The request object. Request message for
                 [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel].
                 Models need to be enabled for exporting, otherwise an
@@ -1620,12 +1659,14 @@ class AutoMlAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the
                 model to export.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            output_config (:class:`~.io.ModelExportOutputConfig`):
+            output_config (:class:`google.cloud.automl_v1.types.ModelExportOutputConfig`):
                 Required. The desired output location
                 and configuration.
+
                 This corresponds to the ``output_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1637,24 +1678,22 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.empty.Empty``: A generic empty message that
-                you can re-use to avoid defining duplicated empty
-                messages in your APIs. A typical example is to use it as
-                the request or the response type of an API method. For
-                instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                ::
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
-                    }
+                      }
 
-                The JSON representation for ``Empty`` is empty JSON
-                object ``{}``.
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -1717,12 +1756,13 @@ class AutoMlAsyncClient:
         r"""Gets a model evaluation.
 
         Args:
-            request (:class:`~.service.GetModelEvaluationRequest`):
+            request (:class:`google.cloud.automl_v1.types.GetModelEvaluationRequest`):
                 The request object. Request message for
                 [AutoMl.GetModelEvaluation][google.cloud.automl.v1.AutoMl.GetModelEvaluation].
             name (:class:`str`):
                 Required. Resource name for the model
                 evaluation.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1734,7 +1774,7 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.model_evaluation.ModelEvaluation:
+            google.cloud.automl_v1.types.ModelEvaluation:
                 Evaluation results of a model.
         """
         # Create or coerce a protobuf request object.
@@ -1766,6 +1806,7 @@ class AutoMlAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=5.0,
             ),
             default_timeout=5.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1796,7 +1837,7 @@ class AutoMlAsyncClient:
         r"""Lists model evaluations.
 
         Args:
-            request (:class:`~.service.ListModelEvaluationsRequest`):
+            request (:class:`google.cloud.automl_v1.types.ListModelEvaluationsRequest`):
                 The request object. Request message for
                 [AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations].
             parent (:class:`str`):
@@ -1805,6 +1846,7 @@ class AutoMlAsyncClient:
                 modelId is set as "-", this will list
                 model evaluations from across all models
                 of the parent location.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1822,6 +1864,7 @@ class AutoMlAsyncClient:
                    4.
                 -  ``NOT annotation_spec_id:*`` --> The model evaluation
                    was done for aggregate of all annotation specs.
+
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1833,7 +1876,7 @@ class AutoMlAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListModelEvaluationsAsyncPager:
+            google.cloud.automl_v1.services.auto_ml.pagers.ListModelEvaluationsAsyncPager:
                 Response message for
                 [AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations].
 
@@ -1872,6 +1915,7 @@ class AutoMlAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=5.0,
             ),
             default_timeout=5.0,
             client_info=DEFAULT_CLIENT_INFO,

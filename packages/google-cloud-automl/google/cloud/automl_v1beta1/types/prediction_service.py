@@ -42,11 +42,11 @@ class PredictRequest(proto.Message):
         name (str):
             Required. Name of the model requested to
             serve the prediction.
-        payload (~.data_items.ExamplePayload):
+        payload (google.cloud.automl_v1beta1.types.ExamplePayload):
             Required. Payload to perform a prediction on.
             The payload must match the problem type that the
             model was trained to solve.
-        params (Sequence[~.prediction_service.PredictRequest.ParamsEntry]):
+        params (Sequence[google.cloud.automl_v1beta1.types.PredictRequest.ParamsEntry]):
             Additional domain-specific parameters, any string must be up
             to 25000 characters long.
 
@@ -83,11 +83,11 @@ class PredictResponse(proto.Message):
     [PredictionService.Predict][google.cloud.automl.v1beta1.PredictionService.Predict].
 
     Attributes:
-        payload (Sequence[~.annotation_payload.AnnotationPayload]):
+        payload (Sequence[google.cloud.automl_v1beta1.types.AnnotationPayload]):
             Prediction result.
             Translation and Text Sentiment will return
             precisely one payload.
-        preprocessed_input (~.data_items.ExamplePayload):
+        preprocessed_input (google.cloud.automl_v1beta1.types.ExamplePayload):
             The preprocessed example that AutoML actually makes
             prediction on. Empty if AutoML does not preprocess the input
             example.
@@ -95,7 +95,7 @@ class PredictResponse(proto.Message):
             -  For Text Extraction: If the input is a .pdf file, the
                OCR'ed text will be provided in
                [document_text][google.cloud.automl.v1beta1.Document.document_text].
-        metadata (Sequence[~.prediction_service.PredictResponse.MetadataEntry]):
+        metadata (Sequence[google.cloud.automl_v1beta1.types.PredictResponse.MetadataEntry]):
             Additional domain-specific prediction response metadata.
 
             -  For Image Object Detection: ``max_bounding_box_count`` -
@@ -133,13 +133,13 @@ class BatchPredictRequest(proto.Message):
         name (str):
             Required. Name of the model requested to
             serve the batch prediction.
-        input_config (~.io.BatchPredictInputConfig):
+        input_config (google.cloud.automl_v1beta1.types.BatchPredictInputConfig):
             Required. The input configuration for batch
             prediction.
-        output_config (~.io.BatchPredictOutputConfig):
+        output_config (google.cloud.automl_v1beta1.types.BatchPredictOutputConfig):
             Required. The Configuration specifying where
             output predictions should be written.
-        params (Sequence[~.prediction_service.BatchPredictRequest.ParamsEntry]):
+        params (Sequence[google.cloud.automl_v1beta1.types.BatchPredictRequest.ParamsEntry]):
             Required. Additional domain-specific parameters for the
             predictions, any string must be up to 25000 characters long.
 
@@ -239,7 +239,7 @@ class BatchPredictResult(proto.Message):
     [PredictionService.BatchPredict][google.cloud.automl.v1beta1.PredictionService.BatchPredict].
 
     Attributes:
-        metadata (Sequence[~.prediction_service.BatchPredictResult.MetadataEntry]):
+        metadata (Sequence[google.cloud.automl_v1beta1.types.BatchPredictResult.MetadataEntry]):
             Additional domain-specific prediction response metadata.
 
             -  For Image Object Detection: ``max_bounding_box_count`` -

@@ -22,12 +22,12 @@ description = "Cloud AutoML API client library"
 version = "2.2.0"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "google-api-core[grpc] >= 1.22.0, < 2.0.0dev",
+    "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
     "proto-plus >= 1.10.0",
-    "libcst >= 0.2.5",
 ]
 extras = {
-    "pandas": ["pandas>=0.17.1"],
+    "libcst": "libcst >= 0.2.5",
+    "pandas": ["pandas>=0.23.0"],
     "storage": ["google-cloud-storage >= 1.18.0, < 2.0.0dev"],
 }
 

@@ -72,7 +72,7 @@ class CreateDatasetRequest(proto.Message):
         parent (str):
             Required. The resource name of the project to
             create the dataset for.
-        dataset (~.gca_dataset.Dataset):
+        dataset (google.cloud.automl_v1beta1.types.Dataset):
             Required. The dataset to create.
     """
 
@@ -138,7 +138,7 @@ class ListDatasetsResponse(proto.Message):
     [AutoMl.ListDatasets][google.cloud.automl.v1beta1.AutoMl.ListDatasets].
 
     Attributes:
-        datasets (Sequence[~.gca_dataset.Dataset]):
+        datasets (Sequence[google.cloud.automl_v1beta1.types.Dataset]):
             The datasets read.
         next_page_token (str):
             A token to retrieve next page of results. Pass to
@@ -162,10 +162,10 @@ class UpdateDatasetRequest(proto.Message):
     [AutoMl.UpdateDataset][google.cloud.automl.v1beta1.AutoMl.UpdateDataset]
 
     Attributes:
-        dataset (~.gca_dataset.Dataset):
+        dataset (google.cloud.automl_v1beta1.types.Dataset):
             Required. The dataset which replaces the
             resource on the server.
-        update_mask (~.gp_field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The update mask applies to the resource.
     """
 
@@ -196,7 +196,7 @@ class ImportDataRequest(proto.Message):
             Required. Dataset name. Dataset must already
             exist. All imported annotations and examples
             will be added.
-        input_config (~.io.InputConfig):
+        input_config (google.cloud.automl_v1beta1.types.InputConfig):
             Required. The desired input location and its
             domain specific semantics, if any.
     """
@@ -213,7 +213,7 @@ class ExportDataRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the dataset.
-        output_config (~.io.OutputConfig):
+        output_config (google.cloud.automl_v1beta1.types.OutputConfig):
             Required. The desired output location.
     """
 
@@ -243,7 +243,7 @@ class GetTableSpecRequest(proto.Message):
         name (str):
             Required. The resource name of the table spec
             to retrieve.
-        field_mask (~.gp_field_mask.FieldMask):
+        field_mask (google.protobuf.field_mask_pb2.FieldMask):
             Mask specifying which fields to read.
     """
 
@@ -260,7 +260,7 @@ class ListTableSpecsRequest(proto.Message):
         parent (str):
             Required. The resource name of the dataset to
             list table specs from.
-        field_mask (~.gp_field_mask.FieldMask):
+        field_mask (google.protobuf.field_mask_pb2.FieldMask):
             Mask specifying which fields to read.
         filter (str):
             Filter expression, see go/filtering.
@@ -293,7 +293,7 @@ class ListTableSpecsResponse(proto.Message):
     [AutoMl.ListTableSpecs][google.cloud.automl.v1beta1.AutoMl.ListTableSpecs].
 
     Attributes:
-        table_specs (Sequence[~.gca_table_spec.TableSpec]):
+        table_specs (Sequence[google.cloud.automl_v1beta1.types.TableSpec]):
             The table specs read.
         next_page_token (str):
             A token to retrieve next page of results. Pass to
@@ -317,10 +317,10 @@ class UpdateTableSpecRequest(proto.Message):
     [AutoMl.UpdateTableSpec][google.cloud.automl.v1beta1.AutoMl.UpdateTableSpec]
 
     Attributes:
-        table_spec (~.gca_table_spec.TableSpec):
+        table_spec (google.cloud.automl_v1beta1.types.TableSpec):
             Required. The table spec which replaces the
             resource on the server.
-        update_mask (~.gp_field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The update mask applies to the resource.
     """
 
@@ -337,7 +337,7 @@ class GetColumnSpecRequest(proto.Message):
         name (str):
             Required. The resource name of the column
             spec to retrieve.
-        field_mask (~.gp_field_mask.FieldMask):
+        field_mask (google.protobuf.field_mask_pb2.FieldMask):
             Mask specifying which fields to read.
     """
 
@@ -354,7 +354,7 @@ class ListColumnSpecsRequest(proto.Message):
         parent (str):
             Required. The resource name of the table spec
             to list column specs from.
-        field_mask (~.gp_field_mask.FieldMask):
+        field_mask (google.protobuf.field_mask_pb2.FieldMask):
             Mask specifying which fields to read.
         filter (str):
             Filter expression, see go/filtering.
@@ -387,7 +387,7 @@ class ListColumnSpecsResponse(proto.Message):
     [AutoMl.ListColumnSpecs][google.cloud.automl.v1beta1.AutoMl.ListColumnSpecs].
 
     Attributes:
-        column_specs (Sequence[~.gca_column_spec.ColumnSpec]):
+        column_specs (Sequence[google.cloud.automl_v1beta1.types.ColumnSpec]):
             The column specs read.
         next_page_token (str):
             A token to retrieve next page of results. Pass to
@@ -411,10 +411,10 @@ class UpdateColumnSpecRequest(proto.Message):
     [AutoMl.UpdateColumnSpec][google.cloud.automl.v1beta1.AutoMl.UpdateColumnSpec]
 
     Attributes:
-        column_spec (~.gca_column_spec.ColumnSpec):
+        column_spec (google.cloud.automl_v1beta1.types.ColumnSpec):
             Required. The column spec which replaces the
             resource on the server.
-        update_mask (~.gp_field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The update mask applies to the resource.
     """
 
@@ -433,7 +433,7 @@ class CreateModelRequest(proto.Message):
         parent (str):
             Required. Resource name of the parent project
             where the model is being created.
-        model (~.gca_model.Model):
+        model (google.cloud.automl_v1beta1.types.Model):
             Required. The model to create.
     """
 
@@ -501,7 +501,7 @@ class ListModelsResponse(proto.Message):
     [AutoMl.ListModels][google.cloud.automl.v1beta1.AutoMl.ListModels].
 
     Attributes:
-        model (Sequence[~.gca_model.Model]):
+        model (Sequence[google.cloud.automl_v1beta1.types.Model]):
             List of models in the requested page.
         next_page_token (str):
             A token to retrieve next page of results. Pass to
@@ -536,10 +536,10 @@ class DeployModelRequest(proto.Message):
     [AutoMl.DeployModel][google.cloud.automl.v1beta1.AutoMl.DeployModel].
 
     Attributes:
-        image_object_detection_model_deployment_metadata (~.image.ImageObjectDetectionModelDeploymentMetadata):
+        image_object_detection_model_deployment_metadata (google.cloud.automl_v1beta1.types.ImageObjectDetectionModelDeploymentMetadata):
             Model deployment metadata specific to Image
             Object Detection.
-        image_classification_model_deployment_metadata (~.image.ImageClassificationModelDeploymentMetadata):
+        image_classification_model_deployment_metadata (google.cloud.automl_v1beta1.types.ImageClassificationModelDeploymentMetadata):
             Model deployment metadata specific to Image
             Classification.
         name (str):
@@ -587,7 +587,7 @@ class ExportModelRequest(proto.Message):
         name (str):
             Required. The resource name of the model to
             export.
-        output_config (~.io.ModelExportOutputConfig):
+        output_config (google.cloud.automl_v1beta1.types.ModelExportOutputConfig):
             Required. The desired output location and
             configuration.
     """
@@ -607,7 +607,7 @@ class ExportEvaluatedExamplesRequest(proto.Message):
         name (str):
             Required. The resource name of the model
             whose evaluated examples are to be exported.
-        output_config (~.io.ExportEvaluatedExamplesOutputConfig):
+        output_config (google.cloud.automl_v1beta1.types.ExportEvaluatedExamplesOutputConfig):
             Required. The desired output location and
             configuration.
     """
@@ -679,7 +679,7 @@ class ListModelEvaluationsResponse(proto.Message):
     [AutoMl.ListModelEvaluations][google.cloud.automl.v1beta1.AutoMl.ListModelEvaluations].
 
     Attributes:
-        model_evaluation (Sequence[~.gca_model_evaluation.ModelEvaluation]):
+        model_evaluation (Sequence[google.cloud.automl_v1beta1.types.ModelEvaluation]):
             List of model evaluations in the requested
             page.
         next_page_token (str):

@@ -35,24 +35,24 @@ class AnnotationPayload(proto.Message):
     r"""Contains annotation information that is relevant to AutoML.
 
     Attributes:
-        translation (~.gca_translation.TranslationAnnotation):
+        translation (google.cloud.automl_v1beta1.types.TranslationAnnotation):
             Annotation details for translation.
-        classification (~.gca_classification.ClassificationAnnotation):
+        classification (google.cloud.automl_v1beta1.types.ClassificationAnnotation):
             Annotation details for content or image
             classification.
-        image_object_detection (~.detection.ImageObjectDetectionAnnotation):
+        image_object_detection (google.cloud.automl_v1beta1.types.ImageObjectDetectionAnnotation):
             Annotation details for image object
             detection.
-        video_classification (~.gca_classification.VideoClassificationAnnotation):
+        video_classification (google.cloud.automl_v1beta1.types.VideoClassificationAnnotation):
             Annotation details for video classification.
             Returned for Video Classification predictions.
-        video_object_tracking (~.detection.VideoObjectTrackingAnnotation):
+        video_object_tracking (google.cloud.automl_v1beta1.types.VideoObjectTrackingAnnotation):
             Annotation details for video object tracking.
-        text_extraction (~.gca_text_extraction.TextExtractionAnnotation):
+        text_extraction (google.cloud.automl_v1beta1.types.TextExtractionAnnotation):
             Annotation details for text extraction.
-        text_sentiment (~.gca_text_sentiment.TextSentimentAnnotation):
+        text_sentiment (google.cloud.automl_v1beta1.types.TextSentimentAnnotation):
             Annotation details for text sentiment.
-        tables (~.gca_tables.TablesAnnotation):
+        tables (google.cloud.automl_v1beta1.types.TablesAnnotation):
             Annotation details for Tables.
         annotation_spec_id (str):
             Output only . The resource ID of the

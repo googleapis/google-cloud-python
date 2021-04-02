@@ -38,7 +38,7 @@ class ImageClassificationDatasetMetadata(proto.Message):
     r"""Dataset metadata that is specific to image classification.
 
     Attributes:
-        classification_type (~.classification.ClassificationType):
+        classification_type (google.cloud.automl_v1beta1.types.ClassificationType):
             Required. Type of the classification problem.
     """
 

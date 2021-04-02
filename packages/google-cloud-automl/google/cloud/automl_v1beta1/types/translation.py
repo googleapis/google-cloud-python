@@ -93,7 +93,7 @@ class TranslationAnnotation(proto.Message):
     r"""Annotation details specific to translation.
 
     Attributes:
-        translated_content (~.data_items.TextSnippet):
+        translated_content (google.cloud.automl_v1beta1.types.TextSnippet):
             Output only . The translated content.
     """
 

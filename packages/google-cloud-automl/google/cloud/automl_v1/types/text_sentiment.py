@@ -80,7 +80,7 @@ class TextSentimentEvaluationMetrics(proto.Message):
             Output only. Quadratic weighted kappa. Only
             set for the overall model evaluation, not for
             evaluation of a single annotation spec.
-        confusion_matrix (~.classification.ClassificationEvaluationMetrics.ConfusionMatrix):
+        confusion_matrix (google.cloud.automl_v1.types.ClassificationEvaluationMetrics.ConfusionMatrix):
             Output only. Confusion matrix of the
             evaluation. Only set for the overall model
             evaluation, not for evaluation of a single

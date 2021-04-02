@@ -63,7 +63,7 @@ class TableSpec(proto.Message):
             Output only. The number of columns of the
             table. That is, the number of child
             ColumnSpec-s.
-        input_configs (Sequence[~.io.InputConfig]):
+        input_configs (Sequence[google.cloud.automl_v1beta1.types.InputConfig]):
             Output only. Input configs via which data
             currently residing in the table had been
             imported.

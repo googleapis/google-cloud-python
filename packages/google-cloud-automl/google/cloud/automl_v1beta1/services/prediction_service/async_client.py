@@ -85,7 +85,36 @@ class PredictionServiceAsyncClient:
         PredictionServiceClient.parse_common_location_path
     )
 
-    from_service_account_file = PredictionServiceClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            PredictionServiceAsyncClient: The constructed client.
+        """
+        return PredictionServiceClient.from_service_account_info.__func__(PredictionServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            PredictionServiceAsyncClient: The constructed client.
+        """
+        return PredictionServiceClient.from_service_account_file.__func__(PredictionServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -183,24 +212,26 @@ class PredictionServiceAsyncClient:
            UTF-8 encoded.
 
         Args:
-            request (:class:`~.prediction_service.PredictRequest`):
+            request (:class:`google.cloud.automl_v1beta1.types.PredictRequest`):
                 The request object. Request message for
                 [PredictionService.Predict][google.cloud.automl.v1beta1.PredictionService.Predict].
             name (:class:`str`):
                 Required. Name of the model requested
                 to serve the prediction.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            payload (:class:`~.data_items.ExamplePayload`):
+            payload (:class:`google.cloud.automl_v1beta1.types.ExamplePayload`):
                 Required. Payload to perform a
                 prediction on. The payload must match
                 the problem type that the model was
                 trained to solve.
+
                 This corresponds to the ``payload`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            params (:class:`Sequence[~.prediction_service.PredictRequest.ParamsEntry]`):
+            params (:class:`Sequence[google.cloud.automl_v1beta1.types.PredictRequest.ParamsEntry]`):
                 Additional domain-specific parameters, any string must
                 be up to 25000 characters long.
 
@@ -223,6 +254,7 @@ class PredictionServiceAsyncClient:
                 -  For Tables: feature_importance - (boolean) Whether
                    feature importance should be populated in the
                    returned TablesAnnotation. The default is false.
+
                 This corresponds to the ``params`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -234,7 +266,7 @@ class PredictionServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.prediction_service.PredictResponse:
+            google.cloud.automl_v1beta1.types.PredictResponse:
                 Response message for
                 [PredictionService.Predict][google.cloud.automl.v1beta1.PredictionService.Predict].
 
@@ -313,29 +345,32 @@ class PredictionServiceAsyncClient:
         -  Tables
 
         Args:
-            request (:class:`~.prediction_service.BatchPredictRequest`):
+            request (:class:`google.cloud.automl_v1beta1.types.BatchPredictRequest`):
                 The request object. Request message for
                 [PredictionService.BatchPredict][google.cloud.automl.v1beta1.PredictionService.BatchPredict].
             name (:class:`str`):
                 Required. Name of the model requested
                 to serve the batch prediction.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            input_config (:class:`~.io.BatchPredictInputConfig`):
+            input_config (:class:`google.cloud.automl_v1beta1.types.BatchPredictInputConfig`):
                 Required. The input configuration for
                 batch prediction.
+
                 This corresponds to the ``input_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            output_config (:class:`~.io.BatchPredictOutputConfig`):
+            output_config (:class:`google.cloud.automl_v1beta1.types.BatchPredictOutputConfig`):
                 Required. The Configuration
                 specifying where output predictions
                 should be written.
+
                 This corresponds to the ``output_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            params (:class:`Sequence[~.prediction_service.BatchPredictRequest.ParamsEntry]`):
+            params (:class:`Sequence[google.cloud.automl_v1beta1.types.BatchPredictRequest.ParamsEntry]`):
                 Required. Additional domain-specific parameters for the
                 predictions, any string must be up to 25000 characters
                 long.
@@ -419,6 +454,7 @@ class PredictionServiceAsyncClient:
                    least that long as a relative value of video frame
                    size will be returned. Value in 0 to 1 range. Default
                    is 0.
+
                 This corresponds to the ``params`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -430,15 +466,13 @@ class PredictionServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation_async.AsyncOperation:
+            google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:``~.prediction_service.BatchPredictResult``:
-                Result of the Batch Predict. This message is returned in
-                [response][google.longrunning.Operation.response] of the
-                operation returned by the
-                [PredictionService.BatchPredict][google.cloud.automl.v1beta1.PredictionService.BatchPredict].
+                The result type for the operation will be :class:`google.cloud.automl_v1beta1.types.BatchPredictResult` Result of the Batch Predict. This message is returned in
+                   [response][google.longrunning.Operation.response] of
+                   the operation returned by the
+                   [PredictionService.BatchPredict][google.cloud.automl.v1beta1.PredictionService.BatchPredict].
 
         """
         # Create or coerce a protobuf request object.

@@ -33,21 +33,21 @@ class Dataset(proto.Message):
     annotated.
 
     Attributes:
-        translation_dataset_metadata (~.translation.TranslationDatasetMetadata):
+        translation_dataset_metadata (google.cloud.automl_v1.types.TranslationDatasetMetadata):
             Metadata for a dataset used for translation.
-        image_classification_dataset_metadata (~.image.ImageClassificationDatasetMetadata):
+        image_classification_dataset_metadata (google.cloud.automl_v1.types.ImageClassificationDatasetMetadata):
             Metadata for a dataset used for image
             classification.
-        text_classification_dataset_metadata (~.text.TextClassificationDatasetMetadata):
+        text_classification_dataset_metadata (google.cloud.automl_v1.types.TextClassificationDatasetMetadata):
             Metadata for a dataset used for text
             classification.
-        image_object_detection_dataset_metadata (~.image.ImageObjectDetectionDatasetMetadata):
+        image_object_detection_dataset_metadata (google.cloud.automl_v1.types.ImageObjectDetectionDatasetMetadata):
             Metadata for a dataset used for image object
             detection.
-        text_extraction_dataset_metadata (~.text.TextExtractionDatasetMetadata):
+        text_extraction_dataset_metadata (google.cloud.automl_v1.types.TextExtractionDatasetMetadata):
             Metadata for a dataset used for text
             extraction.
-        text_sentiment_dataset_metadata (~.text.TextSentimentDatasetMetadata):
+        text_sentiment_dataset_metadata (google.cloud.automl_v1.types.TextSentimentDatasetMetadata):
             Metadata for a dataset used for text
             sentiment.
         name (str):
@@ -64,14 +64,14 @@ class Dataset(proto.Message):
         example_count (int):
             Output only. The number of examples in the
             dataset.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when this dataset was
             created.
         etag (str):
             Used to perform consistent read-modify-write
             updates. If not set, a blind "overwrite" update
             happens.
-        labels (Sequence[~.dataset.Dataset.LabelsEntry]):
+        labels (Sequence[google.cloud.automl_v1.types.Dataset.LabelsEntry]):
             Optional. The labels with user-defined
             metadata to organize your dataset.
             Label keys and values can be no longer than 64

@@ -62,7 +62,7 @@ class CreateDatasetRequest(proto.Message):
         parent (str):
             Required. The resource name of the project to
             create the dataset for.
-        dataset (~.gca_dataset.Dataset):
+        dataset (google.cloud.automl_v1.types.Dataset):
             Required. The dataset to create.
     """
 
@@ -128,7 +128,7 @@ class ListDatasetsResponse(proto.Message):
     [AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets].
 
     Attributes:
-        datasets (Sequence[~.gca_dataset.Dataset]):
+        datasets (Sequence[google.cloud.automl_v1.types.Dataset]):
             The datasets read.
         next_page_token (str):
             A token to retrieve next page of results. Pass to
@@ -152,10 +152,10 @@ class UpdateDatasetRequest(proto.Message):
     [AutoMl.UpdateDataset][google.cloud.automl.v1.AutoMl.UpdateDataset]
 
     Attributes:
-        dataset (~.gca_dataset.Dataset):
+        dataset (google.cloud.automl_v1.types.Dataset):
             Required. The dataset which replaces the
             resource on the server.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The update mask applies to the
             resource.
     """
@@ -187,7 +187,7 @@ class ImportDataRequest(proto.Message):
             Required. Dataset name. Dataset must already
             exist. All imported annotations and examples
             will be added.
-        input_config (~.io.InputConfig):
+        input_config (google.cloud.automl_v1.types.InputConfig):
             Required. The desired input location and its
             domain specific semantics, if any.
     """
@@ -204,7 +204,7 @@ class ExportDataRequest(proto.Message):
     Attributes:
         name (str):
             Required. The resource name of the dataset.
-        output_config (~.io.OutputConfig):
+        output_config (google.cloud.automl_v1.types.OutputConfig):
             Required. The desired output location.
     """
 
@@ -234,7 +234,7 @@ class CreateModelRequest(proto.Message):
         parent (str):
             Required. Resource name of the parent project
             where the model is being created.
-        model (~.gca_model.Model):
+        model (google.cloud.automl_v1.types.Model):
             Required. The model to create.
     """
 
@@ -302,7 +302,7 @@ class ListModelsResponse(proto.Message):
     [AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels].
 
     Attributes:
-        model (Sequence[~.gca_model.Model]):
+        model (Sequence[google.cloud.automl_v1.types.Model]):
             List of models in the requested page.
         next_page_token (str):
             A token to retrieve next page of results. Pass to
@@ -337,10 +337,10 @@ class UpdateModelRequest(proto.Message):
     [AutoMl.UpdateModel][google.cloud.automl.v1.AutoMl.UpdateModel]
 
     Attributes:
-        model (~.gca_model.Model):
+        model (google.cloud.automl_v1.types.Model):
             Required. The model which replaces the
             resource on the server.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. The update mask applies to the
             resource.
     """
@@ -355,10 +355,10 @@ class DeployModelRequest(proto.Message):
     [AutoMl.DeployModel][google.cloud.automl.v1.AutoMl.DeployModel].
 
     Attributes:
-        image_object_detection_model_deployment_metadata (~.image.ImageObjectDetectionModelDeploymentMetadata):
+        image_object_detection_model_deployment_metadata (google.cloud.automl_v1.types.ImageObjectDetectionModelDeploymentMetadata):
             Model deployment metadata specific to Image
             Object Detection.
-        image_classification_model_deployment_metadata (~.image.ImageClassificationModelDeploymentMetadata):
+        image_classification_model_deployment_metadata (google.cloud.automl_v1.types.ImageClassificationModelDeploymentMetadata):
             Model deployment metadata specific to Image
             Classification.
         name (str):
@@ -406,7 +406,7 @@ class ExportModelRequest(proto.Message):
         name (str):
             Required. The resource name of the model to
             export.
-        output_config (~.io.ModelExportOutputConfig):
+        output_config (google.cloud.automl_v1.types.ModelExportOutputConfig):
             Required. The desired output location and
             configuration.
     """
@@ -479,7 +479,7 @@ class ListModelEvaluationsResponse(proto.Message):
     [AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations].
 
     Attributes:
-        model_evaluation (Sequence[~.gca_model_evaluation.ModelEvaluation]):
+        model_evaluation (Sequence[google.cloud.automl_v1.types.ModelEvaluation]):
             List of model evaluations in the requested
             page.
         next_page_token (str):

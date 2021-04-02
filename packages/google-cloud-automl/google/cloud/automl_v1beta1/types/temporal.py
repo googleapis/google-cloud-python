@@ -31,11 +31,11 @@ class TimeSegment(proto.Message):
     (e.g. video).
 
     Attributes:
-        start_time_offset (~.duration.Duration):
+        start_time_offset (google.protobuf.duration_pb2.Duration):
             Start of the time segment (inclusive),
             represented as the duration since the example
             start.
-        end_time_offset (~.duration.Duration):
+        end_time_offset (google.protobuf.duration_pb2.Duration):
             End of the time segment (exclusive),
             represented as the duration since the example
             start.

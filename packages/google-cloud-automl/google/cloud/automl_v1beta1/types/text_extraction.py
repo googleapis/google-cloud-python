@@ -31,7 +31,7 @@ class TextExtractionAnnotation(proto.Message):
     r"""Annotation for identifying spans of text.
 
     Attributes:
-        text_segment (~.gca_text_segment.TextSegment):
+        text_segment (google.cloud.automl_v1beta1.types.TextSegment):
             An entity annotation will set this, which is
             the part of the original text to which the
             annotation pertains.
@@ -58,7 +58,7 @@ class TextExtractionEvaluationMetrics(proto.Message):
         au_prc (float):
             Output only. The Area under precision recall
             curve metric.
-        confidence_metrics_entries (Sequence[~.text_extraction.TextExtractionEvaluationMetrics.ConfidenceMetricsEntry]):
+        confidence_metrics_entries (Sequence[google.cloud.automl_v1beta1.types.TextExtractionEvaluationMetrics.ConfidenceMetricsEntry]):
             Output only. Metrics that have confidence
             thresholds. Precision-recall curve can be
             derived from it.

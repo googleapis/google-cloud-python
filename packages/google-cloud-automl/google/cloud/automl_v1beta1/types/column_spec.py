@@ -39,7 +39,7 @@ class ColumnSpec(proto.Message):
             Output only. The resource name of the column specs. Form:
 
             ``projects/{project_id}/locations/{location_id}/datasets/{dataset_id}/tableSpecs/{table_spec_id}/columnSpecs/{column_spec_id}``
-        data_type (~.data_types.DataType):
+        data_type (google.cloud.automl_v1beta1.types.DataType):
             The data type of elements stored in the
             column.
         display_name (str):
@@ -48,12 +48,12 @@ class ColumnSpec(proto.Message):
             consist only of ASCII Latin letters A-Z and a-z, ASCII
             digits 0-9, underscores(_), and forward slashes(/), and must
             start with a letter or a digit.
-        data_stats (~.gca_data_stats.DataStats):
+        data_stats (google.cloud.automl_v1beta1.types.DataStats):
             Output only. Stats of the series of values in the column.
             This field may be stale, see the ancestor's
             Dataset.tables_dataset_metadata.stats_update_time field for
             the timestamp at which these stats were last updated.
-        top_correlated_columns (Sequence[~.column_spec.ColumnSpec.CorrelatedColumn]):
+        top_correlated_columns (Sequence[google.cloud.automl_v1beta1.types.ColumnSpec.CorrelatedColumn]):
             Deprecated.
         etag (str):
             Used to perform consistent read-modify-write
@@ -69,7 +69,7 @@ class ColumnSpec(proto.Message):
             column_spec_id (str):
                 The column_spec_id of the correlated column, which belongs
                 to the same table as the in-context column.
-            correlation_stats (~.gca_data_stats.CorrelationStats):
+            correlation_stats (google.cloud.automl_v1beta1.types.CorrelationStats):
                 Correlation between this and the in-context
                 column.
         """
