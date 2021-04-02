@@ -18,6 +18,7 @@
 from .services.tables_service import TablesServiceClient
 from .types.tables import BatchCreateRowsRequest
 from .types.tables import BatchCreateRowsResponse
+from .types.tables import BatchDeleteRowsRequest
 from .types.tables import BatchUpdateRowsRequest
 from .types.tables import BatchUpdateRowsResponse
 from .types.tables import ColumnDescription
@@ -25,19 +26,27 @@ from .types.tables import CreateRowRequest
 from .types.tables import DeleteRowRequest
 from .types.tables import GetRowRequest
 from .types.tables import GetTableRequest
+from .types.tables import GetWorkspaceRequest
+from .types.tables import LabeledItem
 from .types.tables import ListRowsRequest
 from .types.tables import ListRowsResponse
 from .types.tables import ListTablesRequest
 from .types.tables import ListTablesResponse
+from .types.tables import ListWorkspacesRequest
+from .types.tables import ListWorkspacesResponse
+from .types.tables import LookupDetails
+from .types.tables import RelationshipDetails
 from .types.tables import Row
 from .types.tables import Table
 from .types.tables import UpdateRowRequest
 from .types.tables import View
+from .types.tables import Workspace
 
 
 __all__ = (
     "BatchCreateRowsRequest",
     "BatchCreateRowsResponse",
+    "BatchDeleteRowsRequest",
     "BatchUpdateRowsRequest",
     "BatchUpdateRowsResponse",
     "ColumnDescription",
@@ -45,13 +54,20 @@ __all__ = (
     "DeleteRowRequest",
     "GetRowRequest",
     "GetTableRequest",
+    "GetWorkspaceRequest",
+    "LabeledItem",
     "ListRowsRequest",
     "ListRowsResponse",
     "ListTablesRequest",
     "ListTablesResponse",
+    "ListWorkspacesRequest",
+    "ListWorkspacesResponse",
+    "LookupDetails",
+    "RelationshipDetails",
     "Row",
     "Table",
     "UpdateRowRequest",
     "View",
+    "Workspace",
     "TablesServiceClient",
 )

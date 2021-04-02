@@ -83,6 +83,10 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     -  Each Table has a collection of
        [Row][google.area120.tables.v1alpha1.Row] resources, named
        ``tables/*/rows/*``
+
+    -  The API has a collection of
+       [Workspace][google.area120.tables.v1alpha1.Workspace] resources,
+       named ``workspaces/*``.
     """
 
     @staticmethod
@@ -120,6 +124,22 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            TablesServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -131,7 +151,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            TablesServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -168,6 +188,17 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     def parse_table_path(path: str) -> Dict[str, str]:
         """Parse a table path into its component segments."""
         m = re.match(r"^tables/(?P<table>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def workspace_path(workspace: str,) -> str:
+        """Return a fully-qualified workspace string."""
+        return "workspaces/{workspace}".format(workspace=workspace,)
+
+    @staticmethod
+    def parse_workspace_path(path: str) -> Dict[str, str]:
+        """Parse a workspace path into its component segments."""
+        m = re.match(r"^workspaces/(?P<workspace>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -245,10 +276,10 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.TablesServiceTransport]): The
+            transport (Union[str, TablesServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -284,21 +315,17 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -341,7 +368,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -358,12 +385,13 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         r"""Gets a table. Returns NOT_FOUND if the table does not exist.
 
         Args:
-            request (:class:`~.tables.GetTableRequest`):
+            request (google.area120.tables_v1alpha1.types.GetTableRequest):
                 The request object. Request message for
                 TablesService.GetTable.
-            name (:class:`str`):
+            name (str):
                 Required. The name of the table to
                 retrieve. Format: tables/{table}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -375,7 +403,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.tables.Table:
+            google.area120.tables_v1alpha1.types.Table:
                 A single table.
         """
         # Create or coerce a protobuf request object.
@@ -428,7 +456,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         r"""Lists tables for the user.
 
         Args:
-            request (:class:`~.tables.ListTablesRequest`):
+            request (google.area120.tables_v1alpha1.types.ListTablesRequest):
                 The request object. Request message for
                 TablesService.ListTables.
 
@@ -439,7 +467,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListTablesPager:
+            google.area120.tables_v1alpha1.services.tables_service.pagers.ListTablesPager:
                 Response message for
                 TablesService.ListTables.
                 Iterating over this object will yield
@@ -472,6 +500,135 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         # Done; return the response.
         return response
 
+    def get_workspace(
+        self,
+        request: tables.GetWorkspaceRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> tables.Workspace:
+        r"""Gets a workspace. Returns NOT_FOUND if the workspace does not
+        exist.
+
+        Args:
+            request (google.area120.tables_v1alpha1.types.GetWorkspaceRequest):
+                The request object. Request message for
+                TablesService.GetWorkspace.
+            name (str):
+                Required. The name of the workspace
+                to retrieve. Format:
+                workspaces/{workspace}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.area120.tables_v1alpha1.types.Workspace:
+                A single workspace.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a tables.GetWorkspaceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, tables.GetWorkspaceRequest):
+            request = tables.GetWorkspaceRequest(request)
+
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_workspace]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def list_workspaces(
+        self,
+        request: tables.ListWorkspacesRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListWorkspacesPager:
+        r"""Lists workspaces for the user.
+
+        Args:
+            request (google.area120.tables_v1alpha1.types.ListWorkspacesRequest):
+                The request object. Request message for
+                TablesService.ListWorkspaces.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.area120.tables_v1alpha1.services.tables_service.pagers.ListWorkspacesPager:
+                Response message for
+                TablesService.ListWorkspaces.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a tables.ListWorkspacesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, tables.ListWorkspacesRequest):
+            request = tables.ListWorkspacesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_workspaces]
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListWorkspacesPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def get_row(
         self,
         request: tables.GetRowRequest = None,
@@ -485,13 +642,14 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         table.
 
         Args:
-            request (:class:`~.tables.GetRowRequest`):
+            request (google.area120.tables_v1alpha1.types.GetRowRequest):
                 The request object. Request message for
                 TablesService.GetRow.
-            name (:class:`str`):
+            name (str):
                 Required. The name of the row to
                 retrieve. Format:
                 tables/{table}/rows/{row}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -503,7 +661,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.tables.Row:
+            google.area120.tables_v1alpha1.types.Row:
                 A single row in a table.
         """
         # Create or coerce a protobuf request object.
@@ -558,12 +716,13 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         exist.
 
         Args:
-            request (:class:`~.tables.ListRowsRequest`):
+            request (google.area120.tables_v1alpha1.types.ListRowsRequest):
                 The request object. Request message for
                 TablesService.ListRows.
-            parent (:class:`str`):
+            parent (str):
                 Required. The parent table.
                 Format: tables/{table}
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -575,7 +734,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListRowsPager:
+            google.area120.tables_v1alpha1.services.tables_service.pagers.ListRowsPager:
                 Response message for
                 TablesService.ListRows.
                 Iterating over this object will yield
@@ -641,17 +800,18 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         r"""Creates a row.
 
         Args:
-            request (:class:`~.tables.CreateRowRequest`):
+            request (google.area120.tables_v1alpha1.types.CreateRowRequest):
                 The request object. Request message for
                 TablesService.CreateRow.
-            parent (:class:`str`):
+            parent (str):
                 Required. The parent table where this
                 row will be created. Format:
                 tables/{table}
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            row (:class:`~.tables.Row`):
+            row (google.area120.tables_v1alpha1.types.Row):
                 Required. The row to create.
                 This corresponds to the ``row`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -664,7 +824,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.tables.Row:
+            google.area120.tables_v1alpha1.types.Row:
                 A single row in a table.
         """
         # Create or coerce a protobuf request object.
@@ -719,7 +879,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         r"""Creates multiple rows.
 
         Args:
-            request (:class:`~.tables.BatchCreateRowsRequest`):
+            request (google.area120.tables_v1alpha1.types.BatchCreateRowsRequest):
                 The request object. Request message for
                 TablesService.BatchCreateRows.
 
@@ -730,7 +890,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.tables.BatchCreateRowsResponse:
+            google.area120.tables_v1alpha1.types.BatchCreateRowsResponse:
                 Response message for
                 TablesService.BatchCreateRows.
 
@@ -773,15 +933,15 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         r"""Updates a row.
 
         Args:
-            request (:class:`~.tables.UpdateRowRequest`):
+            request (google.area120.tables_v1alpha1.types.UpdateRowRequest):
                 The request object. Request message for
                 TablesService.UpdateRow.
-            row (:class:`~.tables.Row`):
+            row (google.area120.tables_v1alpha1.types.Row):
                 Required. The row to update.
                 This corresponds to the ``row`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The list of fields to update.
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -794,7 +954,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.tables.Row:
+            google.area120.tables_v1alpha1.types.Row:
                 A single row in a table.
         """
         # Create or coerce a protobuf request object.
@@ -849,7 +1009,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         r"""Updates multiple rows.
 
         Args:
-            request (:class:`~.tables.BatchUpdateRowsRequest`):
+            request (google.area120.tables_v1alpha1.types.BatchUpdateRowsRequest):
                 The request object. Request message for
                 TablesService.BatchUpdateRows.
 
@@ -860,7 +1020,7 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.tables.BatchUpdateRowsResponse:
+            google.area120.tables_v1alpha1.types.BatchUpdateRowsResponse:
                 Response message for
                 TablesService.BatchUpdateRows.
 
@@ -902,13 +1062,14 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         r"""Deletes a row.
 
         Args:
-            request (:class:`~.tables.DeleteRowRequest`):
+            request (google.area120.tables_v1alpha1.types.DeleteRowRequest):
                 The request object. Request message for
                 TablesService.DeleteRow
-            name (:class:`str`):
+            name (str):
                 Required. The name of the row to
                 delete. Format:
                 tables/{table}/rows/{row}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -950,6 +1111,51 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
+
+    def batch_delete_rows(
+        self,
+        request: tables.BatchDeleteRowsRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes multiple rows.
+
+        Args:
+            request (google.area120.tables_v1alpha1.types.BatchDeleteRowsRequest):
+                The request object. Request message for
+                TablesService.BatchDeleteRows
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a tables.BatchDeleteRowsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, tables.BatchDeleteRowsRequest):
+            request = tables.BatchDeleteRowsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.batch_delete_rows]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.

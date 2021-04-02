@@ -48,6 +48,10 @@ class TablesServiceAsyncClient:
     -  Each Table has a collection of
        [Row][google.area120.tables.v1alpha1.Row] resources, named
        ``tables/*/rows/*``
+
+    -  The API has a collection of
+       [Workspace][google.area120.tables.v1alpha1.Workspace] resources,
+       named ``workspaces/*``.
     """
 
     _client: TablesServiceClient
@@ -59,6 +63,8 @@ class TablesServiceAsyncClient:
     parse_row_path = staticmethod(TablesServiceClient.parse_row_path)
     table_path = staticmethod(TablesServiceClient.table_path)
     parse_table_path = staticmethod(TablesServiceClient.parse_table_path)
+    workspace_path = staticmethod(TablesServiceClient.workspace_path)
+    parse_workspace_path = staticmethod(TablesServiceClient.parse_workspace_path)
 
     common_billing_account_path = staticmethod(
         TablesServiceClient.common_billing_account_path
@@ -89,7 +95,36 @@ class TablesServiceAsyncClient:
         TablesServiceClient.parse_common_location_path
     )
 
-    from_service_account_file = TablesServiceClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            TablesServiceAsyncClient: The constructed client.
+        """
+        return TablesServiceClient.from_service_account_info.__func__(TablesServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            TablesServiceAsyncClient: The constructed client.
+        """
+        return TablesServiceClient.from_service_account_file.__func__(TablesServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -165,12 +200,13 @@ class TablesServiceAsyncClient:
         r"""Gets a table. Returns NOT_FOUND if the table does not exist.
 
         Args:
-            request (:class:`~.tables.GetTableRequest`):
+            request (:class:`google.area120.tables_v1alpha1.types.GetTableRequest`):
                 The request object. Request message for
                 TablesService.GetTable.
             name (:class:`str`):
                 Required. The name of the table to
                 retrieve. Format: tables/{table}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -182,7 +218,7 @@ class TablesServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.tables.Table:
+            google.area120.tables_v1alpha1.types.Table:
                 A single table.
         """
         # Create or coerce a protobuf request object.
@@ -234,7 +270,7 @@ class TablesServiceAsyncClient:
         r"""Lists tables for the user.
 
         Args:
-            request (:class:`~.tables.ListTablesRequest`):
+            request (:class:`google.area120.tables_v1alpha1.types.ListTablesRequest`):
                 The request object. Request message for
                 TablesService.ListTables.
 
@@ -245,7 +281,7 @@ class TablesServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListTablesAsyncPager:
+            google.area120.tables_v1alpha1.services.tables_service.pagers.ListTablesAsyncPager:
                 Response message for
                 TablesService.ListTables.
                 Iterating over this object will yield
@@ -277,6 +313,133 @@ class TablesServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def get_workspace(
+        self,
+        request: tables.GetWorkspaceRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> tables.Workspace:
+        r"""Gets a workspace. Returns NOT_FOUND if the workspace does not
+        exist.
+
+        Args:
+            request (:class:`google.area120.tables_v1alpha1.types.GetWorkspaceRequest`):
+                The request object. Request message for
+                TablesService.GetWorkspace.
+            name (:class:`str`):
+                Required. The name of the workspace
+                to retrieve. Format:
+                workspaces/{workspace}
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.area120.tables_v1alpha1.types.Workspace:
+                A single workspace.
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = tables.GetWorkspaceRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_workspace,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    async def list_workspaces(
+        self,
+        request: tables.ListWorkspacesRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListWorkspacesAsyncPager:
+        r"""Lists workspaces for the user.
+
+        Args:
+            request (:class:`google.area120.tables_v1alpha1.types.ListWorkspacesRequest`):
+                The request object. Request message for
+                TablesService.ListWorkspaces.
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.area120.tables_v1alpha1.services.tables_service.pagers.ListWorkspacesAsyncPager:
+                Response message for
+                TablesService.ListWorkspaces.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+
+        request = tables.ListWorkspacesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_workspaces,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListWorkspacesAsyncPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def get_row(
         self,
         request: tables.GetRowRequest = None,
@@ -290,13 +453,14 @@ class TablesServiceAsyncClient:
         table.
 
         Args:
-            request (:class:`~.tables.GetRowRequest`):
+            request (:class:`google.area120.tables_v1alpha1.types.GetRowRequest`):
                 The request object. Request message for
                 TablesService.GetRow.
             name (:class:`str`):
                 Required. The name of the row to
                 retrieve. Format:
                 tables/{table}/rows/{row}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -308,7 +472,7 @@ class TablesServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.tables.Row:
+            google.area120.tables_v1alpha1.types.Row:
                 A single row in a table.
         """
         # Create or coerce a protobuf request object.
@@ -362,12 +526,13 @@ class TablesServiceAsyncClient:
         exist.
 
         Args:
-            request (:class:`~.tables.ListRowsRequest`):
+            request (:class:`google.area120.tables_v1alpha1.types.ListRowsRequest`):
                 The request object. Request message for
                 TablesService.ListRows.
             parent (:class:`str`):
                 Required. The parent table.
                 Format: tables/{table}
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -379,7 +544,7 @@ class TablesServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListRowsAsyncPager:
+            google.area120.tables_v1alpha1.services.tables_service.pagers.ListRowsAsyncPager:
                 Response message for
                 TablesService.ListRows.
                 Iterating over this object will yield
@@ -444,17 +609,18 @@ class TablesServiceAsyncClient:
         r"""Creates a row.
 
         Args:
-            request (:class:`~.tables.CreateRowRequest`):
+            request (:class:`google.area120.tables_v1alpha1.types.CreateRowRequest`):
                 The request object. Request message for
                 TablesService.CreateRow.
             parent (:class:`str`):
                 Required. The parent table where this
                 row will be created. Format:
                 tables/{table}
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            row (:class:`~.tables.Row`):
+            row (:class:`google.area120.tables_v1alpha1.types.Row`):
                 Required. The row to create.
                 This corresponds to the ``row`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -467,7 +633,7 @@ class TablesServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.tables.Row:
+            google.area120.tables_v1alpha1.types.Row:
                 A single row in a table.
         """
         # Create or coerce a protobuf request object.
@@ -521,7 +687,7 @@ class TablesServiceAsyncClient:
         r"""Creates multiple rows.
 
         Args:
-            request (:class:`~.tables.BatchCreateRowsRequest`):
+            request (:class:`google.area120.tables_v1alpha1.types.BatchCreateRowsRequest`):
                 The request object. Request message for
                 TablesService.BatchCreateRows.
 
@@ -532,7 +698,7 @@ class TablesServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.tables.BatchCreateRowsResponse:
+            google.area120.tables_v1alpha1.types.BatchCreateRowsResponse:
                 Response message for
                 TablesService.BatchCreateRows.
 
@@ -574,15 +740,15 @@ class TablesServiceAsyncClient:
         r"""Updates a row.
 
         Args:
-            request (:class:`~.tables.UpdateRowRequest`):
+            request (:class:`google.area120.tables_v1alpha1.types.UpdateRowRequest`):
                 The request object. Request message for
                 TablesService.UpdateRow.
-            row (:class:`~.tables.Row`):
+            row (:class:`google.area120.tables_v1alpha1.types.Row`):
                 Required. The row to update.
                 This corresponds to the ``row`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 The list of fields to update.
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -595,7 +761,7 @@ class TablesServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.tables.Row:
+            google.area120.tables_v1alpha1.types.Row:
                 A single row in a table.
         """
         # Create or coerce a protobuf request object.
@@ -649,7 +815,7 @@ class TablesServiceAsyncClient:
         r"""Updates multiple rows.
 
         Args:
-            request (:class:`~.tables.BatchUpdateRowsRequest`):
+            request (:class:`google.area120.tables_v1alpha1.types.BatchUpdateRowsRequest`):
                 The request object. Request message for
                 TablesService.BatchUpdateRows.
 
@@ -660,7 +826,7 @@ class TablesServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.tables.BatchUpdateRowsResponse:
+            google.area120.tables_v1alpha1.types.BatchUpdateRowsResponse:
                 Response message for
                 TablesService.BatchUpdateRows.
 
@@ -701,13 +867,14 @@ class TablesServiceAsyncClient:
         r"""Deletes a row.
 
         Args:
-            request (:class:`~.tables.DeleteRowRequest`):
+            request (:class:`google.area120.tables_v1alpha1.types.DeleteRowRequest`):
                 The request object. Request message for
                 TablesService.DeleteRow
             name (:class:`str`):
                 Required. The name of the row to
                 delete. Format:
                 tables/{table}/rows/{row}
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -748,6 +915,50 @@ class TablesServiceAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
+
+    async def batch_delete_rows(
+        self,
+        request: tables.BatchDeleteRowsRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes multiple rows.
+
+        Args:
+            request (:class:`google.area120.tables_v1alpha1.types.BatchDeleteRowsRequest`):
+                The request object. Request message for
+                TablesService.BatchDeleteRows
+
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+
+        request = tables.BatchDeleteRowsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.batch_delete_rows,
+            default_timeout=60.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
         # Send the request.
