@@ -3,30 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-managed-identities",
-        "sha": "53fef1168a0acf9a83bcd410b25a053a946c39c2"
+        "remote": "https://github.com/googleapis/python-managed-identities.git",
+        "sha": "918202821d91ec0eb13a978d29847da3af64f3ab"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "95dd24960cf9f794ef583e59ad9f1fabe1c4a924",
-        "internalRef": "365882072"
+        "sha": "56fc6d43fed71188d7e18f3ca003544646c4ab35",
+        "internalRef": "366346972"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "edbd72054bf9f71505782a94d9973e26866f7038"
+        "sha": "ff39353f34a36e7643b86e97724e4027ab466dc6"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "edbd72054bf9f71505782a94d9973e26866f7038"
+        "sha": "ff39353f34a36e7643b86e97724e4027ab466dc6"
       }
     }
   ],
@@ -40,5 +40,101 @@
         "generator": "bazel"
       }
     }
+  ],
+  "generatedFiles": [
+    ".coveragerc",
+    ".flake8",
+    ".github/CONTRIBUTING.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/support_request.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/header-checker-lint.yml",
+    ".github/release-please.yml",
+    ".github/snippet-bot.yml",
+    ".gitignore",
+    ".kokoro/build.sh",
+    ".kokoro/continuous/common.cfg",
+    ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
+    ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
+    ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
+    ".kokoro/presubmit/common.cfg",
+    ".kokoro/presubmit/presubmit.cfg",
+    ".kokoro/publish-docs.sh",
+    ".kokoro/release.sh",
+    ".kokoro/release/common.cfg",
+    ".kokoro/release/release.cfg",
+    ".kokoro/samples/lint/common.cfg",
+    ".kokoro/samples/lint/continuous.cfg",
+    ".kokoro/samples/lint/periodic.cfg",
+    ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.6/common.cfg",
+    ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic-head.cfg",
+    ".kokoro/samples/python3.6/periodic.cfg",
+    ".kokoro/samples/python3.6/presubmit.cfg",
+    ".kokoro/samples/python3.7/common.cfg",
+    ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic-head.cfg",
+    ".kokoro/samples/python3.7/periodic.cfg",
+    ".kokoro/samples/python3.7/presubmit.cfg",
+    ".kokoro/samples/python3.8/common.cfg",
+    ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic-head.cfg",
+    ".kokoro/samples/python3.8/periodic.cfg",
+    ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples-against-head.sh",
+    ".kokoro/test-samples-impl.sh",
+    ".kokoro/test-samples.sh",
+    ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
+    ".trampolinerc",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "MANIFEST.in",
+    "docs/_static/custom.css",
+    "docs/_templates/layout.html",
+    "docs/conf.py",
+    "docs/managedidentities_v1/managed_identities_service.rst",
+    "docs/managedidentities_v1/services.rst",
+    "docs/managedidentities_v1/types.rst",
+    "docs/multiprocessing.rst",
+    "google/cloud/managedidentities/__init__.py",
+    "google/cloud/managedidentities/py.typed",
+    "google/cloud/managedidentities_v1/__init__.py",
+    "google/cloud/managedidentities_v1/py.typed",
+    "google/cloud/managedidentities_v1/services/__init__.py",
+    "google/cloud/managedidentities_v1/services/managed_identities_service/__init__.py",
+    "google/cloud/managedidentities_v1/services/managed_identities_service/async_client.py",
+    "google/cloud/managedidentities_v1/services/managed_identities_service/client.py",
+    "google/cloud/managedidentities_v1/services/managed_identities_service/pagers.py",
+    "google/cloud/managedidentities_v1/services/managed_identities_service/transports/__init__.py",
+    "google/cloud/managedidentities_v1/services/managed_identities_service/transports/base.py",
+    "google/cloud/managedidentities_v1/services/managed_identities_service/transports/grpc.py",
+    "google/cloud/managedidentities_v1/services/managed_identities_service/transports/grpc_asyncio.py",
+    "google/cloud/managedidentities_v1/types/__init__.py",
+    "google/cloud/managedidentities_v1/types/managed_identities_service.py",
+    "google/cloud/managedidentities_v1/types/resource.py",
+    "mypy.ini",
+    "noxfile.py",
+    "renovate.json",
+    "scripts/decrypt-secrets.sh",
+    "scripts/fixup_managedidentities_v1_keywords.py",
+    "scripts/readme-gen/readme_gen.py",
+    "scripts/readme-gen/templates/README.tmpl.rst",
+    "scripts/readme-gen/templates/auth.tmpl.rst",
+    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "setup.cfg",
+    "testing/.gitignore",
+    "tests/unit/gapic/managedidentities_v1/__init__.py",
+    "tests/unit/gapic/managedidentities_v1/test_managed_identities_service.py"
   ]
 }
