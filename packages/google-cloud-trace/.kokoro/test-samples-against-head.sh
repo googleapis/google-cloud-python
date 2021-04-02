@@ -1,4 +1,5 @@
-# Copyright 2018 Google LLC
+#!/bin/bash
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,17 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-import time
+# A customized test runner for samples.
+#
+# For periodic builds, you can specify this file for testing against head.
 
-from google.cloud import trace_v2
+# `-e` enables the script to automatically fail when a command fails
+# `-o pipefail` sets the exit code to the rightmost comment to exit with a non-zero
+set -eo pipefail
+# Enables `**` to include files nested inside sub-folders
+shopt -s globstar
 
+cd github/python-trace
 
-class TestSystemTraceService(object):
-    def test_batch_write_spans(self):
-        project_id = os.environ["PROJECT_ID"]
-
-        client = trace_v2.TraceServiceClient()
-        name = f"projects/{project_id}"
-        spans = []
-        client.batch_write_spans(name=name, spans=spans)
+exec .kokoro/test-samples-impl.sh

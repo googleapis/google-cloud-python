@@ -16,22 +16,21 @@
 #
 
 from .trace import (
+    GetTraceRequest,
+    ListTracesRequest,
+    ListTracesResponse,
+    PatchTracesRequest,
     Trace,
     Traces,
     TraceSpan,
-    ListTracesRequest,
-    ListTracesResponse,
-    GetTraceRequest,
-    PatchTracesRequest,
 )
 
-
 __all__ = (
+    "GetTraceRequest",
+    "ListTracesRequest",
+    "ListTracesResponse",
+    "PatchTracesRequest",
     "Trace",
     "Traces",
     "TraceSpan",
-    "ListTracesRequest",
-    "ListTracesResponse",
-    "GetTraceRequest",
-    "PatchTracesRequest",
 )

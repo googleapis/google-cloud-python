@@ -1,6 +1,6 @@
 Services for Google Cloud Trace v1 API
 ======================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.trace_v1.services.trace_service
-    :members:
-    :inherited-members:
+    trace_service

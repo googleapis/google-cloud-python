@@ -3,22 +3,22 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-trace.git",
-        "sha": "423fb47f6d3294fca9fe1c942c42d941c3ef3378"
+        "remote": "git@github.com:googleapis/python-trace",
+        "sha": "1806034ea0beded6473de7d0938b92243d653c4f"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "05de3e1e14a0b07eab8b474e669164dbd31f81fb"
+        "sha": "ff39353f34a36e7643b86e97724e4027ab466dc6"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d302f93d7f47e2852e585ac35ab2d15585717ec0"
+        "sha": "ff39353f34a36e7643b86e97724e4027ab466dc6"
       }
     }
   ],
@@ -41,99 +41,5 @@
         "generator": "bazel"
       }
     }
-  ],
-  "generatedFiles": [
-    ".coveragerc",
-    ".flake8",
-    ".github/CONTRIBUTING.md",
-    ".github/ISSUE_TEMPLATE/bug_report.md",
-    ".github/ISSUE_TEMPLATE/feature_request.md",
-    ".github/ISSUE_TEMPLATE/support_request.md",
-    ".github/PULL_REQUEST_TEMPLATE.md",
-    ".github/release-please.yml",
-    ".github/snippet-bot.yml",
-    ".gitignore",
-    ".kokoro/build.sh",
-    ".kokoro/continuous/common.cfg",
-    ".kokoro/continuous/continuous.cfg",
-    ".kokoro/docker/docs/Dockerfile",
-    ".kokoro/docker/docs/fetch_gpg_keys.sh",
-    ".kokoro/docs/common.cfg",
-    ".kokoro/docs/docs-presubmit.cfg",
-    ".kokoro/docs/docs.cfg",
-    ".kokoro/presubmit/common.cfg",
-    ".kokoro/presubmit/presubmit.cfg",
-    ".kokoro/publish-docs.sh",
-    ".kokoro/release.sh",
-    ".kokoro/release/common.cfg",
-    ".kokoro/release/release.cfg",
-    ".kokoro/samples/lint/common.cfg",
-    ".kokoro/samples/lint/continuous.cfg",
-    ".kokoro/samples/lint/periodic.cfg",
-    ".kokoro/samples/lint/presubmit.cfg",
-    ".kokoro/samples/python3.6/common.cfg",
-    ".kokoro/samples/python3.6/continuous.cfg",
-    ".kokoro/samples/python3.6/periodic.cfg",
-    ".kokoro/samples/python3.6/presubmit.cfg",
-    ".kokoro/samples/python3.7/common.cfg",
-    ".kokoro/samples/python3.7/continuous.cfg",
-    ".kokoro/samples/python3.7/periodic.cfg",
-    ".kokoro/samples/python3.7/presubmit.cfg",
-    ".kokoro/samples/python3.8/common.cfg",
-    ".kokoro/samples/python3.8/continuous.cfg",
-    ".kokoro/samples/python3.8/periodic.cfg",
-    ".kokoro/samples/python3.8/presubmit.cfg",
-    ".kokoro/test-samples.sh",
-    ".kokoro/trampoline.sh",
-    ".kokoro/trampoline_v2.sh",
-    ".trampolinerc",
-    "CODE_OF_CONDUCT.md",
-    "CONTRIBUTING.rst",
-    "LICENSE",
-    "MANIFEST.in",
-    "docs/_static/custom.css",
-    "docs/_templates/layout.html",
-    "docs/conf.py",
-    "docs/multiprocessing.rst",
-    "google/cloud/trace_v1/__init__.py",
-    "google/cloud/trace_v1/gapic/__init__.py",
-    "google/cloud/trace_v1/gapic/enums.py",
-    "google/cloud/trace_v1/gapic/trace_service_client.py",
-    "google/cloud/trace_v1/gapic/trace_service_client_config.py",
-    "google/cloud/trace_v1/gapic/transports/__init__.py",
-    "google/cloud/trace_v1/gapic/transports/trace_service_grpc_transport.py",
-    "google/cloud/trace_v1/proto/__init__.py",
-    "google/cloud/trace_v1/proto/trace.proto",
-    "google/cloud/trace_v1/proto/trace_pb2.py",
-    "google/cloud/trace_v1/proto/trace_pb2_grpc.py",
-    "google/cloud/trace_v1/types.py",
-    "google/cloud/trace_v2/__init__.py",
-    "google/cloud/trace_v2/gapic/__init__.py",
-    "google/cloud/trace_v2/gapic/enums.py",
-    "google/cloud/trace_v2/gapic/trace_service_client.py",
-    "google/cloud/trace_v2/gapic/trace_service_client_config.py",
-    "google/cloud/trace_v2/gapic/transports/__init__.py",
-    "google/cloud/trace_v2/gapic/transports/trace_service_grpc_transport.py",
-    "google/cloud/trace_v2/proto/__init__.py",
-    "google/cloud/trace_v2/proto/trace.proto",
-    "google/cloud/trace_v2/proto/trace_pb2.py",
-    "google/cloud/trace_v2/proto/trace_pb2_grpc.py",
-    "google/cloud/trace_v2/proto/tracing.proto",
-    "google/cloud/trace_v2/proto/tracing_pb2.py",
-    "google/cloud/trace_v2/proto/tracing_pb2_grpc.py",
-    "google/cloud/trace_v2/types.py",
-    "noxfile.py",
-    "renovate.json",
-    "scripts/decrypt-secrets.sh",
-    "scripts/readme-gen/readme_gen.py",
-    "scripts/readme-gen/templates/README.tmpl.rst",
-    "scripts/readme-gen/templates/auth.tmpl.rst",
-    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
-    "scripts/readme-gen/templates/install_deps.tmpl.rst",
-    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
-    "setup.cfg",
-    "testing/.gitignore",
-    "tests/unit/gapic/v1/test_trace_service_client_v1.py",
-    "tests/unit/gapic/v2/test_trace_service_client_v2.py"
   ]
 }

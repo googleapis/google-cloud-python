@@ -54,9 +54,73 @@ class TraceServiceAsyncClient:
     DEFAULT_MTLS_ENDPOINT = TraceServiceClient.DEFAULT_MTLS_ENDPOINT
 
     span_path = staticmethod(TraceServiceClient.span_path)
+    parse_span_path = staticmethod(TraceServiceClient.parse_span_path)
 
-    from_service_account_file = TraceServiceClient.from_service_account_file
+    common_billing_account_path = staticmethod(
+        TraceServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        TraceServiceClient.parse_common_billing_account_path
+    )
+
+    common_folder_path = staticmethod(TraceServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(TraceServiceClient.parse_common_folder_path)
+
+    common_organization_path = staticmethod(TraceServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        TraceServiceClient.parse_common_organization_path
+    )
+
+    common_project_path = staticmethod(TraceServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        TraceServiceClient.parse_common_project_path
+    )
+
+    common_location_path = staticmethod(TraceServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        TraceServiceClient.parse_common_location_path
+    )
+
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            TraceServiceAsyncClient: The constructed client.
+        """
+        return TraceServiceClient.from_service_account_info.__func__(TraceServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            TraceServiceAsyncClient: The constructed client.
+        """
+        return TraceServiceClient.from_service_account_file.__func__(TraceServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
+
+    @property
+    def transport(self) -> TraceServiceTransport:
+        """Return the transport used by the client instance.
+
+        Returns:
+            TraceServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(TraceServiceClient).get_transport_class, type(TraceServiceClient)
@@ -84,16 +148,19 @@ class TraceServiceAsyncClient:
             client_options (ClientOptions): Custom options for the client. It
                 won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS
+                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint, this is the default value for
-                the environment variable) and "auto" (auto switch to the default
-                mTLS endpoint if client SSL credentials is present). However,
-                the ``api_endpoint`` property takes precedence if provided.
-                (2) The ``client_cert_source`` property is used to provide client
-                SSL credentials for mutual TLS transport. If not provided, the
-                default SSL credentials will be used if present.
+                use the default regular endpoint) and "auto" (auto switch to the
+                default mTLS endpoint if client certificate is present, this is
+                the default value). However, the ``api_endpoint`` property takes
+                precedence if provided.
+                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                is "true", then the ``client_cert_source`` property can be used
+                to provide client certificate for mutual TLS transport. If
+                not provided, the default SSL client certificate will be used if
+                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
+                set, no client certificate will be used.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -121,19 +188,21 @@ class TraceServiceAsyncClient:
         update existing spans.
 
         Args:
-            request (:class:`~.tracing.BatchWriteSpansRequest`):
+            request (:class:`google.cloud.trace_v2.types.BatchWriteSpansRequest`):
                 The request object. The request message for the
                 `BatchWriteSpans` method.
             name (:class:`str`):
                 Required. The name of the project where the spans
                 belong. The format is ``projects/[PROJECT_ID]``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            spans (:class:`Sequence[~.trace.Span]`):
+            spans (:class:`Sequence[google.cloud.trace_v2.types.Span]`):
                 Required. A list of new spans. The
                 span names must not match existing
                 spans, or the results are undefined.
+
                 This corresponds to the ``spans`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -147,7 +216,8 @@ class TraceServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, spans]):
+        has_flattened_params = any([name, spans])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -160,8 +230,9 @@ class TraceServiceAsyncClient:
 
         if name is not None:
             request.name = name
-        if spans is not None:
-            request.spans = spans
+
+        if spans:
+            request.spans.extend(spans)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -193,7 +264,7 @@ class TraceServiceAsyncClient:
         r"""Creates a new span.
 
         Args:
-            request (:class:`~.trace.Span`):
+            request (:class:`google.cloud.trace_v2.types.Span`):
                 The request object. A span represents a single operation
                 within a trace. Spans can be nested to form a trace
                 tree. Often, a trace contains a root span that describes
@@ -210,7 +281,7 @@ class TraceServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.trace.Span:
+            google.cloud.trace_v2.types.Span:
                 A span represents a single operation
                 within a trace. Spans can be nested to
                 form a trace tree. Often, a trace
@@ -238,6 +309,7 @@ class TraceServiceAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=120.0,
             ),
             default_timeout=120.0,
             client_info=DEFAULT_CLIENT_INFO,

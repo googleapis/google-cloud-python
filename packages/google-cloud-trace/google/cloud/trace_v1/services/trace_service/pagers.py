@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.trace_v1.types import trace
 
@@ -24,7 +33,7 @@ class ListTracesPager:
     """A pager for iterating through ``list_traces`` requests.
 
     This class thinly wraps an initial
-    :class:`~.trace.ListTracesResponse` object, and
+    :class:`google.cloud.trace_v1.types.ListTracesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``traces`` field.
 
@@ -33,7 +42,7 @@ class ListTracesPager:
     through the ``traces`` field on the
     corresponding responses.
 
-    All the usual :class:`~.trace.ListTracesResponse`
+    All the usual :class:`google.cloud.trace_v1.types.ListTracesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListTracesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.trace.ListTracesRequest`):
+            request (google.cloud.trace_v1.types.ListTracesRequest):
                 The initial request object.
-            response (:class:`~.trace.ListTracesResponse`):
+            response (google.cloud.trace_v1.types.ListTracesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListTracesAsyncPager:
     """A pager for iterating through ``list_traces`` requests.
 
     This class thinly wraps an initial
-    :class:`~.trace.ListTracesResponse` object, and
+    :class:`google.cloud.trace_v1.types.ListTracesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``traces`` field.
 
@@ -95,7 +104,7 @@ class ListTracesAsyncPager:
     through the ``traces`` field on the
     corresponding responses.
 
-    All the usual :class:`~.trace.ListTracesResponse`
+    All the usual :class:`google.cloud.trace_v1.types.ListTracesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListTracesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.trace.ListTracesRequest`):
+            request (google.cloud.trace_v1.types.ListTracesRequest):
                 The initial request object.
-            response (:class:`~.trace.ListTracesResponse`):
+            response (google.cloud.trace_v1.types.ListTracesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

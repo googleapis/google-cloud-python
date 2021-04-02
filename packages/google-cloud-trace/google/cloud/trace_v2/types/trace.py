@@ -59,7 +59,7 @@ class Span(proto.Message):
         parent_span_id (str):
             The [SPAN_ID] of this span's parent span. If this is a root
             span, then this field must be empty.
-        display_name (~.trace.TruncatableString):
+        display_name (google.cloud.trace_v2.types.TruncatableString):
             Required. A description of the span's
             operation (up to 128 bytes). Stackdriver Trace
             displays the description in the Google Cloud
@@ -71,44 +71,44 @@ class Span(proto.Message):
             application and at the same call point. This
             makes it easier to correlate spans in different
             traces.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. The start time of the span. On the
             client side, this is the time kept by the local
             machine where the span execution starts. On the
             server side, this is the time when the server's
             application handler starts running.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. The end time of the span. On the
             client side, this is the time kept by the local
             machine where the span execution ends. On the
             server side, this is the time when the server
             application handler stops running.
-        attributes (~.trace.Span.Attributes):
+        attributes (google.cloud.trace_v2.types.Span.Attributes):
             A set of attributes on the span. You can have
             up to 32 attributes per span.
-        stack_trace (~.trace.StackTrace):
+        stack_trace (google.cloud.trace_v2.types.StackTrace):
             Stack trace captured at the start of the
             span.
-        time_events (~.trace.Span.TimeEvents):
+        time_events (google.cloud.trace_v2.types.Span.TimeEvents):
             A set of time events. You can have up to 32
             annotations and 128 message events per span.
-        links (~.trace.Span.Links):
+        links (google.cloud.trace_v2.types.Span.Links):
             Links associated with the span. You can have
             up to 128 links per Span.
-        status (~.gr_status.Status):
+        status (google.rpc.status_pb2.Status):
             Optional. The final status for this span.
-        same_process_as_parent_span (~.wrappers.BoolValue):
+        same_process_as_parent_span (google.protobuf.wrappers_pb2.BoolValue):
             Optional. Set this parameter to indicate
             whether this span is in the same process as its
             parent. If you do not set this parameter,
             Stackdriver Trace is unable to take advantage of
             this helpful information.
-        child_span_count (~.wrappers.Int32Value):
+        child_span_count (google.protobuf.wrappers_pb2.Int32Value):
             Optional. The number of child spans that were
             generated while this span was active. If set,
             allows implementation to detect missing child
             spans.
-        span_kind (~.trace.Span.SpanKind):
+        span_kind (google.cloud.trace_v2.types.Span.SpanKind):
             Optional. Distinguishes between spans generated in a
             particular context. For example, two spans with the same
             name may be distinguished using ``CLIENT`` (caller) and
@@ -130,7 +130,7 @@ class Span(proto.Message):
         r"""A set of attributes, each in the format ``[KEY]:[VALUE]``.
 
         Attributes:
-            attribute_map (Sequence[~.trace.Span.Attributes.AttributeMapEntry]):
+            attribute_map (Sequence[google.cloud.trace_v2.types.Span.Attributes.AttributeMapEntry]):
                 The set of attributes. Each attribute's key can be up to 128
                 bytes long. The value can be a string up to 256 bytes, a
                 signed 64-bit integer, or the Boolean values ``true`` and
@@ -159,12 +159,12 @@ class Span(proto.Message):
         r"""A time-stamped annotation or message event in the Span.
 
         Attributes:
-            time (~.timestamp.Timestamp):
+            time (google.protobuf.timestamp_pb2.Timestamp):
                 The timestamp indicating the time the event
                 occurred.
-            annotation (~.trace.Span.TimeEvent.Annotation):
+            annotation (google.cloud.trace_v2.types.Span.TimeEvent.Annotation):
                 Text annotation with a set of attributes.
-            message_event (~.trace.Span.TimeEvent.MessageEvent):
+            message_event (google.cloud.trace_v2.types.Span.TimeEvent.MessageEvent):
                 An event describing a message sent/received
                 between Spans.
         """
@@ -173,11 +173,11 @@ class Span(proto.Message):
             r"""Text annotation with a set of attributes.
 
             Attributes:
-                description (~.trace.TruncatableString):
+                description (google.cloud.trace_v2.types.TruncatableString):
                     A user-supplied message describing the event.
                     The maximum length for the description is 256
                     bytes.
-                attributes (~.trace.Span.Attributes):
+                attributes (google.cloud.trace_v2.types.Span.Attributes):
                     A set of attributes on the annotation. You
                     can have up to 4 attributes per Annotation.
             """
@@ -194,7 +194,7 @@ class Span(proto.Message):
             r"""An event describing a message sent/received between Spans.
 
             Attributes:
-                type (~.trace.Span.TimeEvent.MessageEvent.Type):
+                type (google.cloud.trace_v2.types.Span.TimeEvent.MessageEvent.Type):
                     Type of MessageEvent. Indicates whether the
                     message was sent or received.
                 id (int):
@@ -246,7 +246,7 @@ class Span(proto.Message):
         pairs, or details of a message sent/received between Spans.
 
         Attributes:
-            time_event (Sequence[~.trace.Span.TimeEvent]):
+            time_event (Sequence[google.cloud.trace_v2.types.Span.TimeEvent]):
                 A collection of ``TimeEvent``\ s.
             dropped_annotations_count (int):
                 The number of dropped annotations in all the
@@ -278,10 +278,10 @@ class Span(proto.Message):
                 The [TRACE_ID] for a trace within a project.
             span_id (str):
                 The [SPAN_ID] for a span within a trace.
-            type (~.trace.Span.Link.Type):
+            type (google.cloud.trace_v2.types.Span.Link.Type):
                 The relationship of the current span relative
                 to the linked span.
-            attributes (~.trace.Span.Attributes):
+            attributes (google.cloud.trace_v2.types.Span.Attributes):
                 A set of attributes on the link. You have
                 have up to  32 attributes per link.
         """
@@ -307,7 +307,7 @@ class Span(proto.Message):
         a span in the same or different trace.
 
         Attributes:
-            link (Sequence[~.trace.Span.Link]):
+            link (Sequence[google.cloud.trace_v2.types.Span.Link]):
                 A collection of links.
             dropped_links_count (int):
                 The number of dropped links after the maximum
@@ -356,7 +356,7 @@ class AttributeValue(proto.Message):
     r"""The allowed types for [VALUE] in a ``[KEY]:[VALUE]`` attribute.
 
     Attributes:
-        string_value (~.trace.TruncatableString):
+        string_value (google.cloud.trace_v2.types.TruncatableString):
             A string up to 256 bytes long.
         int_value (int):
             A 64-bit signed integer.
@@ -377,7 +377,7 @@ class StackTrace(proto.Message):
     r"""A call stack appearing in a trace.
 
     Attributes:
-        stack_frames (~.trace.StackTrace.StackFrames):
+        stack_frames (google.cloud.trace_v2.types.StackTrace.StackFrames):
             Stack frames in this stack trace. A maximum
             of 128 frames are allowed.
         stack_trace_hash_id (int):
@@ -396,15 +396,15 @@ class StackTrace(proto.Message):
         r"""Represents a single stack frame in a stack trace.
 
         Attributes:
-            function_name (~.trace.TruncatableString):
+            function_name (google.cloud.trace_v2.types.TruncatableString):
                 The fully-qualified name that uniquely
                 identifies the function or method that is active
                 in this frame (up to 1024 bytes).
-            original_function_name (~.trace.TruncatableString):
+            original_function_name (google.cloud.trace_v2.types.TruncatableString):
                 An un-mangled function name, if ``function_name`` is
                 `mangled <http://www.avabodh.com/cxxin/namemangling.html>`__.
                 The name can be fully-qualified (up to 1024 bytes).
-            file_name (~.trace.TruncatableString):
+            file_name (google.cloud.trace_v2.types.TruncatableString):
                 The name of the source file where the
                 function call appears (up to 256 bytes).
             line_number (int):
@@ -414,10 +414,10 @@ class StackTrace(proto.Message):
                 The column number where the function call
                 appears, if available. This is important in
                 JavaScript because of its anonymous functions.
-            load_module (~.trace.Module):
+            load_module (google.cloud.trace_v2.types.Module):
                 The binary module from where the code was
                 loaded.
-            source_version (~.trace.TruncatableString):
+            source_version (google.cloud.trace_v2.types.TruncatableString):
                 The version of the deployed source code (up
                 to 128 bytes).
         """
@@ -446,7 +446,7 @@ class StackTrace(proto.Message):
         r"""A collection of stack frames, which can be truncated.
 
         Attributes:
-            frame (Sequence[~.trace.StackTrace.StackFrame]):
+            frame (Sequence[google.cloud.trace_v2.types.StackTrace.StackFrame]):
                 Stack frames in this call stack.
             dropped_frames_count (int):
                 The number of stack frames that were dropped
@@ -470,11 +470,11 @@ class Module(proto.Message):
     r"""Binary module.
 
     Attributes:
-        module (~.trace.TruncatableString):
+        module (google.cloud.trace_v2.types.TruncatableString):
             For example: main binary, kernel modules, and
             dynamic libraries such as libc.so, sharedlib.so
             (up to 256 bytes).
-        build_id (~.trace.TruncatableString):
+        build_id (google.cloud.trace_v2.types.TruncatableString):
             A unique identifier for the module, usually a
             hash of its contents (up to 128 bytes).
     """

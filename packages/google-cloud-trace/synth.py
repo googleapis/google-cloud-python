@@ -36,12 +36,20 @@ for version in ["v1", "v2"]:
     s.move(library, excludes=["docs/index.rst", "setup.py"])
 
 
+# Rename field `type_` to `type` in v1 and v2 to avoid breaking change
+s.replace(
+    "google/**/types/*.py",
+    "type_",
+    "type"
+)
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
     samples=True,  # set to True only if there are samples
     microgenerator=True,
+    cov_level=98,
 )
 
 python.py_samples(skip_readmes=True)

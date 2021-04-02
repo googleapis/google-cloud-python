@@ -33,7 +33,7 @@ class BatchWriteSpansRequest(proto.Message):
         name (str):
             Required. The name of the project where the spans belong.
             The format is ``projects/[PROJECT_ID]``.
-        spans (Sequence[~.trace.Span]):
+        spans (Sequence[google.cloud.trace_v2.types.Span]):
             Required. A list of new spans. The span names
             must not match existing spans, or the results
             are undefined.
