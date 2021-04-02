@@ -15,13 +15,16 @@
 import os
 import shutil
 
+import pathlib
 from pathlib import Path
 import nox
 
 BLACK_VERSION = "black==19.3b0"
 
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
-@nox.session(python="3.6")
+
+@nox.session(python="3.8")
 def blacken(session):
     """Run black.
     Format code to uniform standard.
@@ -62,36 +65,6 @@ def docs(session):
     )
 
 
-# @nox.session(python="3.8")
-# def generate_protos(session):
-#     """Generates the protos using protoc.
-    
-#     Some notes on the `google` directory:
-#     1. The `_pb2.py` files are produced by protoc. 
-#     2. The .proto files are non-functional but are left in the repository
-#        to make it easier to understand diffs.
-#     3. The `google` directory also has `__init__.py` files to create proper modules. 
-#        If a new subdirectory is added, you will need to create more `__init__.py`
-#        files.
-
-#     NOTE: This is a hack and only runnable locally. You will need to have
-#     the api-common-protos repo cloned. This should be migrated to use
-#     bazel in the future.
-#     """
-#     session.install("grpcio-tools")
-#     protos = [str(p) for p in (Path(".").glob("google/**/*.proto"))]
-
-#     session.run(
-#         "python",
-#         "-m",
-#         "grpc_tools.protoc",
-#         "--proto_path=../api-common-protos",
-#         "--proto_path=.",
-#         "--python_out=.",
-#         *protos,
-#     )
-
-
 def default(session):
     # Install all test dependencies, then install this package in-place.
     session.install("asyncmock", "pytest-asyncio")
@@ -100,6 +73,14 @@ def default(session):
         "mock", "pytest", "pytest-cov",
     )
     session.install("-e", ".")
+
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+
+    # Install this package
+    # This *must* be the last install command to get the package from source.
+    session.install("e", "..", "-c", constraints_path)
 
     # Run py.test against the unit tests.
     session.run(
@@ -149,6 +130,14 @@ def system(session):
     )
     session.install("-e", ".")
 
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+
+    # Install this package
+    # This *must* be the last install command to get the package from source.
+    session.install("e", "..", "-c", constraints_path)
+
     # Run py.test against the system tests.
     if system_test_exists:
         session.run("py.test", "--quiet", system_test_path, *session.posargs)
@@ -164,7 +153,7 @@ def test(session, library):
     """Run tests from a downstream libraries.
     To verify that any changes we make here will not break downstream libraries, clone
     a few and run their unit and system tests.
-    NOTE: The unit and system test functions above are copied from the templates. 
+    NOTE: The unit and system test functions above are copied from the templates.
     They will need to be updated when the templates change.
     """
     try:
@@ -183,3 +172,32 @@ def test(session, library):
     # system tests are run 3.7 only
     if session.python == "3.7":
         system(session)
+
+
+# @nox.session(python="3.8")
+# def generate_protos(session):
+#     """Generates the protos using protoc.
+#
+#     THIS SESSION CAN ONLY BE RUN LOCALLY
+#     Clone `api-common-protos` in the parent directory
+#
+#     Some notes on the `google` directory:
+#     1. The `_pb2.py` files are produced by protoc.
+#     2. The .proto files are non-functional but are left in the repository
+#        to make it easier to understand diffs.
+#     3. The `google` directory also has `__init__.py` files to create proper modules.
+#        If a new subdirectory is added, you will need to create more `__init__.py`
+#        files.
+#     """
+#     session.install("grpcio-tools")
+#     protos = [str(p) for p in (Path(".").glob("google/**/*.proto"))]
+
+#     session.run(
+#         "python",
+#         "-m",
+#         "grpc_tools.protoc",
+#         "--proto_path=../api-common-protos",
+#         "--proto_path=.",
+#         "--python_out=.",
+#         *protos,
+#     )
