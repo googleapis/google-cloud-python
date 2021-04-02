@@ -1,6 +1,6 @@
 Services for Google Cloud Dlp v2 API
 ====================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.dlp_v2.services.dlp_service
-    :members:
-    :inherited-members:
+    dlp_service

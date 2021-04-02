@@ -232,7 +232,7 @@ class ExcludeInfoTypes(proto.Message):
     r"""List of exclude infoTypes.
 
     Attributes:
-        info_types (Sequence[~.storage.InfoType]):
+        info_types (Sequence[google.cloud.dlp_v2.types.InfoType]):
             InfoType list in ExclusionRule rule drops a finding when it
             overlaps or contained within with a finding of an infoType
             from this list. For example, for
@@ -252,14 +252,14 @@ class ExclusionRule(proto.Message):
     specified in ``InspectionRuleSet`` are removed from results.
 
     Attributes:
-        dictionary (~.storage.CustomInfoType.Dictionary):
+        dictionary (google.cloud.dlp_v2.types.CustomInfoType.Dictionary):
             Dictionary which defines the rule.
-        regex (~.storage.CustomInfoType.Regex):
+        regex (google.cloud.dlp_v2.types.CustomInfoType.Regex):
             Regular expression which defines the rule.
-        exclude_info_types (~.dlp.ExcludeInfoTypes):
+        exclude_info_types (google.cloud.dlp_v2.types.ExcludeInfoTypes):
             Set of infoTypes for which findings would
             affect this rule.
-        matching_type (~.dlp.MatchingType):
+        matching_type (google.cloud.dlp_v2.types.MatchingType):
             How the rule is applied, see MatchingType
             documentation for details.
     """
@@ -287,9 +287,9 @@ class InspectionRule(proto.Message):
     ``InspectionRuleSet``.
 
     Attributes:
-        hotword_rule (~.storage.CustomInfoType.DetectionRule.HotwordRule):
+        hotword_rule (google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.HotwordRule):
             Hotword-based detection rule.
-        exclusion_rule (~.dlp.ExclusionRule):
+        exclusion_rule (google.cloud.dlp_v2.types.ExclusionRule):
             Exclusion rule.
     """
 
@@ -311,10 +311,10 @@ class InspectionRuleSet(proto.Message):
     of the rules within the set.
 
     Attributes:
-        info_types (Sequence[~.storage.InfoType]):
+        info_types (Sequence[google.cloud.dlp_v2.types.InfoType]):
             List of infoTypes this rule set is applied
             to.
-        rules (Sequence[~.dlp.InspectionRule]):
+        rules (Sequence[google.cloud.dlp_v2.types.InspectionRule]):
             Set of rules to be applied to infoTypes. The
             rules are applied in order.
     """
@@ -329,7 +329,7 @@ class InspectConfig(proto.Message):
     redactContent only info_types and min_likelihood are currently used.
 
     Attributes:
-        info_types (Sequence[~.storage.InfoType]):
+        info_types (Sequence[google.cloud.dlp_v2.types.InfoType]):
             Restricts what info_types to look for. The values must
             correspond to InfoType values returned by ListInfoTypes or
             listed at
@@ -344,12 +344,12 @@ class InspectConfig(proto.Message):
             detectors are run you should specify specific InfoTypes
             listed in the reference, otherwise a default list will be
             used, which may change over time.
-        min_likelihood (~.storage.Likelihood):
+        min_likelihood (google.cloud.dlp_v2.types.Likelihood):
             Only returns findings equal or above this
             threshold. The default is POSSIBLE.
             See https://cloud.google.com/dlp/docs/likelihood
             to learn more.
-        limits (~.dlp.InspectConfig.FindingLimits):
+        limits (google.cloud.dlp_v2.types.InspectConfig.FindingLimits):
             Configuration to control the number of
             findings returned.
         include_quote (bool):
@@ -359,15 +359,15 @@ class InspectConfig(proto.Message):
         exclude_info_types (bool):
             When true, excludes type information of the
             findings.
-        custom_info_types (Sequence[~.storage.CustomInfoType]):
+        custom_info_types (Sequence[google.cloud.dlp_v2.types.CustomInfoType]):
             CustomInfoTypes provided by the user. See
             https://cloud.google.com/dlp/docs/creating-
             custom-infotypes to learn more.
-        content_options (Sequence[~.dlp.ContentOption]):
+        content_options (Sequence[google.cloud.dlp_v2.types.ContentOption]):
             List of options defining data content to
             scan. If empty, text, images, and other content
             will be included.
-        rule_set (Sequence[~.dlp.InspectionRuleSet]):
+        rule_set (Sequence[google.cloud.dlp_v2.types.InspectionRuleSet]):
             Set of rules to apply to the findings for
             this InspectConfig. Exclusion rules, contained
             in the set are executed in the end, other rules
@@ -388,7 +388,7 @@ class InspectConfig(proto.Message):
                 Max number of findings that will be returned per
                 request/job. When set within ``InspectContentRequest``, the
                 maximum returned is 2000 regardless if this is set higher.
-            max_findings_per_info_type (Sequence[~.dlp.InspectConfig.FindingLimits.InfoTypeLimit]):
+            max_findings_per_info_type (Sequence[google.cloud.dlp_v2.types.InspectConfig.FindingLimits.InfoTypeLimit]):
                 Configuration of findings limit given for
                 specified infoTypes.
         """
@@ -398,7 +398,7 @@ class InspectConfig(proto.Message):
             long running DlpJob.
 
             Attributes:
-                info_type (~.storage.InfoType):
+                info_type (google.cloud.dlp_v2.types.InfoType):
                     Type of information the findings limit applies to. Only one
                     limit per info_type should be provided. If InfoTypeLimit
                     does not have an info_type, the DLP API applies the limit
@@ -447,7 +447,7 @@ class ByteContentItem(proto.Message):
     r"""Container for bytes to inspect or redact.
 
     Attributes:
-        type_ (~.dlp.ByteContentItem.BytesType):
+        type_ (google.cloud.dlp_v2.types.ByteContentItem.BytesType):
             The type of data stored in the bytes string. Default will be
             TEXT_UTF8.
         data (bytes):
@@ -480,11 +480,11 @@ class ContentItem(proto.Message):
     Attributes:
         value (str):
             String data to inspect or redact.
-        table (~.dlp.Table):
+        table (google.cloud.dlp_v2.types.Table):
             Structured content for inspection. See
             https://cloud.google.com/dlp/docs/inspecting-text#inspecting_a_table
             to learn more.
-        byte_item (~.dlp.ByteContentItem):
+        byte_item (google.cloud.dlp_v2.types.ByteContentItem):
             Content data to inspect or redact. Replaces ``type`` and
             ``data``.
     """
@@ -505,9 +505,9 @@ class Table(proto.Message):
     to learn more.
 
     Attributes:
-        headers (Sequence[~.storage.FieldId]):
+        headers (Sequence[google.cloud.dlp_v2.types.FieldId]):
             Headers of the table.
-        rows (Sequence[~.dlp.Table.Row]):
+        rows (Sequence[google.cloud.dlp_v2.types.Table.Row]):
             Rows of the table.
     """
 
@@ -515,7 +515,7 @@ class Table(proto.Message):
         r"""Values of the row.
 
         Attributes:
-            values (Sequence[~.dlp.Value]):
+            values (Sequence[google.cloud.dlp_v2.types.Value]):
                 Individual cells.
         """
 
@@ -530,7 +530,7 @@ class InspectResult(proto.Message):
     r"""All the findings for a single scanned item.
 
     Attributes:
-        findings (Sequence[~.dlp.Finding]):
+        findings (Sequence[google.cloud.dlp_v2.types.Finding]):
             List of findings for an item.
         findings_truncated (bool):
             If true, then this item might have more
@@ -563,17 +563,17 @@ class Finding(proto.Message):
             here. Provided if ``include_quote`` is true and the finding
             is less than or equal to 4096 bytes long. If the finding
             exceeds 4096 bytes in length, the quote may be omitted.
-        info_type (~.storage.InfoType):
+        info_type (google.cloud.dlp_v2.types.InfoType):
             The type of content that might have been found. Provided if
             ``excluded_types`` is false.
-        likelihood (~.storage.Likelihood):
+        likelihood (google.cloud.dlp_v2.types.Likelihood):
             Confidence of how likely it is that the ``info_type`` is
             correct.
-        location (~.dlp.Location):
+        location (google.cloud.dlp_v2.types.Location):
             Where the content was found.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp when finding was detected.
-        quote_info (~.dlp.QuoteInfo):
+        quote_info (google.cloud.dlp_v2.types.QuoteInfo):
             Contains data parsed from quotes. Only populated if
             include_quote was set to true and a supported infoType was
             requested. Currently supported infoTypes: DATE,
@@ -583,7 +583,7 @@ class Finding(proto.Message):
         trigger_name (str):
             Job trigger name, if applicable, for this
             finding.
-        labels (Sequence[~.dlp.Finding.LabelsEntry]):
+        labels (Sequence[google.cloud.dlp_v2.types.Finding.LabelsEntry]):
             The labels associated with this ``Finding``.
 
             Label keys must be between 1 and 63 characters long and must
@@ -601,7 +601,7 @@ class Finding(proto.Message):
 
             -  ``"environment" : "production"``
             -  ``"pipeline" : "etl"``
-        job_create_time (~.timestamp.Timestamp):
+        job_create_time (google.protobuf.timestamp_pb2.Timestamp):
             Time the job started that produced this
             finding.
         job_name (str):
@@ -639,23 +639,23 @@ class Location(proto.Message):
     r"""Specifies the location of the finding.
 
     Attributes:
-        byte_range (~.dlp.Range):
+        byte_range (google.cloud.dlp_v2.types.Range):
             Zero-based byte offsets delimiting the
             finding. These are relative to the finding's
             containing element. Note that when the content
             is not textual, this references the UTF-8
             encoded textual representation of the content.
             Omitted if content is an image.
-        codepoint_range (~.dlp.Range):
+        codepoint_range (google.cloud.dlp_v2.types.Range):
             Unicode character offsets delimiting the
             finding. These are relative to the finding's
             containing element. Provided when the content is
             text.
-        content_locations (Sequence[~.dlp.ContentLocation]):
+        content_locations (Sequence[google.cloud.dlp_v2.types.ContentLocation]):
             List of nested objects pointing to the
             precise location of the finding within the file
             or record.
-        container (~.dlp.Container):
+        container (google.cloud.dlp_v2.types.Container):
             Information about the container where this
             finding occurred, if available.
     """
@@ -688,17 +688,17 @@ class ContentLocation(proto.Message):
             Nested names could be absent if the embedded object has no
             string identifier (for an example an image contained within
             a document).
-        record_location (~.dlp.RecordLocation):
+        record_location (google.cloud.dlp_v2.types.RecordLocation):
             Location within a row or record of a database
             table.
-        image_location (~.dlp.ImageLocation):
+        image_location (google.cloud.dlp_v2.types.ImageLocation):
             Location within an image's pixels.
-        document_location (~.dlp.DocumentLocation):
+        document_location (google.cloud.dlp_v2.types.DocumentLocation):
             Location data for document files.
-        metadata_location (~.dlp.MetadataLocation):
+        metadata_location (google.cloud.dlp_v2.types.MetadataLocation):
             Location within the metadata for inspected
             content.
-        container_timestamp (~.timestamp.Timestamp):
+        container_timestamp (google.protobuf.timestamp_pb2.Timestamp):
             Findings container modification timestamp, if applicable.
             For Google Cloud Storage contains last file modification
             timestamp. For BigQuery table contains last_modified_time
@@ -737,9 +737,9 @@ class MetadataLocation(proto.Message):
     r"""Metadata Location
 
     Attributes:
-        type_ (~.dlp.MetadataType):
+        type_ (google.cloud.dlp_v2.types.MetadataType):
             Type of metadata containing the finding.
-        storage_label (~.dlp.StorageMetadataLabel):
+        storage_label (google.cloud.dlp_v2.types.StorageMetadataLabel):
             Storage metadata.
     """
 
@@ -778,11 +778,11 @@ class RecordLocation(proto.Message):
     r"""Location of a finding within a row or record.
 
     Attributes:
-        record_key (~.storage.RecordKey):
+        record_key (google.cloud.dlp_v2.types.RecordKey):
             Key of the finding.
-        field_id (~.storage.FieldId):
+        field_id (google.cloud.dlp_v2.types.FieldId):
             Field id of the field containing the finding.
-        table_location (~.dlp.TableLocation):
+        table_location (google.cloud.dlp_v2.types.TableLocation):
             Location within a ``ContentItem.Table``.
     """
 
@@ -845,7 +845,7 @@ class Container(proto.Message):
             -  Google Cloud Storage file
                ``gs://bucket/folder/filename.txt``, the relative path is
                ``folder/filename.txt``
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Findings container modification timestamp, if applicable.
             For Google Cloud Storage contains last file modification
             timestamp. For BigQuery table contains last_modified_time
@@ -891,7 +891,7 @@ class ImageLocation(proto.Message):
     r"""Location of the finding within an image.
 
     Attributes:
-        bounding_boxes (Sequence[~.dlp.BoundingBox]):
+        bounding_boxes (Sequence[google.cloud.dlp_v2.types.BoundingBox]):
             Bounding boxes locating the pixels within the
             image containing the finding.
     """
@@ -952,15 +952,15 @@ class RedactImageRequest(proto.Message):
                 parent=projects/example-project/locations/europe-west3
         location_id (str):
             Deprecated. This field has no effect.
-        inspect_config (~.dlp.InspectConfig):
+        inspect_config (google.cloud.dlp_v2.types.InspectConfig):
             Configuration for the inspector.
-        image_redaction_configs (Sequence[~.dlp.RedactImageRequest.ImageRedactionConfig]):
+        image_redaction_configs (Sequence[google.cloud.dlp_v2.types.RedactImageRequest.ImageRedactionConfig]):
             The configuration for specifying what content
             to redact from images.
         include_findings (bool):
             Whether the response should include findings
             along with the redacted image.
-        byte_item (~.dlp.ByteContentItem):
+        byte_item (google.cloud.dlp_v2.types.ByteContentItem):
             The content must be PNG, JPEG, SVG or BMP.
     """
 
@@ -969,7 +969,7 @@ class RedactImageRequest(proto.Message):
         occur.
 
         Attributes:
-            info_type (~.storage.InfoType):
+            info_type (google.cloud.dlp_v2.types.InfoType):
                 Only one per info_type should be provided per request. If
                 not specified, and redact_all_text is false, the DLP API
                 will redact all text that it matches against all info_types
@@ -979,7 +979,7 @@ class RedactImageRequest(proto.Message):
                 If true, all text found in the image, regardless whether it
                 matches an info_type, is redacted. Only one should be
                 provided.
-            redaction_color (~.dlp.Color):
+            redaction_color (google.cloud.dlp_v2.types.Color):
                 The color to use when redacting content from
                 an image. If not specified, the default is
                 black.
@@ -1041,7 +1041,7 @@ class RedactImageResponse(proto.Message):
             If an image was being inspected and the InspectConfig's
             include_quote was set to true, then this field will include
             all text, if any, that was found in the image.
-        inspect_result (~.dlp.InspectResult):
+        inspect_result (google.cloud.dlp_v2.types.InspectResult):
             The findings. Populated when include_findings in the request
             is true.
     """
@@ -1076,15 +1076,15 @@ class DeidentifyContentRequest(proto.Message):
             ::
 
                 parent=projects/example-project/locations/europe-west3
-        deidentify_config (~.dlp.DeidentifyConfig):
+        deidentify_config (google.cloud.dlp_v2.types.DeidentifyConfig):
             Configuration for the de-identification of the content item.
             Items specified here will override the template referenced
             by the deidentify_template_name argument.
-        inspect_config (~.dlp.InspectConfig):
+        inspect_config (google.cloud.dlp_v2.types.InspectConfig):
             Configuration for the inspector. Items specified here will
             override the template referenced by the
             inspect_template_name argument.
-        item (~.dlp.ContentItem):
+        item (google.cloud.dlp_v2.types.ContentItem):
             The item to de-identify. Will be treated as
             text.
         inspect_template_name (str):
@@ -1126,9 +1126,9 @@ class DeidentifyContentResponse(proto.Message):
     r"""Results of de-identifying a ContentItem.
 
     Attributes:
-        item (~.dlp.ContentItem):
+        item (google.cloud.dlp_v2.types.ContentItem):
             The de-identified item.
-        overview (~.dlp.TransformationOverview):
+        overview (google.cloud.dlp_v2.types.TransformationOverview):
             An overview of the changes that were made on the ``item``.
     """
 
@@ -1160,7 +1160,7 @@ class ReidentifyContentRequest(proto.Message):
             ::
 
                 parent=projects/example-project/locations/europe-west3
-        reidentify_config (~.dlp.DeidentifyConfig):
+        reidentify_config (google.cloud.dlp_v2.types.DeidentifyConfig):
             Configuration for the re-identification of the content item.
             This field shares the same proto message type that is used
             for de-identification, however its usage here is for the
@@ -1173,9 +1173,9 @@ class ReidentifyContentRequest(proto.Message):
 
             -  ``CryptoDeterministicConfig``
             -  ``CryptoReplaceFfxFpeConfig``
-        inspect_config (~.dlp.InspectConfig):
+        inspect_config (google.cloud.dlp_v2.types.InspectConfig):
             Configuration for the inspector.
-        item (~.dlp.ContentItem):
+        item (google.cloud.dlp_v2.types.ContentItem):
             The item to re-identify. Will be treated as
             text.
         inspect_template_name (str):
@@ -1220,9 +1220,9 @@ class ReidentifyContentResponse(proto.Message):
     r"""Results of re-identifying a item.
 
     Attributes:
-        item (~.dlp.ContentItem):
+        item (google.cloud.dlp_v2.types.ContentItem):
             The re-identified item.
-        overview (~.dlp.TransformationOverview):
+        overview (google.cloud.dlp_v2.types.TransformationOverview):
             An overview of the changes that were made to the ``item``.
     """
 
@@ -1255,11 +1255,11 @@ class InspectContentRequest(proto.Message):
             ::
 
                 parent=projects/example-project/locations/europe-west3
-        inspect_config (~.dlp.InspectConfig):
+        inspect_config (google.cloud.dlp_v2.types.InspectConfig):
             Configuration for the inspector. What specified here will
             override the template referenced by the
             inspect_template_name argument.
-        item (~.dlp.ContentItem):
+        item (google.cloud.dlp_v2.types.ContentItem):
             The item to inspect.
         inspect_template_name (str):
             Template to use. Any configuration directly specified in
@@ -1287,7 +1287,7 @@ class InspectContentResponse(proto.Message):
     r"""Results of inspecting an item.
 
     Attributes:
-        result (~.dlp.InspectResult):
+        result (google.cloud.dlp_v2.types.InspectResult):
             The findings.
     """
 
@@ -1298,7 +1298,7 @@ class OutputStorageConfig(proto.Message):
     r"""Cloud repository for storing output.
 
     Attributes:
-        table (~.storage.BigQueryTable):
+        table (google.cloud.dlp_v2.types.BigQueryTable):
             Store findings in an existing table or a new table in an
             existing dataset. If table_id is not set a new one will be
             generated for you with the following format:
@@ -1315,7 +1315,7 @@ class OutputStorageConfig(proto.Message):
             jobs that analyze the same table but compute a different
             privacy metric, or use different sets of quasi-identifiers,
             cannot store their results in the same table.
-        output_schema (~.dlp.OutputStorageConfig.OutputSchema):
+        output_schema (google.cloud.dlp_v2.types.OutputStorageConfig.OutputSchema):
             Schema used for writing the findings for Inspect jobs. This
             field is only used for Inspect and must be unspecified for
             Risk jobs. Columns are derived from the ``Finding`` object.
@@ -1351,7 +1351,7 @@ class InfoTypeStats(proto.Message):
     r"""Statistics regarding a specific InfoType.
 
     Attributes:
-        info_type (~.storage.InfoType):
+        info_type (google.cloud.dlp_v2.types.InfoType):
             The type of finding this stat is for.
         count (int):
             Number of findings for this infoType.
@@ -1366,9 +1366,9 @@ class InspectDataSourceDetails(proto.Message):
     r"""The results of an inspect DataSource job.
 
     Attributes:
-        requested_options (~.dlp.InspectDataSourceDetails.RequestedOptions):
+        requested_options (google.cloud.dlp_v2.types.InspectDataSourceDetails.RequestedOptions):
             The configuration used for this job.
-        result (~.dlp.InspectDataSourceDetails.Result):
+        result (google.cloud.dlp_v2.types.InspectDataSourceDetails.Result):
             A summary of the outcome of this inspect job.
     """
 
@@ -1376,10 +1376,10 @@ class InspectDataSourceDetails(proto.Message):
         r"""Snapshot of the inspection configuration.
 
         Attributes:
-            snapshot_inspect_template (~.dlp.InspectTemplate):
+            snapshot_inspect_template (google.cloud.dlp_v2.types.InspectTemplate):
                 If run with an InspectTemplate, a snapshot of
                 its state at the time of this run.
-            job_config (~.dlp.InspectJobConfig):
+            job_config (google.cloud.dlp_v2.types.InspectJobConfig):
                 Inspect config.
         """
 
@@ -1398,10 +1398,10 @@ class InspectDataSourceDetails(proto.Message):
                 Total size in bytes that were processed.
             total_estimated_bytes (int):
                 Estimate of the number of bytes to process.
-            info_type_stats (Sequence[~.dlp.InfoTypeStats]):
+            info_type_stats (Sequence[google.cloud.dlp_v2.types.InfoTypeStats]):
                 Statistics of how many instances of each info
                 type were found during inspect job.
-            hybrid_stats (~.dlp.HybridInspectStatistics):
+            hybrid_stats (google.cloud.dlp_v2.types.HybridInspectStatistics):
                 Statistics related to the processing of
                 hybrid inspect. Early access feature is in a
                 pre-release state and might change or have
@@ -1462,7 +1462,7 @@ class InfoTypeDescription(proto.Message):
             Internal name of the infoType.
         display_name (str):
             Human readable form of the infoType name.
-        supported_by (Sequence[~.dlp.InfoTypeSupportedBy]):
+        supported_by (Sequence[google.cloud.dlp_v2.types.InfoTypeSupportedBy]):
             Which parts of the API supports this
             InfoType.
         description (str):
@@ -1518,7 +1518,7 @@ class ListInfoTypesResponse(proto.Message):
     r"""Response to the ListInfoTypes request.
 
     Attributes:
-        info_types (Sequence[~.dlp.InfoTypeDescription]):
+        info_types (Sequence[google.cloud.dlp_v2.types.InfoTypeDescription]):
             Set of sensitive infoTypes.
     """
 
@@ -1533,11 +1533,11 @@ class RiskAnalysisJobConfig(proto.Message):
     learn more.
 
     Attributes:
-        privacy_metric (~.dlp.PrivacyMetric):
+        privacy_metric (google.cloud.dlp_v2.types.PrivacyMetric):
             Privacy metric to compute.
-        source_table (~.storage.BigQueryTable):
+        source_table (google.cloud.dlp_v2.types.BigQueryTable):
             Input dataset to compute metrics over.
-        actions (Sequence[~.dlp.Action]):
+        actions (Sequence[google.cloud.dlp_v2.types.Action]):
             Actions to execute at the completion of the
             job. Are executed in the order provided.
     """
@@ -1553,9 +1553,9 @@ class QuasiId(proto.Message):
     r"""A column with a semantic tag attached.
 
     Attributes:
-        field (~.storage.FieldId):
+        field (google.cloud.dlp_v2.types.FieldId):
             Required. Identifies the column.
-        info_type (~.storage.InfoType):
+        info_type (google.cloud.dlp_v2.types.InfoType):
             A column can be tagged with a InfoType to use the relevant
             public dataset as a statistical model of population, if
             available. We currently support US ZIP codes, region codes,
@@ -1567,7 +1567,7 @@ class QuasiId(proto.Message):
             this case, the user must indicate an auxiliary
             table that contains statistical information on
             the possible values of this column (below).
-        inferred (~.empty.Empty):
+        inferred (google.protobuf.empty_pb2.Empty):
             If no semantic tag is indicated, we infer the
             statistical model from the distribution of
             values in the input data
@@ -1594,11 +1594,11 @@ class StatisticalTable(proto.Message):
     zero (and thus, the tuple is highly reidentifiable).
 
     Attributes:
-        table (~.storage.BigQueryTable):
+        table (google.cloud.dlp_v2.types.BigQueryTable):
             Required. Auxiliary table location.
-        quasi_ids (Sequence[~.dlp.StatisticalTable.QuasiIdentifierField]):
+        quasi_ids (Sequence[google.cloud.dlp_v2.types.StatisticalTable.QuasiIdentifierField]):
             Required. Quasi-identifier columns.
-        relative_frequency (~.storage.FieldId):
+        relative_frequency (google.cloud.dlp_v2.types.FieldId):
             Required. The relative frequency column must
             contain a floating-point number between 0 and 1
             (inclusive). Null values are assumed to be zero.
@@ -1610,7 +1610,7 @@ class StatisticalTable(proto.Message):
         model.
 
         Attributes:
-            field (~.storage.FieldId):
+            field (google.cloud.dlp_v2.types.FieldId):
                 Identifies the column.
             custom_tag (str):
                 A column can be tagged with a custom tag. In
@@ -1636,17 +1636,17 @@ class PrivacyMetric(proto.Message):
     r"""Privacy metric to compute for reidentification risk analysis.
 
     Attributes:
-        numerical_stats_config (~.dlp.PrivacyMetric.NumericalStatsConfig):
+        numerical_stats_config (google.cloud.dlp_v2.types.PrivacyMetric.NumericalStatsConfig):
             Numerical stats
-        categorical_stats_config (~.dlp.PrivacyMetric.CategoricalStatsConfig):
+        categorical_stats_config (google.cloud.dlp_v2.types.PrivacyMetric.CategoricalStatsConfig):
             Categorical stats
-        k_anonymity_config (~.dlp.PrivacyMetric.KAnonymityConfig):
+        k_anonymity_config (google.cloud.dlp_v2.types.PrivacyMetric.KAnonymityConfig):
             K-anonymity
-        l_diversity_config (~.dlp.PrivacyMetric.LDiversityConfig):
+        l_diversity_config (google.cloud.dlp_v2.types.PrivacyMetric.LDiversityConfig):
             l-diversity
-        k_map_estimation_config (~.dlp.PrivacyMetric.KMapEstimationConfig):
+        k_map_estimation_config (google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig):
             k-map
-        delta_presence_estimation_config (~.dlp.PrivacyMetric.DeltaPresenceEstimationConfig):
+        delta_presence_estimation_config (google.cloud.dlp_v2.types.PrivacyMetric.DeltaPresenceEstimationConfig):
             delta-presence
     """
 
@@ -1655,7 +1655,7 @@ class PrivacyMetric(proto.Message):
         min, max, and quantiles.
 
         Attributes:
-            field (~.storage.FieldId):
+            field (google.cloud.dlp_v2.types.FieldId):
                 Field to compute numerical stats on.
                 Supported types are integer, float, date,
                 datetime, timestamp, time.
@@ -1668,7 +1668,7 @@ class PrivacyMetric(proto.Message):
         number of distinct values and value count distribution.
 
         Attributes:
-            field (~.storage.FieldId):
+            field (google.cloud.dlp_v2.types.FieldId):
                 Field to compute categorical stats on. All
                 column types are supported except for arrays and
                 structs. However, it may be more informative to
@@ -1683,7 +1683,7 @@ class PrivacyMetric(proto.Message):
         risk.
 
         Attributes:
-            quasi_ids (Sequence[~.storage.FieldId]):
+            quasi_ids (Sequence[google.cloud.dlp_v2.types.FieldId]):
                 Set of fields to compute k-anonymity over.
                 When multiple fields are specified, they are
                 considered a single composite key. Structs and
@@ -1691,7 +1691,7 @@ class PrivacyMetric(proto.Message):
                 nested fields are supported so long as they are
                 not structs themselves or nested within a
                 repeated field.
-            entity_id (~.storage.EntityId):
+            entity_id (google.cloud.dlp_v2.types.EntityId):
                 Message indicating that multiple rows might be associated to
                 a single individual. If the same entity_id is associated to
                 multiple quasi-identifier tuples over distinct rows, we
@@ -1716,13 +1716,13 @@ class PrivacyMetric(proto.Message):
         risk.
 
         Attributes:
-            quasi_ids (Sequence[~.storage.FieldId]):
+            quasi_ids (Sequence[google.cloud.dlp_v2.types.FieldId]):
                 Set of quasi-identifiers indicating how
                 equivalence classes are defined for the
                 l-diversity computation. When multiple fields
                 are specified, they are considered a single
                 composite key.
-            sensitive_attribute (~.storage.FieldId):
+            sensitive_attribute (google.cloud.dlp_v2.types.FieldId):
                 Sensitive field for computing the l-value.
         """
 
@@ -1745,7 +1745,7 @@ class PrivacyMetric(proto.Message):
         dataset.
 
         Attributes:
-            quasi_ids (Sequence[~.dlp.PrivacyMetric.KMapEstimationConfig.TaggedField]):
+            quasi_ids (Sequence[google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.TaggedField]):
                 Required. Fields considered to be quasi-
                 dentifiers. No two columns can have the same
                 tag.
@@ -1753,7 +1753,7 @@ class PrivacyMetric(proto.Message):
                 ISO 3166-1 alpha-2 region code to use in the statistical
                 modeling. Set if no column is tagged with a region-specific
                 InfoType (like US_ZIP_5) or a region code.
-            auxiliary_tables (Sequence[~.dlp.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable]):
+            auxiliary_tables (Sequence[google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable]):
                 Several auxiliary tables can be used in the analysis. Each
                 custom_tag used to tag a quasi-identifiers column must
                 appear in exactly one column of one auxiliary table.
@@ -1763,9 +1763,9 @@ class PrivacyMetric(proto.Message):
             r"""A column with a semantic tag attached.
 
             Attributes:
-                field (~.storage.FieldId):
+                field (google.cloud.dlp_v2.types.FieldId):
                     Required. Identifies the column.
-                info_type (~.storage.InfoType):
+                info_type (google.cloud.dlp_v2.types.InfoType):
                     A column can be tagged with a InfoType to use the relevant
                     public dataset as a statistical model of population, if
                     available. We currently support US ZIP codes, region codes,
@@ -1777,7 +1777,7 @@ class PrivacyMetric(proto.Message):
                     this case, the user must indicate an auxiliary
                     table that contains statistical information on
                     the possible values of this column (below).
-                inferred (~.empty.Empty):
+                inferred (google.protobuf.empty_pb2.Empty):
                     If no semantic tag is indicated, we infer the
                     statistical model from the distribution of
                     values in the input data
@@ -1805,11 +1805,11 @@ class PrivacyMetric(proto.Message):
             zero (and thus, the tuple is highly reidentifiable).
 
             Attributes:
-                table (~.storage.BigQueryTable):
+                table (google.cloud.dlp_v2.types.BigQueryTable):
                     Required. Auxiliary table location.
-                quasi_ids (Sequence[~.dlp.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField]):
+                quasi_ids (Sequence[google.cloud.dlp_v2.types.PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField]):
                     Required. Quasi-identifier columns.
-                relative_frequency (~.storage.FieldId):
+                relative_frequency (google.cloud.dlp_v2.types.FieldId):
                     Required. The relative frequency column must
                     contain a floating-point number between 0 and 1
                     (inclusive). Null values are assumed to be zero.
@@ -1821,7 +1821,7 @@ class PrivacyMetric(proto.Message):
                 model.
 
                 Attributes:
-                    field (~.storage.FieldId):
+                    field (google.cloud.dlp_v2.types.FieldId):
                         Identifies the column.
                     custom_tag (str):
                         A auxiliary field.
@@ -1865,14 +1865,14 @@ class PrivacyMetric(proto.Message):
         so we use a statistical model instead.
 
         Attributes:
-            quasi_ids (Sequence[~.dlp.QuasiId]):
+            quasi_ids (Sequence[google.cloud.dlp_v2.types.QuasiId]):
                 Required. Fields considered to be quasi-
                 dentifiers. No two fields can have the same tag.
             region_code (str):
                 ISO 3166-1 alpha-2 region code to use in the statistical
                 modeling. Set if no column is tagged with a region-specific
                 InfoType (like US_ZIP_5) or a region code.
-            auxiliary_tables (Sequence[~.dlp.StatisticalTable]):
+            auxiliary_tables (Sequence[google.cloud.dlp_v2.types.StatisticalTable]):
                 Several auxiliary tables can be used in the analysis. Each
                 custom_tag used to tag a quasi-identifiers field must appear
                 in exactly one field of one auxiliary table.
@@ -1915,23 +1915,23 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
     r"""Result of a risk analysis operation request.
 
     Attributes:
-        requested_privacy_metric (~.dlp.PrivacyMetric):
+        requested_privacy_metric (google.cloud.dlp_v2.types.PrivacyMetric):
             Privacy metric to compute.
-        requested_source_table (~.storage.BigQueryTable):
+        requested_source_table (google.cloud.dlp_v2.types.BigQueryTable):
             Input dataset to compute metrics over.
-        numerical_stats_result (~.dlp.AnalyzeDataSourceRiskDetails.NumericalStatsResult):
+        numerical_stats_result (google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.NumericalStatsResult):
             Numerical stats result
-        categorical_stats_result (~.dlp.AnalyzeDataSourceRiskDetails.CategoricalStatsResult):
+        categorical_stats_result (google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult):
             Categorical stats result
-        k_anonymity_result (~.dlp.AnalyzeDataSourceRiskDetails.KAnonymityResult):
+        k_anonymity_result (google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult):
             K-anonymity result
-        l_diversity_result (~.dlp.AnalyzeDataSourceRiskDetails.LDiversityResult):
+        l_diversity_result (google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult):
             L-divesity result
-        k_map_estimation_result (~.dlp.AnalyzeDataSourceRiskDetails.KMapEstimationResult):
+        k_map_estimation_result (google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KMapEstimationResult):
             K-map result
-        delta_presence_estimation_result (~.dlp.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult):
+        delta_presence_estimation_result (google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult):
             Delta-presence result
-        requested_options (~.dlp.AnalyzeDataSourceRiskDetails.RequestedRiskAnalysisOptions):
+        requested_options (google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.RequestedRiskAnalysisOptions):
             The configuration used for this job.
     """
 
@@ -1939,11 +1939,11 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
         r"""Result of the numerical stats computation.
 
         Attributes:
-            min_value (~.dlp.Value):
+            min_value (google.cloud.dlp_v2.types.Value):
                 Minimum value appearing in the column.
-            max_value (~.dlp.Value):
+            max_value (google.cloud.dlp_v2.types.Value):
                 Maximum value appearing in the column.
-            quantile_values (Sequence[~.dlp.Value]):
+            quantile_values (Sequence[google.cloud.dlp_v2.types.Value]):
                 List of 99 values that partition the set of
                 field values into 100 equal sized buckets.
         """
@@ -1958,7 +1958,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
         r"""Result of the categorical stats computation.
 
         Attributes:
-            value_frequency_histogram_buckets (Sequence[~.dlp.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket]):
+            value_frequency_histogram_buckets (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.CategoricalStatsResult.CategoricalStatsHistogramBucket]):
                 Histogram of value frequencies in the column.
         """
 
@@ -1974,7 +1974,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                     values in this bucket.
                 bucket_size (int):
                     Total number of values in this bucket.
-                bucket_values (Sequence[~.dlp.ValueFrequency]):
+                bucket_values (Sequence[google.cloud.dlp_v2.types.ValueFrequency]):
                     Sample of value frequencies in this bucket.
                     The total number of values returned per bucket
                     is capped at 20.
@@ -2005,7 +2005,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
         r"""Result of the k-anonymity computation.
 
         Attributes:
-            equivalence_class_histogram_buckets (Sequence[~.dlp.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket]):
+            equivalence_class_histogram_buckets (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityHistogramBucket]):
                 Histogram of k-anonymity equivalence classes.
         """
 
@@ -2014,7 +2014,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
             value
 
             Attributes:
-                quasi_ids_values (Sequence[~.dlp.Value]):
+                quasi_ids_values (Sequence[google.cloud.dlp_v2.types.Value]):
                     Set of values defining the equivalence class.
                     One value per quasi-identifier column in the
                     original KAnonymity metric message. The order is
@@ -2043,7 +2043,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 bucket_size (int):
                     Total number of equivalence classes in this
                     bucket.
-                bucket_values (Sequence[~.dlp.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass]):
+                bucket_values (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass]):
                     Sample of equivalence classes in this bucket.
                     The total number of classes returned per bucket
                     is capped at 20.
@@ -2076,7 +2076,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
         r"""Result of the l-diversity computation.
 
         Attributes:
-            sensitive_value_frequency_histogram_buckets (Sequence[~.dlp.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket]):
+            sensitive_value_frequency_histogram_buckets (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityHistogramBucket]):
                 Histogram of l-diversity equivalence class
                 sensitive value frequencies.
         """
@@ -2086,7 +2086,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
             value.
 
             Attributes:
-                quasi_ids_values (Sequence[~.dlp.Value]):
+                quasi_ids_values (Sequence[google.cloud.dlp_v2.types.Value]):
                     Quasi-identifier values defining the
                     k-anonymity equivalence class. The order is
                     always the same as the original request.
@@ -2095,7 +2095,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 num_distinct_sensitive_values (int):
                     Number of distinct sensitive values in this
                     equivalence class.
-                top_sensitive_values (Sequence[~.dlp.ValueFrequency]):
+                top_sensitive_values (Sequence[google.cloud.dlp_v2.types.ValueFrequency]):
                     Estimated frequencies of top sensitive
                     values.
             """
@@ -2128,7 +2128,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 bucket_size (int):
                     Total number of equivalence classes in this
                     bucket.
-                bucket_values (Sequence[~.dlp.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityEquivalenceClass]):
+                bucket_values (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityEquivalenceClass]):
                     Sample of equivalence classes in this bucket.
                     The total number of classes returned per bucket
                     is capped at 20.
@@ -2162,7 +2162,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
         results are an estimation, not exact values.
 
         Attributes:
-            k_map_estimation_histogram (Sequence[~.dlp.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationHistogramBucket]):
+            k_map_estimation_histogram (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationHistogramBucket]):
                 The intervals [min_anonymity, max_anonymity] do not overlap.
                 If a value doesn't correspond to any such interval, the
                 associated frequency is zero. For example, the following
@@ -2177,7 +2177,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
             r"""A tuple of values for the quasi-identifier columns.
 
             Attributes:
-                quasi_ids_values (Sequence[~.dlp.Value]):
+                quasi_ids_values (Sequence[google.cloud.dlp_v2.types.Value]):
                     The quasi-identifier values.
                 estimated_anonymity (int):
                     The estimated anonymity for these quasi-
@@ -2206,7 +2206,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 bucket_size (int):
                     Number of records within these anonymity
                     bounds.
-                bucket_values (Sequence[~.dlp.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationQuasiIdValues]):
+                bucket_values (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationQuasiIdValues]):
                     Sample of quasi-identifier tuple values in
                     this bucket. The total number of classes
                     returned per bucket is capped at 20.
@@ -2240,7 +2240,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
         are an estimation, not exact values.
 
         Attributes:
-            delta_presence_estimation_histogram (Sequence[~.dlp.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket]):
+            delta_presence_estimation_histogram (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationHistogramBucket]):
                 The intervals [min_probability, max_probability) do not
                 overlap. If a value doesn't correspond to any such interval,
                 the associated frequency is zero. For example, the following
@@ -2256,7 +2256,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
             r"""A tuple of values for the quasi-identifier columns.
 
             Attributes:
-                quasi_ids_values (Sequence[~.dlp.Value]):
+                quasi_ids_values (Sequence[google.cloud.dlp_v2.types.Value]):
                     The quasi-identifier values.
                 estimated_probability (float):
                     The estimated probability that a given individual sharing
@@ -2293,7 +2293,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 bucket_size (int):
                     Number of records within these probability
                     bounds.
-                bucket_values (Sequence[~.dlp.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues]):
+                bucket_values (Sequence[google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails.DeltaPresenceEstimationResult.DeltaPresenceEstimationQuasiIdValues]):
                     Sample of quasi-identifier tuple values in
                     this bucket. The total number of classes
                     returned per bucket is capped at 20.
@@ -2326,7 +2326,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
         r"""Risk analysis options.
 
         Attributes:
-            job_config (~.dlp.RiskAnalysisJobConfig):
+            job_config (google.cloud.dlp_v2.types.RiskAnalysisJobConfig):
                 The job config for the risk job.
         """
 
@@ -2375,7 +2375,7 @@ class ValueFrequency(proto.Message):
     r"""A value of a field, including its frequency.
 
     Attributes:
-        value (~.dlp.Value):
+        value (google.cloud.dlp_v2.types.Value):
             A value contained in the field in question.
         count (int):
             How many times the value is contained in the
@@ -2404,13 +2404,13 @@ class Value(proto.Message):
             string
         boolean_value (bool):
             boolean
-        timestamp_value (~.timestamp.Timestamp):
+        timestamp_value (google.protobuf.timestamp_pb2.Timestamp):
             timestamp
-        time_value (~.timeofday.TimeOfDay):
+        time_value (google.type.timeofday_pb2.TimeOfDay):
             time of day
-        date_value (~.gt_date.Date):
+        date_value (google.type.date_pb2.Date):
             date
-        day_of_week_value (~.dayofweek.DayOfWeek):
+        day_of_week_value (google.type.dayofweek_pb2.DayOfWeek):
             day of week
     """
 
@@ -2443,7 +2443,7 @@ class QuoteInfo(proto.Message):
     r"""Message for infoType-dependent details parsed from quote.
 
     Attributes:
-        date_time (~.dlp.DateTime):
+        date_time (google.cloud.dlp_v2.types.DateTime):
             The date time indicated by the quote.
     """
 
@@ -2457,14 +2457,14 @@ class DateTime(proto.Message):
     e.g. 2018-01-01, 5th August.
 
     Attributes:
-        date (~.gt_date.Date):
+        date (google.type.date_pb2.Date):
             One or more of the following must be set.
             Must be a valid date or time value.
-        day_of_week (~.dayofweek.DayOfWeek):
+        day_of_week (google.type.dayofweek_pb2.DayOfWeek):
             Day of week
-        time (~.timeofday.TimeOfDay):
+        time (google.type.timeofday_pb2.TimeOfDay):
             Time of day
-        time_zone (~.dlp.DateTime.TimeZone):
+        time_zone (google.cloud.dlp_v2.types.DateTime.TimeZone):
             Time zone
     """
 
@@ -2493,15 +2493,15 @@ class DeidentifyConfig(proto.Message):
     r"""The configuration that controls how the data will change.
 
     Attributes:
-        info_type_transformations (~.dlp.InfoTypeTransformations):
+        info_type_transformations (google.cloud.dlp_v2.types.InfoTypeTransformations):
             Treat the dataset as free-form text and apply
             the same free text transformation everywhere.
-        record_transformations (~.dlp.RecordTransformations):
+        record_transformations (google.cloud.dlp_v2.types.RecordTransformations):
             Treat the dataset as structured.
             Transformations can be applied to specific
             locations within structured datasets, such as
             transforming a column within a table.
-        transformation_error_handling (~.dlp.TransformationErrorHandling):
+        transformation_error_handling (google.cloud.dlp_v2.types.TransformationErrorHandling):
             Mode for handling transformation errors. If left
             unspecified, the default mode is
             ``TransformationErrorHandling.ThrowError``.
@@ -2537,9 +2537,9 @@ class TransformationErrorHandling(proto.Message):
     ``TransformationOverviews``.
 
     Attributes:
-        throw_error (~.dlp.TransformationErrorHandling.ThrowError):
+        throw_error (google.cloud.dlp_v2.types.TransformationErrorHandling.ThrowError):
             Throw an error
-        leave_untransformed (~.dlp.TransformationErrorHandling.LeaveUntransformed):
+        leave_untransformed (google.cloud.dlp_v2.types.TransformationErrorHandling.LeaveUntransformed):
             Ignore errors
     """
 
@@ -2568,27 +2568,27 @@ class PrimitiveTransformation(proto.Message):
     r"""A rule for transforming a value.
 
     Attributes:
-        replace_config (~.dlp.ReplaceValueConfig):
+        replace_config (google.cloud.dlp_v2.types.ReplaceValueConfig):
             Replace
-        redact_config (~.dlp.RedactConfig):
+        redact_config (google.cloud.dlp_v2.types.RedactConfig):
             Redact
-        character_mask_config (~.dlp.CharacterMaskConfig):
+        character_mask_config (google.cloud.dlp_v2.types.CharacterMaskConfig):
             Mask
-        crypto_replace_ffx_fpe_config (~.dlp.CryptoReplaceFfxFpeConfig):
+        crypto_replace_ffx_fpe_config (google.cloud.dlp_v2.types.CryptoReplaceFfxFpeConfig):
             Ffx-Fpe
-        fixed_size_bucketing_config (~.dlp.FixedSizeBucketingConfig):
+        fixed_size_bucketing_config (google.cloud.dlp_v2.types.FixedSizeBucketingConfig):
             Fixed size bucketing
-        bucketing_config (~.dlp.BucketingConfig):
+        bucketing_config (google.cloud.dlp_v2.types.BucketingConfig):
             Bucketing
-        replace_with_info_type_config (~.dlp.ReplaceWithInfoTypeConfig):
+        replace_with_info_type_config (google.cloud.dlp_v2.types.ReplaceWithInfoTypeConfig):
             Replace with infotype
-        time_part_config (~.dlp.TimePartConfig):
+        time_part_config (google.cloud.dlp_v2.types.TimePartConfig):
             Time extraction
-        crypto_hash_config (~.dlp.CryptoHashConfig):
+        crypto_hash_config (google.cloud.dlp_v2.types.CryptoHashConfig):
             Crypto
-        date_shift_config (~.dlp.DateShiftConfig):
+        date_shift_config (google.cloud.dlp_v2.types.DateShiftConfig):
             Date Shift
-        crypto_deterministic_config (~.dlp.CryptoDeterministicConfig):
+        crypto_deterministic_config (google.cloud.dlp_v2.types.CryptoDeterministicConfig):
             Deterministic Crypto
     """
 
@@ -2654,7 +2654,7 @@ class TimePartConfig(proto.Message):
     preserve a portion of the value.
 
     Attributes:
-        part_to_extract (~.dlp.TimePartConfig.TimePart):
+        part_to_extract (google.cloud.dlp_v2.types.TimePartConfig.TimePart):
             The part of the time to keep.
     """
 
@@ -2682,7 +2682,7 @@ class CryptoHashConfig(proto.Message):
     more.
 
     Attributes:
-        crypto_key (~.dlp.CryptoKey):
+        crypto_key (google.cloud.dlp_v2.types.CryptoKey):
             The key used by the hash function.
     """
 
@@ -2696,9 +2696,9 @@ class CryptoDeterministicConfig(proto.Message):
     the RFC https://tools.ietf.org/html/rfc5297.
 
     Attributes:
-        crypto_key (~.dlp.CryptoKey):
+        crypto_key (google.cloud.dlp_v2.types.CryptoKey):
             The key used by the encryption function.
-        surrogate_info_type (~.storage.InfoType):
+        surrogate_info_type (google.cloud.dlp_v2.types.InfoType):
             The custom info type to annotate the surrogate with. This
             annotation will be applied to the surrogate by prefixing it
             with the name of the custom info type followed by the number
@@ -2736,7 +2736,7 @@ class CryptoDeterministicConfig(proto.Message):
             data is entered from a regular ASCII keyboard, the symbol
             with the hex code point 29DD might be used like so:
             ⧝MY_TOKEN_TYPE.
-        context (~.storage.FieldId):
+        context (google.cloud.dlp_v2.types.FieldId):
             A context may be used for higher security and maintaining
             referential integrity such that the same identifier in two
             different contexts will be given a distinct surrogate. The
@@ -2773,7 +2773,7 @@ class ReplaceValueConfig(proto.Message):
     r"""Replace each input value with a given ``Value``.
 
     Attributes:
-        new_value (~.dlp.Value):
+        new_value (google.cloud.dlp_v2.types.Value):
             Value to replace it with.
     """
 
@@ -2799,7 +2799,7 @@ class CharsToIgnore(proto.Message):
     Attributes:
         characters_to_skip (str):
             Characters to not transform when masking.
-        common_characters_to_ignore (~.dlp.CharsToIgnore.CommonCharsToIgnore):
+        common_characters_to_ignore (google.cloud.dlp_v2.types.CharsToIgnore.CommonCharsToIgnore):
             Common characters to not transform when
             masking. Useful to avoid removing punctuation.
     """
@@ -2849,7 +2849,7 @@ class CharacterMaskConfig(proto.Message):
             ``00000000000000-3456``. If ``masking_character`` is ``*``,
             ``number_to_mask`` is ``3``, and ``reverse_order`` is
             ``true``, then the string ``12345`` is masked as ``12***``.
-        characters_to_ignore (Sequence[~.dlp.CharsToIgnore]):
+        characters_to_ignore (Sequence[google.cloud.dlp_v2.types.CharsToIgnore]):
             When masking a string, items in this list will be skipped
             when replacing characters. For example, if the input string
             is ``555-555-5555`` and you instruct Cloud DLP to skip ``-``
@@ -2889,12 +2889,12 @@ class FixedSizeBucketingConfig(proto.Message):
     more.
 
     Attributes:
-        lower_bound (~.dlp.Value):
+        lower_bound (google.cloud.dlp_v2.types.Value):
             Required. Lower bound value of buckets. All values less than
             ``lower_bound`` are grouped together into a single bucket;
             for example if ``lower_bound`` = 10, then all values less
             than 10 are replaced with the value "-10".
-        upper_bound (~.dlp.Value):
+        upper_bound (google.cloud.dlp_v2.types.Value):
             Required. Upper bound value of buckets. All values greater
             than upper_bound are grouped together into a single bucket;
             for example if ``upper_bound`` = 89, then all values greater
@@ -2927,7 +2927,7 @@ class BucketingConfig(proto.Message):
     to learn more.
 
     Attributes:
-        buckets (Sequence[~.dlp.BucketingConfig.Bucket]):
+        buckets (Sequence[google.cloud.dlp_v2.types.BucketingConfig.Bucket]):
             Set of buckets. Ranges must be non-
             verlapping.
     """
@@ -2937,13 +2937,13 @@ class BucketingConfig(proto.Message):
         values.
 
         Attributes:
-            min_ (~.dlp.Value):
+            min_ (google.cloud.dlp_v2.types.Value):
                 Lower bound of the range, inclusive. Type
                 should be the same as max if used.
-            max_ (~.dlp.Value):
+            max_ (google.cloud.dlp_v2.types.Value):
                 Upper bound of the range, exclusive; type
                 must match min.
-            replacement_value (~.dlp.Value):
+            replacement_value (google.cloud.dlp_v2.types.Value):
                 Required. Replacement value for this bucket.
         """
 
@@ -2973,10 +2973,10 @@ class CryptoReplaceFfxFpeConfig(proto.Message):
     plus warrant referential integrity.
 
     Attributes:
-        crypto_key (~.dlp.CryptoKey):
+        crypto_key (google.cloud.dlp_v2.types.CryptoKey):
             Required. The key used by the encryption
             algorithm.
-        context (~.storage.FieldId):
+        context (google.cloud.dlp_v2.types.FieldId):
             The 'tweak', a context may be used for higher security since
             the same identifier in two different contexts won't be given
             the same surrogate. If the context is not set, a default
@@ -3002,7 +3002,7 @@ class CryptoReplaceFfxFpeConfig(proto.Message):
                value 1
             -  a string is encoded in UTF-8 format followed by a single
                byte of value 2
-        common_alphabet (~.dlp.CryptoReplaceFfxFpeConfig.FfxCommonNativeAlphabet):
+        common_alphabet (google.cloud.dlp_v2.types.CryptoReplaceFfxFpeConfig.FfxCommonNativeAlphabet):
             Common alphabets.
         custom_alphabet (str):
             This is supported by mapping these to the alphanumeric
@@ -3017,7 +3017,7 @@ class CryptoReplaceFfxFpeConfig(proto.Message):
         radix (int):
             The native way to select the alphabet. Must be in the range
             [2, 95].
-        surrogate_info_type (~.storage.InfoType):
+        surrogate_info_type (google.cloud.dlp_v2.types.InfoType):
             The custom infoType to annotate the surrogate with. This
             annotation will be applied to the surrogate by prefixing it
             with the name of the custom infoType followed by the number
@@ -3085,11 +3085,11 @@ class CryptoKey(proto.Message):
     attacker cannot unwrap the data crypto key.
 
     Attributes:
-        transient (~.dlp.TransientCryptoKey):
+        transient (google.cloud.dlp_v2.types.TransientCryptoKey):
             Transient crypto key
-        unwrapped (~.dlp.UnwrappedCryptoKey):
+        unwrapped (google.cloud.dlp_v2.types.UnwrappedCryptoKey):
             Unwrapped crypto key
-        kms_wrapped (~.dlp.KmsWrappedCryptoKey):
+        kms_wrapped (google.cloud.dlp_v2.types.KmsWrappedCryptoKey):
             Kms wrapped key
     """
 
@@ -3174,12 +3174,12 @@ class DateShiftConfig(proto.Message):
         lower_bound_days (int):
             Required. For example, -5 means shift date to
             at most 5 days back in the past.
-        context (~.storage.FieldId):
+        context (google.cloud.dlp_v2.types.FieldId):
             Points to the field that contains the
             context, for example, an entity id. If set, must
             also set cryptoKey. If set, shift will be
             consistent for the given context.
-        crypto_key (~.dlp.CryptoKey):
+        crypto_key (google.cloud.dlp_v2.types.CryptoKey):
             Causes the shift to be computed based on this key and the
             context. This results in the same shift for the same context
             and crypto_key. If set, must also set context. Can only be
@@ -3204,7 +3204,7 @@ class InfoTypeTransformations(proto.Message):
     specific info_type.
 
     Attributes:
-        transformations (Sequence[~.dlp.InfoTypeTransformations.InfoTypeTransformation]):
+        transformations (Sequence[google.cloud.dlp_v2.types.InfoTypeTransformations.InfoTypeTransformation]):
             Required. Transformation for each infoType.
             Cannot specify more than one for a given
             infoType.
@@ -3215,12 +3215,12 @@ class InfoTypeTransformations(proto.Message):
         info_type.
 
         Attributes:
-            info_types (Sequence[~.storage.InfoType]):
+            info_types (Sequence[google.cloud.dlp_v2.types.InfoType]):
                 InfoTypes to apply the transformation to. An empty list will
                 cause this transformation to apply to all findings that
                 correspond to infoTypes that were requested in
                 ``InspectConfig``.
-            primitive_transformation (~.dlp.PrimitiveTransformation):
+            primitive_transformation (google.cloud.dlp_v2.types.PrimitiveTransformation):
                 Required. Primitive transformation to apply
                 to the infoType.
         """
@@ -3242,10 +3242,10 @@ class FieldTransformation(proto.Message):
     r"""The transformation to apply to the field.
 
     Attributes:
-        fields (Sequence[~.storage.FieldId]):
+        fields (Sequence[google.cloud.dlp_v2.types.FieldId]):
             Required. Input field(s) to apply the
             transformation to.
-        condition (~.dlp.RecordCondition):
+        condition (google.cloud.dlp_v2.types.RecordCondition):
             Only apply the transformation if the condition evaluates to
             true for the given ``RecordCondition``. The conditions are
             allowed to reference fields that are not used in the actual
@@ -3258,9 +3258,9 @@ class FieldTransformation(proto.Message):
                specific range.
             -  Redact a field if the date of birth field is greater than
                85.
-        primitive_transformation (~.dlp.PrimitiveTransformation):
+        primitive_transformation (google.cloud.dlp_v2.types.PrimitiveTransformation):
             Apply the transformation to the entire field.
-        info_type_transformations (~.dlp.InfoTypeTransformations):
+        info_type_transformations (google.cloud.dlp_v2.types.InfoTypeTransformations):
             Treat the contents of the field as free text, and
             selectively transform content that matches an ``InfoType``.
     """
@@ -3289,10 +3289,10 @@ class RecordTransformations(proto.Message):
     such as a table.
 
     Attributes:
-        field_transformations (Sequence[~.dlp.FieldTransformation]):
+        field_transformations (Sequence[google.cloud.dlp_v2.types.FieldTransformation]):
             Transform the record by applying various
             field transformations.
-        record_suppressions (Sequence[~.dlp.RecordSuppression]):
+        record_suppressions (Sequence[google.cloud.dlp_v2.types.RecordSuppression]):
             Configuration defining which records get
             suppressed entirely. Records that match any
             suppression rule are omitted from the output.
@@ -3312,7 +3312,7 @@ class RecordSuppression(proto.Message):
     conditions evaluate to true.
 
     Attributes:
-        condition (~.dlp.RecordCondition):
+        condition (google.cloud.dlp_v2.types.RecordCondition):
             A condition that when it evaluates to true
             will result in the record being evaluated to be
             suppressed from the transformed content.
@@ -3326,7 +3326,7 @@ class RecordCondition(proto.Message):
     be applied to a field.
 
     Attributes:
-        expressions (~.dlp.RecordCondition.Expressions):
+        expressions (google.cloud.dlp_v2.types.RecordCondition.Expressions):
             An expression.
     """
 
@@ -3352,13 +3352,13 @@ class RecordCondition(proto.Message):
         and the condition will evaluate to false.
 
         Attributes:
-            field (~.storage.FieldId):
+            field (google.cloud.dlp_v2.types.FieldId):
                 Required. Field within the record this
                 condition is evaluated against.
-            operator (~.dlp.RelationalOperator):
+            operator (google.cloud.dlp_v2.types.RelationalOperator):
                 Required. Operator used to compare the field
                 or infoType to the value.
-            value (~.dlp.Value):
+            value (google.cloud.dlp_v2.types.Value):
                 Value to compare against. [Mandatory, except for ``EXISTS``
                 tests.]
         """
@@ -3373,7 +3373,7 @@ class RecordCondition(proto.Message):
         r"""A collection of conditions.
 
         Attributes:
-            conditions (Sequence[~.dlp.RecordCondition.Condition]):
+            conditions (Sequence[google.cloud.dlp_v2.types.RecordCondition.Condition]):
                 A collection of conditions.
         """
 
@@ -3385,10 +3385,10 @@ class RecordCondition(proto.Message):
         r"""An expression, consisting or an operator and conditions.
 
         Attributes:
-            logical_operator (~.dlp.RecordCondition.Expressions.LogicalOperator):
+            logical_operator (google.cloud.dlp_v2.types.RecordCondition.Expressions.LogicalOperator):
                 The operator to apply to the result of conditions. Default
                 and currently only supported value is ``AND``.
-            conditions (~.dlp.RecordCondition.Conditions):
+            conditions (google.cloud.dlp_v2.types.RecordCondition.Conditions):
                 Conditions to apply to the expression.
         """
 
@@ -3415,7 +3415,7 @@ class TransformationOverview(proto.Message):
         transformed_bytes (int):
             Total size in bytes that were transformed in
             some way.
-        transformation_summaries (Sequence[~.dlp.TransformationSummary]):
+        transformation_summaries (Sequence[google.cloud.dlp_v2.types.TransformationSummary]):
             Transformations applied to the dataset.
     """
 
@@ -3431,24 +3431,24 @@ class TransformationSummary(proto.Message):
     'field_transformation', or 'record_suppress' will be set.
 
     Attributes:
-        info_type (~.storage.InfoType):
+        info_type (google.cloud.dlp_v2.types.InfoType):
             Set if the transformation was limited to a
             specific InfoType.
-        field (~.storage.FieldId):
+        field (google.cloud.dlp_v2.types.FieldId):
             Set if the transformation was limited to a
             specific FieldId.
-        transformation (~.dlp.PrimitiveTransformation):
+        transformation (google.cloud.dlp_v2.types.PrimitiveTransformation):
             The specific transformation these stats apply
             to.
-        field_transformations (Sequence[~.dlp.FieldTransformation]):
+        field_transformations (Sequence[google.cloud.dlp_v2.types.FieldTransformation]):
             The field transformation that was applied.
             If multiple field transformations are requested
             for a single field, this list will contain all
             of them; otherwise, only one is supplied.
-        record_suppress (~.dlp.RecordSuppression):
+        record_suppress (google.cloud.dlp_v2.types.RecordSuppression):
             The specific suppression option these stats
             apply to.
-        results (Sequence[~.dlp.TransformationSummary.SummaryResult]):
+        results (Sequence[google.cloud.dlp_v2.types.TransformationSummary.SummaryResult]):
             Collection of all transformations that took
             place or had an error.
         transformed_bytes (int):
@@ -3470,7 +3470,7 @@ class TransformationSummary(proto.Message):
             count (int):
                 Number of transformations counted by this
                 result.
-            code (~.dlp.TransformationSummary.TransformationResultCode):
+            code (google.cloud.dlp_v2.types.TransformationSummary.TransformationResultCode):
                 Outcome of the transformation.
             details (str):
                 A place for warnings or errors to show up if
@@ -3508,7 +3508,7 @@ class Schedule(proto.Message):
     r"""Schedule for triggeredJobs.
 
     Attributes:
-        recurrence_period_duration (~.duration.Duration):
+        recurrence_period_duration (google.protobuf.duration_pb2.Duration):
             With this option a job is started a regular
             periodic basis. For example: every day (86400
             seconds).
@@ -3549,13 +3549,13 @@ class InspectTemplate(proto.Message):
             Display name (max 256 chars).
         description (str):
             Short description (max 256 chars).
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation timestamp of an
             inspectTemplate.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update timestamp of an
             inspectTemplate.
-        inspect_config (~.dlp.InspectConfig):
+        inspect_config (google.cloud.dlp_v2.types.InspectConfig):
             The core content of the template.
             Configuration of the scanning process.
     """
@@ -3589,13 +3589,13 @@ class DeidentifyTemplate(proto.Message):
             Display name (max 256 chars).
         description (str):
             Short description (max 256 chars).
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation timestamp of an
             inspectTemplate.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update timestamp of an
             inspectTemplate.
-        deidentify_config (~.dlp.DeidentifyConfig):
+        deidentify_config (google.cloud.dlp_v2.types.DeidentifyConfig):
             ///////////// // The core content of the
             template  // ///////////////
     """
@@ -3621,9 +3621,9 @@ class Error(proto.Message):
     JobTrigger.
 
     Attributes:
-        details (~.gr_status.Status):
+        details (google.rpc.status_pb2.Status):
             Detailed error codes and messages.
-        timestamps (Sequence[~.timestamp.Timestamp]):
+        timestamps (Sequence[google.protobuf.timestamp_pb2.Timestamp]):
             The times the error occurred.
     """
 
@@ -3648,32 +3648,32 @@ class JobTrigger(proto.Message):
             Display name (max 100 chars)
         description (str):
             User provided description (max 256 chars)
-        inspect_job (~.dlp.InspectJobConfig):
+        inspect_job (google.cloud.dlp_v2.types.InspectJobConfig):
             For inspect jobs, a snapshot of the
             configuration.
-        triggers (Sequence[~.dlp.JobTrigger.Trigger]):
+        triggers (Sequence[google.cloud.dlp_v2.types.JobTrigger.Trigger]):
             A list of triggers which will be OR'ed
             together. Only one in the list needs to trigger
             for a job to be started. The list may contain
             only a single Schedule trigger and must have at
             least one object.
-        errors (Sequence[~.dlp.Error]):
+        errors (Sequence[google.cloud.dlp_v2.types.Error]):
             Output only. A stream of errors encountered
             when the trigger was activated. Repeated errors
             may result in the JobTrigger automatically being
             paused. Will return the last 100 errors.
             Whenever the JobTrigger is modified this list
             will be cleared.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation timestamp of a
             triggeredJob.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update timestamp of a
             triggeredJob.
-        last_run_time (~.timestamp.Timestamp):
+        last_run_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp of the last time
             this trigger executed.
-        status (~.dlp.JobTrigger.Status):
+        status (google.cloud.dlp_v2.types.JobTrigger.Status):
             Required. A status for this trigger.
     """
 
@@ -3693,10 +3693,10 @@ class JobTrigger(proto.Message):
         r"""What event needs to occur for a new job to be started.
 
         Attributes:
-            schedule (~.dlp.Schedule):
+            schedule (google.cloud.dlp_v2.types.Schedule):
                 Create a job on a repeating basis based on
                 the elapse of time.
-            manual (~.dlp.Manual):
+            manual (google.cloud.dlp_v2.types.Manual):
                 For use with hybrid jobs. Jobs must be
                 manually created and finished. Early access
                 feature is in a pre-release state and might
@@ -3743,20 +3743,20 @@ class Action(proto.Message):
     more.
 
     Attributes:
-        save_findings (~.dlp.Action.SaveFindings):
+        save_findings (google.cloud.dlp_v2.types.Action.SaveFindings):
             Save resulting findings in a provided
             location.
-        pub_sub (~.dlp.Action.PublishToPubSub):
+        pub_sub (google.cloud.dlp_v2.types.Action.PublishToPubSub):
             Publish a notification to a pubsub topic.
-        publish_summary_to_cscc (~.dlp.Action.PublishSummaryToCscc):
+        publish_summary_to_cscc (google.cloud.dlp_v2.types.Action.PublishSummaryToCscc):
             Publish summary to Cloud Security Command
             Center (Alpha).
-        publish_findings_to_cloud_data_catalog (~.dlp.Action.PublishFindingsToCloudDataCatalog):
+        publish_findings_to_cloud_data_catalog (google.cloud.dlp_v2.types.Action.PublishFindingsToCloudDataCatalog):
             Publish findings to Cloud Datahub.
-        job_notification_emails (~.dlp.Action.JobNotificationEmails):
+        job_notification_emails (google.cloud.dlp_v2.types.Action.JobNotificationEmails):
             Enable email notification for project owners
             and editors on job's completion/failure.
-        publish_to_stackdriver (~.dlp.Action.PublishToStackdriver):
+        publish_to_stackdriver (google.cloud.dlp_v2.types.Action.PublishToStackdriver):
             Enable Stackdriver metric dlp.googleapis.com/finding_count.
     """
 
@@ -3767,7 +3767,7 @@ class Action(proto.Message):
         Compatible with: Inspect, Risk
 
         Attributes:
-            output_config (~.dlp.OutputStorageConfig):
+            output_config (google.cloud.dlp_v2.types.OutputStorageConfig):
                 Location to store findings outside of DLP.
         """
 
@@ -3890,7 +3890,7 @@ class CreateInspectTemplateRequest(proto.Message):
             ::
 
                 parent=projects/example-project/locations/europe-west3
-        inspect_template (~.dlp.InspectTemplate):
+        inspect_template (google.cloud.dlp_v2.types.InspectTemplate):
             Required. The InspectTemplate to create.
         template_id (str):
             The template id can contain uppercase and lowercase letters,
@@ -3920,9 +3920,9 @@ class UpdateInspectTemplateRequest(proto.Message):
             to be updated, for example
             ``organizations/433245324/inspectTemplates/432452342`` or
             projects/project-id/inspectTemplates/432452342.
-        inspect_template (~.dlp.InspectTemplate):
+        inspect_template (google.cloud.dlp_v2.types.InspectTemplate):
             New InspectTemplate value.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Mask to control which fields get updated.
     """
 
@@ -4016,7 +4016,7 @@ class ListInspectTemplatesResponse(proto.Message):
     r"""Response message for ListInspectTemplates.
 
     Attributes:
-        inspect_templates (Sequence[~.dlp.InspectTemplate]):
+        inspect_templates (Sequence[google.cloud.dlp_v2.types.InspectTemplate]):
             List of inspectTemplates, up to page_size in
             ListInspectTemplatesRequest.
         next_page_token (str):
@@ -4073,7 +4073,7 @@ class CreateJobTriggerRequest(proto.Message):
             ::
 
                 parent=projects/example-project/locations/europe-west3
-        job_trigger (~.dlp.JobTrigger):
+        job_trigger (google.cloud.dlp_v2.types.JobTrigger):
             Required. The JobTrigger to create.
         trigger_id (str):
             The trigger id can contain uppercase and lowercase letters,
@@ -4114,9 +4114,9 @@ class UpdateJobTriggerRequest(proto.Message):
             Required. Resource name of the project and the triggeredJob,
             for example
             ``projects/dlp-test-project/jobTriggers/53234423``.
-        job_trigger (~.dlp.JobTrigger):
+        job_trigger (google.cloud.dlp_v2.types.JobTrigger):
             New JobTrigger value.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Mask to control which fields get updated.
     """
 
@@ -4165,9 +4165,9 @@ class CreateDlpJobRequest(proto.Message):
             ::
 
                 parent=projects/example-project/locations/europe-west3
-        inspect_job (~.dlp.InspectJobConfig):
+        inspect_job (google.cloud.dlp_v2.types.InspectJobConfig):
             Set to control what and how to inspect.
-        risk_job (~.dlp.RiskAnalysisJobConfig):
+        risk_job (google.cloud.dlp_v2.types.RiskAnalysisJobConfig):
             Set to choose what metric to calculate.
         job_id (str):
             The job id can contain uppercase and lowercase letters,
@@ -4301,7 +4301,7 @@ class ListJobTriggersResponse(proto.Message):
     r"""Response message for ListJobTriggers.
 
     Attributes:
-        job_triggers (Sequence[~.dlp.JobTrigger]):
+        job_triggers (Sequence[google.cloud.dlp_v2.types.JobTrigger]):
             List of triggeredJobs, up to page_size in
             ListJobTriggersRequest.
         next_page_token (str):
@@ -4336,15 +4336,15 @@ class InspectJobConfig(proto.Message):
     r"""Controls what and how to inspect for findings.
 
     Attributes:
-        storage_config (~.storage.StorageConfig):
+        storage_config (google.cloud.dlp_v2.types.StorageConfig):
             The data to scan.
-        inspect_config (~.dlp.InspectConfig):
+        inspect_config (google.cloud.dlp_v2.types.InspectConfig):
             How and what to scan for.
         inspect_template_name (str):
             If provided, will be used as the default for all values in
             InspectConfig. ``inspect_config`` will be merged into the
             values persisted as part of the template.
-        actions (Sequence[~.dlp.Action]):
+        actions (Sequence[google.cloud.dlp_v2.types.Action]):
             Actions to execute at the completion of the
             job.
     """
@@ -4366,24 +4366,24 @@ class DlpJob(proto.Message):
     Attributes:
         name (str):
             The server-assigned name.
-        type_ (~.dlp.DlpJobType):
+        type_ (google.cloud.dlp_v2.types.DlpJobType):
             The type of job.
-        state (~.dlp.DlpJob.JobState):
+        state (google.cloud.dlp_v2.types.DlpJob.JobState):
             State of a job.
-        risk_details (~.dlp.AnalyzeDataSourceRiskDetails):
+        risk_details (google.cloud.dlp_v2.types.AnalyzeDataSourceRiskDetails):
             Results from analyzing risk of a data source.
-        inspect_details (~.dlp.InspectDataSourceDetails):
+        inspect_details (google.cloud.dlp_v2.types.InspectDataSourceDetails):
             Results from inspecting a data source.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the job was created.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the job started.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the job finished.
         job_trigger_name (str):
             If created by a job trigger, the resource
             name of the trigger that instantiated the job.
-        errors (Sequence[~.dlp.Error]):
+        errors (Sequence[google.cloud.dlp_v2.types.Error]):
             A stream of errors encountered running the
             job.
     """
@@ -4505,7 +4505,7 @@ class ListDlpJobsRequest(proto.Message):
             The standard list page size.
         page_token (str):
             The standard list page token.
-        type_ (~.dlp.DlpJobType):
+        type_ (google.cloud.dlp_v2.types.DlpJobType):
             The type of job. Defaults to ``DlpJobType.INSPECT``
         order_by (str):
             Comma separated list of fields to order by, followed by
@@ -4544,7 +4544,7 @@ class ListDlpJobsResponse(proto.Message):
     r"""The response message for listing DLP jobs.
 
     Attributes:
-        jobs (Sequence[~.dlp.DlpJob]):
+        jobs (Sequence[google.cloud.dlp_v2.types.DlpJob]):
             A list of DlpJobs that matches the specified
             filter in the request.
         next_page_token (str):
@@ -4624,7 +4624,7 @@ class CreateDeidentifyTemplateRequest(proto.Message):
             ::
 
                 parent=projects/example-project/locations/europe-west3
-        deidentify_template (~.dlp.DeidentifyTemplate):
+        deidentify_template (google.cloud.dlp_v2.types.DeidentifyTemplate):
             Required. The DeidentifyTemplate to create.
         template_id (str):
             The template id can contain uppercase and lowercase letters,
@@ -4656,9 +4656,9 @@ class UpdateDeidentifyTemplateRequest(proto.Message):
             template to be updated, for example
             ``organizations/433245324/deidentifyTemplates/432452342`` or
             projects/project-id/deidentifyTemplates/432452342.
-        deidentify_template (~.dlp.DeidentifyTemplate):
+        deidentify_template (google.cloud.dlp_v2.types.DeidentifyTemplate):
             New DeidentifyTemplate value.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Mask to control which fields get updated.
     """
 
@@ -4754,7 +4754,7 @@ class ListDeidentifyTemplatesResponse(proto.Message):
     r"""Response message for ListDeidentifyTemplates.
 
     Attributes:
-        deidentify_templates (Sequence[~.dlp.DeidentifyTemplate]):
+        deidentify_templates (Sequence[google.cloud.dlp_v2.types.DeidentifyTemplate]):
             List of deidentify templates, up to page_size in
             ListDeidentifyTemplatesRequest.
         next_page_token (str):
@@ -4797,17 +4797,17 @@ class LargeCustomDictionaryConfig(proto.Message):
     smaller dictionaries that satisfy the size requirements.
 
     Attributes:
-        output_path (~.storage.CloudStoragePath):
+        output_path (google.cloud.dlp_v2.types.CloudStoragePath):
             Location to store dictionary artifacts in
             Google Cloud Storage. These files will only be
             accessible by project owners and the DLP API. If
             any of these artifacts are modified, the
             dictionary is considered invalid and can no
             longer be used.
-        cloud_storage_file_set (~.storage.CloudStorageFileSet):
+        cloud_storage_file_set (google.cloud.dlp_v2.types.CloudStorageFileSet):
             Set of files containing newline-delimited
             lists of dictionary phrases.
-        big_query_field (~.storage.BigQueryField):
+        big_query_field (google.cloud.dlp_v2.types.BigQueryField):
             Field in a BigQuery table where each cell
             represents a dictionary phrase.
     """
@@ -4849,12 +4849,12 @@ class StoredInfoTypeConfig(proto.Message):
         description (str):
             Description of the StoredInfoType (max 256
             characters).
-        large_custom_dictionary (~.dlp.LargeCustomDictionaryConfig):
+        large_custom_dictionary (google.cloud.dlp_v2.types.LargeCustomDictionaryConfig):
             StoredInfoType where findings are defined by
             a dictionary of phrases.
-        dictionary (~.storage.CustomInfoType.Dictionary):
+        dictionary (google.cloud.dlp_v2.types.CustomInfoType.Dictionary):
             Store dictionary-based CustomInfoType.
-        regex (~.storage.CustomInfoType.Regex):
+        regex (google.cloud.dlp_v2.types.CustomInfoType.Regex):
             Store regular expression-based
             StoredInfoType.
     """
@@ -4883,7 +4883,7 @@ class StoredInfoTypeStats(proto.Message):
     r"""Statistics for a StoredInfoType.
 
     Attributes:
-        large_custom_dictionary (~.dlp.LargeCustomDictionaryStats):
+        large_custom_dictionary (google.cloud.dlp_v2.types.LargeCustomDictionaryStats):
             StoredInfoType where findings are defined by
             a dictionary of phrases.
     """
@@ -4898,17 +4898,17 @@ class StoredInfoTypeVersion(proto.Message):
     to build it, create timestamp, and current state.
 
     Attributes:
-        config (~.dlp.StoredInfoTypeConfig):
+        config (google.cloud.dlp_v2.types.StoredInfoTypeConfig):
             StoredInfoType configuration.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Create timestamp of the version. Read-only,
             determined by the system when the version is
             created.
-        state (~.dlp.StoredInfoTypeState):
+        state (google.cloud.dlp_v2.types.StoredInfoTypeState):
             Stored info type version state. Read-only,
             updated by the system during dictionary
             creation.
-        errors (Sequence[~.dlp.Error]):
+        errors (Sequence[google.cloud.dlp_v2.types.Error]):
             Errors that occurred when creating this storedInfoType
             version, or anomalies detected in the storedInfoType data
             that render it unusable. Only the five most recent errors
@@ -4925,7 +4925,7 @@ class StoredInfoTypeVersion(proto.Message):
             create another version of the storedInfoType to continue
             using it, reusing the same ``config`` if it was not the
             source of the error.
-        stats (~.dlp.StoredInfoTypeStats):
+        stats (google.cloud.dlp_v2.types.StoredInfoTypeStats):
             Statistics about this storedInfoType version.
     """
 
@@ -4947,9 +4947,9 @@ class StoredInfoType(proto.Message):
     Attributes:
         name (str):
             Resource name.
-        current_version (~.dlp.StoredInfoTypeVersion):
+        current_version (google.cloud.dlp_v2.types.StoredInfoTypeVersion):
             Current version of the stored info type.
-        pending_versions (Sequence[~.dlp.StoredInfoTypeVersion]):
+        pending_versions (Sequence[google.cloud.dlp_v2.types.StoredInfoTypeVersion]):
             Pending versions of the stored info type.
             Empty if no versions are pending.
     """
@@ -4993,7 +4993,7 @@ class CreateStoredInfoTypeRequest(proto.Message):
             ::
 
                 parent=projects/example-project/locations/europe-west3
-        config (~.dlp.StoredInfoTypeConfig):
+        config (google.cloud.dlp_v2.types.StoredInfoTypeConfig):
             Required. Configuration of the storedInfoType
             to create.
         stored_info_type_id (str):
@@ -5024,12 +5024,12 @@ class UpdateStoredInfoTypeRequest(proto.Message):
             to be updated, for example
             ``organizations/433245324/storedInfoTypes/432452342`` or
             projects/project-id/storedInfoTypes/432452342.
-        config (~.dlp.StoredInfoTypeConfig):
+        config (google.cloud.dlp_v2.types.StoredInfoTypeConfig):
             Updated configuration for the storedInfoType.
             If not provided, a new version of the
             storedInfoType will be created with the existing
             configuration.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Mask to control which fields get updated.
     """
 
@@ -5123,7 +5123,7 @@ class ListStoredInfoTypesResponse(proto.Message):
     r"""Response message for ListStoredInfoTypes.
 
     Attributes:
-        stored_info_types (Sequence[~.dlp.StoredInfoType]):
+        stored_info_types (Sequence[google.cloud.dlp_v2.types.StoredInfoType]):
             List of storedInfoTypes, up to page_size in
             ListStoredInfoTypesRequest.
         next_page_token (str):
@@ -5166,7 +5166,7 @@ class HybridInspectJobTriggerRequest(proto.Message):
             Required. Resource name of the trigger to execute a hybrid
             inspect on, for example
             ``projects/dlp-test-project/jobTriggers/53234423``.
-        hybrid_item (~.dlp.HybridContentItem):
+        hybrid_item (google.cloud.dlp_v2.types.HybridContentItem):
             The item to inspect.
     """
 
@@ -5184,7 +5184,7 @@ class HybridInspectDlpJobRequest(proto.Message):
             Required. Resource name of the job to execute a hybrid
             inspect on, for example
             ``projects/dlp-test-project/dlpJob/53234423``.
-        hybrid_item (~.dlp.HybridContentItem):
+        hybrid_item (google.cloud.dlp_v2.types.HybridContentItem):
             The item to inspect.
     """
 
@@ -5198,9 +5198,9 @@ class HybridContentItem(proto.Message):
     temporarily during processing.
 
     Attributes:
-        item (~.dlp.ContentItem):
+        item (google.cloud.dlp_v2.types.ContentItem):
             The item to inspect.
-        finding_details (~.dlp.HybridFindingDetails):
+        finding_details (google.cloud.dlp_v2.types.HybridFindingDetails):
             Supplementary information that will be added
             to each finding.
     """
@@ -5216,7 +5216,7 @@ class HybridFindingDetails(proto.Message):
     r"""Populate to associate additional data with each finding.
 
     Attributes:
-        container_details (~.dlp.Container):
+        container_details (google.cloud.dlp_v2.types.Container):
             Details about the container where the content
             being inspected is from.
         file_offset (int):
@@ -5231,14 +5231,14 @@ class HybridFindingDetails(proto.Message):
             row(s) being scanned are part of a bigger
             dataset and you want to keep track of their
             absolute position.
-        table_options (~.storage.TableOptions):
+        table_options (google.cloud.dlp_v2.types.TableOptions):
             If the container is a table, additional information to make
             findings meaningful such as the columns that are primary
             keys. If not known ahead of time, can also be set within
             each inspect hybrid call and the two will be merged. Note
             that identifying_fields will only be stored to BigQuery, and
             only if the BigQuery action has been included.
-        labels (Sequence[~.dlp.HybridFindingDetails.LabelsEntry]):
+        labels (Sequence[google.cloud.dlp_v2.types.HybridFindingDetails.LabelsEntry]):
             Labels to represent user provided metadata about the data
             being inspected. If configured by the job, some key values
             may be required. The labels associated with ``Finding``'s

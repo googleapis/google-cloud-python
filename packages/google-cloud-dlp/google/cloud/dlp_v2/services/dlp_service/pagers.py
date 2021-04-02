@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.dlp_v2.types import dlp
 
@@ -24,7 +33,7 @@ class ListInspectTemplatesPager:
     """A pager for iterating through ``list_inspect_templates`` requests.
 
     This class thinly wraps an initial
-    :class:`~.dlp.ListInspectTemplatesResponse` object, and
+    :class:`google.cloud.dlp_v2.types.ListInspectTemplatesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``inspect_templates`` field.
 
@@ -33,7 +42,7 @@ class ListInspectTemplatesPager:
     through the ``inspect_templates`` field on the
     corresponding responses.
 
-    All the usual :class:`~.dlp.ListInspectTemplatesResponse`
+    All the usual :class:`google.cloud.dlp_v2.types.ListInspectTemplatesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListInspectTemplatesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.dlp.ListInspectTemplatesRequest`):
+            request (google.cloud.dlp_v2.types.ListInspectTemplatesRequest):
                 The initial request object.
-            response (:class:`~.dlp.ListInspectTemplatesResponse`):
+            response (google.cloud.dlp_v2.types.ListInspectTemplatesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListInspectTemplatesAsyncPager:
     """A pager for iterating through ``list_inspect_templates`` requests.
 
     This class thinly wraps an initial
-    :class:`~.dlp.ListInspectTemplatesResponse` object, and
+    :class:`google.cloud.dlp_v2.types.ListInspectTemplatesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``inspect_templates`` field.
 
@@ -95,7 +104,7 @@ class ListInspectTemplatesAsyncPager:
     through the ``inspect_templates`` field on the
     corresponding responses.
 
-    All the usual :class:`~.dlp.ListInspectTemplatesResponse`
+    All the usual :class:`google.cloud.dlp_v2.types.ListInspectTemplatesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListInspectTemplatesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.dlp.ListInspectTemplatesRequest`):
+            request (google.cloud.dlp_v2.types.ListInspectTemplatesRequest):
                 The initial request object.
-            response (:class:`~.dlp.ListInspectTemplatesResponse`):
+            response (google.cloud.dlp_v2.types.ListInspectTemplatesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -152,7 +161,7 @@ class ListDeidentifyTemplatesPager:
     """A pager for iterating through ``list_deidentify_templates`` requests.
 
     This class thinly wraps an initial
-    :class:`~.dlp.ListDeidentifyTemplatesResponse` object, and
+    :class:`google.cloud.dlp_v2.types.ListDeidentifyTemplatesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``deidentify_templates`` field.
 
@@ -161,7 +170,7 @@ class ListDeidentifyTemplatesPager:
     through the ``deidentify_templates`` field on the
     corresponding responses.
 
-    All the usual :class:`~.dlp.ListDeidentifyTemplatesResponse`
+    All the usual :class:`google.cloud.dlp_v2.types.ListDeidentifyTemplatesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -179,9 +188,9 @@ class ListDeidentifyTemplatesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.dlp.ListDeidentifyTemplatesRequest`):
+            request (google.cloud.dlp_v2.types.ListDeidentifyTemplatesRequest):
                 The initial request object.
-            response (:class:`~.dlp.ListDeidentifyTemplatesResponse`):
+            response (google.cloud.dlp_v2.types.ListDeidentifyTemplatesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -214,7 +223,7 @@ class ListDeidentifyTemplatesAsyncPager:
     """A pager for iterating through ``list_deidentify_templates`` requests.
 
     This class thinly wraps an initial
-    :class:`~.dlp.ListDeidentifyTemplatesResponse` object, and
+    :class:`google.cloud.dlp_v2.types.ListDeidentifyTemplatesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``deidentify_templates`` field.
 
@@ -223,7 +232,7 @@ class ListDeidentifyTemplatesAsyncPager:
     through the ``deidentify_templates`` field on the
     corresponding responses.
 
-    All the usual :class:`~.dlp.ListDeidentifyTemplatesResponse`
+    All the usual :class:`google.cloud.dlp_v2.types.ListDeidentifyTemplatesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -241,9 +250,9 @@ class ListDeidentifyTemplatesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.dlp.ListDeidentifyTemplatesRequest`):
+            request (google.cloud.dlp_v2.types.ListDeidentifyTemplatesRequest):
                 The initial request object.
-            response (:class:`~.dlp.ListDeidentifyTemplatesResponse`):
+            response (google.cloud.dlp_v2.types.ListDeidentifyTemplatesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -280,7 +289,7 @@ class ListJobTriggersPager:
     """A pager for iterating through ``list_job_triggers`` requests.
 
     This class thinly wraps an initial
-    :class:`~.dlp.ListJobTriggersResponse` object, and
+    :class:`google.cloud.dlp_v2.types.ListJobTriggersResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``job_triggers`` field.
 
@@ -289,7 +298,7 @@ class ListJobTriggersPager:
     through the ``job_triggers`` field on the
     corresponding responses.
 
-    All the usual :class:`~.dlp.ListJobTriggersResponse`
+    All the usual :class:`google.cloud.dlp_v2.types.ListJobTriggersResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -307,9 +316,9 @@ class ListJobTriggersPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.dlp.ListJobTriggersRequest`):
+            request (google.cloud.dlp_v2.types.ListJobTriggersRequest):
                 The initial request object.
-            response (:class:`~.dlp.ListJobTriggersResponse`):
+            response (google.cloud.dlp_v2.types.ListJobTriggersResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -342,7 +351,7 @@ class ListJobTriggersAsyncPager:
     """A pager for iterating through ``list_job_triggers`` requests.
 
     This class thinly wraps an initial
-    :class:`~.dlp.ListJobTriggersResponse` object, and
+    :class:`google.cloud.dlp_v2.types.ListJobTriggersResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``job_triggers`` field.
 
@@ -351,7 +360,7 @@ class ListJobTriggersAsyncPager:
     through the ``job_triggers`` field on the
     corresponding responses.
 
-    All the usual :class:`~.dlp.ListJobTriggersResponse`
+    All the usual :class:`google.cloud.dlp_v2.types.ListJobTriggersResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -369,9 +378,9 @@ class ListJobTriggersAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.dlp.ListJobTriggersRequest`):
+            request (google.cloud.dlp_v2.types.ListJobTriggersRequest):
                 The initial request object.
-            response (:class:`~.dlp.ListJobTriggersResponse`):
+            response (google.cloud.dlp_v2.types.ListJobTriggersResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -408,7 +417,7 @@ class ListDlpJobsPager:
     """A pager for iterating through ``list_dlp_jobs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.dlp.ListDlpJobsResponse` object, and
+    :class:`google.cloud.dlp_v2.types.ListDlpJobsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``jobs`` field.
 
@@ -417,7 +426,7 @@ class ListDlpJobsPager:
     through the ``jobs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.dlp.ListDlpJobsResponse`
+    All the usual :class:`google.cloud.dlp_v2.types.ListDlpJobsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -435,9 +444,9 @@ class ListDlpJobsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.dlp.ListDlpJobsRequest`):
+            request (google.cloud.dlp_v2.types.ListDlpJobsRequest):
                 The initial request object.
-            response (:class:`~.dlp.ListDlpJobsResponse`):
+            response (google.cloud.dlp_v2.types.ListDlpJobsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -470,7 +479,7 @@ class ListDlpJobsAsyncPager:
     """A pager for iterating through ``list_dlp_jobs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.dlp.ListDlpJobsResponse` object, and
+    :class:`google.cloud.dlp_v2.types.ListDlpJobsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``jobs`` field.
 
@@ -479,7 +488,7 @@ class ListDlpJobsAsyncPager:
     through the ``jobs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.dlp.ListDlpJobsResponse`
+    All the usual :class:`google.cloud.dlp_v2.types.ListDlpJobsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -497,9 +506,9 @@ class ListDlpJobsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.dlp.ListDlpJobsRequest`):
+            request (google.cloud.dlp_v2.types.ListDlpJobsRequest):
                 The initial request object.
-            response (:class:`~.dlp.ListDlpJobsResponse`):
+            response (google.cloud.dlp_v2.types.ListDlpJobsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -536,7 +545,7 @@ class ListStoredInfoTypesPager:
     """A pager for iterating through ``list_stored_info_types`` requests.
 
     This class thinly wraps an initial
-    :class:`~.dlp.ListStoredInfoTypesResponse` object, and
+    :class:`google.cloud.dlp_v2.types.ListStoredInfoTypesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``stored_info_types`` field.
 
@@ -545,7 +554,7 @@ class ListStoredInfoTypesPager:
     through the ``stored_info_types`` field on the
     corresponding responses.
 
-    All the usual :class:`~.dlp.ListStoredInfoTypesResponse`
+    All the usual :class:`google.cloud.dlp_v2.types.ListStoredInfoTypesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -563,9 +572,9 @@ class ListStoredInfoTypesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.dlp.ListStoredInfoTypesRequest`):
+            request (google.cloud.dlp_v2.types.ListStoredInfoTypesRequest):
                 The initial request object.
-            response (:class:`~.dlp.ListStoredInfoTypesResponse`):
+            response (google.cloud.dlp_v2.types.ListStoredInfoTypesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -598,7 +607,7 @@ class ListStoredInfoTypesAsyncPager:
     """A pager for iterating through ``list_stored_info_types`` requests.
 
     This class thinly wraps an initial
-    :class:`~.dlp.ListStoredInfoTypesResponse` object, and
+    :class:`google.cloud.dlp_v2.types.ListStoredInfoTypesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``stored_info_types`` field.
 
@@ -607,7 +616,7 @@ class ListStoredInfoTypesAsyncPager:
     through the ``stored_info_types`` field on the
     corresponding responses.
 
-    All the usual :class:`~.dlp.ListStoredInfoTypesResponse`
+    All the usual :class:`google.cloud.dlp_v2.types.ListStoredInfoTypesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -625,9 +634,9 @@ class ListStoredInfoTypesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.dlp.ListStoredInfoTypesRequest`):
+            request (google.cloud.dlp_v2.types.ListStoredInfoTypesRequest):
                 The initial request object.
-            response (:class:`~.dlp.ListStoredInfoTypesResponse`):
+            response (google.cloud.dlp_v2.types.ListStoredInfoTypesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

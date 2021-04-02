@@ -90,7 +90,22 @@ def test__get_default_mtls_endpoint():
     assert DlpServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [DlpServiceClient, DlpServiceAsyncClient])
+@pytest.mark.parametrize("client_class", [DlpServiceClient, DlpServiceAsyncClient,])
+def test_dlp_service_client_from_service_account_info(client_class):
+    creds = credentials.AnonymousCredentials()
+    with mock.patch.object(
+        service_account.Credentials, "from_service_account_info"
+    ) as factory:
+        factory.return_value = creds
+        info = {"valid": True}
+        client = client_class.from_service_account_info(info)
+        assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
+
+        assert client.transport._host == "dlp.googleapis.com:443"
+
+
+@pytest.mark.parametrize("client_class", [DlpServiceClient, DlpServiceAsyncClient,])
 def test_dlp_service_client_from_service_account_file(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -99,16 +114,21 @@ def test_dlp_service_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "dlp.googleapis.com:443"
 
 
 def test_dlp_service_client_get_transport_class():
     transport = DlpServiceClient.get_transport_class()
-    assert transport == transports.DlpServiceGrpcTransport
+    available_transports = [
+        transports.DlpServiceGrpcTransport,
+    ]
+    assert transport in available_transports
 
     transport = DlpServiceClient.get_transport_class("grpc")
     assert transport == transports.DlpServiceGrpcTransport
@@ -157,7 +177,7 @@ def test_dlp_service_client_client_options(
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -173,7 +193,7 @@ def test_dlp_service_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_ENDPOINT,
                 scopes=None,
-                ssl_channel_credentials=None,
+                client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
@@ -189,7 +209,7 @@ def test_dlp_service_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_MTLS_ENDPOINT,
                 scopes=None,
-                ssl_channel_credentials=None,
+                client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
@@ -217,7 +237,7 @@ def test_dlp_service_client_client_options(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -266,29 +286,25 @@ def test_dlp_service_client_mtls_env_auto(
             client_cert_source=client_cert_source_callback
         )
         with mock.patch.object(transport_class, "__init__") as patched:
-            ssl_channel_creds = mock.Mock()
-            with mock.patch(
-                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
-            ):
-                patched.return_value = None
-                client = client_class(client_options=options)
+            patched.return_value = None
+            client = client_class(client_options=options)
 
-                if use_client_cert_env == "false":
-                    expected_ssl_channel_creds = None
-                    expected_host = client.DEFAULT_ENDPOINT
-                else:
-                    expected_ssl_channel_creds = ssl_channel_creds
-                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+            if use_client_cert_env == "false":
+                expected_client_cert_source = None
+                expected_host = client.DEFAULT_ENDPOINT
+            else:
+                expected_client_cert_source = client_cert_source_callback
+                expected_host = client.DEFAULT_MTLS_ENDPOINT
 
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=expected_host,
-                    scopes=None,
-                    ssl_channel_credentials=expected_ssl_channel_creds,
-                    quota_project_id=None,
-                    client_info=transports.base.DEFAULT_CLIENT_INFO,
-                )
+            patched.assert_called_once_with(
+                credentials=None,
+                credentials_file=None,
+                host=expected_host,
+                scopes=None,
+                client_cert_source_for_mtls=expected_client_cert_source,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+            )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
@@ -297,40 +313,31 @@ def test_dlp_service_client_mtls_env_auto(
     ):
         with mock.patch.object(transport_class, "__init__") as patched:
             with mock.patch(
-                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=True,
             ):
                 with mock.patch(
-                    "google.auth.transport.grpc.SslCredentials.is_mtls",
-                    new_callable=mock.PropertyMock,
-                ) as is_mtls_mock:
-                    with mock.patch(
-                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
-                        new_callable=mock.PropertyMock,
-                    ) as ssl_credentials_mock:
-                        if use_client_cert_env == "false":
-                            is_mtls_mock.return_value = False
-                            ssl_credentials_mock.return_value = None
-                            expected_host = client.DEFAULT_ENDPOINT
-                            expected_ssl_channel_creds = None
-                        else:
-                            is_mtls_mock.return_value = True
-                            ssl_credentials_mock.return_value = mock.Mock()
-                            expected_host = client.DEFAULT_MTLS_ENDPOINT
-                            expected_ssl_channel_creds = (
-                                ssl_credentials_mock.return_value
-                            )
+                    "google.auth.transport.mtls.default_client_cert_source",
+                    return_value=client_cert_source_callback,
+                ):
+                    if use_client_cert_env == "false":
+                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_client_cert_source = None
+                    else:
+                        expected_host = client.DEFAULT_MTLS_ENDPOINT
+                        expected_client_cert_source = client_cert_source_callback
 
-                        patched.return_value = None
-                        client = client_class()
-                        patched.assert_called_once_with(
-                            credentials=None,
-                            credentials_file=None,
-                            host=expected_host,
-                            scopes=None,
-                            ssl_channel_credentials=expected_ssl_channel_creds,
-                            quota_project_id=None,
-                            client_info=transports.base.DEFAULT_CLIENT_INFO,
-                        )
+                    patched.return_value = None
+                    client = client_class()
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=expected_host,
+                        scopes=None,
+                        client_cert_source_for_mtls=expected_client_cert_source,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    )
 
     # Check the case client_cert_source and ADC client cert are not provided.
     with mock.patch.dict(
@@ -338,24 +345,20 @@ def test_dlp_service_client_mtls_env_auto(
     ):
         with mock.patch.object(transport_class, "__init__") as patched:
             with mock.patch(
-                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=False,
             ):
-                with mock.patch(
-                    "google.auth.transport.grpc.SslCredentials.is_mtls",
-                    new_callable=mock.PropertyMock,
-                ) as is_mtls_mock:
-                    is_mtls_mock.return_value = False
-                    patched.return_value = None
-                    client = client_class()
-                    patched.assert_called_once_with(
-                        credentials=None,
-                        credentials_file=None,
-                        host=client.DEFAULT_ENDPOINT,
-                        scopes=None,
-                        ssl_channel_credentials=None,
-                        quota_project_id=None,
-                        client_info=transports.base.DEFAULT_CLIENT_INFO,
-                    )
+                patched.return_value = None
+                client = client_class()
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=client.DEFAULT_ENDPOINT,
+                    scopes=None,
+                    client_cert_source_for_mtls=None,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                )
 
 
 @pytest.mark.parametrize(
@@ -382,7 +385,7 @@ def test_dlp_service_client_client_options_scopes(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -412,7 +415,7 @@ def test_dlp_service_client_client_options_credentials_file(
             credentials_file="credentials.json",
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -429,7 +432,7 @@ def test_dlp_service_client_client_options_from_dict():
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -466,6 +469,22 @@ def test_inspect_content(
 
 def test_inspect_content_from_dict():
     test_inspect_content(request_type=dict)
+
+
+def test_inspect_content_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.inspect_content), "__call__") as call:
+        client.inspect_content()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.InspectContentRequest()
 
 
 @pytest.mark.asyncio
@@ -591,6 +610,22 @@ def test_redact_image(transport: str = "grpc", request_type=dlp.RedactImageReque
 
 def test_redact_image_from_dict():
     test_redact_image(request_type=dict)
+
+
+def test_redact_image_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.redact_image), "__call__") as call:
+        client.redact_image()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.RedactImageRequest()
 
 
 @pytest.mark.asyncio
@@ -722,6 +757,24 @@ def test_deidentify_content_from_dict():
     test_deidentify_content(request_type=dict)
 
 
+def test_deidentify_content_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.deidentify_content), "__call__"
+    ) as call:
+        client.deidentify_content()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.DeidentifyContentRequest()
+
+
 @pytest.mark.asyncio
 async def test_deidentify_content_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeidentifyContentRequest
@@ -850,6 +903,24 @@ def test_reidentify_content_from_dict():
     test_reidentify_content(request_type=dict)
 
 
+def test_reidentify_content_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reidentify_content), "__call__"
+    ) as call:
+        client.reidentify_content()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.ReidentifyContentRequest()
+
+
 @pytest.mark.asyncio
 async def test_reidentify_content_async(
     transport: str = "grpc_asyncio", request_type=dlp.ReidentifyContentRequest
@@ -974,6 +1045,22 @@ def test_list_info_types(
 
 def test_list_info_types_from_dict():
     test_list_info_types(request_type=dict)
+
+
+def test_list_info_types_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_info_types), "__call__") as call:
+        client.list_info_types()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.ListInfoTypesRequest()
 
 
 @pytest.mark.asyncio
@@ -1122,6 +1209,24 @@ def test_create_inspect_template(
 
 def test_create_inspect_template_from_dict():
     test_create_inspect_template(request_type=dict)
+
+
+def test_create_inspect_template_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_inspect_template), "__call__"
+    ) as call:
+        client.create_inspect_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.CreateInspectTemplateRequest()
 
 
 @pytest.mark.asyncio
@@ -1351,6 +1456,24 @@ def test_update_inspect_template(
 
 def test_update_inspect_template_from_dict():
     test_update_inspect_template(request_type=dict)
+
+
+def test_update_inspect_template_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_inspect_template), "__call__"
+    ) as call:
+        client.update_inspect_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.UpdateInspectTemplateRequest()
 
 
 @pytest.mark.asyncio
@@ -1590,6 +1713,24 @@ def test_get_inspect_template_from_dict():
     test_get_inspect_template(request_type=dict)
 
 
+def test_get_inspect_template_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_inspect_template), "__call__"
+    ) as call:
+        client.get_inspect_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.GetInspectTemplateRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_inspect_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetInspectTemplateRequest
@@ -1797,6 +1938,24 @@ def test_list_inspect_templates(
 
 def test_list_inspect_templates_from_dict():
     test_list_inspect_templates(request_type=dict)
+
+
+def test_list_inspect_templates_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_inspect_templates), "__call__"
+    ) as call:
+        client.list_inspect_templates()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.ListInspectTemplatesRequest()
 
 
 @pytest.mark.asyncio
@@ -2153,6 +2312,24 @@ def test_delete_inspect_template_from_dict():
     test_delete_inspect_template(request_type=dict)
 
 
+def test_delete_inspect_template_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_inspect_template), "__call__"
+    ) as call:
+        client.delete_inspect_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.DeleteInspectTemplateRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_inspect_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteInspectTemplateRequest
@@ -2354,6 +2531,24 @@ def test_create_deidentify_template(
 
 def test_create_deidentify_template_from_dict():
     test_create_deidentify_template(request_type=dict)
+
+
+def test_create_deidentify_template_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_deidentify_template), "__call__"
+    ) as call:
+        client.create_deidentify_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.CreateDeidentifyTemplateRequest()
 
 
 @pytest.mark.asyncio
@@ -2587,6 +2782,24 @@ def test_update_deidentify_template(
 
 def test_update_deidentify_template_from_dict():
     test_update_deidentify_template(request_type=dict)
+
+
+def test_update_deidentify_template_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_deidentify_template), "__call__"
+    ) as call:
+        client.update_deidentify_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.UpdateDeidentifyTemplateRequest()
 
 
 @pytest.mark.asyncio
@@ -2830,6 +3043,24 @@ def test_get_deidentify_template_from_dict():
     test_get_deidentify_template(request_type=dict)
 
 
+def test_get_deidentify_template_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_deidentify_template), "__call__"
+    ) as call:
+        client.get_deidentify_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.GetDeidentifyTemplateRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_deidentify_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetDeidentifyTemplateRequest
@@ -3041,6 +3272,24 @@ def test_list_deidentify_templates(
 
 def test_list_deidentify_templates_from_dict():
     test_list_deidentify_templates(request_type=dict)
+
+
+def test_list_deidentify_templates_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_deidentify_templates), "__call__"
+    ) as call:
+        client.list_deidentify_templates()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.ListDeidentifyTemplatesRequest()
 
 
 @pytest.mark.asyncio
@@ -3411,6 +3660,24 @@ def test_delete_deidentify_template_from_dict():
     test_delete_deidentify_template(request_type=dict)
 
 
+def test_delete_deidentify_template_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_deidentify_template), "__call__"
+    ) as call:
+        client.delete_deidentify_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.DeleteDeidentifyTemplateRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_deidentify_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteDeidentifyTemplateRequest
@@ -3622,6 +3889,24 @@ def test_create_job_trigger(
 
 def test_create_job_trigger_from_dict():
     test_create_job_trigger(request_type=dict)
+
+
+def test_create_job_trigger_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_job_trigger), "__call__"
+    ) as call:
+        client.create_job_trigger()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.CreateJobTriggerRequest()
 
 
 @pytest.mark.asyncio
@@ -3864,6 +4149,24 @@ def test_update_job_trigger_from_dict():
     test_update_job_trigger(request_type=dict)
 
 
+def test_update_job_trigger_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_job_trigger), "__call__"
+    ) as call:
+        client.update_job_trigger()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.UpdateJobTriggerRequest()
+
+
 @pytest.mark.asyncio
 async def test_update_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.UpdateJobTriggerRequest
@@ -4094,6 +4397,24 @@ def test_hybrid_inspect_job_trigger_from_dict():
     test_hybrid_inspect_job_trigger(request_type=dict)
 
 
+def test_hybrid_inspect_job_trigger_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.hybrid_inspect_job_trigger), "__call__"
+    ) as call:
+        client.hybrid_inspect_job_trigger()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.HybridInspectJobTriggerRequest()
+
+
 @pytest.mark.asyncio
 async def test_hybrid_inspect_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.HybridInspectJobTriggerRequest
@@ -4311,6 +4632,22 @@ def test_get_job_trigger_from_dict():
     test_get_job_trigger(request_type=dict)
 
 
+def test_get_job_trigger_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_job_trigger), "__call__") as call:
+        client.get_job_trigger()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.GetJobTriggerRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetJobTriggerRequest
@@ -4511,6 +4848,24 @@ def test_list_job_triggers(
 
 def test_list_job_triggers_from_dict():
     test_list_job_triggers(request_type=dict)
+
+
+def test_list_job_triggers_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_job_triggers), "__call__"
+    ) as call:
+        client.list_job_triggers()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.ListJobTriggersRequest()
 
 
 @pytest.mark.asyncio
@@ -4843,6 +5198,24 @@ def test_delete_job_trigger_from_dict():
     test_delete_job_trigger(request_type=dict)
 
 
+def test_delete_job_trigger_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_job_trigger), "__call__"
+    ) as call:
+        client.delete_job_trigger()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.DeleteJobTriggerRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteJobTriggerRequest
@@ -5056,6 +5429,24 @@ def test_activate_job_trigger_from_dict():
     test_activate_job_trigger(request_type=dict)
 
 
+def test_activate_job_trigger_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.activate_job_trigger), "__call__"
+    ) as call:
+        client.activate_job_trigger()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.ActivateJobTriggerRequest()
+
+
 @pytest.mark.asyncio
 async def test_activate_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.ActivateJobTriggerRequest
@@ -5209,6 +5600,22 @@ def test_create_dlp_job(transport: str = "grpc", request_type=dlp.CreateDlpJobRe
 
 def test_create_dlp_job_from_dict():
     test_create_dlp_job(request_type=dict)
+
+
+def test_create_dlp_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_dlp_job), "__call__") as call:
+        client.create_dlp_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.CreateDlpJobRequest()
 
 
 @pytest.mark.asyncio
@@ -5485,6 +5892,22 @@ def test_list_dlp_jobs(transport: str = "grpc", request_type=dlp.ListDlpJobsRequ
 
 def test_list_dlp_jobs_from_dict():
     test_list_dlp_jobs(request_type=dict)
+
+
+def test_list_dlp_jobs_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_dlp_jobs), "__call__") as call:
+        client.list_dlp_jobs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.ListDlpJobsRequest()
 
 
 @pytest.mark.asyncio
@@ -5796,6 +6219,22 @@ def test_get_dlp_job_from_dict():
     test_get_dlp_job(request_type=dict)
 
 
+def test_get_dlp_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_dlp_job), "__call__") as call:
+        client.get_dlp_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.GetDlpJobRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_dlp_job_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetDlpJobRequest
@@ -5989,6 +6428,22 @@ def test_delete_dlp_job_from_dict():
     test_delete_dlp_job(request_type=dict)
 
 
+def test_delete_dlp_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dlp_job), "__call__") as call:
+        client.delete_dlp_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.DeleteDlpJobRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_dlp_job_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteDlpJobRequest
@@ -6167,6 +6622,22 @@ def test_cancel_dlp_job_from_dict():
     test_cancel_dlp_job(request_type=dict)
 
 
+def test_cancel_dlp_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.cancel_dlp_job), "__call__") as call:
+        client.cancel_dlp_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.CancelDlpJobRequest()
+
+
 @pytest.mark.asyncio
 async def test_cancel_dlp_job_async(
     transport: str = "grpc_asyncio", request_type=dlp.CancelDlpJobRequest
@@ -6285,6 +6756,24 @@ def test_create_stored_info_type(
 
 def test_create_stored_info_type_from_dict():
     test_create_stored_info_type(request_type=dict)
+
+
+def test_create_stored_info_type_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_stored_info_type), "__call__"
+    ) as call:
+        client.create_stored_info_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.CreateStoredInfoTypeRequest()
 
 
 @pytest.mark.asyncio
@@ -6502,6 +6991,24 @@ def test_update_stored_info_type(
 
 def test_update_stored_info_type_from_dict():
     test_update_stored_info_type(request_type=dict)
+
+
+def test_update_stored_info_type_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_stored_info_type), "__call__"
+    ) as call:
+        client.update_stored_info_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.UpdateStoredInfoTypeRequest()
 
 
 @pytest.mark.asyncio
@@ -6729,6 +7236,24 @@ def test_get_stored_info_type_from_dict():
     test_get_stored_info_type(request_type=dict)
 
 
+def test_get_stored_info_type_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_stored_info_type), "__call__"
+    ) as call:
+        client.get_stored_info_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.GetStoredInfoTypeRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_stored_info_type_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetStoredInfoTypeRequest
@@ -6928,6 +7453,24 @@ def test_list_stored_info_types(
 
 def test_list_stored_info_types_from_dict():
     test_list_stored_info_types(request_type=dict)
+
+
+def test_list_stored_info_types_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_stored_info_types), "__call__"
+    ) as call:
+        client.list_stored_info_types()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.ListStoredInfoTypesRequest()
 
 
 @pytest.mark.asyncio
@@ -7284,6 +7827,24 @@ def test_delete_stored_info_type_from_dict():
     test_delete_stored_info_type(request_type=dict)
 
 
+def test_delete_stored_info_type_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_stored_info_type), "__call__"
+    ) as call:
+        client.delete_stored_info_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.DeleteStoredInfoTypeRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_stored_info_type_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteStoredInfoTypeRequest
@@ -7475,6 +8036,24 @@ def test_hybrid_inspect_dlp_job(
 
 def test_hybrid_inspect_dlp_job_from_dict():
     test_hybrid_inspect_dlp_job(request_type=dict)
+
+
+def test_hybrid_inspect_dlp_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.hybrid_inspect_dlp_job), "__call__"
+    ) as call:
+        client.hybrid_inspect_dlp_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.HybridInspectDlpJobRequest()
 
 
 @pytest.mark.asyncio
@@ -7671,6 +8250,22 @@ def test_finish_dlp_job_from_dict():
     test_finish_dlp_job(request_type=dict)
 
 
+def test_finish_dlp_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DlpServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.finish_dlp_job), "__call__") as call:
+        client.finish_dlp_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == dlp.FinishDlpJobRequest()
+
+
 @pytest.mark.asyncio
 async def test_finish_dlp_job_async(
     transport: str = "grpc_asyncio", request_type=dlp.FinishDlpJobRequest
@@ -7810,7 +8405,7 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.DlpServiceGrpcTransport, transports.DlpServiceGrpcAsyncIOTransport],
+    [transports.DlpServiceGrpcTransport, transports.DlpServiceGrpcAsyncIOTransport,],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -7943,6 +8538,48 @@ def test_dlp_service_transport_auth_adc():
         )
 
 
+@pytest.mark.parametrize(
+    "transport_class",
+    [transports.DlpServiceGrpcTransport, transports.DlpServiceGrpcAsyncIOTransport],
+)
+def test_dlp_service_grpc_transport_client_cert_source_for_mtls(transport_class):
+    cred = credentials.AnonymousCredentials()
+
+    # Check ssl_channel_credentials is used if provided.
+    with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
+        mock_ssl_channel_creds = mock.Mock()
+        transport_class(
+            host="squid.clam.whelk",
+            credentials=cred,
+            ssl_channel_credentials=mock_ssl_channel_creds,
+        )
+        mock_create_channel.assert_called_once_with(
+            "squid.clam.whelk:443",
+            credentials=cred,
+            credentials_file=None,
+            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            ssl_credentials=mock_ssl_channel_creds,
+            quota_project_id=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+    # Check if ssl_channel_credentials is not provided, then client_cert_source_for_mtls
+    # is used.
+    with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
+        with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
+            transport_class(
+                credentials=cred,
+                client_cert_source_for_mtls=client_cert_source_callback,
+            )
+            expected_cert, expected_key = client_cert_source_callback()
+            mock_ssl_cred.assert_called_once_with(
+                certificate_chain=expected_cert, private_key=expected_key
+            )
+
+
 def test_dlp_service_host_no_port():
     client = DlpServiceClient(
         credentials=credentials.AnonymousCredentials(),
@@ -7962,7 +8599,7 @@ def test_dlp_service_host_with_port():
 
 
 def test_dlp_service_grpc_transport_channel():
-    channel = grpc.insecure_channel("http://localhost/")
+    channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.DlpServiceGrpcTransport(
@@ -7974,7 +8611,7 @@ def test_dlp_service_grpc_transport_channel():
 
 
 def test_dlp_service_grpc_asyncio_transport_channel():
-    channel = aio.insecure_channel("http://localhost/")
+    channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.DlpServiceGrpcAsyncIOTransport(
@@ -7985,6 +8622,8 @@ def test_dlp_service_grpc_asyncio_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
     [transports.DlpServiceGrpcTransport, transports.DlpServiceGrpcAsyncIOTransport],
@@ -7994,7 +8633,7 @@ def test_dlp_service_transport_channel_mtls_with_client_cert_source(transport_cl
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
@@ -8032,6 +8671,8 @@ def test_dlp_service_transport_channel_mtls_with_client_cert_source(transport_cl
             assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
     [transports.DlpServiceGrpcTransport, transports.DlpServiceGrpcAsyncIOTransport],
@@ -8044,7 +8685,7 @@ def test_dlp_service_transport_channel_mtls_with_adc(transport_class):
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel

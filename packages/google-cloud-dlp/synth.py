@@ -42,7 +42,8 @@ s.move(library, excludes=excludes)
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    system_test_dependencies=["test_utils"], samples=True, microgenerator=True
+    system_test_dependencies=["test_utils"], samples=True, microgenerator=True,
+    cov_level=98
 )
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 

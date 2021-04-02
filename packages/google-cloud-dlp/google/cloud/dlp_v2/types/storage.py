@@ -105,7 +105,7 @@ class StoredType(proto.Message):
             example
             ``organizations/433245324/storedInfoTypes/432452342`` or
             ``projects/project-id/storedInfoTypes/432452342``.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp indicating when the version of the
             ``StoredInfoType`` used for inspection was created.
             Output-only field, populated by the system.
@@ -122,7 +122,7 @@ class CustomInfoType(proto.Message):
     in question.
 
     Attributes:
-        info_type (~.storage.InfoType):
+        info_type (google.cloud.dlp_v2.types.InfoType):
             CustomInfoType can either be a new infoType, or an extension
             of built-in infoType, when the name matches one of existing
             infoTypes and that infoType is specified in
@@ -130,30 +130,30 @@ class CustomInfoType(proto.Message):
             adds findings to the one detected by the system. If built-in
             info type is not specified in ``InspectContent.info_types``
             list then the name is treated as a custom info type.
-        likelihood (~.storage.Likelihood):
+        likelihood (google.cloud.dlp_v2.types.Likelihood):
             Likelihood to return for this CustomInfoType. This base
             value can be altered by a detection rule if the finding
             meets the criteria specified by the rule. Defaults to
             ``VERY_LIKELY`` if not specified.
-        dictionary (~.storage.CustomInfoType.Dictionary):
+        dictionary (google.cloud.dlp_v2.types.CustomInfoType.Dictionary):
             A list of phrases to detect as a
             CustomInfoType.
-        regex (~.storage.CustomInfoType.Regex):
+        regex (google.cloud.dlp_v2.types.CustomInfoType.Regex):
             Regular expression based CustomInfoType.
-        surrogate_type (~.storage.CustomInfoType.SurrogateType):
+        surrogate_type (google.cloud.dlp_v2.types.CustomInfoType.SurrogateType):
             Message for detecting output from
             deidentification transformations that support
             reversing.
-        stored_type (~.storage.StoredType):
+        stored_type (google.cloud.dlp_v2.types.StoredType):
             Load an existing ``StoredInfoType`` resource for use in
             ``InspectDataSource``. Not currently supported in
             ``InspectContent``.
-        detection_rules (Sequence[~.storage.CustomInfoType.DetectionRule]):
+        detection_rules (Sequence[google.cloud.dlp_v2.types.CustomInfoType.DetectionRule]):
             Set of detection rules to apply to all findings of this
             CustomInfoType. Rules are applied in order that they are
             specified. Not supported for the ``surrogate_type``
             CustomInfoType.
-        exclusion_type (~.storage.CustomInfoType.ExclusionType):
+        exclusion_type (google.cloud.dlp_v2.types.CustomInfoType.ExclusionType):
             If set to EXCLUSION_TYPE_EXCLUDE this infoType will not
             cause a finding to be returned. It still can be used for
             rules matching.
@@ -190,9 +190,9 @@ class CustomInfoType(proto.Message):
         ``LargeCustomDictionaryConfig`` in the ``StoredInfoType`` API.
 
         Attributes:
-            word_list (~.storage.CustomInfoType.Dictionary.WordList):
+            word_list (google.cloud.dlp_v2.types.CustomInfoType.Dictionary.WordList):
                 List of words or phrases to search for.
-            cloud_storage_path (~.storage.CloudStoragePath):
+            cloud_storage_path (google.cloud.dlp_v2.types.CloudStoragePath):
                 Newline-delimited file of words in Cloud
                 Storage. Only a single file is accepted.
         """
@@ -260,7 +260,7 @@ class CustomInfoType(proto.Message):
         ``surrogate_type`` custom infoType.
 
         Attributes:
-            hotword_rule (~.storage.CustomInfoType.DetectionRule.HotwordRule):
+            hotword_rule (google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.HotwordRule):
                 Hotword-based detection rule.
         """
 
@@ -286,7 +286,7 @@ class CustomInfoType(proto.Message):
             finding as part of a detection rule.
 
             Attributes:
-                fixed_likelihood (~.storage.Likelihood):
+                fixed_likelihood (google.cloud.dlp_v2.types.Likelihood):
                     Set the likelihood of a finding to a fixed
                     value.
                 relative_likelihood (int):
@@ -312,10 +312,10 @@ class CustomInfoType(proto.Message):
             certain proximity of hotwords.
 
             Attributes:
-                hotword_regex (~.storage.CustomInfoType.Regex):
+                hotword_regex (google.cloud.dlp_v2.types.CustomInfoType.Regex):
                     Regular expression pattern defining what
                     qualifies as a hotword.
-                proximity (~.storage.CustomInfoType.DetectionRule.Proximity):
+                proximity (google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.Proximity):
                     Proximity of the finding within which the
                     entire hotword must reside. The total length of
                     the window cannot exceed 1000 characters. Note
@@ -328,7 +328,7 @@ class CustomInfoType(proto.Message):
                     a company office using the hotword regex
                     "\(xxx\)", where "xxx" is the area code in
                     question.
-                likelihood_adjustment (~.storage.CustomInfoType.DetectionRule.LikelihoodAdjustment):
+                likelihood_adjustment (google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.LikelihoodAdjustment):
                     Likelihood adjustment to apply to all
                     matching findings.
             """
@@ -427,12 +427,12 @@ class DatastoreOptions(proto.Message):
     r"""Options defining a data set within Google Cloud Datastore.
 
     Attributes:
-        partition_id (~.storage.PartitionId):
+        partition_id (google.cloud.dlp_v2.types.PartitionId):
             A partition ID identifies a grouping of
             entities. The grouping is always by project and
             namespace, however the namespace ID may be
             empty.
-        kind (~.storage.KindExpression):
+        kind (google.cloud.dlp_v2.types.KindExpression):
             The kind to process.
     """
 
@@ -515,7 +515,7 @@ class CloudStorageOptions(proto.Message):
     Cloud Storage bucket.
 
     Attributes:
-        file_set (~.storage.CloudStorageOptions.FileSet):
+        file_set (google.cloud.dlp_v2.types.CloudStorageOptions.FileSet):
             The set of one or more files to scan.
         bytes_limit_per_file (int):
             Max number of bytes to scan from a file. If a scanned file's
@@ -528,7 +528,7 @@ class CloudStorageOptions(proto.Message):
             be between 0 and 100, inclusively. Both 0 and 100 means no
             limit. Defaults to 0. Only one of bytes_limit_per_file and
             bytes_limit_per_file_percent can be specified.
-        file_types (Sequence[~.storage.FileType]):
+        file_types (Sequence[google.cloud.dlp_v2.types.FileType]):
             List of file type groups to include in the scan. If empty,
             all files are scanned and available data format processors
             are applied. In addition, the binary content of the selected
@@ -537,7 +537,7 @@ class CloudStorageOptions(proto.Message):
             inspection and no file_types were specified. Image
             inspection is restricted to 'global', 'us', 'asia', and
             'europe'.
-        sample_method (~.storage.CloudStorageOptions.SampleMethod):
+        sample_method (google.cloud.dlp_v2.types.CloudStorageOptions.SampleMethod):
 
         files_limit_percent (int):
             Limits the number of files to scan to this
@@ -573,7 +573,7 @@ class CloudStorageOptions(proto.Message):
                 equivalent to ``gs://mybucket/directory/*``.
 
                 Exactly one of ``url`` or ``regex_file_set`` must be set.
-            regex_file_set (~.storage.CloudStorageRegexFileSet):
+            regex_file_set (google.cloud.dlp_v2.types.CloudStorageRegexFileSet):
                 The regex-filtered set of files to scan. Exactly one of
                 ``url`` or ``regex_file_set`` must be set.
         """
@@ -625,9 +625,9 @@ class BigQueryOptions(proto.Message):
     r"""Options defining BigQuery table and row identifiers.
 
     Attributes:
-        table_reference (~.storage.BigQueryTable):
+        table_reference (google.cloud.dlp_v2.types.BigQueryTable):
             Complete BigQuery table reference.
-        identifying_fields (Sequence[~.storage.FieldId]):
+        identifying_fields (Sequence[google.cloud.dlp_v2.types.FieldId]):
             Table fields that may uniquely identify a row within the
             table. When ``actions.saveFindings.outputConfig.table`` is
             specified, the values of columns specified here are
@@ -647,9 +647,9 @@ class BigQueryOptions(proto.Message):
             Defaults to 0. Only one of rows_limit and rows_limit_percent
             can be specified. Cannot be used in conjunction with
             TimespanConfig.
-        sample_method (~.storage.BigQueryOptions.SampleMethod):
+        sample_method (google.cloud.dlp_v2.types.BigQueryOptions.SampleMethod):
 
-        excluded_fields (Sequence[~.storage.FieldId]):
+        excluded_fields (Sequence[google.cloud.dlp_v2.types.FieldId]):
             References to fields excluded from scanning.
             This allows you to skip inspection of entire
             columns which you know have no findings.
@@ -683,20 +683,20 @@ class StorageConfig(proto.Message):
     r"""Shared message indicating Cloud storage type.
 
     Attributes:
-        datastore_options (~.storage.DatastoreOptions):
+        datastore_options (google.cloud.dlp_v2.types.DatastoreOptions):
             Google Cloud Datastore options.
-        cloud_storage_options (~.storage.CloudStorageOptions):
+        cloud_storage_options (google.cloud.dlp_v2.types.CloudStorageOptions):
             Google Cloud Storage options.
-        big_query_options (~.storage.BigQueryOptions):
+        big_query_options (google.cloud.dlp_v2.types.BigQueryOptions):
             BigQuery options.
-        hybrid_options (~.storage.HybridOptions):
+        hybrid_options (google.cloud.dlp_v2.types.HybridOptions):
             Hybrid inspection options.
             Early access feature is in a pre-release state
             and might change or have limited support. For
             more information, see
             https://cloud.google.com/products#product-
             launch-stages.
-        timespan_config (~.storage.StorageConfig.TimespanConfig):
+        timespan_config (google.cloud.dlp_v2.types.StorageConfig.TimespanConfig):
 
     """
 
@@ -706,15 +706,15 @@ class StorageConfig(proto.Message):
         Storage and BigQuery.
 
         Attributes:
-            start_time (~.timestamp.Timestamp):
+            start_time (google.protobuf.timestamp_pb2.Timestamp):
                 Exclude files, tables, or rows older than
                 this value. If not set, no lower time limit is
                 applied.
-            end_time (~.timestamp.Timestamp):
+            end_time (google.protobuf.timestamp_pb2.Timestamp):
                 Exclude files, tables, or rows newer than
                 this value. If not set, no upper time limit is
                 applied.
-            timestamp_field (~.storage.FieldId):
+            timestamp_field (google.cloud.dlp_v2.types.FieldId):
                 Specification of the field containing the timestamp of
                 scanned items. Used for data sources like Datastore and
                 BigQuery.
@@ -788,7 +788,7 @@ class HybridOptions(proto.Message):
             ``[a-z]([-a-z0-9]*[a-z0-9])?``.
 
             No more than 10 keys can be required.
-        labels (Sequence[~.storage.HybridOptions.LabelsEntry]):
+        labels (Sequence[google.cloud.dlp_v2.types.HybridOptions.LabelsEntry]):
             To organize findings, these labels will be added to each
             finding.
 
@@ -807,7 +807,7 @@ class HybridOptions(proto.Message):
 
             -  ``"environment" : "production"``
             -  ``"pipeline" : "etl"``
-        table_options (~.storage.TableOptions):
+        table_options (google.cloud.dlp_v2.types.TableOptions):
             If the container is a table, additional
             information to make findings meaningful such as
             the columns that are primary keys.
@@ -826,7 +826,7 @@ class BigQueryKey(proto.Message):
     r"""Row key for identifying a record in BigQuery table.
 
     Attributes:
-        table_reference (~.storage.BigQueryTable):
+        table_reference (google.cloud.dlp_v2.types.BigQueryTable):
             Complete BigQuery table reference.
         row_number (int):
             Row number inferred at the time the table was scanned. This
@@ -846,7 +846,7 @@ class DatastoreKey(proto.Message):
     r"""Record key for a finding in Cloud Datastore.
 
     Attributes:
-        entity_key (~.storage.Key):
+        entity_key (google.cloud.dlp_v2.types.Key):
             Datastore entity key.
     """
 
@@ -861,12 +861,12 @@ class Key(proto.Message):
     contexts.
 
     Attributes:
-        partition_id (~.storage.PartitionId):
+        partition_id (google.cloud.dlp_v2.types.PartitionId):
             Entities are partitioned into subsets,
             currently identified by a project ID and
             namespace ID. Queries are scoped to a single
             partition.
-        path (Sequence[~.storage.Key.PathElement]):
+        path (Sequence[google.cloud.dlp_v2.types.Key.PathElement]):
             The entity path. An entity path consists of one or more
             elements composed of a kind and a string or numerical
             identifier, which identify entities. The first element
@@ -917,9 +917,9 @@ class RecordKey(proto.Message):
     finding.
 
     Attributes:
-        datastore_key (~.storage.DatastoreKey):
+        datastore_key (google.cloud.dlp_v2.types.DatastoreKey):
 
-        big_query_key (~.storage.BigQueryKey):
+        big_query_key (google.cloud.dlp_v2.types.BigQueryKey):
 
         id_values (Sequence[str]):
             Values of identifying columns in the given row. Order of
@@ -967,9 +967,9 @@ class BigQueryField(proto.Message):
     r"""Message defining a field of a BigQuery table.
 
     Attributes:
-        table (~.storage.BigQueryTable):
+        table (google.cloud.dlp_v2.types.BigQueryTable):
             Source table of the field.
-        field (~.storage.FieldId):
+        field (google.cloud.dlp_v2.types.FieldId):
             Designated field in the BigQuery table.
     """
 
@@ -987,7 +987,7 @@ class EntityId(proto.Message):
     same entity.
 
     Attributes:
-        field (~.storage.FieldId):
+        field (google.cloud.dlp_v2.types.FieldId):
             Composite key indicating which field contains
             the entity identifier.
     """
@@ -999,7 +999,7 @@ class TableOptions(proto.Message):
     r"""Instructions regarding the table content being inspected.
 
     Attributes:
-        identifying_fields (Sequence[~.storage.FieldId]):
+        identifying_fields (Sequence[google.cloud.dlp_v2.types.FieldId]):
             The columns that are the primary keys for
             table objects included in ContentItem. A copy of
             this cell's value will stored alongside
