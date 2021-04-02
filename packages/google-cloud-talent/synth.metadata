@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-talent.git",
-        "sha": "095747e8b517769a9caa2df6babf96fd526d0a22"
+        "sha": "12d77fa03a5b4757e74c40f5aa7d4e60bcebf4c2"
       }
     },
     {
