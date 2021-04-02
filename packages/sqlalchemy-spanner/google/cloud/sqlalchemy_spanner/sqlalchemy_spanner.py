@@ -126,6 +126,18 @@ class SpannerDDLCompiler(DDLCompiler):
         """
         return None
 
+    def visit_unique_constraint(self, constraint):
+        """Unique contraints in Spanner are defined with indexes:
+        https://cloud.google.com/spanner/docs/secondary-indexes#unique-indexes
+
+        The method throws an exception to notify user that in
+        Spanner unique constraints are done with unique indexes.
+        """
+        raise spanner_dbapi.exceptions.ProgrammingError(
+            "Spanner doesn't support direct UNIQUE constraints creation. "
+            "Create UNIQUE indexes instead."
+        )
+
     def post_create_table(self, table):
         """Build statements to be executed after CREATE TABLE.
 
