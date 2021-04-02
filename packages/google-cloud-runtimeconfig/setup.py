@@ -28,7 +28,7 @@ version = "0.32.1"
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 4 - Beta"
-dependencies = ["google-cloud-core >= 1.1.0, < 2.0dev"]
+dependencies = ["google-cloud-core >= 1.3.0, < 2.0dev"]
 extras = {}
 
 
