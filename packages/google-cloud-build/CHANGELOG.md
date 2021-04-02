@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.2.0](https://www.github.com/googleapis/python-cloudbuild/compare/v3.1.1...v3.2.0) (2021-04-01)
+
+
+### Features
+
+* Add `COMMENTS_ENABLED_FOR_EXTERNAL_CONTRIBUTORS_ONLY` for corresponding comment control behavior with triggered builds. ([df8ddd0](https://www.github.com/googleapis/python-cloudbuild/commit/df8ddd0e691101077784a5272fd27b9d7bd86938))
+* Add `E2_HIGHCPU_8` and `E2_HIGHCPU_32` machine types. ([df8ddd0](https://www.github.com/googleapis/python-cloudbuild/commit/df8ddd0e691101077784a5272fd27b9d7bd86938))
+* Add `ReceiveTriggerWebhook` for webhooks activating specific triggers. ([df8ddd0](https://www.github.com/googleapis/python-cloudbuild/commit/df8ddd0e691101077784a5272fd27b9d7bd86938))
+* Add `SecretManager`-related resources and messages for corresponding integration. ([#73](https://www.github.com/googleapis/python-cloudbuild/issues/73)) ([df8ddd0](https://www.github.com/googleapis/python-cloudbuild/commit/df8ddd0e691101077784a5272fd27b9d7bd86938))
+
+
+### Bug Fixes
+
+* Specify `build` as the body of a `CreateBuild` call. The Cloud Build API has always assumed this, but now we are actually specifying it. ([df8ddd0](https://www.github.com/googleapis/python-cloudbuild/commit/df8ddd0e691101077784a5272fd27b9d7bd86938))
+
+
+### Documentation
+
+* Add `$PROJECT_NUMBER` as a substitution variable. ([df8ddd0](https://www.github.com/googleapis/python-cloudbuild/commit/df8ddd0e691101077784a5272fd27b9d7bd86938))
+* Clarify lifetime/expiration behavior around `ListBuilds` page tokens. ([df8ddd0](https://www.github.com/googleapis/python-cloudbuild/commit/df8ddd0e691101077784a5272fd27b9d7bd86938))
+* Update field docs on required-ness behavior and fix typos. ([df8ddd0](https://www.github.com/googleapis/python-cloudbuild/commit/df8ddd0e691101077784a5272fd27b9d7bd86938))
+
 ### [3.1.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.1.0...v3.1.1) (2021-03-26)
 
 
