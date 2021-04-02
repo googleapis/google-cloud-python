@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-iam.git",
-        "sha": "6f08bcabe0d519ffba62dba30b46a5da9bb40282"
+        "sha": "dfc7338406fc6d68e3980b240e028e0cc8097b8c"
       }
     },
     {
@@ -19,7 +19,7 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "41a4e56982620d3edcf110d76f4fcdfdec471ac8"
+        "sha": "4501974ad08b5d693311457e2ea4ce845676e329"
       }
     }
   ],
@@ -41,6 +41,7 @@
     ".github/ISSUE_TEMPLATE/feature_request.md",
     ".github/ISSUE_TEMPLATE/support_request.md",
     ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/header-checker-lint.yml",
     ".github/release-please.yml",
     ".github/snippet-bot.yml",
     ".gitignore",
@@ -65,16 +66,21 @@
     ".kokoro/samples/lint/presubmit.cfg",
     ".kokoro/samples/python3.6/common.cfg",
     ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic-head.cfg",
     ".kokoro/samples/python3.6/periodic.cfg",
     ".kokoro/samples/python3.6/presubmit.cfg",
     ".kokoro/samples/python3.7/common.cfg",
     ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic-head.cfg",
     ".kokoro/samples/python3.7/periodic.cfg",
     ".kokoro/samples/python3.7/presubmit.cfg",
     ".kokoro/samples/python3.8/common.cfg",
     ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic-head.cfg",
     ".kokoro/samples/python3.8/periodic.cfg",
     ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples-against-head.sh",
+    ".kokoro/test-samples-impl.sh",
     ".kokoro/test-samples.sh",
     ".kokoro/trampoline.sh",
     ".kokoro/trampoline_v2.sh",
