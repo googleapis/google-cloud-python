@@ -35,12 +35,12 @@ class TemporalAsset(proto.Message):
     it.
 
     Attributes:
-        window (~.assets.TimeWindow):
+        window (google.cloud.asset_v1p2beta1.types.TimeWindow):
             The time window when the asset data and state
             was observed.
         deleted (bool):
             If the asset is deleted or not.
-        asset (~.assets.Asset):
+        asset (google.cloud.asset_v1p2beta1.types.Asset):
             Asset.
     """
 
@@ -55,9 +55,9 @@ class TimeWindow(proto.Message):
     r"""A time window of (start_time, end_time].
 
     Attributes:
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Start time of the time window (exclusive).
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             End time of the time window (inclusive).
             Current timestamp if not specified.
     """
@@ -81,9 +81,9 @@ class Asset(proto.Message):
         asset_type (str):
             Type of the asset. Example:
             "compute.googleapis.com/Disk".
-        resource (~.assets.Resource):
+        resource (google.cloud.asset_v1p2beta1.types.Resource):
             Representation of the resource.
-        iam_policy (~.policy.Policy):
+        iam_policy (google.iam.v1.policy_pb2.Policy):
             Representation of the actual Cloud IAM policy
             set on a cloud resource. For each resource,
             there must be at most one Cloud IAM policy set
@@ -147,7 +147,7 @@ class Resource(proto.Message):
             ``"//cloudresourcemanager.googleapis.com/projects/my_project_123"``.
 
             For third-party assets, it is up to the users to define.
-        data (~.struct.Struct):
+        data (google.protobuf.struct_pb2.Struct):
             The content of the resource, in which some
             sensitive fields are scrubbed away and may not
             be present.

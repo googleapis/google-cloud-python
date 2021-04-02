@@ -47,7 +47,7 @@ class ListAssetsRequest(proto.Message):
             (such as "organizations/123"), "projects/[project-number]"
             (such as "projects/my-project-id"), or
             "projects/[project-id]" (such as "projects/12345").
-        read_time (~.timestamp.Timestamp):
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp to take an asset snapshot. This can
             only be set to a timestamp between 2018-10-02
             UTC (inclusive) and the current time. If not
@@ -62,7 +62,7 @@ class ListAssetsRequest(proto.Message):
             Asset
             Inventory <https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview>`__
             for all supported asset types.
-        content_type (~.asset_service.ContentType):
+        content_type (google.cloud.asset_v1p5beta1.types.ContentType):
             Asset content type. If not specified, no
             content but the asset name will be returned.
         page_size (int):
@@ -94,9 +94,9 @@ class ListAssetsResponse(proto.Message):
     r"""ListAssets response.
 
     Attributes:
-        read_time (~.timestamp.Timestamp):
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time the snapshot was taken.
-        assets (Sequence[~.gca_assets.Asset]):
+        assets (Sequence[google.cloud.asset_v1p5beta1.types.Asset]):
             Assets.
         next_page_token (str):
             Token to retrieve the next page of results.

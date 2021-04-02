@@ -36,14 +36,14 @@ class IamPolicyAnalysisResult(proto.Message):
             The full name of the resource to which the
             [iam_binding][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.iam_binding]
             policy attaches.
-        iam_binding (~.policy.Binding):
+        iam_binding (google.iam.v1.policy_pb2.Binding):
             The Cloud IAM policy binding under analysis.
-        access_control_lists (Sequence[~.assets.IamPolicyAnalysisResult.AccessControlList]):
+        access_control_lists (Sequence[google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisResult.AccessControlList]):
             The access control lists derived from the
             [iam_binding][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.iam_binding]
             that match or potentially match resource and access
             selectors specified in the request.
-        identity_list (~.assets.IamPolicyAnalysisResult.IdentityList):
+        identity_list (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisResult.IdentityList):
             The identity list derived from members of the
             [iam_binding][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.iam_binding]
             that match or potentially match identity selector specified
@@ -60,7 +60,7 @@ class IamPolicyAnalysisResult(proto.Message):
         non-critical errors in the response.
 
         Attributes:
-            code (~.gr_code.Code):
+            code (google.rpc.code_pb2.Code):
                 The Google standard error code that best describes the
                 state. For example:
 
@@ -85,7 +85,7 @@ class IamPolicyAnalysisResult(proto.Message):
             full_resource_name (str):
                 The `full resource
                 name <https://aip.dev/122#full-resource-names>`__.
-            analysis_state (~.assets.IamPolicyAnalysisResult.AnalysisState):
+            analysis_state (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisResult.AnalysisState):
                 The analysis state of this resource node.
         """
 
@@ -103,7 +103,7 @@ class IamPolicyAnalysisResult(proto.Message):
                 The role.
             permission (str):
                 The permission.
-            analysis_state (~.assets.IamPolicyAnalysisResult.AnalysisState):
+            analysis_state (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisResult.AnalysisState):
                 The analysis state of this access node.
         """
 
@@ -146,7 +146,7 @@ class IamPolicyAnalysisResult(proto.Message):
                 -  domain:google.com
                 -  allUsers
                 -  etc.
-            analysis_state (~.assets.IamPolicyAnalysisResult.AnalysisState):
+            analysis_state (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisResult.AnalysisState):
                 The analysis state of this identity node.
         """
 
@@ -177,19 +177,19 @@ class IamPolicyAnalysisResult(proto.Message):
         -  AccessControlList 2: [R2, R3], [P3]
 
         Attributes:
-            resources (Sequence[~.assets.IamPolicyAnalysisResult.Resource]):
+            resources (Sequence[google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisResult.Resource]):
                 The resources that match one of the following conditions:
 
                 -  The resource_selector, if it is specified in request;
                 -  Otherwise, resources reachable from the policy attached
                    resource.
-            accesses (Sequence[~.assets.IamPolicyAnalysisResult.Access]):
+            accesses (Sequence[google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisResult.Access]):
                 The accesses that match one of the following conditions:
 
                 -  The access_selector, if it is specified in request;
                 -  Otherwise, access specifiers reachable from the policy
                    binding's role.
-            resource_edges (Sequence[~.assets.IamPolicyAnalysisResult.Edge]):
+            resource_edges (Sequence[google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisResult.Edge]):
                 Resource edges of the graph starting from the policy
                 attached resource to any descendant resources. The
                 [Edge.source_node][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.Edge.source_node]
@@ -216,14 +216,14 @@ class IamPolicyAnalysisResult(proto.Message):
         r"""
 
         Attributes:
-            identities (Sequence[~.assets.IamPolicyAnalysisResult.Identity]):
+            identities (Sequence[google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisResult.Identity]):
                 Only the identities that match one of the following
                 conditions will be presented:
 
                 -  The identity_selector, if it is specified in request;
                 -  Otherwise, identities reachable from the policy binding's
                    members.
-            group_edges (Sequence[~.assets.IamPolicyAnalysisResult.Edge]):
+            group_edges (Sequence[google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisResult.Edge]):
                 Group identity edges of the graph starting from the
                 binding's group members to any node of the
                 [identities][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.IdentityList.identities].

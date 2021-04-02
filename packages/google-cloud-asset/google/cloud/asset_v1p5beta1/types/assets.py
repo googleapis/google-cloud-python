@@ -45,23 +45,23 @@ class Asset(proto.Message):
         asset_type (str):
             Type of the asset. Example:
             "compute.googleapis.com/Disk".
-        resource (~.assets.Resource):
+        resource (google.cloud.asset_v1p5beta1.types.Resource):
             Representation of the resource.
-        iam_policy (~.policy.Policy):
+        iam_policy (google.iam.v1.policy_pb2.Policy):
             Representation of the actual Cloud IAM policy
             set on a cloud resource. For each resource,
             there must be at most one Cloud IAM policy set
             on it.
-        org_policy (Sequence[~.orgpolicy.Policy]):
+        org_policy (Sequence[google.cloud.orgpolicy.v1.orgpolicy_pb2.Policy]):
             Representation of the Cloud Organization
             Policy set on an asset. For each asset, there
             could be multiple Organization policies with
             different constraints.
-        access_policy (~.giav_access_policy.AccessPolicy):
+        access_policy (google.identity.accesscontextmanager.v1.access_policy_pb2.AccessPolicy):
 
-        access_level (~.giav_access_level.AccessLevel):
+        access_level (google.identity.accesscontextmanager.v1.access_level_pb2.AccessLevel):
 
-        service_perimeter (~.giav_service_perimeter.ServicePerimeter):
+        service_perimeter (google.identity.accesscontextmanager.v1.service_perimeter_pb2.ServicePerimeter):
 
         ancestors (Sequence[str]):
             Asset's ancestry path in Cloud Resource Manager (CRM)
@@ -145,7 +145,7 @@ class Resource(proto.Message):
             ``"//cloudresourcemanager.googleapis.com/projects/my_project_123"``.
 
             For third-party assets, it is up to the users to define.
-        data (~.struct.Struct):
+        data (google.protobuf.struct_pb2.Struct):
             The content of the resource, in which some
             sensitive fields are scrubbed away and may not
             be present.

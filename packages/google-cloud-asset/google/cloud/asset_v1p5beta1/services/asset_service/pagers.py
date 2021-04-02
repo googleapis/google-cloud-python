@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.asset_v1p5beta1.types import asset_service
 from google.cloud.asset_v1p5beta1.types import assets
@@ -25,7 +34,7 @@ class ListAssetsPager:
     """A pager for iterating through ``list_assets`` requests.
 
     This class thinly wraps an initial
-    :class:`~.asset_service.ListAssetsResponse` object, and
+    :class:`google.cloud.asset_v1p5beta1.types.ListAssetsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``assets`` field.
 
@@ -34,7 +43,7 @@ class ListAssetsPager:
     through the ``assets`` field on the
     corresponding responses.
 
-    All the usual :class:`~.asset_service.ListAssetsResponse`
+    All the usual :class:`google.cloud.asset_v1p5beta1.types.ListAssetsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -52,9 +61,9 @@ class ListAssetsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.asset_service.ListAssetsRequest`):
+            request (google.cloud.asset_v1p5beta1.types.ListAssetsRequest):
                 The initial request object.
-            response (:class:`~.asset_service.ListAssetsResponse`):
+            response (google.cloud.asset_v1p5beta1.types.ListAssetsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -87,7 +96,7 @@ class ListAssetsAsyncPager:
     """A pager for iterating through ``list_assets`` requests.
 
     This class thinly wraps an initial
-    :class:`~.asset_service.ListAssetsResponse` object, and
+    :class:`google.cloud.asset_v1p5beta1.types.ListAssetsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``assets`` field.
 
@@ -96,7 +105,7 @@ class ListAssetsAsyncPager:
     through the ``assets`` field on the
     corresponding responses.
 
-    All the usual :class:`~.asset_service.ListAssetsResponse`
+    All the usual :class:`google.cloud.asset_v1p5beta1.types.ListAssetsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -114,9 +123,9 @@ class ListAssetsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.asset_service.ListAssetsRequest`):
+            request (google.cloud.asset_v1p5beta1.types.ListAssetsRequest):
                 The initial request object.
-            response (:class:`~.asset_service.ListAssetsResponse`):
+            response (google.cloud.asset_v1p5beta1.types.ListAssetsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

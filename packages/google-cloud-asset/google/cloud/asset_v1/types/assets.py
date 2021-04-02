@@ -50,16 +50,16 @@ class TemporalAsset(proto.Message):
     window.
 
     Attributes:
-        window (~.assets.TimeWindow):
+        window (google.cloud.asset_v1.types.TimeWindow):
             The time window when the asset data and state
             was observed.
         deleted (bool):
             Whether the asset has been deleted or not.
-        asset (~.assets.Asset):
+        asset (google.cloud.asset_v1.types.Asset):
             An asset in Google Cloud.
-        prior_asset_state (~.assets.TemporalAsset.PriorAssetState):
+        prior_asset_state (google.cloud.asset_v1.types.TemporalAsset.PriorAssetState):
             State of prior_asset.
-        prior_asset (~.assets.Asset):
+        prior_asset (google.cloud.asset_v1.types.Asset):
             Prior copy of the asset. Populated if prior_asset_state is
             PRESENT. Currently this is only set for responses in
             Real-Time Feed.
@@ -88,9 +88,9 @@ class TimeWindow(proto.Message):
     r"""A time window specified by its ``start_time`` and ``end_time``.
 
     Attributes:
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Start time of the time window (exclusive).
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             End time of the time window (inclusive). If
             not specified, the current timestamp is used
             instead.
@@ -112,7 +112,7 @@ class Asset(proto.Message):
     for more information.
 
     Attributes:
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             The last update timestamp of an asset. update_time is
             updated when create/update/delete operation is performed.
         name (str):
@@ -129,9 +129,9 @@ class Asset(proto.Message):
             See `Supported asset
             types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
             for more information.
-        resource (~.assets.Resource):
+        resource (google.cloud.asset_v1.types.Resource):
             A representation of the resource.
-        iam_policy (~.gi_policy.Policy):
+        iam_policy (google.iam.v1.policy_pb2.Policy):
             A representation of the Cloud IAM policy set on a Google
             Cloud resource. There can be a maximum of one Cloud IAM
             policy set on any given resource. In addition, Cloud IAM
@@ -143,21 +143,21 @@ class Asset(proto.Message):
             See `this
             topic <https://cloud.google.com/iam/docs/policies#inheritance>`__
             for more information.
-        org_policy (Sequence[~.orgpolicy.Policy]):
+        org_policy (Sequence[google.cloud.orgpolicy.v1.orgpolicy_pb2.Policy]):
             A representation of an `organization
             policy <https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy>`__.
             There can be more than one organization policy with
             different constraints set on a given resource.
-        access_policy (~.gia_access_policy.AccessPolicy):
+        access_policy (google.identity.accesscontextmanager.v1.access_policy_pb2.AccessPolicy):
             Please also refer to the `access policy user
             guide <https://cloud.google.com/access-context-manager/docs/overview#access-policies>`__.
-        access_level (~.gia_access_level.AccessLevel):
+        access_level (google.identity.accesscontextmanager.v1.access_level_pb2.AccessLevel):
             Please also refer to the `access level user
             guide <https://cloud.google.com/access-context-manager/docs/overview#access-levels>`__.
-        service_perimeter (~.gia_service_perimeter.ServicePerimeter):
+        service_perimeter (google.identity.accesscontextmanager.v1.service_perimeter_pb2.ServicePerimeter):
             Please also refer to the `service perimeter user
             guide <https://cloud.google.com/vpc-service-controls/docs/overview>`__.
-        os_inventory (~.inventory.Inventory):
+        os_inventory (google.cloud.osconfig.v1.inventory_pb2.Inventory):
             A representation of runtime OS Inventory information. See
             `this
             topic <https://cloud.google.com/compute/docs/instances/os-inventory-management>`__
@@ -251,7 +251,7 @@ class Resource(proto.Message):
             ``//cloudresourcemanager.googleapis.com/projects/my_project_123``
 
             For third-party assets, this field may be set differently.
-        data (~.struct.Struct):
+        data (google.protobuf.struct_pb2.Struct):
             The content of the resource, in which some
             sensitive fields are removed and may not be
             present.
@@ -333,7 +333,7 @@ class ResourceSearchResult(proto.Message):
 
             -  use a field query. Example: ``location:us-west*``
             -  use a free text query. Example: ``us-west*``
-        labels (Sequence[~.assets.ResourceSearchResult.LabelsEntry]):
+        labels (Sequence[google.cloud.asset_v1.types.ResourceSearchResult.LabelsEntry]):
             Labels associated with this resource. See `Labelling and
             grouping GCP
             resources <https://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources>`__
@@ -361,7 +361,7 @@ class ResourceSearchResult(proto.Message):
 
             -  use a field query. Example: ``networkTags:internal``
             -  use a free text query. Example: ``internal``
-        additional_attributes (~.struct.Struct):
+        additional_attributes (google.protobuf.struct_pb2.Struct):
             The additional searchable attributes of this resource. The
             attributes may vary from one resource type to another.
             Examples: ``projectId`` for Project, ``dnsName`` for DNS
@@ -433,7 +433,7 @@ class IamPolicySearchResult(proto.Message):
 
             -  specify the ``scope`` field as this project in your
                search request.
-        policy (~.gi_policy.Policy):
+        policy (google.iam.v1.policy_pb2.Policy):
             The IAM policy directly set on the given resource. Note that
             the original IAM policy can contain multiple bindings. This
             only contains the bindings that match the given query. For
@@ -451,7 +451,7 @@ class IamPolicySearchResult(proto.Message):
                -  query by the policy contained roles' included
                   permissions. Example:
                   ``policy.role.permissions:compute.instances.create``
-        explanation (~.assets.IamPolicySearchResult.Explanation):
+        explanation (google.cloud.asset_v1.types.IamPolicySearchResult.Explanation):
             Explanation about the IAM policy search
             result. It contains additional information to
             explain why the search result matches the query.
@@ -461,7 +461,7 @@ class IamPolicySearchResult(proto.Message):
         r"""Explanation about the IAM policy search result.
 
         Attributes:
-            matched_permissions (Sequence[~.assets.IamPolicySearchResult.Explanation.MatchedPermissionsEntry]):
+            matched_permissions (Sequence[google.cloud.asset_v1.types.IamPolicySearchResult.Explanation.MatchedPermissionsEntry]):
                 The map from roles to their included permissions that match
                 the permission query (i.e., a query containing
                 ``policy.role.permissions:``). Example: if query
@@ -506,7 +506,7 @@ class IamPolicyAnalysisState(proto.Message):
     such as a resource, an identity or an access.
 
     Attributes:
-        code (~.gr_code.Code):
+        code (google.rpc.code_pb2.Code):
             The Google standard error code that best describes the
             state. For example:
 
@@ -537,14 +537,14 @@ class IamPolicyAnalysisResult(proto.Message):
             of the resource to which the
             [iam_binding][google.cloud.asset.v1.IamPolicyAnalysisResult.iam_binding]
             policy attaches.
-        iam_binding (~.gi_policy.Binding):
+        iam_binding (google.iam.v1.policy_pb2.Binding):
             The Cloud IAM policy binding under analysis.
-        access_control_lists (Sequence[~.assets.IamPolicyAnalysisResult.AccessControlList]):
+        access_control_lists (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.AccessControlList]):
             The access control lists derived from the
             [iam_binding][google.cloud.asset.v1.IamPolicyAnalysisResult.iam_binding]
             that match or potentially match resource and access
             selectors specified in the request.
-        identity_list (~.assets.IamPolicyAnalysisResult.IdentityList):
+        identity_list (google.cloud.asset_v1.types.IamPolicyAnalysisResult.IdentityList):
             The identity list derived from members of the
             [iam_binding][google.cloud.asset.v1.IamPolicyAnalysisResult.iam_binding]
             that match or potentially match identity selector specified
@@ -562,7 +562,7 @@ class IamPolicyAnalysisResult(proto.Message):
             full_resource_name (str):
                 The `full resource
                 name <https://cloud.google.com/asset-inventory/docs/resource-name-format>`__
-            analysis_state (~.assets.IamPolicyAnalysisState):
+            analysis_state (google.cloud.asset_v1.types.IamPolicyAnalysisState):
                 The analysis state of this resource.
         """
 
@@ -580,7 +580,7 @@ class IamPolicyAnalysisResult(proto.Message):
                 The role.
             permission (str):
                 The permission.
-            analysis_state (~.assets.IamPolicyAnalysisState):
+            analysis_state (google.cloud.asset_v1.types.IamPolicyAnalysisState):
                 The analysis state of this access.
         """
 
@@ -609,7 +609,7 @@ class IamPolicyAnalysisResult(proto.Message):
                 -  domain:google.com
                 -  allUsers
                 -  etc.
-            analysis_state (~.assets.IamPolicyAnalysisState):
+            analysis_state (google.cloud.asset_v1.types.IamPolicyAnalysisState):
                 The analysis state of this identity.
         """
 
@@ -658,19 +658,19 @@ class IamPolicyAnalysisResult(proto.Message):
         -  AccessControlList 2: [R2, R3], [P3]
 
         Attributes:
-            resources (Sequence[~.assets.IamPolicyAnalysisResult.Resource]):
+            resources (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.Resource]):
                 The resources that match one of the following conditions:
 
                 -  The resource_selector, if it is specified in request;
                 -  Otherwise, resources reachable from the policy attached
                    resource.
-            accesses (Sequence[~.assets.IamPolicyAnalysisResult.Access]):
+            accesses (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.Access]):
                 The accesses that match one of the following conditions:
 
                 -  The access_selector, if it is specified in request;
                 -  Otherwise, access specifiers reachable from the policy
                    binding's role.
-            resource_edges (Sequence[~.assets.IamPolicyAnalysisResult.Edge]):
+            resource_edges (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.Edge]):
                 Resource edges of the graph starting from the policy
                 attached resource to any descendant resources. The
                 [Edge.source_node][google.cloud.asset.v1.IamPolicyAnalysisResult.Edge.source_node]
@@ -697,14 +697,14 @@ class IamPolicyAnalysisResult(proto.Message):
         r"""The identities and group edges.
 
         Attributes:
-            identities (Sequence[~.assets.IamPolicyAnalysisResult.Identity]):
+            identities (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.Identity]):
                 Only the identities that match one of the following
                 conditions will be presented:
 
                 -  The identity_selector, if it is specified in request;
                 -  Otherwise, identities reachable from the policy binding's
                    members.
-            group_edges (Sequence[~.assets.IamPolicyAnalysisResult.Edge]):
+            group_edges (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult.Edge]):
                 Group identity edges of the graph starting from the
                 binding's group members to any node of the
                 [identities][google.cloud.asset.v1.IamPolicyAnalysisResult.IdentityList.identities].

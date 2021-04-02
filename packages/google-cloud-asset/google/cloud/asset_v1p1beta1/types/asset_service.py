@@ -90,7 +90,7 @@ class SearchAllResourcesResponse(proto.Message):
     r"""Search all resources response.
 
     Attributes:
-        results (Sequence[~.assets.StandardResourceMetadata]):
+        results (Sequence[google.cloud.asset_v1p1beta1.types.StandardResourceMetadata]):
             A list of resource that match the search
             query.
         next_page_token (str):
@@ -157,7 +157,7 @@ class SearchAllIamPoliciesResponse(proto.Message):
     r"""Search all IAM policies response.
 
     Attributes:
-        results (Sequence[~.assets.IamPolicySearchResult]):
+        results (Sequence[google.cloud.asset_v1p1beta1.types.IamPolicySearchResult]):
             A list of IamPolicy that match the search
             query. Related information such as the
             associated resource is returned along with the

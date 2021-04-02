@@ -1,6 +1,6 @@
 Services for Google Cloud Asset v1p4beta1 API
 =============================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.asset_v1p4beta1.services.asset_service
-    :members:
-    :inherited-members:
+    asset_service

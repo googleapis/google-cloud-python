@@ -46,13 +46,13 @@ class IamPolicyAnalysisQuery(proto.Message):
             organization number (such as
             "organizations/123") or a folder number (such as
             "folders/123").
-        resource_selector (~.asset_service.IamPolicyAnalysisQuery.ResourceSelector):
+        resource_selector (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisQuery.ResourceSelector):
             Optional. Specifies a resource for analysis.
             Leaving it empty means ANY.
-        identity_selector (~.asset_service.IamPolicyAnalysisQuery.IdentitySelector):
+        identity_selector (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisQuery.IdentitySelector):
             Optional. Specifies an identity for analysis.
             Leaving it empty means ANY.
-        access_selector (~.asset_service.IamPolicyAnalysisQuery.AccessSelector):
+        access_selector (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisQuery.AccessSelector):
             Optional. Specifies roles or permissions for
             analysis. Leaving it empty means ANY.
     """
@@ -122,9 +122,9 @@ class AnalyzeIamPolicyRequest(proto.Message):
     [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1p4beta1.AssetService.AnalyzeIamPolicy].
 
     Attributes:
-        analysis_query (~.asset_service.IamPolicyAnalysisQuery):
+        analysis_query (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisQuery):
             Required. The request query.
-        options (~.asset_service.AnalyzeIamPolicyRequest.Options):
+        options (google.cloud.asset_v1p4beta1.types.AnalyzeIamPolicyRequest.Options):
             Optional. The request options.
     """
 
@@ -200,7 +200,7 @@ class AnalyzeIamPolicyRequest(proto.Message):
                 [AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis].
 
                 Default is false.
-            execution_timeout (~.duration.Duration):
+            execution_timeout (google.protobuf.duration_pb2.Duration):
                 Optional. Amount of time executable has to complete. See
                 JSON representation of
                 `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__.
@@ -243,10 +243,10 @@ class AnalyzeIamPolicyResponse(proto.Message):
     [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1p4beta1.AssetService.AnalyzeIamPolicy].
 
     Attributes:
-        main_analysis (~.asset_service.AnalyzeIamPolicyResponse.IamPolicyAnalysis):
+        main_analysis (google.cloud.asset_v1p4beta1.types.AnalyzeIamPolicyResponse.IamPolicyAnalysis):
             The main analysis that matches the original
             request.
-        service_account_impersonation_analysis (Sequence[~.asset_service.AnalyzeIamPolicyResponse.IamPolicyAnalysis]):
+        service_account_impersonation_analysis (Sequence[google.cloud.asset_v1p4beta1.types.AnalyzeIamPolicyResponse.IamPolicyAnalysis]):
             The service account impersonation analysis if
             [AnalyzeIamPolicyRequest.analyze_service_account_impersonation][]
             is enabled.
@@ -256,7 +256,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
             and
             [service_account_impersonation_analysis][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis]
             have been fully explored to answer the query in the request.
-        non_critical_errors (Sequence[~.assets.IamPolicyAnalysisResult.AnalysisState]):
+        non_critical_errors (Sequence[google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisResult.AnalysisState]):
             A list of non-critical errors happened during the request
             handling to explain why ``fully_explored`` is false, or
             empty if no error happened.
@@ -266,9 +266,9 @@ class AnalyzeIamPolicyResponse(proto.Message):
         r"""An analysis message to group the query and results.
 
         Attributes:
-            analysis_query (~.asset_service.IamPolicyAnalysisQuery):
+            analysis_query (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisQuery):
                 The analysis query.
-            analysis_results (Sequence[~.assets.IamPolicyAnalysisResult]):
+            analysis_results (Sequence[google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisResult]):
                 A list of
                 [IamPolicyAnalysisResult][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult]
                 that matches the analysis query, or empty if no result is
@@ -307,7 +307,7 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
     destination.
 
     Attributes:
-        gcs_destination (~.asset_service.IamPolicyAnalysisOutputConfig.GcsDestination):
+        gcs_destination (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisOutputConfig.GcsDestination):
             Destination on Cloud Storage.
     """
 
@@ -336,11 +336,11 @@ class ExportIamPolicyAnalysisRequest(proto.Message):
     [AssetService.ExportIamPolicyAnalysis][google.cloud.asset.v1p4beta1.AssetService.ExportIamPolicyAnalysis].
 
     Attributes:
-        analysis_query (~.asset_service.IamPolicyAnalysisQuery):
+        analysis_query (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisQuery):
             Required. The request query.
-        options (~.asset_service.ExportIamPolicyAnalysisRequest.Options):
+        options (google.cloud.asset_v1p4beta1.types.ExportIamPolicyAnalysisRequest.Options):
             Optional. The request options.
-        output_config (~.asset_service.IamPolicyAnalysisOutputConfig):
+        output_config (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisOutputConfig):
             Required. Output configuration indicating
             where the results will be output to.
     """
@@ -447,7 +447,7 @@ class ExportIamPolicyAnalysisResponse(proto.Message):
     returned [google.longrunning.Operation.response][] field.
 
     Attributes:
-        output_config (~.asset_service.IamPolicyAnalysisOutputConfig):
+        output_config (google.cloud.asset_v1p4beta1.types.IamPolicyAnalysisOutputConfig):
             Output configuration indicating where the
             results were output to.
     """

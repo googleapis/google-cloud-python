@@ -108,6 +108,22 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            AssetServiceClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -119,7 +135,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            AssetServiceClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -222,10 +238,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.AssetServiceTransport]): The
+            transport (Union[str, AssetServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -261,21 +277,17 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -318,7 +330,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -337,9 +349,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         updates.
 
         Args:
-            request (:class:`~.asset_service.CreateFeedRequest`):
+            request (google.cloud.asset_v1p2beta1.types.CreateFeedRequest):
                 The request object. Create asset feed request.
-            parent (:class:`str`):
+            parent (str):
                 Required. The name of the
                 project/folder/organization where this
                 feed should be created in. It can only
@@ -349,6 +361,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 (such as "projects/my-project-id")", or
                 a project number (such as
                 "projects/12345").
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -360,7 +373,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.asset_service.Feed:
+            google.cloud.asset_v1p2beta1.types.Feed:
                 An asset feed used to export asset
                 updates to a destinations. An asset feed
                 filter controls what updates are
@@ -421,13 +434,14 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         r"""Gets details about an asset feed.
 
         Args:
-            request (:class:`~.asset_service.GetFeedRequest`):
+            request (google.cloud.asset_v1p2beta1.types.GetFeedRequest):
                 The request object. Get asset feed request.
-            name (:class:`str`):
+            name (str):
                 Required. The name of the Feed and it must be in the
                 format of: projects/project_number/feeds/feed_id
                 folders/folder_number/feeds/feed_id
                 organizations/organization_number/feeds/feed_id
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -439,7 +453,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.asset_service.Feed:
+            google.cloud.asset_v1p2beta1.types.Feed:
                 An asset feed used to export asset
                 updates to a destinations. An asset feed
                 filter controls what updates are
@@ -501,15 +515,16 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         project/folder/organization.
 
         Args:
-            request (:class:`~.asset_service.ListFeedsRequest`):
+            request (google.cloud.asset_v1p2beta1.types.ListFeedsRequest):
                 The request object. List asset feeds request.
-            parent (:class:`str`):
+            parent (str):
                 Required. The parent
                 project/folder/organization whose feeds
                 are to be listed. It can only be using
                 project/folder/organization number (such
                 as "folders/12345")", or a project ID
                 (such as "projects/my-project-id").
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -521,7 +536,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.asset_service.ListFeedsResponse:
+            google.cloud.asset_v1p2beta1.types.ListFeedsResponse:
 
         """
         # Create or coerce a protobuf request object.
@@ -575,14 +590,15 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         r"""Updates an asset feed configuration.
 
         Args:
-            request (:class:`~.asset_service.UpdateFeedRequest`):
+            request (google.cloud.asset_v1p2beta1.types.UpdateFeedRequest):
                 The request object. Update asset feed request.
-            feed (:class:`~.asset_service.Feed`):
+            feed (google.cloud.asset_v1p2beta1.types.Feed):
                 Required. The new values of feed details. It must match
                 an existing feed and the field ``name`` must be in the
                 format of: projects/project_number/feeds/feed_id or
                 folders/folder_number/feeds/feed_id or
                 organizations/organization_number/feeds/feed_id.
+
                 This corresponds to the ``feed`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -594,7 +610,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.asset_service.Feed:
+            google.cloud.asset_v1p2beta1.types.Feed:
                 An asset feed used to export asset
                 updates to a destinations. An asset feed
                 filter controls what updates are
@@ -657,13 +673,14 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         r"""Deletes an asset feed.
 
         Args:
-            request (:class:`~.asset_service.DeleteFeedRequest`):
+            request (google.cloud.asset_v1p2beta1.types.DeleteFeedRequest):
                 The request object.
-            name (:class:`str`):
+            name (str):
                 Required. The name of the feed and it must be in the
                 format of: projects/project_number/feeds/feed_id
                 folders/folder_number/feeds/feed_id
                 organizations/organization_number/feeds/feed_id
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

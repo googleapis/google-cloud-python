@@ -15,42 +15,42 @@
 # limitations under the License.
 #
 
-from .assets import (
-    TemporalAsset,
-    TimeWindow,
-    Asset,
-    Resource,
-)
 from .asset_service import (
     CreateFeedRequest,
+    DeleteFeedRequest,
+    Feed,
+    FeedOutputConfig,
+    GcsDestination,
     GetFeedRequest,
     ListFeedsRequest,
     ListFeedsResponse,
-    UpdateFeedRequest,
-    DeleteFeedRequest,
     OutputConfig,
-    GcsDestination,
     PubsubDestination,
-    FeedOutputConfig,
-    Feed,
+    UpdateFeedRequest,
     ContentType,
+)
+from .assets import (
+    Asset,
+    Resource,
+    TemporalAsset,
+    TimeWindow,
 )
 
 __all__ = (
-    "TemporalAsset",
-    "TimeWindow",
-    "Asset",
-    "Resource",
     "CreateFeedRequest",
+    "DeleteFeedRequest",
+    "Feed",
+    "FeedOutputConfig",
+    "GcsDestination",
     "GetFeedRequest",
     "ListFeedsRequest",
     "ListFeedsResponse",
-    "UpdateFeedRequest",
-    "DeleteFeedRequest",
     "OutputConfig",
-    "GcsDestination",
     "PubsubDestination",
-    "FeedOutputConfig",
-    "Feed",
+    "UpdateFeedRequest",
     "ContentType",
+    "Asset",
+    "Resource",
+    "TemporalAsset",
+    "TimeWindow",
 )

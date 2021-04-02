@@ -15,20 +15,20 @@
 # limitations under the License.
 #
 
-from .assets import (
-    Asset,
-    Resource,
-)
 from .asset_service import (
     ListAssetsRequest,
     ListAssetsResponse,
     ContentType,
 )
+from .assets import (
+    Asset,
+    Resource,
+)
 
 __all__ = (
-    "Asset",
-    "Resource",
     "ListAssetsRequest",
     "ListAssetsResponse",
     "ContentType",
+    "Asset",
+    "Resource",
 )

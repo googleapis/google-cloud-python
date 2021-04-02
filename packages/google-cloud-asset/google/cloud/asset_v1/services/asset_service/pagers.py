@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.asset_v1.types import asset_service
 from google.cloud.asset_v1.types import assets
@@ -25,7 +34,7 @@ class SearchAllResourcesPager:
     """A pager for iterating through ``search_all_resources`` requests.
 
     This class thinly wraps an initial
-    :class:`~.asset_service.SearchAllResourcesResponse` object, and
+    :class:`google.cloud.asset_v1.types.SearchAllResourcesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``results`` field.
 
@@ -34,7 +43,7 @@ class SearchAllResourcesPager:
     through the ``results`` field on the
     corresponding responses.
 
-    All the usual :class:`~.asset_service.SearchAllResourcesResponse`
+    All the usual :class:`google.cloud.asset_v1.types.SearchAllResourcesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -52,9 +61,9 @@ class SearchAllResourcesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.asset_service.SearchAllResourcesRequest`):
+            request (google.cloud.asset_v1.types.SearchAllResourcesRequest):
                 The initial request object.
-            response (:class:`~.asset_service.SearchAllResourcesResponse`):
+            response (google.cloud.asset_v1.types.SearchAllResourcesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -87,7 +96,7 @@ class SearchAllResourcesAsyncPager:
     """A pager for iterating through ``search_all_resources`` requests.
 
     This class thinly wraps an initial
-    :class:`~.asset_service.SearchAllResourcesResponse` object, and
+    :class:`google.cloud.asset_v1.types.SearchAllResourcesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``results`` field.
 
@@ -96,7 +105,7 @@ class SearchAllResourcesAsyncPager:
     through the ``results`` field on the
     corresponding responses.
 
-    All the usual :class:`~.asset_service.SearchAllResourcesResponse`
+    All the usual :class:`google.cloud.asset_v1.types.SearchAllResourcesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -114,9 +123,9 @@ class SearchAllResourcesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.asset_service.SearchAllResourcesRequest`):
+            request (google.cloud.asset_v1.types.SearchAllResourcesRequest):
                 The initial request object.
-            response (:class:`~.asset_service.SearchAllResourcesResponse`):
+            response (google.cloud.asset_v1.types.SearchAllResourcesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -153,7 +162,7 @@ class SearchAllIamPoliciesPager:
     """A pager for iterating through ``search_all_iam_policies`` requests.
 
     This class thinly wraps an initial
-    :class:`~.asset_service.SearchAllIamPoliciesResponse` object, and
+    :class:`google.cloud.asset_v1.types.SearchAllIamPoliciesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``results`` field.
 
@@ -162,7 +171,7 @@ class SearchAllIamPoliciesPager:
     through the ``results`` field on the
     corresponding responses.
 
-    All the usual :class:`~.asset_service.SearchAllIamPoliciesResponse`
+    All the usual :class:`google.cloud.asset_v1.types.SearchAllIamPoliciesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -180,9 +189,9 @@ class SearchAllIamPoliciesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.asset_service.SearchAllIamPoliciesRequest`):
+            request (google.cloud.asset_v1.types.SearchAllIamPoliciesRequest):
                 The initial request object.
-            response (:class:`~.asset_service.SearchAllIamPoliciesResponse`):
+            response (google.cloud.asset_v1.types.SearchAllIamPoliciesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -215,7 +224,7 @@ class SearchAllIamPoliciesAsyncPager:
     """A pager for iterating through ``search_all_iam_policies`` requests.
 
     This class thinly wraps an initial
-    :class:`~.asset_service.SearchAllIamPoliciesResponse` object, and
+    :class:`google.cloud.asset_v1.types.SearchAllIamPoliciesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``results`` field.
 
@@ -224,7 +233,7 @@ class SearchAllIamPoliciesAsyncPager:
     through the ``results`` field on the
     corresponding responses.
 
-    All the usual :class:`~.asset_service.SearchAllIamPoliciesResponse`
+    All the usual :class:`google.cloud.asset_v1.types.SearchAllIamPoliciesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -242,9 +251,9 @@ class SearchAllIamPoliciesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.asset_service.SearchAllIamPoliciesRequest`):
+            request (google.cloud.asset_v1.types.SearchAllIamPoliciesRequest):
                 The initial request object.
-            response (:class:`~.asset_service.SearchAllIamPoliciesResponse`):
+            response (google.cloud.asset_v1.types.SearchAllIamPoliciesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

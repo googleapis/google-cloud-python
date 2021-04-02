@@ -57,7 +57,7 @@ class StandardResourceMetadata(proto.Message):
         location (str):
             Location can be "global", regional like "us-
             ast1", or zonal like "us-west1-b".
-        labels (Sequence[~.assets.StandardResourceMetadata.LabelsEntry]):
+        labels (Sequence[google.cloud.asset_v1p1beta1.types.StandardResourceMetadata.LabelsEntry]):
             Labels associated with this resource. See `Labelling and
             grouping GCP
             resources <https://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources>`__
@@ -104,7 +104,7 @@ class IamPolicySearchResult(proto.Message):
             bucket), the project field will indicate the project that
             contains the resource. If an IAM policy is set on a folder
             or orgnization, the project field will be empty.
-        policy (~.giv_policy.Policy):
+        policy (google.iam.v1.policy_pb2.Policy):
             The IAM policy directly set on the given
             resource. Note that the original IAM policy can
             contain multiple bindings. This only contains
@@ -112,7 +112,7 @@ class IamPolicySearchResult(proto.Message):
             queries that don't contain a constrain on
             policies (e.g. an empty query), this contains
             all the bindings.
-        explanation (~.assets.IamPolicySearchResult.Explanation):
+        explanation (google.cloud.asset_v1p1beta1.types.IamPolicySearchResult.Explanation):
             Explanation about the IAM policy search
             result. It contains additional information to
             explain why the search result matches the query.
@@ -122,7 +122,7 @@ class IamPolicySearchResult(proto.Message):
         r"""Explanation about the IAM policy search result.
 
         Attributes:
-            matched_permissions (Sequence[~.assets.IamPolicySearchResult.Explanation.MatchedPermissionsEntry]):
+            matched_permissions (Sequence[google.cloud.asset_v1p1beta1.types.IamPolicySearchResult.Explanation.MatchedPermissionsEntry]):
                 The map from roles to their included permission matching the
                 permission query (e.g. containing
                 ``policy.role.permissions:``). A sample role string:

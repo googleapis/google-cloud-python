@@ -28,14 +28,15 @@ version = "2.2.0"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "google-api-core[grpc] >= 1.22.0, < 2.0.0dev",
+    "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
     "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
     "google-cloud-access-context-manager >= 0.1.2, < 0.2.0dev",
     "google-cloud-org-policy>=0.1.2, <0.2.1",
     "google-cloud-os-config >= 1.0.0, <2.0.0dev",
-    "proto-plus >= 0.4.0",
-    "libcst >= 0.2.5",
+    "proto-plus >= 1.10.0",
 ]
+
+extras = {"libcst": "libcst >= 0.2.5"}
 
 # Setup boilerplate below this line.
 
@@ -83,6 +84,7 @@ setuptools.setup(
     packages=packages,
     namespace_packages=namespaces,
     install_requires=dependencies,
+    extras_requires=extras,
     python_requires=">=3.6",
     scripts=[
         "scripts/fixup_asset_v1_keywords.py",

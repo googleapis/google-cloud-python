@@ -72,7 +72,36 @@ class AssetServiceAsyncClient:
         AssetServiceClient.parse_common_location_path
     )
 
-    from_service_account_file = AssetServiceClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            AssetServiceAsyncClient: The constructed client.
+        """
+        return AssetServiceClient.from_service_account_info.__func__(AssetServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            AssetServiceAsyncClient: The constructed client.
+        """
+        return AssetServiceClient.from_service_account_file.__func__(AssetServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -148,7 +177,7 @@ class AssetServiceAsyncClient:
         paged results in response.
 
         Args:
-            request (:class:`~.asset_service.ListAssetsRequest`):
+            request (:class:`google.cloud.asset_v1p5beta1.types.ListAssetsRequest`):
                 The request object. ListAssets request.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -158,7 +187,7 @@ class AssetServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListAssetsAsyncPager:
+            google.cloud.asset_v1p5beta1.services.asset_service.pagers.ListAssetsAsyncPager:
                 ListAssets response.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -180,6 +209,7 @@ class AssetServiceAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=60.0,
             ),
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,

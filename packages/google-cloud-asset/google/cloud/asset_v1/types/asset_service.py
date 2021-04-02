@@ -83,7 +83,7 @@ class ExportAssetsRequest(proto.Message):
             (such as "projects/my-project-id"), or a project
             number (such as "projects/12345"), or a folder
             number (such as "folders/123").
-        read_time (~.timestamp.Timestamp):
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp to take an asset snapshot. This can
             only be set to a timestamp between the current
             time and the current time minus 35 days
@@ -115,10 +115,10 @@ class ExportAssetsRequest(proto.Message):
             `Introduction to Cloud Asset
             Inventory <https://cloud.google.com/asset-inventory/docs/overview>`__
             for all supported asset types.
-        content_type (~.asset_service.ContentType):
+        content_type (google.cloud.asset_v1.types.ContentType):
             Asset content type. If not specified, no
             content but the asset name will be returned.
-        output_config (~.asset_service.OutputConfig):
+        output_config (google.cloud.asset_v1.types.OutputConfig):
             Required. Output configuration indicating
             where the results will be output to.
     """
@@ -142,12 +142,12 @@ class ExportAssetsResponse(proto.Message):
     field.
 
     Attributes:
-        read_time (~.timestamp.Timestamp):
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
             Time the snapshot was taken.
-        output_config (~.asset_service.OutputConfig):
+        output_config (google.cloud.asset_v1.types.OutputConfig):
             Output configuration indicating where the
             results were output to.
-        output_result (~.asset_service.OutputResult):
+        output_result (google.cloud.asset_v1.types.OutputResult):
             Output result indicating where the assets were exported to.
             For example, a set of actual Google Cloud Storage object
             uris where the assets are exported to. The uris can be
@@ -183,9 +183,9 @@ class BatchGetAssetsHistoryRequest(proto.Message):
             The request becomes a no-op if the asset name list is empty,
             and the max size of the asset name list is 100 in one
             request.
-        content_type (~.asset_service.ContentType):
+        content_type (google.cloud.asset_v1.types.ContentType):
             Optional. The content type.
-        read_time_window (~.gca_assets.TimeWindow):
+        read_time_window (google.cloud.asset_v1.types.TimeWindow):
             Optional. The time window for the asset history. Both
             start_time and end_time are optional and if set, it must be
             after the current time minus 35 days. If end_time is not
@@ -210,7 +210,7 @@ class BatchGetAssetsHistoryResponse(proto.Message):
     r"""Batch get assets history response.
 
     Attributes:
-        assets (Sequence[~.gca_assets.TemporalAsset]):
+        assets (Sequence[google.cloud.asset_v1.types.TemporalAsset]):
             A list of assets with valid time windows.
     """
 
@@ -236,7 +236,7 @@ class CreateFeedRequest(proto.Message):
             Required. This is the client-assigned asset
             feed identifier and it needs to be unique under
             a specific parent project/folder/organization.
-        feed (~.asset_service.Feed):
+        feed (google.cloud.asset_v1.types.Feed):
             Required. The feed details. The field ``name`` must be empty
             and it will be generated in the format of:
             projects/project_number/feeds/feed_id
@@ -285,7 +285,7 @@ class ListFeedsResponse(proto.Message):
     r"""
 
     Attributes:
-        feeds (Sequence[~.asset_service.Feed]):
+        feeds (Sequence[google.cloud.asset_v1.types.Feed]):
             A list of feeds.
     """
 
@@ -296,13 +296,13 @@ class UpdateFeedRequest(proto.Message):
     r"""Update asset feed request.
 
     Attributes:
-        feed (~.asset_service.Feed):
+        feed (google.cloud.asset_v1.types.Feed):
             Required. The new values of feed details. It must match an
             existing feed and the field ``name`` must be in the format
             of: projects/project_number/feeds/feed_id or
             folders/folder_number/feeds/feed_id or
             organizations/organization_number/feeds/feed_id.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Only updates the ``feed`` fields indicated by this
             mask. The field mask must not be empty, and it must not
             contain fields that are immutable or only set by the server.
@@ -331,9 +331,9 @@ class OutputConfig(proto.Message):
     r"""Output configuration for export assets destination.
 
     Attributes:
-        gcs_destination (~.asset_service.GcsDestination):
+        gcs_destination (google.cloud.asset_v1.types.GcsDestination):
             Destination on Cloud Storage.
-        bigquery_destination (~.asset_service.BigQueryDestination):
+        bigquery_destination (google.cloud.asset_v1.types.BigQueryDestination):
             Destination on BigQuery. The output table
             stores the fields in asset proto as columns in
             BigQuery.
@@ -352,7 +352,7 @@ class OutputResult(proto.Message):
     r"""Output result of export assets.
 
     Attributes:
-        gcs_result (~.asset_service.GcsOutputResult):
+        gcs_result (google.cloud.asset_v1.types.GcsOutputResult):
             Export result on Cloud Storage.
     """
 
@@ -420,7 +420,7 @@ class BigQueryDestination(proto.Message):
             assets snapshot. If the flag is ``FALSE`` or unset and the
             destination table already exists, the export call returns an
             INVALID_ARGUMEMT error.
-        partition_spec (~.asset_service.PartitionSpec):
+        partition_spec (google.cloud.asset_v1.types.PartitionSpec):
             [partition_spec] determines whether to export to partitioned
             table(s) and how to partition the data.
 
@@ -494,7 +494,7 @@ class PartitionSpec(proto.Message):
     destination.
 
     Attributes:
-        partition_key (~.asset_service.PartitionSpec.PartitionKey):
+        partition_key (google.cloud.asset_v1.types.PartitionSpec.PartitionKey):
             The partition key for BigQuery partitioned
             table.
     """
@@ -529,7 +529,7 @@ class FeedOutputConfig(proto.Message):
     r"""Output configuration for asset feed destination.
 
     Attributes:
-        pubsub_destination (~.asset_service.PubsubDestination):
+        pubsub_destination (google.cloud.asset_v1.types.PubsubDestination):
             Destination on Pub/Sub.
     """
 
@@ -576,14 +576,14 @@ class Feed(proto.Message):
             See `this
             topic <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
             for a list of all supported asset types.
-        content_type (~.asset_service.ContentType):
+        content_type (google.cloud.asset_v1.types.ContentType):
             Asset content type. If not specified, no
             content but the asset name and type will be
             returned.
-        feed_output_config (~.asset_service.FeedOutputConfig):
+        feed_output_config (google.cloud.asset_v1.types.FeedOutputConfig):
             Required. Feed output configuration defining
             where the asset updates are published to.
-        condition (~.expr.Expr):
+        condition (google.type.expr_pb2.Expr):
             A condition which determines whether an asset update should
             be published. If specified, an asset will be returned only
             when the expression evaluates to true. When set,
@@ -717,7 +717,7 @@ class SearchAllResourcesResponse(proto.Message):
     r"""Search all resources response.
 
     Attributes:
-        results (Sequence[~.gca_assets.ResourceSearchResult]):
+        results (Sequence[google.cloud.asset_v1.types.ResourceSearchResult]):
             A list of Resources that match the search
             query. It contains the resource standard
             metadata information.
@@ -814,7 +814,7 @@ class SearchAllIamPoliciesResponse(proto.Message):
     r"""Search all IAM policies response.
 
     Attributes:
-        results (Sequence[~.gca_assets.IamPolicySearchResult]):
+        results (Sequence[google.cloud.asset_v1.types.IamPolicySearchResult]):
             A list of IamPolicy that match the search
             query. Related information such as the
             associated resource is returned along with the
@@ -856,14 +856,14 @@ class IamPolicyAnalysisQuery(proto.Message):
 
             To know how to get folder or project id, visit
             `here <https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects>`__.
-        resource_selector (~.asset_service.IamPolicyAnalysisQuery.ResourceSelector):
+        resource_selector (google.cloud.asset_v1.types.IamPolicyAnalysisQuery.ResourceSelector):
             Optional. Specifies a resource for analysis.
-        identity_selector (~.asset_service.IamPolicyAnalysisQuery.IdentitySelector):
+        identity_selector (google.cloud.asset_v1.types.IamPolicyAnalysisQuery.IdentitySelector):
             Optional. Specifies an identity for analysis.
-        access_selector (~.asset_service.IamPolicyAnalysisQuery.AccessSelector):
+        access_selector (google.cloud.asset_v1.types.IamPolicyAnalysisQuery.AccessSelector):
             Optional. Specifies roles or permissions for
             analysis. This is optional.
-        options (~.asset_service.IamPolicyAnalysisQuery.Options):
+        options (google.cloud.asset_v1.types.IamPolicyAnalysisQuery.Options):
             Optional. The query options.
     """
 
@@ -1043,9 +1043,9 @@ class AnalyzeIamPolicyRequest(proto.Message):
     [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy].
 
     Attributes:
-        analysis_query (~.asset_service.IamPolicyAnalysisQuery):
+        analysis_query (google.cloud.asset_v1.types.IamPolicyAnalysisQuery):
             Required. The request query.
-        execution_timeout (~.duration.Duration):
+        execution_timeout (google.protobuf.duration_pb2.Duration):
             Optional. Amount of time executable has to complete. See
             JSON representation of
             `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__.
@@ -1072,10 +1072,10 @@ class AnalyzeIamPolicyResponse(proto.Message):
     [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy].
 
     Attributes:
-        main_analysis (~.asset_service.AnalyzeIamPolicyResponse.IamPolicyAnalysis):
+        main_analysis (google.cloud.asset_v1.types.AnalyzeIamPolicyResponse.IamPolicyAnalysis):
             The main analysis that matches the original
             request.
-        service_account_impersonation_analysis (Sequence[~.asset_service.AnalyzeIamPolicyResponse.IamPolicyAnalysis]):
+        service_account_impersonation_analysis (Sequence[google.cloud.asset_v1.types.AnalyzeIamPolicyResponse.IamPolicyAnalysis]):
             The service account impersonation analysis if
             [AnalyzeIamPolicyRequest.analyze_service_account_impersonation][]
             is enabled.
@@ -1091,9 +1091,9 @@ class AnalyzeIamPolicyResponse(proto.Message):
         r"""An analysis message to group the query and results.
 
         Attributes:
-            analysis_query (~.asset_service.IamPolicyAnalysisQuery):
+            analysis_query (google.cloud.asset_v1.types.IamPolicyAnalysisQuery):
                 The analysis query.
-            analysis_results (Sequence[~.gca_assets.IamPolicyAnalysisResult]):
+            analysis_results (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisResult]):
                 A list of
                 [IamPolicyAnalysisResult][google.cloud.asset.v1.IamPolicyAnalysisResult]
                 that matches the analysis query, or empty if no result is
@@ -1102,7 +1102,7 @@ class AnalyzeIamPolicyResponse(proto.Message):
                 Represents whether all entries in the
                 [analysis_results][google.cloud.asset.v1.AnalyzeIamPolicyResponse.IamPolicyAnalysis.analysis_results]
                 have been fully explored to answer the query.
-            non_critical_errors (Sequence[~.gca_assets.IamPolicyAnalysisState]):
+            non_critical_errors (Sequence[google.cloud.asset_v1.types.IamPolicyAnalysisState]):
                 A list of non-critical errors happened during
                 the query handling.
         """
@@ -1135,9 +1135,9 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
     destination.
 
     Attributes:
-        gcs_destination (~.asset_service.IamPolicyAnalysisOutputConfig.GcsDestination):
+        gcs_destination (google.cloud.asset_v1.types.IamPolicyAnalysisOutputConfig.GcsDestination):
             Destination on Cloud Storage.
-        bigquery_destination (~.asset_service.IamPolicyAnalysisOutputConfig.BigQueryDestination):
+        bigquery_destination (google.cloud.asset_v1.types.IamPolicyAnalysisOutputConfig.BigQueryDestination):
             Destination on BigQuery.
     """
 
@@ -1177,7 +1177,7 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
                    [IamPolicyAnalysisResult][google.cloud.asset.v1.IamPolicyAnalysisResult].
                    When [partition_key] is specified, both tables will be
                    partitioned based on the [partition_key].
-            partition_key (~.asset_service.IamPolicyAnalysisOutputConfig.BigQueryDestination.PartitionKey):
+            partition_key (google.cloud.asset_v1.types.IamPolicyAnalysisOutputConfig.BigQueryDestination.PartitionKey):
                 The partition key for BigQuery partitioned
                 table.
             write_disposition (str):
@@ -1236,9 +1236,9 @@ class AnalyzeIamPolicyLongrunningRequest(proto.Message):
     [AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning].
 
     Attributes:
-        analysis_query (~.asset_service.IamPolicyAnalysisQuery):
+        analysis_query (google.cloud.asset_v1.types.IamPolicyAnalysisQuery):
             Required. The request query.
-        output_config (~.asset_service.IamPolicyAnalysisOutputConfig):
+        output_config (google.cloud.asset_v1.types.IamPolicyAnalysisOutputConfig):
             Required. Output configuration indicating
             where the results will be output to.
     """

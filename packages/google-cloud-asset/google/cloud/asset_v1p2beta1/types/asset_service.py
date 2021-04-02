@@ -64,7 +64,7 @@ class CreateFeedRequest(proto.Message):
             Required. This is the client-assigned asset
             feed identifier and it needs to be unique under
             a specific parent project/folder/organization.
-        feed (~.asset_service.Feed):
+        feed (google.cloud.asset_v1p2beta1.types.Feed):
             Required. The feed details. The field ``name`` must be empty
             and it will be generated in the format of:
             projects/project_number/feeds/feed_id
@@ -113,7 +113,7 @@ class ListFeedsResponse(proto.Message):
     r"""
 
     Attributes:
-        feeds (Sequence[~.asset_service.Feed]):
+        feeds (Sequence[google.cloud.asset_v1p2beta1.types.Feed]):
             A list of feeds.
     """
 
@@ -124,13 +124,13 @@ class UpdateFeedRequest(proto.Message):
     r"""Update asset feed request.
 
     Attributes:
-        feed (~.asset_service.Feed):
+        feed (google.cloud.asset_v1p2beta1.types.Feed):
             Required. The new values of feed details. It must match an
             existing feed and the field ``name`` must be in the format
             of: projects/project_number/feeds/feed_id or
             folders/folder_number/feeds/feed_id or
             organizations/organization_number/feeds/feed_id.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Only updates the ``feed`` fields indicated by this
             mask. The field mask must not be empty, and it must not
             contain fields that are immutable or only set by the server.
@@ -159,7 +159,7 @@ class OutputConfig(proto.Message):
     r"""Output configuration for export assets destination.
 
     Attributes:
-        gcs_destination (~.asset_service.GcsDestination):
+        gcs_destination (google.cloud.asset_v1p2beta1.types.GcsDestination):
             Destination on Cloud Storage.
     """
 
@@ -200,7 +200,7 @@ class FeedOutputConfig(proto.Message):
     r"""Output configuration for asset feed destination.
 
     Attributes:
-        pubsub_destination (~.asset_service.PubsubDestination):
+        pubsub_destination (google.cloud.asset_v1p2beta1.types.PubsubDestination):
             Destination on Cloud Pubsub.
     """
 
@@ -246,11 +246,11 @@ class Feed(proto.Message):
             Asset
             Inventory <https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview>`__
             for all supported asset types.
-        content_type (~.asset_service.ContentType):
+        content_type (google.cloud.asset_v1p2beta1.types.ContentType):
             Asset content type. If not specified, no
             content but the asset name and type will be
             returned.
-        feed_output_config (~.asset_service.FeedOutputConfig):
+        feed_output_config (google.cloud.asset_v1p2beta1.types.FeedOutputConfig):
             Required. Feed output configuration defining
             where the asset updates are published to.
     """
