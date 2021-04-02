@@ -23,7 +23,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-excludes = ["README.rst", "setup.py", "nox*.py", "docs/index.rst"]
+excludes = ["README.rst", "setup.py", "nox*.py", "docs/index.rst", "*.tar.gz"]
 
 # ----------------------------------------------------------------------------
 # Generate tasks GAPIC layer
@@ -48,7 +48,7 @@ s.replace("google/cloud/*/types/target.py", "X-AppEngine-\*", "X-AppEngine-\\*")
 templated_files = common.py_library(
     samples=False,  # set to True only if there are samples
     microgenerator=True,
-    cov_level=99,
+    cov_level=98,
 )
 s.move(
     templated_files, excludes=[".coveragerc"]
