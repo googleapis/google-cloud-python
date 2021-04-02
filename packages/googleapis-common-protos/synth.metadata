@@ -3,37 +3,22 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-api-common-protos",
-        "sha": "05910ad3b74e59b27351d6dc2dea173639daea1c"
+        "remote": "https://github.com/googleapis/python-api-common-protos.git",
+        "sha": "9b6ec22e48c61535da89a008744daa055cfb49f7"
       }
     },
     {
       "git": {
         "name": "api-common-protos",
         "remote": "https://github.com/googleapis/api-common-protos.git",
-        "sha": "f37c0ecc55f19b1675448e4bad70fd45c93f5b8f"
-      }
-    },
-    {
-      "git": {
-        "name": "googleapis",
-        "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "2a9e7295e6fe864d0a748ff5a7c44d2da6e6d15a",
-        "internalRef": "359531616"
+        "sha": "be41e82ef4af6406b4cf331af00a837f813c0c3b"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0199c79b8324fba66476300824aa931788c47e2d"
-      }
-    },
-    {
-      "git": {
-        "name": "synthtool",
-        "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0199c79b8324fba66476300824aa931788c47e2d"
+        "sha": "d2364eb80b840a36136c8ce12f1c6efabcc9600e"
       }
     }
   ]

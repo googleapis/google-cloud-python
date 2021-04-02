@@ -23,7 +23,7 @@ BLACK_VERSION = "black==19.3b0"
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
-@nox.session(python="3.6")
+@nox.session(python="3.8")
 def blacken(session):
     """Run black.
     Format code to uniform standard.

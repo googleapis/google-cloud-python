@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2020 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,12 +20,10 @@ set -eo pipefail
 # Enables `**` to include files nested inside sub-folders
 shopt -s globstar
 
-cd github/python-api-common-protos
-
-# Run periodic samples tests at latest release
-if [[ $KOKORO_BUILD_ARTIFACTS_SUBDIR = *"periodic"* ]]; then
-    LATEST_RELEASE=$(git describe --abbrev=0 --tags)
-    git checkout $LATEST_RELEASE
+# Exit early if samples directory doesn't exist
+if [ ! -d "./samples" ]; then
+  echo "No tests run. `./samples` not found"
+  exit 0
 fi
 
 # Disable buffering, so that the logs stream through.
@@ -81,11 +79,11 @@ for file in samples/**/requirements.txt; do
     python3.6 -m nox -s "$RUN_TESTS_SESSION"
     EXIT=$?
 
-    # If this is a periodic build, send the test log to the Build Cop Bot.
-    # See https://github.com/googleapis/repo-automation-bots/tree/master/packages/buildcop.
+    # If this is a periodic build, send the test log to the FlakyBot.
+    # See https://github.com/googleapis/repo-automation-bots/tree/master/packages/flakybot.
     if [[ $KOKORO_BUILD_ARTIFACTS_SUBDIR = *"periodic"* ]]; then
-      chmod +x $KOKORO_GFILE_DIR/linux_amd64/buildcop
-      $KOKORO_GFILE_DIR/linux_amd64/buildcop
+      chmod +x $KOKORO_GFILE_DIR/linux_amd64/flakybot
+      $KOKORO_GFILE_DIR/linux_amd64/flakybot
     fi
 
     if [[ $EXIT -ne 0 ]]; then
