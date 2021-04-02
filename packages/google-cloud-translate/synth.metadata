@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-translate.git",
-        "sha": "f41be7adee001acaaa14e892bfbb52b91a336cb0"
+        "sha": "ca2c2e1b2929a9c126ccc9510b019d09c506e0f5"
       }
     },
     {
@@ -166,7 +166,6 @@
     "tests/unit/gapic/translate_v3/__init__.py",
     "tests/unit/gapic/translate_v3/test_translation_service.py",
     "tests/unit/gapic/translate_v3beta1/__init__.py",
-    "tests/unit/gapic/translate_v3beta1/test_translation_service.py",
-    "translation-v3-py.tar.gz"
+    "tests/unit/gapic/translate_v3beta1/test_translation_service.py"
   ]
 }
