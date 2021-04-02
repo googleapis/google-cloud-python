@@ -1497,7 +1497,6 @@ __all__ = (
     "GlobalAddressesClient",
     "GlobalForwardingRulesClient",
     "GlobalNetworkEndpointGroupsAttachEndpointsRequest",
-    "GlobalNetworkEndpointGroupsClient",
     "GlobalNetworkEndpointGroupsDetachEndpointsRequest",
     "GlobalOperationsClient",
     "GlobalOrganizationOperationsClient",
@@ -1933,6 +1932,7 @@ __all__ = (
     "RegionInstanceGroupManagerUpdateInstanceConfigReq",
     "RegionInstanceGroupManagersAbandonInstancesRequest",
     "RegionInstanceGroupManagersApplyUpdatesRequest",
+    "RegionInstanceGroupManagersClient",
     "RegionInstanceGroupManagersCreateInstancesRequest",
     "RegionInstanceGroupManagersDeleteInstancesRequest",
     "RegionInstanceGroupManagersListErrorsResponse",
@@ -2271,5 +2271,5 @@ __all__ = (
     "ZoneSetLabelsRequest",
     "ZoneSetPolicyRequest",
     "ZonesClient",
-    "RegionInstanceGroupManagersClient",
+    "GlobalNetworkEndpointGroupsClient",
 )
