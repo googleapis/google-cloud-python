@@ -25,11 +25,11 @@ description = "Access Approval API client library"
 version = "1.1.1"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "google-api-core[grpc] >= 1.22.0, < 2.0.0dev",
+    "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
     "proto-plus >= 1.4.0",
-    "libcst >= 0.2.5",
 ]
 
+extras = {"libcst": "libcst >= 0.2.5"}
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -75,6 +75,7 @@ setuptools.setup(
     scripts=["scripts/fixup_accessapproval_v1_keywords.py"],
     namespace_packages=namespaces,
     install_requires=dependencies,
+    extras_requires=extras,
     include_package_data=True,
     zip_safe=False,
 )

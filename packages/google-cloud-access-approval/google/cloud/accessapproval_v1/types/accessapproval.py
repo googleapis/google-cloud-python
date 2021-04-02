@@ -103,7 +103,7 @@ class AccessReason(proto.Message):
     r"""
 
     Attributes:
-        type_ (~.accessapproval.AccessReason.Type):
+        type_ (google.cloud.accessapproval_v1.types.AccessReason.Type):
             Type of access justification.
         detail (str):
             More detail about certain reason types. See
@@ -127,9 +127,9 @@ class ApproveDecision(proto.Message):
     resource.
 
     Attributes:
-        approve_time (~.timestamp.Timestamp):
+        approve_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which approval was granted.
-        expire_time (~.timestamp.Timestamp):
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the approval expires.
     """
 
@@ -142,7 +142,7 @@ class DismissDecision(proto.Message):
     r"""A decision that has been made to dismiss an approval request.
 
     Attributes:
-        dismiss_time (~.timestamp.Timestamp):
+        dismiss_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the approval request was
             dismissed.
     """
@@ -178,25 +178,25 @@ class ApprovalRequest(proto.Message):
             or a "relative" resource name (e.g.
             "shelves/shelf1/books/book2") as described in the resource
             name specification.
-        requested_resource_properties (~.accessapproval.ResourceProperties):
+        requested_resource_properties (google.cloud.accessapproval_v1.types.ResourceProperties):
             Properties related to the resource represented by
             requested_resource_name.
-        requested_reason (~.accessapproval.AccessReason):
+        requested_reason (google.cloud.accessapproval_v1.types.AccessReason):
             The justification for which approval is being
             requested.
-        requested_locations (~.accessapproval.AccessLocations):
+        requested_locations (google.cloud.accessapproval_v1.types.AccessLocations):
             The locations for which approval is being
             requested.
-        request_time (~.timestamp.Timestamp):
+        request_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which approval was requested.
-        requested_expiration (~.timestamp.Timestamp):
+        requested_expiration (google.protobuf.timestamp_pb2.Timestamp):
             The requested expiration for the approval. If
             the request is approved, access will be granted
             from the time of approval until the expiration
             time.
-        approve (~.accessapproval.ApproveDecision):
+        approve (google.cloud.accessapproval_v1.types.ApproveDecision):
             Access was approved.
-        dismiss (~.accessapproval.DismissDecision):
+        dismiss (google.cloud.accessapproval_v1.types.DismissDecision):
             The request was dismissed.
     """
 
@@ -248,7 +248,7 @@ class EnrolledService(proto.Message):
             - iam.googleapis.com
             - pubsub.googleapis.com
             - storage.googleapis.com
-        enrollment_level (~.accessapproval.EnrollmentLevel):
+        enrollment_level (google.cloud.accessapproval_v1.types.EnrollmentLevel):
             The enrollment level of the service.
     """
 
@@ -275,7 +275,7 @@ class AccessApprovalSettings(proto.Message):
             resource will be sent to all emails in the
             settings of ancestor resources of that resource.
             A maximum of 50 email addresses are allowed.
-        enrolled_services (Sequence[~.accessapproval.EnrolledService]):
+        enrolled_services (Sequence[google.cloud.accessapproval_v1.types.EnrolledService]):
             A list of Google Cloud Services for which the given resource
             has Access Approval enrolled. Access requests for the
             resource given by name against any of these services
@@ -348,7 +348,7 @@ class ListApprovalRequestsResponse(proto.Message):
     r"""Response to listing of ApprovalRequest objects.
 
     Attributes:
-        approval_requests (Sequence[~.accessapproval.ApprovalRequest]):
+        approval_requests (Sequence[google.cloud.accessapproval_v1.types.ApprovalRequest]):
             Approval request details.
         next_page_token (str):
             Token to retrieve the next page of results,
@@ -383,7 +383,7 @@ class ApproveApprovalRequestMessage(proto.Message):
     Attributes:
         name (str):
             Name of the approval request to approve.
-        expire_time (~.timestamp.Timestamp):
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
             The expiration time of this approval.
     """
 
@@ -419,9 +419,9 @@ class UpdateAccessApprovalSettingsMessage(proto.Message):
     r"""Request to update access approval settings.
 
     Attributes:
-        settings (~.accessapproval.AccessApprovalSettings):
+        settings (google.cloud.accessapproval_v1.types.AccessApprovalSettings):
             The new AccessApprovalSettings.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The update mask applies to the settings. Only the top level
             fields of AccessApprovalSettings (notification_emails &
             enrolled_services) are supported. For each field, if it is

@@ -1,6 +1,6 @@
 Services for Google Cloud Accessapproval v1 API
 ===============================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.accessapproval_v1.services.access_approval
-    :members:
-    :inherited-members:
+    access_approval
