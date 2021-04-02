@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-data-qna.git",
-        "sha": "d090b4b19c2aa5185712c86ad189243c78420ca8"
+        "sha": "638df3b745ad2ae0f1edb65cb87fc5dfff8c50f1"
       }
     },
     {

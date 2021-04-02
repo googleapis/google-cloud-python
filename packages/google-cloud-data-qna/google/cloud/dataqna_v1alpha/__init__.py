@@ -43,6 +43,7 @@ from .types.user_feedback import UserFeedback
 
 __all__ = (
     "AnnotatedString",
+    "AutoSuggestionServiceClient",
     "BigQueryJob",
     "CreateQuestionRequest",
     "DataQuery",
@@ -57,7 +58,6 @@ __all__ = (
     "Interpretation",
     "InterpretationStructure",
     "Question",
-    "QuestionServiceClient",
     "SuggestQueriesRequest",
     "SuggestQueriesResponse",
     "Suggestion",
@@ -65,5 +65,5 @@ __all__ = (
     "SuggestionType",
     "UpdateUserFeedbackRequest",
     "UserFeedback",
-    "AutoSuggestionServiceClient",
+    "QuestionServiceClient",
 )
