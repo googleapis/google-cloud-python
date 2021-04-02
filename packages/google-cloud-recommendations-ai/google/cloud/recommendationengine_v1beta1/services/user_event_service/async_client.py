@@ -197,7 +197,7 @@ class UserEventServiceAsyncClient:
                 method.
             parent (:class:`str`):
                 Required. The parent eventStore resource name, such as
-                "projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store".
+                ``projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -296,7 +296,7 @@ class UserEventServiceAsyncClient:
                 method.
             parent (:class:`str`):
                 Required. The parent eventStore name, such as
-                "projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store".
+                ``projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -459,7 +459,7 @@ class UserEventServiceAsyncClient:
                 method.
             parent (:class:`str`):
                 Required. The parent eventStore resource name, such as
-                ``projects/*/locations/*/catalogs/default_catalog/eventStores/default_event_store``
+                ``projects/*/locations/*/catalogs/default_catalog/eventStores/default_event_store``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -600,7 +600,7 @@ class UserEventServiceAsyncClient:
             parent (:class:`str`):
                 Required. The resource name of the event_store under
                 which the events are created. The format is
-                "projects/${projectId}/locations/global/catalogs/${catalogId}/eventStores/${eventStoreId}"
+                ``projects/${projectId}/locations/global/catalogs/${catalogId}/eventStores/${eventStoreId}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -740,7 +740,7 @@ class UserEventServiceAsyncClient:
                 ImportUserEvents request.
             parent (:class:`str`):
                 Required.
-                "projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store"
+                ``projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

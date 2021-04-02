@@ -369,7 +369,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 CreateCatalogItem method.
             parent (str):
                 Required. The parent catalog resource name, such as
-                ``projects/*/locations/global/catalogs/default_catalog``
+                ``projects/*/locations/global/catalogs/default_catalog``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -450,7 +450,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 method.
             name (str):
                 Required. Full resource name of catalog item, such as
-                ``projects/*/locations/global/catalogs/default_catalog/catalogitems/some_catalog_item_id``
+                ``projects/*/locations/global/catalogs/default_catalog/catalogitems/some_catalog_item_id``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -525,7 +525,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 method.
             parent (str):
                 Required. The parent catalog resource name, such as
-                ``projects/*/locations/global/catalogs/default_catalog``
+                ``projects/*/locations/global/catalogs/default_catalog``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -713,7 +713,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 DeleteCatalogItem method.
             name (str):
                 Required. Full resource name of catalog item, such as
-                ``projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id``
+                ``projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -788,7 +788,7 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
                 The request object. Request message for Import methods.
             parent (str):
                 Required.
-                "projects/1234/locations/global/catalogs/default_catalog"
+                ``projects/1234/locations/global/catalogs/default_catalog``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

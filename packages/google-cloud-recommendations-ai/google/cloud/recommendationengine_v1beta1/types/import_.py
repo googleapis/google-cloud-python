@@ -50,11 +50,11 @@ class GcsSource(proto.Message):
         input_uris (Sequence[str]):
             Required. Google Cloud Storage URIs to input files. URI can
             be up to 2000 characters long. URIs can match the full
-            object path (for example, gs://bucket/directory/object.json)
-            or a pattern matching one or more files, such as
-            ``gs://bucket/directory/*.json``. A request can contain at most
-            100 files, and each file can be up to 2 GB. See `Importing
-            catalog
+            object path (for example,
+            ``gs://bucket/directory/object.json``) or a pattern matching
+            one or more files, such as ````gs://bucket/directory/*.json````.
+            A request can contain at most 100 files, and each file can
+            be up to 2 GB. See `Importing catalog
             information </recommendations-ai/docs/upload-catalog>`__ for
             the expected file format and setup instructions.
     """
@@ -112,7 +112,7 @@ class ImportCatalogItemsRequest(proto.Message):
     Attributes:
         parent (str):
             Required.
-            "projects/1234/locations/global/catalogs/default_catalog".
+            ``projects/1234/locations/global/catalogs/default_catalog``
         request_id (str):
             Optional. Unique identifier provided by
             client, within the ancestor dataset scope.
@@ -144,7 +144,7 @@ class ImportUserEventsRequest(proto.Message):
     Attributes:
         parent (str):
             Required.
-            "projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store".
+            ``projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store``
         request_id (str):
             Optional. Unique identifier provided by client, within the
             ancestor dataset scope. Ensures idempotency for expensive

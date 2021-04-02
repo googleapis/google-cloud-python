@@ -34,7 +34,7 @@ class PredictRequest(proto.Message):
     Attributes:
         name (str):
             Required. Full resource name of the format:
-            {name=projects/*/locations/global/catalogs/default_catalog/eventStores/default_event_store/placements/*}
+            ``{name=projects/*/locations/global/catalogs/default_catalog/eventStores/default_event_store/placements/*}``
             The id of the recommendation engine placement. This id is
             used to identify the set of models that will be used to make
             the prediction.

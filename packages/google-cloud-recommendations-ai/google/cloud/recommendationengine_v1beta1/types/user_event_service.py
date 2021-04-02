@@ -43,7 +43,7 @@ class PurgeUserEventsRequest(proto.Message):
         parent (str):
             Required. The resource name of the event_store under which
             the events are created. The format is
-            "projects/${projectId}/locations/global/catalogs/${catalogId}/eventStores/${eventStoreId}".
+            ``projects/${projectId}/locations/global/catalogs/${catalogId}/eventStores/${eventStoreId}``
         filter (str):
             Required. The filter string to specify the events to be
             deleted. Empty string filter is not allowed. This filter can
@@ -123,7 +123,7 @@ class WriteUserEventRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent eventStore resource name, such as
-            "projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store".
+            ``projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store``.
         user_event (google.cloud.recommendationengine_v1beta1.types.UserEvent):
             Required. User event to write.
     """
@@ -139,7 +139,7 @@ class CollectUserEventRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent eventStore name, such as
-            "projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store".
+            ``projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store``.
         user_event (str):
             Required. URL encoded UserEvent proto.
         uri (str):
@@ -171,7 +171,7 @@ class ListUserEventsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent eventStore resource name, such as
-            ``projects/*/locations/*/catalogs/default_catalog/eventStores/default_event_store``
+            ``projects/*/locations/*/catalogs/default_catalog/eventStores/default_event_store``.
         page_size (int):
             Optional. Maximum number of results to return
             per page. If zero, the service will choose a

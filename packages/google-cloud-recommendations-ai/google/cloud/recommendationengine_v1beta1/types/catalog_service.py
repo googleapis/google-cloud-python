@@ -41,7 +41,7 @@ class CreateCatalogItemRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent catalog resource name, such as
-            ``projects/*/locations/global/catalogs/default_catalog``
+            ``projects/*/locations/global/catalogs/default_catalog``.
         catalog_item (google.cloud.recommendationengine_v1beta1.types.CatalogItem):
             Required. The catalog item to create.
     """
@@ -57,7 +57,7 @@ class GetCatalogItemRequest(proto.Message):
     Attributes:
         name (str):
             Required. Full resource name of catalog item, such as
-            ``projects/*/locations/global/catalogs/default_catalog/catalogitems/some_catalog_item_id``
+            ``projects/*/locations/global/catalogs/default_catalog/catalogitems/some_catalog_item_id``.
     """
 
     name = proto.Field(proto.STRING, number=1)
@@ -69,7 +69,7 @@ class ListCatalogItemsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The parent catalog resource name, such as
-            ``projects/*/locations/global/catalogs/default_catalog``
+            ``projects/*/locations/global/catalogs/default_catalog``.
         page_size (int):
             Optional. Maximum number of results to return
             per page. If zero, the service will choose a
@@ -143,7 +143,7 @@ class DeleteCatalogItemRequest(proto.Message):
     Attributes:
         name (str):
             Required. Full resource name of catalog item, such as
-            ``projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id``
+            ``projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id``.
     """
 
     name = proto.Field(proto.STRING, number=1)

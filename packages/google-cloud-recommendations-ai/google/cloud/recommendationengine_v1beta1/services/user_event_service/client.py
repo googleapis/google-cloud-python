@@ -376,7 +376,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 method.
             parent (str):
                 Required. The parent eventStore resource name, such as
-                "projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store".
+                ``projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -467,7 +467,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 method.
             parent (str):
                 Required. The parent eventStore name, such as
-                "projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store".
+                ``projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -622,7 +622,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 method.
             parent (str):
                 Required. The parent eventStore resource name, such as
-                ``projects/*/locations/*/catalogs/default_catalog/eventStores/default_event_store``
+                ``projects/*/locations/*/catalogs/default_catalog/eventStores/default_event_store``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -755,7 +755,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
             parent (str):
                 Required. The resource name of the event_store under
                 which the events are created. The format is
-                "projects/${projectId}/locations/global/catalogs/${catalogId}/eventStores/${eventStoreId}"
+                ``projects/${projectId}/locations/global/catalogs/${catalogId}/eventStores/${eventStoreId}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -887,7 +887,7 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
                 ImportUserEvents request.
             parent (str):
                 Required.
-                "projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store"
+                ``projects/1234/locations/global/catalogs/default_catalog/eventStores/default_event_store``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
