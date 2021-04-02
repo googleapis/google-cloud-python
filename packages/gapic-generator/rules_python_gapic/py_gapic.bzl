@@ -20,7 +20,7 @@ def py_gapic_library(
         grpc_service_config = None,
         plugin_args = None,
         opt_args = None,
-        metadata = False,
+        metadata = True,
         **kwargs):
     #    srcjar_target_name = "%s_srcjar" % name
     srcjar_target_name = name
