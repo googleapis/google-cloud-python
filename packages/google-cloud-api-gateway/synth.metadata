@@ -3,21 +3,30 @@
     {
       "git": {
         "name": ".",
-        "remote": "sso://devrel/cloud/libraries/python/python-api-gateway"
+        "remote": "git@github.com:googleapis/python-api-gateway",
+        "sha": "1eb9af9af2ab9ae75432f21382d1242681e65c9c"
+      }
+    },
+    {
+      "git": {
+        "name": "googleapis",
+        "remote": "https://github.com/googleapis/googleapis.git",
+        "sha": "8ff7d794576311d3d68d4df2ac6da93bbfcd7476",
+        "internalRef": "366472163"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "79c8dd7ee768292f933012d3a69a5b4676404cda"
+        "sha": "ff39353f34a36e7643b86e97724e4027ab466dc6"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "79c8dd7ee768292f933012d3a69a5b4676404cda"
+        "sha": "ff39353f34a36e7643b86e97724e4027ab466dc6"
       }
     }
   ],
