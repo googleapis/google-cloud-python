@@ -1,6 +1,6 @@
 Services for Google Cloud Assuredworkloads v1beta1 API
 ======================================================
+.. toctree::
+    :maxdepth: 2
 
-.. automodule:: google.cloud.assuredworkloads_v1beta1.services.assured_workloads_service
-    :members:
-    :inherited-members:
+    assured_workloads_service

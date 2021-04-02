@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# google-cloud-assured-workflows documentation build configuration file
+# google-cloud-assured-workloads documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -67,7 +67,7 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-assured-workflows"
+project = u"google-cloud-assured-workloads"
 copyright = u"2019, Google"
 author = u"Google APIs"
 
@@ -140,7 +140,7 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for google-cloud-assured-workflows",
+    "description": "Google Cloud Client Libraries for google-cloud-assured-workloads",
     "github_user": "googleapis",
     "github_repo": "python-assured-workloads",
     "github_banner": True,
@@ -234,7 +234,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-assured-workflows-doc"
+htmlhelp_basename = "google-cloud-assured-workloads-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -267,8 +267,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "google-cloud-assured-workflows.tex",
-        u"google-cloud-assured-workflows Documentation",
+        "google-cloud-assured-workloads.tex",
+        u"google-cloud-assured-workloads Documentation",
         author,
         "manual",
     )
@@ -302,8 +302,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "google-cloud-assured-workflows",
-        u"google-cloud-assured-workflows Documentation",
+        "google-cloud-assured-workloads",
+        u"google-cloud-assured-workloads Documentation",
         [author],
         1,
     )
@@ -321,11 +321,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "google-cloud-assured-workflows",
-        u"google-cloud-assured-workflows Documentation",
+        "google-cloud-assured-workloads",
+        u"google-cloud-assured-workloads Documentation",
         author,
-        "google-cloud-assured-workflows",
-        "google-cloud-assured-workflows Library",
+        "google-cloud-assured-workloads",
+        "google-cloud-assured-workloads Library",
         "APIs",
     )
 ]

@@ -20,7 +20,7 @@ If you are still having issues, please be sure to include as much information as
   - OS type and version:
   - Python version: `python --version`
   - pip version: `pip --version`
-  - `google-cloud-assured-workflows` version: `pip show google-cloud-assured-workflows`
+  - `google-cloud-assured-workloads` version: `pip show google-cloud-assured-workloads`
 
 #### Steps to reproduce
 

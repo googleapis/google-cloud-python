@@ -16,23 +16,23 @@
 #
 
 from .assuredworkloads_v1beta1 import (
+    CreateWorkloadOperationMetadata,
     CreateWorkloadRequest,
-    UpdateWorkloadRequest,
     DeleteWorkloadRequest,
     GetWorkloadRequest,
     ListWorkloadsRequest,
     ListWorkloadsResponse,
+    UpdateWorkloadRequest,
     Workload,
-    CreateWorkloadOperationMetadata,
 )
 
 __all__ = (
+    "CreateWorkloadOperationMetadata",
     "CreateWorkloadRequest",
-    "UpdateWorkloadRequest",
     "DeleteWorkloadRequest",
     "GetWorkloadRequest",
     "ListWorkloadsRequest",
     "ListWorkloadsResponse",
+    "UpdateWorkloadRequest",
     "Workload",
-    "CreateWorkloadOperationMetadata",
 )
