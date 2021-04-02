@@ -3,66 +3,23 @@
     {
       "git": {
         "name": ".",
-        "remote": "https://github.com/googleapis/python-audit-log.git",
-        "sha": "8551616639a26e025303aa5bd6d23d412490ae3f"
+        "remote": "git@github.com:googleapis/python-audit-log",
+        "sha": "4c08a8cea32fde10f3b9ce8930bccd59ec3a8f33"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "41a4e56982620d3edcf110d76f4fcdfdec471ac8"
+        "sha": "ff39353f34a36e7643b86e97724e4027ab466dc6"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "41a4e56982620d3edcf110d76f4fcdfdec471ac8"
+        "sha": "ff39353f34a36e7643b86e97724e4027ab466dc6"
       }
     }
-  ],
-  "generatedFiles": [
-    ".github/CONTRIBUTING.md",
-    ".github/ISSUE_TEMPLATE/bug_report.md",
-    ".github/ISSUE_TEMPLATE/feature_request.md",
-    ".github/ISSUE_TEMPLATE/support_request.md",
-    ".github/PULL_REQUEST_TEMPLATE.md",
-    ".github/release-please.yml",
-    ".github/snippet-bot.yml",
-    ".gitignore",
-    ".kokoro/build.sh",
-    ".kokoro/continuous/common.cfg",
-    ".kokoro/continuous/continuous.cfg",
-    ".kokoro/docker/docs/Dockerfile",
-    ".kokoro/docker/docs/fetch_gpg_keys.sh",
-    ".kokoro/populate-secrets.sh",
-    ".kokoro/presubmit/common.cfg",
-    ".kokoro/presubmit/presubmit.cfg",
-    ".kokoro/release.sh",
-    ".kokoro/release/common.cfg",
-    ".kokoro/release/release.cfg",
-    ".kokoro/samples/lint/common.cfg",
-    ".kokoro/samples/lint/continuous.cfg",
-    ".kokoro/samples/lint/periodic.cfg",
-    ".kokoro/samples/lint/presubmit.cfg",
-    ".kokoro/samples/python3.6/common.cfg",
-    ".kokoro/samples/python3.6/continuous.cfg",
-    ".kokoro/samples/python3.6/periodic.cfg",
-    ".kokoro/samples/python3.6/presubmit.cfg",
-    ".kokoro/samples/python3.7/common.cfg",
-    ".kokoro/samples/python3.7/continuous.cfg",
-    ".kokoro/samples/python3.7/periodic.cfg",
-    ".kokoro/samples/python3.7/presubmit.cfg",
-    ".kokoro/samples/python3.8/common.cfg",
-    ".kokoro/samples/python3.8/continuous.cfg",
-    ".kokoro/samples/python3.8/periodic.cfg",
-    ".kokoro/samples/python3.8/presubmit.cfg",
-    ".kokoro/test-samples.sh",
-    ".kokoro/trampoline.sh",
-    ".kokoro/trampoline_v2.sh",
-    "CODE_OF_CONDUCT.md",
-    "LICENSE",
-    "setup.cfg"
   ]
 }
