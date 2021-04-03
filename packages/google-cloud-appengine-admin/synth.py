@@ -38,7 +38,12 @@ for version in versions:
         bazel_target=f"//google/appengine/{version}:google-cloud-appengine-{version}-py",
     )
 
-    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
+    excludes=["setup.py", "README.rst", "docs/index.rst"]
+
+    # See https://github.com/googleapis/gapic-generator-python/issues/825
+    excludes.extend(["docs/appengine_admin_v1/services.rst"])
+
+    s.move(library, excludes=excludes)
 
 # ----------------------------------------------------------------------------
 # Add templated files
