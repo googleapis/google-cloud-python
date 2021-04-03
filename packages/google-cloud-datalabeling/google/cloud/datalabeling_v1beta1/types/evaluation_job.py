@@ -54,7 +54,7 @@ class EvaluationJob(proto.Message):
         description (str):
             Required. Description of the job. The
             description can be up to 25,000 characters long.
-        state (~.evaluation_job.EvaluationJob.State):
+        state (google.cloud.datalabeling_v1beta1.types.EvaluationJob.State):
             Output only. Describes the current state of
             the job.
         schedule (str):
@@ -81,7 +81,7 @@ class EvaluationJob(proto.Message):
             "projects/{project_id}/models/{model_name}/versions/{version_name}"
 
             There can only be one evaluation job per model version.
-        evaluation_job_config (~.evaluation_job.EvaluationJobConfig):
+        evaluation_job_config (google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig):
             Required. Configuration details for the
             evaluation job.
         annotation_spec_set (str):
@@ -99,11 +99,11 @@ class EvaluationJob(proto.Message):
             this to ``true``. If you want to provide your own ground
             truth labels in the evaluation job's BigQuery table, set
             this to ``false``.
-        attempts (Sequence[~.evaluation_job.Attempt]):
+        attempts (Sequence[google.cloud.datalabeling_v1beta1.types.Attempt]):
             Output only. Every time the evaluation job
             runs and an error occurs, the failed attempt is
             appended to this array.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp of when this
             evaluation job was created.
     """
@@ -145,7 +145,7 @@ class EvaluationJobConfig(proto.Message):
     EvaluationJob.
 
     Attributes:
-        image_classification_config (~.gcd_human_annotation_config.ImageClassificationConfig):
+        image_classification_config (google.cloud.datalabeling_v1beta1.types.ImageClassificationConfig):
             Specify this field if your model version performs image
             classification or general classification.
 
@@ -154,13 +154,13 @@ class EvaluationJobConfig(proto.Message):
             ``allowMultiLabel`` in this configuration must match
             ``classificationMetadata.isMultiLabel`` in
             [input_config][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config].
-        bounding_poly_config (~.gcd_human_annotation_config.BoundingPolyConfig):
+        bounding_poly_config (google.cloud.datalabeling_v1beta1.types.BoundingPolyConfig):
             Specify this field if your model version performs image
             object detection (bounding box detection).
 
             ``annotationSpecSet`` in this configuration must match
             [EvaluationJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set].
-        text_classification_config (~.gcd_human_annotation_config.TextClassificationConfig):
+        text_classification_config (google.cloud.datalabeling_v1beta1.types.TextClassificationConfig):
             Specify this field if your model version performs text
             classification.
 
@@ -169,7 +169,7 @@ class EvaluationJobConfig(proto.Message):
             ``allowMultiLabel`` in this configuration must match
             ``classificationMetadata.isMultiLabel`` in
             [input_config][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config].
-        input_config (~.dataset.InputConfig):
+        input_config (google.cloud.datalabeling_v1beta1.types.InputConfig):
             Rquired. Details for the sampled prediction input. Within
             this configuration, there are requirements for several
             fields:
@@ -185,7 +185,7 @@ class EvaluationJobConfig(proto.Message):
             -  If your machine learning model performs classification,
                you must specify ``classificationMetadata.isMultiLabel``.
             -  You must specify ``bigquerySource`` (not ``gcsSource``).
-        evaluation_config (~.evaluation.EvaluationConfig):
+        evaluation_config (google.cloud.datalabeling_v1beta1.types.EvaluationConfig):
             Required. Details for calculating evaluation metrics and
             creating
             [Evaulations][google.cloud.datalabeling.v1beta1.Evaluation].
@@ -193,7 +193,7 @@ class EvaluationJobConfig(proto.Message):
             must specify the ``boundingBoxEvaluationOptions`` field
             within this configuration. Otherwise, provide an empty
             object for this configuration.
-        human_annotation_config (~.gcd_human_annotation_config.HumanAnnotationConfig):
+        human_annotation_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Optional. Details for human annotation of your data. If you
             set
             [labelMissingGroundTruth][google.cloud.datalabeling.v1beta1.EvaluationJob.label_missing_ground_truth]
@@ -206,7 +206,7 @@ class EvaluationJobConfig(proto.Message):
             resource before you can specify this field. Provide the name
             of the instruction resource in the ``instruction`` field
             within this configuration.
-        bigquery_import_keys (Sequence[~.evaluation_job.EvaluationJobConfig.BigqueryImportKeysEntry]):
+        bigquery_import_keys (Sequence[google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.BigqueryImportKeysEntry]):
             Required. Prediction keys that tell Data Labeling Service
             where to find the data for evaluation in your BigQuery
             table. When the service samples prediction input and output
@@ -245,7 +245,7 @@ class EvaluationJobConfig(proto.Message):
             interval][google.cloud.datalabeling.v1beta1.EvaluationJob.schedule].
             For example, 0.1 means 10% of predictions served by your
             model version get saved to BigQuery.
-        evaluation_job_alert_config (~.evaluation_job.EvaluationJobAlertConfig):
+        evaluation_job_alert_config (google.cloud.datalabeling_v1beta1.types.EvaluationJobAlertConfig):
             Optional. Configuration details for
             evaluation job alerts. Specify this field if you
             want to receive email alerts if the evaluation
@@ -323,9 +323,9 @@ class Attempt(proto.Message):
     r"""Records a failed evaluation job run.
 
     Attributes:
-        attempt_time (~.timestamp.Timestamp):
+        attempt_time (google.protobuf.timestamp_pb2.Timestamp):
 
-        partial_failures (Sequence[~.status.Status]):
+        partial_failures (Sequence[google.rpc.status_pb2.Status]):
             Details of errors that occurred.
     """
 

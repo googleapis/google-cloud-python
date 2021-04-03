@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.datalabeling_v1beta1.types import annotation_spec_set
 from google.cloud.datalabeling_v1beta1.types import data_labeling_service
@@ -29,7 +38,7 @@ class ListDatasetsPager:
     """A pager for iterating through ``list_datasets`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.ListDatasetsResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.ListDatasetsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``datasets`` field.
 
@@ -38,7 +47,7 @@ class ListDatasetsPager:
     through the ``datasets`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.ListDatasetsResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.ListDatasetsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -56,9 +65,9 @@ class ListDatasetsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.ListDatasetsRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.ListDatasetsRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.ListDatasetsResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.ListDatasetsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -91,7 +100,7 @@ class ListDatasetsAsyncPager:
     """A pager for iterating through ``list_datasets`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.ListDatasetsResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.ListDatasetsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``datasets`` field.
 
@@ -100,7 +109,7 @@ class ListDatasetsAsyncPager:
     through the ``datasets`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.ListDatasetsResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.ListDatasetsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -118,9 +127,9 @@ class ListDatasetsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.ListDatasetsRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.ListDatasetsRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.ListDatasetsResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.ListDatasetsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -157,7 +166,7 @@ class ListDataItemsPager:
     """A pager for iterating through ``list_data_items`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.ListDataItemsResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.ListDataItemsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``data_items`` field.
 
@@ -166,7 +175,7 @@ class ListDataItemsPager:
     through the ``data_items`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.ListDataItemsResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.ListDataItemsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -184,9 +193,9 @@ class ListDataItemsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.ListDataItemsRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.ListDataItemsRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.ListDataItemsResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.ListDataItemsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -219,7 +228,7 @@ class ListDataItemsAsyncPager:
     """A pager for iterating through ``list_data_items`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.ListDataItemsResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.ListDataItemsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``data_items`` field.
 
@@ -228,7 +237,7 @@ class ListDataItemsAsyncPager:
     through the ``data_items`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.ListDataItemsResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.ListDataItemsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -246,9 +255,9 @@ class ListDataItemsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.ListDataItemsRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.ListDataItemsRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.ListDataItemsResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.ListDataItemsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -285,7 +294,7 @@ class ListAnnotatedDatasetsPager:
     """A pager for iterating through ``list_annotated_datasets`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.ListAnnotatedDatasetsResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.ListAnnotatedDatasetsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``annotated_datasets`` field.
 
@@ -294,7 +303,7 @@ class ListAnnotatedDatasetsPager:
     through the ``annotated_datasets`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.ListAnnotatedDatasetsResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.ListAnnotatedDatasetsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -312,9 +321,9 @@ class ListAnnotatedDatasetsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.ListAnnotatedDatasetsRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.ListAnnotatedDatasetsRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.ListAnnotatedDatasetsResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.ListAnnotatedDatasetsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -347,7 +356,7 @@ class ListAnnotatedDatasetsAsyncPager:
     """A pager for iterating through ``list_annotated_datasets`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.ListAnnotatedDatasetsResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.ListAnnotatedDatasetsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``annotated_datasets`` field.
 
@@ -356,7 +365,7 @@ class ListAnnotatedDatasetsAsyncPager:
     through the ``annotated_datasets`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.ListAnnotatedDatasetsResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.ListAnnotatedDatasetsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -376,9 +385,9 @@ class ListAnnotatedDatasetsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.ListAnnotatedDatasetsRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.ListAnnotatedDatasetsRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.ListAnnotatedDatasetsResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.ListAnnotatedDatasetsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -417,7 +426,7 @@ class ListExamplesPager:
     """A pager for iterating through ``list_examples`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.ListExamplesResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.ListExamplesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``examples`` field.
 
@@ -426,7 +435,7 @@ class ListExamplesPager:
     through the ``examples`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.ListExamplesResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.ListExamplesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -444,9 +453,9 @@ class ListExamplesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.ListExamplesRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.ListExamplesRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.ListExamplesResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.ListExamplesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -479,7 +488,7 @@ class ListExamplesAsyncPager:
     """A pager for iterating through ``list_examples`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.ListExamplesResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.ListExamplesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``examples`` field.
 
@@ -488,7 +497,7 @@ class ListExamplesAsyncPager:
     through the ``examples`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.ListExamplesResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.ListExamplesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -506,9 +515,9 @@ class ListExamplesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.ListExamplesRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.ListExamplesRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.ListExamplesResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.ListExamplesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -545,7 +554,7 @@ class ListAnnotationSpecSetsPager:
     """A pager for iterating through ``list_annotation_spec_sets`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.ListAnnotationSpecSetsResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.ListAnnotationSpecSetsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``annotation_spec_sets`` field.
 
@@ -554,7 +563,7 @@ class ListAnnotationSpecSetsPager:
     through the ``annotation_spec_sets`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.ListAnnotationSpecSetsResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.ListAnnotationSpecSetsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -572,9 +581,9 @@ class ListAnnotationSpecSetsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.ListAnnotationSpecSetsRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.ListAnnotationSpecSetsRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.ListAnnotationSpecSetsResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.ListAnnotationSpecSetsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -607,7 +616,7 @@ class ListAnnotationSpecSetsAsyncPager:
     """A pager for iterating through ``list_annotation_spec_sets`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.ListAnnotationSpecSetsResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.ListAnnotationSpecSetsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``annotation_spec_sets`` field.
 
@@ -616,7 +625,7 @@ class ListAnnotationSpecSetsAsyncPager:
     through the ``annotation_spec_sets`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.ListAnnotationSpecSetsResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.ListAnnotationSpecSetsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -636,9 +645,9 @@ class ListAnnotationSpecSetsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.ListAnnotationSpecSetsRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.ListAnnotationSpecSetsRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.ListAnnotationSpecSetsResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.ListAnnotationSpecSetsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -677,7 +686,7 @@ class ListInstructionsPager:
     """A pager for iterating through ``list_instructions`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.ListInstructionsResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.ListInstructionsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``instructions`` field.
 
@@ -686,7 +695,7 @@ class ListInstructionsPager:
     through the ``instructions`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.ListInstructionsResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.ListInstructionsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -704,9 +713,9 @@ class ListInstructionsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.ListInstructionsRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.ListInstructionsRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.ListInstructionsResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.ListInstructionsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -739,7 +748,7 @@ class ListInstructionsAsyncPager:
     """A pager for iterating through ``list_instructions`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.ListInstructionsResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.ListInstructionsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``instructions`` field.
 
@@ -748,7 +757,7 @@ class ListInstructionsAsyncPager:
     through the ``instructions`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.ListInstructionsResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.ListInstructionsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -768,9 +777,9 @@ class ListInstructionsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.ListInstructionsRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.ListInstructionsRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.ListInstructionsResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.ListInstructionsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -809,7 +818,7 @@ class SearchEvaluationsPager:
     """A pager for iterating through ``search_evaluations`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.SearchEvaluationsResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.SearchEvaluationsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``evaluations`` field.
 
@@ -818,7 +827,7 @@ class SearchEvaluationsPager:
     through the ``evaluations`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.SearchEvaluationsResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.SearchEvaluationsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -836,9 +845,9 @@ class SearchEvaluationsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.SearchEvaluationsRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.SearchEvaluationsResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.SearchEvaluationsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -871,7 +880,7 @@ class SearchEvaluationsAsyncPager:
     """A pager for iterating through ``search_evaluations`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.SearchEvaluationsResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.SearchEvaluationsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``evaluations`` field.
 
@@ -880,7 +889,7 @@ class SearchEvaluationsAsyncPager:
     through the ``evaluations`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.SearchEvaluationsResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.SearchEvaluationsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -900,9 +909,9 @@ class SearchEvaluationsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.SearchEvaluationsRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.SearchEvaluationsRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.SearchEvaluationsResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.SearchEvaluationsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -941,7 +950,7 @@ class SearchExampleComparisonsPager:
     """A pager for iterating through ``search_example_comparisons`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.SearchExampleComparisonsResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``example_comparisons`` field.
 
@@ -950,7 +959,7 @@ class SearchExampleComparisonsPager:
     through the ``example_comparisons`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.SearchExampleComparisonsResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -968,9 +977,9 @@ class SearchExampleComparisonsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.SearchExampleComparisonsRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.SearchExampleComparisonsResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -1007,7 +1016,7 @@ class SearchExampleComparisonsAsyncPager:
     """A pager for iterating through ``search_example_comparisons`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.SearchExampleComparisonsResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``example_comparisons`` field.
 
@@ -1016,7 +1025,7 @@ class SearchExampleComparisonsAsyncPager:
     through the ``example_comparisons`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.SearchExampleComparisonsResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -1036,9 +1045,9 @@ class SearchExampleComparisonsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.SearchExampleComparisonsRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.SearchExampleComparisonsResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -1081,7 +1090,7 @@ class ListEvaluationJobsPager:
     """A pager for iterating through ``list_evaluation_jobs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.ListEvaluationJobsResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``evaluation_jobs`` field.
 
@@ -1090,7 +1099,7 @@ class ListEvaluationJobsPager:
     through the ``evaluation_jobs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.ListEvaluationJobsResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -1108,9 +1117,9 @@ class ListEvaluationJobsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.ListEvaluationJobsRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.ListEvaluationJobsResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -1143,7 +1152,7 @@ class ListEvaluationJobsAsyncPager:
     """A pager for iterating through ``list_evaluation_jobs`` requests.
 
     This class thinly wraps an initial
-    :class:`~.data_labeling_service.ListEvaluationJobsResponse` object, and
+    :class:`google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``evaluation_jobs`` field.
 
@@ -1152,7 +1161,7 @@ class ListEvaluationJobsAsyncPager:
     through the ``evaluation_jobs`` field on the
     corresponding responses.
 
-    All the usual :class:`~.data_labeling_service.ListEvaluationJobsResponse`
+    All the usual :class:`google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -1172,9 +1181,9 @@ class ListEvaluationJobsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.data_labeling_service.ListEvaluationJobsRequest`):
+            request (google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsRequest):
                 The initial request object.
-            response (:class:`~.data_labeling_service.ListEvaluationJobsResponse`):
+            response (google.cloud.datalabeling_v1beta1.types.ListEvaluationJobsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

@@ -98,16 +98,16 @@ class Annotation(proto.Message):
             Output only. Unique name of this annotation, format is:
 
             projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/{annotated_dataset}/examples/{example_id}/annotations/{annotation_id}
-        annotation_source (~.annotation.AnnotationSource):
+        annotation_source (google.cloud.datalabeling_v1beta1.types.AnnotationSource):
             Output only. The source of the annotation.
-        annotation_value (~.annotation.AnnotationValue):
+        annotation_value (google.cloud.datalabeling_v1beta1.types.AnnotationValue):
             Output only. This is the actual annotation
             value, e.g classification, bounding box values
             are stored here.
-        annotation_metadata (~.annotation.AnnotationMetadata):
+        annotation_metadata (google.cloud.datalabeling_v1beta1.types.AnnotationMetadata):
             Output only. Annotation metadata, including
             information like votes for labels.
-        annotation_sentiment (~.annotation.AnnotationSentiment):
+        annotation_sentiment (google.cloud.datalabeling_v1beta1.types.AnnotationSentiment):
             Output only. Sentiment for this annotation.
     """
 
@@ -130,33 +130,33 @@ class AnnotationValue(proto.Message):
     r"""Annotation value for an example.
 
     Attributes:
-        image_classification_annotation (~.annotation.ImageClassificationAnnotation):
+        image_classification_annotation (google.cloud.datalabeling_v1beta1.types.ImageClassificationAnnotation):
             Annotation value for image classification
             case.
-        image_bounding_poly_annotation (~.annotation.ImageBoundingPolyAnnotation):
+        image_bounding_poly_annotation (google.cloud.datalabeling_v1beta1.types.ImageBoundingPolyAnnotation):
             Annotation value for image bounding box,
             oriented bounding box and polygon cases.
-        image_polyline_annotation (~.annotation.ImagePolylineAnnotation):
+        image_polyline_annotation (google.cloud.datalabeling_v1beta1.types.ImagePolylineAnnotation):
             Annotation value for image polyline cases.
             Polyline here is different from BoundingPoly. It
             is formed by line segments connected to each
             other but not closed form(Bounding Poly). The
             line segments can cross each other.
-        image_segmentation_annotation (~.annotation.ImageSegmentationAnnotation):
+        image_segmentation_annotation (google.cloud.datalabeling_v1beta1.types.ImageSegmentationAnnotation):
             Annotation value for image segmentation.
-        text_classification_annotation (~.annotation.TextClassificationAnnotation):
+        text_classification_annotation (google.cloud.datalabeling_v1beta1.types.TextClassificationAnnotation):
             Annotation value for text classification
             case.
-        text_entity_extraction_annotation (~.annotation.TextEntityExtractionAnnotation):
+        text_entity_extraction_annotation (google.cloud.datalabeling_v1beta1.types.TextEntityExtractionAnnotation):
             Annotation value for text entity extraction
             case.
-        video_classification_annotation (~.annotation.VideoClassificationAnnotation):
+        video_classification_annotation (google.cloud.datalabeling_v1beta1.types.VideoClassificationAnnotation):
             Annotation value for video classification
             case.
-        video_object_tracking_annotation (~.annotation.VideoObjectTrackingAnnotation):
+        video_object_tracking_annotation (google.cloud.datalabeling_v1beta1.types.VideoObjectTrackingAnnotation):
             Annotation value for video object detection
             and tracking case.
-        video_event_annotation (~.annotation.VideoEventAnnotation):
+        video_event_annotation (google.cloud.datalabeling_v1beta1.types.VideoEventAnnotation):
             Annotation value for video event case.
     """
 
@@ -222,7 +222,7 @@ class ImageClassificationAnnotation(proto.Message):
     r"""Image classification annotation definition.
 
     Attributes:
-        annotation_spec (~.annotation_spec_set.AnnotationSpec):
+        annotation_spec (google.cloud.datalabeling_v1beta1.types.AnnotationSpec):
             Label of image.
     """
 
@@ -269,7 +269,7 @@ class BoundingPoly(proto.Message):
     r"""A bounding polygon in the image.
 
     Attributes:
-        vertices (Sequence[~.annotation.Vertex]):
+        vertices (Sequence[google.cloud.datalabeling_v1beta1.types.Vertex]):
             The bounding polygon vertices.
     """
 
@@ -280,7 +280,7 @@ class NormalizedBoundingPoly(proto.Message):
     r"""Normalized bounding polygon.
 
     Attributes:
-        normalized_vertices (Sequence[~.annotation.NormalizedVertex]):
+        normalized_vertices (Sequence[google.cloud.datalabeling_v1beta1.types.NormalizedVertex]):
             The bounding polygon normalized vertices.
     """
 
@@ -294,11 +294,11 @@ class ImageBoundingPolyAnnotation(proto.Message):
     including bounding box in the image.
 
     Attributes:
-        bounding_poly (~.annotation.BoundingPoly):
+        bounding_poly (google.cloud.datalabeling_v1beta1.types.BoundingPoly):
 
-        normalized_bounding_poly (~.annotation.NormalizedBoundingPoly):
+        normalized_bounding_poly (google.cloud.datalabeling_v1beta1.types.NormalizedBoundingPoly):
 
-        annotation_spec (~.annotation_spec_set.AnnotationSpec):
+        annotation_spec (google.cloud.datalabeling_v1beta1.types.AnnotationSpec):
             Label of object in this bounding polygon.
     """
 
@@ -319,7 +319,7 @@ class Polyline(proto.Message):
     r"""A line with multiple line segments.
 
     Attributes:
-        vertices (Sequence[~.annotation.Vertex]):
+        vertices (Sequence[google.cloud.datalabeling_v1beta1.types.Vertex]):
             The polyline vertices.
     """
 
@@ -330,7 +330,7 @@ class NormalizedPolyline(proto.Message):
     r"""Normalized polyline.
 
     Attributes:
-        normalized_vertices (Sequence[~.annotation.NormalizedVertex]):
+        normalized_vertices (Sequence[google.cloud.datalabeling_v1beta1.types.NormalizedVertex]):
             The normalized polyline vertices.
     """
 
@@ -343,11 +343,11 @@ class ImagePolylineAnnotation(proto.Message):
     r"""A polyline for the image annotation.
 
     Attributes:
-        polyline (~.annotation.Polyline):
+        polyline (google.cloud.datalabeling_v1beta1.types.Polyline):
 
-        normalized_polyline (~.annotation.NormalizedPolyline):
+        normalized_polyline (google.cloud.datalabeling_v1beta1.types.NormalizedPolyline):
 
-        annotation_spec (~.annotation_spec_set.AnnotationSpec):
+        annotation_spec (google.cloud.datalabeling_v1beta1.types.AnnotationSpec):
             Label of this polyline.
     """
 
@@ -366,7 +366,7 @@ class ImageSegmentationAnnotation(proto.Message):
     r"""Image segmentation annotation.
 
     Attributes:
-        annotation_colors (Sequence[~.annotation.ImageSegmentationAnnotation.AnnotationColorsEntry]):
+        annotation_colors (Sequence[google.cloud.datalabeling_v1beta1.types.ImageSegmentationAnnotation.AnnotationColorsEntry]):
             The mapping between rgb color and annotation
             spec. The key is the rgb color represented in
             format of rgb(0, 0, 0). The value is the
@@ -393,7 +393,7 @@ class TextClassificationAnnotation(proto.Message):
     r"""Text classification annotation.
 
     Attributes:
-        annotation_spec (~.annotation_spec_set.AnnotationSpec):
+        annotation_spec (google.cloud.datalabeling_v1beta1.types.AnnotationSpec):
             Label of the text.
     """
 
@@ -406,9 +406,9 @@ class TextEntityExtractionAnnotation(proto.Message):
     r"""Text entity extraction annotation.
 
     Attributes:
-        annotation_spec (~.annotation_spec_set.AnnotationSpec):
+        annotation_spec (google.cloud.datalabeling_v1beta1.types.AnnotationSpec):
             Label of the text entities.
-        sequential_segment (~.annotation.SequentialSegment):
+        sequential_segment (google.cloud.datalabeling_v1beta1.types.SequentialSegment):
             Position of the entity.
     """
 
@@ -441,11 +441,11 @@ class TimeSegment(proto.Message):
     (e.g. video).
 
     Attributes:
-        start_time_offset (~.duration.Duration):
+        start_time_offset (google.protobuf.duration_pb2.Duration):
             Start of the time segment (inclusive),
             represented as the duration since the example
             start.
-        end_time_offset (~.duration.Duration):
+        end_time_offset (google.protobuf.duration_pb2.Duration):
             End of the time segment (exclusive),
             represented as the duration since the example
             start.
@@ -460,10 +460,10 @@ class VideoClassificationAnnotation(proto.Message):
     r"""Video classification annotation.
 
     Attributes:
-        time_segment (~.annotation.TimeSegment):
+        time_segment (google.cloud.datalabeling_v1beta1.types.TimeSegment):
             The time segment of the video to which the
             annotation applies.
-        annotation_spec (~.annotation_spec_set.AnnotationSpec):
+        annotation_spec (google.cloud.datalabeling_v1beta1.types.AnnotationSpec):
             Label of the segment specified by time_segment.
     """
 
@@ -479,11 +479,11 @@ class ObjectTrackingFrame(proto.Message):
     tracking.
 
     Attributes:
-        bounding_poly (~.annotation.BoundingPoly):
+        bounding_poly (google.cloud.datalabeling_v1beta1.types.BoundingPoly):
 
-        normalized_bounding_poly (~.annotation.NormalizedBoundingPoly):
+        normalized_bounding_poly (google.cloud.datalabeling_v1beta1.types.NormalizedBoundingPoly):
 
-        time_offset (~.duration.Duration):
+        time_offset (google.protobuf.duration_pb2.Duration):
             The time offset of this frame relative to the
             beginning of the video.
     """
@@ -503,13 +503,13 @@ class VideoObjectTrackingAnnotation(proto.Message):
     r"""Video object tracking annotation.
 
     Attributes:
-        annotation_spec (~.annotation_spec_set.AnnotationSpec):
+        annotation_spec (google.cloud.datalabeling_v1beta1.types.AnnotationSpec):
             Label of the object tracked in this
             annotation.
-        time_segment (~.annotation.TimeSegment):
+        time_segment (google.cloud.datalabeling_v1beta1.types.TimeSegment):
             The time segment of the video to which object
             tracking applies.
-        object_tracking_frames (Sequence[~.annotation.ObjectTrackingFrame]):
+        object_tracking_frames (Sequence[google.cloud.datalabeling_v1beta1.types.ObjectTrackingFrame]):
             The list of frames where this object track
             appears.
     """
@@ -529,9 +529,9 @@ class VideoEventAnnotation(proto.Message):
     r"""Video event annotation.
 
     Attributes:
-        annotation_spec (~.annotation_spec_set.AnnotationSpec):
+        annotation_spec (google.cloud.datalabeling_v1beta1.types.AnnotationSpec):
             Label of the event in this annotation.
-        time_segment (~.annotation.TimeSegment):
+        time_segment (google.cloud.datalabeling_v1beta1.types.TimeSegment):
             The time segment of the video to which the
             annotation applies.
     """
@@ -547,7 +547,7 @@ class AnnotationMetadata(proto.Message):
     r"""Additional information associated with the annotation.
 
     Attributes:
-        operator_metadata (~.annotation.OperatorMetadata):
+        operator_metadata (google.cloud.datalabeling_v1beta1.types.OperatorMetadata):
             Metadata related to human labeling.
     """
 

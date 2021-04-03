@@ -73,9 +73,9 @@ class Dataset(proto.Message):
             Optional. User-provided description of the
             annotation specification set. The description
             can be up to 10000 characters long.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time the dataset is created.
-        input_configs (Sequence[~.dataset.InputConfig]):
+        input_configs (Sequence[google.cloud.datalabeling_v1beta1.types.InputConfig]):
             Output only. This is populated with the
             original input configs where ImportData is
             called. It is available only after the clients
@@ -109,24 +109,24 @@ class InputConfig(proto.Message):
     location, etc.
 
     Attributes:
-        text_metadata (~.dataset.TextMetadata):
+        text_metadata (google.cloud.datalabeling_v1beta1.types.TextMetadata):
             Required for text import, as language code
             must be specified.
-        gcs_source (~.dataset.GcsSource):
+        gcs_source (google.cloud.datalabeling_v1beta1.types.GcsSource):
             Source located in Cloud Storage.
-        bigquery_source (~.dataset.BigQuerySource):
+        bigquery_source (google.cloud.datalabeling_v1beta1.types.BigQuerySource):
             Source located in BigQuery. You must specify this field if
             you are using this InputConfig in an
             [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob].
-        data_type (~.dataset.DataType):
+        data_type (google.cloud.datalabeling_v1beta1.types.DataType):
             Required. Data type must be specifed when
             user tries to import data.
-        annotation_type (~.annotation.AnnotationType):
+        annotation_type (google.cloud.datalabeling_v1beta1.types.AnnotationType):
             Optional. The type of annotation to be performed on this
             data. You must specify this field if you are using this
             InputConfig in an
             [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob].
-        classification_metadata (~.dataset.ClassificationMetadata):
+        classification_metadata (google.cloud.datalabeling_v1beta1.types.ClassificationMetadata):
             Optional. Metadata about annotations for the input. You must
             specify this field if you are using this InputConfig in an
             [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob]
@@ -228,11 +228,11 @@ class OutputConfig(proto.Message):
     r"""The configuration of output data.
 
     Attributes:
-        gcs_destination (~.dataset.GcsDestination):
+        gcs_destination (google.cloud.datalabeling_v1beta1.types.GcsDestination):
             Output to a file in Cloud Storage. Should be
             used for labeling output other than image
             segmentation.
-        gcs_folder_destination (~.dataset.GcsFolderDestination):
+        gcs_folder_destination (google.cloud.datalabeling_v1beta1.types.GcsFolderDestination):
             Output to a folder in Cloud Storage. Should
             be used for image segmentation labeling output.
     """
@@ -281,13 +281,13 @@ class DataItem(proto.Message):
     an image.
 
     Attributes:
-        image_payload (~.data_payloads.ImagePayload):
+        image_payload (google.cloud.datalabeling_v1beta1.types.ImagePayload):
             The image payload, a container of the image
             bytes/uri.
-        text_payload (~.data_payloads.TextPayload):
+        text_payload (google.cloud.datalabeling_v1beta1.types.TextPayload):
             The text payload, a container of text
             content.
-        video_payload (~.data_payloads.VideoPayload):
+        video_payload (google.cloud.datalabeling_v1beta1.types.VideoPayload):
             The video payload, a container of the video
             uri.
         name (str):
@@ -330,9 +330,9 @@ class AnnotatedDataset(proto.Message):
             AnnotatedDataset. It is specified in
             HumanAnnotationConfig when user starts a
             labeling task. Maximum of 10000 characters.
-        annotation_source (~.annotation.AnnotationSource):
+        annotation_source (google.cloud.datalabeling_v1beta1.types.AnnotationSource):
             Output only. Source of the annotation.
-        annotation_type (~.annotation.AnnotationType):
+        annotation_type (google.cloud.datalabeling_v1beta1.types.AnnotationType):
             Output only. Type of the annotation. It is
             specified when starting labeling task.
         example_count (int):
@@ -341,12 +341,12 @@ class AnnotatedDataset(proto.Message):
         completed_example_count (int):
             Output only. Number of examples that have
             annotation in the annotated dataset.
-        label_stats (~.dataset.LabelStats):
+        label_stats (google.cloud.datalabeling_v1beta1.types.LabelStats):
             Output only. Per label statistics.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time the AnnotatedDataset was
             created.
-        metadata (~.dataset.AnnotatedDatasetMetadata):
+        metadata (google.cloud.datalabeling_v1beta1.types.AnnotatedDatasetMetadata):
             Output only. Additional information about
             AnnotatedDataset.
         blocking_resources (Sequence[str]):
@@ -386,7 +386,7 @@ class LabelStats(proto.Message):
     r"""Statistics about annotation specs.
 
     Attributes:
-        example_count (Sequence[~.dataset.LabelStats.ExampleCountEntry]):
+        example_count (Sequence[google.cloud.datalabeling_v1beta1.types.LabelStats.ExampleCountEntry]):
             Map of each annotation spec's example count.
             Key is the annotation spec name and value is the
             number of examples for that annotation spec. If
@@ -403,30 +403,30 @@ class AnnotatedDatasetMetadata(proto.Message):
     r"""Metadata on AnnotatedDataset.
 
     Attributes:
-        image_classification_config (~.gcd_human_annotation_config.ImageClassificationConfig):
+        image_classification_config (google.cloud.datalabeling_v1beta1.types.ImageClassificationConfig):
             Configuration for image classification task.
-        bounding_poly_config (~.gcd_human_annotation_config.BoundingPolyConfig):
+        bounding_poly_config (google.cloud.datalabeling_v1beta1.types.BoundingPolyConfig):
             Configuration for image bounding box and
             bounding poly task.
-        polyline_config (~.gcd_human_annotation_config.PolylineConfig):
+        polyline_config (google.cloud.datalabeling_v1beta1.types.PolylineConfig):
             Configuration for image polyline task.
-        segmentation_config (~.gcd_human_annotation_config.SegmentationConfig):
+        segmentation_config (google.cloud.datalabeling_v1beta1.types.SegmentationConfig):
             Configuration for image segmentation task.
-        video_classification_config (~.gcd_human_annotation_config.VideoClassificationConfig):
+        video_classification_config (google.cloud.datalabeling_v1beta1.types.VideoClassificationConfig):
             Configuration for video classification task.
-        object_detection_config (~.gcd_human_annotation_config.ObjectDetectionConfig):
+        object_detection_config (google.cloud.datalabeling_v1beta1.types.ObjectDetectionConfig):
             Configuration for video object detection
             task.
-        object_tracking_config (~.gcd_human_annotation_config.ObjectTrackingConfig):
+        object_tracking_config (google.cloud.datalabeling_v1beta1.types.ObjectTrackingConfig):
             Configuration for video object tracking task.
-        event_config (~.gcd_human_annotation_config.EventConfig):
+        event_config (google.cloud.datalabeling_v1beta1.types.EventConfig):
             Configuration for video event labeling task.
-        text_classification_config (~.gcd_human_annotation_config.TextClassificationConfig):
+        text_classification_config (google.cloud.datalabeling_v1beta1.types.TextClassificationConfig):
             Configuration for text classification task.
-        text_entity_extraction_config (~.gcd_human_annotation_config.TextEntityExtractionConfig):
+        text_entity_extraction_config (google.cloud.datalabeling_v1beta1.types.TextEntityExtractionConfig):
             Configuration for text entity extraction
             task.
-        human_annotation_config (~.gcd_human_annotation_config.HumanAnnotationConfig):
+        human_annotation_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             HumanAnnotationConfig used when requesting
             the human labeling task for this
             AnnotatedDataset.
@@ -514,20 +514,20 @@ class Example(proto.Message):
     example, an image with label "house".
 
     Attributes:
-        image_payload (~.data_payloads.ImagePayload):
+        image_payload (google.cloud.datalabeling_v1beta1.types.ImagePayload):
             The image payload, a container of the image
             bytes/uri.
-        text_payload (~.data_payloads.TextPayload):
+        text_payload (google.cloud.datalabeling_v1beta1.types.TextPayload):
             The text payload, a container of the text
             content.
-        video_payload (~.data_payloads.VideoPayload):
+        video_payload (google.cloud.datalabeling_v1beta1.types.VideoPayload):
             The video payload, a container of the video
             uri.
         name (str):
             Output only. Name of the example, in format of:
             projects/{project_id}/datasets/{dataset_id}/annotatedDatasets/
             {annotated_dataset_id}/examples/{example_id}
-        annotations (Sequence[~.annotation.Annotation]):
+        annotations (Sequence[google.cloud.datalabeling_v1beta1.types.Annotation]):
             Output only. Annotations for the piece of
             data in Example. One piece of data can have
             multiple annotations.

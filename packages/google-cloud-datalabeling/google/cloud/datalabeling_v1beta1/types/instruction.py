@@ -43,13 +43,13 @@ class Instruction(proto.Message):
             Optional. User-provided description of the
             instruction. The description can be up to 10000
             characters long.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Creation time of instruction.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Last update time of instruction.
-        data_type (~.dataset.DataType):
+        data_type (google.cloud.datalabeling_v1beta1.types.DataType):
             Required. The data type of this instruction.
-        csv_instruction (~.instruction.CsvInstruction):
+        csv_instruction (google.cloud.datalabeling_v1beta1.types.CsvInstruction):
             Deprecated: this instruction format is not supported any
             more. Instruction from a CSV file, such as for
             classification task. The CSV file should have exact two
@@ -59,7 +59,7 @@ class Instruction(proto.Message):
                reference, text.
             -  The second column is comma separated labels associated
                with data.
-        pdf_instruction (~.instruction.PdfInstruction):
+        pdf_instruction (google.cloud.datalabeling_v1beta1.types.PdfInstruction):
             Instruction from a PDF document. The PDF
             should be in a Cloud Storage bucket.
         blocking_resources (Sequence[str]):

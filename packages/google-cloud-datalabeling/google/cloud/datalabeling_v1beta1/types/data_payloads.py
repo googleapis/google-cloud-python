@@ -68,7 +68,7 @@ class VideoThumbnail(proto.Message):
     Attributes:
         thumbnail (bytes):
             A byte string of the video frame.
-        time_offset (~.duration.Duration):
+        time_offset (google.protobuf.duration_pb2.Duration):
             Time offset relative to the beginning of the
             video, corresponding to the video frame where
             the thumbnail has been extracted from.
@@ -87,7 +87,7 @@ class VideoPayload(proto.Message):
             Video format.
         video_uri (str):
             Video uri from the user bucket.
-        video_thumbnails (Sequence[~.data_payloads.VideoThumbnail]):
+        video_thumbnails (Sequence[google.cloud.datalabeling_v1beta1.types.VideoThumbnail]):
             The list of video thumbnails.
         frame_rate (float):
             FPS of the video.

@@ -86,7 +86,7 @@ class CreateDatasetRequest(proto.Message):
         parent (str):
             Required. Dataset resource parent, format:
             projects/{project_id}
-        dataset (~.gcd_dataset.Dataset):
+        dataset (google.cloud.datalabeling_v1beta1.types.Dataset):
             Required. The dataset to be created.
     """
 
@@ -142,7 +142,7 @@ class ListDatasetsResponse(proto.Message):
     r"""Results of listing datasets within a project.
 
     Attributes:
-        datasets (Sequence[~.gcd_dataset.Dataset]):
+        datasets (Sequence[google.cloud.datalabeling_v1beta1.types.Dataset]):
             The list of datasets to return.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -178,7 +178,7 @@ class ImportDataRequest(proto.Message):
         name (str):
             Required. Dataset resource name, format:
             projects/{project_id}/datasets/{dataset_id}
-        input_config (~.gcd_dataset.InputConfig):
+        input_config (google.cloud.datalabeling_v1beta1.types.InputConfig):
             Required. Specify the input source of the
             data.
         user_email_address (str):
@@ -212,7 +212,7 @@ class ExportDataRequest(proto.Message):
         filter (str):
             Optional. Filter is not supported at this
             moment.
-        output_config (~.gcd_dataset.OutputConfig):
+        output_config (google.cloud.datalabeling_v1beta1.types.OutputConfig):
             Required. Specify the output destination.
         user_email_address (str):
             Email of the user who started the export task
@@ -280,7 +280,7 @@ class ListDataItemsResponse(proto.Message):
     r"""Results of listing data items in a dataset.
 
     Attributes:
-        data_items (Sequence[~.gcd_dataset.DataItem]):
+        data_items (Sequence[google.cloud.datalabeling_v1beta1.types.DataItem]):
             The list of data items to return.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -345,7 +345,7 @@ class ListAnnotatedDatasetsResponse(proto.Message):
     r"""Results of listing annotated datasets for a dataset.
 
     Attributes:
-        annotated_datasets (Sequence[~.gcd_dataset.AnnotatedDataset]):
+        annotated_datasets (Sequence[google.cloud.datalabeling_v1beta1.types.AnnotatedDataset]):
             The list of annotated datasets to return.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -379,28 +379,28 @@ class LabelImageRequest(proto.Message):
     r"""Request message for starting an image labeling task.
 
     Attributes:
-        image_classification_config (~.human_annotation_config.ImageClassificationConfig):
+        image_classification_config (google.cloud.datalabeling_v1beta1.types.ImageClassificationConfig):
             Configuration for image classification task. One of
             image_classification_config, bounding_poly_config,
             polyline_config and segmentation_config are required.
-        bounding_poly_config (~.human_annotation_config.BoundingPolyConfig):
+        bounding_poly_config (google.cloud.datalabeling_v1beta1.types.BoundingPolyConfig):
             Configuration for bounding box and bounding poly task. One
             of image_classification_config, bounding_poly_config,
             polyline_config and segmentation_config are required.
-        polyline_config (~.human_annotation_config.PolylineConfig):
+        polyline_config (google.cloud.datalabeling_v1beta1.types.PolylineConfig):
             Configuration for polyline task. One of
             image_classification_config, bounding_poly_config,
             polyline_config and segmentation_config are required.
-        segmentation_config (~.human_annotation_config.SegmentationConfig):
+        segmentation_config (google.cloud.datalabeling_v1beta1.types.SegmentationConfig):
             Configuration for segmentation task. One of
             image_classification_config, bounding_poly_config,
             polyline_config and segmentation_config are required.
         parent (str):
             Required. Name of the dataset to request labeling task,
             format: projects/{project_id}/datasets/{dataset_id}
-        basic_config (~.human_annotation_config.HumanAnnotationConfig):
+        basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Required. Basic human annotation config.
-        feature (~.data_labeling_service.LabelImageRequest.Feature):
+        feature (google.cloud.datalabeling_v1beta1.types.LabelImageRequest.Feature):
             Required. The type of image labeling task.
     """
 
@@ -455,28 +455,28 @@ class LabelVideoRequest(proto.Message):
     r"""Request message for LabelVideo.
 
     Attributes:
-        video_classification_config (~.human_annotation_config.VideoClassificationConfig):
+        video_classification_config (google.cloud.datalabeling_v1beta1.types.VideoClassificationConfig):
             Configuration for video classification task. One of
             video_classification_config, object_detection_config,
             object_tracking_config and event_config is required.
-        object_detection_config (~.human_annotation_config.ObjectDetectionConfig):
+        object_detection_config (google.cloud.datalabeling_v1beta1.types.ObjectDetectionConfig):
             Configuration for video object detection task. One of
             video_classification_config, object_detection_config,
             object_tracking_config and event_config is required.
-        object_tracking_config (~.human_annotation_config.ObjectTrackingConfig):
+        object_tracking_config (google.cloud.datalabeling_v1beta1.types.ObjectTrackingConfig):
             Configuration for video object tracking task. One of
             video_classification_config, object_detection_config,
             object_tracking_config and event_config is required.
-        event_config (~.human_annotation_config.EventConfig):
+        event_config (google.cloud.datalabeling_v1beta1.types.EventConfig):
             Configuration for video event task. One of
             video_classification_config, object_detection_config,
             object_tracking_config and event_config is required.
         parent (str):
             Required. Name of the dataset to request labeling task,
             format: projects/{project_id}/datasets/{dataset_id}
-        basic_config (~.human_annotation_config.HumanAnnotationConfig):
+        basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Required. Basic human annotation config.
-        feature (~.data_labeling_service.LabelVideoRequest.Feature):
+        feature (google.cloud.datalabeling_v1beta1.types.LabelVideoRequest.Feature):
             Required. The type of video labeling task.
     """
 
@@ -529,20 +529,20 @@ class LabelTextRequest(proto.Message):
     r"""Request message for LabelText.
 
     Attributes:
-        text_classification_config (~.human_annotation_config.TextClassificationConfig):
+        text_classification_config (google.cloud.datalabeling_v1beta1.types.TextClassificationConfig):
             Configuration for text classification task. One of
             text_classification_config and text_entity_extraction_config
             is required.
-        text_entity_extraction_config (~.human_annotation_config.TextEntityExtractionConfig):
+        text_entity_extraction_config (google.cloud.datalabeling_v1beta1.types.TextEntityExtractionConfig):
             Configuration for entity extraction task. One of
             text_classification_config and text_entity_extraction_config
             is required.
         parent (str):
             Required. Name of the data set to request labeling task,
             format: projects/{project_id}/datasets/{dataset_id}
-        basic_config (~.human_annotation_config.HumanAnnotationConfig):
+        basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Required. Basic human annotation config.
-        feature (~.data_labeling_service.LabelTextRequest.Feature):
+        feature (google.cloud.datalabeling_v1beta1.types.LabelTextRequest.Feature):
             Required. The type of text labeling task.
     """
 
@@ -630,7 +630,7 @@ class ListExamplesResponse(proto.Message):
     r"""Results of listing Examples in and annotated dataset.
 
     Attributes:
-        examples (Sequence[~.gcd_dataset.Example]):
+        examples (Sequence[google.cloud.datalabeling_v1beta1.types.Example]):
             The list of examples to return.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -654,7 +654,7 @@ class CreateAnnotationSpecSetRequest(proto.Message):
         parent (str):
             Required. AnnotationSpecSet resource parent, format:
             projects/{project_id}
-        annotation_spec_set (~.gcd_annotation_spec_set.AnnotationSpecSet):
+        annotation_spec_set (google.cloud.datalabeling_v1beta1.types.AnnotationSpecSet):
             Required. Annotation spec set to create. Annotation specs
             must be included. Only one annotation spec will be accepted
             for annotation specs with same display_name.
@@ -714,7 +714,7 @@ class ListAnnotationSpecSetsResponse(proto.Message):
     r"""Results of listing annotation spec set under a project.
 
     Attributes:
-        annotation_spec_sets (Sequence[~.gcd_annotation_spec_set.AnnotationSpecSet]):
+        annotation_spec_sets (Sequence[google.cloud.datalabeling_v1beta1.types.AnnotationSpecSet]):
             The list of annotation spec sets.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -750,7 +750,7 @@ class CreateInstructionRequest(proto.Message):
         parent (str):
             Required. Instruction resource parent, format:
             projects/{project_id}
-        instruction (~.gcd_instruction.Instruction):
+        instruction (google.cloud.datalabeling_v1beta1.types.Instruction):
             Required. Instruction of how to perform the
             labeling task.
     """
@@ -821,7 +821,7 @@ class ListInstructionsResponse(proto.Message):
     r"""Results of listing instructions under a project.
 
     Attributes:
-        instructions (Sequence[~.gcd_instruction.Instruction]):
+        instructions (Sequence[google.cloud.datalabeling_v1beta1.types.Instruction]):
             The list of Instructions to return.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -917,7 +917,7 @@ class SearchEvaluationsResponse(proto.Message):
     r"""Results of searching evaluations.
 
     Attributes:
-        evaluations (Sequence[~.evaluation.Evaluation]):
+        evaluations (Sequence[google.cloud.datalabeling_v1beta1.types.Evaluation]):
             The list of evaluations matching the search.
         next_page_token (str):
             A token to retrieve next page of results.
@@ -969,7 +969,7 @@ class SearchExampleComparisonsResponse(proto.Message):
     r"""Results of searching example comparisons.
 
     Attributes:
-        example_comparisons (Sequence[~.data_labeling_service.SearchExampleComparisonsResponse.ExampleComparison]):
+        example_comparisons (Sequence[google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse.ExampleComparison]):
             A list of example comparisons matching the
             search criteria.
         next_page_token (str):
@@ -981,9 +981,9 @@ class SearchExampleComparisonsResponse(proto.Message):
         predictions for a specific input.
 
         Attributes:
-            ground_truth_example (~.gcd_dataset.Example):
+            ground_truth_example (google.cloud.datalabeling_v1beta1.types.Example):
                 The ground truth output for the input.
-            model_created_examples (Sequence[~.gcd_dataset.Example]):
+            model_created_examples (Sequence[google.cloud.datalabeling_v1beta1.types.Example]):
                 Predictions by the model for the input.
         """
 
@@ -1013,7 +1013,7 @@ class CreateEvaluationJobRequest(proto.Message):
         parent (str):
             Required. Evaluation job resource parent. Format:
             "projects/{project_id}".
-        job (~.gcd_evaluation_job.EvaluationJob):
+        job (google.cloud.datalabeling_v1beta1.types.EvaluationJob):
             Required. The evaluation job to create.
     """
 
@@ -1028,10 +1028,10 @@ class UpdateEvaluationJobRequest(proto.Message):
     r"""Request message for UpdateEvaluationJob.
 
     Attributes:
-        evaluation_job (~.gcd_evaluation_job.EvaluationJob):
+        evaluation_job (google.cloud.datalabeling_v1beta1.types.EvaluationJob):
             Required. Evaluation job that is going to be
             updated.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Mask for which fields to update. You can only
             provide the following fields:
 
@@ -1148,7 +1148,7 @@ class ListEvaluationJobsResponse(proto.Message):
     r"""Results for listing evaluation jobs.
 
     Attributes:
-        evaluation_jobs (Sequence[~.gcd_evaluation_job.EvaluationJob]):
+        evaluation_jobs (Sequence[google.cloud.datalabeling_v1beta1.types.EvaluationJob]):
             The list of evaluation jobs to return.
         next_page_token (str):
             A token to retrieve next page of results.

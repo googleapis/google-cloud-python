@@ -82,10 +82,10 @@ class ExportDataOperationResponse(proto.Message):
         export_count (int):
             Output only. Number of examples exported
             successfully.
-        label_stats (~.gcd_dataset.LabelStats):
+        label_stats (google.cloud.datalabeling_v1beta1.types.LabelStats):
             Output only. Statistic infos of labels in the
             exported dataset.
-        output_config (~.gcd_dataset.OutputConfig):
+        output_config (google.cloud.datalabeling_v1beta1.types.OutputConfig):
             Output only. output_config in the ExportData request.
     """
 
@@ -109,12 +109,12 @@ class ImportDataOperationMetadata(proto.Message):
         dataset (str):
             Output only. The name of imported dataset.
             "projects/*/datasets/*".
-        partial_failures (Sequence[~.status.Status]):
+        partial_failures (Sequence[google.rpc.status_pb2.Status]):
             Output only. Partial failures encountered.
             E.g. single files that couldn't be read.
             Status details field will contain standard GCP
             error details.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when import dataset
             request was created.
     """
@@ -135,12 +135,12 @@ class ExportDataOperationMetadata(proto.Message):
         dataset (str):
             Output only. The name of dataset to be exported.
             "projects/*/datasets/*".
-        partial_failures (Sequence[~.status.Status]):
+        partial_failures (Sequence[google.rpc.status_pb2.Status]):
             Output only. Partial failures encountered.
             E.g. single files that couldn't be read.
             Status details field will contain standard GCP
             error details.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when export dataset
             request was created.
     """
@@ -159,48 +159,48 @@ class LabelOperationMetadata(proto.Message):
     LabelVideo. Next tag: 20
 
     Attributes:
-        image_classification_details (~.operations.LabelImageClassificationOperationMetadata):
+        image_classification_details (google.cloud.datalabeling_v1beta1.types.LabelImageClassificationOperationMetadata):
             Details of label image classification
             operation.
-        image_bounding_box_details (~.operations.LabelImageBoundingBoxOperationMetadata):
+        image_bounding_box_details (google.cloud.datalabeling_v1beta1.types.LabelImageBoundingBoxOperationMetadata):
             Details of label image bounding box
             operation.
-        image_bounding_poly_details (~.operations.LabelImageBoundingPolyOperationMetadata):
+        image_bounding_poly_details (google.cloud.datalabeling_v1beta1.types.LabelImageBoundingPolyOperationMetadata):
             Details of label image bounding poly
             operation.
-        image_oriented_bounding_box_details (~.operations.LabelImageOrientedBoundingBoxOperationMetadata):
+        image_oriented_bounding_box_details (google.cloud.datalabeling_v1beta1.types.LabelImageOrientedBoundingBoxOperationMetadata):
             Details of label image oriented bounding box
             operation.
-        image_polyline_details (~.operations.LabelImagePolylineOperationMetadata):
+        image_polyline_details (google.cloud.datalabeling_v1beta1.types.LabelImagePolylineOperationMetadata):
             Details of label image polyline operation.
-        image_segmentation_details (~.operations.LabelImageSegmentationOperationMetadata):
+        image_segmentation_details (google.cloud.datalabeling_v1beta1.types.LabelImageSegmentationOperationMetadata):
             Details of label image segmentation
             operation.
-        video_classification_details (~.operations.LabelVideoClassificationOperationMetadata):
+        video_classification_details (google.cloud.datalabeling_v1beta1.types.LabelVideoClassificationOperationMetadata):
             Details of label video classification
             operation.
-        video_object_detection_details (~.operations.LabelVideoObjectDetectionOperationMetadata):
+        video_object_detection_details (google.cloud.datalabeling_v1beta1.types.LabelVideoObjectDetectionOperationMetadata):
             Details of label video object detection
             operation.
-        video_object_tracking_details (~.operations.LabelVideoObjectTrackingOperationMetadata):
+        video_object_tracking_details (google.cloud.datalabeling_v1beta1.types.LabelVideoObjectTrackingOperationMetadata):
             Details of label video object tracking
             operation.
-        video_event_details (~.operations.LabelVideoEventOperationMetadata):
+        video_event_details (google.cloud.datalabeling_v1beta1.types.LabelVideoEventOperationMetadata):
             Details of label video event operation.
-        text_classification_details (~.operations.LabelTextClassificationOperationMetadata):
+        text_classification_details (google.cloud.datalabeling_v1beta1.types.LabelTextClassificationOperationMetadata):
             Details of label text classification
             operation.
-        text_entity_extraction_details (~.operations.LabelTextEntityExtractionOperationMetadata):
+        text_entity_extraction_details (google.cloud.datalabeling_v1beta1.types.LabelTextEntityExtractionOperationMetadata):
             Details of label text entity extraction
             operation.
         progress_percent (int):
             Output only. Progress of label operation. Range: [0, 100].
-        partial_failures (Sequence[~.status.Status]):
+        partial_failures (Sequence[google.rpc.status_pb2.Status]):
             Output only. Partial failures encountered.
             E.g. single files that couldn't be read.
             Status details field will contain standard GCP
             error details.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp when labeling request
             was created.
     """
@@ -302,7 +302,7 @@ class LabelImageClassificationOperationMetadata(proto.Message):
     r"""Metadata of a LabelImageClassification operation.
 
     Attributes:
-        basic_config (~.human_annotation_config.HumanAnnotationConfig):
+        basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
             labeling request.
     """
@@ -316,7 +316,7 @@ class LabelImageBoundingBoxOperationMetadata(proto.Message):
     r"""Details of a LabelImageBoundingBox operation metadata.
 
     Attributes:
-        basic_config (~.human_annotation_config.HumanAnnotationConfig):
+        basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
             labeling request.
     """
@@ -331,7 +331,7 @@ class LabelImageOrientedBoundingBoxOperationMetadata(proto.Message):
     metadata.
 
     Attributes:
-        basic_config (~.human_annotation_config.HumanAnnotationConfig):
+        basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config.
     """
 
@@ -344,7 +344,7 @@ class LabelImageBoundingPolyOperationMetadata(proto.Message):
     r"""Details of LabelImageBoundingPoly operation metadata.
 
     Attributes:
-        basic_config (~.human_annotation_config.HumanAnnotationConfig):
+        basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
             labeling request.
     """
@@ -358,7 +358,7 @@ class LabelImagePolylineOperationMetadata(proto.Message):
     r"""Details of LabelImagePolyline operation metadata.
 
     Attributes:
-        basic_config (~.human_annotation_config.HumanAnnotationConfig):
+        basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
             labeling request.
     """
@@ -372,7 +372,7 @@ class LabelImageSegmentationOperationMetadata(proto.Message):
     r"""Details of a LabelImageSegmentation operation metadata.
 
     Attributes:
-        basic_config (~.human_annotation_config.HumanAnnotationConfig):
+        basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config.
     """
 
@@ -385,7 +385,7 @@ class LabelVideoClassificationOperationMetadata(proto.Message):
     r"""Details of a LabelVideoClassification operation metadata.
 
     Attributes:
-        basic_config (~.human_annotation_config.HumanAnnotationConfig):
+        basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
             labeling request.
     """
@@ -399,7 +399,7 @@ class LabelVideoObjectDetectionOperationMetadata(proto.Message):
     r"""Details of a LabelVideoObjectDetection operation metadata.
 
     Attributes:
-        basic_config (~.human_annotation_config.HumanAnnotationConfig):
+        basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
             labeling request.
     """
@@ -413,7 +413,7 @@ class LabelVideoObjectTrackingOperationMetadata(proto.Message):
     r"""Details of a LabelVideoObjectTracking operation metadata.
 
     Attributes:
-        basic_config (~.human_annotation_config.HumanAnnotationConfig):
+        basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
             labeling request.
     """
@@ -427,7 +427,7 @@ class LabelVideoEventOperationMetadata(proto.Message):
     r"""Details of a LabelVideoEvent operation metadata.
 
     Attributes:
-        basic_config (~.human_annotation_config.HumanAnnotationConfig):
+        basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
             labeling request.
     """
@@ -441,7 +441,7 @@ class LabelTextClassificationOperationMetadata(proto.Message):
     r"""Details of a LabelTextClassification operation metadata.
 
     Attributes:
-        basic_config (~.human_annotation_config.HumanAnnotationConfig):
+        basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
             labeling request.
     """
@@ -455,7 +455,7 @@ class LabelTextEntityExtractionOperationMetadata(proto.Message):
     r"""Details of a LabelTextEntityExtraction operation metadata.
 
     Attributes:
-        basic_config (~.human_annotation_config.HumanAnnotationConfig):
+        basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
             labeling request.
     """
@@ -472,12 +472,12 @@ class CreateInstructionMetadata(proto.Message):
         instruction (str):
             The name of the created Instruction.
             projects/{project_id}/instructions/{instruction_id}
-        partial_failures (Sequence[~.status.Status]):
+        partial_failures (Sequence[google.rpc.status_pb2.Status]):
             Partial failures encountered.
             E.g. single files that couldn't be read.
             Status details field will contain standard GCP
             error details.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp when create instruction request was
             created.
     """

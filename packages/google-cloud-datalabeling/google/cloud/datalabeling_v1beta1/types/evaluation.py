@@ -50,19 +50,19 @@ class Evaluation(proto.Message):
             the following format:
 
             "projects/{project_id}/datasets/{dataset_id}/evaluations/{evaluation_id}'
-        config (~.evaluation.EvaluationConfig):
+        config (google.cloud.datalabeling_v1beta1.types.EvaluationConfig):
             Output only. Options used in the evaluation
             job that created this evaluation.
-        evaluation_job_run_time (~.timestamp.Timestamp):
+        evaluation_job_run_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp for when the
             evaluation job that created this evaluation ran.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp for when this
             evaluation was created.
-        evaluation_metrics (~.evaluation.EvaluationMetrics):
+        evaluation_metrics (google.cloud.datalabeling_v1beta1.types.EvaluationMetrics):
             Output only. Metrics comparing predictions to
             ground truth labels.
-        annotation_type (~.annotation.AnnotationType):
+        annotation_type (google.cloud.datalabeling_v1beta1.types.AnnotationType):
             Output only. Type of task that the model version being
             evaluated performs, as defined in the
 
@@ -100,7 +100,7 @@ class EvaluationConfig(proto.Message):
     [Evaluation][google.cloud.datalabeling.v1beta1.Evaluation].
 
     Attributes:
-        bounding_box_evaluation_options (~.evaluation.BoundingBoxEvaluationOptions):
+        bounding_box_evaluation_options (google.cloud.datalabeling_v1beta1.types.BoundingBoxEvaluationOptions):
             Only specify this field if the related model performs image
             object detection (``IMAGE_BOUNDING_BOX_ANNOTATION``).
             Describes how to evaluate bounding boxes.
@@ -133,9 +133,9 @@ class EvaluationMetrics(proto.Message):
     r"""
 
     Attributes:
-        classification_metrics (~.evaluation.ClassificationMetrics):
+        classification_metrics (google.cloud.datalabeling_v1beta1.types.ClassificationMetrics):
 
-        object_detection_metrics (~.evaluation.ObjectDetectionMetrics):
+        object_detection_metrics (google.cloud.datalabeling_v1beta1.types.ObjectDetectionMetrics):
 
     """
 
@@ -152,11 +152,11 @@ class ClassificationMetrics(proto.Message):
     r"""Metrics calculated for a classification model.
 
     Attributes:
-        pr_curve (~.evaluation.PrCurve):
+        pr_curve (google.cloud.datalabeling_v1beta1.types.PrCurve):
             Precision-recall curve based on ground truth
             labels, predicted labels, and scores for the
             predicted labels.
-        confusion_matrix (~.evaluation.ConfusionMatrix):
+        confusion_matrix (google.cloud.datalabeling_v1beta1.types.ConfusionMatrix):
             Confusion matrix of predicted labels vs.
             ground truth labels.
     """
@@ -171,7 +171,7 @@ class ObjectDetectionMetrics(proto.Message):
     box) model.
 
     Attributes:
-        pr_curve (~.evaluation.PrCurve):
+        pr_curve (google.cloud.datalabeling_v1beta1.types.PrCurve):
             Precision-recall curve.
     """
 
@@ -182,7 +182,7 @@ class PrCurve(proto.Message):
     r"""
 
     Attributes:
-        annotation_spec (~.annotation_spec_set.AnnotationSpec):
+        annotation_spec (google.cloud.datalabeling_v1beta1.types.AnnotationSpec):
             The annotation spec of the label for which
             the precision-recall curve calculated. If this
             field is empty, that means the precision-recall
@@ -191,7 +191,7 @@ class PrCurve(proto.Message):
             Area under the precision-recall curve. Not to
             be confused with area under a receiver operating
             characteristic (ROC) curve.
-        confidence_metrics_entries (Sequence[~.evaluation.PrCurve.ConfidenceMetricsEntry]):
+        confidence_metrics_entries (Sequence[google.cloud.datalabeling_v1beta1.types.PrCurve.ConfidenceMetricsEntry]):
             Entries that make up the precision-recall graph. Each entry
             is a "point" on the graph drawn for a different
             ``confidence_threshold``.
@@ -285,7 +285,7 @@ class ConfusionMatrix(proto.Message):
     labels. Not applicable when the entry is for a single label.
 
     Attributes:
-        row (Sequence[~.evaluation.ConfusionMatrix.Row]):
+        row (Sequence[google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.Row]):
 
     """
 
@@ -293,7 +293,7 @@ class ConfusionMatrix(proto.Message):
         r"""
 
         Attributes:
-            annotation_spec (~.annotation_spec_set.AnnotationSpec):
+            annotation_spec (google.cloud.datalabeling_v1beta1.types.AnnotationSpec):
                 The annotation spec of a predicted label.
             item_count (int):
                 Number of items predicted to have this label. (The ground
@@ -312,10 +312,10 @@ class ConfusionMatrix(proto.Message):
         same ground truth label.
 
         Attributes:
-            annotation_spec (~.annotation_spec_set.AnnotationSpec):
+            annotation_spec (google.cloud.datalabeling_v1beta1.types.AnnotationSpec):
                 The annotation spec of the ground truth label
                 for this row.
-            entries (Sequence[~.evaluation.ConfusionMatrix.ConfusionMatrixEntry]):
+            entries (Sequence[google.cloud.datalabeling_v1beta1.types.ConfusionMatrix.ConfusionMatrixEntry]):
                 A list of the confusion matrix entries. One
                 entry for each possible predicted label.
         """

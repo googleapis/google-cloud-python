@@ -114,7 +114,24 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [DataLabelingServiceClient, DataLabelingServiceAsyncClient]
+    "client_class", [DataLabelingServiceClient, DataLabelingServiceAsyncClient,]
+)
+def test_data_labeling_service_client_from_service_account_info(client_class):
+    creds = credentials.AnonymousCredentials()
+    with mock.patch.object(
+        service_account.Credentials, "from_service_account_info"
+    ) as factory:
+        factory.return_value = creds
+        info = {"valid": True}
+        client = client_class.from_service_account_info(info)
+        assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
+
+        assert client.transport._host == "datalabeling.googleapis.com:443"
+
+
+@pytest.mark.parametrize(
+    "client_class", [DataLabelingServiceClient, DataLabelingServiceAsyncClient,]
 )
 def test_data_labeling_service_client_from_service_account_file(client_class):
     creds = credentials.AnonymousCredentials()
@@ -124,16 +141,21 @@ def test_data_labeling_service_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "datalabeling.googleapis.com:443"
 
 
 def test_data_labeling_service_client_get_transport_class():
     transport = DataLabelingServiceClient.get_transport_class()
-    assert transport == transports.DataLabelingServiceGrpcTransport
+    available_transports = [
+        transports.DataLabelingServiceGrpcTransport,
+    ]
+    assert transport in available_transports
 
     transport = DataLabelingServiceClient.get_transport_class("grpc")
     assert transport == transports.DataLabelingServiceGrpcTransport
@@ -188,7 +210,7 @@ def test_data_labeling_service_client_client_options(
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -204,7 +226,7 @@ def test_data_labeling_service_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_ENDPOINT,
                 scopes=None,
-                ssl_channel_credentials=None,
+                client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
@@ -220,7 +242,7 @@ def test_data_labeling_service_client_client_options(
                 credentials_file=None,
                 host=client.DEFAULT_MTLS_ENDPOINT,
                 scopes=None,
-                ssl_channel_credentials=None,
+                client_cert_source_for_mtls=None,
                 quota_project_id=None,
                 client_info=transports.base.DEFAULT_CLIENT_INFO,
             )
@@ -248,7 +270,7 @@ def test_data_labeling_service_client_client_options(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id="octopus",
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -309,29 +331,25 @@ def test_data_labeling_service_client_mtls_env_auto(
             client_cert_source=client_cert_source_callback
         )
         with mock.patch.object(transport_class, "__init__") as patched:
-            ssl_channel_creds = mock.Mock()
-            with mock.patch(
-                "grpc.ssl_channel_credentials", return_value=ssl_channel_creds
-            ):
-                patched.return_value = None
-                client = client_class(client_options=options)
+            patched.return_value = None
+            client = client_class(client_options=options)
 
-                if use_client_cert_env == "false":
-                    expected_ssl_channel_creds = None
-                    expected_host = client.DEFAULT_ENDPOINT
-                else:
-                    expected_ssl_channel_creds = ssl_channel_creds
-                    expected_host = client.DEFAULT_MTLS_ENDPOINT
+            if use_client_cert_env == "false":
+                expected_client_cert_source = None
+                expected_host = client.DEFAULT_ENDPOINT
+            else:
+                expected_client_cert_source = client_cert_source_callback
+                expected_host = client.DEFAULT_MTLS_ENDPOINT
 
-                patched.assert_called_once_with(
-                    credentials=None,
-                    credentials_file=None,
-                    host=expected_host,
-                    scopes=None,
-                    ssl_channel_credentials=expected_ssl_channel_creds,
-                    quota_project_id=None,
-                    client_info=transports.base.DEFAULT_CLIENT_INFO,
-                )
+            patched.assert_called_once_with(
+                credentials=None,
+                credentials_file=None,
+                host=expected_host,
+                scopes=None,
+                client_cert_source_for_mtls=expected_client_cert_source,
+                quota_project_id=None,
+                client_info=transports.base.DEFAULT_CLIENT_INFO,
+            )
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
@@ -340,40 +358,31 @@ def test_data_labeling_service_client_mtls_env_auto(
     ):
         with mock.patch.object(transport_class, "__init__") as patched:
             with mock.patch(
-                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=True,
             ):
                 with mock.patch(
-                    "google.auth.transport.grpc.SslCredentials.is_mtls",
-                    new_callable=mock.PropertyMock,
-                ) as is_mtls_mock:
-                    with mock.patch(
-                        "google.auth.transport.grpc.SslCredentials.ssl_credentials",
-                        new_callable=mock.PropertyMock,
-                    ) as ssl_credentials_mock:
-                        if use_client_cert_env == "false":
-                            is_mtls_mock.return_value = False
-                            ssl_credentials_mock.return_value = None
-                            expected_host = client.DEFAULT_ENDPOINT
-                            expected_ssl_channel_creds = None
-                        else:
-                            is_mtls_mock.return_value = True
-                            ssl_credentials_mock.return_value = mock.Mock()
-                            expected_host = client.DEFAULT_MTLS_ENDPOINT
-                            expected_ssl_channel_creds = (
-                                ssl_credentials_mock.return_value
-                            )
+                    "google.auth.transport.mtls.default_client_cert_source",
+                    return_value=client_cert_source_callback,
+                ):
+                    if use_client_cert_env == "false":
+                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_client_cert_source = None
+                    else:
+                        expected_host = client.DEFAULT_MTLS_ENDPOINT
+                        expected_client_cert_source = client_cert_source_callback
 
-                        patched.return_value = None
-                        client = client_class()
-                        patched.assert_called_once_with(
-                            credentials=None,
-                            credentials_file=None,
-                            host=expected_host,
-                            scopes=None,
-                            ssl_channel_credentials=expected_ssl_channel_creds,
-                            quota_project_id=None,
-                            client_info=transports.base.DEFAULT_CLIENT_INFO,
-                        )
+                    patched.return_value = None
+                    client = client_class()
+                    patched.assert_called_once_with(
+                        credentials=None,
+                        credentials_file=None,
+                        host=expected_host,
+                        scopes=None,
+                        client_cert_source_for_mtls=expected_client_cert_source,
+                        quota_project_id=None,
+                        client_info=transports.base.DEFAULT_CLIENT_INFO,
+                    )
 
     # Check the case client_cert_source and ADC client cert are not provided.
     with mock.patch.dict(
@@ -381,24 +390,20 @@ def test_data_labeling_service_client_mtls_env_auto(
     ):
         with mock.patch.object(transport_class, "__init__") as patched:
             with mock.patch(
-                "google.auth.transport.grpc.SslCredentials.__init__", return_value=None
+                "google.auth.transport.mtls.has_default_client_cert_source",
+                return_value=False,
             ):
-                with mock.patch(
-                    "google.auth.transport.grpc.SslCredentials.is_mtls",
-                    new_callable=mock.PropertyMock,
-                ) as is_mtls_mock:
-                    is_mtls_mock.return_value = False
-                    patched.return_value = None
-                    client = client_class()
-                    patched.assert_called_once_with(
-                        credentials=None,
-                        credentials_file=None,
-                        host=client.DEFAULT_ENDPOINT,
-                        scopes=None,
-                        ssl_channel_credentials=None,
-                        quota_project_id=None,
-                        client_info=transports.base.DEFAULT_CLIENT_INFO,
-                    )
+                patched.return_value = None
+                client = client_class()
+                patched.assert_called_once_with(
+                    credentials=None,
+                    credentials_file=None,
+                    host=client.DEFAULT_ENDPOINT,
+                    scopes=None,
+                    client_cert_source_for_mtls=None,
+                    quota_project_id=None,
+                    client_info=transports.base.DEFAULT_CLIENT_INFO,
+                )
 
 
 @pytest.mark.parametrize(
@@ -429,7 +434,7 @@ def test_data_labeling_service_client_client_options_scopes(
             credentials_file=None,
             host=client.DEFAULT_ENDPOINT,
             scopes=["1", "2"],
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -463,7 +468,7 @@ def test_data_labeling_service_client_client_options_credentials_file(
             credentials_file="credentials.json",
             host=client.DEFAULT_ENDPOINT,
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -482,7 +487,7 @@ def test_data_labeling_service_client_client_options_from_dict():
             credentials_file=None,
             host="squid.clam.whelk",
             scopes=None,
-            ssl_channel_credentials=None,
+            client_cert_source_for_mtls=None,
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
@@ -535,6 +540,22 @@ def test_create_dataset(
 
 def test_create_dataset_from_dict():
     test_create_dataset(request_type=dict)
+
+
+def test_create_dataset_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
+        client.create_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.CreateDatasetRequest()
 
 
 @pytest.mark.asyncio
@@ -771,6 +792,22 @@ def test_get_dataset_from_dict():
     test_get_dataset(request_type=dict)
 
 
+def test_get_dataset_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
+        client.get_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.GetDatasetRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_dataset_async(
     transport: str = "grpc_asyncio",
@@ -979,6 +1016,22 @@ def test_list_datasets(
 
 def test_list_datasets_from_dict():
     test_list_datasets(request_type=dict)
+
+
+def test_list_datasets_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
+        client.list_datasets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.ListDatasetsRequest()
 
 
 @pytest.mark.asyncio
@@ -1324,6 +1377,22 @@ def test_delete_dataset_from_dict():
     test_delete_dataset(request_type=dict)
 
 
+def test_delete_dataset_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
+        client.delete_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.DeleteDatasetRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_dataset_async(
     transport: str = "grpc_asyncio",
@@ -1509,6 +1578,22 @@ def test_import_data(
 
 def test_import_data_from_dict():
     test_import_data(request_type=dict)
+
+
+def test_import_data_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_data), "__call__") as call:
+        client.import_data()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.ImportDataRequest()
 
 
 @pytest.mark.asyncio
@@ -1728,6 +1813,22 @@ def test_export_data(
 
 def test_export_data_from_dict():
     test_export_data(request_type=dict)
+
+
+def test_export_data_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_data), "__call__") as call:
+        client.export_data()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.ExportDataRequest()
 
 
 @pytest.mark.asyncio
@@ -1971,6 +2072,22 @@ def test_get_data_item_from_dict():
     test_get_data_item(request_type=dict)
 
 
+def test_get_data_item_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_data_item), "__call__") as call:
+        client.get_data_item()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.GetDataItemRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_data_item_async(
     transport: str = "grpc_asyncio",
@@ -2165,6 +2282,22 @@ def test_list_data_items(
 
 def test_list_data_items_from_dict():
     test_list_data_items(request_type=dict)
+
+
+def test_list_data_items_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_data_items), "__call__") as call:
+        client.list_data_items()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.ListDataItemsRequest()
 
 
 @pytest.mark.asyncio
@@ -2558,6 +2691,24 @@ def test_get_annotated_dataset_from_dict():
     test_get_annotated_dataset(request_type=dict)
 
 
+def test_get_annotated_dataset_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_annotated_dataset), "__call__"
+    ) as call:
+        client.get_annotated_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.GetAnnotatedDatasetRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_annotated_dataset_async(
     transport: str = "grpc_asyncio",
@@ -2795,6 +2946,24 @@ def test_list_annotated_datasets(
 
 def test_list_annotated_datasets_from_dict():
     test_list_annotated_datasets(request_type=dict)
+
+
+def test_list_annotated_datasets_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_annotated_datasets), "__call__"
+    ) as call:
+        client.list_annotated_datasets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.ListAnnotatedDatasetsRequest()
 
 
 @pytest.mark.asyncio
@@ -3189,6 +3358,24 @@ def test_delete_annotated_dataset_from_dict():
     test_delete_annotated_dataset(request_type=dict)
 
 
+def test_delete_annotated_dataset_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_annotated_dataset), "__call__"
+    ) as call:
+        client.delete_annotated_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.DeleteAnnotatedDatasetRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_annotated_dataset_async(
     transport: str = "grpc_asyncio",
@@ -3311,6 +3498,22 @@ def test_label_image(
 
 def test_label_image_from_dict():
     test_label_image(request_type=dict)
+
+
+def test_label_image_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.label_image), "__call__") as call:
+        client.label_image()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.LabelImageRequest()
 
 
 @pytest.mark.asyncio
@@ -3546,6 +3749,22 @@ def test_label_video_from_dict():
     test_label_video(request_type=dict)
 
 
+def test_label_video_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.label_video), "__call__") as call:
+        client.label_video()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.LabelVideoRequest()
+
+
 @pytest.mark.asyncio
 async def test_label_video_async(
     transport: str = "grpc_asyncio",
@@ -3777,6 +3996,22 @@ def test_label_text(
 
 def test_label_text_from_dict():
     test_label_text(request_type=dict)
+
+
+def test_label_text_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.label_text), "__call__") as call:
+        client.label_text()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.LabelTextRequest()
 
 
 @pytest.mark.asyncio
@@ -4017,6 +4252,22 @@ def test_get_example_from_dict():
     test_get_example(request_type=dict)
 
 
+def test_get_example_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_example), "__call__") as call:
+        client.get_example()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.GetExampleRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_example_async(
     transport: str = "grpc_asyncio",
@@ -4221,6 +4472,22 @@ def test_list_examples(
 
 def test_list_examples_from_dict():
     test_list_examples(request_type=dict)
+
+
+def test_list_examples_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_examples), "__call__") as call:
+        client.list_examples()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.ListExamplesRequest()
 
 
 @pytest.mark.asyncio
@@ -4583,6 +4850,24 @@ def test_create_annotation_spec_set_from_dict():
     test_create_annotation_spec_set(request_type=dict)
 
 
+def test_create_annotation_spec_set_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_annotation_spec_set), "__call__"
+    ) as call:
+        client.create_annotation_spec_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.CreateAnnotationSpecSetRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_annotation_spec_set_async(
     transport: str = "grpc_asyncio",
@@ -4842,6 +5127,24 @@ def test_get_annotation_spec_set_from_dict():
     test_get_annotation_spec_set(request_type=dict)
 
 
+def test_get_annotation_spec_set_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_annotation_spec_set), "__call__"
+    ) as call:
+        client.get_annotation_spec_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.GetAnnotationSpecSetRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_annotation_spec_set_async(
     transport: str = "grpc_asyncio",
@@ -5064,6 +5367,24 @@ def test_list_annotation_spec_sets(
 
 def test_list_annotation_spec_sets_from_dict():
     test_list_annotation_spec_sets(request_type=dict)
+
+
+def test_list_annotation_spec_sets_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_annotation_spec_sets), "__call__"
+    ) as call:
+        client.list_annotation_spec_sets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.ListAnnotationSpecSetsRequest()
 
 
 @pytest.mark.asyncio
@@ -5466,6 +5787,24 @@ def test_delete_annotation_spec_set_from_dict():
     test_delete_annotation_spec_set(request_type=dict)
 
 
+def test_delete_annotation_spec_set_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_annotation_spec_set), "__call__"
+    ) as call:
+        client.delete_annotation_spec_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.DeleteAnnotationSpecSetRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_annotation_spec_set_async(
     transport: str = "grpc_asyncio",
@@ -5663,6 +6002,24 @@ def test_create_instruction(
 
 def test_create_instruction_from_dict():
     test_create_instruction(request_type=dict)
+
+
+def test_create_instruction_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_instruction), "__call__"
+    ) as call:
+        client.create_instruction()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.CreateInstructionRequest()
 
 
 @pytest.mark.asyncio
@@ -5899,6 +6256,22 @@ def test_get_instruction_from_dict():
     test_get_instruction(request_type=dict)
 
 
+def test_get_instruction_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_instruction), "__call__") as call:
+        client.get_instruction()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.GetInstructionRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_instruction_async(
     transport: str = "grpc_asyncio",
@@ -6113,6 +6486,24 @@ def test_list_instructions(
 
 def test_list_instructions_from_dict():
     test_list_instructions(request_type=dict)
+
+
+def test_list_instructions_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_instructions), "__call__"
+    ) as call:
+        client.list_instructions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.ListInstructionsRequest()
 
 
 @pytest.mark.asyncio
@@ -6494,6 +6885,24 @@ def test_delete_instruction_from_dict():
     test_delete_instruction(request_type=dict)
 
 
+def test_delete_instruction_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_instruction), "__call__"
+    ) as call:
+        client.delete_instruction()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.DeleteInstructionRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_instruction_async(
     transport: str = "grpc_asyncio",
@@ -6703,6 +7112,22 @@ def test_get_evaluation(
 
 def test_get_evaluation_from_dict():
     test_get_evaluation(request_type=dict)
+
+
+def test_get_evaluation_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_evaluation), "__call__") as call:
+        client.get_evaluation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.GetEvaluationRequest()
 
 
 @pytest.mark.asyncio
@@ -6916,6 +7341,24 @@ def test_search_evaluations(
 
 def test_search_evaluations_from_dict():
     test_search_evaluations(request_type=dict)
+
+
+def test_search_evaluations_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_evaluations), "__call__"
+    ) as call:
+        client.search_evaluations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.SearchEvaluationsRequest()
 
 
 @pytest.mark.asyncio
@@ -7301,6 +7744,24 @@ def test_search_example_comparisons(
 
 def test_search_example_comparisons_from_dict():
     test_search_example_comparisons(request_type=dict)
+
+
+def test_search_example_comparisons_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_example_comparisons), "__call__"
+    ) as call:
+        client.search_example_comparisons()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.SearchExampleComparisonsRequest()
 
 
 @pytest.mark.asyncio
@@ -7732,6 +8193,24 @@ def test_create_evaluation_job_from_dict():
     test_create_evaluation_job(request_type=dict)
 
 
+def test_create_evaluation_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_evaluation_job), "__call__"
+    ) as call:
+        client.create_evaluation_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.CreateEvaluationJobRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_evaluation_job_async(
     transport: str = "grpc_asyncio",
@@ -7993,6 +8472,24 @@ def test_update_evaluation_job(
 
 def test_update_evaluation_job_from_dict():
     test_update_evaluation_job(request_type=dict)
+
+
+def test_update_evaluation_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_evaluation_job), "__call__"
+    ) as call:
+        client.update_evaluation_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.UpdateEvaluationJobRequest()
 
 
 @pytest.mark.asyncio
@@ -8269,6 +8766,24 @@ def test_get_evaluation_job_from_dict():
     test_get_evaluation_job(request_type=dict)
 
 
+def test_get_evaluation_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_evaluation_job), "__call__"
+    ) as call:
+        client.get_evaluation_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.GetEvaluationJobRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_evaluation_job_async(
     transport: str = "grpc_asyncio",
@@ -8497,6 +9012,24 @@ def test_pause_evaluation_job_from_dict():
     test_pause_evaluation_job(request_type=dict)
 
 
+def test_pause_evaluation_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_evaluation_job), "__call__"
+    ) as call:
+        client.pause_evaluation_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.PauseEvaluationJobRequest()
+
+
 @pytest.mark.asyncio
 async def test_pause_evaluation_job_async(
     transport: str = "grpc_asyncio",
@@ -8697,6 +9230,24 @@ def test_resume_evaluation_job_from_dict():
     test_resume_evaluation_job(request_type=dict)
 
 
+def test_resume_evaluation_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_evaluation_job), "__call__"
+    ) as call:
+        client.resume_evaluation_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.ResumeEvaluationJobRequest()
+
+
 @pytest.mark.asyncio
 async def test_resume_evaluation_job_async(
     transport: str = "grpc_asyncio",
@@ -8895,6 +9446,24 @@ def test_delete_evaluation_job(
 
 def test_delete_evaluation_job_from_dict():
     test_delete_evaluation_job(request_type=dict)
+
+
+def test_delete_evaluation_job_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_evaluation_job), "__call__"
+    ) as call:
+        client.delete_evaluation_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.DeleteEvaluationJobRequest()
 
 
 @pytest.mark.asyncio
@@ -9100,6 +9669,24 @@ def test_list_evaluation_jobs(
 
 def test_list_evaluation_jobs_from_dict():
     test_list_evaluation_jobs(request_type=dict)
+
+
+def test_list_evaluation_jobs_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_evaluation_jobs), "__call__"
+    ) as call:
+        client.list_evaluation_jobs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == data_labeling_service.ListEvaluationJobsRequest()
 
 
 @pytest.mark.asyncio
@@ -9660,6 +10247,53 @@ def test_data_labeling_service_transport_auth_adc():
         )
 
 
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.DataLabelingServiceGrpcTransport,
+        transports.DataLabelingServiceGrpcAsyncIOTransport,
+    ],
+)
+def test_data_labeling_service_grpc_transport_client_cert_source_for_mtls(
+    transport_class,
+):
+    cred = credentials.AnonymousCredentials()
+
+    # Check ssl_channel_credentials is used if provided.
+    with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
+        mock_ssl_channel_creds = mock.Mock()
+        transport_class(
+            host="squid.clam.whelk",
+            credentials=cred,
+            ssl_channel_credentials=mock_ssl_channel_creds,
+        )
+        mock_create_channel.assert_called_once_with(
+            "squid.clam.whelk:443",
+            credentials=cred,
+            credentials_file=None,
+            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            ssl_credentials=mock_ssl_channel_creds,
+            quota_project_id=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+    # Check if ssl_channel_credentials is not provided, then client_cert_source_for_mtls
+    # is used.
+    with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
+        with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
+            transport_class(
+                credentials=cred,
+                client_cert_source_for_mtls=client_cert_source_callback,
+            )
+            expected_cert, expected_key = client_cert_source_callback()
+            mock_ssl_cred.assert_called_once_with(
+                certificate_chain=expected_cert, private_key=expected_key
+            )
+
+
 def test_data_labeling_service_host_no_port():
     client = DataLabelingServiceClient(
         credentials=credentials.AnonymousCredentials(),
@@ -9681,7 +10315,7 @@ def test_data_labeling_service_host_with_port():
 
 
 def test_data_labeling_service_grpc_transport_channel():
-    channel = grpc.insecure_channel("http://localhost/")
+    channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.DataLabelingServiceGrpcTransport(
@@ -9693,7 +10327,7 @@ def test_data_labeling_service_grpc_transport_channel():
 
 
 def test_data_labeling_service_grpc_asyncio_transport_channel():
-    channel = aio.insecure_channel("http://localhost/")
+    channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
     transport = transports.DataLabelingServiceGrpcAsyncIOTransport(
@@ -9704,6 +10338,8 @@ def test_data_labeling_service_grpc_asyncio_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
     [
@@ -9718,7 +10354,7 @@ def test_data_labeling_service_transport_channel_mtls_with_client_cert_source(
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
@@ -9756,6 +10392,8 @@ def test_data_labeling_service_transport_channel_mtls_with_client_cert_source(
             assert transport._ssl_channel_credentials == mock_ssl_cred
 
 
+# Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
+# removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
     [
@@ -9771,7 +10409,7 @@ def test_data_labeling_service_transport_channel_mtls_with_adc(transport_class):
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
         with mock.patch.object(
-            transport_class, "create_channel", autospec=True
+            transport_class, "create_channel"
         ) as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel

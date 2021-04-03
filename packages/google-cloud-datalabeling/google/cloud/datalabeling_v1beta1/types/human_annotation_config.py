@@ -79,7 +79,7 @@ class HumanAnnotationConfig(proto.Message):
             be returned. Default is set to 1.
             For image related labeling, valid values are 1,
             3, 5.
-        question_duration (~.duration.Duration):
+        question_duration (google.protobuf.duration_pb2.Duration):
             Optional. Maximum duration for contributors
             to answer a question. Maximum is 3600 seconds.
             Default is 3600 seconds.
@@ -125,7 +125,7 @@ class ImageClassificationConfig(proto.Message):
         allow_multi_label (bool):
             Optional. If allow_multi_label is true, contributors are
             able to choose multiple labels for one image.
-        answer_aggregation_type (~.human_annotation_config.StringAggregationType):
+        answer_aggregation_type (google.cloud.datalabeling_v1beta1.types.StringAggregationType):
             Optional. The type of how to aggregate
             answers.
     """
@@ -196,7 +196,7 @@ class VideoClassificationConfig(proto.Message):
     shot, and assign labels on each video clip.
 
     Attributes:
-        annotation_spec_set_configs (Sequence[~.human_annotation_config.VideoClassificationConfig.AnnotationSpecSetConfig]):
+        annotation_spec_set_configs (Sequence[google.cloud.datalabeling_v1beta1.types.VideoClassificationConfig.AnnotationSpecSetConfig]):
             Required. The list of annotation spec set
             configs. Since watching a video clip takes much
             longer time than an image, we support label with
@@ -287,7 +287,7 @@ class TextClassificationConfig(proto.Message):
             able to choose multiple labels for one text segment.
         annotation_spec_set (str):
             Required. Annotation spec set resource name.
-        sentiment_config (~.human_annotation_config.SentimentConfig):
+        sentiment_config (google.cloud.datalabeling_v1beta1.types.SentimentConfig):
             Optional. Configs for sentiment selection.
     """
 

@@ -44,7 +44,7 @@ class AnnotationSpecSet(proto.Message):
             Optional. User-provided description of the
             annotation specification set. The description
             can be up to 10,000 characters long.
-        annotation_specs (Sequence[~.annotation_spec_set.AnnotationSpec]):
+        annotation_specs (Sequence[google.cloud.datalabeling_v1beta1.types.AnnotationSpec]):
             Required. The array of AnnotationSpecs that
             you define when you create the
             AnnotationSpecSet. These are the possible labels
