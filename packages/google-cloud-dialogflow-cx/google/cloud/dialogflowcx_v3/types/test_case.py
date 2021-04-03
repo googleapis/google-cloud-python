@@ -198,7 +198,7 @@ class ConversationTurn(proto.Message):
         r"""The input from the human user.
 
         Attributes:
-            input_ (google.cloud.dialogflowcx_v3.types.QueryInput):
+            input (google.cloud.dialogflowcx_v3.types.QueryInput):
                 Supports [text
                 input][google.cloud.dialogflow.cx.v3.QueryInput.text],
                 [event
@@ -215,7 +215,7 @@ class ConversationTurn(proto.Message):
                 enabled.
         """
 
-        input_ = proto.Field(proto.MESSAGE, number=5, message=session.QueryInput,)
+        input = proto.Field(proto.MESSAGE, number=5, message=session.QueryInput,)
 
         injected_parameters = proto.Field(
             proto.MESSAGE, number=2, message=struct.Struct,
