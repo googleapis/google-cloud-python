@@ -1,6 +1,0 @@
-Collecting proto-plus
-  Using cached proto_plus-1.18.1-py3-none-any.whl (42 kB)
-Requirement already satisfied: protobuf>=3.12.0 in /usr/local/google/home/partheniou/.pyenv/versions/3.8.7/envs/servicecontrol/lib/python3.8/site-packages (from proto-plus) (3.15.6)
-Requirement already satisfied: six>=1.9 in /usr/local/google/home/partheniou/.pyenv/versions/3.8.7/envs/servicecontrol/lib/python3.8/site-packages (from protobuf>=3.12.0->proto-plus) (1.15.0)
-Installing collected packages: proto-plus
-Successfully installed proto-plus-1.18.1
