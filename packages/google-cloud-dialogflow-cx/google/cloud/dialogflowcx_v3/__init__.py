@@ -251,7 +251,6 @@ __all__ = (
     "DetectIntentResponse",
     "DtmfInput",
     "EntityType",
-    "EntityTypesClient",
     "Environment",
     "EnvironmentsClient",
     "EventHandler",
@@ -293,6 +292,7 @@ __all__ = (
     "IntentCoverage",
     "IntentInput",
     "IntentView",
+    "IntentsClient",
     "ListAgentsRequest",
     "ListAgentsResponse",
     "ListEntityTypesRequest",
@@ -399,5 +399,5 @@ __all__ = (
     "WebhookRequest",
     "WebhookResponse",
     "WebhooksClient",
-    "IntentsClient",
+    "EntityTypesClient",
 )
