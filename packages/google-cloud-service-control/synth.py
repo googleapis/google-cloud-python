@@ -39,6 +39,12 @@ for version in versions:
 
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
+    s.replace(
+        "google/cloud/servicecontrol_v1/types/distribution.py",
+        "variance   - a histogram",
+        "    variance\n      - a histogram"
+    )
+
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------

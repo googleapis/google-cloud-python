@@ -30,7 +30,8 @@ class Distribution(proto.Message):
 
       - the arithmetic mean of the samples
       - the minimum and maximum of the samples
-      - the sum-squared-deviation of the samples, used to compute variance
+      - the sum-squared-deviation of the samples, used to compute
+        variance
       - a histogram of the values of the sample points
 
     Attributes:
