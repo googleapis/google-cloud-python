@@ -50,10 +50,10 @@ __all__ = (
     "MetricValue",
     "MetricValueSet",
     "Operation",
-    "QuotaControllerClient",
     "QuotaError",
     "QuotaOperation",
     "ReportRequest",
     "ReportResponse",
     "ServiceControllerClient",
+    "QuotaControllerClient",
 )
