@@ -82,6 +82,7 @@ __all__ = (
     "ListCatalogsResponse",
     "PredictRequest",
     "PredictResponse",
+    "PredictionServiceClient",
     "PriceInfo",
     "Product",
     "ProductDetail",
@@ -102,8 +103,7 @@ __all__ = (
     "UserEventImportSummary",
     "UserEventInlineSource",
     "UserEventInputConfig",
-    "UserEventServiceClient",
     "UserInfo",
     "WriteUserEventRequest",
-    "PredictionServiceClient",
+    "UserEventServiceClient",
 )
