@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+### [1.37.1](https://www.github.com/googleapis/python-storage/compare/v1.37.0...v1.37.1) (2021-04-02)
+
+
+### Bug Fixes
+
+* Ensure consistency check in test runs even if expected error occurs ([#402](https://www.github.com/googleapis/python-storage/issues/402)) ([416bcd4](https://www.github.com/googleapis/python-storage/commit/416bcd42406ec57e51f04e5d9b0c58509f80520c))
+* silence expected errors for routine operations on BlobReader ([#400](https://www.github.com/googleapis/python-storage/issues/400)) ([d52853b](https://www.github.com/googleapis/python-storage/commit/d52853b420f50012e02c395f5407e3018922c048))
+
 ## [1.37.0](https://www.github.com/googleapis/python-storage/compare/v1.36.2...v1.37.0) (2021-03-24)
 
 
