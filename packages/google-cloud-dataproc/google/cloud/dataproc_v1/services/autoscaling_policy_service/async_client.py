@@ -86,7 +86,36 @@ class AutoscalingPolicyServiceAsyncClient:
         AutoscalingPolicyServiceClient.parse_common_location_path
     )
 
-    from_service_account_file = AutoscalingPolicyServiceClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            AutoscalingPolicyServiceAsyncClient: The constructed client.
+        """
+        return AutoscalingPolicyServiceClient.from_service_account_info.__func__(AutoscalingPolicyServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            AutoscalingPolicyServiceAsyncClient: The constructed client.
+        """
+        return AutoscalingPolicyServiceClient.from_service_account_file.__func__(AutoscalingPolicyServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -164,7 +193,7 @@ class AutoscalingPolicyServiceAsyncClient:
         r"""Creates new autoscaling policy.
 
         Args:
-            request (:class:`~.autoscaling_policies.CreateAutoscalingPolicyRequest`):
+            request (:class:`google.cloud.dataproc_v1.types.CreateAutoscalingPolicyRequest`):
                 The request object. A request to create an autoscaling
                 policy.
             parent (:class:`str`):
@@ -181,12 +210,14 @@ class AutoscalingPolicyServiceAsyncClient:
                    the resource name of the location has the following
                    format:
                    ``projects/{project_id}/locations/{location}``
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            policy (:class:`~.autoscaling_policies.AutoscalingPolicy`):
+            policy (:class:`google.cloud.dataproc_v1.types.AutoscalingPolicy`):
                 Required. The autoscaling policy to
                 create.
+
                 This corresponds to the ``policy`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -198,7 +229,7 @@ class AutoscalingPolicyServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.autoscaling_policies.AutoscalingPolicy:
+            google.cloud.dataproc_v1.types.AutoscalingPolicy:
                 Describes an autoscaling policy for
                 Dataproc cluster autoscaler.
 
@@ -258,12 +289,13 @@ class AutoscalingPolicyServiceAsyncClient:
         replacements.
 
         Args:
-            request (:class:`~.autoscaling_policies.UpdateAutoscalingPolicyRequest`):
+            request (:class:`google.cloud.dataproc_v1.types.UpdateAutoscalingPolicyRequest`):
                 The request object. A request to update an autoscaling
                 policy.
-            policy (:class:`~.autoscaling_policies.AutoscalingPolicy`):
+            policy (:class:`google.cloud.dataproc_v1.types.AutoscalingPolicy`):
                 Required. The updated autoscaling
                 policy.
+
                 This corresponds to the ``policy`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -275,7 +307,7 @@ class AutoscalingPolicyServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.autoscaling_policies.AutoscalingPolicy:
+            google.cloud.dataproc_v1.types.AutoscalingPolicy:
                 Describes an autoscaling policy for
                 Dataproc cluster autoscaler.
 
@@ -309,6 +341,7 @@ class AutoscalingPolicyServiceAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=600.0,
             ),
             default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -340,7 +373,7 @@ class AutoscalingPolicyServiceAsyncClient:
         r"""Retrieves autoscaling policy.
 
         Args:
-            request (:class:`~.autoscaling_policies.GetAutoscalingPolicyRequest`):
+            request (:class:`google.cloud.dataproc_v1.types.GetAutoscalingPolicyRequest`):
                 The request object. A request to fetch an autoscaling
                 policy.
             name (:class:`str`):
@@ -356,6 +389,7 @@ class AutoscalingPolicyServiceAsyncClient:
                    the resource name of the policy has the following
                    format:
                    ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -367,7 +401,7 @@ class AutoscalingPolicyServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.autoscaling_policies.AutoscalingPolicy:
+            google.cloud.dataproc_v1.types.AutoscalingPolicy:
                 Describes an autoscaling policy for
                 Dataproc cluster autoscaler.
 
@@ -401,6 +435,7 @@ class AutoscalingPolicyServiceAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=600.0,
             ),
             default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -430,7 +465,7 @@ class AutoscalingPolicyServiceAsyncClient:
         r"""Lists autoscaling policies in the project.
 
         Args:
-            request (:class:`~.autoscaling_policies.ListAutoscalingPoliciesRequest`):
+            request (:class:`google.cloud.dataproc_v1.types.ListAutoscalingPoliciesRequest`):
                 The request object. A request to list autoscaling
                 policies in a project.
             parent (:class:`str`):
@@ -446,6 +481,7 @@ class AutoscalingPolicyServiceAsyncClient:
                    the resource name of the location has the following
                    format:
                    ``projects/{project_id}/locations/{location}``
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -457,7 +493,7 @@ class AutoscalingPolicyServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListAutoscalingPoliciesAsyncPager:
+            google.cloud.dataproc_v1.services.autoscaling_policy_service.pagers.ListAutoscalingPoliciesAsyncPager:
                 A response to a request to list
                 autoscaling policies in a project.
                 Iterating over this object will yield
@@ -494,6 +530,7 @@ class AutoscalingPolicyServiceAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=600.0,
             ),
             default_timeout=600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -531,7 +568,7 @@ class AutoscalingPolicyServiceAsyncClient:
         more clusters.
 
         Args:
-            request (:class:`~.autoscaling_policies.DeleteAutoscalingPolicyRequest`):
+            request (:class:`google.cloud.dataproc_v1.types.DeleteAutoscalingPolicyRequest`):
                 The request object. A request to delete an autoscaling
                 policy.
                 Autoscaling policies in use by one or more clusters will
@@ -551,6 +588,7 @@ class AutoscalingPolicyServiceAsyncClient:
                    the resource name of the policy has the following
                    format:
                    ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

@@ -62,12 +62,12 @@ class AutoscalingPolicy(proto.Message):
             -  For ``projects.locations.autoscalingPolicies``, the
                resource name of the policy has the following format:
                ``projects/{project_id}/locations/{location}/autoscalingPolicies/{policy_id}``
-        basic_algorithm (~.autoscaling_policies.BasicAutoscalingAlgorithm):
+        basic_algorithm (google.cloud.dataproc_v1.types.BasicAutoscalingAlgorithm):
 
-        worker_config (~.autoscaling_policies.InstanceGroupAutoscalingPolicyConfig):
+        worker_config (google.cloud.dataproc_v1.types.InstanceGroupAutoscalingPolicyConfig):
             Required. Describes how the autoscaler will
             operate for primary workers.
-        secondary_worker_config (~.autoscaling_policies.InstanceGroupAutoscalingPolicyConfig):
+        secondary_worker_config (google.cloud.dataproc_v1.types.InstanceGroupAutoscalingPolicyConfig):
             Optional. Describes how the autoscaler will
             operate for secondary workers.
     """
@@ -93,9 +93,9 @@ class BasicAutoscalingAlgorithm(proto.Message):
     r"""Basic algorithm for autoscaling.
 
     Attributes:
-        yarn_config (~.autoscaling_policies.BasicYarnAutoscalingConfig):
+        yarn_config (google.cloud.dataproc_v1.types.BasicYarnAutoscalingConfig):
             Required. YARN autoscaling configuration.
-        cooldown_period (~.duration.Duration):
+        cooldown_period (google.protobuf.duration_pb2.Duration):
             Optional. Duration between scaling events. A scaling period
             starts after the update operation from the previous event
             has completed.
@@ -114,7 +114,7 @@ class BasicYarnAutoscalingConfig(proto.Message):
     r"""Basic autoscaling configurations for YARN.
 
     Attributes:
-        graceful_decommission_timeout (~.duration.Duration):
+        graceful_decommission_timeout (google.protobuf.duration_pb2.Duration):
             Required. Timeout for YARN graceful decommissioning of Node
             Managers. Specifies the duration to wait for jobs to
             complete before forcefully removing workers (and potentially
@@ -244,7 +244,7 @@ class CreateAutoscalingPolicyRequest(proto.Message):
             -  For ``projects.locations.autoscalingPolicies.create``,
                the resource name of the location has the following
                format: ``projects/{project_id}/locations/{location}``
-        policy (~.autoscaling_policies.AutoscalingPolicy):
+        policy (google.cloud.dataproc_v1.types.AutoscalingPolicy):
             Required. The autoscaling policy to create.
     """
 
@@ -278,7 +278,7 @@ class UpdateAutoscalingPolicyRequest(proto.Message):
     r"""A request to update an autoscaling policy.
 
     Attributes:
-        policy (~.autoscaling_policies.AutoscalingPolicy):
+        policy (google.cloud.dataproc_v1.types.AutoscalingPolicy):
             Required. The updated autoscaling policy.
     """
 
@@ -346,7 +346,7 @@ class ListAutoscalingPoliciesResponse(proto.Message):
     project.
 
     Attributes:
-        policies (Sequence[~.autoscaling_policies.AutoscalingPolicy]):
+        policies (Sequence[google.cloud.dataproc_v1.types.AutoscalingPolicy]):
             Output only. Autoscaling policies list.
         next_page_token (str):
             Output only. This token is included in the

@@ -31,7 +31,7 @@ class ClusterOperationStatus(proto.Message):
     r"""The status of the operation.
 
     Attributes:
-        state (~.operations.ClusterOperationStatus.State):
+        state (google.cloud.dataproc_v1.types.ClusterOperationStatus.State):
             Output only. A message containing the
             operation state.
         inner_state (str):
@@ -40,7 +40,7 @@ class ClusterOperationStatus(proto.Message):
         details (str):
             Output only. A message containing any
             operation metadata details.
-        state_start_time (~.timestamp.Timestamp):
+        state_start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time this state was entered.
     """
 
@@ -71,15 +71,15 @@ class ClusterOperationMetadata(proto.Message):
             operation.
         cluster_uuid (str):
             Output only. Cluster UUID for the operation.
-        status (~.operations.ClusterOperationStatus):
+        status (google.cloud.dataproc_v1.types.ClusterOperationStatus):
             Output only. Current operation status.
-        status_history (Sequence[~.operations.ClusterOperationStatus]):
+        status_history (Sequence[google.cloud.dataproc_v1.types.ClusterOperationStatus]):
             Output only. The previous operation status.
         operation_type (str):
             Output only. The operation type.
         description (str):
             Output only. Short description of operation.
-        labels (Sequence[~.operations.ClusterOperationMetadata.LabelsEntry]):
+        labels (Sequence[google.cloud.dataproc_v1.types.ClusterOperationMetadata.LabelsEntry]):
             Output only. Labels associated with the
             operation
         warnings (Sequence[str]):

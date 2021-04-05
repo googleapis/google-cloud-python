@@ -111,6 +111,22 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
     )
 
     @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            JobControllerClient: The constructed client.
+        """
+        credentials = service_account.Credentials.from_service_account_info(info)
+        kwargs["credentials"] = credentials
+        return cls(*args, **kwargs)
+
+    @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
         file.
@@ -122,7 +138,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            {@api.name}: The constructed client.
+            JobControllerClient: The constructed client.
         """
         credentials = service_account.Credentials.from_service_account_file(filename)
         kwargs["credentials"] = credentials
@@ -214,10 +230,10 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.JobControllerTransport]): The
+            transport (Union[str, JobControllerTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (client_options_lib.ClientOptions): Custom options for the
+            client_options (google.api_core.client_options.ClientOptions): Custom options for the
                 client. It won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
@@ -253,21 +269,17 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -310,7 +322,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -329,22 +341,24 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         r"""Submits a job to a cluster.
 
         Args:
-            request (:class:`~.jobs.SubmitJobRequest`):
+            request (google.cloud.dataproc_v1.types.SubmitJobRequest):
                 The request object. A request to submit a job.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. The ID of the Google Cloud
                 Platform project that the job belongs
                 to.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            region (:class:`str`):
+            region (str):
                 Required. The Dataproc region in
                 which to handle the request.
+
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            job (:class:`~.jobs.Job`):
+            job (google.cloud.dataproc_v1.types.Job):
                 Required. The job resource.
                 This corresponds to the ``job`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -357,7 +371,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.jobs.Job:
+            google.cloud.dataproc_v1.types.Job:
                 A Dataproc job resource.
         """
         # Create or coerce a protobuf request object.
@@ -411,22 +425,24 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         r"""Submits job to a cluster.
 
         Args:
-            request (:class:`~.jobs.SubmitJobRequest`):
+            request (google.cloud.dataproc_v1.types.SubmitJobRequest):
                 The request object. A request to submit a job.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. The ID of the Google Cloud
                 Platform project that the job belongs
                 to.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            region (:class:`str`):
+            region (str):
                 Required. The Dataproc region in
                 which to handle the request.
+
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            job (:class:`~.jobs.Job`):
+            job (google.cloud.dataproc_v1.types.Job):
                 Required. The job resource.
                 This corresponds to the ``job`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -439,11 +455,12 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.operation.Operation:
+            google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``~.jobs.Job``: A Dataproc job resource.
+                :class:`google.cloud.dataproc_v1.types.Job` A Dataproc
+                job resource.
 
         """
         # Create or coerce a protobuf request object.
@@ -506,23 +523,25 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         project.
 
         Args:
-            request (:class:`~.jobs.GetJobRequest`):
+            request (google.cloud.dataproc_v1.types.GetJobRequest):
                 The request object. A request to get the resource
                 representation for a job in a project.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. The ID of the Google Cloud
                 Platform project that the job belongs
                 to.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            region (:class:`str`):
+            region (str):
                 Required. The Dataproc region in
                 which to handle the request.
+
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            job_id (:class:`str`):
+            job_id (str):
                 Required. The job ID.
                 This corresponds to the ``job_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -535,7 +554,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.jobs.Job:
+            google.cloud.dataproc_v1.types.Job:
                 A Dataproc job resource.
         """
         # Create or coerce a protobuf request object.
@@ -589,22 +608,24 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         r"""Lists regions/{region}/jobs in a project.
 
         Args:
-            request (:class:`~.jobs.ListJobsRequest`):
+            request (google.cloud.dataproc_v1.types.ListJobsRequest):
                 The request object. A request to list jobs in a project.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. The ID of the Google Cloud
                 Platform project that the job belongs
                 to.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            region (:class:`str`):
+            region (str):
                 Required. The Dataproc region in
                 which to handle the request.
+
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            filter (:class:`str`):
+            filter (str):
                 Optional. A filter constraining the jobs to list.
                 Filters are case-sensitive and have the following
                 syntax:
@@ -622,6 +643,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
 
                 status.state = ACTIVE AND labels.env = staging AND
                 labels.starred = \*
+
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -633,7 +655,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListJobsPager:
+            google.cloud.dataproc_v1.services.job_controller.pagers.ListJobsPager:
                 A list of jobs in a project.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -694,7 +716,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         r"""Updates a job in a project.
 
         Args:
-            request (:class:`~.jobs.UpdateJobRequest`):
+            request (google.cloud.dataproc_v1.types.UpdateJobRequest):
                 The request object. A request to update a job.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -704,7 +726,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.jobs.Job:
+            google.cloud.dataproc_v1.types.Job:
                 A Dataproc job resource.
         """
         # Create or coerce a protobuf request object.
@@ -744,22 +766,24 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         `regions/{region}/jobs.get <https://cloud.google.com/dataproc/docs/reference/rest/v1/projects.regions.jobs/get>`__.
 
         Args:
-            request (:class:`~.jobs.CancelJobRequest`):
+            request (google.cloud.dataproc_v1.types.CancelJobRequest):
                 The request object. A request to cancel a job.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. The ID of the Google Cloud
                 Platform project that the job belongs
                 to.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            region (:class:`str`):
+            region (str):
                 Required. The Dataproc region in
                 which to handle the request.
+
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            job_id (:class:`str`):
+            job_id (str):
                 Required. The job ID.
                 This corresponds to the ``job_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -772,7 +796,7 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            ~.jobs.Job:
+            google.cloud.dataproc_v1.types.Job:
                 A Dataproc job resource.
         """
         # Create or coerce a protobuf request object.
@@ -827,22 +851,24 @@ class JobControllerClient(metaclass=JobControllerClientMeta):
         delete fails, and the response returns ``FAILED_PRECONDITION``.
 
         Args:
-            request (:class:`~.jobs.DeleteJobRequest`):
+            request (google.cloud.dataproc_v1.types.DeleteJobRequest):
                 The request object. A request to delete a job.
-            project_id (:class:`str`):
+            project_id (str):
                 Required. The ID of the Google Cloud
                 Platform project that the job belongs
                 to.
+
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            region (:class:`str`):
+            region (str):
                 Required. The Dataproc region in
                 which to handle the request.
+
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            job_id (:class:`str`):
+            job_id (str):
                 Required. The job ID.
                 This corresponds to the ``job_id`` field
                 on the ``request`` instance; if ``request`` is provided, this

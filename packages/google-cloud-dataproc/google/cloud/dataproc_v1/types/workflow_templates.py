@@ -81,12 +81,12 @@ class WorkflowTemplate(proto.Message):
             ``version`` field filled in with the current server version.
             The user updates other fields in the template, then returns
             it as part of the ``UpdateWorkflowTemplate`` request.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time template was created.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time template was last
             updated.
-        labels (Sequence[~.workflow_templates.WorkflowTemplate.LabelsEntry]):
+        labels (Sequence[google.cloud.dataproc_v1.types.WorkflowTemplate.LabelsEntry]):
             Optional. The labels to associate with this template. These
             labels will be propagated to all jobs and clusters created
             by the workflow instance.
@@ -100,13 +100,13 @@ class WorkflowTemplate(proto.Message):
             1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
 
             No more than 32 labels can be associated with a template.
-        placement (~.workflow_templates.WorkflowTemplatePlacement):
+        placement (google.cloud.dataproc_v1.types.WorkflowTemplatePlacement):
             Required. WorkflowTemplate scheduling
             information.
-        jobs (Sequence[~.workflow_templates.OrderedJob]):
+        jobs (Sequence[google.cloud.dataproc_v1.types.OrderedJob]):
             Required. The Directed Acyclic Graph of Jobs
             to submit.
-        parameters (Sequence[~.workflow_templates.TemplateParameter]):
+        parameters (Sequence[google.cloud.dataproc_v1.types.TemplateParameter]):
             Optional. Template parameters whose values
             are substituted into the template. Values for
             parameters must be provided when the template is
@@ -142,9 +142,9 @@ class WorkflowTemplatePlacement(proto.Message):
     Either ``managed_cluster`` or ``cluster_selector`` is required.
 
     Attributes:
-        managed_cluster (~.workflow_templates.ManagedCluster):
+        managed_cluster (google.cloud.dataproc_v1.types.ManagedCluster):
             A cluster that is managed by the workflow.
-        cluster_selector (~.workflow_templates.ClusterSelector):
+        cluster_selector (google.cloud.dataproc_v1.types.ClusterSelector):
             Optional. A selector that chooses target
             cluster for jobs based on metadata.
 
@@ -174,9 +174,9 @@ class ManagedCluster(proto.Message):
             begin with a letter. Cannot begin or end with
             hyphen. Must consist of between 2 and 35
             characters.
-        config (~.clusters.ClusterConfig):
+        config (google.cloud.dataproc_v1.types.ClusterConfig):
             Required. The cluster configuration.
-        labels (Sequence[~.workflow_templates.ManagedCluster.LabelsEntry]):
+        labels (Sequence[google.cloud.dataproc_v1.types.ManagedCluster.LabelsEntry]):
             Optional. The labels to associate with this cluster.
 
             Label keys must be between 1 and 63 characters long, and
@@ -209,7 +209,7 @@ class ClusterSelector(proto.Message):
             selection of the cluster.
             If unspecified, the zone of the first cluster
             matching the selector is used.
-        cluster_labels (Sequence[~.workflow_templates.ClusterSelector.ClusterLabelsEntry]):
+        cluster_labels (Sequence[google.cloud.dataproc_v1.types.ClusterSelector.ClusterLabelsEntry]):
             Required. The cluster labels. Cluster must
             have all labels to match.
     """
@@ -236,23 +236,23 @@ class OrderedJob(proto.Message):
             underscores (_), and hyphens (-). Cannot begin or end with
             underscore or hyphen. Must consist of between 3 and 50
             characters.
-        hadoop_job (~.gcd_jobs.HadoopJob):
+        hadoop_job (google.cloud.dataproc_v1.types.HadoopJob):
             Optional. Job is a Hadoop job.
-        spark_job (~.gcd_jobs.SparkJob):
+        spark_job (google.cloud.dataproc_v1.types.SparkJob):
             Optional. Job is a Spark job.
-        pyspark_job (~.gcd_jobs.PySparkJob):
+        pyspark_job (google.cloud.dataproc_v1.types.PySparkJob):
             Optional. Job is a PySpark job.
-        hive_job (~.gcd_jobs.HiveJob):
+        hive_job (google.cloud.dataproc_v1.types.HiveJob):
             Optional. Job is a Hive job.
-        pig_job (~.gcd_jobs.PigJob):
+        pig_job (google.cloud.dataproc_v1.types.PigJob):
             Optional. Job is a Pig job.
-        spark_r_job (~.gcd_jobs.SparkRJob):
+        spark_r_job (google.cloud.dataproc_v1.types.SparkRJob):
             Optional. Job is a SparkR job.
-        spark_sql_job (~.gcd_jobs.SparkSqlJob):
+        spark_sql_job (google.cloud.dataproc_v1.types.SparkSqlJob):
             Optional. Job is a SparkSql job.
-        presto_job (~.gcd_jobs.PrestoJob):
+        presto_job (google.cloud.dataproc_v1.types.PrestoJob):
             Optional. Job is a Presto job.
-        labels (Sequence[~.workflow_templates.OrderedJob.LabelsEntry]):
+        labels (Sequence[google.cloud.dataproc_v1.types.OrderedJob.LabelsEntry]):
             Optional. The labels to associate with this job.
 
             Label keys must be between 1 and 63 characters long, and
@@ -264,7 +264,7 @@ class OrderedJob(proto.Message):
             [\p{Ll}\p{Lo}\p{N}_-]{0,63}
 
             No more than 32 labels can be associated with a given job.
-        scheduling (~.gcd_jobs.JobScheduling):
+        scheduling (google.cloud.dataproc_v1.types.JobScheduling):
             Optional. Job scheduling configuration.
         prerequisite_step_ids (Sequence[str]):
             Optional. The optional list of prerequisite job step_ids. If
@@ -387,7 +387,7 @@ class TemplateParameter(proto.Message):
         description (str):
             Optional. Brief description of the parameter.
             Must not exceed 1024 characters.
-        validation (~.workflow_templates.ParameterValidation):
+        validation (google.cloud.dataproc_v1.types.ParameterValidation):
             Optional. Validation rules to be applied to
             this parameter's value.
     """
@@ -405,9 +405,9 @@ class ParameterValidation(proto.Message):
     r"""Configuration for parameter validation.
 
     Attributes:
-        regex (~.workflow_templates.RegexValidation):
+        regex (google.cloud.dataproc_v1.types.RegexValidation):
             Validation based on regular expressions.
-        values (~.workflow_templates.ValueValidation):
+        values (google.cloud.dataproc_v1.types.ValueValidation):
             Validation based on a list of allowed values.
     """
 
@@ -465,24 +465,24 @@ class WorkflowMetadata(proto.Message):
         version (int):
             Output only. The version of template at the
             time of workflow instantiation.
-        create_cluster (~.workflow_templates.ClusterOperation):
+        create_cluster (google.cloud.dataproc_v1.types.ClusterOperation):
             Output only. The create cluster operation
             metadata.
-        graph (~.workflow_templates.WorkflowGraph):
+        graph (google.cloud.dataproc_v1.types.WorkflowGraph):
             Output only. The workflow graph.
-        delete_cluster (~.workflow_templates.ClusterOperation):
+        delete_cluster (google.cloud.dataproc_v1.types.ClusterOperation):
             Output only. The delete cluster operation
             metadata.
-        state (~.workflow_templates.WorkflowMetadata.State):
+        state (google.cloud.dataproc_v1.types.WorkflowMetadata.State):
             Output only. The workflow state.
         cluster_name (str):
             Output only. The name of the target cluster.
-        parameters (Sequence[~.workflow_templates.WorkflowMetadata.ParametersEntry]):
+        parameters (Sequence[google.cloud.dataproc_v1.types.WorkflowMetadata.ParametersEntry]):
             Map from parameter names to values that were
             used for those parameters.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Workflow start time.
-        end_time (~.timestamp.Timestamp):
+        end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Workflow end time.
         cluster_uuid (str):
             Output only. The UUID of target cluster.
@@ -541,7 +541,7 @@ class WorkflowGraph(proto.Message):
     r"""The workflow graph.
 
     Attributes:
-        nodes (Sequence[~.workflow_templates.WorkflowNode]):
+        nodes (Sequence[google.cloud.dataproc_v1.types.WorkflowNode]):
             Output only. The workflow nodes.
     """
 
@@ -559,7 +559,7 @@ class WorkflowNode(proto.Message):
         job_id (str):
             Output only. The job id; populated after the
             node enters RUNNING state.
-        state (~.workflow_templates.WorkflowNode.NodeState):
+        state (google.cloud.dataproc_v1.types.WorkflowNode.NodeState):
             Output only. The node state.
         error (str):
             Output only. The error detail.
@@ -601,7 +601,7 @@ class CreateWorkflowTemplateRequest(proto.Message):
             -  For ``projects.locations.workflowTemplates.create``, the
                resource name of the location has the following format:
                ``projects/{project_id}/locations/{location}``
-        template (~.workflow_templates.WorkflowTemplate):
+        template (google.cloud.dataproc_v1.types.WorkflowTemplate):
             Required. The Dataproc workflow template to
             create.
     """
@@ -675,7 +675,7 @@ class InstantiateWorkflowTemplateRequest(proto.Message):
             The tag must contain only letters (a-z, A-Z), numbers (0-9),
             underscores (_), and hyphens (-). The maximum length is 40
             characters.
-        parameters (Sequence[~.workflow_templates.InstantiateWorkflowTemplateRequest.ParametersEntry]):
+        parameters (Sequence[google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.ParametersEntry]):
             Optional. Map from parameter names to values
             that should be used for those parameters. Values
             may not exceed 100 characters.
@@ -708,7 +708,7 @@ class InstantiateInlineWorkflowTemplateRequest(proto.Message):
                ``projects.locations.workflowTemplates.instantiateinline``,
                the resource name of the location has the following
                format: ``projects/{project_id}/locations/{location}``
-        template (~.workflow_templates.WorkflowTemplate):
+        template (google.cloud.dataproc_v1.types.WorkflowTemplate):
             Required. The workflow template to
             instantiate.
         request_id (str):
@@ -735,7 +735,7 @@ class UpdateWorkflowTemplateRequest(proto.Message):
     r"""A request to update a workflow template.
 
     Attributes:
-        template (~.workflow_templates.WorkflowTemplate):
+        template (google.cloud.dataproc_v1.types.WorkflowTemplate):
             Required. The updated workflow template.
 
             The ``template.version`` field must match the current
@@ -782,7 +782,7 @@ class ListWorkflowTemplatesResponse(proto.Message):
     project.
 
     Attributes:
-        templates (Sequence[~.workflow_templates.WorkflowTemplate]):
+        templates (Sequence[google.cloud.dataproc_v1.types.WorkflowTemplate]):
             Output only. WorkflowTemplates list.
         next_page_token (str):
             Output only. This token is included in the response if there

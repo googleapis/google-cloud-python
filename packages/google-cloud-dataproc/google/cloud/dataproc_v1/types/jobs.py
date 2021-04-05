@@ -57,7 +57,7 @@ class LoggingConfig(proto.Message):
     r"""The runtime logging config of the job.
 
     Attributes:
-        driver_log_levels (Sequence[~.gcd_jobs.LoggingConfig.DriverLogLevelsEntry]):
+        driver_log_levels (Sequence[google.cloud.dataproc_v1.types.LoggingConfig.DriverLogLevelsEntry]):
             The per-package log levels for the driver.
             This may include "root" package name to
             configure rootLogger. Examples:
@@ -120,13 +120,13 @@ class HadoopJob(proto.Message):
             extracted in the working directory of Hadoop
             drivers and tasks. Supported file types: .jar,
             .tar, .tar.gz, .tgz, or .zip.
-        properties (Sequence[~.gcd_jobs.HadoopJob.PropertiesEntry]):
+        properties (Sequence[google.cloud.dataproc_v1.types.HadoopJob.PropertiesEntry]):
             Optional. A mapping of property names to values, used to
             configure Hadoop. Properties that conflict with values set
             by the Dataproc API may be overwritten. Can include
             properties set in /etc/hadoop/conf/*-site and classes in
             user code.
-        logging_config (~.gcd_jobs.LoggingConfig):
+        logging_config (google.cloud.dataproc_v1.types.LoggingConfig):
             Optional. The runtime log config for job
             execution.
     """
@@ -177,14 +177,14 @@ class SparkJob(proto.Message):
             extracted into the working directory of each
             executor. Supported file types: .jar, .tar,
             .tar.gz, .tgz, and .zip.
-        properties (Sequence[~.gcd_jobs.SparkJob.PropertiesEntry]):
+        properties (Sequence[google.cloud.dataproc_v1.types.SparkJob.PropertiesEntry]):
             Optional. A mapping of property names to
             values, used to configure Spark. Properties that
             conflict with values set by the Dataproc API may
             be overwritten. Can include properties set in
             /etc/spark/conf/spark-defaults.conf and classes
             in user code.
-        logging_config (~.gcd_jobs.LoggingConfig):
+        logging_config (google.cloud.dataproc_v1.types.LoggingConfig):
             Optional. The runtime log config for job
             execution.
     """
@@ -236,7 +236,7 @@ class PySparkJob(proto.Message):
             extracted into the working directory of each
             executor. Supported file types: .jar, .tar,
             .tar.gz, .tgz, and .zip.
-        properties (Sequence[~.gcd_jobs.PySparkJob.PropertiesEntry]):
+        properties (Sequence[google.cloud.dataproc_v1.types.PySparkJob.PropertiesEntry]):
             Optional. A mapping of property names to
             values, used to configure PySpark. Properties
             that conflict with values set by the Dataproc
@@ -244,7 +244,7 @@ class PySparkJob(proto.Message):
             set in
             /etc/spark/conf/spark-defaults.conf and classes
             in user code.
-        logging_config (~.gcd_jobs.LoggingConfig):
+        logging_config (google.cloud.dataproc_v1.types.LoggingConfig):
             Optional. The runtime log config for job
             execution.
     """
@@ -301,16 +301,16 @@ class HiveJob(proto.Message):
         query_file_uri (str):
             The HCFS URI of the script that contains Hive
             queries.
-        query_list (~.gcd_jobs.QueryList):
+        query_list (google.cloud.dataproc_v1.types.QueryList):
             A list of queries.
         continue_on_failure (bool):
             Optional. Whether to continue executing queries if a query
             fails. The default value is ``false``. Setting to ``true``
             can be useful when executing independent parallel queries.
-        script_variables (Sequence[~.gcd_jobs.HiveJob.ScriptVariablesEntry]):
+        script_variables (Sequence[google.cloud.dataproc_v1.types.HiveJob.ScriptVariablesEntry]):
             Optional. Mapping of query variable names to values
             (equivalent to the Hive command: ``SET name="value";``).
-        properties (Sequence[~.gcd_jobs.HiveJob.PropertiesEntry]):
+        properties (Sequence[google.cloud.dataproc_v1.types.HiveJob.PropertiesEntry]):
             Optional. A mapping of property names and values, used to
             configure Hive. Properties that conflict with values set by
             the Dataproc API may be overwritten. Can include properties
@@ -346,13 +346,13 @@ class SparkSqlJob(proto.Message):
         query_file_uri (str):
             The HCFS URI of the script that contains SQL
             queries.
-        query_list (~.gcd_jobs.QueryList):
+        query_list (google.cloud.dataproc_v1.types.QueryList):
             A list of queries.
-        script_variables (Sequence[~.gcd_jobs.SparkSqlJob.ScriptVariablesEntry]):
+        script_variables (Sequence[google.cloud.dataproc_v1.types.SparkSqlJob.ScriptVariablesEntry]):
             Optional. Mapping of query variable names to values
             (equivalent to the Spark SQL command: SET
             ``name="value";``).
-        properties (Sequence[~.gcd_jobs.SparkSqlJob.PropertiesEntry]):
+        properties (Sequence[google.cloud.dataproc_v1.types.SparkSqlJob.PropertiesEntry]):
             Optional. A mapping of property names to
             values, used to configure Spark SQL's SparkConf.
             Properties that conflict with values set by the
@@ -360,7 +360,7 @@ class SparkSqlJob(proto.Message):
         jar_file_uris (Sequence[str]):
             Optional. HCFS URIs of jar files to be added
             to the Spark CLASSPATH.
-        logging_config (~.gcd_jobs.LoggingConfig):
+        logging_config (google.cloud.dataproc_v1.types.LoggingConfig):
             Optional. The runtime log config for job
             execution.
     """
@@ -388,16 +388,16 @@ class PigJob(proto.Message):
         query_file_uri (str):
             The HCFS URI of the script that contains the
             Pig queries.
-        query_list (~.gcd_jobs.QueryList):
+        query_list (google.cloud.dataproc_v1.types.QueryList):
             A list of queries.
         continue_on_failure (bool):
             Optional. Whether to continue executing queries if a query
             fails. The default value is ``false``. Setting to ``true``
             can be useful when executing independent parallel queries.
-        script_variables (Sequence[~.gcd_jobs.PigJob.ScriptVariablesEntry]):
+        script_variables (Sequence[google.cloud.dataproc_v1.types.PigJob.ScriptVariablesEntry]):
             Optional. Mapping of query variable names to values
             (equivalent to the Pig command: ``name=[value]``).
-        properties (Sequence[~.gcd_jobs.PigJob.PropertiesEntry]):
+        properties (Sequence[google.cloud.dataproc_v1.types.PigJob.PropertiesEntry]):
             Optional. A mapping of property names to values, used to
             configure Pig. Properties that conflict with values set by
             the Dataproc API may be overwritten. Can include properties
@@ -407,7 +407,7 @@ class PigJob(proto.Message):
             Optional. HCFS URIs of jar files to add to
             the CLASSPATH of the Pig Client and Hadoop
             MapReduce (MR) tasks. Can contain Pig UDFs.
-        logging_config (~.gcd_jobs.LoggingConfig):
+        logging_config (google.cloud.dataproc_v1.types.LoggingConfig):
             Optional. The runtime log config for job
             execution.
     """
@@ -452,7 +452,7 @@ class SparkRJob(proto.Message):
             extracted into the working directory of each
             executor. Supported file types: .jar, .tar,
             .tar.gz, .tgz, and .zip.
-        properties (Sequence[~.gcd_jobs.SparkRJob.PropertiesEntry]):
+        properties (Sequence[google.cloud.dataproc_v1.types.SparkRJob.PropertiesEntry]):
             Optional. A mapping of property names to
             values, used to configure SparkR. Properties
             that conflict with values set by the Dataproc
@@ -460,7 +460,7 @@ class SparkRJob(proto.Message):
             set in
             /etc/spark/conf/spark-defaults.conf and classes
             in user code.
-        logging_config (~.gcd_jobs.LoggingConfig):
+        logging_config (google.cloud.dataproc_v1.types.LoggingConfig):
             Optional. The runtime log config for job
             execution.
     """
@@ -489,7 +489,7 @@ class PrestoJob(proto.Message):
         query_file_uri (str):
             The HCFS URI of the script that contains SQL
             queries.
-        query_list (~.gcd_jobs.QueryList):
+        query_list (google.cloud.dataproc_v1.types.QueryList):
             A list of queries.
         continue_on_failure (bool):
             Optional. Whether to continue executing queries if a query
@@ -502,12 +502,12 @@ class PrestoJob(proto.Message):
         client_tags (Sequence[str]):
             Optional. Presto client tags to attach to
             this query
-        properties (Sequence[~.gcd_jobs.PrestoJob.PropertiesEntry]):
+        properties (Sequence[google.cloud.dataproc_v1.types.PrestoJob.PropertiesEntry]):
             Optional. A mapping of property names to values. Used to set
             Presto `session
             properties <https://prestodb.io/docs/current/sql/set-session.html>`__
             Equivalent to using the --session flag in the Presto CLI
-        logging_config (~.gcd_jobs.LoggingConfig):
+        logging_config (google.cloud.dataproc_v1.types.LoggingConfig):
             Optional. The runtime log config for job
             execution.
     """
@@ -550,17 +550,17 @@ class JobStatus(proto.Message):
     r"""Dataproc job status.
 
     Attributes:
-        state (~.gcd_jobs.JobStatus.State):
+        state (google.cloud.dataproc_v1.types.JobStatus.State):
             Output only. A state message specifying the
             overall job state.
         details (str):
             Optional. Output only. Job state details,
             such as an error description if the state is
             <code>ERROR</code>.
-        state_start_time (~.timestamp.Timestamp):
+        state_start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when this state was
             entered.
-        substate (~.gcd_jobs.JobStatus.Substate):
+        substate (google.cloud.dataproc_v1.types.JobStatus.Substate):
             Output only. Additional state information,
             which includes status reported by the agent.
     """
@@ -632,7 +632,7 @@ class YarnApplication(proto.Message):
     Attributes:
         name (str):
             Required. The application name.
-        state (~.gcd_jobs.YarnApplication.State):
+        state (google.cloud.dataproc_v1.types.YarnApplication.State):
             Required. The application state.
         progress (float):
             Required. The numerical progress of the
@@ -673,37 +673,37 @@ class Job(proto.Message):
     r"""A Dataproc job resource.
 
     Attributes:
-        reference (~.gcd_jobs.JobReference):
+        reference (google.cloud.dataproc_v1.types.JobReference):
             Optional. The fully qualified reference to the job, which
             can be used to obtain the equivalent REST path of the job
             resource. If this property is not specified when a job is
             created, the server generates a job_id.
-        placement (~.gcd_jobs.JobPlacement):
+        placement (google.cloud.dataproc_v1.types.JobPlacement):
             Required. Job information, including how,
             when, and where to run the job.
-        hadoop_job (~.gcd_jobs.HadoopJob):
+        hadoop_job (google.cloud.dataproc_v1.types.HadoopJob):
             Optional. Job is a Hadoop job.
-        spark_job (~.gcd_jobs.SparkJob):
+        spark_job (google.cloud.dataproc_v1.types.SparkJob):
             Optional. Job is a Spark job.
-        pyspark_job (~.gcd_jobs.PySparkJob):
+        pyspark_job (google.cloud.dataproc_v1.types.PySparkJob):
             Optional. Job is a PySpark job.
-        hive_job (~.gcd_jobs.HiveJob):
+        hive_job (google.cloud.dataproc_v1.types.HiveJob):
             Optional. Job is a Hive job.
-        pig_job (~.gcd_jobs.PigJob):
+        pig_job (google.cloud.dataproc_v1.types.PigJob):
             Optional. Job is a Pig job.
-        spark_r_job (~.gcd_jobs.SparkRJob):
+        spark_r_job (google.cloud.dataproc_v1.types.SparkRJob):
             Optional. Job is a SparkR job.
-        spark_sql_job (~.gcd_jobs.SparkSqlJob):
+        spark_sql_job (google.cloud.dataproc_v1.types.SparkSqlJob):
             Optional. Job is a SparkSql job.
-        presto_job (~.gcd_jobs.PrestoJob):
+        presto_job (google.cloud.dataproc_v1.types.PrestoJob):
             Optional. Job is a Presto job.
-        status (~.gcd_jobs.JobStatus):
+        status (google.cloud.dataproc_v1.types.JobStatus):
             Output only. The job status. Additional application-specific
             status information may be contained in the type_job and
             yarn_applications fields.
-        status_history (Sequence[~.gcd_jobs.JobStatus]):
+        status_history (Sequence[google.cloud.dataproc_v1.types.JobStatus]):
             Output only. The previous job status.
-        yarn_applications (Sequence[~.gcd_jobs.YarnApplication]):
+        yarn_applications (Sequence[google.cloud.dataproc_v1.types.YarnApplication]):
             Output only. The collection of YARN applications spun up by
             this job.
 
@@ -717,7 +717,7 @@ class Job(proto.Message):
             control files which may be used as part of job setup and
             handling. If not present, control files may be placed in the
             same location as ``driver_output_uri``.
-        labels (Sequence[~.gcd_jobs.Job.LabelsEntry]):
+        labels (Sequence[google.cloud.dataproc_v1.types.Job.LabelsEntry]):
             Optional. The labels to associate with this job. Label
             **keys** must contain 1 to 63 characters, and must conform
             to `RFC 1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
@@ -725,7 +725,7 @@ class Job(proto.Message):
             1 to 63 characters, and must conform to `RFC
             1035 <https://www.ietf.org/rfc/rfc1035.txt>`__. No more than
             32 labels can be associated with a job.
-        scheduling (~.gcd_jobs.JobScheduling):
+        scheduling (google.cloud.dataproc_v1.types.JobScheduling):
             Optional. Job scheduling configuration.
         job_uuid (str):
             Output only. A UUID that uniquely identifies a job within
@@ -823,7 +823,7 @@ class SubmitJobRequest(proto.Message):
         region (str):
             Required. The Dataproc region in which to
             handle the request.
-        job (~.gcd_jobs.Job):
+        job (google.cloud.dataproc_v1.types.Job):
             Required. The job resource.
         request_id (str):
             Optional. A unique id used to identify the request. If the
@@ -856,11 +856,11 @@ class JobMetadata(proto.Message):
     Attributes:
         job_id (str):
             Output only. The job id.
-        status (~.gcd_jobs.JobStatus):
+        status (google.cloud.dataproc_v1.types.JobStatus):
             Output only. Most recent job status.
         operation_type (str):
             Output only. Operation type.
-        start_time (~.timestamp.Timestamp):
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Job submission time.
     """
 
@@ -916,7 +916,7 @@ class ListJobsRequest(proto.Message):
             Optional. If set, the returned jobs list
             includes only jobs that were submitted to the
             named cluster.
-        job_state_matcher (~.gcd_jobs.ListJobsRequest.JobStateMatcher):
+        job_state_matcher (google.cloud.dataproc_v1.types.ListJobsRequest.JobStateMatcher):
             Optional. Specifies enumerated categories of jobs to list.
             (default = match ALL jobs).
 
@@ -974,9 +974,9 @@ class UpdateJobRequest(proto.Message):
             handle the request.
         job_id (str):
             Required. The job ID.
-        job (~.gcd_jobs.Job):
+        job (google.cloud.dataproc_v1.types.Job):
             Required. The changes to the job.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Specifies the path, relative to Job, of the field
             to update. For example, to update the labels of a Job the
             update_mask parameter would be specified as labels, and the
@@ -999,7 +999,7 @@ class ListJobsResponse(proto.Message):
     r"""A list of jobs in a project.
 
     Attributes:
-        jobs (Sequence[~.gcd_jobs.Job]):
+        jobs (Sequence[google.cloud.dataproc_v1.types.Job]):
             Output only. Jobs list.
         next_page_token (str):
             Optional. This token is included in the response if there

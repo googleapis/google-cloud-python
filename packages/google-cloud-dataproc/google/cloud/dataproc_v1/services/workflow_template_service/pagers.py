@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.dataproc_v1.types import workflow_templates
 
@@ -24,7 +33,7 @@ class ListWorkflowTemplatesPager:
     """A pager for iterating through ``list_workflow_templates`` requests.
 
     This class thinly wraps an initial
-    :class:`~.workflow_templates.ListWorkflowTemplatesResponse` object, and
+    :class:`google.cloud.dataproc_v1.types.ListWorkflowTemplatesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``templates`` field.
 
@@ -33,7 +42,7 @@ class ListWorkflowTemplatesPager:
     through the ``templates`` field on the
     corresponding responses.
 
-    All the usual :class:`~.workflow_templates.ListWorkflowTemplatesResponse`
+    All the usual :class:`google.cloud.dataproc_v1.types.ListWorkflowTemplatesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListWorkflowTemplatesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.workflow_templates.ListWorkflowTemplatesRequest`):
+            request (google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest):
                 The initial request object.
-            response (:class:`~.workflow_templates.ListWorkflowTemplatesResponse`):
+            response (google.cloud.dataproc_v1.types.ListWorkflowTemplatesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListWorkflowTemplatesAsyncPager:
     """A pager for iterating through ``list_workflow_templates`` requests.
 
     This class thinly wraps an initial
-    :class:`~.workflow_templates.ListWorkflowTemplatesResponse` object, and
+    :class:`google.cloud.dataproc_v1.types.ListWorkflowTemplatesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``templates`` field.
 
@@ -95,7 +104,7 @@ class ListWorkflowTemplatesAsyncPager:
     through the ``templates`` field on the
     corresponding responses.
 
-    All the usual :class:`~.workflow_templates.ListWorkflowTemplatesResponse`
+    All the usual :class:`google.cloud.dataproc_v1.types.ListWorkflowTemplatesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -115,9 +124,9 @@ class ListWorkflowTemplatesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.workflow_templates.ListWorkflowTemplatesRequest`):
+            request (google.cloud.dataproc_v1.types.ListWorkflowTemplatesRequest):
                 The initial request object.
-            response (:class:`~.workflow_templates.ListWorkflowTemplatesResponse`):
+            response (google.cloud.dataproc_v1.types.ListWorkflowTemplatesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

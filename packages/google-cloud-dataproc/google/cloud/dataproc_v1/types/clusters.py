@@ -69,11 +69,11 @@ class Cluster(proto.Message):
             Required. The cluster name. Cluster names
             within a project must be unique. Names of
             deleted clusters can be reused.
-        config (~.gcd_clusters.ClusterConfig):
+        config (google.cloud.dataproc_v1.types.ClusterConfig):
             Required. The cluster config. Note that
             Dataproc may set default values, and values may
             change when clusters are updated.
-        labels (Sequence[~.gcd_clusters.Cluster.LabelsEntry]):
+        labels (Sequence[google.cloud.dataproc_v1.types.Cluster.LabelsEntry]):
             Optional. The labels to associate with this cluster. Label
             **keys** must contain 1 to 63 characters, and must conform
             to `RFC 1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.
@@ -81,15 +81,15 @@ class Cluster(proto.Message):
             1 to 63 characters, and must conform to `RFC
             1035 <https://www.ietf.org/rfc/rfc1035.txt>`__. No more than
             32 labels can be associated with a cluster.
-        status (~.gcd_clusters.ClusterStatus):
+        status (google.cloud.dataproc_v1.types.ClusterStatus):
             Output only. Cluster status.
-        status_history (Sequence[~.gcd_clusters.ClusterStatus]):
+        status_history (Sequence[google.cloud.dataproc_v1.types.ClusterStatus]):
             Output only. The previous cluster status.
         cluster_uuid (str):
             Output only. A cluster UUID (Unique Universal
             Identifier). Dataproc generates this value when
             it creates the cluster.
-        metrics (~.gcd_clusters.ClusterMetrics):
+        metrics (google.cloud.dataproc_v1.types.ClusterMetrics):
             Output only. Contains cluster daemon metrics such as HDFS
             and YARN stats.
 
@@ -142,22 +142,22 @@ class ClusterConfig(proto.Message):
             this project-level, per-location bucket. The
             default bucket has a TTL of 90 days, but you can
             use any TTL (or none) if you specify a bucket.
-        gce_cluster_config (~.gcd_clusters.GceClusterConfig):
+        gce_cluster_config (google.cloud.dataproc_v1.types.GceClusterConfig):
             Optional. The shared Compute Engine config
             settings for all instances in a cluster.
-        master_config (~.gcd_clusters.InstanceGroupConfig):
+        master_config (google.cloud.dataproc_v1.types.InstanceGroupConfig):
             Optional. The Compute Engine config settings
             for the master instance in a cluster.
-        worker_config (~.gcd_clusters.InstanceGroupConfig):
+        worker_config (google.cloud.dataproc_v1.types.InstanceGroupConfig):
             Optional. The Compute Engine config settings
             for worker instances in a cluster.
-        secondary_worker_config (~.gcd_clusters.InstanceGroupConfig):
+        secondary_worker_config (google.cloud.dataproc_v1.types.InstanceGroupConfig):
             Optional. The Compute Engine config settings
             for additional worker instances in a cluster.
-        software_config (~.gcd_clusters.SoftwareConfig):
+        software_config (google.cloud.dataproc_v1.types.SoftwareConfig):
             Optional. The config settings for software
             inside the cluster.
-        initialization_actions (Sequence[~.gcd_clusters.NodeInitializationAction]):
+        initialization_actions (Sequence[google.cloud.dataproc_v1.types.NodeInitializationAction]):
             Optional. Commands to execute on each node after config is
             completed. By default, executables are run on master and all
             worker nodes. You can test a node's ``role`` metadata to run
@@ -173,18 +173,18 @@ class ClusterConfig(proto.Message):
                 else
                   ... worker specific actions ...
                 fi
-        encryption_config (~.gcd_clusters.EncryptionConfig):
+        encryption_config (google.cloud.dataproc_v1.types.EncryptionConfig):
             Optional. Encryption settings for the
             cluster.
-        autoscaling_config (~.gcd_clusters.AutoscalingConfig):
+        autoscaling_config (google.cloud.dataproc_v1.types.AutoscalingConfig):
             Optional. Autoscaling config for the policy
             associated with the cluster. Cluster does not
             autoscale if this field is unset.
-        security_config (~.gcd_clusters.SecurityConfig):
+        security_config (google.cloud.dataproc_v1.types.SecurityConfig):
             Optional. Security settings for the cluster.
-        lifecycle_config (~.gcd_clusters.LifecycleConfig):
+        lifecycle_config (google.cloud.dataproc_v1.types.LifecycleConfig):
             Optional. Lifecycle setting for the cluster.
-        endpoint_config (~.gcd_clusters.EndpointConfig):
+        endpoint_config (google.cloud.dataproc_v1.types.EndpointConfig):
             Optional. Port/endpoint configuration for
             this cluster
     """
@@ -232,7 +232,7 @@ class EndpointConfig(proto.Message):
     r"""Endpoint config for this cluster
 
     Attributes:
-        http_ports (Sequence[~.gcd_clusters.EndpointConfig.HttpPortsEntry]):
+        http_ports (Sequence[google.cloud.dataproc_v1.types.EndpointConfig.HttpPortsEntry]):
             Output only. The map of port descriptions to URLs. Will only
             be populated if enable_http_port_access is true.
         enable_http_port_access (bool):
@@ -360,11 +360,11 @@ class GceClusterConfig(proto.Message):
             The Compute Engine tags to add to all instances (see
             `Tagging
             instances <https://cloud.google.com/compute/docs/label-or-tag-resources#tags>`__).
-        metadata (Sequence[~.gcd_clusters.GceClusterConfig.MetadataEntry]):
+        metadata (Sequence[google.cloud.dataproc_v1.types.GceClusterConfig.MetadataEntry]):
             The Compute Engine metadata entries to add to all instances
             (see `Project and instance
             metadata <https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata>`__).
-        reservation_affinity (~.gcd_clusters.ReservationAffinity):
+        reservation_affinity (google.cloud.dataproc_v1.types.ReservationAffinity):
             Optional. Reservation Affinity for consuming
             Zonal reservation.
     """
@@ -438,12 +438,12 @@ class InstanceGroupConfig(proto.Message):
             Placement <https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/auto-zone#using_auto_zone_placement>`__
             feature, you must use the short name of the machine type
             resource, for example, ``n1-standard-2``.
-        disk_config (~.gcd_clusters.DiskConfig):
+        disk_config (google.cloud.dataproc_v1.types.DiskConfig):
             Optional. Disk option config settings.
         is_preemptible (bool):
             Output only. Specifies that this instance
             group contains preemptible instances.
-        preemptibility (~.gcd_clusters.InstanceGroupConfig.Preemptibility):
+        preemptibility (google.cloud.dataproc_v1.types.InstanceGroupConfig.Preemptibility):
             Optional. Specifies the preemptibility of the instance
             group.
 
@@ -452,12 +452,12 @@ class InstanceGroupConfig(proto.Message):
 
             The default value for secondary instances is
             ``PREEMPTIBLE``.
-        managed_group_config (~.gcd_clusters.ManagedGroupConfig):
+        managed_group_config (google.cloud.dataproc_v1.types.ManagedGroupConfig):
             Output only. The config for Compute Engine
             Instance Group Manager that manages this group.
             This is only used for preemptible instance
             groups.
-        accelerators (Sequence[~.gcd_clusters.AcceleratorConfig]):
+        accelerators (Sequence[google.cloud.dataproc_v1.types.AcceleratorConfig]):
             Optional. The Compute Engine accelerator
             configuration for these instances.
         min_cpu_platform (str):
@@ -588,7 +588,7 @@ class NodeInitializationAction(proto.Message):
         executable_file (str):
             Required. Cloud Storage URI of executable
             file.
-        execution_timeout (~.duration.Duration):
+        execution_timeout (google.protobuf.duration_pb2.Duration):
             Optional. Amount of time executable has to complete. Default
             is 10 minutes (see JSON representation of
             `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
@@ -608,16 +608,16 @@ class ClusterStatus(proto.Message):
     r"""The status of a cluster and its instances.
 
     Attributes:
-        state (~.gcd_clusters.ClusterStatus.State):
+        state (google.cloud.dataproc_v1.types.ClusterStatus.State):
             Output only. The cluster's state.
         detail (str):
             Optional. Output only. Details of cluster's
             state.
-        state_start_time (~.timestamp.Timestamp):
+        state_start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time when this state was entered (see JSON
             representation of
             `Timestamp <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
-        substate (~.gcd_clusters.ClusterStatus.Substate):
+        substate (google.cloud.dataproc_v1.types.ClusterStatus.Substate):
             Output only. Additional state information
             that includes status reported by the agent.
     """
@@ -652,7 +652,7 @@ class SecurityConfig(proto.Message):
     r"""Security related configuration, including Kerberos.
 
     Attributes:
-        kerberos_config (~.gcd_clusters.KerberosConfig):
+        kerberos_config (google.cloud.dataproc_v1.types.KerberosConfig):
             Kerberos related configuration.
     """
 
@@ -778,7 +778,7 @@ class SoftwareConfig(proto.Message):
             "1.2.29"), or the `"preview"
             version <https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions>`__.
             If unspecified, it defaults to the latest Debian version.
-        properties (Sequence[~.gcd_clusters.SoftwareConfig.PropertiesEntry]):
+        properties (Sequence[google.cloud.dataproc_v1.types.SoftwareConfig.PropertiesEntry]):
             Optional. The properties to set on daemon config files.
 
             Property keys are specified in ``prefix:property`` format,
@@ -797,7 +797,7 @@ class SoftwareConfig(proto.Message):
 
             For more information, see `Cluster
             properties <https://cloud.google.com/dataproc/docs/concepts/cluster-properties>`__.
-        optional_components (Sequence[~.shared.Component]):
+        optional_components (Sequence[google.cloud.dataproc_v1.types.Component]):
             Optional. The set of components to activate
             on the cluster.
     """
@@ -815,24 +815,24 @@ class LifecycleConfig(proto.Message):
     r"""Specifies the cluster auto-delete schedule configuration.
 
     Attributes:
-        idle_delete_ttl (~.duration.Duration):
+        idle_delete_ttl (google.protobuf.duration_pb2.Duration):
             Optional. The duration to keep the cluster alive while
             idling (when no jobs are running). Passing this threshold
             will cause the cluster to be deleted. Minimum value is 10
             minutes; maximum value is 14 days (see JSON representation
             of
             `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__.
-        auto_delete_time (~.timestamp.Timestamp):
+        auto_delete_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The time when cluster will be auto-deleted (see
             JSON representation of
             `Timestamp <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
-        auto_delete_ttl (~.duration.Duration):
+        auto_delete_ttl (google.protobuf.duration_pb2.Duration):
             Optional. The lifetime duration of cluster. The cluster will
             be auto-deleted at the end of this period. Minimum value is
             10 minutes; maximum value is 14 days (see JSON
             representation of
             `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
-        idle_start_time (~.timestamp.Timestamp):
+        idle_start_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when cluster became idle (most recent
             job finished) and became eligible for deletion due to
             idleness (see JSON representation of
@@ -859,9 +859,9 @@ class ClusterMetrics(proto.Message):
     only. It may be changed before final release.
 
     Attributes:
-        hdfs_metrics (Sequence[~.gcd_clusters.ClusterMetrics.HdfsMetricsEntry]):
+        hdfs_metrics (Sequence[google.cloud.dataproc_v1.types.ClusterMetrics.HdfsMetricsEntry]):
             The HDFS metrics.
-        yarn_metrics (Sequence[~.gcd_clusters.ClusterMetrics.YarnMetricsEntry]):
+        yarn_metrics (Sequence[google.cloud.dataproc_v1.types.ClusterMetrics.YarnMetricsEntry]):
             The YARN metrics.
     """
 
@@ -880,7 +880,7 @@ class CreateClusterRequest(proto.Message):
         region (str):
             Required. The Dataproc region in which to
             handle the request.
-        cluster (~.gcd_clusters.Cluster):
+        cluster (google.cloud.dataproc_v1.types.Cluster):
             Required. The cluster to create.
         request_id (str):
             Optional. A unique id used to identify the request. If the
@@ -920,9 +920,9 @@ class UpdateClusterRequest(proto.Message):
             handle the request.
         cluster_name (str):
             Required. The cluster name.
-        cluster (~.gcd_clusters.Cluster):
+        cluster (google.cloud.dataproc_v1.types.Cluster):
             Required. The changes to the cluster.
-        graceful_decommission_timeout (~.duration.Duration):
+        graceful_decommission_timeout (google.protobuf.duration_pb2.Duration):
             Optional. Timeout for graceful YARN decomissioning. Graceful
             decommissioning allows removing nodes from the cluster
             without interrupting jobs in progress. Timeout specifies how
@@ -934,7 +934,7 @@ class UpdateClusterRequest(proto.Message):
             `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
 
             Only supported on Dataproc image versions 1.2 and higher.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Required. Specifies the path, relative to ``Cluster``, of
             the field to update. For example, to change the number of
             workers in a cluster to 5, the ``update_mask`` parameter
@@ -1148,7 +1148,7 @@ class ListClustersResponse(proto.Message):
     r"""The list of all clusters in a project.
 
     Attributes:
-        clusters (Sequence[~.gcd_clusters.Cluster]):
+        clusters (Sequence[google.cloud.dataproc_v1.types.Cluster]):
             Output only. The clusters in the project.
         next_page_token (str):
             Output only. This token is included in the response if there
@@ -1205,7 +1205,7 @@ class ReservationAffinity(proto.Message):
     r"""Reservation Affinity for consuming Zonal reservation.
 
     Attributes:
-        consume_reservation_type (~.gcd_clusters.ReservationAffinity.Type):
+        consume_reservation_type (google.cloud.dataproc_v1.types.ReservationAffinity.Type):
             Optional. Type of reservation to consume
         key (str):
             Optional. Corresponds to the label key of

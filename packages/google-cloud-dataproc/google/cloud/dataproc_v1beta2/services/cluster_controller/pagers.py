@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.dataproc_v1beta2.types import clusters
 
@@ -24,7 +33,7 @@ class ListClustersPager:
     """A pager for iterating through ``list_clusters`` requests.
 
     This class thinly wraps an initial
-    :class:`~.clusters.ListClustersResponse` object, and
+    :class:`google.cloud.dataproc_v1beta2.types.ListClustersResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``clusters`` field.
 
@@ -33,7 +42,7 @@ class ListClustersPager:
     through the ``clusters`` field on the
     corresponding responses.
 
-    All the usual :class:`~.clusters.ListClustersResponse`
+    All the usual :class:`google.cloud.dataproc_v1beta2.types.ListClustersResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListClustersPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.clusters.ListClustersRequest`):
+            request (google.cloud.dataproc_v1beta2.types.ListClustersRequest):
                 The initial request object.
-            response (:class:`~.clusters.ListClustersResponse`):
+            response (google.cloud.dataproc_v1beta2.types.ListClustersResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListClustersAsyncPager:
     """A pager for iterating through ``list_clusters`` requests.
 
     This class thinly wraps an initial
-    :class:`~.clusters.ListClustersResponse` object, and
+    :class:`google.cloud.dataproc_v1beta2.types.ListClustersResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``clusters`` field.
 
@@ -95,7 +104,7 @@ class ListClustersAsyncPager:
     through the ``clusters`` field on the
     corresponding responses.
 
-    All the usual :class:`~.clusters.ListClustersResponse`
+    All the usual :class:`google.cloud.dataproc_v1beta2.types.ListClustersResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -113,9 +122,9 @@ class ListClustersAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.clusters.ListClustersRequest`):
+            request (google.cloud.dataproc_v1beta2.types.ListClustersRequest):
                 The initial request object.
-            response (:class:`~.clusters.ListClustersResponse`):
+            response (google.cloud.dataproc_v1beta2.types.ListClustersResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

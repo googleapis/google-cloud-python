@@ -15,7 +15,16 @@
 # limitations under the License.
 #
 
-from typing import Any, AsyncIterable, Awaitable, Callable, Iterable, Sequence, Tuple
+from typing import (
+    Any,
+    AsyncIterable,
+    Awaitable,
+    Callable,
+    Iterable,
+    Sequence,
+    Tuple,
+    Optional,
+)
 
 from google.cloud.dataproc_v1.types import autoscaling_policies
 
@@ -24,7 +33,7 @@ class ListAutoscalingPoliciesPager:
     """A pager for iterating through ``list_autoscaling_policies`` requests.
 
     This class thinly wraps an initial
-    :class:`~.autoscaling_policies.ListAutoscalingPoliciesResponse` object, and
+    :class:`google.cloud.dataproc_v1.types.ListAutoscalingPoliciesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``policies`` field.
 
@@ -33,7 +42,7 @@ class ListAutoscalingPoliciesPager:
     through the ``policies`` field on the
     corresponding responses.
 
-    All the usual :class:`~.autoscaling_policies.ListAutoscalingPoliciesResponse`
+    All the usual :class:`google.cloud.dataproc_v1.types.ListAutoscalingPoliciesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -51,9 +60,9 @@ class ListAutoscalingPoliciesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.autoscaling_policies.ListAutoscalingPoliciesRequest`):
+            request (google.cloud.dataproc_v1.types.ListAutoscalingPoliciesRequest):
                 The initial request object.
-            response (:class:`~.autoscaling_policies.ListAutoscalingPoliciesResponse`):
+            response (google.cloud.dataproc_v1.types.ListAutoscalingPoliciesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -86,7 +95,7 @@ class ListAutoscalingPoliciesAsyncPager:
     """A pager for iterating through ``list_autoscaling_policies`` requests.
 
     This class thinly wraps an initial
-    :class:`~.autoscaling_policies.ListAutoscalingPoliciesResponse` object, and
+    :class:`google.cloud.dataproc_v1.types.ListAutoscalingPoliciesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``policies`` field.
 
@@ -95,7 +104,7 @@ class ListAutoscalingPoliciesAsyncPager:
     through the ``policies`` field on the
     corresponding responses.
 
-    All the usual :class:`~.autoscaling_policies.ListAutoscalingPoliciesResponse`
+    All the usual :class:`google.cloud.dataproc_v1.types.ListAutoscalingPoliciesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -115,9 +124,9 @@ class ListAutoscalingPoliciesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (:class:`~.autoscaling_policies.ListAutoscalingPoliciesRequest`):
+            request (google.cloud.dataproc_v1.types.ListAutoscalingPoliciesRequest):
                 The initial request object.
-            response (:class:`~.autoscaling_policies.ListAutoscalingPoliciesResponse`):
+            response (google.cloud.dataproc_v1.types.ListAutoscalingPoliciesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
