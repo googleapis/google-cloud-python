@@ -3,8 +3,8 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-binary-authorization",
-        "sha": "2bcce18f2fb53917d58537bc366940093569178c"
+        "remote": "https://github.com/googleapis/python-binary-authorization.git",
+        "sha": "a23f2e78ed9ca93e0e030056146e8cd89804e0d9"
       }
     },
     {
@@ -98,6 +98,7 @@
     "CONTRIBUTING.rst",
     "LICENSE",
     "MANIFEST.in",
+    "binaryauthorization-v1beta1-py.tar.gz",
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/binaryauthorization_v1beta1/binauthz_management_service_v1_beta1.rst",
