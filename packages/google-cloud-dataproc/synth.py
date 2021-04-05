@@ -42,17 +42,17 @@ for version in versions:
 templated_files = common.py_library(
     samples=True,  # set to True only if there are samples
     microgenerator=True,
-    cov_level=98,
 )
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
+# Rename `policy_` to `policy` to avoid breaking change in a GA library
+# Only replace if a non-alphanumeric (\W) character follows `policy_`
+s.replace(["google/**/*.py", "scripts/fixup*.py", "tests/unit/**/*.py"], "policy_(\W)", "policy\g<1>")
 # ----------------------------------------------------------------------------
 # Samples templates
 # ----------------------------------------------------------------------------
 python.py_samples(skip_readmes=True)
 
-# TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 
 # Temporarily disable warnings due to
 # https://github.com/googleapis/gapic-generator-python/issues/525
