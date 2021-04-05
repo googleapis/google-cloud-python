@@ -34,7 +34,7 @@ for version in versions:
         bazel_target="//google/cloud/compute/v1:compute-v1-py",
         diregapic=True,
     )
-    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst", "docs/multiprocessing.rst"])
+    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst", "docs/multiprocessing.rst", "scripts/fixup*"])
 
 # ----------------------------------------------------------------------------
 # Add templated files

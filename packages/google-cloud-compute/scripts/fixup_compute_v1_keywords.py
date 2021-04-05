@@ -41,27 +41,41 @@ def partition(
 class computeCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'abandon_instances': ('instance_group_manager', 'project', 'region', 'region_instance_group_managers_abandon_instances_request_resource', 'request_id', ),
+    'abandon_instances': ('instance_group_manager', 'instance_group_managers_abandon_instances_request_resource', 'project', 'zone', 'request_id', ),
     'add_access_config': ('access_config_resource', 'instance', 'network_interface', 'project', 'zone', 'request_id', ),
     'add_health_check': ('project', 'region', 'target_pool', 'target_pools_add_health_check_request_resource', 'request_id', ),
     'add_instance': ('project', 'region', 'target_pool', 'target_pools_add_instance_request_resource', 'request_id', ),
     'add_instances': ('instance_group', 'instance_groups_add_instances_request_resource', 'project', 'zone', 'request_id', ),
     'add_nodes': ('node_group', 'node_groups_add_nodes_request_resource', 'project', 'zone', 'request_id', ),
     'add_peering': ('network', 'networks_add_peering_request_resource', 'project', 'request_id', ),
+<<<<<<< HEAD
+    'add_resource_policies': ('disk', 'disks_add_resource_policies_request_resource', 'project', 'zone', 'request_id', ),
+=======
     'add_resource_policies': ('instance', 'instances_add_resource_policies_request_resource', 'project', 'zone', 'request_id', ),
+>>>>>>> master
     'add_rule': ('project', 'security_policy', 'security_policy_rule_resource', ),
     'add_signed_url_key': ('backend_bucket', 'project', 'signed_url_key_resource', 'request_id', ),
     'aggregated_list': ('project', 'filter', 'include_all_scopes', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
-    'apply_updates_to_instances': ('instance_group_manager', 'project', 'region', 'region_instance_group_managers_apply_updates_request_resource', ),
+    'apply_updates_to_instances': ('instance_group_manager', 'instance_group_managers_apply_updates_request_resource', 'project', 'zone', ),
     'attach_disk': ('attached_disk_resource', 'instance', 'project', 'zone', 'force_attach', 'request_id', ),
     'attach_network_endpoints': ('global_network_endpoint_groups_attach_endpoints_request_resource', 'network_endpoint_group', 'project', 'request_id', ),
+<<<<<<< HEAD
+    'create_instances': ('instance_group_manager', 'instance_group_managers_create_instances_request_resource', 'project', 'zone', 'request_id', ),
+    'create_snapshot': ('disk', 'project', 'snapshot_resource', 'zone', 'guest_flush', 'request_id', ),
+    'delete': ('address', 'project', 'region', 'request_id', ),
+=======
     'create_instances': ('instance_group_manager', 'project', 'region', 'region_instance_group_managers_create_instances_request_resource', 'request_id', ),
     'create_snapshot': ('disk', 'project', 'region', 'snapshot_resource', 'request_id', ),
     'delete': ('network_endpoint_group', 'project', 'request_id', ),
+>>>>>>> master
     'delete_access_config': ('access_config', 'instance', 'network_interface', 'project', 'zone', 'request_id', ),
-    'delete_instances': ('instance_group_manager', 'project', 'region', 'region_instance_group_managers_delete_instances_request_resource', 'request_id', ),
+    'delete_instances': ('instance_group_manager', 'instance_group_managers_delete_instances_request_resource', 'project', 'zone', 'request_id', ),
     'delete_nodes': ('node_group', 'node_groups_delete_nodes_request_resource', 'project', 'zone', 'request_id', ),
+<<<<<<< HEAD
+    'delete_per_instance_configs': ('instance_group_manager', 'instance_group_managers_delete_per_instance_configs_req_resource', 'project', 'zone', ),
+=======
     'delete_per_instance_configs': ('instance_group_manager', 'project', 'region', 'region_instance_group_manager_delete_instance_config_req_resource', ),
+>>>>>>> master
     'delete_signed_url_key': ('backend_bucket', 'key_name', 'project', 'request_id', ),
     'deprecate': ('deprecation_status_resource', 'image', 'project', 'request_id', ),
     'detach_disk': ('device_name', 'instance', 'project', 'zone', 'request_id', ),
@@ -71,11 +85,19 @@ class computeCallTransformer(cst.CSTTransformer):
     'enable_xpn_host': ('project', 'request_id', ),
     'enable_xpn_resource': ('project', 'projects_enable_xpn_resource_request_resource', 'request_id', ),
     'expand_ip_cidr_range': ('project', 'region', 'subnetwork', 'subnetworks_expand_ip_cidr_range_request_resource', 'request_id', ),
+<<<<<<< HEAD
+    'get': ('accelerator_type', 'project', 'zone', ),
+    'get_diagnostics': ('interconnect', 'project', ),
+    'get_from_family': ('family', 'project', ),
+    'get_guest_attributes': ('instance', 'project', 'zone', 'query_path', 'variable_key', ),
+    'get_health': ('backend_service', 'project', 'resource_group_reference_resource', ),
+=======
     'get': ('network_endpoint_group', 'project', ),
     'get_diagnostics': ('interconnect', 'project', ),
     'get_from_family': ('family', 'project', ),
     'get_guest_attributes': ('instance', 'project', 'zone', 'query_path', 'variable_key', ),
     'get_health': ('backend_service', 'project', 'region', 'resource_group_reference_resource', ),
+>>>>>>> master
     'get_iam_policy': ('project', 'resource', 'zone', 'options_requested_policy_version', ),
     'get_nat_mapping_info': ('project', 'region', 'router', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
     'get_router_status': ('project', 'region', 'router', ),
@@ -86,36 +108,54 @@ class computeCallTransformer(cst.CSTTransformer):
     'get_status': ('project', 'region', 'vpn_gateway', ),
     'get_xpn_host': ('project', ),
     'get_xpn_resources': ('project', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
+<<<<<<< HEAD
+    'insert': ('address_resource', 'project', 'region', 'request_id', ),
+    'invalidate_cache': ('cache_invalidation_rule_resource', 'project', 'url_map', 'request_id', ),
+    'list': ('project', 'zone', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
+=======
     'insert': ('network_endpoint_group_resource', 'project', 'request_id', ),
     'invalidate_cache': ('cache_invalidation_rule_resource', 'project', 'url_map', 'request_id', ),
     'list': ('project', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
+>>>>>>> master
     'list_available_features': ('project', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
-    'list_errors': ('instance_group_manager', 'project', 'region', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
-    'list_instances': ('instance_group', 'project', 'region', 'region_instance_groups_list_instances_request_resource', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
-    'list_managed_instances': ('instance_group_manager', 'project', 'region', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
+    'list_errors': ('instance_group_manager', 'project', 'zone', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
+    'list_instances': ('instance_group', 'instance_groups_list_instances_request_resource', 'project', 'zone', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
+    'list_managed_instances': ('instance_group_manager', 'project', 'zone', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
     'list_network_endpoints': ('network_endpoint_group', 'project', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
     'list_nodes': ('node_group', 'project', 'zone', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
     'list_peering_routes': ('network', 'project', 'direction', 'filter', 'max_results', 'order_by', 'page_token', 'peering_name', 'region', 'return_partial_success', ),
-    'list_per_instance_configs': ('instance_group_manager', 'project', 'region', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
+    'list_per_instance_configs': ('instance_group_manager', 'project', 'zone', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
     'list_preconfigured_expression_sets': ('project', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
     'list_referrers': ('instance', 'project', 'zone', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
     'list_usable': ('project', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
     'list_xpn_hosts': ('project', 'projects_list_xpn_hosts_request_resource', 'filter', 'max_results', 'order_by', 'page_token', 'return_partial_success', ),
     'move_disk': ('disk_move_request_resource', 'project', 'request_id', ),
     'move_instance': ('instance_move_request_resource', 'project', 'request_id', ),
+<<<<<<< HEAD
+    'patch': ('autoscaler_resource', 'project', 'zone', 'autoscaler', 'request_id', ),
+    'patch_per_instance_configs': ('instance_group_manager', 'instance_group_managers_patch_per_instance_configs_req_resource', 'project', 'zone', 'request_id', ),
+=======
     'patch': ('project', 'region', 'router', 'router_resource', 'request_id', ),
     'patch_per_instance_configs': ('instance_group_manager', 'project', 'region', 'region_instance_group_manager_patch_instance_config_req_resource', 'request_id', ),
+>>>>>>> master
     'patch_rule': ('project', 'security_policy', 'security_policy_rule_resource', 'priority', ),
     'preview': ('project', 'region', 'router', 'router_resource', ),
-    'recreate_instances': ('instance_group_manager', 'project', 'region', 'region_instance_group_managers_recreate_request_resource', 'request_id', ),
+    'recreate_instances': ('instance_group_manager', 'instance_group_managers_recreate_instances_request_resource', 'project', 'zone', 'request_id', ),
     'remove_health_check': ('project', 'region', 'target_pool', 'target_pools_remove_health_check_request_resource', 'request_id', ),
     'remove_instance': ('project', 'region', 'target_pool', 'target_pools_remove_instance_request_resource', 'request_id', ),
     'remove_instances': ('instance_group', 'instance_groups_remove_instances_request_resource', 'project', 'zone', 'request_id', ),
     'remove_peering': ('network', 'networks_remove_peering_request_resource', 'project', 'request_id', ),
+<<<<<<< HEAD
+    'remove_resource_policies': ('disk', 'disks_remove_resource_policies_request_resource', 'project', 'zone', 'request_id', ),
+    'remove_rule': ('project', 'security_policy', 'priority', ),
+    'reset': ('instance', 'project', 'zone', 'request_id', ),
+    'resize': ('disk', 'disks_resize_request_resource', 'project', 'zone', 'request_id', ),
+=======
     'remove_resource_policies': ('instance', 'instances_remove_resource_policies_request_resource', 'project', 'zone', 'request_id', ),
     'remove_rule': ('project', 'security_policy', 'priority', ),
     'reset': ('instance', 'project', 'zone', 'request_id', ),
     'resize': ('disk', 'project', 'region', 'region_disks_resize_request_resource', 'request_id', ),
+>>>>>>> master
     'set_backend_service': ('project', 'target_ssl_proxies_set_backend_service_request_resource', 'target_ssl_proxy', 'request_id', ),
     'set_backup': ('project', 'region', 'target_pool', 'target_reference_resource', 'failover_ratio', 'request_id', ),
     'set_common_instance_metadata': ('metadata_resource', 'project', 'request_id', ),
@@ -123,13 +163,18 @@ class computeCallTransformer(cst.CSTTransformer):
     'set_deletion_protection': ('project', 'resource', 'zone', 'deletion_protection', 'request_id', ),
     'set_disk_auto_delete': ('auto_delete', 'device_name', 'instance', 'project', 'zone', 'request_id', ),
     'set_iam_policy': ('project', 'resource', 'zone', 'zone_set_policy_request_resource', ),
+<<<<<<< HEAD
+    'set_instance_template': ('instance_group_manager', 'instance_group_managers_set_instance_template_request_resource', 'project', 'zone', 'request_id', ),
+    'set_labels': ('project', 'resource', 'zone', 'zone_set_labels_request_resource', 'request_id', ),
+=======
     'set_instance_template': ('instance_group_manager', 'project', 'region', 'region_instance_group_managers_set_template_request_resource', 'request_id', ),
     'set_labels': ('instance', 'instances_set_labels_request_resource', 'project', 'zone', 'request_id', ),
+>>>>>>> master
     'set_machine_resources': ('instance', 'instances_set_machine_resources_request_resource', 'project', 'zone', 'request_id', ),
     'set_machine_type': ('instance', 'instances_set_machine_type_request_resource', 'project', 'zone', 'request_id', ),
     'set_metadata': ('instance', 'metadata_resource', 'project', 'zone', 'request_id', ),
     'set_min_cpu_platform': ('instance', 'instances_set_min_cpu_platform_request_resource', 'project', 'zone', 'request_id', ),
-    'set_named_ports': ('instance_group', 'project', 'region', 'region_instance_groups_set_named_ports_request_resource', 'request_id', ),
+    'set_named_ports': ('instance_group', 'instance_groups_set_named_ports_request_resource', 'project', 'zone', 'request_id', ),
     'set_node_template': ('node_group', 'node_groups_set_node_template_request_resource', 'project', 'zone', 'request_id', ),
     'set_private_ip_google_access': ('project', 'region', 'subnetwork', 'subnetworks_set_private_ip_google_access_request_resource', 'request_id', ),
     'set_proxy_header': ('project', 'target_ssl_proxies_set_proxy_header_request_resource', 'target_ssl_proxy', 'request_id', ),
@@ -138,12 +183,18 @@ class computeCallTransformer(cst.CSTTransformer):
     'set_security_policy': ('backend_service', 'project', 'security_policy_reference_resource', 'request_id', ),
     'set_service_account': ('instance', 'instances_set_service_account_request_resource', 'project', 'zone', 'request_id', ),
     'set_shielded_instance_integrity_policy': ('instance', 'project', 'shielded_instance_integrity_policy_resource', 'zone', 'request_id', ),
-    'set_ssl_certificates': ('project', 'target_ssl_proxies_set_ssl_certificates_request_resource', 'target_ssl_proxy', 'request_id', ),
-    'set_ssl_policy': ('project', 'ssl_policy_reference_resource', 'target_ssl_proxy', 'request_id', ),
+    'set_ssl_certificates': ('project', 'region', 'region_target_https_proxies_set_ssl_certificates_request_resource', 'target_https_proxy', 'request_id', ),
+    'set_ssl_policy': ('project', 'ssl_policy_reference_resource', 'target_https_proxy', 'request_id', ),
     'set_tags': ('instance', 'project', 'tags_resource', 'zone', 'request_id', ),
+<<<<<<< HEAD
+    'set_target': ('forwarding_rule', 'project', 'region', 'target_reference_resource', 'request_id', ),
+    'set_target_pools': ('instance_group_manager', 'instance_group_managers_set_target_pools_request_resource', 'project', 'zone', 'request_id', ),
+    'set_url_map': ('project', 'region', 'target_http_proxy', 'url_map_reference_resource', 'request_id', ),
+=======
     'set_target': ('forwarding_rule', 'project', 'target_reference_resource', 'request_id', ),
     'set_target_pools': ('instance_group_manager', 'project', 'region', 'region_instance_group_managers_set_target_pools_request_resource', 'request_id', ),
     'set_url_map': ('project', 'target_https_proxy', 'url_map_reference_resource', 'request_id', ),
+>>>>>>> master
     'set_usage_export_bucket': ('project', 'usage_export_location_resource', 'request_id', ),
     'simulate_maintenance_event': ('instance', 'project', 'zone', ),
     'start': ('instance', 'project', 'zone', 'request_id', ),
@@ -151,15 +202,24 @@ class computeCallTransformer(cst.CSTTransformer):
     'stop': ('instance', 'project', 'zone', 'request_id', ),
     'switch_to_custom_mode': ('network', 'project', 'request_id', ),
     'test_iam_permissions': ('project', 'resource', 'test_permissions_request_resource', 'zone', ),
+<<<<<<< HEAD
+    'update': ('autoscaler_resource', 'project', 'zone', 'autoscaler', 'request_id', ),
+=======
     'update': ('project', 'region', 'router', 'router_resource', 'request_id', ),
+>>>>>>> master
     'update_access_config': ('access_config_resource', 'instance', 'network_interface', 'project', 'zone', 'request_id', ),
     'update_display_device': ('display_device_resource', 'instance', 'project', 'zone', 'request_id', ),
     'update_network_interface': ('instance', 'network_interface', 'network_interface_resource', 'project', 'zone', 'request_id', ),
     'update_peering': ('network', 'networks_update_peering_request_resource', 'project', 'request_id', ),
-    'update_per_instance_configs': ('instance_group_manager', 'project', 'region', 'region_instance_group_manager_update_instance_config_req_resource', 'request_id', ),
+    'update_per_instance_configs': ('instance_group_manager', 'instance_group_managers_update_per_instance_configs_req_resource', 'project', 'zone', 'request_id', ),
     'update_shielded_instance_config': ('instance', 'project', 'shielded_instance_config_resource', 'zone', 'request_id', ),
+<<<<<<< HEAD
+    'validate': ('project', 'region', 'region_url_maps_validate_request_resource', 'url_map', ),
+    'wait': ('operation', 'project', ),
+=======
     'validate': ('project', 'url_map', 'url_maps_validate_request_resource', ),
     'wait': ('operation', 'project', 'region', ),
+>>>>>>> master
 
     }
 
