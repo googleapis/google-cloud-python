@@ -26,7 +26,6 @@ release_status = "Development Status :: 4 - Beta"
 url = "https://github.com/googleapis/python-appengine-admin"
 dependencies = [
     "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
-    "libcst >= 0.2.5",
     "proto-plus >= 1.18.1",
     "grpc-google-iam-v1",
     "six",
