@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-billing.git",
-        "sha": "95ba26961090dc76e75064cba10c21ca4897675e"
+        "sha": "08990be682edd6e978859ee01b54c8c8c902586e"
       }
     },
     {
@@ -99,6 +99,7 @@
     "LICENSE",
     "MANIFEST.in",
     "README.rst",
+    "billing-v1-py.tar.gz",
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/billing_v1/cloud_billing.rst",
