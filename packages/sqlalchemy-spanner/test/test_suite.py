@@ -682,3 +682,48 @@ class ComponentReflectionTest(_ComponentReflectionTest):
 
         with pytest.raises(spanner_dbapi.exceptions.ProgrammingError):
             self.metadata.create_all()
+
+    @testing.provide_metadata
+    def _test_get_table_names(self, schema=None, table_type="table", order_by=None):
+        """
+        SPANNER OVERRIDE:
+
+        Spanner doesn't support temporary tables, so real tables are
+        used for testing. As the original test expects only real
+        tables to be read, and in Spanner all the tables are real,
+        expected results override is required.
+        """
+        _ignore_tables = [
+            "comment_test",
+            "noncol_idx_test_pk",
+            "noncol_idx_test_nopk",
+            "local_table",
+            "remote_table",
+            "remote_table_2",
+        ]
+        meta = self.metadata
+
+        insp = inspect(meta.bind)
+
+        if table_type == "view":
+            table_names = insp.get_view_names(schema)
+            table_names.sort()
+            answer = ["email_addresses_v", "users_v"]
+            eq_(sorted(table_names), answer)
+        else:
+            if order_by:
+                tables = [
+                    rec[0]
+                    for rec in insp.get_sorted_table_and_fkc_names(schema)
+                    if rec[0]
+                ]
+            else:
+                tables = insp.get_table_names(schema)
+            table_names = [t for t in tables if t not in _ignore_tables]
+
+            if order_by == "foreign_key":
+                answer = ["users", "user_tmp", "email_addresses", "dingalings"]
+                eq_(table_names, answer)
+            else:
+                answer = ["dingalings", "email_addresses", "user_tmp", "users"]
+                eq_(sorted(table_names), answer)
