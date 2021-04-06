@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [1.8.0](https://www.github.com/googleapis/python-ndb/compare/v1.7.3...v1.8.0) (2021-04-06)
+
+
+### Features
+
+* retry global cache operations on transient errors ([#603](https://www.github.com/googleapis/python-ndb/issues/603)) ([5d6b650](https://www.github.com/googleapis/python-ndb/commit/5d6b6503ce40ba0d36ea79a461c2c95897235734)), closes [#601](https://www.github.com/googleapis/python-ndb/issues/601)
+
+
+### Bug Fixes
+
+* don't return `None` for entities found in queries ([#612](https://www.github.com/googleapis/python-ndb/issues/612)) ([9e5e255](https://www.github.com/googleapis/python-ndb/commit/9e5e255c14716b3046a9dc70bb8a4596beec1562)), closes [#586](https://www.github.com/googleapis/python-ndb/issues/586)
+* fix bug with compressed blob property ([#615](https://www.github.com/googleapis/python-ndb/issues/615)) ([d305f9f](https://www.github.com/googleapis/python-ndb/commit/d305f9fd2b1cfe8e7d709849e392402f4ae059ac)), closes [#602](https://www.github.com/googleapis/python-ndb/issues/602)
+* fix failing unit test ([#607](https://www.github.com/googleapis/python-ndb/issues/607)) ([5d3927e](https://www.github.com/googleapis/python-ndb/commit/5d3927e0b0a6d6a447585d2cc90077de26f24c5c)), closes [#606](https://www.github.com/googleapis/python-ndb/issues/606)
+* handle unpickling between GAE NDB (2.7) to Cloud NDB (3) ([#596](https://www.github.com/googleapis/python-ndb/issues/596)) ([5be4225](https://www.github.com/googleapis/python-ndb/commit/5be4225f20b9216b49f953c464b8b8ef9683d8bf))
+* mock call to `tasklets.sleep` in unit test ([#609](https://www.github.com/googleapis/python-ndb/issues/609)) ([00e23f3](https://www.github.com/googleapis/python-ndb/commit/00e23f3f31fb531b402f087e29b539a7af9ac79f)), closes [#608](https://www.github.com/googleapis/python-ndb/issues/608)
+* prevent mismatch error when using default namespace on ancestor queries ([#614](https://www.github.com/googleapis/python-ndb/issues/614)) ([ae67f04](https://www.github.com/googleapis/python-ndb/commit/ae67f04db12c65ecca9d6145f113729072b952f3))
+* reimplement `_clone_properties` ([#610](https://www.github.com/googleapis/python-ndb/issues/610)) ([e23f42b](https://www.github.com/googleapis/python-ndb/commit/e23f42b27cec6f7fcf05ae51d4e6ee2aea30f6ca)), closes [#566](https://www.github.com/googleapis/python-ndb/issues/566)
+* replicate legacy behavior for using cache with queries ([#613](https://www.github.com/googleapis/python-ndb/issues/613)) ([edd1185](https://www.github.com/googleapis/python-ndb/commit/edd1185f01c6db5b4876f7b0ce81df0315c98890)), closes [#586](https://www.github.com/googleapis/python-ndb/issues/586)
+* support `int` as base type for `BooleanProperty` ([#624](https://www.github.com/googleapis/python-ndb/issues/624)) ([a04bf3a](https://www.github.com/googleapis/python-ndb/commit/a04bf3acef3eb88f23c4f0832ce74af9557cb03d))
+
 ### [1.7.3](https://www.github.com/googleapis/python-ndb/compare/v1.7.2...v1.7.3) (2021-01-21)
 
 
