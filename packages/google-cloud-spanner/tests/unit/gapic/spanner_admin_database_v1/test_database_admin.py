@@ -104,15 +104,19 @@ def test__get_default_mtls_endpoint():
     )
 
 
-def test_database_admin_client_from_service_account_info():
+@pytest.mark.parametrize(
+    "client_class", [DatabaseAdminClient, DatabaseAdminAsyncClient,]
+)
+def test_database_admin_client_from_service_account_info(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = DatabaseAdminClient.from_service_account_info(info)
+        client = client_class.from_service_account_info(info)
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "spanner.googleapis.com:443"
 
@@ -128,9 +132,11 @@ def test_database_admin_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "spanner.googleapis.com:443"
 
@@ -493,6 +499,22 @@ def test_list_databases_from_dict():
     test_list_databases(request_type=dict)
 
 
+def test_list_databases_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
+        client.list_databases()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner_database_admin.ListDatabasesRequest()
+
+
 @pytest.mark.asyncio
 async def test_list_databases_async(
     transport: str = "grpc_asyncio",
@@ -842,6 +864,22 @@ def test_create_database_from_dict():
     test_create_database(request_type=dict)
 
 
+def test_create_database_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_database), "__call__") as call:
+        client.create_database()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner_database_admin.CreateDatabaseRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_database_async(
     transport: str = "grpc_asyncio",
@@ -1052,6 +1090,22 @@ def test_get_database_from_dict():
     test_get_database(request_type=dict)
 
 
+def test_get_database_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_database), "__call__") as call:
+        client.get_database()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner_database_admin.GetDatabaseRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_database_async(
     transport: str = "grpc_asyncio",
@@ -1250,6 +1304,24 @@ def test_update_database_ddl(
 
 def test_update_database_ddl_from_dict():
     test_update_database_ddl(request_type=dict)
+
+
+def test_update_database_ddl_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_database_ddl), "__call__"
+    ) as call:
+        client.update_database_ddl()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner_database_admin.UpdateDatabaseDdlRequest()
 
 
 @pytest.mark.asyncio
@@ -1461,6 +1533,22 @@ def test_drop_database_from_dict():
     test_drop_database(request_type=dict)
 
 
+def test_drop_database_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.drop_database), "__call__") as call:
+        client.drop_database()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner_database_admin.DropDatabaseRequest()
+
+
 @pytest.mark.asyncio
 async def test_drop_database_async(
     transport: str = "grpc_asyncio",
@@ -1645,6 +1733,22 @@ def test_get_database_ddl(
 
 def test_get_database_ddl_from_dict():
     test_get_database_ddl(request_type=dict)
+
+
+def test_get_database_ddl_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_database_ddl), "__call__") as call:
+        client.get_database_ddl()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner_database_admin.GetDatabaseDdlRequest()
 
 
 @pytest.mark.asyncio
@@ -1841,6 +1945,22 @@ def test_set_iam_policy(
 
 def test_set_iam_policy_from_dict():
     test_set_iam_policy(request_type=dict)
+
+
+def test_set_iam_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        client.set_iam_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == iam_policy.SetIamPolicyRequest()
 
 
 @pytest.mark.asyncio
@@ -2050,6 +2170,22 @@ def test_get_iam_policy_from_dict():
     test_get_iam_policy(request_type=dict)
 
 
+def test_get_iam_policy_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        client.get_iam_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == iam_policy.GetIamPolicyRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy.GetIamPolicyRequest
@@ -2257,6 +2393,24 @@ def test_test_iam_permissions(
 
 def test_test_iam_permissions_from_dict():
     test_test_iam_permissions(request_type=dict)
+
+
+def test_test_iam_permissions_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        client.test_iam_permissions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == iam_policy.TestIamPermissionsRequest()
 
 
 @pytest.mark.asyncio
@@ -2487,6 +2641,22 @@ def test_create_backup_from_dict():
     test_create_backup(request_type=dict)
 
 
+def test_create_backup_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_backup), "__call__") as call:
+        client.create_backup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == gsad_backup.CreateBackupRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_backup_async(
     transport: str = "grpc_asyncio", request_type=gsad_backup.CreateBackupRequest
@@ -2710,6 +2880,22 @@ def test_get_backup_from_dict():
     test_get_backup(request_type=dict)
 
 
+def test_get_backup_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_backup), "__call__") as call:
+        client.get_backup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == backup.GetBackupRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_backup_async(
     transport: str = "grpc_asyncio", request_type=backup.GetBackupRequest
@@ -2925,6 +3111,22 @@ def test_update_backup_from_dict():
     test_update_backup(request_type=dict)
 
 
+def test_update_backup_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_backup), "__call__") as call:
+        client.update_backup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == gsad_backup.UpdateBackupRequest()
+
+
 @pytest.mark.asyncio
 async def test_update_backup_async(
     transport: str = "grpc_asyncio", request_type=gsad_backup.UpdateBackupRequest
@@ -3137,6 +3339,22 @@ def test_delete_backup_from_dict():
     test_delete_backup(request_type=dict)
 
 
+def test_delete_backup_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_backup), "__call__") as call:
+        client.delete_backup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == backup.DeleteBackupRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_backup_async(
     transport: str = "grpc_asyncio", request_type=backup.DeleteBackupRequest
@@ -3318,6 +3536,22 @@ def test_list_backups(transport: str = "grpc", request_type=backup.ListBackupsRe
 
 def test_list_backups_from_dict():
     test_list_backups(request_type=dict)
+
+
+def test_list_backups_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_backups), "__call__") as call:
+        client.list_backups()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == backup.ListBackupsRequest()
 
 
 @pytest.mark.asyncio
@@ -3622,6 +3856,22 @@ def test_restore_database_from_dict():
     test_restore_database(request_type=dict)
 
 
+def test_restore_database_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.restore_database), "__call__") as call:
+        client.restore_database()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner_database_admin.RestoreDatabaseRequest()
+
+
 @pytest.mark.asyncio
 async def test_restore_database_async(
     transport: str = "grpc_asyncio",
@@ -3837,6 +4087,24 @@ def test_list_database_operations(
 
 def test_list_database_operations_from_dict():
     test_list_database_operations(request_type=dict)
+
+
+def test_list_database_operations_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_database_operations), "__call__"
+    ) as call:
+        client.list_database_operations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner_database_admin.ListDatabaseOperationsRequest()
 
 
 @pytest.mark.asyncio
@@ -4201,6 +4469,24 @@ def test_list_backup_operations(
 
 def test_list_backup_operations_from_dict():
     test_list_backup_operations(request_type=dict)
+
+
+def test_list_backup_operations_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DatabaseAdminClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_backup_operations), "__call__"
+    ) as call:
+        client.list_backup_operations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == backup.ListBackupOperationsRequest()
 
 
 @pytest.mark.asyncio

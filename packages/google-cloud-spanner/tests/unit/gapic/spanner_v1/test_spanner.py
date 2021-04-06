@@ -87,15 +87,17 @@ def test__get_default_mtls_endpoint():
     assert SpannerClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-def test_spanner_client_from_service_account_info():
+@pytest.mark.parametrize("client_class", [SpannerClient, SpannerAsyncClient,])
+def test_spanner_client_from_service_account_info(client_class):
     creds = credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = SpannerClient.from_service_account_info(info)
+        client = client_class.from_service_account_info(info)
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "spanner.googleapis.com:443"
 
@@ -109,9 +111,11 @@ def test_spanner_client_from_service_account_file(client_class):
         factory.return_value = creds
         client = client_class.from_service_account_file("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         client = client_class.from_service_account_json("dummy/file/path.json")
         assert client.transport._credentials == creds
+        assert isinstance(client, client_class)
 
         assert client.transport._host == "spanner.googleapis.com:443"
 
@@ -448,6 +452,22 @@ def test_create_session_from_dict():
     test_create_session(request_type=dict)
 
 
+def test_create_session_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpannerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
+        client.create_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner.CreateSessionRequest()
+
+
 @pytest.mark.asyncio
 async def test_create_session_async(
     transport: str = "grpc_asyncio", request_type=spanner.CreateSessionRequest
@@ -633,6 +653,24 @@ def test_batch_create_sessions(
 
 def test_batch_create_sessions_from_dict():
     test_batch_create_sessions(request_type=dict)
+
+
+def test_batch_create_sessions_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpannerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.batch_create_sessions), "__call__"
+    ) as call:
+        client.batch_create_sessions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner.BatchCreateSessionsRequest()
 
 
 @pytest.mark.asyncio
@@ -844,6 +882,22 @@ def test_get_session_from_dict():
     test_get_session(request_type=dict)
 
 
+def test_get_session_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpannerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
+        client.get_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner.GetSessionRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_session_async(
     transport: str = "grpc_asyncio", request_type=spanner.GetSessionRequest
@@ -1031,6 +1085,22 @@ def test_list_sessions(
 
 def test_list_sessions_from_dict():
     test_list_sessions(request_type=dict)
+
+
+def test_list_sessions_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpannerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        client.list_sessions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner.ListSessionsRequest()
 
 
 @pytest.mark.asyncio
@@ -1343,6 +1413,22 @@ def test_delete_session_from_dict():
     test_delete_session(request_type=dict)
 
 
+def test_delete_session_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpannerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        client.delete_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner.DeleteSessionRequest()
+
+
 @pytest.mark.asyncio
 async def test_delete_session_async(
     transport: str = "grpc_asyncio", request_type=spanner.DeleteSessionRequest
@@ -1522,6 +1608,22 @@ def test_execute_sql_from_dict():
     test_execute_sql(request_type=dict)
 
 
+def test_execute_sql_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpannerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.execute_sql), "__call__") as call:
+        client.execute_sql()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner.ExecuteSqlRequest()
+
+
 @pytest.mark.asyncio
 async def test_execute_sql_async(
     transport: str = "grpc_asyncio", request_type=spanner.ExecuteSqlRequest
@@ -1642,6 +1744,24 @@ def test_execute_streaming_sql(
 
 def test_execute_streaming_sql_from_dict():
     test_execute_streaming_sql(request_type=dict)
+
+
+def test_execute_streaming_sql_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpannerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_streaming_sql), "__call__"
+    ) as call:
+        client.execute_streaming_sql()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner.ExecuteSqlRequest()
 
 
 @pytest.mark.asyncio
@@ -1775,6 +1895,24 @@ def test_execute_batch_dml_from_dict():
     test_execute_batch_dml(request_type=dict)
 
 
+def test_execute_batch_dml_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpannerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.execute_batch_dml), "__call__"
+    ) as call:
+        client.execute_batch_dml()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner.ExecuteBatchDmlRequest()
+
+
 @pytest.mark.asyncio
 async def test_execute_batch_dml_async(
     transport: str = "grpc_asyncio", request_type=spanner.ExecuteBatchDmlRequest
@@ -1899,6 +2037,22 @@ def test_read_from_dict():
     test_read(request_type=dict)
 
 
+def test_read_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpannerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.read), "__call__") as call:
+        client.read()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner.ReadRequest()
+
+
 @pytest.mark.asyncio
 async def test_read_async(
     transport: str = "grpc_asyncio", request_type=spanner.ReadRequest
@@ -2015,6 +2169,22 @@ def test_streaming_read(transport: str = "grpc", request_type=spanner.ReadReques
 
 def test_streaming_read_from_dict():
     test_streaming_read(request_type=dict)
+
+
+def test_streaming_read_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpannerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.streaming_read), "__call__") as call:
+        client.streaming_read()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner.ReadRequest()
 
 
 @pytest.mark.asyncio
@@ -2142,6 +2312,24 @@ def test_begin_transaction(
 
 def test_begin_transaction_from_dict():
     test_begin_transaction(request_type=dict)
+
+
+def test_begin_transaction_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpannerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.begin_transaction), "__call__"
+    ) as call:
+        client.begin_transaction()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner.BeginTransactionRequest()
 
 
 @pytest.mark.asyncio
@@ -2353,6 +2541,22 @@ def test_commit(transport: str = "grpc", request_type=spanner.CommitRequest):
 
 def test_commit_from_dict():
     test_commit(request_type=dict)
+
+
+def test_commit_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpannerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.commit), "__call__") as call:
+        client.commit()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner.CommitRequest()
 
 
 @pytest.mark.asyncio
@@ -2581,6 +2785,22 @@ def test_rollback_from_dict():
     test_rollback(request_type=dict)
 
 
+def test_rollback_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpannerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.rollback), "__call__") as call:
+        client.rollback()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner.RollbackRequest()
+
+
 @pytest.mark.asyncio
 async def test_rollback_async(
     transport: str = "grpc_asyncio", request_type=spanner.RollbackRequest
@@ -2774,6 +2994,22 @@ def test_partition_query_from_dict():
     test_partition_query(request_type=dict)
 
 
+def test_partition_query_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpannerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.partition_query), "__call__") as call:
+        client.partition_query()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner.PartitionQueryRequest()
+
+
 @pytest.mark.asyncio
 async def test_partition_query_async(
     transport: str = "grpc_asyncio", request_type=spanner.PartitionQueryRequest
@@ -2892,6 +3128,22 @@ def test_partition_read(
 
 def test_partition_read_from_dict():
     test_partition_read(request_type=dict)
+
+
+def test_partition_read_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SpannerClient(
+        credentials=credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.partition_read), "__call__") as call:
+        client.partition_read()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+
+        assert args[0] == spanner.PartitionReadRequest()
 
 
 @pytest.mark.asyncio

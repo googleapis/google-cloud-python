@@ -14,13 +14,13 @@ limitations under the License.
 
 # 2.0.0 Migration Guide
 
-The 2.0 release of the `google-cloud-spanner` client is a significant update based on a 
+The 2.0 release of the `google-cloud-spanner` client is a significant update based on a
 [next-gen code generator](https://github.com/googleapis/gapic-generator-python).
-It drops support for Python versions below 3.6. 
+It drops support for Python versions below 3.6.
 
 The handwritten client surfaces have minor changes which may require minimal updates to existing user code.
 
-The generated client surfaces have substantial interface changes. Existing user code which uses these surfaces directly 
+The generated client surfaces have substantial interface changes. Existing user code which uses these surfaces directly
 will require significant updates to use this version.
 
 This document describes the changes that have been made, and what you need to do to update your usage.
@@ -89,7 +89,7 @@ for database_pb in instance.list_databases():
 > **WARNING**: Breaking change
 
 The library now handles pages for the user. Previously, the library would return a page generator which required a user
-to then iterate over each page to get the resource. Now, the library handles iterating over the pages and only returns 
+to then iterate over each page to get the resource. Now, the library handles iterating over the pages and only returns
 the resource protos.
 
 **Before:**
@@ -176,14 +176,14 @@ for database_pb in instance.list_databases():
 
 Methods expect request objects. We provide scripts that will convert most common use cases.
 
-* Install the library
+* Install the library with `libcst`.
 
 ```py
-python3 -m pip install google-cloud-spanner
+python3 -m pip install google-cloud-spanner[libcst]
 ```
 
 * The scripts `fixup_spanner_v1_keywords.py`, `fixup_spanner_admin_database_v1_keywords.py`, and
-`fixup_spanner_admin_instance_v1_keywords.py` are shipped with the library. They expect an input directory (with the 
+`fixup_spanner_admin_instance_v1_keywords.py` are shipped with the library. They expect an input directory (with the
 code to convert) and an empty destination directory.
 
 ```sh
@@ -194,10 +194,10 @@ $ fixup_spanner_v1_keywords.py --input-directory .samples/ --output-directory sa
 >the handwritten surfaces e.g. `client.list_instances()`
 
 #### More details
- 
+
  In `google-cloud-spanner<2.0.0`, parameters required by the API were positional parameters and optional parameters were
  keyword parameters.
- 
+
  **Before:**
  ```py
 def list_instances(
@@ -210,14 +210,14 @@ def list_instances(
         metadata=None,
     ):
  ```
- 
- In the 2.0.0 release, all methods have a single positional parameter `request`. Method docstrings indicate whether a 
+
+ In the 2.0.0 release, all methods have a single positional parameter `request`. Method docstrings indicate whether a
  parameter is required or optional.
- 
- Some methods have additional keyword only parameters. The available parameters depend on the 
+
+ Some methods have additional keyword only parameters. The available parameters depend on the
  [`google.api.method_signature` annotation](https://github.com/googleapis/googleapis/blob/master/google/spanner/admin/instance/v1/spanner_instance_admin.proto#L86) specified by the API producer.
- 
- 
+
+
  **After:**
  ```py
 def list_instances(
@@ -230,13 +230,13 @@ def list_instances(
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInstancesPager:
  ```
- 
+
  > **NOTE:** The `request` parameter and flattened keyword parameters for the API are mutually exclusive.
  > Passing both will result in an error.
- 
- 
+
+
  Both of these calls are valid:
- 
+
  ```py
  response = client.list_instances(
      request={
@@ -244,16 +244,16 @@ def list_instances(
      }
  )
  ```
- 
+
  ```py
  response = client.execute_sql(
      parent=project_name,
  )
  ```
- 
+
  This call is invalid because it mixes `request` with a keyword argument `parent`. Executing this code
  will result in an error.
- 
+
  ```py
  response = client.execute_sql(
      request={},

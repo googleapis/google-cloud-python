@@ -103,8 +103,36 @@ class DatabaseAdminAsyncClient:
         DatabaseAdminClient.parse_common_location_path
     )
 
-    from_service_account_info = DatabaseAdminClient.from_service_account_info
-    from_service_account_file = DatabaseAdminClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            DatabaseAdminAsyncClient: The constructed client.
+        """
+        return DatabaseAdminClient.from_service_account_info.__func__(DatabaseAdminAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            DatabaseAdminAsyncClient: The constructed client.
+        """
+        return DatabaseAdminClient.from_service_account_file.__func__(DatabaseAdminAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -236,6 +264,7 @@ class DatabaseAdminAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=3600.0,
             ),
             default_timeout=3600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -431,6 +460,7 @@ class DatabaseAdminAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=3600.0,
             ),
             default_timeout=3600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -559,6 +589,7 @@ class DatabaseAdminAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=3600.0,
             ),
             default_timeout=3600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -642,6 +673,7 @@ class DatabaseAdminAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=3600.0,
             ),
             default_timeout=3600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -726,6 +758,7 @@ class DatabaseAdminAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=3600.0,
             ),
             default_timeout=3600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1007,6 +1040,7 @@ class DatabaseAdminAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=30.0,
             ),
             default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1302,6 +1336,7 @@ class DatabaseAdminAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=3600.0,
             ),
             default_timeout=3600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1402,6 +1437,7 @@ class DatabaseAdminAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=3600.0,
             ),
             default_timeout=3600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1481,6 +1517,7 @@ class DatabaseAdminAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=3600.0,
             ),
             default_timeout=3600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1566,6 +1603,7 @@ class DatabaseAdminAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=3600.0,
             ),
             default_timeout=3600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1795,6 +1833,7 @@ class DatabaseAdminAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=3600.0,
             ),
             default_timeout=3600.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -1897,6 +1936,7 @@ class DatabaseAdminAsyncClient:
                 predicate=retries.if_exception_type(
                     exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
                 ),
+                deadline=3600.0,
             ),
             default_timeout=3600.0,
             client_info=DEFAULT_CLIENT_INFO,

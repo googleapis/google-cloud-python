@@ -1082,11 +1082,10 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
+            # The request isn't a proto-plus wrapped type,
+            # so it must be constructed via keyword expansion.
             request = iam_policy.SetIamPolicyRequest(**request)
-
         elif not request:
             # Null request, just make one.
             request = iam_policy.SetIamPolicyRequest()
@@ -1219,11 +1218,10 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
+            # The request isn't a proto-plus wrapped type,
+            # so it must be constructed via keyword expansion.
             request = iam_policy.GetIamPolicyRequest(**request)
-
         elif not request:
             # Null request, just make one.
             request = iam_policy.GetIamPolicyRequest()
@@ -1311,11 +1309,10 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # The request isn't a proto-plus wrapped type,
-        # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
+            # The request isn't a proto-plus wrapped type,
+            # so it must be constructed via keyword expansion.
             request = iam_policy.TestIamPermissionsRequest(**request)
-
         elif not request:
             # Null request, just make one.
             request = iam_policy.TestIamPermissionsRequest()

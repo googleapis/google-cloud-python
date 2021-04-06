@@ -42,20 +42,20 @@ class spannerCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
     'batch_create_sessions': ('database', 'session_count', 'session_template', ),
-    'begin_transaction': ('session', 'options', ),
-    'commit': ('session', 'transaction_id', 'single_use_transaction', 'mutations', 'return_commit_stats', ),
+    'begin_transaction': ('session', 'options', 'request_options', ),
+    'commit': ('session', 'transaction_id', 'single_use_transaction', 'mutations', 'return_commit_stats', 'request_options', ),
     'create_session': ('database', 'session', ),
     'delete_session': ('name', ),
-    'execute_batch_dml': ('session', 'transaction', 'statements', 'seqno', ),
-    'execute_sql': ('session', 'sql', 'transaction', 'params', 'param_types', 'resume_token', 'query_mode', 'partition_token', 'seqno', 'query_options', ),
-    'execute_streaming_sql': ('session', 'sql', 'transaction', 'params', 'param_types', 'resume_token', 'query_mode', 'partition_token', 'seqno', 'query_options', ),
+    'execute_batch_dml': ('session', 'transaction', 'statements', 'seqno', 'request_options', ),
+    'execute_sql': ('session', 'sql', 'transaction', 'params', 'param_types', 'resume_token', 'query_mode', 'partition_token', 'seqno', 'query_options', 'request_options', ),
+    'execute_streaming_sql': ('session', 'sql', 'transaction', 'params', 'param_types', 'resume_token', 'query_mode', 'partition_token', 'seqno', 'query_options', 'request_options', ),
     'get_session': ('name', ),
     'list_sessions': ('database', 'page_size', 'page_token', 'filter', ),
     'partition_query': ('session', 'sql', 'transaction', 'params', 'param_types', 'partition_options', ),
     'partition_read': ('session', 'table', 'key_set', 'transaction', 'index', 'columns', 'partition_options', ),
-    'read': ('session', 'table', 'columns', 'key_set', 'transaction', 'index', 'limit', 'resume_token', 'partition_token', ),
+    'read': ('session', 'table', 'columns', 'key_set', 'transaction', 'index', 'limit', 'resume_token', 'partition_token', 'request_options', ),
     'rollback': ('session', 'transaction_id', ),
-    'streaming_read': ('session', 'table', 'columns', 'key_set', 'transaction', 'index', 'limit', 'resume_token', 'partition_token', ),
+    'streaming_read': ('session', 'table', 'columns', 'key_set', 'transaction', 'index', 'limit', 'resume_token', 'partition_token', 'request_options', ),
 
     }
 

@@ -1,4 +1,4 @@
-// Copyright 2020 Google LLC
+// Copyright 2021 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -425,6 +425,63 @@ message DeleteSessionRequest {
   ];
 }
 
+// Common request options for various APIs.
+message RequestOptions {
+  // The relative priority for requests. Note that priority is not applicable
+  // for [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction].
+  //
+  // The priority acts as a hint to the Cloud Spanner scheduler and does not
+  // guarantee priority or order of execution. For example:
+  //
+  // * Some parts of a write operation always execute at `PRIORITY_HIGH`,
+  //   regardless of the specified priority. This may cause you to see an
+  //   increase in high priority workload even when executing a low priority
+  //   request. This can also potentially cause a priority inversion where a
+  //   lower priority request will be fulfilled ahead of a higher priority
+  //   request.
+  // * If a transaction contains multiple operations with different priorities,
+  //   Cloud Spanner does not guarantee to process the higher priority
+  //   operations first. There may be other constraints to satisfy, such as
+  //   order of operations.
+  enum Priority {
+    // `PRIORITY_UNSPECIFIED` is equivalent to `PRIORITY_HIGH`.
+    PRIORITY_UNSPECIFIED = 0;
+
+    // This specifies that the request is low priority.
+    PRIORITY_LOW = 1;
+
+    // This specifies that the request is medium priority.
+    PRIORITY_MEDIUM = 2;
+
+    // This specifies that the request is high priority.
+    PRIORITY_HIGH = 3;
+  }
+
+  // Priority for the request.
+  Priority priority = 1;
+
+  // A per-request tag which can be applied to queries or reads, used for
+  // statistics collection.
+  // Both request_tag and transaction_tag can be specified for a read or query
+  // that belongs to a transaction.
+  // This field is ignored for requests where it's not applicable (e.g.
+  // CommitRequest).
+  // `request_tag` must be a valid identifier of the form:
+  // `[a-zA-Z][a-zA-Z0-9_\-]` between 2 and 64 characters in length
+  string request_tag = 2;
+
+  // A tag used for statistics collection about this transaction.
+  // Both request_tag and transaction_tag can be specified for a read or query
+  // that belongs to a transaction.
+  // The value of transaction_tag should be the same for all requests belonging
+  // to the same transaction.
+  // If this request doesn’t belong to any transaction, transaction_tag will be
+  // ignored.
+  // `transaction_tag` must be a valid identifier of the format:
+  // `[a-zA-Z][a-zA-Z0-9_\-]{0,49}`
+  string transaction_tag = 3;
+}
+
 // The request for [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
 // [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql].
 message ExecuteSqlRequest {
@@ -435,21 +492,50 @@ message ExecuteSqlRequest {
     // This parameter allows individual queries to pick different query
     // optimizer versions.
     //
-    // Specifying "latest" as a value instructs Cloud Spanner to use the
+    // Specifying `latest` as a value instructs Cloud Spanner to use the
     // latest supported query optimizer version. If not specified, Cloud Spanner
-    // uses optimizer version set at the database level options. Any other
+    // uses the optimizer version set at the database level options. Any other
     // positive integer (from the list of supported optimizer versions)
     // overrides the default optimizer version for query execution.
+    //
     // The list of supported optimizer versions can be queried from
-    // SPANNER_SYS.SUPPORTED_OPTIMIZER_VERSIONS. Executing a SQL statement
-    // with an invalid optimizer version will fail with a syntax error
-    // (`INVALID_ARGUMENT`) status.
+    // SPANNER_SYS.SUPPORTED_OPTIMIZER_VERSIONS.
+    //
+    // Executing a SQL statement with an invalid optimizer version fails with
+    // an `INVALID_ARGUMENT` error.
+    //
     // See
     // https://cloud.google.com/spanner/docs/query-optimizer/manage-query-optimizer
     // for more information on managing the query optimizer.
     //
     // The `optimizer_version` statement hint has precedence over this setting.
     string optimizer_version = 1;
+
+    // An option to control the selection of optimizer statistics package.
+    //
+    // This parameter allows individual queries to use a different query
+    // optimizer statistics package.
+    //
+    // Specifying `latest` as a value instructs Cloud Spanner to use the latest
+    // generated statistics package. If not specified, Cloud Spanner uses
+    // the statistics package set at the database level options, or the latest
+    // package if the database option is not set.
+    //
+    // The statistics package requested by the query has to be exempt from
+    // garbage collection. This can be achieved with the following DDL
+    // statement:
+    //
+    // ```
+    // ALTER STATISTICS <package_name> SET OPTIONS (allow_gc=false)
+    // ```
+    //
+    // The list of available statistics packages can be queried from
+    // `INFORMATION_SCHEMA.SPANNER_STATISTICS`.
+    //
+    // Executing a SQL statement with an invalid optimizer statistics package
+    // or with a statistics package that allows garbage collection fails with
+    // an `INVALID_ARGUMENT` error.
+    string optimizer_statistics_package = 2;
   }
 
   // Mode in which the statement must be processed.
@@ -547,6 +633,9 @@ message ExecuteSqlRequest {
 
   // Query optimizer configuration to use for the given query.
   QueryOptions query_options = 10;
+
+  // Common options for this request.
+  RequestOptions request_options = 11;
 }
 
 // The request for [ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml].
@@ -613,6 +702,9 @@ message ExecuteBatchDmlRequest {
   // sequence number, the transaction may be aborted. Replays of previously
   // handled requests will yield the same response as the first execution.
   int64 seqno = 4 [(google.api.field_behavior) = REQUIRED];
+
+  // Common options for this request.
+  RequestOptions request_options = 5;
 }
 
 // The response for [ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml]. Contains a list
@@ -847,6 +939,9 @@ message ReadRequest {
   // match for the values of fields common to this message and the
   // PartitionReadRequest message used to create this partition_token.
   bytes partition_token = 10;
+
+  // Common options for this request.
+  RequestOptions request_options = 11;
 }
 
 // The request for [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction].
@@ -861,6 +956,13 @@ message BeginTransactionRequest {
 
   // Required. Options for the new transaction.
   TransactionOptions options = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Common options for this request.
+  // Priority is ignored for this request. Setting the priority in this
+  // request_options struct will not do anything. To set the priority for a
+  // transaction, set it on the reads and writes that are part of this
+  // transaction instead.
+  RequestOptions request_options = 3;
 }
 
 // The request for [Commit][google.spanner.v1.Spanner.Commit].
@@ -899,6 +1001,9 @@ message CommitRequest {
   // the [CommitResponse][google.spanner.v1.CommitResponse.commit_stats]. Default value is
   // `false`.
   bool return_commit_stats = 5;
+
+  // Common options for this request.
+  RequestOptions request_options = 6;
 }
 
 // The response for [Commit][google.spanner.v1.Spanner.Commit].

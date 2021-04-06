@@ -29,10 +29,9 @@ version = "3.3.0"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
-    "google-api-core[grpc] >= 1.22.0, < 2.0.0dev",
+    "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
     "google-cloud-core >= 1.4.1, < 2.0dev",
     "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
-    "libcst >= 0.2.5",
     "proto-plus >= 1.11.0",
     "sqlparse >= 0.3.0",
 ]
@@ -41,7 +40,8 @@ extras = {
         "opentelemetry-api >= 0.11b0",
         "opentelemetry-sdk >= 0.11b0",
         "opentelemetry-instrumentation >= 0.11b0",
-    ]
+    ],
+    "libcst": "libcst >= 0.2.5",
 }
 
 
