@@ -2365,6 +2365,22 @@ class BooleanProperty(Property):
             raise exceptions.BadValueError("Expected bool, got {!r}".format(value))
         return value
 
+    def _from_base_type(self, value):
+        """Convert a value from the "base" value type for this property.
+
+        Args:
+            value (Union[int, bool]): The value to be converted.
+
+        Returns:
+            Optional[bool]: The converted value. If the current property is
+            an ``int`` value, this will convert to a ``bool``.
+        """
+        # When loading a LocalStructuredProperty from a database written with the legacy
+        # GAE NDB, the boolean properties will have int values.
+        # See: Issue #623 (https://github.com/googleapis/python-ndb/issues/623)
+        if type(value) is int:
+            return bool(value)
+
 
 class IntegerProperty(Property):
     """A property that contains values of type integer.

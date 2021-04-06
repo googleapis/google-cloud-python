@@ -455,3 +455,38 @@ def test_non_transactional_means_no_transaction(dispose_of):
     keys = create_entities().result()
     test_lookup(keys)
     eventually(test_query, length_equals(N * 2))
+
+
+@pytest.mark.usefixtures("client_context")
+def test_legacy_local_structured_property_with_boolean(ds_entity):
+    """Regression test for #623
+
+    https://github.com/googleapis/python-ndb/issues/623
+    """
+    children = [
+        b"x\x9c\xab\xe2\x96bNJ,R`\xd0b\x12`\xac\x12\xe1\xe0\x97bN\xcb\xcf\x07r9\xa5"
+        b"\xd832\x15r\xf3s\x15\x01u_\x07\n"
+    ]
+    entity_id = test_utils.system.unique_resource_id()
+    ds_entity(KIND, entity_id, children=children)
+
+    class OtherKind(ndb.Model):
+        foo = ndb.StringProperty()
+        bar = ndb.BooleanProperty(default=True)
+
+    class SomeKind(ndb.Model):
+        children = ndb.LocalStructuredProperty(
+            OtherKind, repeated=True, compressed=True
+        )
+
+    entity = SomeKind.get_by_id(entity_id)
+
+    assert len(entity.children) == 1
+    assert entity.children[0].foo == "hi mom!"
+    assert entity.children[0].bar is True
+
+    entity.children[0].foo = "hello dad!"
+    entity.put()
+
+    entity = SomeKind.get_by_id(entity_id)
+    assert entity.children[0].foo == "hello dad!"

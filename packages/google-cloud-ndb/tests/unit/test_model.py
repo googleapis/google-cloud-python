@@ -1480,6 +1480,16 @@ class TestBooleanProperty:
         with pytest.raises(NotImplementedError):
             prop._db_get_value(None, None)
 
+    @staticmethod
+    def test__from_base_type_bool():
+        prop = model.BooleanProperty(name="certify")
+        assert prop._from_base_type(True) is None
+
+    @staticmethod
+    def test__from_base_type_int():
+        prop = model.BooleanProperty(name="certify")
+        assert prop._from_base_type(1) is True
+
 
 class TestIntegerProperty:
     @staticmethod
