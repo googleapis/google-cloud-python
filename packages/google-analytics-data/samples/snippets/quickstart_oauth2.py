@@ -15,19 +15,16 @@
 # limitations under the License.
 
 """Google Analytics Data API sample quickstart application.
-
 This application demonstrates the usage of the Analytics Data API using
 OAuth2 credentials.
-
 Before you start the application, please review the comments starting with
 "TODO(developer)" and update the code to use correct values.
-
 Usage:
   pip3 install --upgrade google-auth-oauthlib
   pip3 install --upgrade google-analytics-data
   python3 quickstart_oauth2.py
 """
-# [START analyticsdata_quickstart_oauth2]
+# [START analyticsdata_oauth2_quickstart]
 from google.analytics.data import BetaAnalyticsDataClient
 from google.analytics.data_v1beta.types import DateRange
 from google.analytics.data_v1beta.types import Dimension
@@ -44,7 +41,7 @@ def sample_run_report(credentials=None, property_id="YOUR-GA4-PROPERTY-ID"):
 
     client = BetaAnalyticsDataClient(credentials=credentials)
     request = RunReportRequest(
-        property="properties/" + str(property_id),
+        property=f"properties/{property_id}",
         dimensions=[Dimension(name="city")],
         metrics=[Metric(name="activeUsers")],
         date_ranges=[DateRange(start_date="2020-03-31", end_date="today")],
@@ -59,7 +56,7 @@ def sample_run_report(credentials=None, property_id="YOUR-GA4-PROPERTY-ID"):
 
 def get_credentials():
     """Creates an OAuth2 credentials instance."""
-    # [START analyticsdata_initialize]
+    # [START analyticsdata_oauth2_initialize]
     appflow = flow.InstalledAppFlow.from_client_secrets_file(
         "client_secrets.json",
         scopes=["https://www.googleapis.com/auth/analytics.readonly"],
@@ -75,7 +72,7 @@ def get_credentials():
     else:
         appflow.run_console()
     return appflow.credentials
-    # [END analyticsdata_initialize]
+    # [END analyticsdata_oauth2_initialize]
 
 
 def main():
@@ -83,7 +80,8 @@ def main():
     sample_run_report(credentials)
 
 
-# [END analyticsdata_quickstart_oauth2]
+# [END analyticsdata_oauth2_quickstart]
+
 
 if __name__ == "__main__":
     main()

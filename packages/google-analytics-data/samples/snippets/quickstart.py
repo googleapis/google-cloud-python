@@ -15,13 +15,10 @@
 # limitations under the License.
 
 """Google Analytics Data API sample quickstart application.
-
 This application demonstrates the usage of the Analytics Data API using
 service account credentials.
-
 Before you start the application, please review the comments starting with
 "TODO(developer)" and update the code to use correct values.
-
 Usage:
   pip3 install --upgrade google-analytics-data
   python3 quickstart.py
@@ -48,7 +45,7 @@ def sample_run_report(property_id="YOUR-GA4-PROPERTY-ID"):
 
     # [START analyticsdata_run_report]
     request = RunReportRequest(
-        property="properties/" + str(property_id),
+        property=f"properties/{property_id}",
         dimensions=[Dimension(name="city")],
         metrics=[Metric(name="activeUsers")],
         date_ranges=[DateRange(start_date="2020-03-31", end_date="today")],

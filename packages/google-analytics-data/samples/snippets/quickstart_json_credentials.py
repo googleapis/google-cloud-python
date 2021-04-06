@@ -54,7 +54,7 @@ def sample_run_report(property_id="YOUR-GA4-PROPERTY-ID", credentials_json_path=
 
     # [START analyticsdata_json_credentials_run_report]
     request = RunReportRequest(
-        property="properties/" + str(property_id),
+        property=f"properties/{property_id}",
         dimensions=[Dimension(name="city")],
         metrics=[Metric(name="activeUsers")],
         date_ranges=[DateRange(start_date="2020-03-31", end_date="today")],
