@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-access-approval.git",
-        "sha": "8f6833aa95e7610576fba4500857a4143de7d1d7"
+        "sha": "89df68567047a289887996fd6690cb6974799af8"
       }
     },
     {
@@ -98,7 +98,6 @@
     "CONTRIBUTING.rst",
     "LICENSE",
     "MANIFEST.in",
-    "accessapproval-v1-py.tar.gz",
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/accessapproval_v1/access_approval.rst",
