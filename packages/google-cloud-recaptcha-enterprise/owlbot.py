@@ -19,7 +19,6 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
@@ -27,22 +26,17 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 versions = ["v1"]
 
-for version in versions:
-    library = gapic.py_library(
-        service="recaptchaenterprise",
-        version="v1",
-        bazel_target=f"//google/cloud/recaptchaenterprise/{version}:recaptchaenterprise-{version}-py",
+for library in s.get_staging_dirs("v1"):
+    # rename to google-cloud-recaptcha-enterprise
+    s.replace(
+        [library / "google/**/*.py", library / "tests/**/*.py"],
+        "google-cloud-recaptchaenterprise",
+        "google-cloud-recaptcha-enterprise",
     )
 
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst", "*.tar.gz"])
 
-
-# rename to google-cloud-recaptcha-enterprise
-s.replace(
-    ["google/**/*.py", "tests/**/*.py"],
-    "google-cloud-recaptchaenterprise",
-    "google-cloud-recaptcha-enterprise",
-)
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
