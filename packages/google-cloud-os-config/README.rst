@@ -1,7 +1,7 @@
 Python Client for Cloud OS Config
 =================================================
 
-|beta| |pypi| |versions|
+|GA| |pypi| |versions|
 
 `Cloud OS Config API`_: OS management tools that can be used for patch management,
 patch compliance, and configuration management on VM instances.
@@ -9,8 +9,8 @@ patch compliance, and configuration management on VM instances.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-os-config.svg
    :target: https://pypi.org/project/google-cloud-os-config/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-os-config.svg
