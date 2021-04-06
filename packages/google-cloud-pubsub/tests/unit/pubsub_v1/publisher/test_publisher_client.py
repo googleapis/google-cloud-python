@@ -17,7 +17,6 @@ from __future__ import division
 
 import inspect
 
-from google.auth import credentials
 import grpc
 
 import mock
@@ -51,8 +50,7 @@ def _assert_retries_equal(retry, retry2):
     assert inspect.getclosurevars(pred) == inspect.getclosurevars(pred2)
 
 
-def test_init():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_init(creds):
     client = publisher.Client(credentials=creds)
 
     # A plain client should have an `api` (the underlying GAPIC) and a
@@ -63,8 +61,7 @@ def test_init():
     assert client.batch_settings.max_messages == 100
 
 
-def test_init_default_client_info():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_init_default_client_info(creds):
     client = publisher.Client(credentials=creds)
 
     installed_version = publisher.client.__version__
@@ -83,8 +80,8 @@ def test_init_default_client_info():
         assert expected_client_info in user_agent
 
 
-def test_init_w_custom_transport():
-    transport = PublisherGrpcTransport()
+def test_init_w_custom_transport(creds):
+    transport = PublisherGrpcTransport(credentials=creds)
     client = publisher.Client(transport=transport)
 
     # A plain client should have an `api` (the underlying GAPIC) and a
@@ -96,9 +93,9 @@ def test_init_w_custom_transport():
     assert client.batch_settings.max_messages == 100
 
 
-def test_init_w_api_endpoint():
+def test_init_w_api_endpoint(creds):
     client_options = {"api_endpoint": "testendpoint.google.com"}
-    client = publisher.Client(client_options=client_options)
+    client = publisher.Client(client_options=client_options, credentials=creds)
 
     assert isinstance(client.api, publisher_client.PublisherClient)
     assert (client.api._transport.grpc_channel._channel.target()).decode(
@@ -106,18 +103,8 @@ def test_init_w_api_endpoint():
     ) == "testendpoint.google.com:443"
 
 
-def test_init_w_unicode_api_endpoint():
-    client_options = {"api_endpoint": "testendpoint.google.com"}
-    client = publisher.Client(client_options=client_options)
-
-    assert isinstance(client.api, publisher_client.PublisherClient)
-    assert (client.api._transport.grpc_channel._channel.target()).decode(
-        "utf-8"
-    ) == "testendpoint.google.com:443"
-
-
-def test_init_w_empty_client_options():
-    client = publisher.Client(client_options={})
+def test_init_w_empty_client_options(creds):
+    client = publisher.Client(client_options={}, credentials=creds)
 
     assert isinstance(client.api, publisher_client.PublisherClient)
     assert (client.api._transport.grpc_channel._channel.target()).decode(
@@ -164,8 +151,7 @@ def test_init_emulator(monkeypatch):
     assert channel.target().decode("utf8") == "/foo/bar:123"
 
 
-def test_message_ordering_enabled():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_message_ordering_enabled(creds):
     client = publisher.Client(credentials=creds)
     assert not client._enable_message_ordering
 
@@ -176,8 +162,7 @@ def test_message_ordering_enabled():
     assert client._enable_message_ordering
 
 
-def test_publish():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_publish(creds):
     client = publisher.Client(credentials=creds)
 
     future1 = mock.sentinel.future1
@@ -212,8 +197,7 @@ def test_publish():
     )
 
 
-def test_publish_error_exceeding_flow_control_limits():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_publish_error_exceeding_flow_control_limits(creds):
     publisher_options = types.PublisherOptions(
         flow_control=types.PublishFlowControl(
             message_limit=10,
@@ -235,8 +219,7 @@ def test_publish_error_exceeding_flow_control_limits():
         future2.result()
 
 
-def test_publish_data_not_bytestring_error():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_publish_data_not_bytestring_error(creds):
     client = publisher.Client(credentials=creds)
     topic = "topic/path"
     with pytest.raises(TypeError):
@@ -245,16 +228,14 @@ def test_publish_data_not_bytestring_error():
         client.publish(topic, 42)
 
 
-def test_publish_message_ordering_not_enabled_error():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_publish_message_ordering_not_enabled_error(creds):
     client = publisher.Client(credentials=creds)
     topic = "topic/path"
     with pytest.raises(ValueError):
         client.publish(topic, b"bytestring body", ordering_key="ABC")
 
 
-def test_publish_empty_ordering_key_when_message_ordering_enabled():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_publish_empty_ordering_key_when_message_ordering_enabled(creds):
     client = publisher.Client(
         publisher_options=types.PublisherOptions(enable_message_ordering=True),
         credentials=creds,
@@ -263,8 +244,7 @@ def test_publish_empty_ordering_key_when_message_ordering_enabled():
     assert client.publish(topic, b"bytestring body", ordering_key="") is not None
 
 
-def test_publish_with_ordering_key_uses_extended_retry_deadline():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_publish_with_ordering_key_uses_extended_retry_deadline(creds):
     client = publisher.Client(
         credentials=creds,
         publisher_options=types.PublisherOptions(enable_message_ordering=True),
@@ -303,8 +283,7 @@ def test_publish_with_ordering_key_uses_extended_retry_deadline():
     _assert_retries_equal(batch_commit_retry, expected_retry)
 
 
-def test_publish_attrs_bytestring():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_publish_attrs_bytestring(creds):
     client = publisher.Client(credentials=creds)
 
     # Use a mock in lieu of the actual batch class.
@@ -325,8 +304,7 @@ def test_publish_attrs_bytestring():
     )
 
 
-def test_publish_new_batch_needed():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_publish_new_batch_needed(creds):
     client = publisher.Client(credentials=creds)
 
     # Use mocks in lieu of the actual batch class.
@@ -365,16 +343,14 @@ def test_publish_new_batch_needed():
     batch2.publish.assert_called_once_with(message_pb)
 
 
-def test_publish_attrs_type_error():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_publish_attrs_type_error(creds):
     client = publisher.Client(credentials=creds)
     topic = "topic/path"
     with pytest.raises(TypeError):
         client.publish(topic, b"foo", answer=42)
 
 
-def test_stop():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_stop(creds):
     client = publisher.Client(credentials=creds)
 
     batch1 = mock.Mock(spec=client._batch_class)
@@ -395,8 +371,7 @@ def test_stop():
         client.stop()
 
 
-def test_gapic_instance_method():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_gapic_instance_method(creds):
     client = publisher.Client(credentials=creds)
 
     transport_mock = mock.Mock(create_topic=mock.sentinel)
@@ -432,15 +407,13 @@ def test_class_method_factory():
     assert isinstance(client, publisher.Client)
 
 
-def test_gapic_class_method_on_instance():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_gapic_class_method_on_instance(creds):
     client = publisher.Client(credentials=creds)
     answer = client.topic_path("foo", "bar")
     assert answer == "projects/foo/topics/bar"
 
 
-def test_commit_thread_created_on_publish():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_commit_thread_created_on_publish(creds):
     # Max latency is not infinite so a commit thread is created.
     batch_settings = types.BatchSettings(max_latency=600)
     client = publisher.Client(batch_settings=batch_settings, credentials=creds)
@@ -463,8 +436,7 @@ def test_commit_thread_created_on_publish():
         _start_commit_thread.assert_called_once()
 
 
-def test_commit_thread_not_created_on_publish_if_max_latency_is_inf():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_commit_thread_not_created_on_publish_if_max_latency_is_inf(creds):
     # Max latency is infinite so a commit thread is not created.
     batch_settings = types.BatchSettings(max_latency=float("inf"))
     client = publisher.Client(batch_settings=batch_settings, credentials=creds)
@@ -473,8 +445,7 @@ def test_commit_thread_not_created_on_publish_if_max_latency_is_inf():
     assert client._commit_thread is None
 
 
-def test_wait_and_commit_sequencers():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_wait_and_commit_sequencers(creds):
     # Max latency is infinite so a commit thread is not created.
     # We don't want a commit thread to interfere with this test.
     batch_settings = types.BatchSettings(max_latency=float("inf"))
@@ -492,8 +463,7 @@ def test_wait_and_commit_sequencers():
             assert _commit_sequencers.call_count == 1
 
 
-def test_stopped_client_does_not_commit_sequencers():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_stopped_client_does_not_commit_sequencers(creds):
     # Max latency is infinite so a commit thread is not created.
     # We don't want a commit thread to interfere with this test.
     batch_settings = types.BatchSettings(max_latency=float("inf"))
@@ -515,8 +485,7 @@ def test_stopped_client_does_not_commit_sequencers():
             assert _commit_sequencers.call_count == 0
 
 
-def test_publish_with_ordering_key():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_publish_with_ordering_key(creds):
     publisher_options = types.PublisherOptions(enable_message_ordering=True)
     client = publisher.Client(publisher_options=publisher_options, credentials=creds)
 
@@ -555,8 +524,7 @@ def test_publish_with_ordering_key():
     )
 
 
-def test_ordered_sequencer_cleaned_up():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_ordered_sequencer_cleaned_up(creds):
     # Max latency is infinite so a commit thread is not created.
     # We don't want a commit thread to interfere with this test.
     batch_settings = types.BatchSettings(max_latency=float("inf"))
@@ -584,8 +552,7 @@ def test_ordered_sequencer_cleaned_up():
     assert len(client._sequencers) == 0
 
 
-def test_resume_publish():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_resume_publish(creds):
     publisher_options = types.PublisherOptions(enable_message_ordering=True)
     client = publisher.Client(publisher_options=publisher_options, credentials=creds)
 
@@ -598,8 +565,7 @@ def test_resume_publish():
     assert sequencer.unpause.called_once()
 
 
-def test_resume_publish_no_sequencer_found():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_resume_publish_no_sequencer_found(creds):
     publisher_options = types.PublisherOptions(enable_message_ordering=True)
     client = publisher.Client(publisher_options=publisher_options, credentials=creds)
 
@@ -608,8 +574,7 @@ def test_resume_publish_no_sequencer_found():
     client.resume_publish("topic", "ord_key")
 
 
-def test_resume_publish_ordering_keys_not_enabled():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_resume_publish_ordering_keys_not_enabled(creds):
     publisher_options = types.PublisherOptions(enable_message_ordering=False)
     client = publisher.Client(publisher_options=publisher_options, credentials=creds)
 

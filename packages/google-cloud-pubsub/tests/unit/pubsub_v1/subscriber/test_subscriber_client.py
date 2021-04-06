@@ -14,7 +14,6 @@
 
 import warnings
 
-from google.auth import credentials
 import grpc
 import mock
 import pytest
@@ -27,14 +26,12 @@ from google.pubsub_v1.services.subscriber import client as subscriber_client
 from google.pubsub_v1.services.subscriber.transports.grpc import SubscriberGrpcTransport
 
 
-def test_init():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_init(creds):
     client = subscriber.Client(credentials=creds)
     assert isinstance(client.api, subscriber_client.SubscriberClient)
 
 
-def test_init_default_client_info():
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_init_default_client_info(creds):
     client = subscriber.Client(credentials=creds)
 
     installed_version = subscriber.client.__version__
@@ -53,16 +50,16 @@ def test_init_default_client_info():
         assert expected_client_info in user_agent
 
 
-def test_init_w_custom_transport():
-    transport = SubscriberGrpcTransport()
+def test_init_w_custom_transport(creds):
+    transport = SubscriberGrpcTransport(credentials=creds)
     client = subscriber.Client(transport=transport)
     assert isinstance(client.api, subscriber_client.SubscriberClient)
     assert client.api._transport is transport
 
 
-def test_init_w_api_endpoint():
+def test_init_w_api_endpoint(creds):
     client_options = {"api_endpoint": "testendpoint.google.com"}
-    client = subscriber.Client(client_options=client_options)
+    client = subscriber.Client(client_options=client_options, credentials=creds)
 
     assert isinstance(client.api, subscriber_client.SubscriberClient)
     assert (client.api._transport.grpc_channel._channel.target()).decode(
@@ -70,18 +67,8 @@ def test_init_w_api_endpoint():
     ) == "testendpoint.google.com:443"
 
 
-def test_init_w_unicode_api_endpoint():
-    client_options = {"api_endpoint": "testendpoint.google.com"}
-    client = subscriber.Client(client_options=client_options)
-
-    assert isinstance(client.api, subscriber_client.SubscriberClient)
-    assert (client.api._transport.grpc_channel._channel.target()).decode(
-        "utf-8"
-    ) == "testendpoint.google.com:443"
-
-
-def test_init_w_empty_client_options():
-    client = subscriber.Client(client_options={})
+def test_init_w_empty_client_options(creds):
+    client = subscriber.Client(client_options={}, credentials=creds)
 
     assert isinstance(client.api, subscriber_client.SubscriberClient)
     assert (client.api._transport.grpc_channel._channel.target()).decode(
@@ -144,8 +131,7 @@ def test_class_method_factory():
     "StreamingPullManager.open",
     autospec=True,
 )
-def test_subscribe(manager_open):
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_subscribe(manager_open, creds):
     client = subscriber.Client(credentials=creds)
 
     future = client.subscribe("sub_name_a", callback=mock.sentinel.callback)
@@ -164,8 +150,7 @@ def test_subscribe(manager_open):
     "StreamingPullManager.open",
     autospec=True,
 )
-def test_subscribe_options(manager_open):
-    creds = mock.Mock(spec=credentials.Credentials)
+def test_subscribe_options(manager_open, creds):
     client = subscriber.Client(credentials=creds)
     flow_control = types.FlowControl(max_bytes=42)
     scheduler = mock.sentinel.scheduler
@@ -190,8 +175,8 @@ def test_subscribe_options(manager_open):
     )
 
 
-def test_close():
-    client = subscriber.Client()
+def test_close(creds):
+    client = subscriber.Client(credentials=creds)
     patcher = mock.patch.object(client.api._transport.grpc_channel, "close")
 
     with patcher as patched_close:
@@ -200,8 +185,8 @@ def test_close():
     patched_close.assert_called()
 
 
-def test_closes_channel_as_context_manager():
-    client = subscriber.Client()
+def test_closes_channel_as_context_manager(creds):
+    client = subscriber.Client(credentials=creds)
     patcher = mock.patch.object(client.api._transport.grpc_channel, "close")
 
     with patcher as patched_close:
@@ -211,8 +196,8 @@ def test_closes_channel_as_context_manager():
     patched_close.assert_called()
 
 
-def test_streaming_pull_gapic_monkeypatch():
-    client = subscriber.Client()
+def test_streaming_pull_gapic_monkeypatch(creds):
+    client = subscriber.Client(credentials=creds)
 
     with mock.patch("google.api_core.gapic_v1.method.wrap_method"):
         client.streaming_pull(requests=iter([]))
@@ -222,8 +207,8 @@ def test_streaming_pull_gapic_monkeypatch():
     assert not transport.streaming_pull._prefetch_first_result_
 
 
-def test_sync_pull_warning_if_return_immediately():
-    client = subscriber.Client()
+def test_sync_pull_warning_if_return_immediately(creds):
+    client = subscriber.Client(credentials=creds)
     subscription_path = "projects/foo/subscriptions/bar"
 
     with mock.patch.object(
@@ -240,10 +225,10 @@ def test_sync_pull_warning_if_return_immediately():
 
 
 @pytest.mark.asyncio
-async def test_sync_pull_warning_if_return_immediately_async():
+async def test_sync_pull_warning_if_return_immediately_async(creds):
     from google.pubsub_v1.services.subscriber.async_client import SubscriberAsyncClient
 
-    client = SubscriberAsyncClient()
+    client = SubscriberAsyncClient(credentials=creds)
     subscription_path = "projects/foo/subscriptions/bar"
 
     patcher = mock.patch(
