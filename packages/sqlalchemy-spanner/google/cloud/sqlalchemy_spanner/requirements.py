@@ -38,6 +38,10 @@ class Requirements(SuiteRequirements):
         return exclusions.open()
 
     @property
+    def implements_get_lastrowid(self):
+        return exclusions.closed()
+
+    @property
     def ctes(self):
         return exclusions.open()
 
