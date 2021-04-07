@@ -109,7 +109,6 @@ __all__ = (
     "AcceleratorConfig",
     "AutoscalingConfig",
     "AutoscalingPolicy",
-    "AutoscalingPolicyServiceClient",
     "BasicAutoscalingAlgorithm",
     "BasicYarnAutoscalingConfig",
     "CancelJobRequest",
@@ -192,6 +191,7 @@ __all__ = (
     "WorkflowNode",
     "WorkflowTemplate",
     "WorkflowTemplatePlacement",
-    "YarnApplication",
     "WorkflowTemplateServiceClient",
+    "YarnApplication",
+    "AutoscalingPolicyServiceClient",
 )
