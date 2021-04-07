@@ -296,21 +296,17 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
             util.strtobool(os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"))
         )
 
-        ssl_credentials = None
+        client_cert_source_func = None
         is_mtls = False
         if use_client_cert:
             if client_options.client_cert_source:
-                import grpc  # type: ignore
-
-                cert, key = client_options.client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
                 is_mtls = True
+                client_cert_source_func = client_options.client_cert_source
             else:
-                creds = SslCredentials()
-                is_mtls = creds.is_mtls
-                ssl_credentials = creds.ssl_credentials if is_mtls else None
+                is_mtls = mtls.has_default_client_cert_source()
+                client_cert_source_func = (
+                    mtls.default_client_cert_source() if is_mtls else None
+                )
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -353,7 +349,7 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
                 credentials_file=client_options.credentials_file,
                 host=api_endpoint,
                 scopes=client_options.scopes,
-                ssl_channel_credentials=ssl_credentials,
+                client_cert_source_for_mtls=client_cert_source_func,
                 quota_project_id=client_options.quota_project_id,
                 client_info=client_info,
             )
@@ -460,13 +456,12 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
             if name is not None:
                 request.name = name
+            if delegates is not None:
+                request.delegates = delegates
+            if scope is not None:
+                request.scope = scope
             if lifetime is not None:
                 request.lifetime = lifetime
-
-            if delegates:
-                request.delegates.extend(delegates)
-            if scope:
-                request.scope.extend(scope)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -580,13 +575,12 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
             if name is not None:
                 request.name = name
+            if delegates is not None:
+                request.delegates = delegates
             if audience is not None:
                 request.audience = audience
             if include_email is not None:
                 request.include_email = include_email
-
-            if delegates:
-                request.delegates.extend(delegates)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -688,11 +682,10 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
             if name is not None:
                 request.name = name
+            if delegates is not None:
+                request.delegates = delegates
             if payload is not None:
                 request.payload = payload
-
-            if delegates:
-                request.delegates.extend(delegates)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -797,11 +790,10 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
 
             if name is not None:
                 request.name = name
+            if delegates is not None:
+                request.delegates = delegates
             if payload is not None:
                 request.payload = payload
-
-            if delegates:
-                request.delegates.extend(delegates)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
