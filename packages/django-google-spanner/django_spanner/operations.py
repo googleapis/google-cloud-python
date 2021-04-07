@@ -25,6 +25,7 @@ from google.cloud.spanner_dbapi.parse_utils import (
 
 class DatabaseOperations(BaseDatabaseOperations):
     """A Spanner-specific version of Django database operations."""
+
     cast_data_types = {"CharField": "STRING", "TextField": "STRING"}
     cast_char_field_without_max_length = "STRING"
     compiler_module = "django_spanner.compiler"
@@ -108,7 +109,9 @@ class DatabaseOperations(BaseDatabaseOperations):
         values_sql = ", ".join("(%s)" % sql for sql in placeholder_rows_sql)
         return "VALUES " + values_sql
 
-    def sql_flush(self, style, tables, reset_sequences=False, allow_cascade=False):
+    def sql_flush(
+        self, style, tables, reset_sequences=False, allow_cascade=False
+    ):
         """
         Override the base class method. Returns a list of SQL statements
         required to remove all data from the given database tables (without

@@ -15,6 +15,7 @@ from google.cloud.spanner_v1 import TypeCode
 
 class DatabaseIntrospection(BaseDatabaseIntrospection):
     """A Spanner-specific version of Django introspection utilities."""
+
     data_types_reverse = {
         TypeCode.BOOL: "BooleanField",
         TypeCode.BYTES: "BinaryField",

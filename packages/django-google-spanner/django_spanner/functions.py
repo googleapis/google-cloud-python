@@ -28,6 +28,7 @@ from django.db.models.functions import (
 
 class IfNull(Func):
     """Represent SQL `IFNULL` function."""
+
     function = "IFNULL"
     arity = 2
 

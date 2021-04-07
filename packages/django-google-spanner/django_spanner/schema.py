@@ -13,6 +13,7 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
     The database abstraction layer that turns things like “create a model” or
     “delete a field” into SQL.
     """
+
     sql_create_table = (
         "CREATE TABLE %(table)s (%(definition)s) PRIMARY KEY(%(primary_key)s)"
     )
