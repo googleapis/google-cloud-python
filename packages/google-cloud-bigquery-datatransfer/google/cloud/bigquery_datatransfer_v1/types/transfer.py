@@ -39,6 +39,7 @@ __protobuf__ = proto.module(
 
 class TransferType(proto.Enum):
     r"""DEPRECATED. Represents data transfer type."""
+    _pb_options = {"deprecated": True}
     TRANSFER_TYPE_UNSPECIFIED = 0
     BATCH = 1
     STREAMING = 2

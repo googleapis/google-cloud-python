@@ -1,4 +1,4 @@
-<!-- 
+<!--
 Copyright 2020 Google LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -80,7 +80,7 @@ that will convert most common use cases.
 * Install the library
 
 ```py
-python3 -m pip install google-cloud-bigquery-datatransfer
+python3 -m pip install google-cloud-bigquery-datatransfer[libcst]
 ```
 
 * The script `fixup_datatransfer_v1_keywords.py` is shipped with the library. It expects
