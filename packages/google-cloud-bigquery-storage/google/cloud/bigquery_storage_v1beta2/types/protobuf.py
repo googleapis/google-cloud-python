@@ -28,8 +28,8 @@ __protobuf__ = proto.module(
 
 
 class ProtoSchema(proto.Message):
-    r"""Protobuf schema is an API presentation the proto buffer
-    schema.
+    r"""ProtoSchema describes the schema of the serialized protocol
+    buffer data rows.
 
     Attributes:
         proto_descriptor (google.protobuf.descriptor_pb2.DescriptorProto):
@@ -47,7 +47,7 @@ class ProtoSchema(proto.Message):
 
 
 class ProtoRows(proto.Message):
-    r"""Protobuf rows.
+    r"""
 
     Attributes:
         serialized_rows (Sequence[bytes]):

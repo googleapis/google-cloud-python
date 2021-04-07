@@ -170,6 +170,10 @@ class ReadRowsResponse(proto.Message):
             Throttling state. If unset, the latest
             response still describes the current throttling
             status.
+        avro_schema (google.cloud.bigquery_storage_v1beta2.types.AvroSchema):
+            Output only. Avro schema.
+        arrow_schema (google.cloud.bigquery_storage_v1beta2.types.ArrowSchema):
+            Output only. Arrow schema.
     """
 
     avro_rows = proto.Field(
@@ -185,6 +189,14 @@ class ReadRowsResponse(proto.Message):
     stats = proto.Field(proto.MESSAGE, number=2, message="StreamStats",)
 
     throttle_state = proto.Field(proto.MESSAGE, number=5, message="ThrottleState",)
+
+    avro_schema = proto.Field(
+        proto.MESSAGE, number=7, oneof="schema", message=avro.AvroSchema,
+    )
+
+    arrow_schema = proto.Field(
+        proto.MESSAGE, number=8, oneof="schema", message=arrow.ArrowSchema,
+    )
 
 
 class SplitReadStreamRequest(proto.Message):
@@ -307,28 +319,38 @@ class AppendRowsResponse(proto.Message):
         append_result (google.cloud.bigquery_storage_v1beta2.types.AppendRowsResponse.AppendResult):
             Result if the append is successful.
         error (google.rpc.status_pb2.Status):
-            Error in case of request failed. If set, it means rows are
-            not accepted into the system. Users can retry or continue
-            with other requests within the same connection.
-            ALREADY_EXISTS: happens when offset is specified, it means
-            the entire request is already appended, it is safe to ignore
-            this error. OUT_OF_RANGE: happens when offset is specified,
-            it means the specified offset is beyond the end of the
-            stream. INVALID_ARGUMENT: error caused by malformed request
-            or data. RESOURCE_EXHAUSTED: request rejected due to
-            throttling. Only happens when append without offset.
-            ABORTED: request processing is aborted because of prior
-            failures, request can be retried if previous failure is
-            fixed. INTERNAL: server side errors that can be retried.
+            Error returned when problems were encountered. If present,
+            it indicates rows were not accepted into the system. Users
+            can retry or continue with other append requests within the
+            same connection.
+
+            Additional information about error signalling:
+
+            ALREADY_EXISTS: Happens when an append specified an offset,
+            and the backend already has received data at this offset.
+            Typically encountered in retry scenarios, and can be
+            ignored.
+
+            OUT_OF_RANGE: Returned when the specified offset in the
+            stream is beyond the current end of the stream.
+
+            INVALID_ARGUMENT: Indicates a malformed request or data.
+
+            ABORTED: Request processing is aborted because of prior
+            failures. The request can be retried if previous failure is
+            addressed.
+
+            INTERNAL: Indicates server side error(s) that can be
+            retried.
         updated_schema (google.cloud.bigquery_storage_v1beta2.types.TableSchema):
             If backend detects a schema update, pass it
             to user so that user can use it to input new
-            type of message. It will be empty when there is
-            no schema updates.
+            type of message. It will be empty when no schema
+            updates have occurred.
     """
 
     class AppendResult(proto.Message):
-        r"""A success append result.
+        r"""AppendResult is returned for successful append requests.
 
         Attributes:
             offset (google.protobuf.wrappers_pb2.Int64Value):
@@ -385,12 +407,17 @@ class BatchCommitWriteStreamsResponse(proto.Message):
 
     Attributes:
         commit_time (google.protobuf.timestamp_pb2.Timestamp):
-            The time at which streams were committed in
-            microseconds granularity. This field will only
-            exist when there is no stream errors.
+            The time at which streams were committed in microseconds
+            granularity. This field will only exist when there are no
+            stream errors. **Note** if this field is not set, it means
+            the commit was not successful.
         stream_errors (Sequence[google.cloud.bigquery_storage_v1beta2.types.StorageError]):
             Stream level error if commit failed. Only
             streams with error will be in the list.
+            If empty, there is no error and all streams are
+            committed successfully. If non empty, certain
+            streams have errors and ZERO stream is committed
+            due to atomicity guarantee.
     """
 
     commit_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
@@ -455,9 +482,10 @@ class FlushRowsResponse(proto.Message):
 
 class StorageError(proto.Message):
     r"""Structured custom BigQuery Storage error message. The error
-    can be attached as error details in the returned rpc Status.
-    User can use the info to process errors in a structural way,
-    rather than having to parse error messages.
+    can be attached as error details in the returned rpc Status. In
+    particular, the use of error codes allows more structured error
+    handling, and reduces the need to evaluate unstructured error
+    text strings.
 
     Attributes:
         code (google.cloud.bigquery_storage_v1beta2.types.StorageError.StorageErrorCode):
@@ -476,6 +504,7 @@ class StorageError(proto.Message):
         STREAM_NOT_FOUND = 3
         INVALID_STREAM_TYPE = 4
         INVALID_STREAM_STATE = 5
+        STREAM_FINALIZED = 6
 
     code = proto.Field(proto.ENUM, number=1, enum=StorageErrorCode,)
 

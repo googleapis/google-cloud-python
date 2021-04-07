@@ -105,7 +105,9 @@ class ReadSession(proto.Message):
                 Examples: "int_field > 5" "date_field = CAST('2014-9-27' as
                 DATE)" "nullable_field is not NULL" "st_equals(geo_field,
                 st_geofromtext("POINT(2, 2)"))" "numeric_field BETWEEN 1.0
-                AND 5.0".
+                AND 5.0"
+
+                Restricted to a maximum length for 1 MB.
             arrow_serialization_options (google.cloud.bigquery_storage_v1beta2.types.ArrowSerializationOptions):
                 Optional. Options specific to the Apache
                 Arrow output format.

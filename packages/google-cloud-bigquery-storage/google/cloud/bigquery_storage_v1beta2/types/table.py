@@ -72,6 +72,8 @@ class TableFieldSchema(proto.Message):
         DATETIME = 10
         GEOGRAPHY = 11
         NUMERIC = 12
+        BIGNUMERIC = 13
+        INTERVAL = 14
 
     class Mode(proto.Enum):
         r""""""
