@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-asset.git",
-        "sha": "34278bf526384296e95196f755ab983c4efeca62"
+        "sha": "07780ca9af3184eac94d33455f0550431e37d93e"
       }
     },
     {
@@ -134,6 +134,7 @@
     "CONTRIBUTING.rst",
     "LICENSE",
     "MANIFEST.in",
+    "asset-v1-py.tar.gz",
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/asset_v1/asset_service.rst",
