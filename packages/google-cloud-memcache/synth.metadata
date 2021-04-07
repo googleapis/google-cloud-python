@@ -145,6 +145,7 @@
     "google/cloud/memcache_v1beta2/services/cloud_memcache/transports/grpc_asyncio.py",
     "google/cloud/memcache_v1beta2/types/__init__.py",
     "google/cloud/memcache_v1beta2/types/cloud_memcache.py",
+    "memcache-v1beta2-py.tar.gz",
     "mypy.ini",
     "noxfile.py",
     "renovate.json",
