@@ -174,8 +174,8 @@ def table_one_row(engine):
 
 
 @pytest.fixture(scope="session")
-def table_dml(engine):
-    return Table("test_pybigquery.sample_dml", MetaData(bind=engine), autoload=True)
+def table_dml(engine, bigquery_empty_table):
+    return Table(bigquery_empty_table, MetaData(bind=engine), autoload=True)
 
 
 @pytest.fixture(scope="session")
@@ -355,13 +355,11 @@ def test_tables_list(engine, engine_using_test_dataset):
     tables = engine.table_names()
     assert "test_pybigquery.sample" in tables
     assert "test_pybigquery.sample_one_row" in tables
-    assert "test_pybigquery.sample_dml" in tables
     assert "test_pybigquery.sample_view" not in tables
 
     tables = engine_using_test_dataset.table_names()
     assert "sample" in tables
     assert "sample_one_row" in tables
-    assert "sample_dml" in tables
     assert "sample_view" not in tables
 
 
@@ -520,7 +518,7 @@ def test_dml(engine, session, table_dml):
         {"string": "updated_row"}, synchronize_session=False
     )
     updated_result = table_dml.select().execute().fetchone()
-    assert updated_result["test_pybigquery.sample_dml_string"] == "updated_row"
+    assert updated_result[table_dml.c.string] == "updated_row"
 
     # test delete
     session.query(table_dml).filter(table_dml.c.string == "updated_row").delete(
@@ -576,16 +574,14 @@ def test_table_names_in_schema(inspector, inspector_using_test_dataset):
     tables = inspector.get_table_names("test_pybigquery")
     assert "test_pybigquery.sample" in tables
     assert "test_pybigquery.sample_one_row" in tables
-    assert "test_pybigquery.sample_dml" in tables
     assert "test_pybigquery.sample_view" not in tables
-    assert len(tables) == 3
+    assert len(tables) == 2
 
     tables = inspector_using_test_dataset.get_table_names()
     assert "sample" in tables
     assert "sample_one_row" in tables
-    assert "sample_dml" in tables
     assert "sample_view" not in tables
-    assert len(tables) == 3
+    assert len(tables) == 2
 
 
 def test_view_names(inspector, inspector_using_test_dataset):

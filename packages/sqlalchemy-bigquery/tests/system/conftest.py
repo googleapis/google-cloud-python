@@ -4,7 +4,9 @@
 # license that can be found in the LICENSE file or at
 # https://opensource.org/licenses/MIT.
 
+import datetime
 import pathlib
+import random
 
 import pytest
 import google.api_core.exceptions
@@ -14,6 +16,12 @@ from typing import List
 
 
 DATA_DIR = pathlib.Path(__file__).parent / "data"
+
+
+def temp_suffix():
+    timestamp = datetime.datetime.utcnow().strftime("%y%m%d_%H%M%S")
+    random_string = hex(random.randrange(1000000))[2:]
+    return f"{timestamp}_{random_string}"
 
 
 def load_sample_data(
@@ -84,12 +92,36 @@ def bigquery_dataset(
 
 
 @pytest.fixture(scope="session", autouse=True)
-def bigquery_empty_table(bigquery_dataset, bigquery_client, bigquery_schema):
+def bigquery_dml_dataset(bigquery_client: bigquery.Client):
     project_id = bigquery_client.project
-    dataset_id = bigquery_dataset
-    table_id = f"{project_id}.{dataset_id}.sample_dml"
+    dataset_id = "test_pybigquery_dml"
+    dataset = bigquery.Dataset(f"{project_id}.{dataset_id}")
+    # Add default table expiration in case cleanup fails.
+    dataset.default_table_expiration_ms = 1000 * int(
+        datetime.timedelta(days=1).total_seconds()
+    )
+    dataset = bigquery_client.create_dataset(dataset, exists_ok=True)
+    return dataset_id
+
+
+@pytest.fixture(scope="session", autouse=True)
+def bigquery_empty_table(
+    bigquery_dataset: str,
+    bigquery_dml_dataset: str,
+    bigquery_client: bigquery.Client,
+    bigquery_schema: List[bigquery.SchemaField],
+):
+    project_id = bigquery_client.project
+    # Cleanup the sample_dml table, if it exists.
+    old_table_id = f"{project_id}.{bigquery_dataset}.sample_dml"
+    bigquery_client.delete_table(old_table_id, not_found_ok=True)
+    # Create new table in its own dataset.
+    dataset_id = bigquery_dml_dataset
+    table_id = f"{project_id}.{dataset_id}.sample_dml_{temp_suffix()}"
     empty_table = bigquery.Table(table_id, schema=bigquery_schema)
-    bigquery_client.create_table(empty_table, exists_ok=True)
+    bigquery_client.create_table(empty_table)
+    yield table_id
+    bigquery_client.delete_table(empty_table)
 
 
 @pytest.fixture(scope="session", autouse=True)
