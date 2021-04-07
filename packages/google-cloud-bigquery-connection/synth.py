@@ -31,7 +31,7 @@ library = gapic.py_library(
     bazel_target=f"//google/cloud/bigquery/connection/v1:bigquery-connection-v1-py"
 )
 
-s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
+s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst", "*.tar.gz"])
 
 # ----------------------------------------------------------------------------
 # Add templated files
