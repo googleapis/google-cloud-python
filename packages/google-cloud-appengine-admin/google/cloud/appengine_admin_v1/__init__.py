@@ -130,6 +130,7 @@ __all__ = (
     "ApiConfigHandler",
     "ApiEndpointHandler",
     "Application",
+    "ApplicationsClient",
     "AuditData",
     "AuthFailAction",
     "AuthorizedCertificate",
@@ -162,7 +163,6 @@ __all__ = (
     "Deployment",
     "DiskUtilization",
     "DomainMapping",
-    "DomainMappingsClient",
     "DomainOverrideStrategy",
     "EndpointsApiService",
     "Entrypoint",
@@ -235,5 +235,5 @@ __all__ = (
     "Volume",
     "VpcAccessConnector",
     "ZipInfo",
-    "ApplicationsClient",
+    "DomainMappingsClient",
 )
