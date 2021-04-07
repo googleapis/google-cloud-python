@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-channel/compare/v0.2.0...v0.2.1) (2021-04-07)
+
+
+### Bug Fixes
+
+* BREAKING deprecate TransferableSkus fields ([#14](https://www.github.com/googleapis/python-channel/issues/14)) ([0d3b493](https://www.github.com/googleapis/python-channel/commit/0d3b4939cdae196ea9b0edc00e13f61d7d71777d))
+
 ## [0.2.0](https://www.github.com/googleapis/python-channel/compare/v0.1.0...v0.2.0) (2021-02-11)
 
 
