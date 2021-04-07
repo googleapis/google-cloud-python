@@ -20,21 +20,14 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate channel GAPIC layer
 # ----------------------------------------------------------------------------
-versions = ["v1"]
-for version in versions:
-    library = gapic.py_library(
-        service="channel",
-        version=version,
-        bazel_target=f"//google/cloud/channel/{version}:channel-{version}-py",
-    )
-
+for library in s.get_staging_dirs("v1"):
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
