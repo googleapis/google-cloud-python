@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-service-control.git",
-        "sha": "94c7fc51a5f84fe5c11d35ef6b7bd64462fa6b41"
+        "sha": "acdf1b85ddb6622103c80f2898304d19193fd51e"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "4501974ad08b5d693311457e2ea4ce845676e329"
+        "sha": "5b5bf6d519b2d658d9f2e483d9f6f3d0ba8ee6bc"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "4501974ad08b5d693311457e2ea4ce845676e329"
+        "sha": "5b5bf6d519b2d658d9f2e483d9f6f3d0ba8ee6bc"
       }
     }
   ],
