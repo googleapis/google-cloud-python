@@ -30,21 +30,8 @@ python setup.py install
 ```
 During setup the dialect will be registered with entry points.
 
-Example Usage
+A Minimal App
 -----------
-**Simple SELECT**
-```python
-from sqlalchemy import MetaData, Table, create_engine, select
-
-engine = create_engine(
-    "spanner:///projects/project-id/instances/instance-id/databases/database-id"
-)
-
-table = Table("table-id", MetaData(bind=engine), autoload=True)
-for row in select(["*"], from_obj=table).execute().fetchall():
-    print(row)
-```
-
 **Create a table**
 ```python
 from sqlalchemy import (
@@ -57,9 +44,9 @@ from sqlalchemy import (
 )
 
 engine = create_engine(
-    "spanner:///projects/appdev-soda-spanner-staging/instances/sqlalchemy-dialect-test/databases/compliance-test"
+    "spanner:///projects/project-id/instances/instance-id/databases/database-id"
 )
-metadata = MetaData()
+metadata = MetaData(bind=engine)
 
 user = Table(
     "users",
@@ -70,6 +57,38 @@ user = Table(
 
 metadata.create_all(engine)
 ```
+**Insert a row**
+```python
+from sqlalchemy import (
+    MetaData,
+    Table,
+    create_engine,
+    insert,
+)
+
+engine = create_engine(
+    "spanner:///projects/project-id/instances/instance-id/databases/database-id"
+)
+metadata = MetaData(bind=engine)
+
+user = Table("users", metadata, autoload=True)
+
+insert(user).values(user_id=1, user_name="Full Name").execute()
+```
+
+**Read**
+```python
+from sqlalchemy import MetaData, Table, create_engine, select
+
+engine = create_engine(
+    "spanner:///projects/project-id/instances/instance-id/databases/database-id"
+)
+
+table = Table("users", MetaData(bind=engine), autoload=True)
+for row in select(["*"], from_obj=table).execute().fetchall():
+    print(row)
+```
+
 Migration
 -----------
 SQLAlchemy uses [Alembic](https://alembic.sqlalchemy.org/en/latest/#) tool to organize database migrations.
