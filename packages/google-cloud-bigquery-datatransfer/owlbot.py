@@ -20,24 +20,28 @@ from synthtool import gcp
 from synthtool.languages import python
 
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v1"]
 
 # ----------------------------------------------------------------------------
 # Generate bigquery_datatransfer GAPIC layer
 # ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="bigquery_datatransfer",
-        version=version,
-        bazel_target=(
-            f"//google/cloud/bigquery/datatransfer/{version}:"
-            "bigquery-datatransfer-v1-py"
-        ),
-        include_protos=True,
+for library in s.get_staging_dirs("v1"):
+    # Fix missing async client in datatransfer_v1
+    # https://github.com/googleapis/gapic-generator-python/issues/815
+    s.replace(
+        library / "google/cloud/bigquery_datatransfer_v1/__init__.py",
+        r"from \.services\.data_transfer_service import DataTransferServiceClient",
+        "\\g<0>\nfrom .services.data_transfer_service import DataTransferServiceAsyncClient",
     )
+    s.replace(
+        library / "google/cloud/bigquery_datatransfer_v1/__init__.py",
+        r"'DataTransferServiceClient',",
+        '\\g<0>\n    "DataTransferServiceAsyncClient"',
+    )
+
     s.move(library, excludes=["*.tar.gz", "docs/index.rst", "README.rst", "setup.py"])
+
+s.remove_staging_dirs()
 
 
 # ----------------------------------------------------------------------------
@@ -51,18 +55,5 @@ s.move(templated_files, excludes=[".coveragerc"])
 # ----------------------------------------------------------------------------
 
 python.py_samples(skip_readmes=True)
-
-# Fix missing async client in datatransfer_v1
-# https://github.com/googleapis/gapic-generator-python/issues/815
-s.replace(
-    "google/cloud/bigquery_datatransfer_v1/__init__.py",
-    r"from \.services\.data_transfer_service import DataTransferServiceClient",
-    "\\g<0>\nfrom .services.data_transfer_service import DataTransferServiceAsyncClient",
-)
-s.replace(
-    "google/cloud/bigquery_datatransfer_v1/__init__.py",
-    r"'DataTransferServiceClient',",
-    '\\g<0>\n    "DataTransferServiceAsyncClient"',
-)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
