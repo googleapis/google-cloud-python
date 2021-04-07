@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-binary-authorization.git",
-        "sha": "a23f2e78ed9ca93e0e030056146e8cd89804e0d9"
+        "sha": "347099806abb1cb561db02f02e091cb67cfb9e4f"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "6d76df2138f8f841e5a5b9ac427f81def520c15f"
+        "sha": "5b5bf6d519b2d658d9f2e483d9f6f3d0ba8ee6bc"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "6d76df2138f8f841e5a5b9ac427f81def520c15f"
+        "sha": "5b5bf6d519b2d658d9f2e483d9f6f3d0ba8ee6bc"
       }
     }
   ],
@@ -98,7 +98,6 @@
     "CONTRIBUTING.rst",
     "LICENSE",
     "MANIFEST.in",
-    "binaryauthorization-v1beta1-py.tar.gz",
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/binaryauthorization_v1beta1/binauthz_management_service_v1_beta1.rst",
