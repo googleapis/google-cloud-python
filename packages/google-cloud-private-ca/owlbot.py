@@ -20,23 +20,19 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------
 # Generate Private CA GAPIC layer
 # ----------------------------------------------------------------------------
 
-library = gapic.py_library(
-    service="privateca",
-    version="v1beta1",
-    bazel_target="//google/cloud/security/privateca/v1beta1:security-privateca-v1beta1-py",
-)
+for library in s.get_staging_dirs("v1beta1"):
+    # Fix name
+    s.replace(library / "google/**/*.py", "google-cloud-security-privateca", "google-cloud-security-private-ca")
 
-s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
+    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
-# Fix name
-s.replace("google/**/*.py", "google-cloud-security-privateca", "google-cloud-security-private-ca")
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
