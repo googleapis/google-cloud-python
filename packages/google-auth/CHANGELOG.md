@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.28.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.28.0...v1.28.1) (2021-04-08)
+
+
+### Bug Fixes
+
+* support custom alg in jwt header for signing ([#729](https://www.github.com/googleapis/google-auth-library-python/issues/729)) ([0a83706](https://www.github.com/googleapis/google-auth-library-python/commit/0a83706c9d65f7d5a30ea3b42c5beac269ed2a25))
+
 ## [1.28.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.27.1...v1.28.0) (2021-03-16)
 
 
