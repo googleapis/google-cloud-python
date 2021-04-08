@@ -815,7 +815,7 @@ class _QueryResults(object):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#body.QueryResponse.FIELDS.total_rows
 
         Returns:
-            Optional[int}: Count generated on the server (None until set by the server).
+            Optional[int]: Count generated on the server (None until set by the server).
         """
         total_rows = self._properties.get("totalRows")
         if total_rows is not None:
@@ -858,7 +858,7 @@ class _QueryResults(object):
 
         Returns:
             Optional[List[google.cloud.bigquery.table.Row]]:
-                Fields describing the schema (None until set by the server).
+                Rows containing the results of the query.
         """
         return _rows_from_json(self._properties.get("rows", ()), self.schema)
 
