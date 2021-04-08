@@ -19,32 +19,21 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate media translation GAPIC layer
-# ----------------------------------------------------------------------------
+default_version = "v1beta1"
 
-versions = ["v1beta1"]
-
-for version in versions:
-    library = gapic.py_library(
-        service="mediatranslation",
-        version="v1beta1",
-        bazel_target=f"//google/cloud/mediatranslation/{version}:mediatranslation-{version}-py",
+for library in s.get_staging_dirs(default_version):
+    # rename library to google-cloud-media-translation
+    s.replace(
+        [library / "google/**/*.py", "tests/**/*.py"],
+        "google-cloud-mediatranslation",
+        "google-cloud-media-translation",
     )
 
-s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
+    s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
 
-
-# rename library to google-cloud-media-translation
-s.replace(
-    ["google/**/*.py", "tests/**/*.py"],
-    "google-cloud-mediatranslation",
-    "google-cloud-media-translation",
-)
-
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
