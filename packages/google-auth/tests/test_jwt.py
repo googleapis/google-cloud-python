@@ -73,6 +73,12 @@ def test_encode_extra_headers(signer):
     }
 
 
+def test_encode_custom_alg_in_headers(signer):
+    encoded = jwt.encode(signer, {}, header={"alg": "foo"})
+    header = jwt.decode_header(encoded)
+    assert header == {"typ": "JWT", "alg": "foo", "kid": signer.key_id}
+
+
 @pytest.fixture
 def es256_signer():
     return crypt.ES256Signer.from_string(EC_PRIVATE_KEY_BYTES, "1")

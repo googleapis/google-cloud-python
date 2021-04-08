@@ -95,10 +95,11 @@ def encode(signer, payload, header=None, key_id=None):
 
     header.update({"typ": "JWT"})
 
-    if es256 is not None and isinstance(signer, es256.ES256Signer):
-        header.update({"alg": "ES256"})
-    else:
-        header.update({"alg": "RS256"})
+    if "alg" not in header:
+        if es256 is not None and isinstance(signer, es256.ES256Signer):
+            header.update({"alg": "ES256"})
+        else:
+            header.update({"alg": "RS256"})
 
     if key_id is not None:
         header["kid"] = key_id
