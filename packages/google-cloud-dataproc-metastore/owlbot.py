@@ -20,26 +20,14 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-versions = [
-    "v1alpha",
-    "v1beta",
+default_version = "v1beta"
 
-] # add new versions at the end of the list
-
-# ----------------------------------------------------------------------------
-# Generate metastore GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="metastore",
-        version=version,
-        bazel_target=f"//google/cloud/metastore/{version}:metastore-{version}-py",
-    )
-
+for library in s.get_staging_dirs(default_version):
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
