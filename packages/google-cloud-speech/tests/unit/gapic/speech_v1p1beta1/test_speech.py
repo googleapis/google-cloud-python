@@ -42,6 +42,7 @@ from google.cloud.speech_v1p1beta1.types import cloud_speech
 from google.cloud.speech_v1p1beta1.types import resource
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
+from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
 from google.rpc import status_pb2 as status  # type: ignore
 
 

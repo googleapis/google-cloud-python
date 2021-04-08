@@ -584,7 +584,7 @@ class SpeechClient(metaclass=SpeechClientMeta):
                    single_utterance is set to false, then no messages
                    are streamed back to the client.
 
-                   Here's an example of a series of ten
+                   Here's an example of a series of
                    StreamingRecognizeResponses that might be returned
                    while processing audio:
 
