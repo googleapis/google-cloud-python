@@ -21,6 +21,7 @@ import proto  # type: ignore
 from google.cloud.speech_v1p1beta1.types import resource
 from google.protobuf import duration_pb2 as duration  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
 from google.rpc import status_pb2 as status  # type: ignore
 
 
@@ -271,14 +272,14 @@ class RecognitionConfig(proto.Message):
             speech recognition. When speech adaptation is set it
             supersedes the ``speech_contexts`` field. For more
             information, see the `speech
-            adaptation <https://cloud.google.com/speech-to-text/docs/context-strength>`__
+            adaptation <https://cloud.google.com/speech-to-text/docs/adaptation>`__
             documentation.
         speech_contexts (Sequence[google.cloud.speech_v1p1beta1.types.SpeechContext]):
             Array of
             [SpeechContext][google.cloud.speech.v1p1beta1.SpeechContext].
             A means to provide context to assist the speech recognition.
             For more information, see `speech
-            adaptation <https://cloud.google.com/speech-to-text/docs/context-strength>`__.
+            adaptation <https://cloud.google.com/speech-to-text/docs/adaptation>`__.
         enable_word_time_offsets (bool):
             If ``true``, the top result includes a list of words and the
             start and end time offsets (timestamps) for those words. If
@@ -296,6 +297,23 @@ class RecognitionConfig(proto.Message):
             requests in other languages has no effect at
             all. The default 'false' value does not add
             punctuation to result hypotheses.
+        enable_spoken_punctuation (google.protobuf.wrappers_pb2.BoolValue):
+            The spoken punctuation behavior for the call If not set,
+            uses default behavior based on model of choice e.g.
+            command_and_search will enable spoken punctuation by default
+            If 'true', replaces spoken punctuation with the
+            corresponding symbols in the request. For example, "how are
+            you question mark" becomes "how are you?". See
+            https://cloud.google.com/speech-to-text/docs/spoken-punctuation
+            for support. If 'false', spoken punctuation is not replaced.
+        enable_spoken_emojis (google.protobuf.wrappers_pb2.BoolValue):
+            The spoken emoji behavior for the call
+            If not set, uses default behavior based on model
+            of choice If 'true', adds spoken emoji
+            formatting for the request. This will replace
+            spoken emojis with the corresponding Unicode
+            symbols in the final transcript. If 'false',
+            spoken emojis are not replaced.
         enable_speaker_diarization (bool):
             If 'true', enables speaker detection for each recognized
             word in the top alternative of the recognition result using
@@ -435,6 +453,14 @@ class RecognitionConfig(proto.Message):
     enable_word_confidence = proto.Field(proto.BOOL, number=15)
 
     enable_automatic_punctuation = proto.Field(proto.BOOL, number=11)
+
+    enable_spoken_punctuation = proto.Field(
+        proto.MESSAGE, number=22, message=wrappers.BoolValue,
+    )
+
+    enable_spoken_emojis = proto.Field(
+        proto.MESSAGE, number=23, message=wrappers.BoolValue,
+    )
 
     enable_speaker_diarization = proto.Field(proto.BOOL, number=16)
 
@@ -749,9 +775,8 @@ class StreamingRecognizeResponse(proto.Message):
     client. If there is no recognizable audio, and ``single_utterance``
     is set to false, then no messages are streamed back to the client.
 
-    Here's an example of a series of ten
-    ``StreamingRecognizeResponse``\ s that might be returned while
-    processing audio:
+    Here's an example of a series of ``StreamingRecognizeResponse``\ s
+    that might be returned while processing audio:
 
     1. results { alternatives { transcript: "tube" } stability: 0.01 }
 
