@@ -18,22 +18,13 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v1beta2", "v1"]
+default_version = "v1"
 
-
-# ----------------------------------------------------------------------------
-# Generate language GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="language",
-        version=version,
-        bazel_target=f"//google/cloud/language/{version}:language-{version}-py",
-        include_protos=True,
-    )
+for library in s.get_staging_dirs(default_version):
     s.move(library, excludes=["docs/index.rst", "README.rst", "setup.py"])
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
