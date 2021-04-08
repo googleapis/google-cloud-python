@@ -19,28 +19,21 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v1beta1", "v1"]
 
-# ----------------------------------------------------------------------------
-# Generate texttospeech GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="texttospeech",
-        version=version,
-        bazel_target=f"//google/cloud/texttospeech/{version}:texttospeech-{version}-py",
+default_version = "v1"
 
+for library in s.get_staging_dirs(default_version):
+    # Sphinx interprets `*` as emphasis
+    s.replace(
+        [library / "google/cloud/**/*client.py", library / "google/cloud/**/cloud_tts.py"],
+        "((en)|(no)|(nb)|(cmn)|(yue))-\*",
+        "\g<1>-\*",
     )
+
     s.move(library, excludes=["setup.py", "docs/index.rst", "README.rst"])
 
-# Sphinx interprets `*` as emphasis
-s.replace(
-    ["google/cloud/**/*client.py", "google/cloud/**/cloud_tts.py"],
-    "((en)|(no)|(nb)|(cmn)|(yue))-\*",
-    "\g<1>-\*",
-)
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
