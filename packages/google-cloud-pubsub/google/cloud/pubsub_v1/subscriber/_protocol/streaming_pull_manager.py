@@ -148,6 +148,7 @@ class StreamingPullManager(object):
         self._closing = threading.Lock()
         self._closed = False
         self._close_callbacks = []
+        self._regular_shutdown_thread = None  # Created on intentional shutdown.
 
         # Generate a random client id tied to this object. All streaming pull
         # connections (initial and re-connects) will then use the same client
@@ -539,13 +540,13 @@ class StreamingPullManager(object):
                 an "intentional" shutdown. This is passed to the callbacks
                 specified via :meth:`add_close_callback`.
         """
-        thread = threading.Thread(
+        self._regular_shutdown_thread = threading.Thread(
             name=_REGULAR_SHUTDOWN_THREAD_NAME,
             daemon=True,
             target=self._shutdown,
             kwargs={"reason": reason},
         )
-        thread.start()
+        self._regular_shutdown_thread.start()
 
     def _shutdown(self, reason=None):
         """Run the actual shutdown sequence (stop the stream and all helper threads).
