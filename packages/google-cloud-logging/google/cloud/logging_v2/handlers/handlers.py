@@ -16,16 +16,48 @@
 
 import logging
 
-
 from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
 from google.cloud.logging_v2.handlers.transports import BackgroundThreadTransport
 from google.cloud.logging_v2.handlers._monitored_resources import detect_resource
+from google.cloud.logging_v2.handlers._helpers import get_request_data
 
 DEFAULT_LOGGER_NAME = "python"
 
 EXCLUDED_LOGGER_DEFAULTS = ("google.cloud", "google.auth", "google_auth_httplib2")
 
 _CLEAR_HANDLER_RESOURCE_TYPES = ("gae_app", "cloud_function")
+
+
+class CloudLoggingFilter(logging.Filter):
+    """Python standard ``logging`` Filter class to add Cloud Logging
+    information to each LogRecord.
+
+    When attached to a LogHandler, each incoming log will receive trace and
+    http_request related to the request. This data can be overwritten using
+    the `extras` argument when writing logs.
+    """
+
+    def __init__(self, project=None):
+        self.project = project
+
+    def filter(self, record):
+        # ensure record has all required fields set
+        record.lineno = 0 if record.lineno is None else record.lineno
+        record.msg = "" if record.msg is None else record.msg
+        record.funcName = "" if record.funcName is None else record.funcName
+        record.pathname = "" if record.pathname is None else record.pathname
+        # find http request data
+        inferred_http, inferred_trace = get_request_data()
+        if inferred_trace is not None and self.project is not None:
+            inferred_trace = f"projects/{self.project}/traces/{inferred_trace}"
+
+        record.trace = getattr(record, "trace", inferred_trace) or ""
+        record.http_request = getattr(record, "http_request", inferred_http) or {}
+        record.request_method = record.http_request.get("requestMethod", "")
+        record.request_url = record.http_request.get("requestUrl", "")
+        record.user_agent = record.http_request.get("userAgent", "")
+        record.protocol = record.http_request.get("protocol", "")
+        return True
 
 
 class CloudLoggingHandler(logging.StreamHandler):

@@ -1,0 +1,4 @@
+node_modules
+nodejs-logging
+*.tar
+package-lock.json

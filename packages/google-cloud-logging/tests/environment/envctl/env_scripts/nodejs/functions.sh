@@ -63,6 +63,7 @@ deploy() {
 
   # copy test code into temporary test file
   cp $REPO_ROOT/deployable/nodejs/app.js $TMP_DIR/app.js
+  cp $REPO_ROOT/deployable/nodejs/tests.js $TMP_DIR/tests.js
   cp $REPO_ROOT/deployable/nodejs/package.json $TMP_DIR/
 
   # deploy function
