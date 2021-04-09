@@ -188,7 +188,7 @@ def test_client_api_publish_not_blocking_additional_publish_calls():
 
         start = datetime.datetime.now()
         event_set = api_publish_called.wait(timeout=1.0)
-        if not event_set:
+        if not event_set:  # pragma: NO COVER
             pytest.fail("API publish was not called in time")
         batch.publish({"data": b"second message"})
         end = datetime.datetime.now()

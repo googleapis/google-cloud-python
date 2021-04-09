@@ -258,7 +258,7 @@ class FlowController(object):
 
         return size_overflow or msg_count_overflow
 
-    def _load_info(self, message_count=None, total_bytes=None, reserved_bytes=None):
+    def _load_info(self, message_count=None, total_bytes=None):
         """Return the current flow control load information.
 
         The caller can optionally adjust some of the values to fit its reporting
@@ -271,8 +271,6 @@ class FlowController(object):
                 The value to override the current message count with.
             total_bytes (Optional[int]):
                 The value to override the current total bytes with.
-            reserved_bytes (Optional[int]):
-                The value to override the current number of reserved bytes with.
 
         Returns:
             str
@@ -285,13 +283,10 @@ class FlowController(object):
         if total_bytes is None:
             total_bytes = self._total_bytes
 
-        if reserved_bytes is None:
-            reserved_bytes = self._reserved_bytes
-
         return msg.format(
             message_count,
             self._settings.message_limit,
             total_bytes,
             self._settings.byte_limit,
-            reserved_bytes,
+            self._reserved_bytes,
         )

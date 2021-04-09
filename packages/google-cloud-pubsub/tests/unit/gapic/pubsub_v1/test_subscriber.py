@@ -17,6 +17,7 @@
 
 import os
 import mock
+import warnings
 
 import grpc
 from grpc.experimental import aio
@@ -2338,11 +2339,13 @@ def test_pull_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.pull(
-            subscription="subscription_value",
-            return_immediately=True,
-            max_messages=1277,
-        )
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=DeprecationWarning)
+            client.pull(
+                subscription="subscription_value",
+                return_immediately=True,
+                max_messages=1277,
+            )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2382,11 +2385,13 @@ async def test_pull_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(pubsub.PullResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.pull(
-            subscription="subscription_value",
-            return_immediately=True,
-            max_messages=1277,
-        )
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=DeprecationWarning)
+            await client.pull(
+                subscription="subscription_value",
+                return_immediately=True,
+                max_messages=1277,
+            )
 
         # Establish that the underlying call was made with the expected
         # request object values.

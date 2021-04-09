@@ -116,9 +116,6 @@ def check_call_types(mock, *args, **kwargs):
         assert len(call_args) == len(args)
         for n, argtype in enumerate(args):
             assert isinstance(call_args[n], argtype)
-        for argname, argtype in kwargs:
-            assert argname in call_kwargs
-            assert isinstance(call_kwargs[argname], argtype)
 
 
 def test_ack():

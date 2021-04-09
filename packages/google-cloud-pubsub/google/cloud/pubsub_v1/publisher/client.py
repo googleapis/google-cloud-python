@@ -49,14 +49,6 @@ _BLACKLISTED_METHODS = (
 _raw_proto_pubbsub_message = gapic_types.PubsubMessage.pb()
 
 
-def _set_nested_value(container, value, keys):
-    current = container
-    for key in keys[:-1]:
-        current = current.setdefault(key, {})
-    current[keys[-1]] = value
-    return container
-
-
 @_gapic.add_methods(publisher_client.PublisherClient, blacklist=_BLACKLISTED_METHODS)
 class Client(object):
     """A publisher client for Google Cloud Pub/Sub.

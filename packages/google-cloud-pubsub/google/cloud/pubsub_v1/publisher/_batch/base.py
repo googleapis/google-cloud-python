@@ -50,7 +50,7 @@ class Batch(metaclass=abc.ABCMeta):
 
     @staticmethod
     @abc.abstractmethod
-    def make_lock():
+    def make_lock():  # pragma: NO COVER
         """Return a lock in the chosen concurrency model.
 
         Returns:
@@ -60,7 +60,7 @@ class Batch(metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def messages(self):
+    def messages(self):  # pragma: NO COVER
         """Return the messages currently in the batch.
 
         Returns:
@@ -70,7 +70,7 @@ class Batch(metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def size(self):
+    def size(self):  # pragma: NO COVER
         """Return the total size of all of the messages currently in the batch.
 
         The size includes any overhead of the actual ``PublishRequest`` that is
@@ -84,7 +84,7 @@ class Batch(metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def settings(self):
+    def settings(self):  # pragma: NO COVER
         """Return the batch settings.
 
         Returns:
@@ -95,7 +95,7 @@ class Batch(metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def status(self):
+    def status(self):  # pragma: NO COVER
         """Return the status of this batch.
 
         Returns:
@@ -106,7 +106,7 @@ class Batch(metaclass=abc.ABCMeta):
         """
         raise NotImplementedError
 
-    def cancel(self, cancellation_reason):
+    def cancel(self, cancellation_reason):  # pragma: NO COVER
         """Complete pending futures with an exception.
 
         This method must be called before publishing starts (ie: while the
@@ -119,7 +119,7 @@ class Batch(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def publish(self, message):
+    def publish(self, message):  # pragma: NO COVER
         """Publish a single message.
 
         Add the given message to this object; this will cause it to be

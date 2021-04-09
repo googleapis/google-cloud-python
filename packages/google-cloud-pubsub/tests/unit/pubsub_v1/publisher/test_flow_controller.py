@@ -47,7 +47,7 @@ def _run_in_daemon(
                     time.sleep(action_pause)
                 method(msg)
         except Exception:
-            if error_event is not None:
+            if error_event is not None:  # pragma: NO COVER
                 error_event.set()
         else:
             all_done_event.set()
@@ -229,27 +229,29 @@ def test_blocking_on_overflow_until_free_capacity():
     # Adding a message with free capacity should not block.
     _run_in_daemon(flow_controller, "add", [msg1], adding_1_done)
     if not adding_1_done.wait(timeout=0.1):
-        pytest.fail("Adding a message with enough flow capacity blocked or errored.")
+        pytest.fail(  # pragma: NO COVER
+            "Adding a message with enough flow capacity blocked or errored."
+        )
 
     # Adding messages when there is not enough capacity should block, even if
     # added through multiple threads.
     _run_in_daemon(flow_controller, "add", [msg2], adding_2_done)
     if adding_2_done.wait(timeout=0.1):
-        pytest.fail("Adding a message on overflow did not block.")
+        pytest.fail("Adding a message on overflow did not block.")  # pragma: NO COVER
 
     _run_in_daemon(flow_controller, "add", [msg3], adding_3_done)
     if adding_3_done.wait(timeout=0.1):
-        pytest.fail("Adding a message on overflow did not block.")
+        pytest.fail("Adding a message on overflow did not block.")  # pragma: NO COVER
 
     _run_in_daemon(flow_controller, "add", [msg4], adding_4_done)
     if adding_4_done.wait(timeout=0.1):
-        pytest.fail("Adding a message on overflow did not block.")
+        pytest.fail("Adding a message on overflow did not block.")  # pragma: NO COVER
 
     # After releasing one message, there should be room for a new message, which
     # should result in unblocking one of the waiting threads.
     _run_in_daemon(flow_controller, "release", [msg1], releasing_1_done)
     if not releasing_1_done.wait(timeout=0.1):
-        pytest.fail("Releasing a message blocked or errored.")
+        pytest.fail("Releasing a message blocked or errored.")  # pragma: NO COVER
 
     done_status = [
         adding_2_done.wait(timeout=0.1),
@@ -267,7 +269,7 @@ def test_blocking_on_overflow_until_free_capacity():
     _run_in_daemon(flow_controller, "release", [added_msg], releasing_x_done)
 
     if not releasing_x_done.wait(timeout=0.1):
-        pytest.fail("Releasing messages blocked or errored.")
+        pytest.fail("Releasing messages blocked or errored.")  # pragma: NO COVER
 
     released_count = sum(
         (
@@ -345,24 +347,24 @@ def test_threads_posting_large_messages_do_not_starve():
 
     # Sanity check - releasing should have completed by now.
     if not releasing_busy_done.wait(timeout=1.1):
-        pytest.fail("Releasing messages blocked or errored.")
+        pytest.fail("Releasing messages blocked or errored.")  # pragma: NO COVER
 
     # Enough messages released, the large message should have come through in
     # the meantime.
     if not adding_large_done.wait(timeout=0.1):
-        pytest.fail("A thread adding a large message starved.")
+        pytest.fail("A thread adding a large message starved.")  # pragma: NO COVER
 
     if adding_busy_done.wait(timeout=0.1):
-        pytest.fail("Adding multiple small messages did not block.")
+        pytest.fail("Adding multiple small messages did not block.")  # pragma: NO COVER
 
     # Releasing the large message should unblock adding the remaining "busy" messages
     # that have not been added yet.
     _run_in_daemon(flow_controller, "release", [large_msg], releasing_large_done)
     if not releasing_large_done.wait(timeout=0.1):
-        pytest.fail("Releasing a message blocked or errored.")
+        pytest.fail("Releasing a message blocked or errored.")  # pragma: NO COVER
 
     if not adding_busy_done.wait(timeout=1.0):
-        pytest.fail("Adding messages blocked or errored.")
+        pytest.fail("Adding messages blocked or errored.")  # pragma: NO COVER
 
 
 def test_warning_on_internal_reservation_stats_error_when_unblocking():
@@ -387,13 +389,15 @@ def test_warning_on_internal_reservation_stats_error_when_unblocking():
     # Adding a message with free capacity should not block.
     _run_in_daemon(flow_controller, "add", [msg1], adding_1_done)
     if not adding_1_done.wait(timeout=0.1):
-        pytest.fail("Adding a message with enough flow capacity blocked or errored.")
+        pytest.fail(  # pragma: NO COVER
+            "Adding a message with enough flow capacity blocked or errored."
+        )
 
     # Adding messages when there is not enough capacity should block, even if
     # added through multiple threads.
     _run_in_daemon(flow_controller, "add", [msg2], adding_2_done)
     if adding_2_done.wait(timeout=0.1):
-        pytest.fail("Adding a message on overflow did not block.")
+        pytest.fail("Adding a message on overflow did not block.")  # pragma: NO COVER
 
     # Intentionally corrupt internal stats
     reservation = next(iter(flow_controller._byte_reservations.values()), None)
@@ -403,7 +407,7 @@ def test_warning_on_internal_reservation_stats_error_when_unblocking():
     with warnings.catch_warnings(record=True) as warned:
         _run_in_daemon(flow_controller, "release", [msg1], releasing_1_done)
         if not releasing_1_done.wait(timeout=0.1):
-            pytest.fail("Releasing a message blocked or errored.")
+            pytest.fail("Releasing a message blocked or errored.")  # pragma: NO COVER
 
     matches = [warning for warning in warned if warning.category is RuntimeWarning]
     assert len(matches) == 1

@@ -31,7 +31,7 @@ class Scheduler(metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def queue(self):
+    def queue(self):  # pragma: NO COVER
         """Queue: A concurrency-safe queue specific to the underlying
         concurrency implementation.
 
@@ -40,7 +40,7 @@ class Scheduler(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def schedule(self, callback, *args, **kwargs):
+    def schedule(self, callback, *args, **kwargs):  # pragma: NO COVER
         """Schedule the callback to be called asynchronously.
 
         Args:
@@ -54,7 +54,7 @@ class Scheduler(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def shutdown(self, await_msg_callbacks=False):
+    def shutdown(self, await_msg_callbacks=False):  # pragma: NO COVER
         """Shuts down the scheduler and immediately end all pending callbacks.
 
         Args:

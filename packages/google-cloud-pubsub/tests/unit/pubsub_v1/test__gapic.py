@@ -32,7 +32,7 @@ class SourceClass(object):
         return "source class class method"
 
     @classmethod
-    def blacklisted_method(cls):
+    def blacklisted_method(cls):  # pragma: NO COVER
         return "source class blacklisted method"
 
 
@@ -42,7 +42,7 @@ def test_add_method():
         def __init__(self):
             self.api = SourceClass()
 
-        def method(self):
+        def method(self):  # pragma: NO COVER
             return "foo class instance method"
 
     foo = Foo()

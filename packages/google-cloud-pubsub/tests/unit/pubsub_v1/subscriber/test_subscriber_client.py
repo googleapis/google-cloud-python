@@ -44,7 +44,7 @@ def test_init_default_client_info(creds):
                 for header, header_value in wrapped_method._metadata
                 if header == METRICS_METADATA_KEY
             ),
-            None,
+            None,  # pragma: NO COVER
         )
         assert user_agent is not None
         assert expected_client_info in user_agent

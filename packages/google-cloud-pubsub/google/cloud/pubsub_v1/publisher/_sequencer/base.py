@@ -24,7 +24,7 @@ class Sequencer(metaclass=abc.ABCMeta):
 
     @staticmethod
     @abc.abstractmethod
-    def is_finished(self):
+    def is_finished(self):  # pragma: NO COVER
         """ Whether the sequencer is finished and should be cleaned up.
 
             Returns:
@@ -34,7 +34,7 @@ class Sequencer(metaclass=abc.ABCMeta):
 
     @staticmethod
     @abc.abstractmethod
-    def unpause(self, message):
+    def unpause(self, message):  # pragma: NO COVER
         """ Unpauses this sequencer.
 
         Raises:
@@ -45,7 +45,7 @@ class Sequencer(metaclass=abc.ABCMeta):
 
     @staticmethod
     @abc.abstractmethod
-    def publish(self, message, retry=None):
+    def publish(self, message, retry=None):  # pragma: NO COVER
         """ Publish message for this ordering key.
 
         Args:
