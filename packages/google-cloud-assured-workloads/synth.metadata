@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-assured-workloads.git",
-        "sha": "8152c436a649eb47b8bbc24ad82d113808970c0b"
+        "sha": "208c4170fd84e4749296ed21549262d8d2e6642a"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "5b5bf6d519b2d658d9f2e483d9f6f3d0ba8ee6bc"
+        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "5b5bf6d519b2d658d9f2e483d9f6f3d0ba8ee6bc"
+        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
       }
     }
   ],
