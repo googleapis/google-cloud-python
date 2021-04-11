@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-appengine-admin.git",
-        "sha": "b23b075ae60fb5b7452e9c996b0febdeea81c50e"
+        "sha": "29d67f947f488bd15684a525ee408f42d41fa1e6"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "705743e66f5c0b24a95f7f30619c9d3ef747b317"
+        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "705743e66f5c0b24a95f7f30619c9d3ef747b317"
+        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
       }
     }
   ],

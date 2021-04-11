@@ -135,7 +135,6 @@ __all__ = (
     "AuthFailAction",
     "AuthorizedCertificate",
     "AuthorizedCertificateView",
-    "AuthorizedCertificatesClient",
     "AuthorizedDomain",
     "AuthorizedDomainsClient",
     "AutomaticScaling",
@@ -163,6 +162,7 @@ __all__ = (
     "Deployment",
     "DiskUtilization",
     "DomainMapping",
+    "DomainMappingsClient",
     "DomainOverrideStrategy",
     "EndpointsApiService",
     "Entrypoint",
@@ -235,5 +235,5 @@ __all__ = (
     "Volume",
     "VpcAccessConnector",
     "ZipInfo",
-    "DomainMappingsClient",
+    "AuthorizedCertificatesClient",
 )
