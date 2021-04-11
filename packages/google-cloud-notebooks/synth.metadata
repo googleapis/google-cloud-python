@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-notebooks.git",
-        "sha": "4cb05085253603f7647c0482cb8683ccb64f6859"
+        "sha": "1193643464f95d52f5e8d0982419c4a516c79d09"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "5b5bf6d519b2d658d9f2e483d9f6f3d0ba8ee6bc"
+        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "5b5bf6d519b2d658d9f2e483d9f6f3d0ba8ee6bc"
+        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
       }
     }
   ],
