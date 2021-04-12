@@ -123,6 +123,7 @@ class TestCursor(unittest.TestCase):
                 schema=schema,
                 num_dml_affected_rows=num_dml_affected_rows,
             )
+            mock_job.destination.project = "P"
             mock_job.destination.to_bqstorage.return_value = (
                 "projects/P/datasets/DS/tables/T"
             )
@@ -379,6 +380,52 @@ class TestCursor(unittest.TestCase):
 
         # the default client was not used
         mock_client.list_rows.assert_not_called()
+
+    @unittest.skipIf(
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
+    def test_fetchall_w_bqstorage_client_no_arrow_compression(self):
+        from google.cloud.bigquery import dbapi
+        from google.cloud.bigquery import table
+
+        # Use unordered data to also test any non-determenistic key order in dicts.
+        row_data = [table.Row([1.2, 1.1], {"bar": 1, "foo": 0})]
+        bqstorage_streamed_rows = [{"bar": _to_pyarrow(1.2), "foo": _to_pyarrow(1.1)}]
+
+        mock_client = self._mock_client(rows=row_data)
+        mock_bqstorage_client = self._mock_bqstorage_client(
+            stream_count=1, rows=bqstorage_streamed_rows,
+        )
+
+        connection = dbapi.connect(
+            client=mock_client, bqstorage_client=mock_bqstorage_client,
+        )
+        cursor = connection.cursor()
+        cursor.execute("SELECT foo, bar FROM some_table")
+
+        with mock.patch(
+            "google.cloud.bigquery.dbapi.cursor._ARROW_COMPRESSION_SUPPORT", new=False
+        ):
+            rows = cursor.fetchall()
+
+        mock_client.list_rows.assert_not_called()  # The default client was not used.
+
+        # Check the BQ Storage session config.
+        expected_session = bigquery_storage.ReadSession(
+            table="projects/P/datasets/DS/tables/T",
+            data_format=bigquery_storage.DataFormat.ARROW,
+        )
+        mock_bqstorage_client.create_read_session.assert_called_once_with(
+            parent="projects/P", read_session=expected_session, max_stream_count=1
+        )
+
+        # Check the data returned.
+        field_value = op.itemgetter(1)
+        sorted_row_data = [sorted(row.items(), key=field_value) for row in rows]
+        expected_row_data = [[("foo", 1.1), ("bar", 1.2)]]
+
+        self.assertEqual(sorted_row_data, expected_row_data)
 
     def test_execute_custom_job_id(self):
         from google.cloud.bigquery.dbapi import connect

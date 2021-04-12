@@ -41,6 +41,22 @@ from .helpers import _make_connection
 from .helpers import _make_job_resource
 
 
+@pytest.fixture
+def table_read_options_kwarg():
+    # Create a BigQuery Storage table read options object with pyarrow compression
+    # enabled if a recent-enough version of google-cloud-bigquery-storage dependency is
+    # installed to support the compression.
+    if not hasattr(bigquery_storage, "ArrowSerializationOptions"):
+        return {}
+
+    read_options = bigquery_storage.ReadSession.TableReadOptions(
+        arrow_serialization_options=bigquery_storage.ArrowSerializationOptions(
+            buffer_compression=bigquery_storage.ArrowSerializationOptions.CompressionCodec.LZ4_FRAME
+        )
+    )
+    return {"read_options": read_options}
+
+
 @pytest.mark.parametrize(
     "query,expected",
     (
@@ -82,7 +98,7 @@ def test__contains_order_by(query, expected):
         "SelecT name, age froM table OrdeR \n\t BY other_column;",
     ),
 )
-def test_to_dataframe_bqstorage_preserve_order(query):
+def test_to_dataframe_bqstorage_preserve_order(query, table_read_options_kwarg):
     from google.cloud.bigquery.job import QueryJob as target_class
 
     job_resource = _make_job_resource(
@@ -123,8 +139,10 @@ def test_to_dataframe_bqstorage_preserve_order(query):
     destination_table = "projects/{projectId}/datasets/{datasetId}/tables/{tableId}".format(
         **job_resource["configuration"]["query"]["destinationTable"]
     )
-    expected_session = bigquery_storage.types.ReadSession(
-        table=destination_table, data_format=bigquery_storage.types.DataFormat.ARROW,
+    expected_session = bigquery_storage.ReadSession(
+        table=destination_table,
+        data_format=bigquery_storage.DataFormat.ARROW,
+        **table_read_options_kwarg,
     )
     bqstorage_client.create_read_session.assert_called_once_with(
         parent="projects/test-project",
@@ -431,7 +449,7 @@ def test_to_dataframe_ddl_query():
 @pytest.mark.skipif(
     bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
 )
-def test_to_dataframe_bqstorage():
+def test_to_dataframe_bqstorage(table_read_options_kwarg):
     from google.cloud.bigquery.job import QueryJob as target_class
 
     resource = _make_job_resource(job_type="query", ended=True)
@@ -468,13 +486,61 @@ def test_to_dataframe_bqstorage():
     destination_table = "projects/{projectId}/datasets/{datasetId}/tables/{tableId}".format(
         **resource["configuration"]["query"]["destinationTable"]
     )
-    expected_session = bigquery_storage.types.ReadSession(
-        table=destination_table, data_format=bigquery_storage.types.DataFormat.ARROW,
+    expected_session = bigquery_storage.ReadSession(
+        table=destination_table,
+        data_format=bigquery_storage.DataFormat.ARROW,
+        **table_read_options_kwarg,
     )
     bqstorage_client.create_read_session.assert_called_once_with(
         parent=f"projects/{client.project}",
         read_session=expected_session,
         max_stream_count=0,  # Use default number of streams for best performance.
+    )
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+@pytest.mark.skipif(
+    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
+)
+def test_to_dataframe_bqstorage_no_pyarrow_compression():
+    from google.cloud.bigquery.job import QueryJob as target_class
+
+    resource = _make_job_resource(job_type="query", ended=True)
+    query_resource = {
+        "jobComplete": True,
+        "jobReference": resource["jobReference"],
+        "totalRows": "4",
+        "schema": {"fields": [{"name": "name", "type": "STRING", "mode": "NULLABLE"}]},
+    }
+    connection = _make_connection(query_resource)
+    client = _make_client(connection=connection)
+    job = target_class.from_api_repr(resource, client)
+    bqstorage_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
+    session = bigquery_storage.types.ReadSession()
+    session.avro_schema.schema = json.dumps(
+        {
+            "type": "record",
+            "name": "__root__",
+            "fields": [{"name": "name", "type": ["null", "string"]}],
+        }
+    )
+    bqstorage_client.create_read_session.return_value = session
+
+    with mock.patch(
+        "google.cloud.bigquery._pandas_helpers._ARROW_COMPRESSION_SUPPORT", new=False
+    ):
+        job.to_dataframe(bqstorage_client=bqstorage_client)
+
+    destination_table = "projects/{projectId}/datasets/{datasetId}/tables/{tableId}".format(
+        **resource["configuration"]["query"]["destinationTable"]
+    )
+    expected_session = bigquery_storage.ReadSession(
+        table=destination_table, data_format=bigquery_storage.DataFormat.ARROW,
+    )
+    bqstorage_client.create_read_session.assert_called_once_with(
+        parent=f"projects/{client.project}",
+        read_session=expected_session,
+        max_stream_count=0,
     )
 
 

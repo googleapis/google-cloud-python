@@ -28,7 +28,6 @@ import uuid
 
 import psutil
 import pytest
-import pkg_resources
 
 from google.cloud.bigquery._pandas_helpers import _BIGNUMERIC_SUPPORT
 from . import helpers
@@ -115,13 +114,6 @@ SAMPLES_BUCKET = os.environ.get("GCLOUD_TEST_SAMPLES_BUCKET", "cloud-samples-dat
 retry_storage_errors = RetryErrors(
     (TooManyRequests, InternalServerError, ServiceUnavailable)
 )
-
-PYARROW_MINIMUM_VERSION = pkg_resources.parse_version("0.17.0")
-
-if pyarrow:
-    PYARROW_INSTALLED_VERSION = pkg_resources.get_distribution("pyarrow").parsed_version
-else:
-    PYARROW_INSTALLED_VERSION = None
 
 MTLS_TESTING = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE") == "true"
 

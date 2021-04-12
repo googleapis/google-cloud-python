@@ -33,6 +33,14 @@ try:
 except ImportError:  # pragma: NO COVER
     pyarrow = None
 
+try:
+    from google.cloud.bigquery_storage import ArrowSerializationOptions
+except ImportError:
+    _ARROW_COMPRESSION_SUPPORT = False
+else:
+    # Having BQ Storage available implies that pyarrow >=1.0.0 is available, too.
+    _ARROW_COMPRESSION_SUPPORT = True
+
 from google.cloud.bigquery import schema
 
 
@@ -630,6 +638,11 @@ def _download_table_bqstorage(
     if selected_fields is not None:
         for field in selected_fields:
             requested_session.read_options.selected_fields.append(field.name)
+
+    if _ARROW_COMPRESSION_SUPPORT:
+        requested_session.read_options.arrow_serialization_options.buffer_compression = (
+            ArrowSerializationOptions.CompressionCodec.LZ4_FRAME
+        )
 
     session = bqstorage_client.create_read_session(
         parent="projects/{}".format(project_id),

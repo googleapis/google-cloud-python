@@ -19,6 +19,14 @@ from collections import abc as collections_abc
 import copy
 import logging
 
+try:
+    from google.cloud.bigquery_storage import ArrowSerializationOptions
+except ImportError:
+    _ARROW_COMPRESSION_SUPPORT = False
+else:
+    # Having BQ Storage available implies that pyarrow >=1.0.0 is available, too.
+    _ARROW_COMPRESSION_SUPPORT = True
+
 from google.cloud.bigquery import job
 from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.dbapi import exceptions
@@ -255,6 +263,12 @@ class Cursor(object):
             table=table_reference.to_bqstorage(),
             data_format=bigquery_storage.types.DataFormat.ARROW,
         )
+
+        if _ARROW_COMPRESSION_SUPPORT:
+            requested_session.read_options.arrow_serialization_options.buffer_compression = (
+                ArrowSerializationOptions.CompressionCodec.LZ4_FRAME
+            )
+
         read_session = bqstorage_client.create_read_session(
             parent="projects/{}".format(table_reference.project),
             read_session=requested_session,
