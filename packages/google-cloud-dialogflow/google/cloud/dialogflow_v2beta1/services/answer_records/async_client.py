@@ -227,11 +227,12 @@ class AnswerRecordsAsyncClient:
                       the answers,
                       [AnswerRecord.name][google.cloud.dialogflow.v2beta1.AnswerRecord.name]
                       are returned to the customers.
+
                    2. The customer uses the
-                      [AnswerRecord.name][google.cloud.dialogflow.v2beta1.AnswerRecord.name]
-                      to call the [UpdateAnswerRecord][] method to send
-                      feedback about a specific answer that they believe
-                      is wrong.
+                   [AnswerRecord.name][google.cloud.dialogflow.v2beta1.AnswerRecord.name]
+                   to call the [UpdateAnswerRecord][] method to send
+                   feedback about a specific answer that they believe is
+                   wrong.
 
         """
         # Create or coerce a protobuf request object.
@@ -292,7 +293,7 @@ class AnswerRecordsAsyncClient:
         Returns:
             google.cloud.dialogflow_v2beta1.services.answer_records.pagers.ListAnswerRecordsAsyncPager:
                 Response message for
-                [AnswerRecords.ListAnswerRecords][google.cloud.dialogflow.v2beta1.AnswerRecords.ListAnswerRecords].
+                   [AnswerRecords.ListAnswerRecords][google.cloud.dialogflow.v2beta1.AnswerRecords.ListAnswerRecords].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -407,11 +408,12 @@ class AnswerRecordsAsyncClient:
                       the answers,
                       [AnswerRecord.name][google.cloud.dialogflow.v2beta1.AnswerRecord.name]
                       are returned to the customers.
+
                    2. The customer uses the
-                      [AnswerRecord.name][google.cloud.dialogflow.v2beta1.AnswerRecord.name]
-                      to call the [UpdateAnswerRecord][] method to send
-                      feedback about a specific answer that they believe
-                      is wrong.
+                   [AnswerRecord.name][google.cloud.dialogflow.v2beta1.AnswerRecord.name]
+                   to call the [UpdateAnswerRecord][] method to send
+                   feedback about a specific answer that they believe is
+                   wrong.
 
         """
         # Create or coerce a protobuf request object.

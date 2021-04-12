@@ -29,7 +29,6 @@ from grpc.experimental import aio  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.types import conversation
 from google.cloud.dialogflow_v2beta1.types import conversation as gcd_conversation
-from google.protobuf import empty_pb2 as empty  # type: ignore
 
 from .base import ConversationsTransport, DEFAULT_CLIENT_INFO
 from .grpc import ConversationsGrpcTransport
@@ -64,7 +63,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
     ) -> aio.Channel:
         """Create and return a gRPC AsyncIO channel object.
         Args:
-            address (Optional[str]): The host for the channel to use.
+            host (Optional[str]): The host for the channel to use.
             credentials (Optional[~.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If
@@ -142,10 +141,10 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
                 ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
 
         Raises:
@@ -154,7 +153,9 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
+        self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
+        self._stubs: Dict[str, Callable] = {}
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -162,88 +163,59 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
         if channel:
-            # Sanity check: Ensure that channel and credentials are not both
-            # provided.
+            # Ignore credentials if a channel was passed.
             credentials = False
-
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-        elif api_mtls_endpoint:
-            host = (
-                api_mtls_endpoint
-                if ":" in api_mtls_endpoint
-                else api_mtls_endpoint + ":443"
-            )
 
-            if credentials is None:
-                credentials, _ = auth.default(
-                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
-                )
-
-            # Create SSL credentials with client_cert_source or application
-            # default SSL credentials.
-            if client_cert_source:
-                cert, key = client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
-            else:
-                ssl_credentials = SslCredentials().ssl_credentials
-
-            # create a new channel. The provided one is ignored.
-            self._grpc_channel = type(self).create_channel(
-                host,
-                credentials=credentials,
-                credentials_file=credentials_file,
-                ssl_credentials=ssl_credentials,
-                scopes=scopes or self.AUTH_SCOPES,
-                quota_project_id=quota_project_id,
-                options=[
-                    ("grpc.max_send_message_length", -1),
-                    ("grpc.max_receive_message_length", -1),
-                ],
-            )
-            self._ssl_channel_credentials = ssl_credentials
         else:
-            host = host if ":" in host else host + ":443"
+            if api_mtls_endpoint:
+                host = api_mtls_endpoint
 
-            if credentials is None:
-                credentials, _ = auth.default(
-                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
-                )
+                # Create SSL credentials with client_cert_source or application
+                # default SSL credentials.
+                if client_cert_source:
+                    cert, key = client_cert_source()
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                        certificate_chain=cert, private_key=key
+                    )
+                else:
+                    self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
-            if client_cert_source_for_mtls and not ssl_channel_credentials:
-                cert, key = client_cert_source_for_mtls()
-                self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
+            else:
+                if client_cert_source_for_mtls and not ssl_channel_credentials:
+                    cert, key = client_cert_source_for_mtls()
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                        certificate_chain=cert, private_key=key
+                    )
 
-            # create a new channel. The provided one is ignored.
-            self._grpc_channel = type(self).create_channel(
-                host,
-                credentials=credentials,
-                credentials_file=credentials_file,
-                ssl_credentials=self._ssl_channel_credentials,
-                scopes=scopes or self.AUTH_SCOPES,
-                quota_project_id=quota_project_id,
-                options=[
-                    ("grpc.max_send_message_length", -1),
-                    ("grpc.max_receive_message_length", -1),
-                ],
-            )
-
-        # Run the base constructor.
+        # The base transport sets the host, credentials and scopes
         super().__init__(
             host=host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes or self.AUTH_SCOPES,
+            scopes=scopes,
             quota_project_id=quota_project_id,
             client_info=client_info,
         )
 
-        self._stubs = {}
+        if not self._grpc_channel:
+            self._grpc_channel = type(self).create_channel(
+                self._host,
+                credentials=self._credentials,
+                credentials_file=credentials_file,
+                scopes=self._scopes,
+                ssl_credentials=self._ssl_channel_credentials,
+                quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+
+        # Wrap messages. This must be done after self._grpc_channel exists
+        self._prep_wrapped_messages(client_info)
 
     @property
     def grpc_channel(self) -> aio.Channel:
@@ -391,92 +363,6 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
                 response_deserializer=conversation.Conversation.deserialize,
             )
         return self._stubs["complete_conversation"]
-
-    @property
-    def create_call_matcher(
-        self,
-    ) -> Callable[
-        [conversation.CreateCallMatcherRequest], Awaitable[conversation.CallMatcher]
-    ]:
-        r"""Return a callable for the create call matcher method over gRPC.
-
-        Creates a call matcher that links incoming SIP calls
-        to the specified conversation if they fulfill specified
-        criteria.
-
-        Returns:
-            Callable[[~.CreateCallMatcherRequest],
-                    Awaitable[~.CallMatcher]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_call_matcher" not in self._stubs:
-            self._stubs["create_call_matcher"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/CreateCallMatcher",
-                request_serializer=conversation.CreateCallMatcherRequest.serialize,
-                response_deserializer=conversation.CallMatcher.deserialize,
-            )
-        return self._stubs["create_call_matcher"]
-
-    @property
-    def list_call_matchers(
-        self,
-    ) -> Callable[
-        [conversation.ListCallMatchersRequest],
-        Awaitable[conversation.ListCallMatchersResponse],
-    ]:
-        r"""Return a callable for the list call matchers method over gRPC.
-
-        Returns the list of all call matchers in the
-        specified conversation.
-
-        Returns:
-            Callable[[~.ListCallMatchersRequest],
-                    Awaitable[~.ListCallMatchersResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_call_matchers" not in self._stubs:
-            self._stubs["list_call_matchers"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/ListCallMatchers",
-                request_serializer=conversation.ListCallMatchersRequest.serialize,
-                response_deserializer=conversation.ListCallMatchersResponse.deserialize,
-            )
-        return self._stubs["list_call_matchers"]
-
-    @property
-    def delete_call_matcher(
-        self,
-    ) -> Callable[[conversation.DeleteCallMatcherRequest], Awaitable[empty.Empty]]:
-        r"""Return a callable for the delete call matcher method over gRPC.
-
-        Requests deletion of a call matcher.
-
-        Returns:
-            Callable[[~.DeleteCallMatcherRequest],
-                    Awaitable[~.Empty]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_call_matcher" not in self._stubs:
-            self._stubs["delete_call_matcher"] = self.grpc_channel.unary_unary(
-                "/google.cloud.dialogflow.v2beta1.Conversations/DeleteCallMatcher",
-                request_serializer=conversation.DeleteCallMatcherRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
-            )
-        return self._stubs["delete_call_matcher"]
 
     @property
     def batch_create_messages(

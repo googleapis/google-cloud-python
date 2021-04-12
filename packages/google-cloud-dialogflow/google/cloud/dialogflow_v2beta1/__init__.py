@@ -72,17 +72,12 @@ from .types.context import ListContextsResponse
 from .types.context import UpdateContextRequest
 from .types.conversation import BatchCreateMessagesRequest
 from .types.conversation import BatchCreateMessagesResponse
-from .types.conversation import CallMatcher
 from .types.conversation import CompleteConversationRequest
 from .types.conversation import Conversation
 from .types.conversation import ConversationPhoneNumber
-from .types.conversation import CreateCallMatcherRequest
 from .types.conversation import CreateConversationRequest
 from .types.conversation import CreateMessageRequest
-from .types.conversation import DeleteCallMatcherRequest
 from .types.conversation import GetConversationRequest
-from .types.conversation import ListCallMatchersRequest
-from .types.conversation import ListCallMatchersResponse
 from .types.conversation import ListConversationsRequest
 from .types.conversation import ListConversationsResponse
 from .types.conversation import ListMessagesRequest
@@ -155,7 +150,6 @@ from .types.participant import AnalyzeContentRequest
 from .types.participant import AnalyzeContentResponse
 from .types.participant import AnnotatedMessagePart
 from .types.participant import ArticleAnswer
-from .types.participant import AudioInput
 from .types.participant import AutomatedAgentReply
 from .types.participant import CompileSuggestionRequest
 from .types.participant import CompileSuggestionResponse
@@ -165,7 +159,6 @@ from .types.participant import FaqAnswer
 from .types.participant import GetParticipantRequest
 from .types.participant import InputAudio
 from .types.participant import InputText
-from .types.participant import InputTextConfig
 from .types.participant import ListParticipantsRequest
 from .types.participant import ListParticipantsResponse
 from .types.participant import ListSuggestionsRequest
@@ -176,8 +169,6 @@ from .types.participant import OutputAudio
 from .types.participant import Participant
 from .types.participant import ResponseMessage
 from .types.participant import SmartReplyAnswer
-from .types.participant import StreamingAnalyzeContentRequest
-from .types.participant import StreamingAnalyzeContentResponse
 from .types.participant import SuggestArticlesRequest
 from .types.participant import SuggestArticlesResponse
 from .types.participant import SuggestFaqAnswersRequest
@@ -229,7 +220,6 @@ __all__ = (
     "AnswerRecordsClient",
     "ArticleAnswer",
     "AudioEncoding",
-    "AudioInput",
     "AutomatedAgentConfig",
     "AutomatedAgentReply",
     "BatchCreateEntitiesRequest",
@@ -243,7 +233,6 @@ __all__ = (
     "BatchUpdateEntityTypesResponse",
     "BatchUpdateIntentsRequest",
     "BatchUpdateIntentsResponse",
-    "CallMatcher",
     "CompileSuggestionRequest",
     "CompileSuggestionResponse",
     "CompleteConversationRequest",
@@ -255,7 +244,6 @@ __all__ = (
     "ConversationProfile",
     "ConversationProfilesClient",
     "ConversationsClient",
-    "CreateCallMatcherRequest",
     "CreateContextRequest",
     "CreateConversationProfileRequest",
     "CreateConversationRequest",
@@ -268,7 +256,6 @@ __all__ = (
     "CreateSessionEntityTypeRequest",
     "DeleteAgentRequest",
     "DeleteAllContextsRequest",
-    "DeleteCallMatcherRequest",
     "DeleteContextRequest",
     "DeleteConversationProfileRequest",
     "DeleteDocumentRequest",
@@ -314,18 +301,15 @@ __all__ = (
     "InputAudio",
     "InputAudioConfig",
     "InputText",
-    "InputTextConfig",
     "Intent",
     "IntentBatch",
     "IntentView",
+    "IntentsClient",
     "KnowledgeAnswers",
     "KnowledgeBase",
-    "KnowledgeBasesClient",
     "KnowledgeOperationMetadata",
     "ListAnswerRecordsRequest",
     "ListAnswerRecordsResponse",
-    "ListCallMatchersRequest",
-    "ListCallMatchersResponse",
     "ListContextsRequest",
     "ListContextsResponse",
     "ListConversationProfilesRequest",
@@ -381,8 +365,6 @@ __all__ = (
     "SpeechToTextConfig",
     "SpeechWordInfo",
     "SsmlVoiceGender",
-    "StreamingAnalyzeContentRequest",
-    "StreamingAnalyzeContentResponse",
     "StreamingDetectIntentRequest",
     "StreamingDetectIntentResponse",
     "StreamingRecognitionResult",
@@ -415,5 +397,5 @@ __all__ = (
     "VoiceSelectionParams",
     "WebhookRequest",
     "WebhookResponse",
-    "IntentsClient",
+    "KnowledgeBasesClient",
 )

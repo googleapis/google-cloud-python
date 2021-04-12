@@ -26,16 +26,11 @@ __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
     manifest={
         "Conversation",
-        "CallMatcher",
         "CreateConversationRequest",
         "ListConversationsRequest",
         "ListConversationsResponse",
         "GetConversationRequest",
         "CompleteConversationRequest",
-        "CreateCallMatcherRequest",
-        "ListCallMatchersRequest",
-        "ListCallMatchersResponse",
-        "DeleteCallMatcherRequest",
         "ListMessagesRequest",
         "ListMessagesResponse",
         "ConversationPhoneNumber",
@@ -122,85 +117,6 @@ class Conversation(proto.Message):
     end_time = proto.Field(proto.MESSAGE, number=6, message=timestamp.Timestamp,)
 
     conversation_stage = proto.Field(proto.ENUM, number=7, enum=ConversationStage,)
-
-
-class CallMatcher(proto.Message):
-    r"""Represents a call matcher that describes criteria for matching
-    incoming SIP calls to a conversation. When Dialogflow get a SIP call
-    from a third-party carrier, Dialogflow matches the call to an
-    existing conversation by either:
-
-    -  Extracting the conversation id from the `Call-Info
-       header <https://tools.ietf.org/html/rfc3261#section-20.9>`__,
-       e.g.
-       ``Call-Info: <http://dialogflow.googleapis.com/v2/projects/111/conversations/222> ;purpose=Goog-ContactCenter-Conversation``.
-    -  Or, if that doesn't work, matching incoming `SIP
-       headers <https://tools.ietf.org/html/rfc3261#section-7.3>`__
-       against any [CallMatcher][google.cloud.dialogflow.v2.CallMatcher]
-       for the conversation.
-
-    If an incoming SIP call without valid ``Call-Info`` header matches
-    to zero or multiple conversations with ``CallMatcher``, we reject
-    it.
-
-    A call matcher contains equality conditions for SIP headers that all
-    have to be fulfilled in order for a SIP call to match.
-
-    The matched SIP headers consist of well-known headers (``To``,
-    ``From``, ``Call-ID``) and custom headers. A
-    [CallMatcher][google.cloud.dialogflow.v2.CallMatcher] is only valid
-    if it specifies:
-
-    -  At least 1 custom header,
-    -  or at least 2 well-known headers.
-
-    Attributes:
-        name (str):
-            Output only. The unique identifier of this call matcher.
-            Format:
-            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/callMatchers/<Call Matcher ID>``.
-        to_header (str):
-            Value of the ```To``
-            header <https://tools.ietf.org/html/rfc3261#section-8.1.1.2>`__
-            to match. If empty or unspecified, we don't match to the
-            ```To``
-            header <https://tools.ietf.org/html/rfc3261#section-8.1.1.2>`__.
-        from_header (str):
-            Value of the ```From``
-            header <https://tools.ietf.org/html/rfc3261#section-8.1.1.3>`__
-            to match. If empty or unspecified, we don't match to the
-            ```From``
-            header <https://tools.ietf.org/html/rfc3261#section-8.1.1.3>`__.
-        call_id_header (str):
-            Value of the ```Call-ID``
-            header <https://tools.ietf.org/html/rfc3261#section-8.1.1.4>`__
-            to match. If empty or unspecified, we don't match to the
-            ```Call-ID``
-            header <https://tools.ietf.org/html/rfc3261#section-8.1.1.4>`__.
-        custom_headers (google.cloud.dialogflow_v2.types.CallMatcher.CustomHeaders):
-            Custom SIP headers that must match.
-    """
-
-    class CustomHeaders(proto.Message):
-        r"""Custom SIP headers. See the `description of headers in the
-        RFC <https://tools.ietf.org/html/rfc3261#section-7.3>`__.
-
-        Attributes:
-            cisco_guid (str):
-                Cisco's proprietary ``Cisco-Guid`` header.
-        """
-
-        cisco_guid = proto.Field(proto.STRING, number=1)
-
-    name = proto.Field(proto.STRING, number=1)
-
-    to_header = proto.Field(proto.STRING, number=2)
-
-    from_header = proto.Field(proto.STRING, number=3)
-
-    call_id_header = proto.Field(proto.STRING, number=4)
-
-    custom_headers = proto.Field(proto.MESSAGE, number=5, message=CustomHeaders,)
 
 
 class CreateConversationRequest(proto.Message):
@@ -332,86 +248,6 @@ class CompleteConversationRequest(proto.Message):
             Required. Resource identifier of the conversation to close.
             Format:
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
-    """
-
-    name = proto.Field(proto.STRING, number=1)
-
-
-class CreateCallMatcherRequest(proto.Message):
-    r"""The request message for
-    [Conversations.CreateCallMatcher][google.cloud.dialogflow.v2.Conversations.CreateCallMatcher].
-
-    Attributes:
-        parent (str):
-            Required. Resource identifier of the conversation adding the
-            call matcher. Format:
-            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
-        call_matcher (google.cloud.dialogflow_v2.types.CallMatcher):
-            Required. The call matcher to create.
-    """
-
-    parent = proto.Field(proto.STRING, number=1)
-
-    call_matcher = proto.Field(proto.MESSAGE, number=2, message="CallMatcher",)
-
-
-class ListCallMatchersRequest(proto.Message):
-    r"""The request message for
-    [Conversations.ListCallMatchers][google.cloud.dialogflow.v2.Conversations.ListCallMatchers].
-
-    Attributes:
-        parent (str):
-            Required. The conversation to list all call matchers from.
-            Format:
-            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
-        page_size (int):
-            Optional. The maximum number of items to
-            return in a single page. By default 100 and at
-            most 1000.
-        page_token (str):
-            Optional. The next_page_token value returned from a previous
-            list request.
-    """
-
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
-
-
-class ListCallMatchersResponse(proto.Message):
-    r"""The response message for
-    [Conversations.ListCallMatchers][google.cloud.dialogflow.v2.Conversations.ListCallMatchers].
-
-    Attributes:
-        call_matchers (Sequence[google.cloud.dialogflow_v2.types.CallMatcher]):
-            The list of call matchers. There is a maximum number of
-            items returned based on the page_size field in the request.
-        next_page_token (str):
-            Token to retrieve the next page of results or
-            empty if there are no more results in the list.
-    """
-
-    @property
-    def raw_page(self):
-        return self
-
-    call_matchers = proto.RepeatedField(proto.MESSAGE, number=1, message="CallMatcher",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
-
-
-class DeleteCallMatcherRequest(proto.Message):
-    r"""The request message for
-    [Conversations.DeleteCallMatcher][google.cloud.dialogflow.v2.Conversations.DeleteCallMatcher].
-
-    Attributes:
-        name (str):
-            Required. The unique identifier of the
-            [CallMatcher][google.cloud.dialogflow.v2.CallMatcher] to
-            delete. Format:
-            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/callMatchers/<CallMatcher ID>``.
     """
 
     name = proto.Field(proto.STRING, number=1)

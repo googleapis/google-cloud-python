@@ -57,8 +57,6 @@ from .types.audio_config import SpeechToTextConfig
 from .types.audio_config import SpeechWordInfo
 from .types.audio_config import SsmlVoiceGender
 from .types.audio_config import SynthesizeSpeechConfig
-from .types.audio_config import TelephonyDtmf
-from .types.audio_config import TelephonyDtmfEvents
 from .types.audio_config import VoiceSelectionParams
 from .types.context import Context
 from .types.context import CreateContextRequest
@@ -68,16 +66,11 @@ from .types.context import GetContextRequest
 from .types.context import ListContextsRequest
 from .types.context import ListContextsResponse
 from .types.context import UpdateContextRequest
-from .types.conversation import CallMatcher
 from .types.conversation import CompleteConversationRequest
 from .types.conversation import Conversation
 from .types.conversation import ConversationPhoneNumber
-from .types.conversation import CreateCallMatcherRequest
 from .types.conversation import CreateConversationRequest
-from .types.conversation import DeleteCallMatcherRequest
 from .types.conversation import GetConversationRequest
-from .types.conversation import ListCallMatchersRequest
-from .types.conversation import ListCallMatchersResponse
 from .types.conversation import ListConversationsRequest
 from .types.conversation import ListConversationsResponse
 from .types.conversation import ListMessagesRequest
@@ -146,21 +139,17 @@ from .types.participant import AnalyzeContentRequest
 from .types.participant import AnalyzeContentResponse
 from .types.participant import AnnotatedMessagePart
 from .types.participant import ArticleAnswer
-from .types.participant import AudioInput
 from .types.participant import AutomatedAgentReply
 from .types.participant import CreateParticipantRequest
 from .types.participant import DtmfParameters
 from .types.participant import FaqAnswer
 from .types.participant import GetParticipantRequest
-from .types.participant import InputTextConfig
 from .types.participant import ListParticipantsRequest
 from .types.participant import ListParticipantsResponse
 from .types.participant import Message
 from .types.participant import MessageAnnotation
 from .types.participant import OutputAudio
 from .types.participant import Participant
-from .types.participant import StreamingAnalyzeContentRequest
-from .types.participant import StreamingAnalyzeContentResponse
 from .types.participant import SuggestArticlesRequest
 from .types.participant import SuggestArticlesResponse
 from .types.participant import SuggestFaqAnswersRequest
@@ -207,7 +196,6 @@ __all__ = (
     "AnswerRecordsClient",
     "ArticleAnswer",
     "AudioEncoding",
-    "AudioInput",
     "AutomatedAgentConfig",
     "AutomatedAgentReply",
     "BatchCreateEntitiesRequest",
@@ -219,7 +207,6 @@ __all__ = (
     "BatchUpdateEntityTypesResponse",
     "BatchUpdateIntentsRequest",
     "BatchUpdateIntentsResponse",
-    "CallMatcher",
     "CompleteConversationRequest",
     "Context",
     "ContextsClient",
@@ -228,7 +215,7 @@ __all__ = (
     "ConversationPhoneNumber",
     "ConversationProfile",
     "ConversationProfilesClient",
-    "CreateCallMatcherRequest",
+    "ConversationsClient",
     "CreateContextRequest",
     "CreateConversationProfileRequest",
     "CreateConversationRequest",
@@ -240,7 +227,6 @@ __all__ = (
     "CreateSessionEntityTypeRequest",
     "DeleteAgentRequest",
     "DeleteAllContextsRequest",
-    "DeleteCallMatcherRequest",
     "DeleteContextRequest",
     "DeleteConversationProfileRequest",
     "DeleteDocumentRequest",
@@ -278,18 +264,14 @@ __all__ = (
     "HumanAgentHandoffConfig",
     "ImportAgentRequest",
     "InputAudioConfig",
-    "InputTextConfig",
     "Intent",
     "IntentBatch",
     "IntentView",
     "IntentsClient",
     "KnowledgeBase",
-    "KnowledgeBasesClient",
     "KnowledgeOperationMetadata",
     "ListAnswerRecordsRequest",
     "ListAnswerRecordsResponse",
-    "ListCallMatchersRequest",
-    "ListCallMatchersResponse",
     "ListContextsRequest",
     "ListContextsResponse",
     "ListConversationProfilesRequest",
@@ -341,8 +323,6 @@ __all__ = (
     "SpeechToTextConfig",
     "SpeechWordInfo",
     "SsmlVoiceGender",
-    "StreamingAnalyzeContentRequest",
-    "StreamingAnalyzeContentResponse",
     "StreamingDetectIntentRequest",
     "StreamingDetectIntentResponse",
     "StreamingRecognitionResult",
@@ -353,8 +333,6 @@ __all__ = (
     "SuggestionFeature",
     "SuggestionResult",
     "SynthesizeSpeechConfig",
-    "TelephonyDtmf",
-    "TelephonyDtmfEvents",
     "TextInput",
     "TrainAgentRequest",
     "UpdateAnswerRecordRequest",
@@ -371,5 +349,5 @@ __all__ = (
     "VoiceSelectionParams",
     "WebhookRequest",
     "WebhookResponse",
-    "ConversationsClient",
+    "KnowledgeBasesClient",
 )

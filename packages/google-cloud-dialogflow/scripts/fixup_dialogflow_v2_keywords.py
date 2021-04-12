@@ -41,7 +41,7 @@ def partition(
 class dialogflowCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'analyze_content': ('participant', 'text_input', 'audio_input', 'event_input', 'reply_audio_config', 'query_params', 'request_id', ),
+    'analyze_content': ('participant', 'text_input', 'event_input', 'reply_audio_config', 'query_params', 'request_id', ),
     'batch_create_entities': ('parent', 'entities', 'language_code', ),
     'batch_delete_entities': ('parent', 'entity_values', 'language_code', ),
     'batch_delete_entity_types': ('parent', 'entity_type_names', ),
@@ -50,7 +50,6 @@ class dialogflowCallTransformer(cst.CSTTransformer):
     'batch_update_entity_types': ('parent', 'entity_type_batch_uri', 'entity_type_batch_inline', 'language_code', 'update_mask', ),
     'batch_update_intents': ('parent', 'intent_batch_uri', 'intent_batch_inline', 'language_code', 'update_mask', 'intent_view', ),
     'complete_conversation': ('name', ),
-    'create_call_matcher': ('parent', 'call_matcher', ),
     'create_context': ('parent', 'context', ),
     'create_conversation': ('parent', 'conversation', 'conversation_id', ),
     'create_conversation_profile': ('parent', 'conversation_profile', ),
@@ -62,7 +61,6 @@ class dialogflowCallTransformer(cst.CSTTransformer):
     'create_session_entity_type': ('parent', 'session_entity_type', ),
     'delete_agent': ('parent', ),
     'delete_all_contexts': ('parent', ),
-    'delete_call_matcher': ('name', ),
     'delete_context': ('name', ),
     'delete_conversation_profile': ('name', ),
     'delete_document': ('name', ),
@@ -85,7 +83,6 @@ class dialogflowCallTransformer(cst.CSTTransformer):
     'get_validation_result': ('parent', 'language_code', ),
     'import_agent': ('parent', 'agent_uri', 'agent_content', ),
     'list_answer_records': ('parent', 'filter', 'page_size', 'page_token', ),
-    'list_call_matchers': ('parent', 'page_size', 'page_token', ),
     'list_contexts': ('parent', 'page_size', 'page_token', ),
     'list_conversation_profiles': ('parent', 'page_size', 'page_token', ),
     'list_conversations': ('parent', 'page_size', 'page_token', 'filter', ),
@@ -101,7 +98,6 @@ class dialogflowCallTransformer(cst.CSTTransformer):
     'restore_agent': ('parent', 'agent_uri', 'agent_content', ),
     'search_agents': ('parent', 'page_size', 'page_token', ),
     'set_agent': ('agent', 'update_mask', ),
-    'streaming_analyze_content': ('participant', 'audio_config', 'text_config', 'reply_audio_config', 'input_audio', 'input_text', 'input_dtmf', 'query_params', ),
     'streaming_detect_intent': ('session', 'query_input', 'query_params', 'single_utterance', 'output_audio_config', 'output_audio_config_mask', 'input_audio', ),
     'suggest_articles': ('parent', 'latest_message', 'context_size', ),
     'suggest_faq_answers': ('parent', 'latest_message', 'context_size', ),

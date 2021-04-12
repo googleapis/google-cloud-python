@@ -1603,852 +1603,6 @@ async def test_complete_conversation_flattened_error_async():
         )
 
 
-def test_create_call_matcher(
-    transport: str = "grpc", request_type=conversation.CreateCallMatcherRequest
-):
-    client = ConversationsClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_call_matcher), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = conversation.CallMatcher(
-            name="name_value",
-            to_header="to_header_value",
-            from_header="from_header_value",
-            call_id_header="call_id_header_value",
-        )
-
-        response = client.create_call_matcher(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == conversation.CreateCallMatcherRequest()
-
-    # Establish that the response is the type that we expect.
-
-    assert isinstance(response, conversation.CallMatcher)
-
-    assert response.name == "name_value"
-
-    assert response.to_header == "to_header_value"
-
-    assert response.from_header == "from_header_value"
-
-    assert response.call_id_header == "call_id_header_value"
-
-
-def test_create_call_matcher_from_dict():
-    test_create_call_matcher(request_type=dict)
-
-
-def test_create_call_matcher_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_call_matcher), "__call__"
-    ) as call:
-        client.create_call_matcher()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == conversation.CreateCallMatcherRequest()
-
-
-@pytest.mark.asyncio
-async def test_create_call_matcher_async(
-    transport: str = "grpc_asyncio", request_type=conversation.CreateCallMatcherRequest
-):
-    client = ConversationsAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_call_matcher), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            conversation.CallMatcher(
-                name="name_value",
-                to_header="to_header_value",
-                from_header="from_header_value",
-                call_id_header="call_id_header_value",
-            )
-        )
-
-        response = await client.create_call_matcher(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == conversation.CreateCallMatcherRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, conversation.CallMatcher)
-
-    assert response.name == "name_value"
-
-    assert response.to_header == "to_header_value"
-
-    assert response.from_header == "from_header_value"
-
-    assert response.call_id_header == "call_id_header_value"
-
-
-@pytest.mark.asyncio
-async def test_create_call_matcher_async_from_dict():
-    await test_create_call_matcher_async(request_type=dict)
-
-
-def test_create_call_matcher_field_headers():
-    client = ConversationsClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = conversation.CreateCallMatcherRequest()
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_call_matcher), "__call__"
-    ) as call:
-        call.return_value = conversation.CallMatcher()
-
-        client.create_call_matcher(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_create_call_matcher_field_headers_async():
-    client = ConversationsAsyncClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = conversation.CreateCallMatcherRequest()
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_call_matcher), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            conversation.CallMatcher()
-        )
-
-        await client.create_call_matcher(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-def test_create_call_matcher_flattened():
-    client = ConversationsClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_call_matcher), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = conversation.CallMatcher()
-
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.create_call_matcher(
-            parent="parent_value",
-            call_matcher=conversation.CallMatcher(name="name_value"),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0].parent == "parent_value"
-
-        assert args[0].call_matcher == conversation.CallMatcher(name="name_value")
-
-
-def test_create_call_matcher_flattened_error():
-    client = ConversationsClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.create_call_matcher(
-            conversation.CreateCallMatcherRequest(),
-            parent="parent_value",
-            call_matcher=conversation.CallMatcher(name="name_value"),
-        )
-
-
-@pytest.mark.asyncio
-async def test_create_call_matcher_flattened_async():
-    client = ConversationsAsyncClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_call_matcher), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = conversation.CallMatcher()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            conversation.CallMatcher()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.create_call_matcher(
-            parent="parent_value",
-            call_matcher=conversation.CallMatcher(name="name_value"),
-        )
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0].parent == "parent_value"
-
-        assert args[0].call_matcher == conversation.CallMatcher(name="name_value")
-
-
-@pytest.mark.asyncio
-async def test_create_call_matcher_flattened_error_async():
-    client = ConversationsAsyncClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.create_call_matcher(
-            conversation.CreateCallMatcherRequest(),
-            parent="parent_value",
-            call_matcher=conversation.CallMatcher(name="name_value"),
-        )
-
-
-def test_list_call_matchers(
-    transport: str = "grpc", request_type=conversation.ListCallMatchersRequest
-):
-    client = ConversationsClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_call_matchers), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = conversation.ListCallMatchersResponse(
-            next_page_token="next_page_token_value",
-        )
-
-        response = client.list_call_matchers(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == conversation.ListCallMatchersRequest()
-
-    # Establish that the response is the type that we expect.
-
-    assert isinstance(response, pagers.ListCallMatchersPager)
-
-    assert response.next_page_token == "next_page_token_value"
-
-
-def test_list_call_matchers_from_dict():
-    test_list_call_matchers(request_type=dict)
-
-
-def test_list_call_matchers_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_call_matchers), "__call__"
-    ) as call:
-        client.list_call_matchers()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == conversation.ListCallMatchersRequest()
-
-
-@pytest.mark.asyncio
-async def test_list_call_matchers_async(
-    transport: str = "grpc_asyncio", request_type=conversation.ListCallMatchersRequest
-):
-    client = ConversationsAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_call_matchers), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            conversation.ListCallMatchersResponse(
-                next_page_token="next_page_token_value",
-            )
-        )
-
-        response = await client.list_call_matchers(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == conversation.ListCallMatchersRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListCallMatchersAsyncPager)
-
-    assert response.next_page_token == "next_page_token_value"
-
-
-@pytest.mark.asyncio
-async def test_list_call_matchers_async_from_dict():
-    await test_list_call_matchers_async(request_type=dict)
-
-
-def test_list_call_matchers_field_headers():
-    client = ConversationsClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = conversation.ListCallMatchersRequest()
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_call_matchers), "__call__"
-    ) as call:
-        call.return_value = conversation.ListCallMatchersResponse()
-
-        client.list_call_matchers(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_list_call_matchers_field_headers_async():
-    client = ConversationsAsyncClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = conversation.ListCallMatchersRequest()
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_call_matchers), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            conversation.ListCallMatchersResponse()
-        )
-
-        await client.list_call_matchers(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-def test_list_call_matchers_flattened():
-    client = ConversationsClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_call_matchers), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = conversation.ListCallMatchersResponse()
-
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.list_call_matchers(parent="parent_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0].parent == "parent_value"
-
-
-def test_list_call_matchers_flattened_error():
-    client = ConversationsClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.list_call_matchers(
-            conversation.ListCallMatchersRequest(), parent="parent_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_list_call_matchers_flattened_async():
-    client = ConversationsAsyncClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_call_matchers), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = conversation.ListCallMatchersResponse()
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            conversation.ListCallMatchersResponse()
-        )
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.list_call_matchers(parent="parent_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0].parent == "parent_value"
-
-
-@pytest.mark.asyncio
-async def test_list_call_matchers_flattened_error_async():
-    client = ConversationsAsyncClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.list_call_matchers(
-            conversation.ListCallMatchersRequest(), parent="parent_value",
-        )
-
-
-def test_list_call_matchers_pager():
-    client = ConversationsClient(credentials=credentials.AnonymousCredentials,)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_call_matchers), "__call__"
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            conversation.ListCallMatchersResponse(
-                call_matchers=[
-                    conversation.CallMatcher(),
-                    conversation.CallMatcher(),
-                    conversation.CallMatcher(),
-                ],
-                next_page_token="abc",
-            ),
-            conversation.ListCallMatchersResponse(
-                call_matchers=[], next_page_token="def",
-            ),
-            conversation.ListCallMatchersResponse(
-                call_matchers=[conversation.CallMatcher(),], next_page_token="ghi",
-            ),
-            conversation.ListCallMatchersResponse(
-                call_matchers=[conversation.CallMatcher(), conversation.CallMatcher(),],
-            ),
-            RuntimeError,
-        )
-
-        metadata = ()
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_call_matchers(request={})
-
-        assert pager._metadata == metadata
-
-        results = [i for i in pager]
-        assert len(results) == 6
-        assert all(isinstance(i, conversation.CallMatcher) for i in results)
-
-
-def test_list_call_matchers_pages():
-    client = ConversationsClient(credentials=credentials.AnonymousCredentials,)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_call_matchers), "__call__"
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            conversation.ListCallMatchersResponse(
-                call_matchers=[
-                    conversation.CallMatcher(),
-                    conversation.CallMatcher(),
-                    conversation.CallMatcher(),
-                ],
-                next_page_token="abc",
-            ),
-            conversation.ListCallMatchersResponse(
-                call_matchers=[], next_page_token="def",
-            ),
-            conversation.ListCallMatchersResponse(
-                call_matchers=[conversation.CallMatcher(),], next_page_token="ghi",
-            ),
-            conversation.ListCallMatchersResponse(
-                call_matchers=[conversation.CallMatcher(), conversation.CallMatcher(),],
-            ),
-            RuntimeError,
-        )
-        pages = list(client.list_call_matchers(request={}).pages)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-@pytest.mark.asyncio
-async def test_list_call_matchers_async_pager():
-    client = ConversationsAsyncClient(credentials=credentials.AnonymousCredentials,)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_call_matchers),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            conversation.ListCallMatchersResponse(
-                call_matchers=[
-                    conversation.CallMatcher(),
-                    conversation.CallMatcher(),
-                    conversation.CallMatcher(),
-                ],
-                next_page_token="abc",
-            ),
-            conversation.ListCallMatchersResponse(
-                call_matchers=[], next_page_token="def",
-            ),
-            conversation.ListCallMatchersResponse(
-                call_matchers=[conversation.CallMatcher(),], next_page_token="ghi",
-            ),
-            conversation.ListCallMatchersResponse(
-                call_matchers=[conversation.CallMatcher(), conversation.CallMatcher(),],
-            ),
-            RuntimeError,
-        )
-        async_pager = await client.list_call_matchers(request={},)
-        assert async_pager.next_page_token == "abc"
-        responses = []
-        async for response in async_pager:
-            responses.append(response)
-
-        assert len(responses) == 6
-        assert all(isinstance(i, conversation.CallMatcher) for i in responses)
-
-
-@pytest.mark.asyncio
-async def test_list_call_matchers_async_pages():
-    client = ConversationsAsyncClient(credentials=credentials.AnonymousCredentials,)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_call_matchers),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
-        # Set the response to a series of pages.
-        call.side_effect = (
-            conversation.ListCallMatchersResponse(
-                call_matchers=[
-                    conversation.CallMatcher(),
-                    conversation.CallMatcher(),
-                    conversation.CallMatcher(),
-                ],
-                next_page_token="abc",
-            ),
-            conversation.ListCallMatchersResponse(
-                call_matchers=[], next_page_token="def",
-            ),
-            conversation.ListCallMatchersResponse(
-                call_matchers=[conversation.CallMatcher(),], next_page_token="ghi",
-            ),
-            conversation.ListCallMatchersResponse(
-                call_matchers=[conversation.CallMatcher(), conversation.CallMatcher(),],
-            ),
-            RuntimeError,
-        )
-        pages = []
-        async for page_ in (await client.list_call_matchers(request={})).pages:
-            pages.append(page_)
-        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
-            assert page_.raw_page.next_page_token == token
-
-
-def test_delete_call_matcher(
-    transport: str = "grpc", request_type=conversation.DeleteCallMatcherRequest
-):
-    client = ConversationsClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_call_matcher), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-
-        response = client.delete_call_matcher(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == conversation.DeleteCallMatcherRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-def test_delete_call_matcher_from_dict():
-    test_delete_call_matcher(request_type=dict)
-
-
-def test_delete_call_matcher_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = ConversationsClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_call_matcher), "__call__"
-    ) as call:
-        client.delete_call_matcher()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == conversation.DeleteCallMatcherRequest()
-
-
-@pytest.mark.asyncio
-async def test_delete_call_matcher_async(
-    transport: str = "grpc_asyncio", request_type=conversation.DeleteCallMatcherRequest
-):
-    client = ConversationsAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_call_matcher), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-
-        response = await client.delete_call_matcher(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == conversation.DeleteCallMatcherRequest()
-
-    # Establish that the response is the type that we expect.
-    assert response is None
-
-
-@pytest.mark.asyncio
-async def test_delete_call_matcher_async_from_dict():
-    await test_delete_call_matcher_async(request_type=dict)
-
-
-def test_delete_call_matcher_field_headers():
-    client = ConversationsClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = conversation.DeleteCallMatcherRequest()
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_call_matcher), "__call__"
-    ) as call:
-        call.return_value = None
-
-        client.delete_call_matcher(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_delete_call_matcher_field_headers_async():
-    client = ConversationsAsyncClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = conversation.DeleteCallMatcherRequest()
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_call_matcher), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-
-        await client.delete_call_matcher(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-def test_delete_call_matcher_flattened():
-    client = ConversationsClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_call_matcher), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        client.delete_call_matcher(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0].name == "name_value"
-
-
-def test_delete_call_matcher_flattened_error():
-    client = ConversationsClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        client.delete_call_matcher(
-            conversation.DeleteCallMatcherRequest(), name="name_value",
-        )
-
-
-@pytest.mark.asyncio
-async def test_delete_call_matcher_flattened_async():
-    client = ConversationsAsyncClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_call_matcher), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = None
-
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        # Call the method with a truthy value for each flattened field,
-        # using the keyword arguments to the method.
-        response = await client.delete_call_matcher(name="name_value",)
-
-        # Establish that the underlying call was made with the expected
-        # request object values.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0].name == "name_value"
-
-
-@pytest.mark.asyncio
-async def test_delete_call_matcher_flattened_error_async():
-    client = ConversationsAsyncClient(credentials=credentials.AnonymousCredentials(),)
-
-    # Attempting to call a method with both a request object and flattened
-    # fields is an error.
-    with pytest.raises(ValueError):
-        await client.delete_call_matcher(
-            conversation.DeleteCallMatcherRequest(), name="name_value",
-        )
-
-
 def test_batch_create_messages(
     transport: str = "grpc", request_type=conversation.BatchCreateMessagesRequest
 ):
@@ -3115,9 +2269,6 @@ def test_conversations_base_transport():
         "list_conversations",
         "get_conversation",
         "complete_conversation",
-        "create_call_matcher",
-        "list_call_matchers",
-        "delete_call_matcher",
         "batch_create_messages",
         "list_messages",
     )
@@ -3386,34 +2537,9 @@ def test_conversations_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_call_matcher_path():
+def test_conversation_path():
     project = "squid"
     conversation = "clam"
-    call_matcher = "whelk"
-
-    expected = "projects/{project}/conversations/{conversation}/callMatchers/{call_matcher}".format(
-        project=project, conversation=conversation, call_matcher=call_matcher,
-    )
-    actual = ConversationsClient.call_matcher_path(project, conversation, call_matcher)
-    assert expected == actual
-
-
-def test_parse_call_matcher_path():
-    expected = {
-        "project": "octopus",
-        "conversation": "oyster",
-        "call_matcher": "nudibranch",
-    }
-    path = ConversationsClient.call_matcher_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = ConversationsClient.parse_call_matcher_path(path)
-    assert expected == actual
-
-
-def test_conversation_path():
-    project = "cuttlefish"
-    conversation = "mussel"
 
     expected = "projects/{project}/conversations/{conversation}".format(
         project=project, conversation=conversation,
@@ -3424,8 +2550,8 @@ def test_conversation_path():
 
 def test_parse_conversation_path():
     expected = {
-        "project": "winkle",
-        "conversation": "nautilus",
+        "project": "whelk",
+        "conversation": "octopus",
     }
     path = ConversationsClient.conversation_path(**expected)
 
@@ -3435,8 +2561,8 @@ def test_parse_conversation_path():
 
 
 def test_conversation_profile_path():
-    project = "scallop"
-    conversation_profile = "abalone"
+    project = "oyster"
+    conversation_profile = "nudibranch"
 
     expected = "projects/{project}/conversationProfiles/{conversation_profile}".format(
         project=project, conversation_profile=conversation_profile,
@@ -3449,8 +2575,8 @@ def test_conversation_profile_path():
 
 def test_parse_conversation_profile_path():
     expected = {
-        "project": "squid",
-        "conversation_profile": "clam",
+        "project": "cuttlefish",
+        "conversation_profile": "mussel",
     }
     path = ConversationsClient.conversation_profile_path(**expected)
 
@@ -3460,9 +2586,9 @@ def test_parse_conversation_profile_path():
 
 
 def test_message_path():
-    project = "whelk"
-    conversation = "octopus"
-    message = "oyster"
+    project = "winkle"
+    conversation = "nautilus"
+    message = "scallop"
 
     expected = "projects/{project}/conversations/{conversation}/messages/{message}".format(
         project=project, conversation=conversation, message=message,
@@ -3473,9 +2599,9 @@ def test_message_path():
 
 def test_parse_message_path():
     expected = {
-        "project": "nudibranch",
-        "conversation": "cuttlefish",
-        "message": "mussel",
+        "project": "abalone",
+        "conversation": "squid",
+        "message": "clam",
     }
     path = ConversationsClient.message_path(**expected)
 
@@ -3485,7 +2611,7 @@ def test_parse_message_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "whelk"
 
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
@@ -3496,7 +2622,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "octopus",
     }
     path = ConversationsClient.common_billing_account_path(**expected)
 
@@ -3506,7 +2632,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "oyster"
 
     expected = "folders/{folder}".format(folder=folder,)
     actual = ConversationsClient.common_folder_path(folder)
@@ -3515,7 +2641,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "nudibranch",
     }
     path = ConversationsClient.common_folder_path(**expected)
 
@@ -3525,7 +2651,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "cuttlefish"
 
     expected = "organizations/{organization}".format(organization=organization,)
     actual = ConversationsClient.common_organization_path(organization)
@@ -3534,7 +2660,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "mussel",
     }
     path = ConversationsClient.common_organization_path(**expected)
 
@@ -3544,7 +2670,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "winkle"
 
     expected = "projects/{project}".format(project=project,)
     actual = ConversationsClient.common_project_path(project)
@@ -3553,7 +2679,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "nautilus",
     }
     path = ConversationsClient.common_project_path(**expected)
 
@@ -3563,8 +2689,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "scallop"
+    location = "abalone"
 
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
@@ -3575,8 +2701,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "squid",
+        "location": "clam",
     }
     path = ConversationsClient.common_location_path(**expected)
 

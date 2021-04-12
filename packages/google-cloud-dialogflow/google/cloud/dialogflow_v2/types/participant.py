@@ -18,7 +18,7 @@
 import proto  # type: ignore
 
 
-from google.cloud.dialogflow_v2.types import audio_config as gcd_audio_config
+from google.cloud.dialogflow_v2.types import audio_config
 from google.cloud.dialogflow_v2.types import session
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import struct_pb2 as struct  # type: ignore
@@ -39,19 +39,15 @@ __protobuf__ = proto.module(
         "AnalyzeContentRequest",
         "DtmfParameters",
         "AnalyzeContentResponse",
-        "StreamingAnalyzeContentRequest",
-        "StreamingAnalyzeContentResponse",
         "SuggestArticlesRequest",
         "SuggestArticlesResponse",
         "SuggestFaqAnswersRequest",
         "SuggestFaqAnswersResponse",
-        "AudioInput",
         "OutputAudio",
         "AutomatedAgentReply",
         "ArticleAnswer",
         "FaqAnswer",
         "SuggestionResult",
-        "InputTextConfig",
         "AnnotatedMessagePart",
         "MessageAnnotation",
     },
@@ -242,9 +238,6 @@ class AnalyzeContentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/participants/<Participant ID>``.
         text_input (google.cloud.dialogflow_v2.types.TextInput):
             The natural language text to be processed.
-        audio_input (google.cloud.dialogflow_v2.types.AudioInput):
-            The natural language speech audio to be
-            processed.
         event_input (google.cloud.dialogflow_v2.types.EventInput):
             An input event to send to Dialogflow.
         reply_audio_config (google.cloud.dialogflow_v2.types.OutputAudioConfig):
@@ -269,16 +262,12 @@ class AnalyzeContentRequest(proto.Message):
         proto.MESSAGE, number=6, oneof="input", message=session.TextInput,
     )
 
-    audio_input = proto.Field(
-        proto.MESSAGE, number=7, oneof="input", message="AudioInput",
-    )
-
     event_input = proto.Field(
         proto.MESSAGE, number=8, oneof="input", message=session.EventInput,
     )
 
     reply_audio_config = proto.Field(
-        proto.MESSAGE, number=5, message=gcd_audio_config.OutputAudioConfig,
+        proto.MESSAGE, number=5, message=audio_config.OutputAudioConfig,
     )
 
     query_params = proto.Field(
@@ -367,203 +356,6 @@ class AnalyzeContentResponse(proto.Message):
     )
 
     dtmf_parameters = proto.Field(proto.MESSAGE, number=9, message="DtmfParameters",)
-
-
-class StreamingAnalyzeContentRequest(proto.Message):
-    r"""The top-level message sent by the client to the
-    [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2.Participants.StreamingAnalyzeContent]
-    method.
-
-    Multiple request messages should be sent in order:
-
-    1. The first message must contain
-       [participant][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.participant],
-       [config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config]
-       and optionally
-       [query_params][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.query_params].
-       If you want to receive an audio response, it should also contain
-       [reply_audio_config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.reply_audio_config].
-       The message must not contain
-       [input][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.input].
-
-    2. If
-       [config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config]
-       in the first message was set to
-       [audio_config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.audio_config],
-       all subsequent messages must contain
-       [input_audio][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.input_audio]
-       to continue with Speech recognition. However, note that:
-
-       -  Dialogflow will bill you for the audio so far.
-       -  Dialogflow discards all Speech recognition results in favor of
-          the text input.
-
-    3. If
-       [StreamingAnalyzeContentRequest.config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config]
-       in the first message was set to
-       [StreamingAnalyzeContentRequest.text_config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.text_config],
-       then the second message must contain only
-       [input_text][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.input_text].
-       Moreover, you must not send more than two messages.
-
-    After you sent all input, you must half-close or abort the request
-    stream.
-
-    Attributes:
-        participant (str):
-            Required. The name of the participant this text comes from.
-            Format:
-            ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/participants/<Participant ID>``.
-        audio_config (google.cloud.dialogflow_v2.types.InputAudioConfig):
-            Instructs the speech recognizer how to
-            process the speech audio.
-        text_config (google.cloud.dialogflow_v2.types.InputTextConfig):
-            The natural language text to be processed.
-        reply_audio_config (google.cloud.dialogflow_v2.types.OutputAudioConfig):
-            Speech synthesis configuration.
-            The speech synthesis settings for a virtual
-            agent that may be configured for the associated
-            conversation profile are not used when calling
-            StreamingAnalyzeContent. If this configuration
-            is not supplied, speech synthesis is disabled.
-        input_audio (bytes):
-            The input audio content to be recognized. Must be sent if
-            ``audio_config`` is set in the first message. The complete
-            audio over all streaming messages must not exceed 1 minute.
-        input_text (str):
-            The UTF-8 encoded natural language text to be processed.
-            Must be sent if ``text_config`` is set in the first message.
-            Text length must not exceed 256 bytes. The ``input_text``
-            field can be only sent once.
-        input_dtmf (google.cloud.dialogflow_v2.types.TelephonyDtmfEvents):
-            The DTMF digits used to invoke intent and
-            fill in parameter value.
-            This input is ignored if the previous response
-            indicated that DTMF input is not accepted.
-        query_params (google.cloud.dialogflow_v2.types.QueryParameters):
-            Parameters for a Dialogflow virtual-agent
-            query.
-    """
-
-    participant = proto.Field(proto.STRING, number=1)
-
-    audio_config = proto.Field(
-        proto.MESSAGE,
-        number=2,
-        oneof="config",
-        message=gcd_audio_config.InputAudioConfig,
-    )
-
-    text_config = proto.Field(
-        proto.MESSAGE, number=3, oneof="config", message="InputTextConfig",
-    )
-
-    reply_audio_config = proto.Field(
-        proto.MESSAGE, number=4, message=gcd_audio_config.OutputAudioConfig,
-    )
-
-    input_audio = proto.Field(proto.BYTES, number=5, oneof="input")
-
-    input_text = proto.Field(proto.STRING, number=6, oneof="input")
-
-    input_dtmf = proto.Field(
-        proto.MESSAGE,
-        number=9,
-        oneof="input",
-        message=gcd_audio_config.TelephonyDtmfEvents,
-    )
-
-    query_params = proto.Field(
-        proto.MESSAGE, number=7, message=session.QueryParameters,
-    )
-
-
-class StreamingAnalyzeContentResponse(proto.Message):
-    r"""The top-level message returned from the ``StreamingAnalyzeContent``
-    method.
-
-    Multiple response messages can be returned in order:
-
-    1. If the input was set to streaming audio, the first one or more
-       messages contain ``recognition_result``. Each
-       ``recognition_result`` represents a more complete transcript of
-       what the user said. The last ``recognition_result`` has
-       ``is_final`` set to ``true``.
-
-    2. The next message contains ``reply_text`` and optionally
-       ``reply_audio`` returned by an agent. This message may also
-       contain ``automated_agent_reply``.
-
-    Attributes:
-        recognition_result (google.cloud.dialogflow_v2.types.StreamingRecognitionResult):
-            The result of speech recognition.
-        reply_text (str):
-            The output text content.
-            This field is set if an automated agent
-            responded with a text for the user.
-        reply_audio (google.cloud.dialogflow_v2.types.OutputAudio):
-            The audio data bytes encoded as specified in the request.
-            This field is set if:
-
-            -  The ``reply_audio_config`` field is specified in the
-               request.
-            -  The automated agent, which this output comes from,
-               responded with audio. In such case, the
-               ``reply_audio.config`` field contains settings used to
-               synthesize the speech.
-
-            In some scenarios, multiple output audio fields may be
-            present in the response structure. In these cases, only the
-            top-most-level audio output has content.
-        automated_agent_reply (google.cloud.dialogflow_v2.types.AutomatedAgentReply):
-            Only set if a Dialogflow automated agent has responded. Note
-            that:
-            [AutomatedAgentReply.detect_intent_response.output_audio][]
-            and
-            [AutomatedAgentReply.detect_intent_response.output_audio_config][]
-            are always empty, use
-            [reply_audio][google.cloud.dialogflow.v2.StreamingAnalyzeContentResponse.reply_audio]
-            instead.
-        message (google.cloud.dialogflow_v2.types.Message):
-            Message analyzed by CCAI.
-        human_agent_suggestion_results (Sequence[google.cloud.dialogflow_v2.types.SuggestionResult]):
-            The suggestions for most recent human agent. The order is
-            the same as
-            [HumanAgentAssistantConfig.SuggestionConfig.feature_configs][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.feature_configs]
-            of
-            [HumanAgentAssistantConfig.human_agent_suggestion_config][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.human_agent_suggestion_config].
-        end_user_suggestion_results (Sequence[google.cloud.dialogflow_v2.types.SuggestionResult]):
-            The suggestions for end user. The order is the same as
-            [HumanAgentAssistantConfig.SuggestionConfig.feature_configs][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.feature_configs]
-            of
-            [HumanAgentAssistantConfig.end_user_suggestion_config][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.end_user_suggestion_config].
-        dtmf_parameters (google.cloud.dialogflow_v2.types.DtmfParameters):
-            Indicates the parameters of DTMF.
-    """
-
-    recognition_result = proto.Field(
-        proto.MESSAGE, number=1, message=session.StreamingRecognitionResult,
-    )
-
-    reply_text = proto.Field(proto.STRING, number=2)
-
-    reply_audio = proto.Field(proto.MESSAGE, number=3, message="OutputAudio",)
-
-    automated_agent_reply = proto.Field(
-        proto.MESSAGE, number=4, message="AutomatedAgentReply",
-    )
-
-    message = proto.Field(proto.MESSAGE, number=6, message="Message",)
-
-    human_agent_suggestion_results = proto.RepeatedField(
-        proto.MESSAGE, number=7, message="SuggestionResult",
-    )
-
-    end_user_suggestion_results = proto.RepeatedField(
-        proto.MESSAGE, number=8, message="SuggestionResult",
-    )
-
-    dtmf_parameters = proto.Field(proto.MESSAGE, number=10, message="DtmfParameters",)
 
 
 class SuggestArticlesRequest(proto.Message):
@@ -686,28 +478,6 @@ class SuggestFaqAnswersResponse(proto.Message):
     context_size = proto.Field(proto.INT32, number=3)
 
 
-class AudioInput(proto.Message):
-    r"""Represents the natural language speech audio to be processed.
-
-    Attributes:
-        config (google.cloud.dialogflow_v2.types.InputAudioConfig):
-            Required. Instructs the speech recognizer how
-            to process the speech audio.
-        audio (bytes):
-            Required. The natural language speech audio
-            to be processed. A single request can contain up
-            to 1 minute of speech audio data. The
-            transcribed text cannot contain more than 256
-            bytes.
-    """
-
-    config = proto.Field(
-        proto.MESSAGE, number=1, message=gcd_audio_config.InputAudioConfig,
-    )
-
-    audio = proto.Field(proto.BYTES, number=2)
-
-
 class OutputAudio(proto.Message):
     r"""Represents the natural language speech audio to be played to
     the end user.
@@ -721,7 +491,7 @@ class OutputAudio(proto.Message):
     """
 
     config = proto.Field(
-        proto.MESSAGE, number=1, message=gcd_audio_config.OutputAudioConfig,
+        proto.MESSAGE, number=1, message=audio_config.OutputAudioConfig,
     )
 
     audio = proto.Field(proto.BYTES, number=2)
@@ -856,20 +626,6 @@ class SuggestionResult(proto.Message):
         oneof="suggestion_response",
         message="SuggestFaqAnswersResponse",
     )
-
-
-class InputTextConfig(proto.Message):
-    r"""Defines the language used in the input text.
-
-    Attributes:
-        language_code (str):
-            Required. The language of this conversational query. See
-            `Language
-            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
-            for a list of the currently supported language codes.
-    """
-
-    language_code = proto.Field(proto.STRING, number=1)
 
 
 class AnnotatedMessagePart(proto.Message):

@@ -108,7 +108,9 @@ class ParticipantsGrpcTransport(ParticipantsTransport):
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
+        self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
+        self._stubs: Dict[str, Callable] = {}
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -116,88 +118,59 @@ class ParticipantsGrpcTransport(ParticipantsTransport):
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
         if channel:
-            # Sanity check: Ensure that channel and credentials are not both
-            # provided.
+            # Ignore credentials if a channel was passed.
             credentials = False
-
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-        elif api_mtls_endpoint:
-            host = (
-                api_mtls_endpoint
-                if ":" in api_mtls_endpoint
-                else api_mtls_endpoint + ":443"
-            )
 
-            if credentials is None:
-                credentials, _ = auth.default(
-                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
-                )
-
-            # Create SSL credentials with client_cert_source or application
-            # default SSL credentials.
-            if client_cert_source:
-                cert, key = client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
-            else:
-                ssl_credentials = SslCredentials().ssl_credentials
-
-            # create a new channel. The provided one is ignored.
-            self._grpc_channel = type(self).create_channel(
-                host,
-                credentials=credentials,
-                credentials_file=credentials_file,
-                ssl_credentials=ssl_credentials,
-                scopes=scopes or self.AUTH_SCOPES,
-                quota_project_id=quota_project_id,
-                options=[
-                    ("grpc.max_send_message_length", -1),
-                    ("grpc.max_receive_message_length", -1),
-                ],
-            )
-            self._ssl_channel_credentials = ssl_credentials
         else:
-            host = host if ":" in host else host + ":443"
+            if api_mtls_endpoint:
+                host = api_mtls_endpoint
 
-            if credentials is None:
-                credentials, _ = auth.default(
-                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
-                )
+                # Create SSL credentials with client_cert_source or application
+                # default SSL credentials.
+                if client_cert_source:
+                    cert, key = client_cert_source()
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                        certificate_chain=cert, private_key=key
+                    )
+                else:
+                    self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
-            if client_cert_source_for_mtls and not ssl_channel_credentials:
-                cert, key = client_cert_source_for_mtls()
-                self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
+            else:
+                if client_cert_source_for_mtls and not ssl_channel_credentials:
+                    cert, key = client_cert_source_for_mtls()
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                        certificate_chain=cert, private_key=key
+                    )
 
-            # create a new channel. The provided one is ignored.
-            self._grpc_channel = type(self).create_channel(
-                host,
-                credentials=credentials,
-                credentials_file=credentials_file,
-                ssl_credentials=self._ssl_channel_credentials,
-                scopes=scopes or self.AUTH_SCOPES,
-                quota_project_id=quota_project_id,
-                options=[
-                    ("grpc.max_send_message_length", -1),
-                    ("grpc.max_receive_message_length", -1),
-                ],
-            )
-
-        self._stubs = {}  # type: Dict[str, Callable]
-
-        # Run the base constructor.
+        # The base transport sets the host, credentials and scopes
         super().__init__(
             host=host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes or self.AUTH_SCOPES,
+            scopes=scopes,
             quota_project_id=quota_project_id,
             client_info=client_info,
         )
+
+        if not self._grpc_channel:
+            self._grpc_channel = type(self).create_channel(
+                self._host,
+                credentials=self._credentials,
+                credentials_file=credentials_file,
+                scopes=self._scopes,
+                ssl_credentials=self._ssl_channel_credentials,
+                quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+
+        # Wrap messages. This must be done after self._grpc_channel exists
+        self._prep_wrapped_messages(client_info)
 
     @classmethod
     def create_channel(
@@ -211,7 +184,7 @@ class ParticipantsGrpcTransport(ParticipantsTransport):
     ) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
-            address (Optional[str]): The host for the channel to use.
+            host (Optional[str]): The host for the channel to use.
             credentials (Optional[~.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If
@@ -373,8 +346,8 @@ class ParticipantsGrpcTransport(ParticipantsTransport):
         example) message from a participant into the conversation.
 
         Note: Always use agent versions for production traffic sent to
-        virtual agents. See [Versions and
-        environments(https://cloud.google.com/dialogflow/es/docs/agents-versions).
+        virtual agents. See `Versions and
+        environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
 
         Returns:
             Callable[[~.AnalyzeContentRequest],
@@ -393,50 +366,6 @@ class ParticipantsGrpcTransport(ParticipantsTransport):
                 response_deserializer=gcd_participant.AnalyzeContentResponse.deserialize,
             )
         return self._stubs["analyze_content"]
-
-    @property
-    def streaming_analyze_content(
-        self,
-    ) -> Callable[
-        [participant.StreamingAnalyzeContentRequest],
-        participant.StreamingAnalyzeContentResponse,
-    ]:
-        r"""Return a callable for the streaming analyze content method over gRPC.
-
-        Adds a text (chat, for example), or audio (phone recording, for
-        example) message from a participant into the conversation. Note:
-        This method is only available through the gRPC API (not REST).
-
-        The top-level message sent to the client by the server is
-        ``StreamingAnalyzeContentResponse``. Multiple response messages
-        can be returned in order. The first one or more messages contain
-        the ``recognition_result`` field. Each result represents a more
-        complete transcript of what the user said. The next message
-        contains the ``reply_text`` field and potentially the
-        ``reply_audio`` field. The message can also contain the
-        ``automated_agent_reply`` field.
-
-        Note: Always use agent versions for production traffic sent to
-        virtual agents. See [Versions and
-        environments(https://cloud.google.com/dialogflow/es/docs/agents-versions).
-
-        Returns:
-            Callable[[~.StreamingAnalyzeContentRequest],
-                    ~.StreamingAnalyzeContentResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "streaming_analyze_content" not in self._stubs:
-            self._stubs["streaming_analyze_content"] = self.grpc_channel.stream_stream(
-                "/google.cloud.dialogflow.v2.Participants/StreamingAnalyzeContent",
-                request_serializer=participant.StreamingAnalyzeContentRequest.serialize,
-                response_deserializer=participant.StreamingAnalyzeContentResponse.deserialize,
-            )
-        return self._stubs["streaming_analyze_content"]
 
     @property
     def suggest_articles(

@@ -378,7 +378,7 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
         Returns:
             google.cloud.dialogflow_v2.services.answer_records.pagers.ListAnswerRecordsPager:
                 Response message for
-                [AnswerRecords.ListAnswerRecords][google.cloud.dialogflow.v2.AnswerRecords.ListAnswerRecords].
+                   [AnswerRecords.ListAnswerRecords][google.cloud.dialogflow.v2.AnswerRecords.ListAnswerRecords].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -494,11 +494,12 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
                       the answers,
                       [AnswerRecord.name][google.cloud.dialogflow.v2.AnswerRecord.name]
                       are returned to the customers.
+
                    2. The customer uses the
-                      [AnswerRecord.name][google.cloud.dialogflow.v2.AnswerRecord.name]
-                      to call the [UpdateAnswerRecord][] method to send
-                      feedback about a specific answer that they believe
-                      is wrong.
+                   [AnswerRecord.name][google.cloud.dialogflow.v2.AnswerRecord.name]
+                   to call the [UpdateAnswerRecord][] method to send
+                   feedback about a specific answer that they believe is
+                   wrong.
 
         """
         # Create or coerce a protobuf request object.

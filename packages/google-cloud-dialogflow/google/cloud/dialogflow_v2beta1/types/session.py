@@ -293,6 +293,9 @@ class QueryInput(proto.Message):
             The natural language text to be processed.
         event (google.cloud.dialogflow_v2beta1.types.EventInput):
             The event to be processed.
+        dtmf (google.cloud.dialogflow_v2beta1.types.TelephonyDtmfEvents):
+            The DTMF digits used to invoke intent and
+            fill in parameter value.
     """
 
     audio_config = proto.Field(
@@ -305,6 +308,13 @@ class QueryInput(proto.Message):
     text = proto.Field(proto.MESSAGE, number=2, oneof="input", message="TextInput",)
 
     event = proto.Field(proto.MESSAGE, number=3, oneof="input", message="EventInput",)
+
+    dtmf = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="input",
+        message=gcd_audio_config.TelephonyDtmfEvents,
+    )
 
 
 class QueryResult(proto.Message):

@@ -18,16 +18,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import (
-    Dict,
-    AsyncIterable,
-    Awaitable,
-    AsyncIterator,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
@@ -517,7 +508,6 @@ class ParticipantsAsyncClient:
         *,
         participant: str = None,
         text_input: session.TextInput = None,
-        audio_input: gcd_participant.AudioInput = None,
         event_input: session.EventInput = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -527,8 +517,8 @@ class ParticipantsAsyncClient:
         example) message from a participant into the conversation.
 
         Note: Always use agent versions for production traffic sent to
-        virtual agents. See [Versions and
-        environments(https://cloud.google.com/dialogflow/es/docs/agents-versions).
+        virtual agents. See `Versions and
+        environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
 
         Args:
             request (:class:`google.cloud.dialogflow_v2.types.AnalyzeContentRequest`):
@@ -547,13 +537,6 @@ class ParticipantsAsyncClient:
                 processed.
 
                 This corresponds to the ``text_input`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            audio_input (:class:`google.cloud.dialogflow_v2.types.AudioInput`):
-                The natural language speech audio to
-                be processed.
-
-                This corresponds to the ``audio_input`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             event_input (:class:`google.cloud.dialogflow_v2.types.EventInput`):
@@ -577,7 +560,7 @@ class ParticipantsAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([participant, text_input, audio_input, event_input])
+        has_flattened_params = any([participant, text_input, event_input])
         if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
@@ -593,8 +576,6 @@ class ParticipantsAsyncClient:
             request.participant = participant
         if text_input is not None:
             request.text_input = text_input
-        if audio_input is not None:
-            request.audio_input = audio_input
         if event_input is not None:
             request.event_input = event_input
 
@@ -607,6 +588,7 @@ class ParticipantsAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                deadline=220.0,
             ),
             default_timeout=220.0,
             client_info=DEFAULT_CLIENT_INFO,
@@ -622,109 +604,6 @@ class ParticipantsAsyncClient:
 
         # Send the request.
         response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    def streaming_analyze_content(
-        self,
-        requests: AsyncIterator[participant.StreamingAnalyzeContentRequest] = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> Awaitable[AsyncIterable[participant.StreamingAnalyzeContentResponse]]:
-        r"""Adds a text (chat, for example), or audio (phone recording, for
-        example) message from a participant into the conversation. Note:
-        This method is only available through the gRPC API (not REST).
-
-        The top-level message sent to the client by the server is
-        ``StreamingAnalyzeContentResponse``. Multiple response messages
-        can be returned in order. The first one or more messages contain
-        the ``recognition_result`` field. Each result represents a more
-        complete transcript of what the user said. The next message
-        contains the ``reply_text`` field and potentially the
-        ``reply_audio`` field. The message can also contain the
-        ``automated_agent_reply`` field.
-
-        Note: Always use agent versions for production traffic sent to
-        virtual agents. See [Versions and
-        environments(https://cloud.google.com/dialogflow/es/docs/agents-versions).
-
-        Args:
-            requests (AsyncIterator[`google.cloud.dialogflow_v2.types.StreamingAnalyzeContentRequest`]):
-                The request object AsyncIterator. The top-level message sent by the
-                client to the
-                [Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2.Participants.StreamingAnalyzeContent]
-                method.
-                Multiple request messages should be sent in order:
-
-                1.  The first message must contain
-                [participant][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.participant],
-                [config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config]
-                and optionally
-                [query_params][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.query_params].
-                If you want     to receive an audio response, it should
-                also contain
-                [reply_audio_config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.reply_audio_config].
-                The message must not contain
-                [input][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.input].
-                2.  If
-                [config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config]
-                in the first message     was set to
-                [audio_config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.audio_config],
-                all subsequent messages must contain
-                [input_audio][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.input_audio]
-                to continue     with Speech recognition.
-                    However, note that:
-
-                    * Dialogflow will bill you for the audio so far.
-                    * Dialogflow discards all Speech recognition results
-                in favor of the       text input.
-
-                 3. If
-                [StreamingAnalyzeContentRequest.config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config]
-                in the first message was set    to
-                [StreamingAnalyzeContentRequest.text_config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.text_config],
-                then the second message    must contain only
-                [input_text][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.input_text].
-                Moreover, you must not send more than two messages.
-                 After you sent all input, you must half-close or abort
-                the request stream.
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            AsyncIterable[google.cloud.dialogflow_v2.types.StreamingAnalyzeContentResponse]:
-                The top-level message returned from the
-                StreamingAnalyzeContent method.
-
-                   Multiple response messages can be returned in order:
-
-                   1. If the input was set to streaming audio, the first
-                      one or more messages contain recognition_result.
-                      Each recognition_result represents a more complete
-                      transcript of what the user said. The last
-                      recognition_result has is_final set to true.
-                   2. The next message contains reply_text and
-                      optionally reply_audio returned by an agent. This
-                      message may also contain automated_agent_reply.
-
-        """
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.streaming_analyze_content,
-            default_timeout=220.0,
-            client_info=DEFAULT_CLIENT_INFO,
-        )
-
-        # Send the request.
-        response = rpc(requests, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response

@@ -295,6 +295,7 @@ class SessionsAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                deadline=220.0,
             ),
             default_timeout=220.0,
             client_info=DEFAULT_CLIENT_INFO,
