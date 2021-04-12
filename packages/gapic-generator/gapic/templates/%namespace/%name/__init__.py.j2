@@ -46,7 +46,7 @@ from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.'
 __all__ = (
 {%- filter indent %}
 {% filter sort_lines -%}
-{% for subpackage in api.subpackages.keys() -%}
+{% for subpackage, _ in api.subpackages|dictsort -%}
 '{{ subpackage }}',
 {% endfor -%}
 {% for service in api.services.values()|sort(attribute='name')
