@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+### [2.1.1](https://www.github.com/googleapis/python-dialogflow/compare/v2.1.0...v2.1.1) (2021-04-12)
+
+
+### Bug Fixes
+
+* remove `input_audio` field from AnalyzeContentRequest from v2/v2beta1 ([06381fc](https://www.github.com/googleapis/python-dialogflow/commit/06381fcc965669e1b3dc8bec22aa567dceb6f935))
+* remove proto message CreateCallMatcherRequest, CreateCallMatcherResponse, ListCallMatchersRequest, ListCallMatchersResponse, DeleteCallMatcherRequest, DeleteCallMatcherResponse, CallMatcher, StreamingAnalyzeContentRequest, StreamingAnalyzeContentResponse, AudioInput from v2/v2beta1, TelephonyDtmfEvents, TelephonyDtmf from v2 ([06381fc](https://www.github.com/googleapis/python-dialogflow/commit/06381fcc965669e1b3dc8bec22aa567dceb6f935))
+* remove resource_reference for invisible resources ([06381fc](https://www.github.com/googleapis/python-dialogflow/commit/06381fcc965669e1b3dc8bec22aa567dceb6f935))
+* Remove resource_reference from UpdateAnswerRecord ([06381fc](https://www.github.com/googleapis/python-dialogflow/commit/06381fcc965669e1b3dc8bec22aa567dceb6f935))
+* remove rpc or fields that are unintended to release ([#264](https://www.github.com/googleapis/python-dialogflow/issues/264)) ([06381fc](https://www.github.com/googleapis/python-dialogflow/commit/06381fcc965669e1b3dc8bec22aa567dceb6f935))
+* remove StreamingAnalyzeContent, CreateCallMatcher, ListCallMatchers, DeleteCallMatcher rpc from v2/v2beta1 ([06381fc](https://www.github.com/googleapis/python-dialogflow/commit/06381fcc965669e1b3dc8bec22aa567dceb6f935))
+
+
+### Documentation
+
+* **samples:** add Agent Assist code samples ([#267](https://www.github.com/googleapis/python-dialogflow/issues/267)) ([0a8cfb9](https://www.github.com/googleapis/python-dialogflow/commit/0a8cfb9ac71870df9f69ae518e32a920d08bd170))
+
 ## [2.1.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.0.0...v2.1.0) (2021-03-10)
 
 
