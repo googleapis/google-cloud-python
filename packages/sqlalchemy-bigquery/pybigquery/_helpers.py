@@ -38,13 +38,13 @@ def create_bigquery_client(
             credentials_path
         )
         credentials = credentials.with_scopes(SCOPES)
-        default_project = credentials.project
+        default_project = credentials.project_id
     elif credentials_info:
         credentials = service_account.Credentials.from_service_account_info(
             credentials_info
         )
         credentials = credentials.with_scopes(SCOPES)
-        default_project = credentials.project
+        default_project = credentials.project_id
     else:
         credentials, default_project = google.auth.default(scopes=SCOPES)
 

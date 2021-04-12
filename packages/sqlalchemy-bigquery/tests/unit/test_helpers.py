@@ -17,7 +17,7 @@ class AnonymousCredentialsWithProject(google.auth.credentials.AnonymousCredentia
 
     def __init__(self, project):
         super().__init__()
-        self.project = project
+        self.project_id = project
 
     def with_scopes(self, scopes):
         return self
