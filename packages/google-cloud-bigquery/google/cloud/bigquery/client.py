@@ -449,6 +449,22 @@ class Client(ClientWithProject):
 
         return bigquery_storage.BigQueryReadClient(credentials=self._credentials)
 
+    def _dataset_from_arg(self, dataset):
+        if isinstance(dataset, str):
+            dataset = DatasetReference.from_string(
+                dataset, default_project=self.project
+            )
+
+        if not isinstance(dataset, (Dataset, DatasetReference)):
+            if isinstance(dataset, DatasetListItem):
+                dataset = dataset.reference
+            else:
+                raise TypeError(
+                    "dataset must be a Dataset, DatasetReference, DatasetListItem,"
+                    " or string"
+                )
+        return dataset
+
     def create_dataset(
         self, dataset, exists_ok=False, retry=DEFAULT_RETRY, timeout=None
     ):
@@ -461,6 +477,7 @@ class Client(ClientWithProject):
             dataset (Union[ \
                 google.cloud.bigquery.dataset.Dataset, \
                 google.cloud.bigquery.dataset.DatasetReference, \
+                google.cloud.bigquery.dataset.DatasetListItem, \
                 str, \
             ]):
                 A :class:`~google.cloud.bigquery.dataset.Dataset` to create.
@@ -491,10 +508,7 @@ class Client(ClientWithProject):
             >>> dataset = client.create_dataset(dataset)
 
         """
-        if isinstance(dataset, str):
-            dataset = DatasetReference.from_string(
-                dataset, default_project=self.project
-            )
+        dataset = self._dataset_from_arg(dataset)
         if isinstance(dataset, DatasetReference):
             dataset = Dataset(dataset)
 
@@ -1133,6 +1147,7 @@ class Client(ClientWithProject):
             dataset (Union[ \
                 google.cloud.bigquery.dataset.Dataset, \
                 google.cloud.bigquery.dataset.DatasetReference, \
+                google.cloud.bigquery.dataset.DatasetListItem, \
                 str, \
             ]):
                 A reference to the dataset whose models to list from the
@@ -1160,13 +1175,7 @@ class Client(ClientWithProject):
                 :class:`~google.cloud.bigquery.model.Model` contained
                 within the requested dataset.
         """
-        if isinstance(dataset, str):
-            dataset = DatasetReference.from_string(
-                dataset, default_project=self.project
-            )
-
-        if not isinstance(dataset, (Dataset, DatasetReference)):
-            raise TypeError("dataset must be a Dataset, DatasetReference, or string")
+        dataset = self._dataset_from_arg(dataset)
 
         path = "%s/models" % dataset.path
         span_attributes = {"path": path}
@@ -1210,6 +1219,7 @@ class Client(ClientWithProject):
             dataset (Union[ \
                 google.cloud.bigquery.dataset.Dataset, \
                 google.cloud.bigquery.dataset.DatasetReference, \
+                google.cloud.bigquery.dataset.DatasetListItem, \
                 str, \
             ]):
                 A reference to the dataset whose routines to list from the
@@ -1237,14 +1247,7 @@ class Client(ClientWithProject):
                 :class:`~google.cloud.bigquery.routine.Routine`s contained
                 within the requested dataset, limited by ``max_results``.
         """
-        if isinstance(dataset, str):
-            dataset = DatasetReference.from_string(
-                dataset, default_project=self.project
-            )
-
-        if not isinstance(dataset, (Dataset, DatasetReference)):
-            raise TypeError("dataset must be a Dataset, DatasetReference, or string")
-
+        dataset = self._dataset_from_arg(dataset)
         path = "{}/routines".format(dataset.path)
 
         span_attributes = {"path": path}
@@ -1288,6 +1291,7 @@ class Client(ClientWithProject):
             dataset (Union[ \
                 google.cloud.bigquery.dataset.Dataset, \
                 google.cloud.bigquery.dataset.DatasetReference, \
+                google.cloud.bigquery.dataset.DatasetListItem, \
                 str, \
             ]):
                 A reference to the dataset whose tables to list from the
@@ -1315,14 +1319,7 @@ class Client(ClientWithProject):
                 :class:`~google.cloud.bigquery.table.TableListItem` contained
                 within the requested dataset.
         """
-        if isinstance(dataset, str):
-            dataset = DatasetReference.from_string(
-                dataset, default_project=self.project
-            )
-
-        if not isinstance(dataset, (Dataset, DatasetReference)):
-            raise TypeError("dataset must be a Dataset, DatasetReference, or string")
-
+        dataset = self._dataset_from_arg(dataset)
         path = "%s/tables" % dataset.path
         span_attributes = {"path": path}
 
@@ -1365,6 +1362,7 @@ class Client(ClientWithProject):
             dataset (Union[ \
                 google.cloud.bigquery.dataset.Dataset, \
                 google.cloud.bigquery.dataset.DatasetReference, \
+                google.cloud.bigquery.dataset.DatasetListItem, \
                 str, \
             ]):
                 A reference to the dataset to delete. If a string is passed
@@ -1384,14 +1382,7 @@ class Client(ClientWithProject):
                 Defaults to ``False``. If ``True``, ignore "not found" errors
                 when deleting the dataset.
         """
-        if isinstance(dataset, str):
-            dataset = DatasetReference.from_string(
-                dataset, default_project=self.project
-            )
-
-        if not isinstance(dataset, (Dataset, DatasetReference)):
-            raise TypeError("dataset must be a Dataset or a DatasetReference")
-
+        dataset = self._dataset_from_arg(dataset)
         params = {}
         path = dataset.path
         if delete_contents:
