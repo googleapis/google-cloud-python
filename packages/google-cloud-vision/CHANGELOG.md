@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+### [2.3.1](https://www.github.com/googleapis/python-vision/compare/v2.3.0...v2.3.1) (2021-04-13)
+
+
+### Documentation
+
+* insert spaces between classes and methods in docs ([#133](https://www.github.com/googleapis/python-vision/issues/133)) ([1495241](https://www.github.com/googleapis/python-vision/commit/1495241f7f19098ba33412e5c6f98c76b0bedfb2))
+
 ## [2.3.0](https://www.github.com/googleapis/python-vision/compare/v2.2.0...v2.3.0) (2021-03-31)
 
 
