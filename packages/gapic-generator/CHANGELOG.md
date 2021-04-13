@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.43.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.43.2...v0.43.3) (2021-04-12)
+
+
+### Bug Fixes
+
+* sort subpackages in %namespace/%name/__init__.py ([#836](https://www.github.com/googleapis/gapic-generator-python/issues/836)) ([90cf882](https://www.github.com/googleapis/gapic-generator-python/commit/90cf882b20f430499f692e6b9b23497b3555e928))
+
 ### [0.43.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.43.1...v0.43.2) (2021-03-24)
 
 
