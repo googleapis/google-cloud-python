@@ -146,8 +146,8 @@ class Client(object):
         a long time to process.
 
         The ``use_legacy_flow_control`` argument disables enforcing flow control
-        settings at the Cloud PubSub server and uses the less accurate method of
-        only enforcing flow control at the client side.
+        settings at the Cloud Pub/Sub server, and only the client side flow control
+        will be enforced.
 
         This method starts the receiver in the background and returns a
         *Future* representing its execution. Waiting on the future (calling
@@ -200,6 +200,10 @@ class Client(object):
                 *scheduler* to use when executing the callback. This controls
                 how callbacks are executed concurrently. This object must not be shared
                 across multiple SubscriberClients.
+            use_legacy_flow_control (bool):
+                If set to ``True``, flow control at the Cloud Pub/Sub server is disabled,
+                though client-side flow control is still enabled. If set to ``False``
+                (default), both server-side and client-side flow control are enabled.
             await_callbacks_on_shutdown (bool):
                 If ``True``, after canceling the returned future, the latter's
                 ``result()`` method will block until the background stream and its

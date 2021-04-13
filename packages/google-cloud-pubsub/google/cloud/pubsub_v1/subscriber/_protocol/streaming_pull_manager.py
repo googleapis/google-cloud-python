@@ -106,9 +106,10 @@ class StreamingPullManager(object):
             ``projects/{project}/subscriptions/{subscription}``.
         flow_control (~google.cloud.pubsub_v1.types.FlowControl): The flow
             control settings.
-        use_legacy_flow_control (bool): Disables enforcing flow control settings
-            at the Cloud PubSub server and uses the less accurate method of only
-            enforcing flow control at the client side.
+        use_legacy_flow_control (bool):
+            If set to ``True``, flow control at the Cloud Pub/Sub server is disabled,
+            though client-side flow control is still enabled. If set to ``False``
+            (default), both server-side and client-side flow control are enabled.
         scheduler (~google.cloud.pubsub_v1.scheduler.Scheduler): The scheduler
             to use to process messages. If not provided, a thread pool-based
             scheduler will be used.
