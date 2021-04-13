@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+### [2.1.2](https://www.github.com/googleapis/python-dialogflow/compare/v2.1.1...v2.1.2) (2021-04-13)
+
+
+### Bug Fixes
+
+* remove unused proto InputText, InputAudio ([#273](https://www.github.com/googleapis/python-dialogflow/issues/273)) ([787d064](https://www.github.com/googleapis/python-dialogflow/commit/787d0648a842b62bfc1be8dcf43c0e8cbd88618a))
+
 ### [2.1.1](https://www.github.com/googleapis/python-dialogflow/compare/v2.1.0...v2.1.1) (2021-04-12)
 
 

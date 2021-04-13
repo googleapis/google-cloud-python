@@ -19,7 +19,7 @@ import setuptools
 
 name = "dialogflow"
 description = "Client library for the Dialogflow API"
-version = "2.1.1"
+version = "2.1.2"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = ["google-api-core[grpc] >= 1.22.2, < 2.0.0dev", "proto-plus >= 1.10.0"]
 
