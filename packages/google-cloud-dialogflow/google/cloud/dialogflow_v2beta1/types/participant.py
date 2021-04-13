@@ -36,8 +36,6 @@ __protobuf__ = proto.module(
         "ListParticipantsRequest",
         "ListParticipantsResponse",
         "UpdateParticipantRequest",
-        "InputText",
-        "InputAudio",
         "OutputAudio",
         "AutomatedAgentReply",
         "SuggestionFeature",
@@ -278,48 +276,6 @@ class UpdateParticipantRequest(proto.Message):
     participant = proto.Field(proto.MESSAGE, number=1, message="Participant",)
 
     update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
-
-
-class InputText(proto.Message):
-    r"""Represents the natural language text to be processed.
-
-    Attributes:
-        text (str):
-            Required. The UTF-8 encoded natural language
-            text to be processed. Text length must not
-            exceed 256 bytes.
-        language_code (str):
-            Required. The language of this conversational query. See
-            `Language
-            Support <https://cloud.google.com/dialogflow/docs/reference/language>`__
-            for a list of the currently supported language codes.
-    """
-
-    text = proto.Field(proto.STRING, number=1)
-
-    language_code = proto.Field(proto.STRING, number=2)
-
-
-class InputAudio(proto.Message):
-    r"""Represents the natural language speech audio to be processed.
-
-    Attributes:
-        config (google.cloud.dialogflow_v2beta1.types.InputAudioConfig):
-            Required. Instructs the speech recognizer how
-            to process the speech audio.
-        audio (bytes):
-            Required. The natural language speech audio
-            to be processed. A single request can contain up
-            to 1 minute of speech audio data. The
-            transcribed text cannot contain more than 256
-            bytes.
-    """
-
-    config = proto.Field(
-        proto.MESSAGE, number=1, message=audio_config.InputAudioConfig,
-    )
-
-    audio = proto.Field(proto.BYTES, number=2)
 
 
 class OutputAudio(proto.Message):

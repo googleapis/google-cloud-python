@@ -157,8 +157,6 @@ from .types.participant import CreateParticipantRequest
 from .types.participant import DtmfParameters
 from .types.participant import FaqAnswer
 from .types.participant import GetParticipantRequest
-from .types.participant import InputAudio
-from .types.participant import InputText
 from .types.participant import ListParticipantsRequest
 from .types.participant import ListParticipantsResponse
 from .types.participant import ListSuggestionsRequest
@@ -237,7 +235,6 @@ __all__ = (
     "CompileSuggestionResponse",
     "CompleteConversationRequest",
     "Context",
-    "ContextsClient",
     "Conversation",
     "ConversationEvent",
     "ConversationPhoneNumber",
@@ -298,15 +295,14 @@ __all__ = (
     "ImportDocumentTemplate",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
-    "InputAudio",
     "InputAudioConfig",
-    "InputText",
     "Intent",
     "IntentBatch",
     "IntentView",
     "IntentsClient",
     "KnowledgeAnswers",
     "KnowledgeBase",
+    "KnowledgeBasesClient",
     "KnowledgeOperationMetadata",
     "ListAnswerRecordsRequest",
     "ListAnswerRecordsResponse",
@@ -397,5 +393,5 @@ __all__ = (
     "VoiceSelectionParams",
     "WebhookRequest",
     "WebhookResponse",
-    "KnowledgeBasesClient",
+    "ContextsClient",
 )
