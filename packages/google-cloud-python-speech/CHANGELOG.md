@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-speech/compare/v2.2.1...v2.3.0) (2021-04-08)
+
+
+### Features
+
+* Support for spoken punctuation and spoken emojis ([#143](https://www.github.com/googleapis/python-speech/issues/143)) ([b6bddbe](https://www.github.com/googleapis/python-speech/commit/b6bddbe46172debd962c3d8e566a7c410fb4f279))
+
 ### [2.2.1](https://www.github.com/googleapis/python-speech/compare/v2.2.0...v2.2.1) (2021-03-31)
 
 
