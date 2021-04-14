@@ -90,6 +90,12 @@ from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
     TimestampMicrosecondsTest,
 )
 
+from sqlalchemy.testing.suite.test_sequence import (
+    SequenceCompilerTest as _SequenceCompilerTest,
+    HasSequenceTest as _HasSequenceTest,
+    SequenceTest as _SequenceTest,
+)
+
 config.test_schema = ""
 
 
@@ -541,6 +547,21 @@ class IntegerTest(_IntegerTest):
                 if filter_ is not None:
                     value = filter_(value)
                 assert value in output
+
+
+@pytest.mark.skip("Spanner doesn't support CREATE SEQUENCE.")
+class SequenceCompilerTest(_SequenceCompilerTest):
+    pass
+
+
+@pytest.mark.skip("Spanner doesn't support CREATE SEQUENCE.")
+class HasSequenceTest(_HasSequenceTest):
+    pass
+
+
+@pytest.mark.skip("Spanner doesn't support CREATE SEQUENCE.")
+class SequenceTest(_SequenceTest):
+    pass
 
 
 class ComponentReflectionTest(_ComponentReflectionTest):
