@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.3](https://www.github.com/googleapis/python-access-context-manager/compare/v0.1.2...v0.1.3) (2021-04-14)
+
+
+### Bug Fixes
+
+* add create_key to protos ([#25](https://www.github.com/googleapis/python-access-context-manager/issues/25)) ([166c54c](https://www.github.com/googleapis/python-access-context-manager/commit/166c54cd73d2cfac6d45df2a676389f252fd73e3))
+
 ### [0.1.2](https://www.github.com/googleapis/python-access-context-manager/compare/v0.1.1...v0.1.2) (2020-05-08)
 
 
