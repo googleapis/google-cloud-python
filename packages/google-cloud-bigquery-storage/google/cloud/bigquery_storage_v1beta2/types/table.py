@@ -74,6 +74,7 @@ class TableFieldSchema(proto.Message):
         NUMERIC = 12
         BIGNUMERIC = 13
         INTERVAL = 14
+        JSON = 15
 
     class Mode(proto.Enum):
         r""""""
