@@ -5,3 +5,4 @@ Services for Google Cloud Automl v1beta1 API
 
     auto_ml
     prediction_service
+    tables

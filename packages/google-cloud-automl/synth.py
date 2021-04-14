@@ -58,12 +58,11 @@ s.replace(
 
 s.replace(
     "docs/automl_v1beta1/services.rst",
-    """(google\.cloud\.automl_v1beta1\.services\.prediction_service
-    :members:
-    :inherited-members:)""",
-    """\g<1>\n.. automodule:: google.cloud.automl_v1beta1.services.tables
-    :members:
-    :inherited-members:"""
+    """auto_ml
+    prediction_service""",
+    """auto_ml
+    prediction_service
+    tables"""
 )
 
 # ----------------------------------------------------------------------------
@@ -79,9 +78,6 @@ python.py_samples(skip_readmes=True)
 
 s.move(templated_files)
 
-# TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
-# TODO(busunkim): Remove after microgenerator transition.
 # This is being added to AutoML because the proto comments are long and
 # regex replaces are a brittle temporary solution.
 s.replace(
@@ -89,13 +85,5 @@ s.replace(
 """'-W',  # warnings as errors
 \s+'-T',  \# show full traceback on exception""",
 """"-T",  # show full traceback on exception""")
-
-
-# install with extras (pandas, storage)
-s.replace(
-    "noxfile.py",
-    """session\.install\(['"]-e['"], ['"]\.['"]\)""",
-    """session.install("-e", ".[pandas,storage]")""",
-)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
