@@ -51,6 +51,7 @@ _type_map_inv = {
     types.TIME: "TIME",
     types.TIMESTAMP: "TIMESTAMP",
     types.Integer: "INT64",
+    types.NullType: "INT64",
 }
 
 _compound_keywords = {
