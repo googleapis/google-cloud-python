@@ -189,13 +189,16 @@ class SpannerTypeCompiler(GenericTypeCompiler):
         return "FLOAT64"
 
     def visit_TEXT(self, type_, **kw):
-        return "STRING({})".format(type_.length)
+        return "STRING({})".format(type_.length or "MAX")
 
     def visit_ARRAY(self, type_, **kw):
         return "ARRAY<{}>".format(self.process(type_.item_type, **kw))
 
     def visit_BINARY(self, type_, **kw):
-        return "BYTES"
+        return "BYTES({})".format(type_.length or "MAX")
+
+    def visit_large_binary(self, type_, **kw):
+        return "BYTES({})".format(type_.length or "MAX")
 
     def visit_DECIMAL(self, type_, **kw):
         return "NUMERIC"
@@ -204,10 +207,10 @@ class SpannerTypeCompiler(GenericTypeCompiler):
         return "NUMERIC"
 
     def visit_VARCHAR(self, type_, **kw):
-        return "STRING({})".format(type_.length)
+        return "STRING({})".format(type_.length or "MAX")
 
     def visit_CHAR(self, type_, **kw):
-        return "STRING({})".format(type_.length)
+        return "STRING({})".format(type_.length or "MAX")
 
     def visit_BOOLEAN(self, type_, **kw):
         return "BOOL"

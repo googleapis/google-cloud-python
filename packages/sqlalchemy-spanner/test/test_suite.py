@@ -27,6 +27,7 @@ from sqlalchemy.schema import DDL
 from sqlalchemy.testing import config
 from sqlalchemy.testing import db
 from sqlalchemy.testing import eq_
+from sqlalchemy.testing import fixtures
 from sqlalchemy.testing import provide_metadata
 from sqlalchemy.testing.provision import temp_table_keyword_args
 from sqlalchemy.testing.schema import Column
@@ -39,6 +40,7 @@ from sqlalchemy import select
 from sqlalchemy import util
 from sqlalchemy import event
 from sqlalchemy import exists
+from sqlalchemy import LargeBinary
 from sqlalchemy import Boolean
 from sqlalchemy import String
 from sqlalchemy.types import Integer
@@ -75,6 +77,7 @@ from sqlalchemy.testing.suite.test_select import (
 )
 from sqlalchemy.testing.suite.test_types import BooleanTest as _BooleanTest
 from sqlalchemy.testing.suite.test_types import IntegerTest as _IntegerTest
+from sqlalchemy.testing.suite.test_types import _LiteralRoundTripFixture
 
 from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
     DateTest as _DateTest,
@@ -789,3 +792,14 @@ class InsertBehaviorTest(_InsertBehaviorTest):
 @pytest.mark.skip("Spanner doesn't support IS DISTINCT FROM clause")
 class IsOrIsNotDistinctFromTest(_IsOrIsNotDistinctFromTest):
     pass
+
+
+class BytesTest(_LiteralRoundTripFixture, fixtures.TestBase):
+    __backend__ = True
+
+    def test_nolength_binary(self):
+        metadata = MetaData()
+        foo = Table("foo", metadata, Column("one", LargeBinary))
+
+        foo.create(config.db)
+        foo.drop(config.db)
