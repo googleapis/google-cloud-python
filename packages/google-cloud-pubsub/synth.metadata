@@ -3,8 +3,8 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:plamut/python-pubsub.git",
-        "sha": "0a662a6daad0517fb0e01732c9dd7f9d1852924c"
+        "remote": "https://github.com/googleapis/python-pubsub.git",
+        "sha": "9f451a1fe0ac5cb2fb13d72b0436e0b521a4fecb"
       }
     },
     {
@@ -19,21 +19,21 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "c84c8f156e09702e1c8946bfb9746e6f5892cf27"
+        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "c84c8f156e09702e1c8946bfb9746e6f5892cf27"
+        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "c84c8f156e09702e1c8946bfb9746e6f5892cf27"
+        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
       }
     }
   ],
@@ -47,5 +47,121 @@
         "generator": "bazel"
       }
     }
+  ],
+  "generatedFiles": [
+    ".coveragerc",
+    ".flake8",
+    ".github/CONTRIBUTING.md",
+    ".github/ISSUE_TEMPLATE/bug_report.md",
+    ".github/ISSUE_TEMPLATE/feature_request.md",
+    ".github/ISSUE_TEMPLATE/support_request.md",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/header-checker-lint.yml",
+    ".github/release-please.yml",
+    ".github/snippet-bot.yml",
+    ".gitignore",
+    ".kokoro/build.sh",
+    ".kokoro/continuous/common.cfg",
+    ".kokoro/continuous/continuous.cfg",
+    ".kokoro/docker/docs/Dockerfile",
+    ".kokoro/docker/docs/fetch_gpg_keys.sh",
+    ".kokoro/docs/common.cfg",
+    ".kokoro/docs/docs-presubmit.cfg",
+    ".kokoro/docs/docs.cfg",
+    ".kokoro/populate-secrets.sh",
+    ".kokoro/presubmit/common.cfg",
+    ".kokoro/presubmit/presubmit.cfg",
+    ".kokoro/publish-docs.sh",
+    ".kokoro/release.sh",
+    ".kokoro/release/common.cfg",
+    ".kokoro/release/release.cfg",
+    ".kokoro/samples/lint/common.cfg",
+    ".kokoro/samples/lint/continuous.cfg",
+    ".kokoro/samples/lint/periodic.cfg",
+    ".kokoro/samples/lint/presubmit.cfg",
+    ".kokoro/samples/python3.6/common.cfg",
+    ".kokoro/samples/python3.6/continuous.cfg",
+    ".kokoro/samples/python3.6/periodic-head.cfg",
+    ".kokoro/samples/python3.6/periodic.cfg",
+    ".kokoro/samples/python3.6/presubmit.cfg",
+    ".kokoro/samples/python3.7/common.cfg",
+    ".kokoro/samples/python3.7/continuous.cfg",
+    ".kokoro/samples/python3.7/periodic-head.cfg",
+    ".kokoro/samples/python3.7/periodic.cfg",
+    ".kokoro/samples/python3.7/presubmit.cfg",
+    ".kokoro/samples/python3.8/common.cfg",
+    ".kokoro/samples/python3.8/continuous.cfg",
+    ".kokoro/samples/python3.8/periodic-head.cfg",
+    ".kokoro/samples/python3.8/periodic.cfg",
+    ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/test-samples-against-head.sh",
+    ".kokoro/test-samples-impl.sh",
+    ".kokoro/test-samples.sh",
+    ".kokoro/trampoline.sh",
+    ".kokoro/trampoline_v2.sh",
+    ".pre-commit-config.yaml",
+    ".trampolinerc",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.rst",
+    "LICENSE",
+    "MANIFEST.in",
+    "docs/_static/custom.css",
+    "docs/_templates/layout.html",
+    "docs/conf.py",
+    "docs/multiprocessing.rst",
+    "google/cloud/pubsub_v1/proto/pubsub.proto",
+    "google/cloud/pubsub_v1/proto/schema.proto",
+    "google/pubsub/__init__.py",
+    "google/pubsub/py.typed",
+    "google/pubsub_v1/__init__.py",
+    "google/pubsub_v1/py.typed",
+    "google/pubsub_v1/services/__init__.py",
+    "google/pubsub_v1/services/publisher/__init__.py",
+    "google/pubsub_v1/services/publisher/async_client.py",
+    "google/pubsub_v1/services/publisher/client.py",
+    "google/pubsub_v1/services/publisher/pagers.py",
+    "google/pubsub_v1/services/publisher/transports/__init__.py",
+    "google/pubsub_v1/services/publisher/transports/base.py",
+    "google/pubsub_v1/services/publisher/transports/grpc.py",
+    "google/pubsub_v1/services/publisher/transports/grpc_asyncio.py",
+    "google/pubsub_v1/services/schema_service/__init__.py",
+    "google/pubsub_v1/services/schema_service/async_client.py",
+    "google/pubsub_v1/services/schema_service/client.py",
+    "google/pubsub_v1/services/schema_service/pagers.py",
+    "google/pubsub_v1/services/schema_service/transports/__init__.py",
+    "google/pubsub_v1/services/schema_service/transports/base.py",
+    "google/pubsub_v1/services/schema_service/transports/grpc.py",
+    "google/pubsub_v1/services/schema_service/transports/grpc_asyncio.py",
+    "google/pubsub_v1/services/subscriber/__init__.py",
+    "google/pubsub_v1/services/subscriber/async_client.py",
+    "google/pubsub_v1/services/subscriber/client.py",
+    "google/pubsub_v1/services/subscriber/pagers.py",
+    "google/pubsub_v1/services/subscriber/transports/__init__.py",
+    "google/pubsub_v1/services/subscriber/transports/base.py",
+    "google/pubsub_v1/services/subscriber/transports/grpc.py",
+    "google/pubsub_v1/services/subscriber/transports/grpc_asyncio.py",
+    "google/pubsub_v1/types/__init__.py",
+    "google/pubsub_v1/types/pubsub.py",
+    "google/pubsub_v1/types/schema.py",
+    "mypy.ini",
+    "noxfile.py",
+    "renovate.json",
+    "samples/AUTHORING_GUIDE.md",
+    "samples/CONTRIBUTING.md",
+    "samples/snippets/noxfile.py",
+    "scripts/decrypt-secrets.sh",
+    "scripts/fixup_pubsub_v1_keywords.py",
+    "scripts/readme-gen/readme_gen.py",
+    "scripts/readme-gen/templates/README.tmpl.rst",
+    "scripts/readme-gen/templates/auth.tmpl.rst",
+    "scripts/readme-gen/templates/auth_api_key.tmpl.rst",
+    "scripts/readme-gen/templates/install_deps.tmpl.rst",
+    "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
+    "setup.cfg",
+    "testing/.gitignore",
+    "tests/unit/gapic/pubsub_v1/__init__.py",
+    "tests/unit/gapic/pubsub_v1/test_publisher.py",
+    "tests/unit/gapic/pubsub_v1/test_schema_service.py",
+    "tests/unit/gapic/pubsub_v1/test_subscriber.py"
   ]
 }
