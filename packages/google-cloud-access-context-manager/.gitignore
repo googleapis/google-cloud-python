@@ -59,3 +59,6 @@ pylintrc.test
 
 # Exclude python-asset which is copied for testing
 python-asset/
+
+# Exclude api-common-protos which is only needed for generation
+api-common-protos

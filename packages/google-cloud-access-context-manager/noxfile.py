@@ -174,30 +174,40 @@ def test(session, library):
         system(session)
 
 
-# @nox.session(python="3.8")
-# def generate_protos(session):
-#     """Generates the protos using protoc.
-#
-#     THIS SESSION CAN ONLY BE RUN LOCALLY
-#     Clone `api-common-protos` in the parent directory
-#
-#     Some notes on the `google` directory:
-#     1. The `_pb2.py` files are produced by protoc.
-#     2. The .proto files are non-functional but are left in the repository
-#        to make it easier to understand diffs.
-#     3. The `google` directory also has `__init__.py` files to create proper modules.
-#        If a new subdirectory is added, you will need to create more `__init__.py`
-#        files.
-#     """
-#     session.install("grpcio-tools")
-#     protos = [str(p) for p in (Path(".").glob("google/**/*.proto"))]
+@nox.session(python="3.8")
+def generate_protos(session):
+    """Generates the protos using protoc.
 
-#     session.run(
-#         "python",
-#         "-m",
-#         "grpc_tools.protoc",
-#         "--proto_path=../api-common-protos",
-#         "--proto_path=.",
-#         "--python_out=.",
-#         *protos,
-#     )
+    Some notes on the `google` directory:
+    1. The `_pb2.py` files are produced by protoc.
+    2. The .proto files are non-functional but are left in the repository
+       to make it easier to understand diffs.
+    3. The `google` directory also has `__init__.py` files to create proper modules.
+       If a new subdirectory is added, you will need to create more `__init__.py`
+       files.
+    """
+    session.install("grpcio-tools")
+    protos = [str(p) for p in (Path(".").glob("google/**/*.proto"))]
+
+    # Clone googleapis/api-common-protos
+    api_common_protos = "api-common-protos"
+    try:
+        session.run("git", "-C", api_common_protos, "pull", external=True)
+    except nox.command.CommandFailed:
+        session.run(
+            "git",
+            "clone",
+            "--single-branch",
+            f"https://github.com/googleapis/{api_common_protos}",
+            external=True,
+        )
+
+    session.run(
+        "python",
+        "-m",
+        "grpc_tools.protoc",
+        "--proto_path=api-common-protos",
+        "--proto_path=.",
+        "--python_out=.",
+        *protos,
+    )
