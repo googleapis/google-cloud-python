@@ -3,7 +3,7 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-workflows",
+        "remote": "git@github.com:googleapis/python-workflows"
       }
     },
     {
