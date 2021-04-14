@@ -41,7 +41,7 @@ from google.auth import _cloud_sdk
 from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
-from google.oauth2 import _client
+from google.oauth2 import reauth
 
 
 # The Google OAuth 2.0 token endpoint. Used for authorized user credentials.
@@ -55,6 +55,10 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
     quota project, use :meth:`with_quota_project` or ::
 
         credentials = credentials.with_quota_project('myproject-123)
+
+    If reauth is enabled, `pyu2f` dependency has to be installed in order to use security
+    key reauth feature. Dependency can be installed via `pip install pyu2f` or `pip install
+    google-auth[reauth]`.
     """
 
     def __init__(
@@ -69,6 +73,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         default_scopes=None,
         quota_project_id=None,
         expiry=None,
+        rapt_token=None,
     ):
         """
         Args:
@@ -97,6 +102,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             quota_project_id (Optional[str]): The project ID used for quota and billing.
                 This project may be different from the project used to
                 create the credentials.
+            rapt_token (Optional[str]): The reauth Proof Token.
         """
         super(Credentials, self).__init__()
         self.token = token
@@ -109,6 +115,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self._client_id = client_id
         self._client_secret = client_secret
         self._quota_project_id = quota_project_id
+        self._rapt_token = rapt_token
 
     def __getstate__(self):
         """A __getstate__ method must exist for the __setstate__ to be called
@@ -130,6 +137,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self._client_id = d.get("_client_id")
         self._client_secret = d.get("_client_secret")
         self._quota_project_id = d.get("_quota_project_id")
+        self._rapt_token = d.get("_rapt_token")
 
     @property
     def refresh_token(self):
@@ -174,6 +182,11 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         the initial token is requested and can not be changed."""
         return False
 
+    @property
+    def rapt_token(self):
+        """Optional[str]: The reauth Proof Token."""
+        return self._rapt_token
+
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
 
@@ -187,6 +200,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             scopes=self.scopes,
             default_scopes=self.default_scopes,
             quota_project_id=quota_project_id,
+            rapt_token=self.rapt_token,
         )
 
     @_helpers.copy_docstring(credentials.Credentials)
@@ -205,23 +219,31 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
 
         scopes = self._scopes if self._scopes is not None else self._default_scopes
 
-        access_token, refresh_token, expiry, grant_response = _client.refresh_grant(
+        (
+            access_token,
+            refresh_token,
+            expiry,
+            grant_response,
+            rapt_token,
+        ) = reauth.refresh_grant(
             request,
             self._token_uri,
             self._refresh_token,
             self._client_id,
             self._client_secret,
-            scopes,
+            scopes=scopes,
+            rapt_token=self._rapt_token,
         )
 
         self.token = access_token
         self.expiry = expiry
         self._refresh_token = refresh_token
         self._id_token = grant_response.get("id_token")
+        self._rapt_token = rapt_token
 
-        if scopes and "scopes" in grant_response:
+        if scopes and "scope" in grant_response:
             requested_scopes = frozenset(scopes)
-            granted_scopes = frozenset(grant_response["scopes"].split())
+            granted_scopes = frozenset(grant_response["scope"].split())
             scopes_requested_but_not_granted = requested_scopes - granted_scopes
             if scopes_requested_but_not_granted:
                 raise exceptions.RefreshError(
@@ -323,6 +345,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
             "client_id": self.client_id,
             "client_secret": self.client_secret,
             "scopes": self.scopes,
+            "rapt_token": self.rapt_token,
         }
         if self.expiry:  # flatten expiry timestamp
             prep["expiry"] = self.expiry.isoformat() + "Z"

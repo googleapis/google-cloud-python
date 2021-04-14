@@ -48,7 +48,7 @@ SCOPES_AS_STRING = (
 
 
 def test__handle_error_response():
-    response_data = json.dumps({"error": "help", "error_description": "I'm alive"})
+    response_data = {"error": "help", "error_description": "I'm alive"}
 
     with pytest.raises(exceptions.RefreshError) as excinfo:
         _client._handle_error_response(response_data)
@@ -57,12 +57,12 @@ def test__handle_error_response():
 
 
 def test__handle_error_response_non_json():
-    response_data = "Help, I'm alive"
+    response_data = {"foo": "bar"}
 
     with pytest.raises(exceptions.RefreshError) as excinfo:
         _client._handle_error_response(response_data)
 
-    assert excinfo.match(r"Help, I\'m alive")
+    assert excinfo.match(r"{\"foo\": \"bar\"}")
 
 
 @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
@@ -95,8 +95,34 @@ def test__token_endpoint_request():
     request.assert_called_with(
         method="POST",
         url="http://example.com",
-        headers={"content-type": "application/x-www-form-urlencoded"},
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
         body="test=params".encode("utf-8"),
+    )
+
+    # Check result
+    assert result == {"test": "response"}
+
+
+def test__token_endpoint_request_use_json():
+    request = make_request({"test": "response"})
+
+    result = _client._token_endpoint_request(
+        request,
+        "http://example.com",
+        {"test": "params"},
+        access_token="access_token",
+        use_json=True,
+    )
+
+    # Check request call
+    request.assert_called_with(
+        method="POST",
+        url="http://example.com",
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": "Bearer access_token",
+        },
+        body=b'{"test": "params"}',
     )
 
     # Check result
@@ -220,7 +246,12 @@ def test_refresh_grant(unused_utcnow):
     )
 
     token, refresh_token, expiry, extra_data = _client.refresh_grant(
-        request, "http://example.com", "refresh_token", "client_id", "client_secret"
+        request,
+        "http://example.com",
+        "refresh_token",
+        "client_id",
+        "client_secret",
+        rapt_token="rapt_token",
     )
 
     # Check request call
@@ -231,6 +262,7 @@ def test_refresh_grant(unused_utcnow):
             "refresh_token": "refresh_token",
             "client_id": "client_id",
             "client_secret": "client_secret",
+            "rapt": "rapt_token",
         },
     )
 

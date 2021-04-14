@@ -25,6 +25,7 @@ TEST_DEPENDENCIES = [
     "pytest",
     "pytest-cov",
     "pytest-localserver",
+    "pyu2f",
     "requests",
     "urllib3",
     "cryptography",
