@@ -1490,13 +1490,12 @@ class RowIterator(HTTPIterator):
         if not self._validate_bqstorage(bqstorage_client, False):
             bqstorage_client = None
 
-        if bqstorage_client is not None:
-            for item in bqstorage_download():
-                yield item
-            return
-
-        for item in tabledata_list_download():
-            yield item
+        result_pages = (
+            bqstorage_download()
+            if bqstorage_client is not None
+            else tabledata_list_download()
+        )
+        yield from result_pages
 
     def _to_arrow_iterable(self, bqstorage_client=None):
         """Create an iterable of arrow RecordBatches, to process the table as a stream."""
@@ -1622,7 +1621,12 @@ class RowIterator(HTTPIterator):
             arrow_schema = _pandas_helpers.bq_to_arrow_schema(self._schema)
             return pyarrow.Table.from_batches(record_batches, schema=arrow_schema)
 
-    def to_dataframe_iterable(self, bqstorage_client=None, dtypes=None):
+    def to_dataframe_iterable(
+        self,
+        bqstorage_client=None,
+        dtypes=None,
+        max_queue_size=_pandas_helpers._MAX_QUEUE_SIZE_DEFAULT,
+    ):
         """Create an iterable of pandas DataFrames, to process the table as a stream.
 
         Args:
@@ -1641,6 +1645,17 @@ class RowIterator(HTTPIterator):
                 A dictionary of column names pandas ``dtype``s. The provided
                 ``dtype`` is used when constructing the series for the column
                 specified. Otherwise, the default pandas behavior is used.
+
+            max_queue_size (Optional[int]):
+                The maximum number of result pages to hold in the internal queue when
+                streaming query results over the BigQuery Storage API. Ignored if
+                Storage API is not used.
+
+                By default, the max queue size is set to the number of BQ Storage streams
+                created by the server. If ``max_queue_size`` is :data:`None`, the queue
+                size is infinite.
+
+                ..versionadded:: 2.14.0
 
         Returns:
             pandas.DataFrame:
@@ -1665,6 +1680,7 @@ class RowIterator(HTTPIterator):
             dtypes,
             preserve_order=self._preserve_order,
             selected_fields=self._selected_fields,
+            max_queue_size=max_queue_size,
         )
         tabledata_list_download = functools.partial(
             _pandas_helpers.download_dataframe_row_iterator,

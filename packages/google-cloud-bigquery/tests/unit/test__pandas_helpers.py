@@ -17,6 +17,7 @@ import datetime
 import decimal
 import functools
 import operator
+import queue
 import warnings
 
 import mock
@@ -40,6 +41,11 @@ import pytz
 from google import api_core
 from google.cloud.bigquery import schema
 from google.cloud.bigquery._pandas_helpers import _BIGNUMERIC_SUPPORT
+
+try:
+    from google.cloud import bigquery_storage
+except ImportError:  # pragma: NO COVER
+    bigquery_storage = None
 
 
 skip_if_no_bignumeric = pytest.mark.skipif(
@@ -1263,6 +1269,66 @@ def test_dataframe_to_parquet_dict_sequence_schema(module_under_test):
     ]
     schema_arg = fake_to_arrow.call_args.args[1]
     assert schema_arg == expected_schema_arg
+
+
+@pytest.mark.parametrize(
+    "stream_count,maxsize_kwarg,expected_call_count,expected_maxsize",
+    [
+        (3, {"max_queue_size": 2}, 3, 2),  # custom queue size
+        (4, {}, 4, 4),  # default queue size
+        (7, {"max_queue_size": None}, 7, 0),  # infinite queue size
+    ],
+)
+@pytest.mark.skipif(
+    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
+)
+def test__download_table_bqstorage(
+    module_under_test,
+    stream_count,
+    maxsize_kwarg,
+    expected_call_count,
+    expected_maxsize,
+):
+    from google.cloud.bigquery import dataset
+    from google.cloud.bigquery import table
+
+    queue_used = None  # A reference to the queue used by code under test.
+
+    bqstorage_client = mock.create_autospec(
+        bigquery_storage.BigQueryReadClient, instance=True
+    )
+    fake_session = mock.Mock(streams=["stream/s{i}" for i in range(stream_count)])
+    bqstorage_client.create_read_session.return_value = fake_session
+
+    table_ref = table.TableReference(
+        dataset.DatasetReference("project-x", "dataset-y"), "table-z",
+    )
+
+    def fake_download_stream(
+        download_state, bqstorage_client, session, stream, worker_queue, page_to_item
+    ):
+        nonlocal queue_used
+        queue_used = worker_queue
+        try:
+            worker_queue.put_nowait("result_page")
+        except queue.Full:  # pragma: NO COVER
+            pass
+
+    download_stream = mock.Mock(side_effect=fake_download_stream)
+
+    with mock.patch.object(
+        module_under_test, "_download_table_bqstorage_stream", new=download_stream
+    ):
+        result_gen = module_under_test._download_table_bqstorage(
+            "some-project", table_ref, bqstorage_client, **maxsize_kwarg
+        )
+        list(result_gen)
+
+    # Timing-safe, as the method under test should block until the pool shutdown is
+    # complete, at which point all download stream workers have already been submitted
+    # to the thread pool.
+    assert download_stream.call_count == stream_count  # once for each stream
+    assert queue_used.maxsize == expected_maxsize
 
 
 @pytest.mark.skipif(isinstance(pyarrow, mock.Mock), reason="Requires `pyarrow`")

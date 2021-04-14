@@ -53,6 +53,8 @@ _NO_BQSTORAGE_ERROR = (
 
 _PROGRESS_INTERVAL = 0.2  # Maximum time between download status checks, in seconds.
 
+_MAX_QUEUE_SIZE_DEFAULT = object()  # max queue size sentinel for BQ Storage downloads
+
 _PANDAS_DTYPE_TO_BQ = {
     "bool": "BOOLEAN",
     "datetime64[ns, UTC]": "TIMESTAMP",
@@ -616,6 +618,7 @@ def _download_table_bqstorage(
     preserve_order=False,
     selected_fields=None,
     page_to_item=None,
+    max_queue_size=_MAX_QUEUE_SIZE_DEFAULT,
 ):
     """Use (faster, but billable) BQ Storage API to construct DataFrame."""
 
@@ -667,7 +670,17 @@ def _download_table_bqstorage(
     download_state = _DownloadState()
 
     # Create a queue to collect frames as they are created in each thread.
-    worker_queue = queue.Queue()
+    #
+    # The queue needs to be bounded by default, because if the user code processes the
+    # fetched result pages too slowly, while at the same time new pages are rapidly being
+    # fetched from the server, the queue can grow to the point where the process runs
+    # out of memory.
+    if max_queue_size is _MAX_QUEUE_SIZE_DEFAULT:
+        max_queue_size = total_streams
+    elif max_queue_size is None:
+        max_queue_size = 0  # unbounded
+
+    worker_queue = queue.Queue(maxsize=max_queue_size)
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=total_streams) as pool:
         try:
@@ -708,15 +721,12 @@ def _download_table_bqstorage(
                     continue
 
             # Return any remaining values after the workers finished.
-            while not worker_queue.empty():  # pragma: NO COVER
+            while True:  # pragma: NO COVER
                 try:
-                    # Include a timeout because even though the queue is
-                    # non-empty, it doesn't guarantee that a subsequent call to
-                    # get() will not block.
-                    frame = worker_queue.get(timeout=_PROGRESS_INTERVAL)
+                    frame = worker_queue.get_nowait()
                     yield frame
                 except queue.Empty:  # pragma: NO COVER
-                    continue
+                    break
         finally:
             # No need for a lock because reading/replacing a variable is
             # defined to be an atomic operation in the Python language
@@ -729,7 +739,7 @@ def _download_table_bqstorage(
 
 
 def download_arrow_bqstorage(
-    project_id, table, bqstorage_client, preserve_order=False, selected_fields=None
+    project_id, table, bqstorage_client, preserve_order=False, selected_fields=None,
 ):
     return _download_table_bqstorage(
         project_id,
@@ -749,6 +759,7 @@ def download_dataframe_bqstorage(
     dtypes,
     preserve_order=False,
     selected_fields=None,
+    max_queue_size=_MAX_QUEUE_SIZE_DEFAULT,
 ):
     page_to_item = functools.partial(_bqstorage_page_to_dataframe, column_names, dtypes)
     return _download_table_bqstorage(
@@ -758,6 +769,7 @@ def download_dataframe_bqstorage(
         preserve_order=preserve_order,
         selected_fields=selected_fields,
         page_to_item=page_to_item,
+        max_queue_size=max_queue_size,
     )
 
 
