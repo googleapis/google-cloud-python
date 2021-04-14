@@ -110,3 +110,4 @@ gcloud iam service-accounts add-iam-policy-binding $service_account_email \
 
 echo "OIDC audience: "$oidc_aud
 echo "AWS audience: "$aws_aud
+echo "AWS role: arn:aws:iam::$aws_account_id:role/$aws_role_name"

@@ -54,12 +54,38 @@ def authorized_user_file():
 
 
 @pytest.fixture(params=["urllib3", "requests"])
-def http_request(request):
+def request_type(request):
+    yield request.param
+
+
+@pytest.fixture
+def http_request(request_type):
     """A transport.request object."""
-    if request.param == "urllib3":
+    if request_type == "urllib3":
         yield google.auth.transport.urllib3.Request(URLLIB3_HTTP)
-    elif request.param == "requests":
+    elif request_type == "requests":
         yield google.auth.transport.requests.Request(REQUESTS_SESSION)
+
+
+@pytest.fixture
+def authenticated_request(request_type):
+    """A transport.request object that takes credentials"""
+    if request_type == "urllib3":
+
+        def wrapper(credentials):
+            return google.auth.transport.urllib3.AuthorizedHttp(
+                credentials, http=URLLIB3_HTTP
+            ).request
+
+        yield wrapper
+    elif request_type == "requests":
+
+        def wrapper(credentials):
+            session = google.auth.transport.requests.AuthorizedSession(credentials)
+            session.verify = False
+            return google.auth.transport.requests.Request(session)
+
+        yield wrapper
 
 
 @pytest.fixture
