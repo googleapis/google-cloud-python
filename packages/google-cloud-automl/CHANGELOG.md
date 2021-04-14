@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-automl/compare/v2.2.0...v2.3.0) (2021-04-14)
+
+
+### Features
+
+* add `from_service_account_info` ([4f6f1d6](https://www.github.com/googleapis/python-automl/commit/4f6f1d6fde69bd97dce51a1007c482d843ca8b5d))
+
+
+### Bug Fixes
+
+* use correct retry deadlines ([#119](https://www.github.com/googleapis/python-automl/issues/119)) ([4f6f1d6](https://www.github.com/googleapis/python-automl/commit/4f6f1d6fde69bd97dce51a1007c482d843ca8b5d))
+
+
+### Documentation
+
+* re-publish tables client documentation ([#146](https://www.github.com/googleapis/python-automl/issues/146)) ([9f3e73a](https://www.github.com/googleapis/python-automl/commit/9f3e73a7e45088c929ae86b5b90f0e4f31a7b278))
+
 ## [2.2.0](https://www.github.com/googleapis/python-automl/compare/v2.1.0...v2.2.0) (2021-02-16)
 
 
