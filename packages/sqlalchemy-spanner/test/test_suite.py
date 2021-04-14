@@ -52,6 +52,7 @@ from google.cloud import spanner_dbapi
 from sqlalchemy.testing.suite.test_cte import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_ddl import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_dialect import *  # noqa: F401, F403
+from sqlalchemy.testing.suite.test_insert import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_results import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_update_delete import *  # noqa: F401, F403
 
@@ -69,6 +70,9 @@ from sqlalchemy.testing.suite.test_reflection import (
 )
 from sqlalchemy.testing.suite.test_results import RowFetchTest as _RowFetchTest
 from sqlalchemy.testing.suite.test_select import ExistsTest as _ExistsTest
+from sqlalchemy.testing.suite.test_select import (
+    IsOrIsNotDistinctFromTest as _IsOrIsNotDistinctFromTest,
+)
 from sqlalchemy.testing.suite.test_types import BooleanTest as _BooleanTest
 from sqlalchemy.testing.suite.test_types import IntegerTest as _IntegerTest
 
@@ -768,3 +772,20 @@ class InsertBehaviorTest(_InsertBehaviorTest):
     @pytest.mark.skip("Spanner doesn't support empty inserts")
     def test_empty_insert(self):
         pass
+
+    @pytest.mark.skip("Spanner doesn't support auto increment")
+    def test_insert_from_select_autoinc(self):
+        pass
+
+    @pytest.mark.skip("Spanner doesn't support auto increment")
+    def test_insert_from_select_autoinc_no_rows(self):
+        pass
+
+    @pytest.mark.skip("Spanner doesn't support default column values")
+    def test_insert_from_select_with_defaults(self):
+        pass
+
+
+@pytest.mark.skip("Spanner doesn't support IS DISTINCT FROM clause")
+class IsOrIsNotDistinctFromTest(_IsOrIsNotDistinctFromTest):
+    pass
