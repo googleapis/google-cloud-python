@@ -1734,12 +1734,20 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get
 
         Args:
-            job_id (str): Unique job identifier.
+            job_id (Union[ \
+                str, \
+                google.cloud.bigquery.job.LoadJob, \
+                google.cloud.bigquery.job.CopyJob, \
+                google.cloud.bigquery.job.ExtractJob, \
+                google.cloud.bigquery.job.QueryJob \
+            ]): Job identifier.
 
         Keyword Arguments:
             project (Optional[str]):
                 ID of the project which owns the job (defaults to the client's project).
-            location (Optional[str]): Location where the job was run.
+            location (Optional[str]):
+                Location where the job was run. Ignored if ``job_id`` is a job
+                object.
             retry (Optional[google.api_core.retry.Retry]):
                 How to retry the RPC.
             timeout (Optional[float]):
@@ -1756,6 +1764,10 @@ class Client(ClientWithProject):
                 Job instance, based on the resource returned by the API.
         """
         extra_params = {"projection": "full"}
+
+        project, location, job_id = _extract_job_reference(
+            job_id, project=project, location=location
+        )
 
         if project is None:
             project = self.project
@@ -1791,12 +1803,20 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/cancel
 
         Args:
-            job_id (str): Unique job identifier.
+            job_id (Union[ \
+                str, \
+                google.cloud.bigquery.job.LoadJob, \
+                google.cloud.bigquery.job.CopyJob, \
+                google.cloud.bigquery.job.ExtractJob, \
+                google.cloud.bigquery.job.QueryJob \
+            ]): Job identifier.
 
         Keyword Arguments:
             project (Optional[str]):
                 ID of the project which owns the job (defaults to the client's project).
-            location (Optional[str]): Location where the job was run.
+            location (Optional[str]):
+                Location where the job was run. Ignored if ``job_id`` is a job
+                object.
             retry (Optional[google.api_core.retry.Retry]):
                 How to retry the RPC.
             timeout (Optional[float]):
@@ -1813,6 +1833,10 @@ class Client(ClientWithProject):
                 Job instance, based on the resource returned by the API.
         """
         extra_params = {"projection": "full"}
+
+        project, location, job_id = _extract_job_reference(
+            job_id, project=project, location=location
+        )
 
         if project is None:
             project = self.project
@@ -3516,6 +3540,37 @@ def _item_to_table(iterator, resource):
         google.cloud.bigquery.table.Table: The next table in the page.
     """
     return TableListItem(resource)
+
+
+def _extract_job_reference(job, project=None, location=None):
+    """Extract fully-qualified job reference from a job-like object.
+
+    Args:
+        job_id (Union[ \
+            str, \
+            google.cloud.bigquery.job.LoadJob, \
+            google.cloud.bigquery.job.CopyJob, \
+            google.cloud.bigquery.job.ExtractJob, \
+            google.cloud.bigquery.job.QueryJob \
+        ]): Job identifier.
+        project (Optional[str]):
+            Project where the job was run. Ignored if ``job_id`` is a job
+            object.
+        location (Optional[str]):
+            Location where the job was run. Ignored if ``job_id`` is a job
+            object.
+
+    Returns:
+        Tuple[str, str, str]: ``(project, location, job_id)``
+    """
+    if hasattr(job, "job_id"):
+        project = job.project
+        job_id = job.job_id
+        location = job.location
+    else:
+        job_id = job
+
+    return (project, location, job_id)
 
 
 def _make_job_id(job_id, prefix=None):

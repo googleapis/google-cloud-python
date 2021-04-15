@@ -189,7 +189,9 @@ class TestBigQuery(unittest.TestCase):
     def _create_bucket(self, bucket_name, location=None):
         storage_client = storage.Client()
         bucket = storage_client.bucket(bucket_name)
-        retry_storage_errors(bucket.create)(location=location)
+        retry_storage_errors(storage_client.create_bucket)(
+            bucket_name, location=location
+        )
         self.to_delete.append(bucket)
 
         return bucket
@@ -872,7 +874,7 @@ class TestBigQuery(unittest.TestCase):
         job_id = load_job.job_id
 
         # Can get the job from the EU.
-        load_job = client.get_job(job_id, location="EU")
+        load_job = client.get_job(load_job)
         self.assertEqual(job_id, load_job.job_id)
         self.assertEqual("EU", load_job.location)
         self.assertTrue(load_job.exists())
@@ -889,7 +891,7 @@ class TestBigQuery(unittest.TestCase):
 
         # Can cancel the job from the EU.
         self.assertTrue(load_job.cancel())
-        load_job = client.cancel_job(job_id, location="EU")
+        load_job = client.cancel_job(load_job)
         self.assertEqual(job_id, load_job.job_id)
         self.assertEqual("EU", load_job.location)
 
@@ -1204,8 +1206,7 @@ class TestBigQuery(unittest.TestCase):
         # Even though the query takes >1 second, the call to getQueryResults
         # should succeed.
         self.assertFalse(query_job.done(timeout=1))
-
-        Config.CLIENT.cancel_job(query_job.job_id, location=query_job.location)
+        self.assertIsNotNone(Config.CLIENT.cancel_job(query_job))
 
     def test_query_w_page_size(self):
         page_size = 45
