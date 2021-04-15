@@ -4,21 +4,21 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-audit-log.git",
-        "sha": "e14194538cb4978b97b683c116d577074f485944"
+        "sha": "5b70102e6e074cea0a1deda4e3311de540965ff3"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
+        "sha": "043cc620d6a6111816d9e09f2a97208565fde958"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
+        "sha": "043cc620d6a6111816d9e09f2a97208565fde958"
       }
     }
   ],
