@@ -27,7 +27,7 @@ with io.open(os.path.join(PACKAGE_ROOT, "README.rst")) as file_obj:
 
 setup(
     name="gapic-generator",
-    version=version,
+    version=setuptools.sic(version),
     license="Apache 2.0",
     author="Dov Shlachter",
     author_email="dovs@google.com",
