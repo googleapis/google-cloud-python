@@ -30,7 +30,7 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 setuptools.setup(
     name="google-cloud-bigquery-reservation",
     description="Google Cloud BigQuery Reservation API client library",
-    version=version,
+    version=setuptools.sic(version),
     release_status="Development Status :: 4 - Beta",
     long_description=readme,
     author="Google LLC",
