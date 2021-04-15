@@ -144,6 +144,17 @@ def test_decode_valid_with_audience(token_factory):
     assert payload["metadata"]["meta"] == "data"
 
 
+def test_decode_valid_with_audience_list(token_factory):
+    payload = jwt.decode(
+        token_factory(),
+        certs=PUBLIC_CERT_BYTES,
+        audience=["audience@example.com", "another_audience@example.com"],
+    )
+    assert payload["aud"] == "audience@example.com"
+    assert payload["user"] == "billy bob"
+    assert payload["metadata"]["meta"] == "data"
+
+
 def test_decode_valid_unverified(token_factory):
     payload = jwt.decode(token_factory(), certs=OTHER_CERT_BYTES, verify=False)
     assert payload["aud"] == "audience@example.com"
@@ -206,6 +217,14 @@ def test_decode_bad_token_expired(token_factory):
 def test_decode_bad_token_wrong_audience(token_factory):
     token = token_factory()
     audience = "audience2@example.com"
+    with pytest.raises(ValueError) as excinfo:
+        jwt.decode(token, PUBLIC_CERT_BYTES, audience=audience)
+    assert excinfo.match(r"Token has wrong audience")
+
+
+def test_decode_bad_token_wrong_audience_list(token_factory):
+    token = token_factory()
+    audience = ["audience2@example.com", "audience3@example.com"]
     with pytest.raises(ValueError) as excinfo:
         jwt.decode(token, PUBLIC_CERT_BYTES, audience=audience)
     assert excinfo.match(r"Token has wrong audience")

@@ -112,8 +112,8 @@ def verify_token(id_token, request, audience=None, certs_url=_GOOGLE_OAUTH2_CERT
         id_token (Union[str, bytes]): The encoded token.
         request (google.auth.transport.Request): The object used to make
             HTTP requests.
-        audience (str): The audience that this token is intended for. If None
-            then the audience is not verified.
+        audience (str or list): The audience or audiences that this token is
+            intended for. If None then the audience is not verified.
         certs_url (str): The URL that specifies the certificates to use to
             verify the token. This URL should return JSON in the format of
             ``{'key id': 'x509 certificate'}``.
