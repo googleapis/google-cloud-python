@@ -425,3 +425,19 @@ class TestParseUtils(unittest.TestCase):
             with self.subTest(name=name):
                 got = escape_name(name)
                 self.assertEqual(got, want)
+
+    def test_insert_from_select(self):
+        """Check that INSERT from SELECT clause can be executed with arguments."""
+        from google.cloud.spanner_dbapi.parse_utils import parse_insert
+
+        SQL = """
+INSERT INTO tab_name (id, data)
+SELECT tab_name.id + %s AS anon_1, tab_name.data
+FROM tab_name
+WHERE tab_name.data IN (%s, %s)
+"""
+        ARGS = [5, "data2", "data3"]
+
+        self.assertEqual(
+            parse_insert(SQL, ARGS), {"sql_params_list": [(SQL, ARGS)]},
+        )

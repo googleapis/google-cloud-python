@@ -224,11 +224,11 @@ def parse_insert(insert_sql, params):
             }
 
     Case b)
-            SQL: 'INSERT INTO T (s, c) SELECT st, zc FROM cus ORDER BY fn, ln',
+        SQL: 'INSERT INTO T (s, c) SELECT st, zc FROM cus WHERE col IN (%s, %s)',
         it produces:
             {
                 'sql_params_list': [
-                    ('INSERT INTO T (s, c) SELECT st, zc FROM cus ORDER BY fn, ln', None),
+                    ('INSERT INTO T (s, c) SELECT st, zc FROM cus ORDER BY fn, ln', ('a', 'b')),
                 ]
             }
 
@@ -276,7 +276,7 @@ def parse_insert(insert_sql, params):
     if not after_values_sql:
         # Case b)
         insert_sql = sanitize_literals_for_upload(insert_sql)
-        return {"sql_params_list": [(insert_sql, None)]}
+        return {"sql_params_list": [(insert_sql, params)]}
 
     if not params:
         # Case a) perhaps?
