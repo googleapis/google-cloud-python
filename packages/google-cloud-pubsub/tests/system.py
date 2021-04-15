@@ -44,12 +44,12 @@ def project():
     yield default_project
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
 def publisher():
     yield pubsub_v1.PublisherClient()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture()
 def subscriber():
     yield pubsub_v1.SubscriberClient()
 
