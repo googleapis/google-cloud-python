@@ -16,6 +16,20 @@ import os
 
 import setuptools
 
+# Disable version normalization performed by setuptools.setup()
+try:
+    # Try the approach of using sic(), added in setuptools 46.1.0
+    from setuptools import sic
+except ImportError:
+    # Try the approach of replacing packaging.version.Version
+    sic = lambda v: v
+    try:
+        # setuptools >=39.0.0 uses packaging from setuptools.extern
+        from setuptools.extern import packaging
+    except ImportError:
+        # setuptools <39.0.0 uses packaging from pkg_resources.extern
+        from pkg_resources.extern import packaging
+    packaging.version.Version = packaging.version.LegacyVersion
 
 PACKAGE_ROOT = os.path.abspath(os.path.dirname(__file__))
 
@@ -36,9 +50,11 @@ EXTRAS_REQUIRE = {
     'aiohttp': 'aiohttp >= 3.6.2, < 4.0.0dev; python_version>="3.6"'
 }
 
+version = "1.2.0"
+
 setuptools.setup(
     name='google-resumable-media',
-    version = "1.2.0",
+    version = sic(version),
     description='Utilities for Google Media Downloads and Resumable Uploads',
     author='Google Cloud Platform',
     author_email='googleapis-publisher@google.com',
