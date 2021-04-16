@@ -657,6 +657,14 @@ class TestCursor(unittest.TestCase):
             {"somevalue-not-here": "hi", "othervalue": "world"},
         )
 
+    def test__format_operation_w_redundant_dict_key(self):
+        from google.cloud.bigquery.dbapi import cursor
+
+        formatted_operation = cursor._format_operation(
+            "SELECT %(somevalue)s;", {"somevalue": "foo", "value-not-used": "bar"}
+        )
+        self.assertEqual(formatted_operation, "SELECT @`somevalue`;")
+
     def test__format_operation_w_sequence(self):
         from google.cloud.bigquery.dbapi import cursor
 
@@ -676,8 +684,53 @@ class TestCursor(unittest.TestCase):
             ("hello",),
         )
 
+    def test__format_operation_w_too_long_sequence(self):
+        from google.cloud.bigquery import dbapi
+        from google.cloud.bigquery.dbapi import cursor
+
+        self.assertRaises(
+            dbapi.ProgrammingError,
+            cursor._format_operation,
+            "SELECT %s, %s;",
+            ("hello", "world", "everyone"),
+        )
+
     def test__format_operation_w_empty_dict(self):
         from google.cloud.bigquery.dbapi import cursor
 
         formatted_operation = cursor._format_operation("SELECT '%f'", {})
         self.assertEqual(formatted_operation, "SELECT '%f'")
+
+    def test__format_operation_wo_params_single_percent(self):
+        from google.cloud.bigquery.dbapi import cursor
+
+        formatted_operation = cursor._format_operation("SELECT '%'", {})
+        self.assertEqual(formatted_operation, "SELECT '%'")
+
+    def test__format_operation_wo_params_double_percents(self):
+        from google.cloud.bigquery.dbapi import cursor
+
+        formatted_operation = cursor._format_operation("SELECT '%%'", {})
+        self.assertEqual(formatted_operation, "SELECT '%'")
+
+    def test__format_operation_unescaped_percent_w_dict_param(self):
+        from google.cloud.bigquery import dbapi
+        from google.cloud.bigquery.dbapi import cursor
+
+        self.assertRaises(
+            dbapi.ProgrammingError,
+            cursor._format_operation,
+            "SELECT %(foo)s, '100 %';",
+            {"foo": "bar"},
+        )
+
+    def test__format_operation_unescaped_percent_w_list_param(self):
+        from google.cloud.bigquery import dbapi
+        from google.cloud.bigquery.dbapi import cursor
+
+        self.assertRaises(
+            dbapi.ProgrammingError,
+            cursor._format_operation,
+            "SELECT %s, %s, '100 %';",
+            ["foo", "bar"],
+        )
