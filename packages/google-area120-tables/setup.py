@@ -19,6 +19,21 @@ import io
 import os
 import setuptools  # type: ignore
 
+# Disable version normalization performed by setuptools.setup()
+try:
+    # Try the approach of using sic(), added in setuptools 46.1.0
+    from setuptools import sic
+except ImportError:
+    # Try the approach of replacing packaging.version.Version
+    sic = lambda v: v
+    try:
+        # setuptools >=39.0.0 uses packaging from setuptools.extern
+        from setuptools.extern import packaging
+    except ImportError:
+        # setuptools <39.0.0 uses packaging from pkg_resources.extern
+        from pkg_resources.extern import packaging
+    packaging.version.Version = packaging.version.LegacyVersion
+
 version = "0.2.0"
 
 package_root = os.path.abspath(os.path.dirname(__file__))
@@ -30,7 +45,7 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 
 setuptools.setup(
     name="google-area120-tables",
-    version=version,
+    version=sic(version),
     long_description=readme,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
