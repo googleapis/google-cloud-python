@@ -178,6 +178,7 @@ class TestCursor(unittest.TestCase):
             "fetchone",
             "setinputsizes",
             "setoutputsize",
+            "__iter__",
         )
 
         for method in method_names:
@@ -610,6 +611,29 @@ class TestCursor(unittest.TestCase):
         )
         self.assertIsNone(cursor.description)
         self.assertEqual(cursor.rowcount, 12)
+
+    def test_is_iterable(self):
+        from google.cloud.bigquery import dbapi
+
+        connection = dbapi.connect(
+            self._mock_client(rows=[("hello", "there", 7), ("good", "bye", -3)])
+        )
+        cursor = connection.cursor()
+        cursor.execute("SELECT foo, bar, baz FROM hello_world WHERE baz < 42;")
+
+        rows_iter = iter(cursor)
+
+        row = next(rows_iter)
+        self.assertEqual(row, ("hello", "there", 7))
+        row = next(rows_iter)
+        self.assertEqual(row, ("good", "bye", -3))
+        self.assertRaises(StopIteration, next, rows_iter)
+
+        self.assertEqual(
+            list(cursor),
+            [],
+            "Iterating again over the same results should produce no rows.",
+        )
 
     def test__format_operation_w_dict(self):
         from google.cloud.bigquery.dbapi import cursor

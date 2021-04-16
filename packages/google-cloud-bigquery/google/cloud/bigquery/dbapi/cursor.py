@@ -365,6 +365,10 @@ class Cursor(object):
     def setoutputsize(self, size, column=None):
         """No-op, but for consistency raise an error if cursor is closed."""
 
+    def __iter__(self):
+        self._try_fetch()
+        return iter(self._query_data)
+
 
 def _format_operation_list(operation, parameters):
     """Formats parameters in operation in the way BigQuery expects.

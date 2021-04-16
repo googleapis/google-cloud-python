@@ -276,7 +276,7 @@ def raise_on_closed(
         """Apply ``_raise_on_closed()`` decorator to public instance methods.
         """
         for name in dir(klass):
-            if name.startswith("_"):
+            if name.startswith("_") and name != "__iter__":
                 continue
 
             member = getattr(klass, name)
