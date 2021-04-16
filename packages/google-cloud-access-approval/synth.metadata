@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-access-approval.git",
-        "sha": "e6c71f9d7f45d7d23eab1d252b757d1454bd33f6"
+        "sha": "0a9805dab0a528ea8de190bef90f502ac69768a2"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
+        "sha": "043cc620d6a6111816d9e09f2a97208565fde958"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
+        "sha": "043cc620d6a6111816d9e09f2a97208565fde958"
       }
     }
   ],
