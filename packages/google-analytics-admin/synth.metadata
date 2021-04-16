@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-analytics-admin.git",
-        "sha": "0c36bc14b755633f331e40791b445dc90537a6ba"
+        "sha": "bf07ed75dc6d22fb52483212e914555194cab40f"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
+        "sha": "043cc620d6a6111816d9e09f2a97208565fde958"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
+        "sha": "043cc620d6a6111816d9e09f2a97208565fde958"
       }
     }
   ],
@@ -105,6 +105,7 @@
     "docs/admin_v1alpha/types.rst",
     "docs/conf.py",
     "docs/multiprocessing.rst",
+    "google-analytics-admin-v1alpha-py.tar.gz",
     "google/analytics/admin/__init__.py",
     "google/analytics/admin/py.typed",
     "google/analytics/admin_v1alpha/__init__.py",
