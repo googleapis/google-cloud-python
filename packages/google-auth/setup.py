@@ -15,9 +15,24 @@
 import io
 import os
 
-from setuptools import find_packages
-from setuptools import setup
+import setuptools
 
+# Disable version normalization performed by setuptools.setup()
+# Adding this in even though it works for Python3.x, but does not
+# work for Python 2.7
+try:
+    # Try the approach of using sic(), added in setuptools 46.1.0
+    from setuptools import sic
+except ImportError:
+    # Try the approach of replacing packaging.version.Version
+    sic = lambda v: v
+    try:
+        # setuptools >=39.0.0 uses packaging from setuptools.extern
+        from setuptools.extern import packaging
+    except ImportError:
+        # setuptools <39.0.0 uses packaging from pkg_resources.extern
+        from pkg_resources.extern import packaging
+    packaging.version.Version = packaging.version.LegacyVersion
 
 DEPENDENCIES = (
     "cachetools>=2.0.0,<5.0",
@@ -46,15 +61,15 @@ with open(os.path.join(package_root, "google/auth/version.py")) as fp:
     exec(fp.read(), version)
 version = version["__version__"]
 
-setup(
+setuptools.setup(
     name="google-auth",
-    version=version,
+    version=sic(version),
     author="Google Cloud Platform",
     author_email="googleapis-packages@google.com",
     description="Google Authentication Library",
     long_description=long_description,
     url="https://github.com/googleapis/google-auth-library-python",
-    packages=find_packages(exclude=("tests*", "system_tests*")),
+    packages=setuptools.find_packages(exclude=("tests*", "system_tests*")),
     namespace_packages=("google",),
     install_requires=DEPENDENCIES,
     extras_require=extras,
