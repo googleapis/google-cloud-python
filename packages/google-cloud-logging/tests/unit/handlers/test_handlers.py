@@ -257,11 +257,11 @@ class TestCloudLoggingHandler(unittest.TestCase):
         logname = "loggername"
         message = "hello world"
         record = logging.LogRecord(logname, logging, None, None, message, None, None)
+        handler.filter(record)
         handler.emit(record)
-
         self.assertEqual(
             handler.transport.send_called_with,
-            (record, message, _GLOBAL_RESOURCE, None, None, None, None),
+            (record, message, _GLOBAL_RESOURCE, None, None, None, None, None),
         )
 
     def test_emit_manual_field_override(self):
@@ -286,6 +286,15 @@ class TestCloudLoggingHandler(unittest.TestCase):
         setattr(record, "resource", expected_resource)
         expected_labels = {"test-label": "manual"}
         setattr(record, "labels", expected_labels)
+        expected_source = {
+            "file": "test-file",
+            "line": str(1),
+            "function": "test-func",
+        }
+        setattr(record, "lineno", int(expected_source["line"]))
+        setattr(record, "funcName", expected_source["function"])
+        setattr(record, "pathname", expected_source["file"])
+        handler.filter(record)
         handler.emit(record)
 
         self.assertEqual(
@@ -298,6 +307,7 @@ class TestCloudLoggingHandler(unittest.TestCase):
                 expected_trace,
                 expected_span,
                 expected_http,
+                expected_source,
             ),
         )
 
@@ -413,6 +423,7 @@ class _Transport(object):
         trace=None,
         span_id=None,
         http_request=None,
+        source_location=None,
     ):
         self.send_called_with = (
             record,
@@ -422,4 +433,5 @@ class _Transport(object):
             trace,
             span_id,
             http_request,
+            source_location,
         )

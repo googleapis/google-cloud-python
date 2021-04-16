@@ -126,6 +126,8 @@ class CloudLoggingHandler(logging.StreamHandler):
         self.project_id = client.project
         self.resource = resource
         self.labels = labels
+        # add extra keys to log record
+        self.addFilter(CloudLoggingFilter(self.project_id))
 
     def emit(self, record):
         """Actually log the specified logging record.
@@ -138,25 +140,31 @@ class CloudLoggingHandler(logging.StreamHandler):
             record (logging.LogRecord): The record to be logged.
         """
         message = super(CloudLoggingHandler, self).format(record)
-        trace_id = getattr(record, "trace", None)
-        span_id = getattr(record, "span_id", None)
-        http_request = getattr(record, "http_request", None)
-        resource = getattr(record, "resource", self.resource)
         user_labels = getattr(record, "labels", {})
         # merge labels
         total_labels = self.labels if self.labels is not None else {}
         total_labels.update(user_labels)
         if len(total_labels) == 0:
             total_labels = None
+        # create source location object
+        if record.lineno and record.funcName and record.pathname:
+            source_location = {
+                "file": record.pathname,
+                "line": str(record.lineno),
+                "function": record.funcName,
+            }
+        else:
+            source_location = None
         # send off request
         self.transport.send(
             record,
             message,
-            resource=resource,
+            resource=getattr(record, "resource", self.resource),
             labels=(total_labels if total_labels else None),
-            trace=trace_id,
-            span_id=span_id,
-            http_request=http_request,
+            trace=(record.trace if record.trace else None),
+            span_id=getattr(record, "span_id", None),
+            http_request=(record.http_request if record.http_request else None),
+            source_location=source_location,
         )
 
 

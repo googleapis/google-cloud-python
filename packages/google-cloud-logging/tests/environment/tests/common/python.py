@@ -61,3 +61,50 @@ class CommonPython:
             found_severity = log_list[-1].severity
 
             self.assertEqual(found_severity.lower(), severity.lower())
+
+    def test_source_location_pylogging(self):
+        if self.environment == "kubernetes" or "appengine" in self.environment:
+            # disable these tests on environments with custom handlers
+            # todo: enable in v3.0.0
+            return
+        log_text = f"{inspect.currentframe().f_code.co_name}"
+        log_list = self.trigger_and_retrieve(log_text, function="pylogging")
+        found_source = log_list[-1].source_location
+
+        self.assertIsNotNone(found_source)
+        self.assertIsNotNone(found_source['file'])
+        self.assertIsNotNone(found_source['function'])
+        self.assertIsNotNone(found_source['line'])
+        self.assertIn("snippets.py", found_source['file'])
+        self.assertEqual(found_source['function'], "pylogging")
+        self.assertTrue(int(found_source['line']) > 0)
+
+    def test_flask_http_request_pylogging(self):
+        if self.environment == "kubernetes" or "appengine" in self.environment:
+            # disable these tests on environments with custom handlers
+            # todo: enable in v3.0.0
+            return
+        log_text = f"{inspect.currentframe().f_code.co_name}"
+
+        expected_agent = "test-agent"
+        expected_base_url = "http://test"
+        expected_path = "/pylogging"
+        expected_trace = "123"
+
+        log_list = self.trigger_and_retrieve(log_text, function="pylogging_flask",
+                path=expected_path, trace=expected_trace, base_url=expected_base_url, agent=expected_agent)
+        found_request = log_list[-1].http_request
+
+        self.assertIsNotNone(found_request)
+        self.assertIsNotNone(found_request['requestMethod'])
+        self.assertIsNotNone(found_request['requestUrl'])
+        self.assertIsNotNone(found_request['userAgent'])
+        self.assertIsNotNone(found_request['protocol'])
+        self.assertEqual(found_request['requestMethod'], 'GET')
+        self.assertEqual(found_request['requestUrl'], expected_base_url + expected_path)
+        self.assertEqual(found_request['userAgent'], expected_agent)
+        self.assertEqual(found_request['protocol'], 'HTTP/1.1')
+
+        found_trace = log_list[-1].trace
+        self.assertIsNotNone(found_trace)
+        self.assertIn("projects/", found_trace)

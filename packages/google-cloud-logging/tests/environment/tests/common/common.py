@@ -70,13 +70,14 @@ class Common:
         args_str = ",".join([f'{k}="{v}"' for k, v in kwargs.items()])
         self._script.run_command(Command.Trigger, [function, args_str])
 
-    @RetryErrors(exception=(LogsNotFound, RpcError), delay=2)
+    @RetryErrors(exception=(LogsNotFound, RpcError), delay=2, max_tries=2)
     def trigger_and_retrieve(
         self, log_text, function="simplelog", append_uuid=True, max_tries=6, **kwargs
     ):
         if append_uuid:
             log_text = f"{log_text} {uuid.uuid1()}"
         self._trigger(function, log_text=log_text, **kwargs)
+        sleep(2)
         filter_str = self._add_time_condition_to_filter(log_text)
         # give the command time to be received
         tries = 0
@@ -86,7 +87,7 @@ class Common:
                 log_list = self._get_logs(filter_str)
                 return log_list
             except (LogsNotFound, RpcError) as e:
-                sleep(10)
+                sleep(5)
                 tries += 1
         # log not found
         raise LogsNotFound
