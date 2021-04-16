@@ -1,4 +1,4 @@
 backoff==1.10.0
 pytest==6.2.3
-mock==3.0.5
+mock==4.0.3
 flaky==3.7.0
