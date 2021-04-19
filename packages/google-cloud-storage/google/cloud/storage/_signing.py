@@ -277,7 +277,7 @@ def generate_signed_url_v2(
 
         Assumes ``credentials`` implements the
         :class:`google.auth.credentials.Signing` interface. Also assumes
-        ``credentials`` has a ``service_account_email`` property which
+        ``credentials`` has a ``signer_email`` property which
         identifies the credentials.
 
     .. note::
@@ -441,7 +441,7 @@ def generate_signed_url_v4(
 
         Assumes ``credentials`` implements the
         :class:`google.auth.credentials.Signing` interface. Also assumes
-        ``credentials`` has a ``service_account_email`` property which
+        ``credentials`` has a ``signer_email`` property which
         identifies the credentials.
 
     .. note::
