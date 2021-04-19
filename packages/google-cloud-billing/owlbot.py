@@ -19,20 +19,15 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate budgets GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="billing",
-    version="v1",
-    bazel_target="//google/cloud/billing/v1:billing-v1-py",
-)
+default_version = "v1"
 
-excludes = ["setup.py", "docs/index.rst", "scripts/fixup*"]
-s.move(library, excludes=excludes)
+for library in s.get_staging_dirs(default_version):
+    excludes = ["setup.py", "docs/index.rst", "scripts/fixup*"]
+    s.move(library, excludes=excludes)
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
@@ -40,7 +35,5 @@ s.move(library, excludes=excludes)
 templated_files = common.py_library(cov_level=98, microgenerator=True)
 s.move(templated_files, excludes=[".coveragerc"])  # the microgenerator has a good coveragerc file
 s.replace(".gitignore", "bigquery/docs/generated", "htmlcov")  # temporary hack to ignore htmlcov
-
-
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
