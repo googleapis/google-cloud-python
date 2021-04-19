@@ -2,5 +2,8 @@
   "extends": [
     "config:base",  ":preserveSemverRanges"
   ],
-  "ignorePaths": [".pre-commit-config.yaml"]
+  "ignorePaths": [".pre-commit-config.yaml"],
+  "pip_requirements": {
+    "fileMatch": ["requirements-test.txt", "samples/[\\S/]*constraints.txt", "samples/[\\S/]*constraints-test.txt"]
+  }
 }

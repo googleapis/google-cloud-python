@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-documentai.git",
-        "sha": "bcef3b8b8e3c107ed7ba8528e901731fc185b582"
+        "sha": "9878a282d7a8180157d398e52a4b91be61a63e77"
       }
     },
     {
@@ -19,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "5b5bf6d519b2d658d9f2e483d9f6f3d0ba8ee6bc"
+        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "5b5bf6d519b2d658d9f2e483d9f6f3d0ba8ee6bc"
+        "sha": "0a071b3460344886297a304253bf924aa68ddb7e"
       }
     }
   ],
@@ -129,6 +129,7 @@
     "docs/documentai_v1beta3/services.rst",
     "docs/documentai_v1beta3/types.rst",
     "docs/multiprocessing.rst",
+    "documentai-v1-py.tar.gz",
     "google/cloud/documentai/__init__.py",
     "google/cloud/documentai/py.typed",
     "google/cloud/documentai_v1/__init__.py",
