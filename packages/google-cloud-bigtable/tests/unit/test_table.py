@@ -534,6 +534,87 @@ class TestTable(unittest.TestCase):
         result = table.get_cluster_states()
         self.assertEqual(result, expected_result)
 
+    def test_get_encryption_info(self):
+        from google.rpc.code_pb2 import Code
+        from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
+            client as bigtable_table_admin,
+        )
+        from google.cloud.bigtable.encryption_info import EncryptionInfo
+        from google.cloud.bigtable.enums import EncryptionInfo as enum_crypto
+        from google.cloud.bigtable.error import Status
+
+        ENCRYPTION_TYPE_UNSPECIFIED = (
+            enum_crypto.EncryptionType.ENCRYPTION_TYPE_UNSPECIFIED
+        )
+        GOOGLE_DEFAULT_ENCRYPTION = enum_crypto.EncryptionType.GOOGLE_DEFAULT_ENCRYPTION
+        CUSTOMER_MANAGED_ENCRYPTION = (
+            enum_crypto.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION
+        )
+
+        table_api = mock.create_autospec(bigtable_table_admin.BigtableTableAdminClient)
+        credentials = _make_credentials()
+        client = self._make_client(
+            project="project-id", credentials=credentials, admin=True
+        )
+        instance = client.instance(instance_id=self.INSTANCE_ID)
+        table = self._make_one(self.TABLE_ID, instance)
+
+        response_pb = _TablePB(
+            cluster_states={
+                "cluster-id1": _ClusterStateEncryptionInfoPB(
+                    encryption_type=ENCRYPTION_TYPE_UNSPECIFIED,
+                    encryption_status=_StatusPB(Code.OK, "Status OK"),
+                ),
+                "cluster-id2": _ClusterStateEncryptionInfoPB(
+                    encryption_type=GOOGLE_DEFAULT_ENCRYPTION,
+                ),
+                "cluster-id3": _ClusterStateEncryptionInfoPB(
+                    encryption_type=CUSTOMER_MANAGED_ENCRYPTION,
+                    encryption_status=_StatusPB(
+                        Code.UNKNOWN, "Key version is not yet known."
+                    ),
+                    kms_key_version="UNKNOWN",
+                ),
+            }
+        )
+
+        # Patch the stub used by the API method.
+        client._table_admin_client = table_api
+        bigtable_table_stub = client._table_admin_client
+
+        bigtable_table_stub.get_table.side_effect = [response_pb]
+
+        # build expected result
+        expected_result = {
+            "cluster-id1": (
+                EncryptionInfo(
+                    encryption_type=ENCRYPTION_TYPE_UNSPECIFIED,
+                    encryption_status=Status(_StatusPB(Code.OK, "Status OK")),
+                    kms_key_version="",
+                ),
+            ),
+            "cluster-id2": (
+                EncryptionInfo(
+                    encryption_type=GOOGLE_DEFAULT_ENCRYPTION,
+                    encryption_status=Status(_StatusPB(0, "")),
+                    kms_key_version="",
+                ),
+            ),
+            "cluster-id3": (
+                EncryptionInfo(
+                    encryption_type=CUSTOMER_MANAGED_ENCRYPTION,
+                    encryption_status=Status(
+                        _StatusPB(Code.UNKNOWN, "Key version is not yet known.")
+                    ),
+                    kms_key_version="UNKNOWN",
+                ),
+            ),
+        }
+
+        # Perform the method and check the result.
+        result = table.get_encryption_info()
+        self.assertEqual(result, expected_result)
+
     def _read_row_helper(self, chunks, expected_result, app_profile_id=None):
 
         from google.cloud._testing import _Monkey
@@ -2255,6 +2336,32 @@ def _ClusterStatePB(replication_state):
     from google.cloud.bigtable_admin_v2.types import table as table_v2_pb2
 
     return table_v2_pb2.Table.ClusterState(replication_state=replication_state)
+
+
+def _ClusterStateEncryptionInfoPB(
+    encryption_type, encryption_status=None, kms_key_version=None
+):
+    from google.cloud.bigtable_admin_v2.types import table as table_v2_pb2
+
+    return table_v2_pb2.Table.ClusterState(
+        encryption_info=(
+            table_v2_pb2.EncryptionInfo(
+                encryption_type=encryption_type,
+                encryption_status=encryption_status,
+                kms_key_version=kms_key_version,
+            ),
+        )
+    )
+
+
+def _StatusPB(code, message):
+    from google.rpc import status_pb2
+
+    status_pb = status_pb2.Status()
+    status_pb.code = code
+    status_pb.message = message
+
+    return status_pb
 
 
 def _read_rows_retry_exception(exc):

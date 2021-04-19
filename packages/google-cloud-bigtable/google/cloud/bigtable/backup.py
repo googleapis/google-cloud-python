@@ -19,6 +19,7 @@ import re
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud.bigtable_admin_v2 import BigtableTableAdminClient
 from google.cloud.bigtable_admin_v2.types import table
+from google.cloud.bigtable.encryption_info import EncryptionInfo
 from google.cloud.bigtable.policy import Policy
 from google.cloud.exceptions import NotFound
 from google.protobuf import field_mask_pb2
@@ -67,13 +68,20 @@ class Backup(object):
     """
 
     def __init__(
-        self, backup_id, instance, cluster_id=None, table_id=None, expire_time=None
+        self,
+        backup_id,
+        instance,
+        cluster_id=None,
+        table_id=None,
+        expire_time=None,
+        encryption_info=None,
     ):
         self.backup_id = backup_id
         self._instance = instance
         self._cluster = cluster_id
         self.table_id = table_id
         self._expire_time = expire_time
+        self._encryption_info = encryption_info
 
         self._parent = None
         self._source_table = None
@@ -177,6 +185,15 @@ class Backup(object):
         self._expire_time = new_expire_time
 
     @property
+    def encryption_info(self):
+        """Encryption info for this Backup.
+
+        :rtype: :class:`google.cloud.bigtable.encryption.EncryptionInfo`
+        :returns: The encryption information for this backup.
+        """
+        return self._encryption_info
+
+    @property
     def start_time(self):
         """The time this Backup was started.
 
@@ -255,6 +272,7 @@ class Backup(object):
         table_id = match.group("table_id") if match else None
 
         expire_time = backup_pb._pb.expire_time
+        encryption_info = EncryptionInfo._from_pb(backup_pb.encryption_info)
 
         backup = cls(
             backup_id,
@@ -262,6 +280,7 @@ class Backup(object):
             cluster_id=cluster_id,
             table_id=table_id,
             expire_time=expire_time,
+            encryption_info=encryption_info,
         )
         backup._start_time = backup_pb._pb.start_time
         backup._end_time = backup_pb._pb.end_time

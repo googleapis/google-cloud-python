@@ -18,6 +18,8 @@ import os
 import time
 import unittest
 
+import pytest
+
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 from google.api_core.exceptions import DeadlineExceeded
 from google.api_core.exceptions import TooManyRequests
@@ -56,8 +58,8 @@ TABLE_ID = "google-cloud-python-test-table"
 CLUSTER_ID = INSTANCE_ID + "-cluster"
 CLUSTER_ID_DATA = INSTANCE_ID_DATA + "-cluster"
 SERVE_NODES = 3
-COLUMN_FAMILY_ID1 = u"col-fam-id1"
-COLUMN_FAMILY_ID2 = u"col-fam-id2"
+COLUMN_FAMILY_ID1 = "col-fam-id1"
+COLUMN_FAMILY_ID2 = "col-fam-id2"
 COL_NAME1 = b"col-name1"
 COL_NAME2 = b"col-name2"
 COL_NAME3 = b"col-name3-but-other-fam"
@@ -68,13 +70,14 @@ CELL_VAL4 = b"foo"
 ROW_KEY = b"row-key"
 ROW_KEY_ALT = b"row-key-alt"
 EXISTING_INSTANCES = []
-LABEL_KEY = u"python-system"
+LABEL_KEY = "python-system"
 label_stamp = (
     datetime.datetime.utcnow()
     .replace(microsecond=0, tzinfo=UTC)
     .strftime("%Y-%m-%dt%H-%M-%S")
 )
 LABELS = {LABEL_KEY: str(label_stamp)}
+KMS_KEY_NAME = os.environ.get("KMS_KEY_NAME", None)
 
 
 class Config(object):
@@ -121,13 +124,13 @@ def setUpModule():
 
     Config.INSTANCE = Config.CLIENT.instance(INSTANCE_ID, labels=LABELS)
     Config.CLUSTER = Config.INSTANCE.cluster(
-        CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=SERVE_NODES
+        CLUSTER_ID, location_id=LOCATION_ID, serve_nodes=SERVE_NODES,
     )
     Config.INSTANCE_DATA = Config.CLIENT.instance(
         INSTANCE_ID_DATA, instance_type=Instance.Type.DEVELOPMENT, labels=LABELS
     )
     Config.CLUSTER_DATA = Config.INSTANCE_DATA.cluster(
-        CLUSTER_ID_DATA, location_id=LOCATION_ID
+        CLUSTER_ID_DATA, location_id=LOCATION_ID,
     )
 
     if not Config.IN_EMULATOR:
@@ -331,6 +334,220 @@ class TestInstanceAdminAPI(unittest.TestCase):
         temp_table_id = "test-get-cluster-states"
         temp_table = instance.table(temp_table_id)
         temp_table.create()
+
+        encryption_info = temp_table.get_encryption_info()
+        self.assertEqual(
+            encryption_info[ALT_CLUSTER_ID_1][0].encryption_type,
+            enums.EncryptionInfo.EncryptionType.GOOGLE_DEFAULT_ENCRYPTION,
+        )
+        self.assertEqual(
+            encryption_info[ALT_CLUSTER_ID_2][0].encryption_type,
+            enums.EncryptionInfo.EncryptionType.GOOGLE_DEFAULT_ENCRYPTION,
+        )
+
+        result = temp_table.get_cluster_states()
+        ReplicationState = enums.Table.ReplicationState
+        expected_results = [
+            ClusterState(ReplicationState.STATE_NOT_KNOWN),
+            ClusterState(ReplicationState.INITIALIZING),
+            ClusterState(ReplicationState.PLANNED_MAINTENANCE),
+            ClusterState(ReplicationState.UNPLANNED_MAINTENANCE),
+            ClusterState(ReplicationState.READY),
+        ]
+        cluster_id_list = result.keys()
+        self.assertEqual(len(cluster_id_list), 2)
+        self.assertIn(ALT_CLUSTER_ID_1, cluster_id_list)
+        self.assertIn(ALT_CLUSTER_ID_2, cluster_id_list)
+        for clusterstate in result.values():
+            self.assertIn(clusterstate, expected_results)
+
+        # Test create app profile with multi_cluster_routing policy
+        app_profiles_to_delete = []
+        description = "routing policy-multy"
+        app_profile_id_1 = "app_profile_id_1"
+        routing = enums.RoutingPolicyType.ANY
+        self._test_create_app_profile_helper(
+            app_profile_id_1,
+            instance,
+            routing_policy_type=routing,
+            description=description,
+            ignore_warnings=True,
+        )
+        app_profiles_to_delete.append(app_profile_id_1)
+
+        # Test list app profiles
+        self._test_list_app_profiles_helper(instance, [app_profile_id_1])
+
+        # Test modify app profile app_profile_id_1
+        # routing policy to single cluster policy,
+        # cluster -> ALT_CLUSTER_ID_1,
+        # allow_transactional_writes -> disallowed
+        # modify description
+        description = "to routing policy-single"
+        routing = enums.RoutingPolicyType.SINGLE
+        self._test_modify_app_profile_helper(
+            app_profile_id_1,
+            instance,
+            routing_policy_type=routing,
+            description=description,
+            cluster_id=ALT_CLUSTER_ID_1,
+            allow_transactional_writes=False,
+        )
+
+        # Test modify app profile app_profile_id_1
+        # cluster -> ALT_CLUSTER_ID_2,
+        # allow_transactional_writes -> allowed
+        self._test_modify_app_profile_helper(
+            app_profile_id_1,
+            instance,
+            routing_policy_type=routing,
+            description=description,
+            cluster_id=ALT_CLUSTER_ID_2,
+            allow_transactional_writes=True,
+            ignore_warnings=True,
+        )
+
+        # Test create app profile with single cluster routing policy
+        description = "routing policy-single"
+        app_profile_id_2 = "app_profile_id_2"
+        routing = enums.RoutingPolicyType.SINGLE
+        self._test_create_app_profile_helper(
+            app_profile_id_2,
+            instance,
+            routing_policy_type=routing,
+            description=description,
+            cluster_id=ALT_CLUSTER_ID_2,
+            allow_transactional_writes=False,
+        )
+        app_profiles_to_delete.append(app_profile_id_2)
+
+        # Test list app profiles
+        self._test_list_app_profiles_helper(
+            instance, [app_profile_id_1, app_profile_id_2]
+        )
+
+        # Test modify app profile app_profile_id_2 to
+        # allow transactional writes
+        # Note: no need to set ``ignore_warnings`` to True
+        # since we are not restrictings anything with this modification.
+        self._test_modify_app_profile_helper(
+            app_profile_id_2,
+            instance,
+            routing_policy_type=routing,
+            description=description,
+            cluster_id=ALT_CLUSTER_ID_2,
+            allow_transactional_writes=True,
+        )
+
+        # Test modify app profile app_profile_id_2 routing policy
+        # to multi_cluster_routing policy
+        # modify description
+        description = "to routing policy-multy"
+        routing = enums.RoutingPolicyType.ANY
+        self._test_modify_app_profile_helper(
+            app_profile_id_2,
+            instance,
+            routing_policy_type=routing,
+            description=description,
+            allow_transactional_writes=False,
+            ignore_warnings=True,
+        )
+
+        # Test delete app profiles
+        for app_profile_id in app_profiles_to_delete:
+            self._test_delete_app_profile_helper(app_profile_id, instance)
+
+    @pytest.mark.skipif(
+        not KMS_KEY_NAME, reason="requires KMS_KEY_NAME environment variable"
+    )
+    def test_create_instance_w_two_clusters_cmek(self):
+        from google.cloud.bigtable import enums
+        from google.cloud.bigtable.table import ClusterState
+
+        _PRODUCTION = enums.Instance.Type.PRODUCTION
+        ALT_INSTANCE_ID = "dif-cmek" + UNIQUE_SUFFIX
+        instance = Config.CLIENT.instance(
+            ALT_INSTANCE_ID, instance_type=_PRODUCTION, labels=LABELS
+        )
+
+        ALT_CLUSTER_ID_1 = ALT_INSTANCE_ID + "-c1"
+        ALT_CLUSTER_ID_2 = ALT_INSTANCE_ID + "-c2"
+        LOCATION_ID_2 = "us-central1-f"
+        STORAGE_TYPE = enums.StorageType.HDD
+        serve_nodes = 1
+        cluster_1 = instance.cluster(
+            ALT_CLUSTER_ID_1,
+            location_id=LOCATION_ID,
+            serve_nodes=serve_nodes,
+            default_storage_type=STORAGE_TYPE,
+            kms_key_name=KMS_KEY_NAME,
+        )
+        cluster_2 = instance.cluster(
+            ALT_CLUSTER_ID_2,
+            location_id=LOCATION_ID_2,
+            serve_nodes=serve_nodes,
+            default_storage_type=STORAGE_TYPE,
+            kms_key_name=KMS_KEY_NAME,
+        )
+        operation = instance.create(clusters=[cluster_1, cluster_2])
+
+        # Make sure this instance gets deleted after the test case.
+        self.instances_to_delete.append(instance)
+
+        # We want to make sure the operation completes.
+        operation.result(timeout=120)
+
+        # Create a new instance instance and make sure it is the same.
+        instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID)
+        instance_alt.reload()
+
+        self.assertEqual(instance, instance_alt)
+        self.assertEqual(instance.display_name, instance_alt.display_name)
+        self.assertEqual(instance.type_, instance_alt.type_)
+
+        clusters, failed_locations = instance_alt.list_clusters()
+        self.assertEqual(failed_locations, [])
+
+        clusters.sort(key=lambda x: x.name)
+        alt_cluster_1, alt_cluster_2 = clusters
+
+        self.assertEqual(cluster_1.location_id, alt_cluster_1.location_id)
+        self.assertEqual(alt_cluster_1.state, enums.Cluster.State.READY)
+        self.assertEqual(cluster_1.serve_nodes, alt_cluster_1.serve_nodes)
+        self.assertEqual(
+            cluster_1.default_storage_type, alt_cluster_1.default_storage_type
+        )
+        self.assertEqual(cluster_2.location_id, alt_cluster_2.location_id)
+        self.assertEqual(alt_cluster_2.state, enums.Cluster.State.READY)
+        self.assertEqual(cluster_2.serve_nodes, alt_cluster_2.serve_nodes)
+        self.assertEqual(
+            cluster_2.default_storage_type, alt_cluster_2.default_storage_type
+        )
+
+        # Test list clusters in project via 'client.list_clusters'
+        clusters, failed_locations = Config.CLIENT.list_clusters()
+        self.assertFalse(failed_locations)
+        found = set([cluster.name for cluster in clusters])
+        self.assertTrue(
+            {alt_cluster_1.name, alt_cluster_2.name, Config.CLUSTER.name}.issubset(
+                found
+            )
+        )
+
+        temp_table_id = "test-get-cluster-states"
+        temp_table = instance.table(temp_table_id)
+        temp_table.create()
+
+        encryption_info = temp_table.get_encryption_info()
+        self.assertEqual(
+            encryption_info[ALT_CLUSTER_ID_1][0].encryption_type,
+            enums.EncryptionInfo.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
+        )
+        self.assertEqual(
+            encryption_info[ALT_CLUSTER_ID_2][0].encryption_type,
+            enums.EncryptionInfo.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION,
+        )
+
         result = temp_table.get_cluster_states()
         ReplicationState = enums.Table.ReplicationState
         expected_results = [
@@ -843,6 +1060,7 @@ class TestTableAdminAPI(unittest.TestCase):
             self.skipTest("backups are not supported in the emulator")
 
         from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.cloud.bigtable import enums
 
         temp_table_id = "test-backup-table"
         temp_table = Config.INSTANCE_DATA.table(temp_table_id)
@@ -879,6 +1097,10 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertEqual(temp_backup_id, temp_table_backup.backup_id)
         self.assertEqual(CLUSTER_ID_DATA, temp_table_backup.cluster)
         self.assertEqual(expire, temp_table_backup.expire_time.seconds)
+        self.assertEqual(
+            temp_table_backup.encryption_info.encryption_type,
+            enums.EncryptionInfo.EncryptionType.GOOGLE_DEFAULT_ENCRYPTION,
+        )
 
         # Testing `Backup.update_expire_time()` method
         expire += 3600  # A one-hour change in the `expire_time` parameter
@@ -1213,13 +1435,13 @@ class TestDataAPI(unittest.TestCase):
         row.commit()
 
         # Combine a label with column 1.
-        label1 = u"label-red"
+        label1 = "label-red"
         label1_filter = ApplyLabelFilter(label1)
         col1_filter = ColumnQualifierRegexFilter(COL_NAME1)
         chain1 = RowFilterChain(filters=[col1_filter, label1_filter])
 
         # Combine a label with column 2.
-        label2 = u"label-blue"
+        label2 = "label-blue"
         label2_filter = ApplyLabelFilter(label2)
         col2_filter = ColumnQualifierRegexFilter(COL_NAME2)
         chain2 = RowFilterChain(filters=[col2_filter, label2_filter])

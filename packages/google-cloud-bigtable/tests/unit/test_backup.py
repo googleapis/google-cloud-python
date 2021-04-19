@@ -66,6 +66,7 @@ class TestBackup(unittest.TestCase):
         self.assertIsNone(backup._end_time)
         self.assertIsNone(backup._size_bytes)
         self.assertIsNone(backup._state)
+        self.assertIsNone(backup._encryption_info)
 
     def test_constructor_non_defaults(self):
         instance = _Instance(self.INSTANCE_NAME)
@@ -77,6 +78,7 @@ class TestBackup(unittest.TestCase):
             cluster_id=self.CLUSTER_ID,
             table_id=self.TABLE_ID,
             expire_time=expire_time,
+            encryption_info="encryption_info",
         )
 
         self.assertEqual(backup.backup_id, self.BACKUP_ID)
@@ -84,6 +86,7 @@ class TestBackup(unittest.TestCase):
         self.assertIs(backup._cluster, self.CLUSTER_ID)
         self.assertEqual(backup.table_id, self.TABLE_ID)
         self.assertEqual(backup._expire_time, expire_time)
+        self.assertEqual(backup._encryption_info, "encryption_info")
 
         self.assertIsNone(backup._parent)
         self.assertIsNone(backup._source_table)
@@ -128,14 +131,20 @@ class TestBackup(unittest.TestCase):
             klasse.from_pb(backup_pb, instance)
 
     def test_from_pb_success(self):
+        from google.cloud.bigtable.encryption_info import EncryptionInfo
+        from google.cloud.bigtable.error import Status
         from google.cloud.bigtable_admin_v2.types import table
         from google.cloud._helpers import _datetime_to_pb_timestamp
+        from google.rpc.code_pb2 import Code
 
         client = _Client()
         instance = _Instance(self.INSTANCE_NAME, client)
         timestamp = _datetime_to_pb_timestamp(self._make_timestamp())
         size_bytes = 1234
         state = table.Backup.State.READY
+        GOOGLE_DEFAULT_ENCRYPTION = (
+            table.EncryptionInfo.EncryptionType.GOOGLE_DEFAULT_ENCRYPTION
+        )
         backup_pb = table.Backup(
             name=self.BACKUP_NAME,
             source_table=self.TABLE_NAME,
@@ -144,6 +153,11 @@ class TestBackup(unittest.TestCase):
             end_time=timestamp,
             size_bytes=size_bytes,
             state=state,
+            encryption_info=table.EncryptionInfo(
+                encryption_type=GOOGLE_DEFAULT_ENCRYPTION,
+                encryption_status=_StatusPB(Code.OK, "Status OK"),
+                kms_key_version="2",
+            ),
         )
         klasse = self._get_target_class()
 
@@ -159,6 +173,14 @@ class TestBackup(unittest.TestCase):
         self.assertEqual(backup.end_time, timestamp)
         self.assertEqual(backup._size_bytes, size_bytes)
         self.assertEqual(backup._state, state)
+        self.assertEqual(
+            backup.encryption_info,
+            EncryptionInfo(
+                encryption_type=GOOGLE_DEFAULT_ENCRYPTION,
+                encryption_status=Status(_StatusPB(Code.OK, "Status OK")),
+                kms_key_version="2",
+            ),
+        )
 
     def test_property_name(self):
         from google.cloud.bigtable.client import Client
@@ -862,3 +884,13 @@ class _Instance(object):
         self.name = name
         self.instance_id = name.rsplit("/", 1)[1]
         self._client = client
+
+
+def _StatusPB(code, message):
+    from google.rpc import status_pb2
+
+    status_pb = status_pb2.Status()
+    status_pb.code = code
+    status_pb.message = message
+
+    return status_pb

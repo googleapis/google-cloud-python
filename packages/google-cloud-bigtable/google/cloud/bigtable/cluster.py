@@ -63,6 +63,19 @@ class Cluster(object):
                                  Defaults to
                                  :data:`google.cloud.bigtable.enums.StorageType.UNSPECIFIED`.
 
+    :type kms_key_name: str
+    :param kms_key_name: (Optional, Creation Only) The name of the KMS customer managed
+                         encryption key (CMEK) to use for at-rest encryption of data in
+                         this cluster.  If omitted, Google's default encryption will be
+                         used. If specified, the requirements for this key are:
+
+                         1) The Cloud Bigtable service account associated with the
+                            project that contains the cluster must be granted the
+                            ``cloudkms.cryptoKeyEncrypterDecrypter`` role on the CMEK.
+                         2) Only regional keys can be used and the region of the CMEK
+                            key must match the region of the cluster.
+                         3) All clusters within an instance must use the same CMEK key.
+
     :type _state: int
     :param _state: (`OutputOnly`)
                    The current state of the cluster.
@@ -81,6 +94,7 @@ class Cluster(object):
         location_id=None,
         serve_nodes=None,
         default_storage_type=None,
+        kms_key_name=None,
         _state=None,
     ):
         self.cluster_id = cluster_id
@@ -88,6 +102,7 @@ class Cluster(object):
         self.location_id = location_id
         self.serve_nodes = serve_nodes
         self.default_storage_type = default_storage_type
+        self._kms_key_name = kms_key_name
         self._state = _state
 
     @classmethod
@@ -145,6 +160,10 @@ class Cluster(object):
         self.location_id = cluster_pb.location.split("/")[-1]
         self.serve_nodes = cluster_pb.serve_nodes
         self.default_storage_type = cluster_pb.default_storage_type
+        if cluster_pb.encryption_config:
+            self._kms_key_name = cluster_pb.encryption_config.kms_key_name
+        else:
+            self._kms_key_name = None
         self._state = cluster_pb.state
 
     @property
@@ -186,6 +205,11 @@ class Cluster(object):
 
         """
         return self._state
+
+    @property
+    def kms_key_name(self):
+        """str: Customer managed encryption key for the cluster."""
+        return self._kms_key_name
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -356,4 +380,8 @@ class Cluster(object):
             serve_nodes=self.serve_nodes,
             default_storage_type=self.default_storage_type,
         )
+        if self._kms_key_name:
+            cluster_pb.encryption_config = instance.Cluster.EncryptionConfig(
+                kms_key_name=self._kms_key_name,
+            )
         return cluster_pb

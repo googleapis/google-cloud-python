@@ -28,6 +28,7 @@ from google.cloud.bigtable.column_family import _gc_rule_from_pb
 from google.cloud.bigtable.column_family import ColumnFamily
 from google.cloud.bigtable.batcher import MutationsBatcher
 from google.cloud.bigtable.batcher import FLUSH_COUNT, MAX_ROW_BYTES
+from google.cloud.bigtable.encryption_info import EncryptionInfo
 from google.cloud.bigtable.policy import Policy
 from google.cloud.bigtable.row import AppendRow
 from google.cloud.bigtable.row import ConditionalRow
@@ -481,6 +482,33 @@ class Table(object):
 
         return {
             cluster_id: ClusterState(value_pb.replication_state)
+            for cluster_id, value_pb in table_pb.cluster_states.items()
+        }
+
+    def get_encryption_info(self):
+        """List the encryption info for each cluster owned by this table.
+
+        Gets the current encryption info for the table across all of the clusters.  The
+        returned dict will be keyed by cluster id and contain a status for all of the
+        keys in use.
+
+        :rtype: dict
+        :returns: Dictionary of encryption info for this table. Keys are cluster ids and
+                  values are tuples of :class:`google.cloud.bigtable.encryption.EncryptionInfo` instances.
+        """
+        ENCRYPTION_VIEW = enums.Table.View.ENCRYPTION_VIEW
+        table_client = self._instance._client.table_admin_client
+        table_pb = table_client.get_table(
+            request={"name": self.name, "view": ENCRYPTION_VIEW}
+        )
+
+        return {
+            cluster_id: tuple(
+                (
+                    EncryptionInfo._from_pb(info_pb)
+                    for info_pb in value_pb.encryption_info
+                )
+            )
             for cluster_id, value_pb in table_pb.cluster_states.items()
         }
 

@@ -540,7 +540,12 @@ class Instance(object):
         return list(resp.permissions)
 
     def cluster(
-        self, cluster_id, location_id=None, serve_nodes=None, default_storage_type=None
+        self,
+        cluster_id,
+        location_id=None,
+        serve_nodes=None,
+        default_storage_type=None,
+        kms_key_name=None,
     ):
         """Factory to create a cluster associated with this instance.
 
@@ -576,6 +581,22 @@ class Instance(object):
 
         :rtype: :class:`~google.cloud.bigtable.instance.Cluster`
         :returns: a cluster owned by this instance.
+
+        :type kms_key_name: str
+        :param kms_key_name: (Optional, Creation Only) The name of the KMS customer
+                             managed encryption key (CMEK) to use for at-rest encryption
+                             of data in this cluster.  If omitted, Google's default
+                             encryption will be used. If specified, the requirements for
+                             this key are:
+
+                             1) The Cloud Bigtable service account associated with the
+                                project that contains the cluster must be granted the
+                                ``cloudkms.cryptoKeyEncrypterDecrypter`` role on the
+                                CMEK.
+                             2) Only regional keys can be used and the region of the
+                                CMEK key must match the region of the cluster.
+                             3) All clusters within an instance must use the same CMEK
+                                key.
         """
         return Cluster(
             cluster_id,
@@ -583,6 +604,7 @@ class Instance(object):
             location_id=location_id,
             serve_nodes=serve_nodes,
             default_storage_type=default_storage_type,
+            kms_key_name=kms_key_name,
         )
 
     def list_clusters(self):

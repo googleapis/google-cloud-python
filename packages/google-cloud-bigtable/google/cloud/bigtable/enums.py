@@ -156,6 +156,7 @@ class Table(object):
         NAME_ONLY = table.Table.View.NAME_ONLY
         SCHEMA_VIEW = table.Table.View.SCHEMA_VIEW
         REPLICATION_VIEW = table.Table.View.REPLICATION_VIEW
+        ENCRYPTION_VIEW = table.Table.View.ENCRYPTION_VIEW
         FULL = table.Table.View.FULL
 
     class ReplicationState(object):
@@ -191,3 +192,32 @@ class Table(object):
             table.Table.ClusterState.ReplicationState.UNPLANNED_MAINTENANCE
         )
         READY = table.Table.ClusterState.ReplicationState.READY
+
+
+class EncryptionInfo:
+    class EncryptionType:
+        """Possible encryption types for a resource.
+
+        Attributes:
+            ENCRYPTION_TYPE_UNSPECIFIED (int): Encryption type was not specified, though
+                data at rest remains encrypted.
+            GOOGLE_DEFAULT_ENCRYPTION (int): The data backing this resource is encrypted
+                at rest with a key that is fully managed by Google. No key version or
+                status will be populated. This is the default state.
+            CUSTOMER_MANAGED_ENCRYPTION (int): The data backing this resource is
+                encrypted at rest with a key that is managed by the customer. The in-use
+                version of the key and its status are populated for CMEK-protected
+                tables. CMEK-protected backups are pinned to the key version that was in
+                use at the time the backup was taken. This key version is populated but
+                its status is not tracked and is reported as `UNKNOWN`.
+        """
+
+        ENCRYPTION_TYPE_UNSPECIFIED = (
+            table.EncryptionInfo.EncryptionType.ENCRYPTION_TYPE_UNSPECIFIED
+        )
+        GOOGLE_DEFAULT_ENCRYPTION = (
+            table.EncryptionInfo.EncryptionType.GOOGLE_DEFAULT_ENCRYPTION
+        )
+        CUSTOMER_MANAGED_ENCRYPTION = (
+            table.EncryptionInfo.EncryptionType.CUSTOMER_MANAGED_ENCRYPTION
+        )
