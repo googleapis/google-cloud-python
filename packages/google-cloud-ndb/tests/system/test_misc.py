@@ -459,20 +459,24 @@ def test_non_transactional_means_no_transaction(dispose_of):
 
 @pytest.mark.usefixtures("client_context")
 def test_legacy_local_structured_property_with_boolean(ds_entity):
-    """Regression test for #623
+    """Regression test for #623, #625
 
     https://github.com/googleapis/python-ndb/issues/623
+    https://github.com/googleapis/python-ndb/issues/625
     """
     children = [
         b"x\x9c\xab\xe2\x96bNJ,R`\xd0b\x12`\xac\x12\xe1\xe0\x97bN\xcb\xcf\x07r9\xa5"
-        b"\xd832\x15r\xf3s\x15\x01u_\x07\n"
+        b"\xd832\x15r\xf3s\x15\x01u_\x07\n",
+        b"x\x9c\xab\xe2\x96bNJ,R`\xd0b\x12`\xa8\x12\xe7\xe0\x97bN\xcb\xcf\x07ry\xa4"
+        b"\xb82Rsr\xf2\x15R\x12S\x14\x01\x8e\xbf\x085",
     ]
+
     entity_id = test_utils.system.unique_resource_id()
     ds_entity(KIND, entity_id, children=children)
 
     class OtherKind(ndb.Model):
         foo = ndb.StringProperty()
-        bar = ndb.BooleanProperty(default=True)
+        bar = ndb.BooleanProperty(required=True, default=True)
 
     class SomeKind(ndb.Model):
         children = ndb.LocalStructuredProperty(
@@ -481,12 +485,19 @@ def test_legacy_local_structured_property_with_boolean(ds_entity):
 
     entity = SomeKind.get_by_id(entity_id)
 
-    assert len(entity.children) == 1
+    assert len(entity.children) == 2
     assert entity.children[0].foo == "hi mom!"
     assert entity.children[0].bar is True
+    assert entity.children[1].foo == "hello dad!"
+    assert entity.children[1].bar is False
 
-    entity.children[0].foo = "hello dad!"
+    entity.children.append(OtherKind(foo="i'm in jail!", bar=False))
     entity.put()
 
     entity = SomeKind.get_by_id(entity_id)
-    assert entity.children[0].foo == "hello dad!"
+    assert entity.children[0].foo == "hi mom!"
+    assert entity.children[0].bar is True
+    assert entity.children[1].foo == "hello dad!"
+    assert entity.children[1].bar is False
+    assert entity.children[2].foo == "i'm in jail!"
+    assert entity.children[2].bar is False

@@ -794,7 +794,7 @@ class EntityProto(ProtocolBuffer.ProtocolMessage):
         for prop in self.property_list():
             name = prop.name().decode("utf-8")
             entity_props[name] = (
-                prop.has_value() and self._get_property_value(prop.value()) or None
+                self._get_property_value(prop.value()) if prop.has_value() else None
             )
         return entity_props
 
