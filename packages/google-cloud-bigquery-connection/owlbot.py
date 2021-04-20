@@ -19,19 +19,14 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate access approval GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="bigquery/connection",
-    version="v1",
-    bazel_target=f"//google/cloud/bigquery/connection/v1:bigquery-connection-v1-py"
-)
+default_version = "v1"
 
-s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst", "*.tar.gz"])
+for library in s.get_staging_dirs(default_version):
+    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst", "*.tar.gz"])
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
