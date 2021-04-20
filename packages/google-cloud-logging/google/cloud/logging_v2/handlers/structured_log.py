@@ -19,7 +19,7 @@ import logging.handlers
 
 from google.cloud.logging_v2.handlers.handlers import CloudLoggingFilter
 
-GCP_FORMAT = '{"message": "%(message)s", "severity": "%(levelname)s", "logging.googleapis.com/trace": "%(trace)s", "logging.googleapis.com/sourceLocation": { "file": "%(pathname)s", "line": "%(lineno)d", "function": "%(funcName)s"}, "httpRequest": {"requestMethod": "%(request_method)s", "requestUrl": "%(request_url)s", "userAgent": "%(user_agent)s", "protocol": "%(protocol)s"} }'
+GCP_FORMAT = '{"message": "%(message)s", "severity": "%(levelname)s", "logging.googleapis.com/trace": "%(trace)s", "logging.googleapis.com/sourceLocation": { "file": "%(file)s", "line": "%(line)d", "function": "%(function)s"}, "httpRequest": {"requestMethod": "%(request_method)s", "requestUrl": "%(request_url)s", "userAgent": "%(user_agent)s", "protocol": "%(protocol)s"} }'
 
 
 class StructuredLogHandler(logging.StreamHandler):
