@@ -262,6 +262,42 @@ class Test_Blob(unittest.TestCase):
         self.assertIsInstance(acl, ObjectACL)
         self.assertIs(acl, blob._acl)
 
+    def test_encryption_key_getter(self):
+        BLOB_NAME = "blob-name"
+        BUCKET = object()
+        blob = self._make_one(BLOB_NAME, bucket=BUCKET)
+        self.assertIsNone(blob.encryption_key)
+        VALUE = object()
+        blob._encryption_key = VALUE
+        self.assertIs(blob.encryption_key, VALUE)
+
+    def test_encryption_key_setter(self):
+        BLOB_NAME = "blob-name"
+        BUCKET = object()
+        blob = self._make_one(BLOB_NAME, bucket=BUCKET)
+        self.assertIsNone(blob._encryption_key)
+        key = b"12345678901234567890123456789012"
+        blob.encryption_key = key
+        self.assertEqual(blob._encryption_key, key)
+
+    def test_kms_key_name_getter(self):
+        BLOB_NAME = "blob-name"
+        BUCKET = object()
+        blob = self._make_one(BLOB_NAME, bucket=BUCKET)
+        self.assertIsNone(blob.kms_key_name)
+        VALUE = object()
+        blob._patch_property("kmsKeyName", VALUE)
+        self.assertIs(blob.kms_key_name, VALUE)
+
+    def test_kms_key_name_setter(self):
+        BLOB_NAME = "blob-name"
+        BUCKET = object()
+        blob = self._make_one(BLOB_NAME, bucket=BUCKET)
+        self.assertIsNone(blob._properties.get("kmsKeyName"))
+        kms_key_name = "cryptoKeys/test-key"
+        blob.kms_key_name = kms_key_name
+        self.assertEqual(blob._properties.get("kmsKeyName"), kms_key_name)
+
     def test_path_bad_bucket(self):
         fake_bucket = object()
         name = u"blob-name"

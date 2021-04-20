@@ -254,6 +254,31 @@ class Blob(_PropertyMixin):
             )
         self._chunk_size = value
 
+    @property
+    def encryption_key(self):
+        """Retrieve the customer-supplied encryption key for the object.
+
+        :rtype: bytes or ``NoneType``
+        :returns:
+            The encryption key or ``None`` if no customer-supplied encryption key was used,
+            or the blob's resource has not been loaded from the server.
+        """
+        return self._encryption_key
+
+    @encryption_key.setter
+    def encryption_key(self, value):
+        """Set the blob's encryption key.
+
+        See https://cloud.google.com/storage/docs/encryption#customer-supplied
+
+        To perform a key rotation for an encrypted blob, use :meth:`rewrite`.
+        See https://cloud.google.com/storage/docs/encryption/using-customer-supplied-keys?hl=ca#rotating
+
+        :type value: bytes
+        :param value: 32 byte encryption key for customer-supplied encryption.
+        """
+        self._encryption_key = value
+
     @staticmethod
     def path_helper(bucket_path, blob_name):
         """Relative URL path for a blob.
@@ -347,25 +372,25 @@ class Blob(_PropertyMixin):
     def from_string(cls, uri, client=None):
         """Get a constructor for blob object by URI.
 
-         :type uri: str
-         :param uri: The blob uri pass to get blob object.
+        :type uri: str
+        :param uri: The blob uri pass to get blob object.
 
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client:
             (Optional) The client to use.  If not passed, falls back to the
             ``client`` stored on the blob's bucket.
 
-         :rtype: :class:`google.cloud.storage.blob.Blob`
-         :returns: The blob object created.
+        :rtype: :class:`google.cloud.storage.blob.Blob`
+        :returns: The blob object created.
 
-         Example:
-            Get a constructor for blob object by URI..
+        Example:
+            Get a constructor for blob object by URI.
 
             >>> from google.cloud import storage
             >>> from google.cloud.storage.blob import Blob
             >>> client = storage.Client()
             >>> blob = Blob.from_string("gs://bucket/object")
-         """
+        """
         from google.cloud.storage.bucket import Bucket
 
         scheme, netloc, path, query, frag = urlsplit(uri)
@@ -3838,6 +3863,15 @@ class Blob(_PropertyMixin):
             or the blob's resource has not been loaded from the server.
         """
         return self._properties.get("kmsKeyName")
+
+    @kms_key_name.setter
+    def kms_key_name(self, value):
+        """Set KMS encryption key for object.
+
+        :type value: str or ``NoneType``
+        :param value: new KMS key name (None to clear any existing key).
+        """
+        self._patch_property("kmsKeyName", value)
 
     storage_class = _scalar_property("storageClass")
     """Retrieve the storage class for the object.
