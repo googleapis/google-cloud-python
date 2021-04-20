@@ -140,6 +140,15 @@ class Test_entity_from_protobuf(unittest.TestCase):
         self.assertIsNone(entity.key)
         self.assertEqual(dict(entity), {})
 
+    def test_pb2_entity_no_key(self):
+        from google.cloud.datastore_v1.types import entity as entity_pb2
+
+        entity_pb = entity_pb2.Entity()
+        entity = self._call_fut(entity_pb)
+
+        self.assertIsNone(entity.key)
+        self.assertEqual(dict(entity), {})
+
     def test_entity_with_meaning(self):
         from google.cloud.datastore_v1.types import entity as entity_pb2
         from google.cloud.datastore.helpers import _new_value_pb
