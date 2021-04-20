@@ -42,10 +42,21 @@ class CloudLoggingFilter(logging.Filter):
 
     def filter(self, record):
         # ensure record has all required fields set
-        record.lineno = 0 if record.lineno is None else record.lineno
+        if hasattr(record, "source_location"):
+            record.line = int(record.source_location.get("line", 0))
+            record.file = record.source_location.get("file", "")
+            record.function = record.source_location.get("function", "")
+        else:
+            record.line = record.lineno if record.lineno else 0
+            record.file = record.pathname if record.pathname else ""
+            record.function = record.funcName if record.funcName else ""
+            if any([record.line, record.file, record.function]):
+                record.source_location = {
+                    "line": record.line,
+                    "file": record.file,
+                    "function": record.function,
+                }
         record.msg = "" if record.msg is None else record.msg
-        record.funcName = "" if record.funcName is None else record.funcName
-        record.pathname = "" if record.pathname is None else record.pathname
         # find http request data
         inferred_http, inferred_trace = get_request_data()
         if inferred_trace is not None and self.project is not None:
@@ -146,25 +157,16 @@ class CloudLoggingHandler(logging.StreamHandler):
         total_labels.update(user_labels)
         if len(total_labels) == 0:
             total_labels = None
-        # create source location object
-        if record.lineno and record.funcName and record.pathname:
-            source_location = {
-                "file": record.pathname,
-                "line": str(record.lineno),
-                "function": record.funcName,
-            }
-        else:
-            source_location = None
         # send off request
         self.transport.send(
             record,
             message,
             resource=getattr(record, "resource", self.resource),
-            labels=(total_labels if total_labels else None),
-            trace=(record.trace if record.trace else None),
+            labels=total_labels,
+            trace=getattr(record, "trace", None),
             span_id=getattr(record, "span_id", None),
-            http_request=(record.http_request if record.http_request else None),
-            source_location=source_location,
+            http_request=getattr(record, "http_request", None),
+            source_location=getattr(record, "source_location", None),
         )
 
 

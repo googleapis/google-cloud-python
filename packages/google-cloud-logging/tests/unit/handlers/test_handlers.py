@@ -67,10 +67,10 @@ class TestCloudLoggingFilter(unittest.TestCase):
         success = filter_obj.filter(record)
         self.assertTrue(success)
 
-        self.assertEqual(record.lineno, lineno)
+        self.assertEqual(record.line, lineno)
         self.assertEqual(record.msg, message)
-        self.assertEqual(record.funcName, func)
-        self.assertEqual(record.pathname, pathname)
+        self.assertEqual(record.function, func)
+        self.assertEqual(record.file, pathname)
         self.assertEqual(record.trace, "")
         self.assertEqual(record.http_request, {})
         self.assertEqual(record.request_method, "")
@@ -91,10 +91,10 @@ class TestCloudLoggingFilter(unittest.TestCase):
         success = filter_obj.filter(record)
         self.assertTrue(success)
 
-        self.assertEqual(record.lineno, 0)
+        self.assertEqual(record.line, 0)
         self.assertEqual(record.msg, "")
-        self.assertEqual(record.funcName, "")
-        self.assertEqual(record.pathname, "")
+        self.assertEqual(record.function, "")
+        self.assertEqual(record.file, "")
         self.assertEqual(record.trace, "")
         self.assertEqual(record.http_request, {})
         self.assertEqual(record.request_method, "")
@@ -175,7 +175,16 @@ class TestCloudLoggingFilter(unittest.TestCase):
                 "userAgent": overwritten_agent,
                 "protocol": overwritten_protocol,
             }
+            overwritten_line = 22
+            overwritten_function = "test-func"
+            overwritten_file = "test-file"
+            overwritten_source_location = {
+                "file": overwritten_file,
+                "line": overwritten_line,
+                "function": overwritten_function,
+            }
             record.http_request = overwritten_request_object
+            record.source_location = overwritten_source_location
             success = filter_obj.filter(record)
             self.assertTrue(success)
 
@@ -185,6 +194,9 @@ class TestCloudLoggingFilter(unittest.TestCase):
             self.assertEqual(record.request_url, overwritten_url)
             self.assertEqual(record.user_agent, overwritten_agent)
             self.assertEqual(record.protocol, overwritten_protocol)
+            self.assertEqual(record.line, overwritten_line)
+            self.assertEqual(record.function, overwritten_function)
+            self.assertEqual(record.file, overwritten_file)
 
 
 class TestCloudLoggingHandler(unittest.TestCase):
@@ -256,12 +268,13 @@ class TestCloudLoggingHandler(unittest.TestCase):
         )
         logname = "loggername"
         message = "hello world"
+        labels = {"test-key": "test-value"}
         record = logging.LogRecord(logname, logging, None, None, message, None, None)
-        handler.filter(record)
+        record.labels = labels
         handler.emit(record)
         self.assertEqual(
             handler.transport.send_called_with,
-            (record, message, _GLOBAL_RESOURCE, None, None, None, None, None),
+            (record, message, _GLOBAL_RESOURCE, labels, None, None, None, None),
         )
 
     def test_emit_manual_field_override(self):
@@ -282,19 +295,12 @@ class TestCloudLoggingHandler(unittest.TestCase):
         setattr(record, "span_id", expected_span)
         expected_http = {"reuqest_url": "manual"}
         setattr(record, "http_request", expected_http)
+        expected_source = {"file": "test-file"}
+        setattr(record, "source_location", expected_source)
         expected_resource = Resource(type="test", labels={})
         setattr(record, "resource", expected_resource)
         expected_labels = {"test-label": "manual"}
         setattr(record, "labels", expected_labels)
-        expected_source = {
-            "file": "test-file",
-            "line": str(1),
-            "function": "test-func",
-        }
-        setattr(record, "lineno", int(expected_source["line"]))
-        setattr(record, "funcName", expected_source["function"])
-        setattr(record, "pathname", expected_source["file"])
-        handler.filter(record)
         handler.emit(record)
 
         self.assertEqual(

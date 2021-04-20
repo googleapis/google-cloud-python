@@ -35,7 +35,7 @@ class TestCloudFunctions(Common, CommonPython, unittest.TestCase):
         """
         log_text = f"{inspect.currentframe().f_code.co_name}"
 
-        log_list = self.trigger_and_retrieve(log_text, function="pylogging")
+        log_list = self.trigger_and_retrieve(log_text, "pylogging")
         found_request = log_list[-1].http_request
         found_trace = log_list[-1].trace
 

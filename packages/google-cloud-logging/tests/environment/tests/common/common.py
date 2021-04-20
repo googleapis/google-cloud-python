@@ -65,18 +65,18 @@ class Common:
             raise LogsNotFound
         return entries
 
-    def _trigger(self, function, **kwargs):
+    def _trigger(self, snippet, **kwargs):
         timestamp = datetime.now(timezone.utc)
         args_str = ",".join([f'{k}="{v}"' for k, v in kwargs.items()])
-        self._script.run_command(Command.Trigger, [function, args_str])
+        self._script.run_command(Command.Trigger, [snippet, args_str])
 
     @RetryErrors(exception=(LogsNotFound, RpcError), delay=2, max_tries=2)
     def trigger_and_retrieve(
-        self, log_text, function="simplelog", append_uuid=True, max_tries=6, **kwargs
+        self, log_text, snippet, append_uuid=True, max_tries=6, **kwargs
     ):
         if append_uuid:
             log_text = f"{log_text} {uuid.uuid1()}"
-        self._trigger(function, log_text=log_text, **kwargs)
+        self._trigger(snippet, log_text=log_text, **kwargs)
         sleep(2)
         filter_str = self._add_time_condition_to_filter(log_text)
         # give the command time to be received
@@ -124,7 +124,7 @@ class Common:
 
     def test_receive_log(self):
         log_text = f"{inspect.currentframe().f_code.co_name}"
-        log_list = self.trigger_and_retrieve(log_text)
+        log_list = self.trigger_and_retrieve(log_text, "simplelog")
 
         found_log = None
         for log in log_list:
@@ -143,7 +143,7 @@ class Common:
     #         # to do: add monitored resource info to go
     #         return True
     #     log_text = f"{inspect.currentframe().f_code.co_name}"
-    #     log_list = self.trigger_and_retrieve(log_text)
+    #     log_list = self.trigger_and_retrieve(log_text, "simplelog")
     #     found_resource = log_list[-1].resource
 
     #     self.assertIsNotNone(self.monitored_resource_name)
@@ -170,9 +170,9 @@ class Common:
             "DEBUG",
         ]
         for severity in severities:
-            log_list = self.trigger_and_retrieve(log_text, severity=severity)
+            log_list = self.trigger_and_retrieve(log_text, "simplelog", severity=severity)
             found_severity = log_list[-1].severity
             self.assertEqual(found_severity.lower(), severity.lower())
         # DEFAULT severity should result in empty field
-        log_list = self.trigger_and_retrieve(log_text, severity="DEFAULT")
+        log_list = self.trigger_and_retrieve(log_text, "simplelog", severity="DEFAULT")
         self.assertIsNone(log_list[-1].severity)

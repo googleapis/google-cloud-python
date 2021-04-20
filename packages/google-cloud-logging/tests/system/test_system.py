@@ -333,10 +333,12 @@ class TestLogging(unittest.TestCase):
             cloud_logger = logging.getLogger(LOGGER_NAME)
             cloud_logger.addHandler(handler)
             expected_request = {"requestUrl": "localhost"}
+            expected_source = {"file": "test.py"}
             extra = {
                 "trace": "123",
                 "span_id": "456",
                 "http_request": expected_request,
+                "source_location": expected_source,
                 "resource": Resource(type="cloudiot_device", labels={}),
                 "labels": {"test-label": "manual"},
             }

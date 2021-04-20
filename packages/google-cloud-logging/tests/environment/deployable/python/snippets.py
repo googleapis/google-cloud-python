@@ -41,17 +41,35 @@ def simplelog(log_name=None, log_text="simple_log", severity="DEFAULT", **kwargs
 
 def pylogging(log_text="pylogging", severity="WARNING", **kwargs):
     # allowed severity: debug, info, warning, error, critical
+
+    # build http request if fields given as argument
+    http_keys =  ["protocol", "requestUrl", "userAgent", "requestMethod"]
+    if any([k in kwargs for k in http_keys]):
+        http_request = {}
+        for key in http_keys:
+            if key in kwargs:
+                http_request[key] = kwargs[key]
+        kwargs['http_request'] = http_request
+    # build source location if given as argument
+    source_keys =  ["line", "file", "function"]
+    if any([k in kwargs for k in http_keys]):
+        source_location = {}
+        for key in source_keys:
+            if key in kwargs:
+                source_location[key] = kwargs[key]
+        kwargs['source_location'] = source_location
+
     severity = severity.upper()
     if severity == "DEBUG":
-        logging.debug(log_text)
+        logging.debug(log_text, extra=kwargs)
     elif severity == "INFO":
-        logging.info(log_text)
+        logging.info(log_text, extra=kwargs)
     elif severity == "WARNING":
-        logging.warning(log_text)
+        logging.warning(log_text, extra=kwargs)
     elif severity == "ERROR":
-        logging.error(log_text)
+        logging.error(log_text, extra=kwargs)
     else:
-        logging.critical(log_text)
+        logging.critical(log_text, extra=kwargs)
 
 def pylogging_flask(log_text="pylogging_flask", path="/", base_url="http://google", agent="Chrome", trace="123", **kwargs):
     import flask

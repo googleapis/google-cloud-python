@@ -24,7 +24,7 @@ from ..common.common import Common
 class CommonPython:
     def pylogging_test_receive_log(self):
         log_text = f"{inspect.currentframe().f_code.co_name}"
-        log_list = self.trigger_and_retrieve(log_text, function="pylogging")
+        log_list = self.trigger_and_retrieve(log_text, "pylogging")
 
         found_log = None
         for log in log_list:
@@ -39,7 +39,7 @@ class CommonPython:
 
     def test_monitored_resource_pylogging(self):
         log_text = f"{inspect.currentframe().f_code.co_name}"
-        log_list = self.trigger_and_retrieve(log_text, function="pylogging")
+        log_list = self.trigger_and_retrieve(log_text, "pylogging")
         found_resource = log_list[-1].resource
 
         self.assertIsNotNone(self.monitored_resource_name)
@@ -56,7 +56,7 @@ class CommonPython:
         for severity in severities:
             log_text = f"{inspect.currentframe().f_code.co_name}"
             log_list = self.trigger_and_retrieve(
-                log_text, function="pylogging", severity=severity
+                log_text, "pylogging", severity=severity
             )
             found_severity = log_list[-1].severity
 
@@ -68,7 +68,7 @@ class CommonPython:
             # todo: enable in v3.0.0
             return
         log_text = f"{inspect.currentframe().f_code.co_name}"
-        log_list = self.trigger_and_retrieve(log_text, function="pylogging")
+        log_list = self.trigger_and_retrieve(log_text, "pylogging")
         found_source = log_list[-1].source_location
 
         self.assertIsNotNone(found_source)
@@ -91,7 +91,7 @@ class CommonPython:
         expected_path = "/pylogging"
         expected_trace = "123"
 
-        log_list = self.trigger_and_retrieve(log_text, function="pylogging_flask",
+        log_list = self.trigger_and_retrieve(log_text, "pylogging_flask",
                 path=expected_path, trace=expected_trace, base_url=expected_base_url, agent=expected_agent)
         found_request = log_list[-1].http_request
 
@@ -108,3 +108,67 @@ class CommonPython:
         found_trace = log_list[-1].trace
         self.assertIsNotNone(found_trace)
         self.assertIn("projects/", found_trace)
+
+    def test_pylogging_extras(self):
+        if self.environment == "kubernetes" or "appengine" in self.environment:
+            # disable these tests on environments with custom handlers
+            # todo: enable in v3.0.0
+            return
+        log_text = f"{inspect.currentframe().f_code.co_name}"
+        kwargs = {
+            'trace': '123',
+            'requestMethod': 'POST',
+            'requestUrl': 'http://test',
+            'userAgent': 'agent',
+            'protocol': 'test',
+            'line': 25,
+            'file': 'test-file',
+            'function': 'test-function'
+        }
+        log_list = self.trigger_and_retrieve(log_text, "pylogging", **kwargs)
+        found_log = log_list[-1]
+
+        if self.environment != "functions":
+            # functions seems to override the user's trace value
+            self.assertEqual(found_log.trace, kwargs['trace'])
+
+        # check that custom http request fields were set
+        self.assertIsNotNone(found_log.http_request)
+        for field in ['requestMethod', 'requestUrl', 'userAgent', 'protocol']:
+            self.assertIsNotNone(found_log.http_request[field],
+                    'http_request[{field}] is unexpectedly None')
+            self.assertEqual(found_log.http_request[field], kwargs[field],
+                    f'http_request[{field}] != {kwargs[field]}')
+        # check that custom source location fields were set
+        self.assertIsNotNone(found_log.source_location)
+        for field in ['line', 'file', 'function']:
+            self.assertIsNotNone(found_log.source_location[field],
+                    f'source_location[{field}] is unexpectedly None')
+            self.assertEqual(found_log.source_location[field], kwargs[field],
+                    f'source_location[{field}] != {kwargs[field]}')
+
+    def test_pylogging_extras_sparse(self):
+        if self.environment == "kubernetes" or "appengine" in self.environment:
+            # disable these tests on environments with custom handlers
+            # todo: enable in v3.0.0
+            return
+        log_text = f"{inspect.currentframe().f_code.co_name}"
+        kwargs = {
+            'requestMethod': 'POST',
+            'file': 'test-file',
+        }
+        log_list = self.trigger_and_retrieve(log_text, "pylogging", **kwargs)
+        found_log = log_list[-1]
+
+        # check that custom http request fields were set
+        self.assertIsNotNone(found_log.http_request)
+        self.assertEqual(found_log.http_request["requestMethod"], kwargs["requestMethod"])
+        for field in ['requestUrl', 'userAgent', 'protocol']:
+            self.assertIsNone(found_log.http_request.get(field, None),
+                    f'http_request[{field}] is unexpectedly not None')
+        # check that custom source location fields were set
+        self.assertIsNotNone(found_log.source_location)
+        self.assertEqual(found_log.source_location['file'], kwargs['file'])
+        for field in ['line', 'function']:
+            self.assertIsNone(found_log.source_location.get(field, None),
+                    f'source_location[{field}] is unexpectedly not None')

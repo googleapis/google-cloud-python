@@ -149,3 +149,52 @@ class TestStructuredLogHandler(unittest.TestCase):
             result = json.loads(handler.format(record))
             for (key, value) in expected_payload.items():
                 self.assertEqual(value, result[key])
+
+    def test_format_overrides(self):
+        """
+        Allow users to override log fields using `logging.info("", extra={})`
+
+        If supported fields were overriden by the user, those choices should
+        take precedence.
+        """
+        import logging
+        import json
+
+        handler = self._make_one()
+        logname = "loggername"
+        message = "hello world，嗨 世界"
+        record = logging.LogRecord(logname, logging.INFO, "", 0, message, None, None)
+        overwrite_path = "http://overwrite"
+        inferred_path = "http://testserver/123"
+        overwrite_trace = "456"
+        inferred_trace = "123"
+        overwrite_file = "test-file"
+        record.http_request = {"requestUrl": overwrite_path}
+        record.source_location = {"file": overwrite_file}
+        record.trace = overwrite_trace
+        expected_payload = {
+            "logging.googleapis.com/trace": overwrite_trace,
+            "logging.googleapis.com/sourceLocation": {
+                "file": overwrite_file,
+                "function": "",
+                "line": "0",
+            },
+            "httpRequest": {
+                "requestMethod": "",
+                "requestUrl": overwrite_path,
+                "userAgent": "",
+                "protocol": "",
+            },
+        }
+
+        app = self.create_app()
+        with app.test_client() as c:
+            c.put(
+                path=inferred_path,
+                data="body",
+                headers={"X_CLOUD_TRACE_CONTEXT": inferred_trace},
+            )
+            handler.filter(record)
+            result = json.loads(handler.format(record))
+            for (key, value) in expected_payload.items():
+                self.assertEqual(value, result[key])
