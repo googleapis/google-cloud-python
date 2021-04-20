@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+### [2.1.1](https://www.github.com/googleapis/python-datastore/compare/v2.1.0...v2.1.1) (2021-04-20)
+
+
+### Bug Fixes
+
+* make HTTPDatastoreAPI compatible w/ microgen Gapic API ([#136](https://www.github.com/googleapis/python-datastore/issues/136)) ([d522799](https://www.github.com/googleapis/python-datastore/commit/d5227994a4a5e2300905d6619742664dcd909443))
+* optimize protobuf access for performance ([#155](https://www.github.com/googleapis/python-datastore/issues/155)) ([5b67daa](https://www.github.com/googleapis/python-datastore/commit/5b67daa3b2da1f0b5dd5b25e14bd5dee4444120b)), closes [#145](https://www.github.com/googleapis/python-datastore/issues/145) [#150](https://www.github.com/googleapis/python-datastore/issues/150)
+
 ## [2.1.0](https://www.github.com/googleapis/python-datastore/compare/v2.0.1...v2.1.0) (2020-12-04)
 
 
