@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-bigtable/compare/v2.0.0...v2.1.0) (2021-04-21)
+
+
+### Features
+
+* customer managed keys (CMEK) ([#249](https://www.github.com/googleapis/python-bigtable/issues/249)) ([93df829](https://www.github.com/googleapis/python-bigtable/commit/93df82998cc0218cbc4a1bc2ab41a48b7478758d))
+
 ## [2.0.0](https://www.github.com/googleapis/python-bigtable/compare/v1.7.0...v2.0.0) (2021-04-06)
 
 
