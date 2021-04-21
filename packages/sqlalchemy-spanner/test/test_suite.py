@@ -70,6 +70,9 @@ from sqlalchemy.testing.suite.test_insert import (
 from sqlalchemy.testing.suite.test_reflection import (
     ComponentReflectionTest as _ComponentReflectionTest,
 )
+from sqlalchemy.testing.suite.test_reflection import (
+    QuotedNameArgumentTest as _QuotedNameArgumentTest,
+)
 from sqlalchemy.testing.suite.test_results import RowFetchTest as _RowFetchTest
 from sqlalchemy.testing.suite.test_select import ExistsTest as _ExistsTest
 from sqlalchemy.testing.suite.test_select import (
@@ -561,6 +564,11 @@ class HasSequenceTest(_HasSequenceTest):
 
 @pytest.mark.skip("Spanner doesn't support CREATE SEQUENCE.")
 class SequenceTest(_SequenceTest):
+    pass
+
+
+@pytest.mark.skip("Spanner doesn't support quotes in table names.")
+class QuotedNameArgumentTest(_QuotedNameArgumentTest):
     pass
 
 
