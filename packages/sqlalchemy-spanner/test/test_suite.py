@@ -610,7 +610,7 @@ class ComponentReflectionTest(_ComponentReflectionTest):
             key=operator.itemgetter("name"),
         )
         orig_meta = self.metadata
-        table = Table(
+        Table(
             "testtbl",
             orig_meta,
             Column("a", sqlalchemy.String(20)),
@@ -619,12 +619,12 @@ class ComponentReflectionTest(_ComponentReflectionTest):
             # reserved identifiers
             Column("asc", sqlalchemy.String(30)),
             Column("key", sqlalchemy.String(30)),
+            sqlalchemy.Index("unique_a", "a", unique=True),
+            sqlalchemy.Index("unique_a_b_c", "a", "b", "c", unique=True),
+            sqlalchemy.Index("unique_c_a_b", "c", "a", "b", unique=True),
+            sqlalchemy.Index("unique_asc_key", "asc", "key", unique=True),
             schema=schema,
         )
-        for uc in uniques:
-            table.append_constraint(
-                sqlalchemy.Index(uc["name"], *uc["column_names"], unique=True)
-            )
         orig_meta.create_all()
 
         inspector = inspect(orig_meta.bind)
