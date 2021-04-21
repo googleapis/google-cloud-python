@@ -49,6 +49,10 @@ class Requirements(SuiteRequirements):
     def isolation_level(self):
         return exclusions.open()
 
+    @property
+    def sequences(self):
+        return exclusions.closed()
+
     def get_order_by_collation(self, _):
         """Get the default collation name.
 
