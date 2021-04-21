@@ -27,7 +27,12 @@ from google.cloud.pubsub_v1.subscriber._protocol import streaming_pull_manager
 from google.pubsub_v1.services.subscriber import client as subscriber_client
 
 
-__version__ = pkg_resources.get_distribution("google-cloud-pubsub").version
+try:
+    __version__ = pkg_resources.get_distribution("google-cloud-pubsub").version
+except pkg_resources.DistributionNotFound:
+    # Distribution might not be available if we are not running from within
+    # a PIP package.
+    __version__ = "0.0"
 
 _BLACKLISTED_METHODS = (
     "publish",
