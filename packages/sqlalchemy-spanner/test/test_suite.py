@@ -55,6 +55,7 @@ from sqlalchemy.testing.suite.test_cte import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_ddl import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_dialect import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_insert import *  # noqa: F401, F403
+from sqlalchemy.testing.suite.test_reflection import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_results import *  # noqa: F401, F403
 from sqlalchemy.testing.suite.test_update_delete import *  # noqa: F401, F403
 
@@ -72,6 +73,9 @@ from sqlalchemy.testing.suite.test_reflection import (
 )
 from sqlalchemy.testing.suite.test_reflection import (
     QuotedNameArgumentTest as _QuotedNameArgumentTest,
+)
+from sqlalchemy.testing.suite.test_reflection import (
+    CompositeKeyReflectionTest as _CompositeKeyReflectionTest,
 )
 from sqlalchemy.testing.suite.test_results import RowFetchTest as _RowFetchTest
 from sqlalchemy.testing.suite.test_select import ExistsTest as _ExistsTest
@@ -771,6 +775,27 @@ class ComponentReflectionTest(_ComponentReflectionTest):
             assert isinstance(typ, Numeric)
             eq_(typ.precision, 38)
             eq_(typ.scale, 9)
+
+
+class CompositeKeyReflectionTest(_CompositeKeyReflectionTest):
+    @testing.requires.foreign_key_constraint_reflection
+    @testing.provide_metadata
+    def test_fk_column_order(self):
+        """
+        SPANNER OVERRIDE:
+
+        Spanner column usage reflection doesn't support determenistic
+        ordering. Overriding the test to check that columns are
+        reflected correctly, without considering their order.
+        """
+        # test for issue #5661
+        meta = self.metadata
+        insp = inspect(meta.bind)
+        foreign_keys = insp.get_foreign_keys(self.tables.tb2.name)
+        eq_(len(foreign_keys), 1)
+        fkey1 = foreign_keys[0]
+        eq_(set(fkey1.get("referred_columns")), {"name", "id", "attr"})
+        eq_(set(fkey1.get("constrained_columns")), {"pname", "pid", "pattr"})
 
 
 class RowFetchTest(_RowFetchTest):
