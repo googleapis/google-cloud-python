@@ -22,28 +22,22 @@ from synthtool.languages import python
 
 REPO_ROOT = pathlib.Path(__file__).parent.absolute()
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate access approval GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="bigquery/reservation",
-    version="v1",
-    bazel_target=f"//google/cloud/bigquery/reservation/v1:bigquery-reservation-v1-py",
-)
+default_version = "v1"
 
-s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
+for library in s.get_staging_dirs(default_version):
+    s.replace(
+        [
+            library / "google/cloud/bigquery_reservation_v1/services/reservation_service/client.py",
+            library / "google/cloud/bigquery_reservation_v1/services/reservation_service/async_client.py",
+        ],
+        "assignee=organizations/456``",
+        "assignee=organizations/456``\n",
+    )
+    s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
 
-s.replace(
-    [
-        "google/cloud/bigquery_reservation_v1/services/reservation_service/client.py",
-        "google/cloud/bigquery_reservation_v1/services/reservation_service/async_client.py",
-    ],
-    "assignee=organizations/456``",
-    "assignee=organizations/456``\n",
-)
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
