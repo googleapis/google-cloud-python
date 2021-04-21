@@ -81,12 +81,14 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
+        # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
+        # credentials object 
         super().__init__(
             host=host,
             credentials=credentials,
             client_info=client_info,
         )
-        self._session = AuthorizedSession(self._credentials)
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         {%- if service.has_lro %}
         self._operations_client = None
         {%- endif %}
@@ -106,11 +108,14 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         # Sanity check: Only create a new client if we do not already have one.
         if self._operations_client is None:
             from google.api_core import grpc_helpers
+
+            self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(self._host, self._scopes)
+
             self._operations_client = operations_v1.OperationsClient(
                 grpc_helpers.create_channel(
                     self._host,
                     credentials=self._credentials,
-                    scopes=self.AUTH_SCOPES,
+                    **self_signed_jwt_kwargs,
                     options=[
                         ("grpc.max_send_message_length", -1),
                         ("grpc.max_receive_message_length", -1),
