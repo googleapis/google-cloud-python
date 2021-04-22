@@ -268,13 +268,11 @@ class TestCloudLoggingHandler(unittest.TestCase):
         )
         logname = "loggername"
         message = "hello world"
-        labels = {"test-key": "test-value"}
         record = logging.LogRecord(logname, logging, None, None, message, None, None)
-        record.labels = labels
-        handler.emit(record)
+        handler.handle(record)
         self.assertEqual(
             handler.transport.send_called_with,
-            (record, message, _GLOBAL_RESOURCE, labels, None, None, None, None),
+            (record, message, _GLOBAL_RESOURCE, None, None, None, None, None),
         )
 
     def test_emit_manual_field_override(self):
@@ -282,8 +280,15 @@ class TestCloudLoggingHandler(unittest.TestCase):
         from google.cloud.logging_v2.resource import Resource
 
         client = _Client(self.PROJECT)
+        default_labels = {
+            "default_key": "default-value",
+            "overwritten_key": "bad_value",
+        }
         handler = self._make_one(
-            client, transport=_Transport, resource=_GLOBAL_RESOURCE
+            client,
+            transport=_Transport,
+            resource=_GLOBAL_RESOURCE,
+            labels=default_labels,
         )
         logname = "loggername"
         message = "hello world"
@@ -299,9 +304,14 @@ class TestCloudLoggingHandler(unittest.TestCase):
         setattr(record, "source_location", expected_source)
         expected_resource = Resource(type="test", labels={})
         setattr(record, "resource", expected_resource)
-        expected_labels = {"test-label": "manual"}
-        setattr(record, "labels", expected_labels)
-        handler.emit(record)
+        added_labels = {"added_key": "added_value", "overwritten_key": "new_value"}
+        expected_labels = {
+            "default_key": "default-value",
+            "overwritten_key": "new_value",
+            "added_key": "added_value",
+        }
+        setattr(record, "labels", added_labels)
+        handler.handle(record)
 
         self.assertEqual(
             handler.transport.send_called_with,

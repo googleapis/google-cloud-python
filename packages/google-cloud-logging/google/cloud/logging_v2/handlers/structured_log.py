@@ -19,7 +19,14 @@ import logging.handlers
 
 from google.cloud.logging_v2.handlers.handlers import CloudLoggingFilter
 
-GCP_FORMAT = '{"message": "%(message)s", "severity": "%(levelname)s", "logging.googleapis.com/trace": "%(trace)s", "logging.googleapis.com/sourceLocation": { "file": "%(file)s", "line": "%(line)d", "function": "%(function)s"}, "httpRequest": {"requestMethod": "%(request_method)s", "requestUrl": "%(request_url)s", "userAgent": "%(user_agent)s", "protocol": "%(protocol)s"} }'
+GCP_FORMAT = (
+    '{"message": "%(message)s", '
+    '"severity": "%(levelname)s", '
+    '"logging.googleapis.com/labels": { %(total_labels_str)s }, '
+    '"logging.googleapis.com/trace": "%(trace)s", '
+    '"logging.googleapis.com/sourceLocation": { "file": "%(file)s", "line": "%(line)d", "function": "%(function)s"}, '
+    '"httpRequest": {"requestMethod": "%(request_method)s", "requestUrl": "%(request_url)s", "userAgent": "%(user_agent)s", "protocol": "%(protocol)s"} }'
+)
 
 
 class StructuredLogHandler(logging.StreamHandler):
@@ -27,18 +34,19 @@ class StructuredLogHandler(logging.StreamHandler):
     and write them to standard output
     """
 
-    def __init__(self, *, name=None, stream=None, project=None):
+    def __init__(self, *, labels=None, stream=None, project_id=None):
         """
         Args:
-            name (Optional[str]): The name of the custom log in Cloud Logging.
+            labels (Optional[dict]): Additional labels to attach to logs.
             stream (Optional[IO]): Stream to be used by the handler.
+            project (Optional[str]): Project Id associated with the logs.
         """
         super(StructuredLogHandler, self).__init__(stream=stream)
-        self.name = name
-        self.project_id = project
+        self.project_id = project_id
 
         # add extra keys to log record
-        self.addFilter(CloudLoggingFilter(project))
+        log_filter = CloudLoggingFilter(project=project_id, default_labels=labels)
+        self.addFilter(log_filter)
 
         # make logs appear in GCP structured logging format
         self.formatter = logging.Formatter(GCP_FORMAT)

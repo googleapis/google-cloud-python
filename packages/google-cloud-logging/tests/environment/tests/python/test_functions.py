@@ -21,6 +21,7 @@ import google.cloud.logging
 from ..common.common import Common
 from ..common.python import CommonPython
 
+
 class TestCloudFunctions(Common, CommonPython, unittest.TestCase):
 
     environment = "functions"
@@ -40,12 +41,12 @@ class TestCloudFunctions(Common, CommonPython, unittest.TestCase):
         found_trace = log_list[-1].trace
 
         self.assertIsNotNone(found_request)
-        self.assertIsNotNone(found_request['requestMethod'])
-        self.assertIsNotNone(found_request['requestUrl'])
-        self.assertIsNotNone(found_request['userAgent'])
-        self.assertIsNotNone(found_request['protocol'])
-        self.assertEqual(found_request['requestMethod'], 'POST')
-        self.assertEqual(found_request['protocol'], 'HTTP/1.1')
+        self.assertIsNotNone(found_request["requestMethod"])
+        self.assertIsNotNone(found_request["requestUrl"])
+        self.assertIsNotNone(found_request["userAgent"])
+        self.assertIsNotNone(found_request["protocol"])
+        self.assertEqual(found_request["requestMethod"], "POST")
+        self.assertEqual(found_request["protocol"], "HTTP/1.1")
 
         self.assertIsNotNone(found_trace)
         self.assertIn("projects/", found_trace)

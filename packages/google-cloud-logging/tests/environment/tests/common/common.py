@@ -170,7 +170,9 @@ class Common:
             "DEBUG",
         ]
         for severity in severities:
-            log_list = self.trigger_and_retrieve(log_text, "simplelog", severity=severity)
+            log_list = self.trigger_and_retrieve(
+                log_text, "simplelog", severity=severity
+            )
             found_severity = log_list[-1].severity
             self.assertEqual(found_severity.lower(), severity.lower())
         # DEFAULT severity should result in empty field

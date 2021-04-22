@@ -43,21 +43,30 @@ def pylogging(log_text="pylogging", severity="WARNING", **kwargs):
     # allowed severity: debug, info, warning, error, critical
 
     # build http request if fields given as argument
-    http_keys =  ["protocol", "requestUrl", "userAgent", "requestMethod"]
+    http_keys = ["protocol", "requestUrl", "userAgent", "requestMethod"]
     if any([k in kwargs for k in http_keys]):
         http_request = {}
         for key in http_keys:
             if key in kwargs:
                 http_request[key] = kwargs[key]
-        kwargs['http_request'] = http_request
+        kwargs["http_request"] = http_request
     # build source location if given as argument
-    source_keys =  ["line", "file", "function"]
+    source_keys = ["line", "file", "function"]
     if any([k in kwargs for k in http_keys]):
         source_location = {}
         for key in source_keys:
             if key in kwargs:
                 source_location[key] = kwargs[key]
-        kwargs['source_location'] = source_location
+        kwargs["source_location"] = source_location
+    # build custom labels
+    label_prefix = "label_"
+    label_keys = [k for k in kwargs.keys() if k.startswith(label_prefix)]
+    if label_keys:
+        labels = {}
+        for k in label_keys:
+            adjusted_key = k[len(label_prefix) :]
+            labels[adjusted_key] = kwargs[k]
+        kwargs["labels"] = labels
 
     severity = severity.upper()
     if severity == "DEBUG":
@@ -71,12 +80,23 @@ def pylogging(log_text="pylogging", severity="WARNING", **kwargs):
     else:
         logging.critical(log_text, extra=kwargs)
 
-def pylogging_flask(log_text="pylogging_flask", path="/", base_url="http://google", agent="Chrome", trace="123", **kwargs):
+
+def pylogging_flask(
+    log_text="pylogging_flask",
+    path="/",
+    base_url="http://google",
+    agent="Chrome",
+    trace="123",
+    **kwargs,
+):
     import flask
+
     app = flask.Flask(__name__)
     with app.test_request_context(
-            path, base_url, headers={'User-Agent': agent, "X_CLOUD_TRACE_CONTEXT": trace}):
+        path, base_url, headers={"User-Agent": agent, "X_CLOUD_TRACE_CONTEXT": trace}
+    ):
         logging.info(log_text)
+
 
 def print_handlers(**kwargs):
     root_logger = logging.getLogger()
