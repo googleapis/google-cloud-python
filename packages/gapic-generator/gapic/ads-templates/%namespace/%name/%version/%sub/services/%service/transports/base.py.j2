@@ -1,6 +1,7 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
+
 import abc
 import typing
 import pkg_resources
@@ -8,16 +9,16 @@ import pkg_resources
 from google import auth
 from google.api_core import gapic_v1    # type: ignore
 from google.api_core import retry as retries  # type: ignore
-{%- if service.has_lro %}
+{% if service.has_lro %}
 from google.api_core import operations_v1  # type: ignore
-{%- endif %}
+{% endif %}
 from google.auth import credentials  # type: ignore
 
-{% filter sort_lines -%}
-{% for method in service.methods.values() -%}
+{% filter sort_lines %}
+{% for method in service.methods.values() %}
 {{ method.input.ident.python_import }}
 {{ method.output.ident.python_import }}
-{% endfor -%}
+{% endfor %}
 {% endfilter %}
 
 try:
@@ -34,9 +35,9 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
     """Abstract transport class for {{ service.name }}."""
 
     AUTH_SCOPES = (
-        {%- for scope in service.oauth_scopes %}
+        {% for scope in service.oauth_scopes %}
         '{{ scope }}',
-        {%- endfor %}
+        {% endfor %}
     )
 
     def __init__(
@@ -49,7 +50,7 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
 
         Args:
             host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
-                {{- ' ' }}The hostname to connect to.
+                {{ ' ' }}The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -80,22 +81,22 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
     def _prep_wrapped_messages(self, client_info):
         # Precomputed wrapped methods
         self._wrapped_methods = {
-            {% for method in service.methods.values() -%}
+            {% for method in service.methods.values() %}
             self.{{ method.name|snake_case }}: gapic_v1.method.wrap_method(
                 self.{{ method.name|snake_case }},
-                {%- if method.retry %}
+                {% if method.retry %}
                 default_retry=retries.Retry(
                     {% if method.retry.initial_backoff %}initial={{ method.retry.initial_backoff }},{% endif %}
                     {% if method.retry.max_backoff %}maximum={{ method.retry.max_backoff }},{% endif %}
                     {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
                     predicate=retries.if_exception_type(
-                        {%- for ex in method.retry.retryable_exceptions|sort(attribute='__name__') %}
+                        {% for ex in method.retry.retryable_exceptions|sort(attribute='__name__') %}
                         exceptions.{{ ex.__name__ }},
-                        {%- endfor %}
+                        {% endfor %}
                     ),
                     deadline={{ method.timeout }},
                 ),
-                {%- endif %}
+                {% endif %}
                 default_timeout={{ method.timeout }},
                 client_info=client_info,
             ),
@@ -103,21 +104,21 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
         }
 
 
-    {%- if service.has_lro %}
+    {% if service.has_lro %}
 
     @property
     def operations_client(self) -> operations_v1.OperationsClient:
         """Return the client designed to process long-running operations."""
         raise NotImplementedError
-    {%- endif %}
-    {%- for method in service.methods.values() %}
+    {% endif %}
+    {% for method in service.methods.values() %}
 
     @property
     def {{ method.name|snake_case }}(self) -> typing.Callable[
             [{{ method.input.ident }}],
             {{ method.output.ident }}]:
         raise NotImplementedError
-    {%- endfor %}
+    {% endfor %}
 
 
 __all__ = (

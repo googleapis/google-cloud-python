@@ -1,6 +1,7 @@
 {% extends "_base.py.j2" %}
 
 {% block content %}
+
 import os
 import mock
 import packaging.version
@@ -11,21 +12,21 @@ import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 
-{%- if 'rest' in opts.transport %}
+{% if 'rest' in opts.transport %}
 from requests import Response
 from requests.sessions import Session
-{%- endif %}
+{% endif %}
 
-{# Import the service itself as well as every proto module that it imports. -#}
-{% filter sort_lines -%}
+{# Import the service itself as well as every proto module that it imports. #}
+{% filter sort_lines %}
 from google import auth
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
-{%- if 'grpc' in opts.transport %}
+{% if 'grpc' in opts.transport %}
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.async_client_name }}
-{%- endif %}
+{% endif %}
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import transports
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.base import _GOOGLE_AUTH_VERSION
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.base import _API_CORE_VERSION
@@ -33,19 +34,19 @@ from google.api_core import client_options
 from google.api_core import exceptions
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
-{% if service.has_lro -%}
+{% if service.has_lro %}
 from google.api_core import future
 from google.api_core import operations_v1
 from google.longrunning import operations_pb2
-{% endif -%}
+{% endif %}
 from google.api_core import gapic_v1
-{% for method in service.methods.values() -%}
+{% for method in service.methods.values() %}
 {% for ref_type in method.ref_types
    if not ((ref_type.ident.python_import.package == ('google', 'api_core') and ref_type.ident.python_import.module == 'operation')
-           or ref_type.ident.python_import.package == ('google', 'protobuf') and ref_type.ident.python_import.module == 'empty_pb2') -%}
+           or ref_type.ident.python_import.package == ('google', 'protobuf') and ref_type.ident.python_import.module == 'empty_pb2') %}
 {{ ref_type.ident.python_import }}
-{% endfor -%}
-{% endfor -%}
+{% endfor %}
+{% endfor %}
 {% if opts.add_iam_methods %}
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import options_pb2 as options  # type: ignore
@@ -104,9 +105,9 @@ def test__get_default_mtls_endpoint():
 
 @pytest.mark.parametrize("client_class", [
     {{ service.client_name }},
-    {%- if 'grpc' in opts.transport %}
+    {% if 'grpc' in opts.transport %}
     {{ service.async_client_name }},
-    {%- endif %}
+    {% endif %}
 ])
 def test_{{ service.client_name|snake_case }}_from_service_account_info(client_class):
     creds = credentials.AnonymousCredentials()
@@ -117,14 +118,16 @@ def test_{{ service.client_name|snake_case }}_from_service_account_info(client_c
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        {% if service.host %}assert client.transport._host == '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'{% endif %}
+        {% if service.host %}
+        assert client.transport._host == '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'
+        {% endif %}
 
 
 @pytest.mark.parametrize("client_class", [
     {{ service.client_name }},
-    {%- if 'grpc' in opts.transport %}
+    {% if 'grpc' in opts.transport %}
     {{ service.async_client_name }},
-    {%- endif %}
+    {% endif %}
 ])
 def test_{{ service.client_name|snake_case }}_from_service_account_file(client_class):
     creds = credentials.AnonymousCredentials()
@@ -138,15 +141,17 @@ def test_{{ service.client_name|snake_case }}_from_service_account_file(client_c
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        {% if service.host %}assert client.transport._host == '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'{% endif %}
+        {% if service.host %}
+        assert client.transport._host == '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'
+        {% endif %}
 
 
 def test_{{ service.client_name|snake_case }}_get_transport_class():
     transport = {{ service.client_name }}.get_transport_class()
     available_transports = [
-        {%- for transport_name in opts.transport %}
+        {% for transport_name in opts.transport %}
         transports.{{ service.name }}{{ transport_name.capitalize() }}Transport,
-        {%- endfor %}
+        {% endfor %}
     ]
     assert transport in available_transports
 
@@ -155,17 +160,17 @@ def test_{{ service.client_name|snake_case }}_get_transport_class():
 
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
-    {%- if 'grpc' in opts.transport %}
+    {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc"),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio"),
-    {%- elif 'rest' in opts.transport %}
+    {% elif 'rest' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest"),
-    {%- endif %}
+    {% endif %}
 ])
 @mock.patch.object({{ service.client_name }}, "DEFAULT_ENDPOINT", modify_default_endpoint({{ service.client_name }}))
-{%- if 'grpc' in opts.transport %}
+{% if 'grpc' in opts.transport %}
 @mock.patch.object({{ service.async_client_name }}, "DEFAULT_ENDPOINT", modify_default_endpoint({{ service.async_client_name }}))
-{%- endif %}
+{% endif %}
 def test_{{ service.client_name|snake_case }}_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object({{ service.client_name }}, 'get_transport_class') as gtc:
@@ -262,12 +267,12 @@ def test_{{ service.client_name|snake_case }}_client_options(client_class, trans
     {% elif 'rest' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest", "true"),
     ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest", "false"),
-    {%- endif %}
+    {% endif %}
 ])
 @mock.patch.object({{ service.client_name }}, "DEFAULT_ENDPOINT", modify_default_endpoint({{ service.client_name }}))
-{%- if 'grpc' in opts.transport %}
+{% if 'grpc' in opts.transport %}
 @mock.patch.object({{ service.async_client_name }}, "DEFAULT_ENDPOINT", modify_default_endpoint({{ service.async_client_name }}))
-{%- endif %}
+{% endif %}
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
 def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -341,12 +346,12 @@ def test_{{ service.client_name|snake_case }}_mtls_env_auto(client_class, transp
 
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
-    {%- if 'grpc' in opts.transport %}
+    {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc"),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio"),
-    {%- elif 'rest' in opts.transport %}
+    {% elif 'rest' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest"),
-    {%- endif %}
+    {% endif %}
 ])
 def test_{{ service.client_name|snake_case }}_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
@@ -367,12 +372,12 @@ def test_{{ service.client_name|snake_case }}_client_options_scopes(client_class
         )
 
 @pytest.mark.parametrize("client_class,transport_class,transport_name", [
-    {%- if 'grpc' in opts.transport %}
+    {% if 'grpc' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.grpc_transport_name }}, "grpc"),
     ({{ service.async_client_name }}, transports.{{ service.grpc_asyncio_transport_name }}, "grpc_asyncio"),
-    {%- elif 'rest' in opts.transport %}
+    {% elif 'rest' in opts.transport %}
     ({{ service.client_name }}, transports.{{ service.rest_transport_name }}, "rest"),
-    {%- endif %}
+    {% endif %}
 ])
 def test_{{ service.client_name|snake_case }}_client_options_credentials_file(client_class, transport_class, transport_name):
     # Check the case credentials file is provided.
@@ -391,7 +396,7 @@ def test_{{ service.client_name|snake_case }}_client_options_credentials_file(cl
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
-{%- if 'grpc' in opts.transport %}
+{% if 'grpc' in opts.transport %}
 
 
 def test_{{ service.client_name|snake_case }}_client_options_from_dict():
@@ -409,10 +414,10 @@ def test_{{ service.client_name|snake_case }}_client_options_from_dict():
             quota_project_id=None,
             client_info=transports.base.DEFAULT_CLIENT_INFO,
         )
-{%- endif %}
+{% endif %}
 
 
-{% for method in service.methods.values() if 'grpc' in opts.transport -%}
+{% for method in service.methods.values() if 'grpc' in opts.transport %}
 def test_{{ method.name|snake_case }}(transport: str = 'grpc', request_type={{ method.input.ident }}):
     client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
@@ -431,25 +436,26 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc', request_type={{ m
             type(client.transport.{{ method.name|snake_case }}),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        {% if method.void -%}
+        {% if method.void %}
         call.return_value = None
-        {% elif method.lro -%}
+        {% elif method.lro %}
         call.return_value = operations_pb2.Operation(name='operations/spam')
-        {% elif method.server_streaming -%}
+        {% elif method.server_streaming %}
         call.return_value = iter([{{ method.output.ident }}()])
-        {% else -%}
+        {% else %}
         call.return_value = {{ method.output.ident }}(
-          {%- for field in method.output.fields.values() | rejectattr('message')%}{% if not field.oneof or field.proto3_optional %}
+          {% for field in method.output.fields.values() | rejectattr('message')%}
+          {% if not field.oneof or field.proto3_optional %}
             {{ field.name }}={{ field.mock_value }},
-            {% endif %}{%- endfor %}
-            {#- This is a hack to only pick one field  #}
-            {%- for oneof_fields in method.output.oneof_fields().values() %}
+            {% endif %}{% endfor %}
+            {# This is a hack to only pick one field  #}
+            {% for oneof_fields in method.output.oneof_fields().values() %}
             {% with field = oneof_fields[0] %}
             {{ field.name }}={{ field.mock_value }},
-            {%- endwith %}
-            {%- endfor %}
+            {% endwith %}
+            {% endfor %}
         )
-        {% endif -%}
+        {% endif %}
         {% if method.client_streaming %}
         response = client.{{ method.name|snake_case }}(iter(requests))
         {% else %}
@@ -466,28 +472,29 @@ def test_{{ method.name|snake_case }}(transport: str = 'grpc', request_type={{ m
         {% endif %}
 
     # Establish that the response is the type that we expect.
-    {% if method.void -%}
+    {% if method.void %}
     assert response is None
-    {% elif method.lro -%}
+    {% elif method.lro %}
     assert isinstance(response, future.Future)
-    {% elif method.server_streaming -%}
+    {% elif method.server_streaming %}
     for message in response:
         assert isinstance(message, {{ method.output.ident }})
-    {% else -%}
+    {% else %}
     {% if "next_page_token" in method.output.fields.values()|map(attribute='name') and not method.paged_result_field %}
     {# Cheeser assertion to force code coverage for bad paginated methods #}
     assert response.raw_page is response
     {% endif %}
     assert isinstance(response, {{ method.client_output.ident }})
-    {% for field in method.output.fields.values() | rejectattr('message') -%}{% if not field.oneof or field.proto3_optional %}
-    {% if field.field_pb.type in [1, 2] -%} {# Use approx eq for floats -#}
+    {% for field in method.output.fields.values() | rejectattr('message') %}
+    {% if not field.oneof or field.proto3_optional %}
+    {% if field.field_pb.type in [1, 2] %}{# Use approx eq for floats #}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
-    {% elif field.field_pb.type == 8 -%} {# Use 'is' for bools #}
+    {% elif field.field_pb.type == 8 %}{# Use 'is' for bools #}
     assert response.{{ field.name }} is {{ field.mock_value }}
-    {% else -%}
+    {% else %}
     assert response.{{ field.name }} == {{ field.mock_value }}
-    {% endif -%}
-    {% endif -%} {# end oneof/optional #}
+    {% endif %}
+    {% endif %}{# end oneof/optional #}
     {% endfor %}
     {% endif %}
 
@@ -496,7 +503,7 @@ def test_{{ method.name|snake_case }}_from_dict():
     test_{{ method.name|snake_case }}(request_type=dict)
 
 
-{% if not method.client_streaming -%}
+{% if not method.client_streaming %}
 def test_{{ method.name|snake_case }}_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
@@ -517,7 +524,7 @@ def test_{{ method.name|snake_case }}_empty_call():
         {% else %}
         assert args[0] == {{ method.input.ident }}()
         {% endif %}
-{% endif -%}
+{% endif %}
 
 
 @pytest.mark.asyncio
@@ -539,31 +546,31 @@ async def test_{{ method.name|snake_case }}_async(transport: str = 'grpc_asyncio
             type(client.transport.{{ method.name|snake_case }}),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        {% if method.void -%}
+        {% if method.void %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        {% elif method.lro -%}
+        {% elif method.lro %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        {% elif not method.client_streaming and method.server_streaming -%}
+        {% elif not method.client_streaming and method.server_streaming %}
         call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
         call.return_value.read = mock.AsyncMock(side_effect=[{{ method.output.ident }}()])
-        {% elif method.client_streaming and method.server_streaming -%}
+        {% elif method.client_streaming and method.server_streaming %}
         call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
         call.return_value.read = mock.AsyncMock(side_effect=[{{ method.output.ident }}()])
-        {% else -%}
-        call.return_value ={{' '}}
+        {% else %}
+        call.return_value ={{ '' }}
             {%- if not method.client_streaming and not method.server_streaming -%}
                 grpc_helpers_async.FakeUnaryUnaryCall
             {%- else -%}
                 grpc_helpers_async.FakeStreamUnaryCall
             {%- endif -%}({{ method.output.ident }}(
-            {%- for field in method.output.fields.values() | rejectattr('message') %}{% if not field.oneof or field.proto3_optional %}
+            {% for field in method.output.fields.values() | rejectattr('message') %}{% if not field.oneof or field.proto3_optional %}
             {{ field.name }}={{ field.mock_value }},
-            {%- endif %}
-            {%- endfor %}
+            {% endif %}
+            {% endfor %}
         ))
-        {% endif -%}
+        {% endif %}
         {% if method.client_streaming and method.server_streaming %}
         response = await client.{{ method.name|snake_case }}(iter(requests))
         {% elif method.client_streaming and not method.server_streaming %}
@@ -582,24 +589,25 @@ async def test_{{ method.name|snake_case }}_async(transport: str = 'grpc_asyncio
         {% endif %}
 
     # Establish that the response is the type that we expect.
-    {% if method.void -%}
+    {% if method.void %}
     assert response is None
-    {% elif method.lro -%}
+    {% elif method.lro %}
     assert isinstance(response, future.Future)
-    {% elif method.server_streaming -%}
+    {% elif method.server_streaming %}
     message = await response.read()
     assert isinstance(message, {{ method.output.ident }})
-    {% else -%}
+    {% else %}
     assert isinstance(response, {{ method.client_output_async.ident }})
-    {% for field in method.output.fields.values() | rejectattr('message') -%}{% if not field.oneof or field.proto3_optional %}
-    {% if field.field_pb.type in [1, 2] -%} {# Use approx eq for floats -#}
+    {% for field in method.output.fields.values() | rejectattr('message') %}
+    {% if not field.oneof or field.proto3_optional %}
+    {% if field.field_pb.type in [1, 2] %}{# Use approx eq for floats #}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
-    {% elif field.field_pb.type == 8 -%} {# Use 'is' for bools #}
+    {% elif field.field_pb.type == 8 %}{# Use 'is' for bools #}
     assert response.{{ field.name }} is {{ field.mock_value }}
-    {% else -%}
+    {% else %}
     assert response.{{ field.name }} == {{ field.mock_value }}
-    {% endif -%}
-    {% endif -%} {# oneof/optional #}
+    {% endif %}
+    {% endif %}{# oneof/optional #}
     {% endfor %}
     {% endif %}
 
@@ -619,21 +627,21 @@ def test_{{ method.name|snake_case }}_field_headers():
     # a field header. Set these to a non-empty value.
     request = {{ method.input.ident }}()
 
-    {%- for field_header in method.field_headers %}
+    {% for field_header in method.field_headers %}
     request.{{ field_header }} = '{{ field_header }}/value'
-    {%- endfor %}
+    {% endfor %}
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.{{ method.name|snake_case }}),
             '__call__') as call:
-        {% if method.void -%}
+        {% if method.void %}
         call.return_value = None
-        {% elif method.lro -%}
+        {% elif method.lro %}
         call.return_value = operations_pb2.Operation(name='operations/op')
-        {% elif method.server_streaming -%}
+        {% elif method.server_streaming %}
         call.return_value = iter([{{ method.output.ident }}()])
-        {% else -%}
+        {% else %}
         call.return_value = {{ method.output.ident }}()
         {% endif %}
         client.{{ method.name|snake_case }}(request)
@@ -649,8 +657,8 @@ def test_{{ method.name|snake_case }}_field_headers():
         'x-goog-request-params',
         '{% for field_header in method.field_headers -%}
         {{ field_header }}={{ field_header }}/value
-        {%- if not loop.last %}&{% endif -%}
-        {%- endfor %}',
+        {%- if not loop.last %}&{% endif %}
+        {%- endfor -%}',
     ) in kw['metadata']
 
 
@@ -664,22 +672,22 @@ async def test_{{ method.name|snake_case }}_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = {{ method.input.ident }}()
 
-    {%- for field_header in method.field_headers %}
+    {% for field_header in method.field_headers %}
     request.{{ field_header }} = '{{ field_header }}/value'
-    {%- endfor %}
+    {% endfor %}
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
             type(client.transport.{{ method.name|snake_case }}),
             '__call__') as call:
-        {% if method.void -%}
+        {% if method.void %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        {% elif method.lro -%}
+        {% elif method.lro %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name='operations/op'))
-        {% elif method.server_streaming -%}
+        {% elif method.server_streaming %}
         call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
         call.return_value.read = mock.AsyncMock(side_effect=[{{ method.output.ident }}()])
-        {% else -%}
+        {% else %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall({{ method.output.ident }}())
         {% endif %}
         await client.{{ method.name|snake_case }}(request)
@@ -695,8 +703,8 @@ async def test_{{ method.name|snake_case }}_field_headers_async():
         'x-goog-request-params',
         '{% for field_header in method.field_headers -%}
         {{ field_header }}={{ field_header }}/value
-        {%- if not loop.last %}&{% endif -%}
-        {%- endfor %}',
+        {%- if not loop.last %}&{% endif %}
+        {%- endfor -%}',
     ) in kw['metadata']
 {% endif %}
 
@@ -710,19 +718,19 @@ def test_{{ method.name|snake_case }}_from_dict_foreign():
             type(client.transport.{{ method.name|snake_case }}),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        {% if method.void -%}
+        {% if method.void %}
         call.return_value = None
-        {% elif method.lro -%}
+        {% elif method.lro %}
         call.return_value = operations_pb2.Operation(name='operations/op')
-        {% elif method.server_streaming -%}
+        {% elif method.server_streaming %}
         call.return_value = iter([{{ method.output.ident }}()])
-        {% else -%}
+        {% else %}
         call.return_value = {{ method.output.ident }}()
         {% endif %}
         response = client.{{ method.name|snake_case }}(request={
-            {%- for field in method.input.fields.values() %}
+            {% for field in method.input.fields.values() %}
             '{{ field.name }}': {{ field.mock_value }},
-            {%- endfor %}
+            {% endfor %}
             }
         )
         call.assert_called()
@@ -740,41 +748,41 @@ def test_{{ method.name|snake_case }}_flattened():
             type(client.transport.{{ method.name|snake_case }}),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        {% if method.void -%}
+        {% if method.void %}
         call.return_value = None
-        {% elif method.lro -%}
+        {% elif method.lro %}
         call.return_value = operations_pb2.Operation(name='operations/op')
-        {% elif method.server_streaming -%}
+        {% elif method.server_streaming %}
         call.return_value = iter([{{ method.output.ident }}()])
-        {% else -%}
+        {% else %}
         call.return_value = {{ method.output.ident }}()
         {% endif %}
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.{{ method.name|snake_case }}(
-            {%- for field in method.flattened_fields.values() %}
+            {% for field in method.flattened_fields.values() %}
             {{ field.name }}={{ field.mock_value }},
-            {%- endfor %}
+            {% endfor %}
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        {% for key, field in method.flattened_fields.items() -%}{%- if not field.oneof or field.proto3_optional %}
-        {% if field.ident|string() == 'timestamp.Timestamp' -%}
+        {% for key, field in method.flattened_fields.items() %}{% if not field.oneof or field.proto3_optional %}
+        {% if field.ident|string() == 'timestamp.Timestamp' %}
         assert TimestampRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
-        {% elif field.ident|string() == 'duration.Duration' -%}
+        {% elif field.ident|string() == 'duration.Duration' %}
         assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
-        {% else -%}
+        {% else %}
         assert args[0].{{ key }} == {{ field.mock_value }}
         {% endif %}
         {% endif %}{% endfor %}
-        {%- for oneofs in method.flattened_oneof_fields().values() %}
-        {%- with field = oneofs[-1]  %}
+        {% for oneofs in method.flattened_oneof_fields().values() %}
+        {% with field = oneofs[-1]  %}
         assert args[0].{{ method.flattened_field_to_key[field.name] }} == {{ field.mock_value }}
-        {%- endwith %}
-        {%- endfor %}
+        {% endwith %}
+        {% endfor %}
 
 
 
@@ -788,9 +796,9 @@ def test_{{ method.name|snake_case }}_flattened_error():
     with pytest.raises(ValueError):
         client.{{ method.name|snake_case }}(
             {{ method.input.ident }}(),
-            {%- for field in method.flattened_fields.values() %}
+            {% for field in method.flattened_fields.values() %}
             {{ field.name }}={{ field.mock_value }},
-            {%- endfor %}
+            {% endfor %}
         )
 
 
@@ -805,61 +813,61 @@ async def test_{{ method.name|snake_case }}_flattened_async():
             type(client.transport.{{ method.name|snake_case }}),
             '__call__') as call:
         # Designate an appropriate return value for the call.
-        {% if method.void -%}
+        {% if method.void %}
         call.return_value = None
-        {% elif method.lro -%}
+        {% elif method.lro %}
         call.return_value = operations_pb2.Operation(name='operations/op')
-        {% elif method.server_streaming -%}
+        {% elif method.server_streaming %}
         call.return_value = iter([{{ method.output.ident }}()])
-        {% else -%}
+        {% else %}
         call.return_value = {{ method.output.ident }}()
         {% endif %}
 
 
-        {% if method.void -%}
+        {% if method.void %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        {% elif method.lro -%}
+        {% elif method.lro %}
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name='operations/spam')
         )
-        {% elif not method.client_streaming and method.server_streaming -%}
+        {% elif not method.client_streaming and method.server_streaming %}
         call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
-        {% elif method.client_streaming and method.server_streaming -%}
+        {% elif method.client_streaming and method.server_streaming %}
         call.return_value = mock.Mock(aio.StreamStreamCall, autospec=True)
-        {% else -%}
-        call.return_value ={{' '}}
+        {% else %}
+        call.return_value = {{ '' }}
             {%- if not method.client_streaming and not method.server_streaming -%}
                 grpc_helpers_async.FakeUnaryUnaryCall
             {%- else -%}
                 grpc_helpers_async.FakeStreamUnaryCall
             {%- endif -%}({{ method.output.ident }}())
-        {% endif -%}
+        {% endif %}
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.{{ method.name|snake_case }}(
-            {%- for field in method.flattened_fields.values() %}
+            {% for field in method.flattened_fields.values() %}
             {{ field.name }}={{ field.mock_value }},
-            {%- endfor %}
+            {% endfor %}
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        {% for key, field in method.flattened_fields.items() -%}{%- if not field.oneof or field.proto3_optional %}
-        {% if field.ident|string() == 'timestamp.Timestamp' -%}
+        {% for key, field in method.flattened_fields.items() %}{% if not field.oneof or field.proto3_optional %}
+        {% if field.ident|string() == 'timestamp.Timestamp' %}
         assert TimestampRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
-        {% elif field.ident|string() == 'duration.Duration' -%}
+        {% elif field.ident|string() == 'duration.Duration' %}
         assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
-        {% else -%}
+        {% else %}
         assert args[0].{{ key }} == {{ field.mock_value }}
         {% endif %}
         {% endif %}{% endfor %}
-        {%- for oneofs in method.flattened_oneof_fields().values() %}
-        {%- with field = oneofs[-1]  %}
+        {% for oneofs in method.flattened_oneof_fields().values() %}
+        {% with field = oneofs[-1]  %}
         assert args[0].{{ method.flattened_field_to_key[field.name] }} == {{ field.mock_value }}
-        {%- endwith %}
-        {%- endfor %}
+        {% endwith %}
+        {% endfor %}
 
 
 @pytest.mark.asyncio
@@ -873,9 +881,9 @@ async def test_{{ method.name|snake_case }}_flattened_error_async():
     with pytest.raises(ValueError):
         await client.{{ method.name|snake_case }}(
             {{ method.input.ident }}(),
-            {%- for field in method.flattened_fields.values() %}
+            {% for field in method.flattened_fields.values() %}
             {{ field.name }}={{ field.mock_value }},
-            {%- endfor %}
+            {% endfor %}
         )
 {% endif %}
 
@@ -920,17 +928,17 @@ def test_{{ method.name|snake_case }}_pager():
         )
 
         metadata = ()
-        {% if method.field_headers -%}
+        {% if method.field_headers %}
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
-                {%- for field_header in method.field_headers %}
-                {%- if not method.client_streaming %}
+                {% for field_header in method.field_headers %}
+                {% if not method.client_streaming %}
                 ('{{ field_header }}', ''),
-                {%- endif %}
-                {%- endfor %}
+                {% endif %}
+                {% endfor %}
             )),
         )
-        {% endif -%}
+        {% endif %}
         pager = client.{{ method.name|snake_case }}(request={})
 
         assert pager._metadata == metadata
@@ -1076,11 +1084,11 @@ async def test_{{ method.name|snake_case }}_async_pages():
 def test_{{ method.name|snake_case }}_raw_page_lro():
     response = {{ method.lro.response_type.ident }}()
     assert response.raw_page is response
-{% endif %} {#- method.paged_result_field #}
+{% endif %} {# method.paged_result_field #}
 
-{% endfor -%} {#- method in methods for grpc #}
+{% endfor %} {# method in methods for grpc #}
 
-{% for method in service.methods.values() if 'rest' in opts.transport -%}
+{% for method in service.methods.values() if 'rest' in opts.transport %}
 def test_{{ method.name|snake_case }}_rest(transport: str = 'rest', request_type={{ method.input.ident }}):
     client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
@@ -1097,19 +1105,19 @@ def test_{{ method.name|snake_case }}_rest(transport: str = 'rest', request_type
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, 'request') as req:
         # Designate an appropriate value for the returned response.
-        {% if method.void -%}
+        {% if method.void %}
         return_value = None
-        {% elif method.lro -%}
+        {% elif method.lro %}
         return_value = operations_pb2.Operation(name='operations/spam')
-        {% elif method.server_streaming -%}
+        {% elif method.server_streaming %}
         return_value = iter([{{ method.output.ident }}()])
-        {% else -%}
+        {% else %}
         return_value = {{ method.output.ident }}(
-            {%- for field in method.output.fields.values() %}
+            {% for field in method.output.fields.values() %}
             {{ field.name }}={{ field.mock_value }},
-            {%- endfor %}
+            {% endfor %}
         )
-        {% endif -%}
+        {% endif %}
 
         # Wrap the value into a proper Response obj
         json_return_value = {{ method.output.ident }}.to_json(return_value)
@@ -1129,18 +1137,18 @@ def test_{{ method.name|snake_case }}_rest(transport: str = 'rest', request_type
     {% endif %}
 
     # Establish that the response is the type that we expect.
-    {% if method.void -%}
+    {% if method.void %}
     assert response is None
     {% else %}
     assert isinstance(response, {{ method.client_output.ident }})
-    {% for field in method.output.fields.values() -%}
-    {% if field.field_pb.type in [1, 2] -%} {# Use approx eq for floats -#}
+    {% for field in method.output.fields.values() %}
+    {% if field.field_pb.type in [1, 2] %}{# Use approx eq for floats #}
     assert math.isclose(response.{{ field.name }}, {{ field.mock_value }}, rel_tol=1e-6)
-    {% elif field.field_pb.type == 8 -%} {# Use 'is' for bools #}
+    {% elif field.field_pb.type == 8 %}{# Use 'is' for bools #}
     assert response.{{ field.name }} is {{ field.mock_value }}
-    {% else -%}
+    {% else %}
     assert response.{{ field.name }} == {{ field.mock_value }}
-    {% endif -%}
+    {% endif %}
     {% endfor %}
     {% endif %}
 
@@ -1157,13 +1165,13 @@ def test_{{ method.name|snake_case }}_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, 'request') as req:
         # Designate an appropriate value for the returned response.
-        {% if method.void -%}
+        {% if method.void %}
         return_value = None
-        {% elif method.lro -%}
+        {% elif method.lro %}
         return_value = operations_pb2.Operation(name='operations/spam')
-        {% elif method.server_streaming -%}
+        {% elif method.server_streaming %}
         return_value = iter([{{ method.output.ident }}()])
-        {% else -%}
+        {% else %}
         return_value = {{ method.output.ident }}()
         {% endif %}
 
@@ -1176,13 +1184,13 @@ def test_{{ method.name|snake_case }}_rest_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        {%- for field in method.flattened_fields.values() if field.field_pb is msg_field_pb %}
+        {% for field in method.flattened_fields.values() if field.field_pb is msg_field_pb %}
         {{ field.name }} = {{ field.mock_value }}
         {% endfor %}
         client.{{ method.name|snake_case }}(
-            {%- for field in method.flattened_fields.values() %}
+            {% for field in method.flattened_fields.values() %}
             {% if field.field_pb is msg_field_pb %}{{ field.name }}={{ field.name }},{% else %}{{ field.name }}={{ field.mock_value }},{% endif %}
-            {%- endfor %}
+            {% endfor %}
         )
 
         # Establish that the underlying call was made with the expected
@@ -1190,16 +1198,16 @@ def test_{{ method.name|snake_case }}_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get('data')
-        {% for key, field in method.flattened_fields.items() -%}{%- if not field.oneof or field.proto3_optional %}
-        {% if field.ident|string() == 'timestamp.Timestamp' -%}
+        {% for key, field in method.flattened_fields.items() %}{% if not field.oneof or field.proto3_optional %}
+        {% if field.ident|string() == 'timestamp.Timestamp' %}
         assert TimestampRule().to_proto(http_call[0].{{ key }}) == {{ field.mock_value }}
-        {% elif field.ident|string() == 'duration.Duration' -%}
+        {% elif field.ident|string() == 'duration.Duration' %}
         assert DurationRule().to_proto(http_call[0].{{ key }}) == {{ field.mock_value }}
-        {% else -%}
+        {% else %}
         assert {% if field.field_pb is msg_field_pb %}{{ field.ident }}.to_json({{ field.name }}, including_default_value_fields=False, use_integers_for_enums=False)
-               {%- elif field.field_pb is str_field_pb %}{{ field.mock_value }}
-               {%- else %}str({{ field.mock_value }})
-               {%- endif %} in http_call[1] + str(body)
+               {% elif field.field_pb is str_field_pb %}{{ field.mock_value }}
+               {% else %}str({{ field.mock_value }})
+               {% endif %} in http_call[1] + str(body)
         {% endif %}
         {% endif %}{% endfor %}
 
@@ -1214,9 +1222,9 @@ def test_{{ method.name|snake_case }}_rest_flattened_error():
     with pytest.raises(ValueError):
         client.{{ method.name|snake_case }}(
             {{ method.input.ident }}(),
-            {%- for field in method.flattened_fields.values() %}
+            {% for field in method.flattened_fields.values() %}
             {{ field.name }}={{ field.mock_value }},
-            {%- endfor %}
+            {% endfor %}
         )
 
 
@@ -1296,17 +1304,17 @@ def test_{{ method.name|snake_case }}_pager():
         req.side_effect = return_values
 
         metadata = ()
-        {% if method.field_headers -%}
+        {% if method.field_headers %}
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
-                {%- for field_header in method.field_headers %}
-                {%- if not method.client_streaming %}
+                {% for field_header in method.field_headers %}
+                {% if not method.client_streaming %}
                 ('{{ field_header }}', ''),
-                {%- endif %}
-                {%- endfor %}
+                {% endif %}
+                {% endfor %}
             )),
         )
-        {% endif -%}
+        {% endif %}
         pager = client.{{ method.name|snake_case }}(request={})
 
         assert pager._metadata == metadata
@@ -1338,8 +1346,8 @@ def test_{{ method.name|snake_case }}_pager():
             assert page_.raw_page.next_page_token == token
 
 
-{% endif %} {# paged methods #}
-{% endfor -%} {#- method in methods for rest #}
+{% endif %}{# paged methods #}
+{% endfor %}{# method in methods for rest #}
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.{{ service.name }}{{ opts.transport[0].capitalize() }}Transport(
@@ -1397,12 +1405,12 @@ def test_transport_get_channel():
 {% endif %}
 
 @pytest.mark.parametrize("transport_class", [
-    {%- if 'grpc' in opts.transport %}
+    {% if 'grpc' in opts.transport %}
     transports.{{ service.grpc_transport_name }},
     transports.{{ service.grpc_asyncio_transport_name }},
-    {%- elif 'rest' in opts.transport %}
+    {% elif 'rest' in opts.transport %}
     transports.{{ service.rest_transport_name }},
-    {%- endif %}
+    {% endif %}
 ])
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -1443,20 +1451,20 @@ def test_{{ service.name|snake_case }}_base_transport():
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        {% for method in service.methods.values() -%}
+        {% for method in service.methods.values() %}
         '{{ method.name|snake_case }}',
-        {% endfor -%}
-        {%- if opts.add_iam_methods -%}
+        {% endfor %}
+        {% if opts.add_iam_methods %}
         'set_iam_policy',
         'get_iam_policy',
         'test_iam_permissions',
-        {% endif -%}
+        {% endif %}
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())
 
-    {% if service.has_lro -%}
+    {% if service.has_lro %}
     # Additionally, the LRO client (a property) should
     # also raise NotImplementedError
     with pytest.raises(NotImplementedError):
@@ -1495,11 +1503,10 @@ def test_{{ service.name|snake_case }}_base_transport_with_credentials_file_old_
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
-        load_creds.assert_called_once_with("credentials.json",
-            scopes=(
-            {%- for scope in service.oauth_scopes %}
+        load_creds.assert_called_once_with("credentials.json", scopes=(
+            {% for scope in service.oauth_scopes %}
             '{{ scope }}',
-            {%- endfor %}
+            {% endfor %}
             ),
             quota_project_id="octopus",
         )
@@ -1523,9 +1530,10 @@ def test_{{ service.name|snake_case }}_auth_adc():
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=(
-                {%- for scope in service.oauth_scopes %}
-                '{{ scope }}',
-                {%- endfor %}),
+            {% for scope in service.oauth_scopes %}
+            '{{ scope }}',
+            {% endfor %}),
+
             quota_project_id=None,
         )
 
@@ -1584,11 +1592,10 @@ def test_{{ service.name|snake_case }}_transport_auth_adc_old_google_auth(transp
     with mock.patch.object(auth, "default", autospec=True) as adc:
         adc.return_value = (credentials.AnonymousCredentials(), None)
         transport_class(quota_project_id="octopus")
-        adc.assert_called_once_with(
-            scopes=(
-                {%- for scope in service.oauth_scopes %}
-                '{{ scope }}',
-                {%- endfor %}),
+        adc.assert_called_once_with(scopes=(
+            {% for scope in service.oauth_scopes %}
+            '{{ scope }}',
+            {% endfor %}),
             quota_project_id="octopus",
         )
 
@@ -1614,7 +1621,7 @@ def test_{{ service.name|snake_case }}_transport_create_channel(transport_class,
             scopes=["1", "2"]
         )
 
-        {% with host = (service.host|default('localhost', true)) -%}
+        {% with host = (service.host|default('localhost', true)) %}
         create_channel.assert_called_with(
             "{{ host }}",
             credentials=creds,
@@ -1653,7 +1660,7 @@ def test_{{ service.name|snake_case }}_transport_create_channel_old_api_core(tra
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus")
 
-        {% with host = (service.host|default('localhost', true)) -%}
+        {% with host = (service.host|default('localhost', true)) %}
         create_channel.assert_called_with(
             "{{ host }}",
             credentials=creds,
@@ -1688,7 +1695,7 @@ def test_{{ service.name|snake_case }}_transport_create_channel_user_scopes(tran
     ) as create_channel:
         creds = credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
-        {% with host = (service.host|default('localhost', true)) -%}
+        {% with host = (service.host|default('localhost', true)) %}
 
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
 
@@ -1728,9 +1735,9 @@ def test_{{ service.name|snake_case }}_grpc_transport_client_cert_source_for_mtl
             credentials=cred,
             credentials_file=None,
             scopes=(
-                {%- for scope in service.oauth_scopes %}
+                {% for scope in service.oauth_scopes %}
                 '{{ scope }}',
-                {%- endfor %}
+                {% endfor %}
             ),
             ssl_credentials=mock_ssl_channel_creds,
             quota_project_id=None,
@@ -1767,7 +1774,7 @@ def test_{{ service.name|snake_case }}_http_transport_client_cert_source_for_mtl
 {% endif %}
 
 def test_{{ service.name|snake_case }}_host_no_port():
-    {% with host = (service.host|default('localhost', true)).split(':')[0] -%}
+    {% with host = (service.host|default('localhost', true)).split(':')[0] %}
     client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='{{ host }}'),
@@ -1777,7 +1784,7 @@ def test_{{ service.name|snake_case }}_host_no_port():
 
 
 def test_{{ service.name|snake_case }}_host_with_port():
-    {% with host = (service.host|default('localhost', true)).split(':')[0] -%}
+    {% with host = (service.host|default('localhost', true)).split(':')[0] %}
     client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='{{ host }}:8000'),
@@ -1845,9 +1852,9 @@ def test_{{ service.name|snake_case }}_transport_channel_mtls_with_client_cert_s
                 credentials=cred,
                 credentials_file=None,
                 scopes=(
-                    {%- for scope in service.oauth_scopes %}
+                    {% for scope in service.oauth_scopes %}
                     '{{ scope }}',
-                    {%- endfor %}
+                    {% endfor %}
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
@@ -1890,9 +1897,9 @@ def test_{{ service.name|snake_case }}_transport_channel_mtls_with_adc(
                 credentials=mock_cred,
                 credentials_file=None,
                 scopes=(
-                    {%- for scope in service.oauth_scopes %}
+                    {% for scope in service.oauth_scopes %}
                     '{{ scope }}',
-                    {%- endfor %}
+                    {% endfor %}
                 ),
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
@@ -1904,7 +1911,7 @@ def test_{{ service.name|snake_case }}_transport_channel_mtls_with_adc(
             assert transport.grpc_channel == mock_grpc_channel
 
 
-{% if service.has_lro -%}
+{% if service.has_lro %}
 def test_{{ service.name|snake_case }}_grpc_lro_client():
     client = {{ service.client_name }}(
         credentials=credentials.AnonymousCredentials(),
@@ -1938,13 +1945,13 @@ def test_{{ service.name|snake_case }}_grpc_lro_async_client():
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
 
-{% endif -%}
+{% endif %}
 {% endif %} {# if grpc in opts #}
 
-{% with molluscs = cycler("squid", "clam", "whelk", "octopus", "oyster", "nudibranch", "cuttlefish", "mussel", "winkle", "nautilus", "scallop", "abalone") -%}
-{% for message in service.resource_messages|sort(attribute="resource_type") -%}
+{% with molluscs = cycler("squid", "clam", "whelk", "octopus", "oyster", "nudibranch", "cuttlefish", "mussel", "winkle", "nautilus", "scallop", "abalone") %}
+{% for message in service.resource_messages|sort(attribute="resource_type") %}
 def test_{{ message.resource_type|snake_case }}_path():
-    {% for arg in message.resource_path_args -%}
+    {% for arg in message.resource_path_args %}
     {{ arg }} = "{{ molluscs.next() }}"
     {% endfor %}
     expected = "{{ message.resource_path }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
@@ -1954,7 +1961,7 @@ def test_{{ message.resource_type|snake_case }}_path():
 
 def test_parse_{{ message.resource_type|snake_case }}_path():
     expected = {
-    {% for arg in message.resource_path_args -%}
+    {% for arg in message.resource_path_args %}
         "{{ arg }}": "{{ molluscs.next() }}",
     {% endfor %}
     }
@@ -1964,10 +1971,10 @@ def test_parse_{{ message.resource_type|snake_case }}_path():
     actual = {{ service.client_name }}.parse_{{ message.resource_type|snake_case }}_path(path)
     assert expected == actual
 
-{% endfor -%}
-{% for resource_msg in service.common_resources.values()|sort(attribute="type_name") -%}
+{% endfor %}
+{% for resource_msg in service.common_resources.values()|sort(attribute="type_name") %}
 def test_common_{{ resource_msg.message_type.resource_type|snake_case }}_path():
-    {% for arg in resource_msg.message_type.resource_path_args -%}
+    {% for arg in resource_msg.message_type.resource_path_args %}
     {{ arg }} = "{{ molluscs.next() }}"
     {% endfor %}
     expected = "{{ resource_msg.message_type.resource_path }}".format({% for arg in resource_msg.message_type.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
@@ -1977,7 +1984,7 @@ def test_common_{{ resource_msg.message_type.resource_type|snake_case }}_path():
 
 def test_parse_common_{{ resource_msg.message_type.resource_type|snake_case }}_path():
     expected = {
-    {% for arg in resource_msg.message_type.resource_path_args -%}
+    {% for arg in resource_msg.message_type.resource_path_args %}
         "{{ arg }}": "{{ molluscs.next() }}",
     {% endfor %}
     }
@@ -1987,8 +1994,8 @@ def test_parse_common_{{ resource_msg.message_type.resource_type|snake_case }}_p
     actual = {{ service.client_name }}.parse_common_{{ resource_msg.message_type.resource_type|snake_case }}_path(path)
     assert expected == actual
 
-{% endfor -%} {# common resources#}
-{% endwith -%} {# cycler #}
+{% endfor %} {# common resources#}
+{% endwith %} {# cycler #}
 
 
 def test_client_withDEFAULT_CLIENT_INFO():

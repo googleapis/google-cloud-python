@@ -49,6 +49,8 @@ class Generator:
             loader=jinja2.FileSystemLoader(searchpath=opts.templates),
             undefined=jinja2.StrictUndefined,
             extensions=["jinja2.ext.do"],
+            trim_blocks=True,
+            lstrip_blocks=True,
         )
 
         # Add filters which templates require.

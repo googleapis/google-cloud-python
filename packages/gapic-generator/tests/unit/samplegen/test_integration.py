@@ -153,11 +153,10 @@ def sample_classify(video, location):
     # location = "New Zealand"
     classify_target["location_annotation"] = location
 
- 
- 
+
     response = client.classify(classify_target=classify_target)
     print("Mollusc is a \\"{}\\"".format(response.taxonomy))
- 
+
 
 # [END %s]
 
@@ -293,11 +292,10 @@ def sample_classify(video, location):
     request = {
         'classify_target': classify_target,
     }
- 
- 
+
     response = client.classify(request=request)
     print("Mollusc is a \\"{}\\"".format(response.taxonomy))
- 
+
 
 # [END %s]
 

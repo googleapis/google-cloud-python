@@ -52,7 +52,7 @@ There is a little, but not enough for it to be important because
       {% do input_parameters.append(request.single.input_parameter) %}
     {% endif %}
   {% endfor %}
-{{ input_parameters|join(", ") -}}
+{{ input_parameters|join(", ") }}
 {% endwith %}
 {% endmacro %}
 
@@ -89,7 +89,7 @@ for {{ statement.variable }} in {{ statement.collection|coerce_response_name }}:
 {% endmacro %}
 
 {% macro render_map_loop(statement) %}
- {# At least one of key and value exist; validated in python #}
+{# At least one of key and value exist; validated in python #}
 {% if "key" not in statement %}
 for {{ statement.value }} in {{ statement.map|coerce_response_name }}.values():
 {% elif "value" not in statement %}
@@ -111,21 +111,21 @@ with open({{ print_string_formatting(statement["filename"])|trim }}, "wb") as f:
 
 {% macro dispatch_statement(statement, indentation=0) %}
 {# Each statement is a dict with a single key/value pair #}
-{% if "print" in statement -%}
+{% if "print" in statement %}
 {{ render_print(statement["print"])|indent(width=indentation, first=True) }}
-{% elif "define" in statement -%}
+{% elif "define" in statement %}
 {{ render_define(statement["define"])|indent(width=indentation, first=True) }}
-{% elif "comment" in statement -%}
+{% elif "comment" in statement %}
 {{ render_comment(statement["comment"])|indent(width=indentation, first=True) }}
-{% elif "loop" in statement -%}
-  {% with loop = statement["loop"] -%}
-    {% if "collection" in loop -%}
+{% elif "loop" in statement %}
+  {% with loop = statement["loop"] %}
+    {% if "collection" in loop %}
 {{ render_collection_loop(loop)|indent(width=indentation, first=True) }}
-    {% else -%}
+    {% else %}
 {{ render_map_loop(loop)|indent(width=indentation, first=True) }}
-    {% endif -%}
-  {% endwith -%}
-{% elif "write_file" in statement -%}
+    {% endif %}
+  {% endwith %}
+{% elif "write_file" in statement %}
 {{ render_write_file(statement["write_file"])|indent(indentation, first=True) }}
 {% endif %}
 {% endmacro %}
@@ -135,9 +135,9 @@ with open({{ print_string_formatting(statement["filename"])|trim }}, "wb") as f:
 {# to be the correct enum from the right module, if necessary. #}
 {# Python is also responsible for verifying that each input parameter is unique,#}
 {# no parameter is a reserved keyword #}
-  {% if attr.input_parameter %}
+{% if attr.input_parameter %}
 # {{ attr.input_parameter }} = {{ attr.value }}
-  {% if attr.value_is_file %}
+{% if attr.value_is_file %}
 with open({{ attr.input_parameter }}, "rb") as f:
     {{ base_name }}["{{ attr.field }}"] = f.read()
     {% else %}
@@ -150,67 +150,66 @@ with open({{ attr.input_parameter }}, "rb") as f:
 
 {% macro render_request_setup(full_request) %}
 {% for parameter_block in full_request.request_list if parameter_block.body %}
-{% if parameter_block.pattern -%}
+{% if parameter_block.pattern %}
 {# This is a resource-name patterned lookup parameter #}
-{% with formals = [] -%} 
-{% for attr in parameter_block.body -%} 
-{% do formals.append("%s=%s"|format(attr.field, attr.input_parameter or attr.value)) -%} 
-{% endfor -%} 
+{% with formals = [] %}
+{% for attr in parameter_block.body %}
+{% do formals.append("%s=%s"|format(attr.field, attr.input_parameter or attr.value)) %}
+{% endfor %}
 {{ parameter_block.base }} = "{{parameter_block.pattern }}".format({{ formals|join(", ") }})
-{% endwith -%}  
-{% else -%} {# End resource name construction #}
+{% endwith %}
+{% else %}{# End resource name construction #}
 {{ parameter_block.base }} = {}
 {% for attr in parameter_block.body %}
 {{ render_request_attr(parameter_block.base, attr) }}
 {% endfor %}
-{% endif -%}
+{% endif %}
 {% endfor %}
-{% if not full_request.flattenable -%}
+{% if not full_request.flattenable %}
 request = {
 {% for parameter in full_request.request_list %}
     '{{ parameter.base  }}': {{ parameter.base if parameter.body else parameter.single }},
-{% endfor -%}
-}
-{% endif -%}
+{% endfor %}}
+{% endif %}
 {% endmacro %}
 
 {% macro render_request_params(request) %}
-  {# Provide the top level parameters last and as keyword params #}
-  {% with params = [] -%}
-    {% for r in request if r.body -%}
-      {% do params.append(r.base) -%}
-    {% endfor -%}
-    {% for r in request if r.single -%}
-      {% do params.append("%s=%s"|format(r.base, r.single.value)) -%}
-    {% endfor -%}
-{{ params|join(", ") -}}
-  {% endwith -%}
+{# Provide the top level parameters last and as keyword params #}
+  {% with params = [] %}
+    {% for r in request if r.body %}
+      {% do params.append(r.base) %}
+    {% endfor %}
+    {% for r in request if r.single %}
+      {% do params.append("%s=%s"|format(r.base, r.single.value)) %}
+    {% endfor %}
+{{ params|join(", ") }}
+  {% endwith %}
 {% endmacro %}
 
 {% macro render_request_params_unary(request) %}
-  {# Provide the top level parameters last and as keyword params #}
-  {% if request.flattenable -%}
-  {% with params = [] -%}
-    {% for r in request.request_list -%}
-      {% do params.append("%s=%s"|format(r.base, r.single.value if r.single else r.base)) -%}
-    {% endfor -%}
-{{ params|join(", ") -}}
-  {% endwith -%}
-  {% else -%}
+{# Provide the top level parameters last and as keyword params #}
+  {% if request.flattenable %}
+  {% with params = [] %}
+    {% for r in request.request_list %}
+      {% do params.append("%s=%s"|format(r.base, r.single.value if r.single else r.base)) %}
+    {% endfor %}
+{{ params|join(", ") }}
+  {% endwith %}
+  {% else %}
 request=request
-  {% endif -%}
+  {% endif %}
 {% endmacro %}
 
 
 {% macro render_method_call(sample, calling_form, calling_form_enum) %}
-  {# Note: this doesn't deal with enums or unions #}
+{# Note: this doesn't deal with enums or unions #}
 {% if calling_form in [calling_form_enum.RequestStreamingBidi,
-                       calling_form_enum.RequestStreamingClient] -%}
-client.{{ sample.rpc|snake_case }}([{{ render_request_params(sample.request.request_list)|trim -}}])
-{% else -%} {# TODO: deal with flattening #}
+                       calling_form_enum.RequestStreamingClient] %}
+client.{{ sample.rpc|snake_case }}([{{ render_request_params(sample.request.request_list)|trim }}])
+{% else %}{# TODO: deal with flattening #}
 {# TODO: set up client streaming once some questions are answered #}
-client.{{ sample.rpc|snake_case }}({{ render_request_params_unary(sample.request)|trim -}})
-{% endif -%}
+client.{{ sample.rpc|snake_case }}({{ render_request_params_unary(sample.request)|trim }})
+{% endif %}
 {% endmacro %}
 
 {# Setting up the method invocation is the responsibility of the caller: #}
@@ -262,15 +261,15 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser()
-{% with arg_list = [] -%}
-{% for request in full_request.request_list if request.body -%}
+{% with arg_list = [] %}
+{% for request in full_request.request_list if request.body %}
 {% for attr in request.body if attr.input_parameter %}
     parser.add_argument("--{{ attr.input_parameter }}",
                         type=str,
                         default={{ attr.value }})
-{% do arg_list.append("args." + attr.input_parameter) -%}
-{% endfor -%}
-{% endfor -%}
+{% do arg_list.append("args." + attr.input_parameter) %}
+{% endfor %}
+{% endfor %}
 {% for request in full_request.request_list if request.single and request.single.input_parameter %}
     parser.add_argument("--{{ request.single.input_parameter }}",
                         type=str,

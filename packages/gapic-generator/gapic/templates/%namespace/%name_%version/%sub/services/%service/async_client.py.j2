@@ -1,6 +1,7 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
+
 from collections import OrderedDict
 import functools
 import re
@@ -14,12 +15,12 @@ from google.api_core import retry as retries           # type: ignore
 from google.auth import credentials                    # type: ignore
 from google.oauth2 import service_account              # type: ignore
 
-{% filter sort_lines -%}
-{% for method in service.methods.values() -%}
-{% for ref_type in method.flat_ref_types -%}
+{% filter sort_lines %}
+{% for method in service.methods.values() %}
+{% for ref_type in method.flat_ref_types %}
 {{ ref_type.ident.python_import }}
-{% endfor -%}
-{% endfor -%}
+{% endfor %}
+{% endfor %}
 {% if opts.add_iam_methods %}
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
@@ -39,7 +40,7 @@ class {{ service.async_client_name }}:
     DEFAULT_ENDPOINT = {{ service.client_name }}.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = {{ service.client_name }}.DEFAULT_MTLS_ENDPOINT
 
-    {% for message in service.resource_messages|sort(attribute="resource_type") -%}
+    {% for message in service.resource_messages|sort(attribute="resource_type") %}
     {{ message.resource_type|snake_case }}_path = staticmethod({{ service.client_name }}.{{ message.resource_type|snake_case }}_path)
     parse_{{ message.resource_type|snake_case}}_path = staticmethod({{ service.client_name }}.parse_{{ message.resource_type|snake_case }}_path)
     {% endfor %}
@@ -139,64 +140,64 @@ class {{ service.async_client_name }}:
 
         )
 
-    {% for method in service.methods.values() -%}
-    {% if not method.server_streaming %}async {% endif -%}def {{ method.name|snake_case }}(self,
-            {%- if not method.client_streaming %}
+    {% for method in service.methods.values() %}
+    {%+ if not method.server_streaming %}async {% endif %}def {{ method.name|snake_case }}(self,
+            {% if not method.client_streaming %}
             request: {{ method.input.ident }} = None,
             *,
-            {% for field in method.flattened_fields.values() -%}
+            {% for field in method.flattened_fields.values() %}
             {{ field.name }}: {{ field.ident }} = None,
-            {% endfor -%}
-            {%- else %}
+            {% endfor %}
+            {% else %}
             requests: AsyncIterator[{{ method.input.ident }}] = None,
             *,
-            {% endif -%}
+            {% endif %}
             retry: retries.Retry = gapic_v1.method.DEFAULT,
             timeout: float = None,
             metadata: Sequence[Tuple[str, str]] = (),
-            {%- if not method.server_streaming %}
+            {% if not method.server_streaming %}
             ) -> {{ method.client_output_async.ident }}:
-            {%- else %}
+            {% else %}
             ) -> Awaitable[AsyncIterable[{{ method.client_output_async.ident }}]]:
-            {%- endif %}
+            {% endif %}
         r"""{{ method.meta.doc|rst(width=72, indent=8) }}
 
         Args:
-            {%- if not method.client_streaming %}
+            {% if not method.client_streaming %}
             request (:class:`{{ method.input.ident.sphinx }}`):
-                The request object.{{ ' ' -}}
+                The request object.{{ ' ' }}
                 {{ method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
-            {% for key, field in method.flattened_fields.items() -%}
+            {% for key, field in method.flattened_fields.items() %}
             {{ field.name }} (:class:`{{ field.ident.sphinx }}`):
                 {{ field.meta.doc|rst(width=72, indent=16) }}
                 This corresponds to the ``{{ key }}`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            {% endfor -%}
-            {%- else %}
+            {% endfor %}
+            {% else %}
             requests (AsyncIterator[`{{ method.input.ident.sphinx }}`]):
-                The request object AsyncIterator.{{ ' ' -}}
+                The request object AsyncIterator.{{ ' ' }}
                 {{ method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
-            {%- endif %}
+            {% endif %}
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
-        {%- if not method.void %}
+        {% if not method.void %}
 
         Returns:
-            {%- if not method.server_streaming %}
+            {% if not method.server_streaming %}
             {{ method.client_output_async.ident.sphinx }}:
-            {%- else %}
+            {% else %}
             AsyncIterable[{{ method.client_output_async.ident.sphinx }}]:
-            {%- endif %}
+            {% endif %}
                 {{ method.client_output_async.meta.doc|rst(width=72, indent=16, source_format='rst') }}
-        {%- endif %}
+        {% endif %}
         """
-        {%- if not method.client_streaming %}
+        {% if not method.client_streaming %}
         # Create or coerce a protobuf request object.
-        {% if method.flattened_fields -%}
+        {% if method.flattened_fields %}
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
         has_flattened_params = any([{{ method.flattened_fields.values()|join(', ', attribute='name') }}])
@@ -204,90 +205,90 @@ class {{ service.async_client_name }}:
             raise ValueError('If the `request` argument is set, then none of '
                              'the individual field arguments should be set.')
 
-        {% endif -%}
-        {% if method.input.ident.package != method.ident.package -%} {# request lives in a different package, so there is no proto wrapper #}
+        {% endif %}
+        {% if method.input.ident.package != method.ident.package %} {# request lives in a different package, so there is no proto wrapper #}
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
             request = {{ method.input.ident }}(**request)
-        {% if method.flattened_fields -%}{# Cross-package req and flattened fields #}
+        {% if method.flattened_fields %}{# Cross-package req and flattened fields #}
         elif not request:
             request = {{ method.input.ident }}({% if method.input.ident.package != method.ident.package %}{% for f in method.flattened_fields.values() %}{{ f.name }}={{ f.name }}, {% endfor %}{% endif %})
-        {% endif -%}{# Cross-package req and flattened fields #}
-        {%- else %}
+        {% endif %}{# Cross-package req and flattened fields #}
+        {% else %}
         request = {{ method.input.ident }}(request)
         {% endif %} {# different request package #}
 
-        {#- Vanilla python protobuf wrapper types cannot _set_ repeated fields #}
-        {% if method.flattened_fields and method.input.ident.package == method.ident.package -%}
+        {# Vanilla python protobuf wrapper types cannot _set_ repeated fields #}
+        {% if method.flattened_fields and method.input.ident.package == method.ident.package %}
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-        {% endif -%}
-        {%- for key, field in method.flattened_fields.items() if not field.repeated and method.input.ident.package == method.ident.package %}
+        {% endif %}
+        {% for key, field in method.flattened_fields.items() if not field.repeated and method.input.ident.package == method.ident.package %}
         if {{ field.name }} is not None:
             request.{{ key }} = {{ field.name }}
-        {%- endfor %}
+        {% endfor %}
         {# Map-y fields can be _updated_, however #}
-        {%- for key, field in method.flattened_fields.items() if field.map and method.input.ident.package == method.ident.package %}
+        {% for key, field in method.flattened_fields.items() if field.map and method.input.ident.package == method.ident.package %}
 
         if {{ field.name }}:
             request.{{ key }}.update({{ field.name }})
-        {%- endfor %}
-        {# And list-y fields can be _extended_ -#}
-        {%- for key, field in method.flattened_fields.items() if field.repeated and not field.map and method.input.ident.package == method.ident.package %}
+        {% endfor %}
+        {# And list-y fields can be _extended_ #}
+        {% for key, field in method.flattened_fields.items() if field.repeated and not field.map and method.input.ident.package == method.ident.package %}
         if {{ field.name }}:
             request.{{ key }}.extend({{ field.name }})
-        {%- endfor %}
-        {%- endif %}
+        {% endfor %}
+        {% endif %}
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.{{ method.name|snake_case }},
-            {%- if method.retry %}
+            {% if method.retry %}
             default_retry=retries.Retry(
                 {% if method.retry.initial_backoff %}initial={{ method.retry.initial_backoff }},{% endif %}
                 {% if method.retry.max_backoff %}maximum={{ method.retry.max_backoff }},{% endif %}
                 {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
                 predicate=retries.if_exception_type(
-                    {%- for ex in method.retry.retryable_exceptions|sort(attribute='__name__') %}
+                    {% for ex in method.retry.retryable_exceptions|sort(attribute='__name__') %}
                     exceptions.{{ ex.__name__ }},
-                    {%- endfor %}
+                    {% endfor %}
                 ),
                 deadline={{ method.timeout }},
             ),
-            {%- endif %}
+            {% endif %}
             default_timeout={{ method.timeout }},
             client_info=DEFAULT_CLIENT_INFO,
         )
-        {%- if method.field_headers %}
+        {% if method.field_headers %}
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((
-                {%- for field_header in method.field_headers %}
-                {%- if not method.client_streaming %}
+                {% for field_header in method.field_headers %}
+                {% if not method.client_streaming %}
                 ('{{ field_header }}', request.{{ field_header }}),
-                {%- endif %}
-                {%- endfor %}
+                {% endif %}
+                {% endfor %}
             )),
         )
-        {%- endif %}
+        {% endif %}
 
         # Send the request.
-        {% if not method.void %}response = {% endif %}
-        {%- if not method.server_streaming %}await {% endif %}rpc(
-            {%- if not method.client_streaming %}
+        {%+ if not method.void %}response = {% endif %}
+        {% if not method.server_streaming %}await {% endif %}rpc(
+            {% if not method.client_streaming %}
             request,
-            {%- else %}
+            {% else %}
             requests,
-            {%- endif %}
+            {% endif %}
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
-        {%- if method.lro %}
+        {% if method.lro %}
 
         # Wrap the response in an operation future.
         response = {{ method.client_output_async.ident.module_alias or method.client_output_async.ident.module }}.from_gapic(
@@ -296,7 +297,7 @@ class {{ service.async_client_name }}:
             {{ method.lro.response_type.ident }},
             metadata_type={{ method.lro.metadata_type.ident }},
         )
-        {%- elif method.paged_result_field %}
+        {% elif method.paged_result_field %}
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
@@ -306,12 +307,12 @@ class {{ service.async_client_name }}:
             response=response,
             metadata=metadata,
         )
-        {%- endif %}
-        {%- if not method.void %}
+        {% endif %}
+        {% if not method.void %}
 
         # Done; return the response.
         return response
-        {%- endif %}
+        {% endif %}
         {{ '\n' }}
     {% endfor %}
 

@@ -1,8 +1,9 @@
 {% extends "_base.py.j2" %}
 {% block content %}
-{% if opts.lazy_import -%} {# lazy import #}
+
+{% if opts.lazy_import %} {# lazy import #}
 import pytest
-  
+
 
 def test_module_level_imports():
     expected_names = []
@@ -11,23 +12,23 @@ def test_module_level_imports():
     {% for message in api.top_level_messages.values() %}
     from {{ api.naming.module_namespace|join('.') }}.{{ api.naming.module_name }} import {{ message.name }}
     expected_names.append({{ message.name }}.__name__)
-    {%- endfor %}
+    {% endfor %}
 
     {% if api.top_level_enums %}# Enum types{% endif %}
-    {%- for enum in api.top_level_enums.values() %}
+    {% for enum in api.top_level_enums.values() %}
     from {{ api.naming.module_namespace|join('.') }}.{{ api.naming.module_name }} import {{ enum.name }}
     expected_names.append({{ enum.name }}.__name__)
-    {%- endfor %}
+    {% endfor %}
 
     # Client and transport classes
-    {%- for service in api.services.values() %}
+    {% for service in api.services.values() %}
     from {{ api.naming.module_namespace|join('.')}}.{{ api.naming.module_name }} import {{ service.client_name }}
     expected_names.append({{ service.client_name}}.__name__)
     from {{ api.naming.module_namespace|join('.')}}.{{ api.naming.module_name }} import {{ service.transport_name }}
     expected_names.append({{ service.transport_name }}.__name__)
     from {{ api.naming.module_namespace|join('.')}}.{{ api.naming.module_name }} import {{ service.grpc_transport_name }}
     expected_names.append({{ service.grpc_transport_name }}.__name__)
-    {%- endfor %}
+    {% endfor %}
 
     expected_names.sort()
     from {{ api.naming.module_namespace|join('.') }} import {{ api.naming.module_name }}
@@ -47,23 +48,23 @@ def test_versionsed_module_level_imports():
     {% for message in api.top_level_messages.values() %}
     from {{ api.naming.module_namespace|join('.') }}.{{ api.naming.versioned_module_name }} import {{ message.name }}
     expected_names.append({{ message.name }}.__name__)
-    {%- endfor %}
+    {% endfor %}
 
     {% if api.top_level_enums %}# Enum types{% endif %}
-    {%- for enum in api.top_level_enums.values() %}
+    {% for enum in api.top_level_enums.values() %}
     from {{ api.naming.module_namespace|join('.') }}.{{ api.naming.versioned_module_name }} import {{ enum.name }}
     expected_names.append({{ enum.name }}.__name__)
-    {%- endfor %}
+    {% endfor %}
 
     # Client and transport classes
-    {%- for service in api.services.values() %}
+    {% for service in api.services.values() %}
     from {{ api.naming.module_namespace|join('.')}}.{{ api.naming.versioned_module_name }} import {{ service.client_name }}
     expected_names.append({{ service.client_name}}.__name__)
     from {{ api.naming.module_namespace|join('.')}}.{{ api.naming.versioned_module_name }} import {{ service.transport_name }}
     expected_names.append({{ service.transport_name }}.__name__)
     from {{ api.naming.module_namespace|join('.')}}.{{ api.naming.versioned_module_name }} import {{ service.grpc_transport_name }}
     expected_names.append({{ service.grpc_transport_name }}.__name__)
-    {%- endfor %}
+    {% endfor %}
 
     expected_names.sort()
     from {{ api.naming.module_namespace|join('.') }}.{{ api.naming.module_name }} import {{ api.naming.version }}
@@ -73,7 +74,7 @@ def test_versionsed_module_level_imports():
     # Verify the logic for handling non-existant names
     with pytest.raises(ImportError):
         from {{ api.naming.module_namespace|join('.' )}}.{{ api.naming.versioned_module_name }} import GiantSquid
-    
-    
-{% endif -%} {# lazy import #}
+
+
+{% endif %} {# lazy import #}
 {% endblock %}

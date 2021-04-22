@@ -1,6 +1,7 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
+
 import io
 import os
 import setuptools  # type: ignore
@@ -17,12 +18,12 @@ setuptools.setup(
     name='{{ api.naming.warehouse_package_name }}',
     version=version,
     long_description=readme,
-    {% if api.naming.namespace -%}
+    {% if api.naming.namespace %}
     packages=setuptools.PEP420PackageFinder.find(),
     namespace_packages={{ api.naming.namespace_packages }},
-    {% else -%}
+    {% else %}
     packages=setuptools.PEP420PackageFinder.find(),
-    {% endif -%}
+    {% endif %}
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,
     install_requires=(

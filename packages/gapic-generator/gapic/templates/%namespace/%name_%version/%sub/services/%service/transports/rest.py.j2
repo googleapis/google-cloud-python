@@ -1,12 +1,13 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
+
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple
 
 {% if service.has_lro %}
 from google.api_core import operations_v1
-{%- endif %}
+{% endif %}
 from google.api_core import gapic_v1       # type: ignore
 from google import auth                    # type: ignore
 from google.auth import credentials        # type: ignore
@@ -17,11 +18,11 @@ import grpc  # type: ignore
 from google.auth.transport.requests import AuthorizedSession
 
 {# TODO(yon-mg): re-add python_import/ python_modules from removed diff/current grpc template code #}
-{% filter sort_lines -%}
-{% for method in service.methods.values() -%}
+{% filter sort_lines %}
+{% for method in service.methods.values() %}
 {{ method.input.ident.python_import }}
 {{ method.output.ident.python_import }}
-{% endfor -%}
+{% endfor %}
 {% if opts.add_iam_methods %}
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
@@ -56,7 +57,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
 
         Args:
             host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
-                {{- ' ' }}The hostname to connect to.
+                {{ ' ' }}The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -82,7 +83,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
         # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
-        # credentials object 
+        # credentials object
         super().__init__(
             host=host,
             credentials=credentials,
@@ -91,12 +92,12 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         {%- if service.has_lro %}
         self._operations_client = None
-        {%- endif %}
+        {% endif %}
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._prep_wrapped_messages(client_info)
 
-    {%- if service.has_lro %}
+    {% if service.has_lro %}
 
     @property
     def operations_client(self) -> operations_v1.OperationsClient:
@@ -125,18 +126,18 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
 
         # Return the client from cache.
         return self._operations_client
-    {%- endif %}
-    {%- for method in service.methods.values() %}
-    {%- if method.http_opt %}
+    {% endif %}
+    {% for method in service.methods.values() %}
+    {% if method.http_opt %}
 
     def {{ method.name|snake_case }}(self,
             request: {{ method.input.ident }}, *,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> {{ method.output.ident }}:
-        r"""Call the {{- ' ' -}}
+        r"""Call the {{ ' ' }}
         {{ (method.name|snake_case).replace('_',' ')|wrap(
                 width=70, offset=45, indent=8) }}
-        {{- ' ' -}} method over HTTP.
+        {{ ' ' }} method over HTTP.
 
         Args:
             request (~.{{ method.input.ident }}):
@@ -144,12 +145,12 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
                 {{ method.input.meta.doc|rst(width=72, indent=16) }}
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
-        {%- if not method.void %}
+        {% if not method.void %}
 
         Returns:
             ~.{{ method.output.ident }}:
                 {{ method.output.meta.doc|rst(width=72, indent=16) }}
-        {%- endif %}
+        {% endif %}
         """
 
         {# TODO(yon-mg): refactor when implementing grpc transcoding
@@ -158,30 +159,30 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
                          - make sure dotted nested fields preserved
                          - format url and send the request
         #}
-        {%- if 'body' in method.http_opt %}
+        {% if 'body' in method.http_opt %}
         # Jsonify the request body
-        {%- if method.http_opt['body'] != '*' %}
+        {% if method.http_opt['body'] != '*' %}
         body = {{ method.input.fields[method.http_opt['body']].type.ident }}.to_json(
             request.{{ method.http_opt['body'] }},
             including_default_value_fields=False,
             use_integers_for_enums=False
         )
-        {%- else %}
+        {% else %}
         body = {{ method.input.ident }}.to_json(
             request,
             use_integers_for_enums=False
         )
-        {%- endif %}
-        {%- endif %}
+        {% endif %}
+        {% endif %}
 
         {# TODO(yon-mg): Write helper method for handling grpc transcoding url #}
         # TODO(yon-mg): need to handle grpc transcoding and parse url correctly
         #               current impl assumes basic case of grpc transcoding
         url = 'https://{host}{{ method.http_opt['url'] }}'.format(
             host=self._host,
-            {%- for field in method.path_params %}
+            {% for field in method.path_params %}
             {{ field }}=request.{{ method.input.get_field(field).name }},
-            {%- endfor %}
+            {% endfor %}
         )
 
         {# TODO(yon-mg): move all query param logic out of wrappers into here to handle
@@ -190,9 +191,9 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {
-            {%- for field in method.query_params | sort%}
+            {% for field in method.query_params | sort%}
             '{{ field|camel_case }}': request.{{ field }},
-            {%- endfor %}
+            {% endfor %}
         }
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
@@ -203,23 +204,23 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         # Send the request
         {% if not method.void %}response = {% endif %}self._session.{{ method.http_opt['verb'] }}(
             url
-            {%- if 'body' in method.http_opt %},
+            {% if 'body' in method.http_opt %},
             data=body,
-            {%- endif %}
+            {% endif %}
         )
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
-        {%- if not method.void %}
+        {% if not method.void %}
 
         # Return the response
         return {{ method.output.ident }}.from_json(
             response.content,
             ignore_unknown_fields=True
         )
-        {%- endif %}
-    {%- endif %}
-    {%- endfor %}
+        {% endif %}
+    {% endif %}
+    {% endfor %}
 
 
 __all__ = (

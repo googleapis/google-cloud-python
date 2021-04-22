@@ -1,18 +1,19 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
+
 import setuptools  # type: ignore
 
 
 setuptools.setup(
     name='{{ api.naming.warehouse_package_name }}',
     version='0.0.1',
-    {% if api.naming.namespace -%}
+    {% if api.naming.namespace %}
     packages=setuptools.PEP420PackageFinder.find(),
     namespace_packages={{ api.naming.namespace_packages }},
-    {% else -%}
+    {% else %}
     packages=setuptools.find_packages(),
-    {% endif -%}
+    {% endif %}
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,
     install_requires=(
@@ -20,9 +21,9 @@ setuptools.setup(
         'googleapis-common-protos >= 1.5.8',
         'grpcio >= 1.10.0',
         'proto-plus >= 1.15.0',
-    {%- if api.requires_package(('google', 'iam', 'v1')) %}
+    {% if api.requires_package(('google', 'iam', 'v1')) %}
         'grpc-google-iam-v1',
-    {%- endif %}
+    {% endif %}
     ),
     python_requires='>=3.7',{# Lazy import requires module-level getattr #}
     setup_requires=[

@@ -1,6 +1,7 @@
 {% extends "_base.py.j2" %}
 
 {% block content %}
+
 import os
 
 import nox  # type: ignore
@@ -31,10 +32,10 @@ def mypy(session):
     session.install('.')
     session.run(
         'mypy',
-        {%- if api.naming.module_namespace %}
+        {% if api.naming.module_namespace %}
         '{{ api.naming.module_namespace[0] }}',
-        {%- else %}
+        {% else %}
         '{{ api.naming.versioned_module_name }}',
-        {%- endif %}
+        {% endif %}
     )
 {% endblock %}

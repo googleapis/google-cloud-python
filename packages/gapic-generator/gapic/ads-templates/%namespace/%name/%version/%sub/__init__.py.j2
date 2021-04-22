@@ -2,28 +2,29 @@
 
 {% block content %}
 
+
 {#  Define __all__.
     This requires the full set of imported names, so we iterate over
     them again.
 -#}
 __all__ = (
-    {%- filter sort_lines %}
-    {%- for subpackage in api.subpackages.keys() %}
+    {% filter sort_lines %}
+    {% for subpackage in api.subpackages.keys() %}
     '{{ subpackage }}',
-    {%- endfor %}
-    {%- for service in api.services.values()
+    {% endfor %}
+    {% for service in api.services.values()
             if service.meta.address.subpackage == api.subpackage_view %}
     '{{ service.client_name }}',
-    {%- endfor %}
-    {%- for proto in api.protos.values()
+    {% endfor %}
+    {% for proto in api.protos.values()
             if proto.meta.address.subpackage == api.subpackage_view %}
-    {%- for message in proto.messages.values() %}
+    {% for message in proto.messages.values() %}
     '{{ message.name }}',
-    {%- endfor %}
-    {%- for enum in proto.enums.values() %}
+    {% endfor %}
+    {% for enum in proto.enums.values() %}
     '{{ enum.name }}',
-    {%- endfor %}
-    {%- endfor %}
-    {%- endfilter %}
+    {% endfor %}
+    {% endfor %}
+    {% endfilter %}
 )
 {% endblock %}

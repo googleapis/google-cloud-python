@@ -1,34 +1,35 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
+
 {#  Import subpackages. -#}
-{% for subpackage, _ in api.subpackages|dictsort -%}
+{% for subpackage, _ in api.subpackages|dictsort %}
 from . import {{ subpackage }}
-{% endfor -%}
+{% endfor %}
 
 {#  Import services for this package. -#}
-{% filter sort_lines -%}
+{% filter sort_lines %}
 {% for service in api.services.values()|sort(attribute='name')
-        if service.meta.address.subpackage == api.subpackage_view -%}
+        if service.meta.address.subpackage == api.subpackage_view %}
 from .services.{{ service.name|snake_case }} import {{ service.client_name }}
-{% endfor -%}
-{% endfilter -%}
+{% endfor %}
+{% endfilter %}
 
 {#  Import messages and enums from each proto.
     It is safe to import all of the messages into the same namespace here,
     because protocol buffers itself enforces selector uniqueness within
     a proto package.
 -#}
-{% filter sort_lines -%}
+{% filter sort_lines %}
 {% for proto in api.protos.values()
-        if proto.meta.address.subpackage == api.subpackage_view -%}
-{% for message in proto.messages.values() -%}
+        if proto.meta.address.subpackage == api.subpackage_view %}
+{% for message in proto.messages.values() %}
 from .types.{{ proto.module_name }} import {{ message.name }}
-{% endfor -%}
-{% for enum in proto.enums.values() -%}
+{% endfor %}
+{% for enum in proto.enums.values() %}
 from .types.{{ proto.module_name }} import {{ enum.name }}
-{% endfor -%}
-{% endfor -%}
+{% endfor %}
+{% endfor %}
 {% endfilter %}
 
 {#  Define __all__.
@@ -36,23 +37,23 @@ from .types.{{ proto.module_name }} import {{ enum.name }}
     them again.
 -#}
 __all__ = (
-    {%- filter sort_lines %}
-    {%- for subpackage in api.subpackages.keys() %}
+    {% filter sort_lines %}
+    {% for subpackage in api.subpackages.keys() %}
     '{{ subpackage }}',
-    {%- endfor %}
-    {%- for service in api.services.values()
+    {% endfor %}
+    {% for service in api.services.values()
             if service.meta.address.subpackage == api.subpackage_view %}
     '{{ service.client_name }}',
-    {%- endfor %}
-    {%- for proto in api.protos.values()
+    {% endfor %}
+    {% for proto in api.protos.values()
             if proto.meta.address.subpackage == api.subpackage_view %}
-    {%- for message in proto.messages.values() %}
+    {% for message in proto.messages.values() %}
     '{{ message.name }}',
-    {%- endfor %}
-    {%- for enum in proto.enums.values() %}
+    {% endfor %}
+    {% for enum in proto.enums.values() %}
     '{{ enum.name }}',
-    {%- endfor %}
-    {%- endfor %}
-    {%- endfilter %}
+    {% endfor %}
+    {% endfor %}
+    {% endfilter %}
 )
 {% endblock %}
