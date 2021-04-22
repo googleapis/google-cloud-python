@@ -20,22 +20,15 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-excludes = ["README.rst", "setup.py", "nox*.py", "docs/conf.py", "docs/index.rst"]
 
-# ----------------------------------------------------------------------------
-# Generate redis GAPIC layer
-# ----------------------------------------------------------------------------
-for version in ["v1beta1", "v1"]:
-    library = gapic.py_library(
-        service="redis",
-        version=version,
-        bazel_target=f"//google/cloud/redis/{version}:redis-{version}-py",
-        include_protos=True,
-    )
+default_version = "v1"
 
-    s.copy(library, excludes=excludes)
+for library in s.get_staging_dirs(default_version):
+    excludes = ["README.rst", "setup.py", "nox*.py", "docs/conf.py", "docs/index.rst"]
+    s.move(library, excludes=excludes)
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
