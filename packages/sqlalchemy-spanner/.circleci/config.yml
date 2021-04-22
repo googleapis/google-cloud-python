@@ -1,19 +1,17 @@
 version: 2.1
 
 orbs:
-  python: circleci/python@3.8.0
+  python: circleci/python@1.3.3
 
 jobs:
   build-and-test:
     executor: python/default
     steps:
       - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
-      - run:
-          command: ./manage.py test
-          name: Test
+      - run: sudo apt install python3.8
+      - run: echo $GCLOUD_SERVICE_KEY > "$GOOGLE_APPLICATION_CREDENTIALS"
+      - run: python3 -m pip install nox
+      - run: python3 -m nox
 
 workflows:
   main:
