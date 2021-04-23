@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.44.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.43.3...v0.44.0) (2021-04-23)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([#774](https://www.github.com/googleapis/gapic-generator-python/issues/774)) ([89d6f35](https://www.github.com/googleapis/gapic-generator-python/commit/89d6f35c54b0a9b81c9b5f580d2e9eb87352ed93))
+
+
+### Bug Fixes
+
+* enable GAPIC metadata generation ([#843](https://www.github.com/googleapis/gapic-generator-python/issues/843)) ([697816c](https://www.github.com/googleapis/gapic-generator-python/commit/697816ce7d5b201d6ced85fadd89f9140da67b37))
+
 ### [0.43.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.43.2...v0.43.3) (2021-04-12)
 
 
