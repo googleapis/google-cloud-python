@@ -38,4 +38,4 @@ permissionRules:
   - team: yoshi-python-admins
     permission: admin
   - team: yoshi-python
-    permission: write
+    permission: push
