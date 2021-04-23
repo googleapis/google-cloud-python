@@ -18,37 +18,32 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v3beta1", "v3"]
 
-excludes = [
-    "setup.py",
-    "nox*.py",
-    "README.rst",
-    "docs/conf.py",
-    "docs/index.rst",
-    "translation.py",
-]
+default_version = "v3"
 
-# ----------------------------------------------------------------------------
-# Generate asset GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="translate",
-        version=version,
-        bazel_target=f"//google/cloud/translate/{version}:translation-{version}-py",
-    )
+for library in s.get_staging_dirs(default_version):
+    if library.name.startswith("v3"):
+        # TODO(danoscarmike): remove once upstream protos have been fixed
+        # Escape underscores in gs:\\ URLs
+        s.replace(
+            library / "google/cloud/translate_v3*/types/translation_service.py",
+            "a_b_c_",
+            "a_b_c\_"
+        )
+
+    excludes = [
+        "setup.py",
+        "nox*.py",
+        "README.rst",
+        "docs/conf.py",
+        "docs/index.rst",
+        "translation.py",
+    ]
+
     s.move(library, excludes=excludes)
 
-# TODO(danoscarmike): remove once upstream protos have been fixed
-# Escape underscores in gs:\\ URLs
-s.replace(
-    "google/cloud/translate_v3*/types/translation_service.py",
-    r"""a_b_c_""",
-    """a_b_c\_"""
-)
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
@@ -62,13 +57,6 @@ s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .
 # Correct namespace in noxfile
 s.replace("noxfile.py", "google.cloud.translation", "google.cloud.translate")
 
-# Exclude the v2 from coverage targets
-s.replace(".coveragerc",
-"    google/cloud/translate/__init__.py",
-"""    google/cloud/translate/__init__.py
-    google/cloud/translate_v2/__init__.py
-    google/cloud/__init__.py"""
-)
 # ----------------------------------------------------------------------------
 # Samples templates
 # ----------------------------------------------------------------------------
