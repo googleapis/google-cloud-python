@@ -1464,6 +1464,7 @@ def test_download_dataframe_row_iterator_dict_sequence_schema(module_under_test)
         result = next(results_gen)
 
 
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_table_data_listpage_to_dataframe_skips_stop_iteration(module_under_test):
     dataframe = module_under_test._row_iterator_page_to_dataframe([], [], {})
     assert isinstance(dataframe, pandas.DataFrame)

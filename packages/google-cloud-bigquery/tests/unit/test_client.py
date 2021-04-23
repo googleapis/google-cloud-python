@@ -65,7 +65,12 @@ from test_utils.imports import maybe_fail_import
 from tests.unit.helpers import make_connection
 
 PANDAS_MINIUM_VERSION = pkg_resources.parse_version("1.0.0")
-PANDAS_INSTALLED_VERSION = pkg_resources.get_distribution("pandas").parsed_version
+
+if pandas is not None:
+    PANDAS_INSTALLED_VERSION = pkg_resources.get_distribution("pandas").parsed_version
+else:
+    # Set to less than MIN version.
+    PANDAS_INSTALLED_VERSION = pkg_resources.parse_version("0.0.0")
 
 
 def _make_credentials():

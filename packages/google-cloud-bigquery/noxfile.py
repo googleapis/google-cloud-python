@@ -31,6 +31,7 @@ CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
+    "unit_noextras",
     "unit",
     "system",
     "snippets",
@@ -42,7 +43,7 @@ nox.options.sessions = [
 ]
 
 
-def default(session):
+def default(session, install_extras=True):
     """Default unit test session.
 
     This is intended to be run **without** an interpreter set, so
@@ -65,7 +66,8 @@ def default(session):
         constraints_path,
     )
 
-    session.install("-e", ".[all]", "-c", constraints_path)
+    install_target = ".[all]" if install_extras else "."
+    session.install("-e", install_target, "-c", constraints_path)
 
     session.install("ipython", "-c", constraints_path)
 
@@ -88,6 +90,12 @@ def default(session):
 def unit(session):
     """Run the unit test suite."""
     default(session)
+
+
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS[-1])
+def unit_noextras(session):
+    """Run the unit test suite."""
+    default(session, install_extras=False)
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
