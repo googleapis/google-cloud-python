@@ -20,21 +20,18 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v1beta2", "v1"]
 
-# ----------------------------------------------------------------------------
-# Generate dataproc GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="dataproc",
-        version=version,
-        bazel_target=f"//google/cloud/dataproc/{version}:dataproc-{version}-py",
-        include_protos=True,
-    )
+default_version = "v1"
+
+for library in s.get_staging_dirs(default_version):
+    # Rename `policy_` to `policy` to avoid breaking change in a GA library
+    # Only replace if a non-alphanumeric (\W) character follows `policy_`
+    s.replace(library / "**/*.py", "policy_(\W)", "policy\g<1>")
+
     s.move(library, excludes=["docs/index.rst", "nox.py", "README.rst", "setup.py"])
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
@@ -45,14 +42,10 @@ templated_files = common.py_library(
 )
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
-# Rename `policy_` to `policy` to avoid breaking change in a GA library
-# Only replace if a non-alphanumeric (\W) character follows `policy_`
-s.replace(["google/**/*.py", "scripts/fixup*.py", "tests/unit/**/*.py"], "policy_(\W)", "policy\g<1>")
 # ----------------------------------------------------------------------------
 # Samples templates
 # ----------------------------------------------------------------------------
 python.py_samples(skip_readmes=True)
-
 
 # Temporarily disable warnings due to
 # https://github.com/googleapis/gapic-generator-python/issues/525
