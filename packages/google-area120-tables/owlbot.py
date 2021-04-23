@@ -19,27 +19,22 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate area120 tables GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="tables",
-    version="v1alpha1",
-    bazel_target="//google/area120/tables/v1alpha1:area120-tables-v1alpha1-py",
-)
+default_version = "v1alpha1"
 
-s.move(
-    library,
-    excludes=[
-        "setup.py",
-        "README.rst",
-        "docs/index.rst",
-        "scripts/fixup_tables_v1alpha1_keywords.py",
-    ],
-)
+for library in s.get_staging_dirs(default_version):
+    s.move(
+        library,
+        excludes=[
+            "setup.py",
+            "README.rst",
+            "docs/index.rst",
+            "scripts/fixup_tables_v1alpha1_keywords.py",
+        ],
+    )
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
