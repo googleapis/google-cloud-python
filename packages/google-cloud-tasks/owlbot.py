@@ -21,26 +21,19 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-excludes = ["README.rst", "setup.py", "nox*.py", "docs/index.rst", "*.tar.gz"]
 
-# ----------------------------------------------------------------------------
-# Generate tasks GAPIC layer
-# ----------------------------------------------------------------------------
-for version in ["v2beta2", "v2beta3", "v2"]:
-    library = gapic.py_library(
-        service="tasks",
-        version=version,
-        bazel_target=f"//google/cloud/tasks/{version}:tasks-{version}-py",
-        include_protos=True,
-    )
+default_version = "v2"
 
+for library in s.get_staging_dirs(default_version):
+    # Fix docstring.
+    s.replace(library / "google/cloud/*/types/target.py", "X-Google-\*", "X-Google-\\*")
+    s.replace(library / "google/cloud/*/types/target.py", "X-AppEngine-\*", "X-AppEngine-\\*")
+
+    excludes = ["README.rst", "setup.py", "nox*.py", "docs/index.rst", "*.tar.gz"]
     s.copy(library, excludes=excludes)
 
-# Fix docstring.
-s.replace("google/cloud/*/types/target.py", "X-Google-\*", "X-Google-\\*")
-s.replace("google/cloud/*/types/target.py", "X-AppEngine-\*", "X-AppEngine-\\*")
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
