@@ -38,51 +38,19 @@ from six.moves import range
 
 from google.auth import exceptions
 from google.oauth2 import _client
+from google.oauth2 import _client_async
 from google.oauth2 import challenges
+from google.oauth2 import reauth
 
 
-_REAUTH_SCOPE = "https://www.googleapis.com/auth/accounts.reauth"
-_REAUTH_API = "https://reauth.googleapis.com/v2/sessions"
-
-_REAUTH_NEEDED_ERROR = "invalid_grant"
-_REAUTH_NEEDED_ERROR_INVALID_RAPT = "invalid_rapt"
-_REAUTH_NEEDED_ERROR_RAPT_REQUIRED = "rapt_required"
-
-_AUTHENTICATED = "AUTHENTICATED"
-_CHALLENGE_REQUIRED = "CHALLENGE_REQUIRED"
-_CHALLENGE_PENDING = "CHALLENGE_PENDING"
-
-
-# Override this global variable to set custom max number of rounds of reauth
-# challenges should be run.
-RUN_CHALLENGE_RETRY_LIMIT = 5
-
-
-def is_interactive():
-    """Check if we are in an interractive environment.
-
-    Override this function with a different logic if you are using this library
-    outside a CLI.
-
-    If the rapt token needs refreshing, the user needs to answer the challenges.
-    If the user is not in an interractive environment, the challenges can not
-    be answered and we just wait for timeout for no reason.
-
-    Returns:
-        bool: True if is interactive environment, False otherwise.
-    """
-
-    return sys.stdin.isatty()
-
-
-def _get_challenges(
+async def _get_challenges(
     request, supported_challenge_types, access_token, requested_scopes=None
 ):
     """Does initial request to reauth API to get the challenges.
 
     Args:
         request (google.auth.transport.Request): A callable used to make
-            HTTP requests.
+            HTTP requests. This must be an aiohttp request.
         supported_challenge_types (Sequence[str]): list of challenge names
             supported by the manager.
         access_token (str): Access token with reauth scopes.
@@ -95,19 +63,23 @@ def _get_challenges(
     if requested_scopes:
         body["oauthScopesForDomainPolicyLookup"] = requested_scopes
 
-    return _client._token_endpoint_request(
-        request, _REAUTH_API + ":start", body, access_token=access_token, use_json=True
+    return await _client_async._token_endpoint_request(
+        request,
+        reauth._REAUTH_API + ":start",
+        body,
+        access_token=access_token,
+        use_json=True,
     )
 
 
-def _send_challenge_result(
+async def _send_challenge_result(
     request, session_id, challenge_id, client_input, access_token
 ):
     """Attempt to refresh access token by sending next challenge result.
 
     Args:
         request (google.auth.transport.Request): A callable used to make
-            HTTP requests.
+            HTTP requests. This must be an aiohttp request.
         session_id (str): session id returned by the initial reauth call.
         challenge_id (str): challenge id returned by the initial reauth call.
         client_input: dict with a challenge-specific client input. For example:
@@ -124,16 +96,16 @@ def _send_challenge_result(
         "proposalResponse": client_input,
     }
 
-    return _client._token_endpoint_request(
+    return await _client_async._token_endpoint_request(
         request,
-        _REAUTH_API + "/{}:continue".format(session_id),
+        reauth._REAUTH_API + "/{}:continue".format(session_id),
         body,
         access_token=access_token,
         use_json=True,
     )
 
 
-def _run_next_challenge(msg, request, access_token):
+async def _run_next_challenge(msg, request, access_token):
     """Get the next challenge from msg and run it.
 
     Args:
@@ -142,7 +114,7 @@ def _run_next_challenge(msg, request, access_token):
             previous challenge response to
             https://reauth.googleapis.com/v2/sessions/id:continue)
         request (google.auth.transport.Request): A callable used to make
-            HTTP requests.
+            HTTP requests. This must be an aiohttp request.
         access_token (str): reauth access token
 
     Returns:
@@ -172,7 +144,7 @@ def _run_next_challenge(msg, request, access_token):
         client_input = c.obtain_challenge_input(challenge)
         if not client_input:
             return None
-        return _send_challenge_result(
+        return await _send_challenge_result(
             request,
             msg["sessionId"],
             challenge["challengeId"],
@@ -182,12 +154,12 @@ def _run_next_challenge(msg, request, access_token):
     return None
 
 
-def _obtain_rapt(request, access_token, requested_scopes):
+async def _obtain_rapt(request, access_token, requested_scopes):
     """Given an http request method and reauth access token, get rapt token.
 
     Args:
         request (google.auth.transport.Request): A callable used to make
-            HTTP requests.
+            HTTP requests. This must be an aiohttp request.
         access_token (str): reauth access token
         requested_scopes (Sequence[str]): scopes required by the client application
 
@@ -197,19 +169,20 @@ def _obtain_rapt(request, access_token, requested_scopes):
     Raises:
         google.auth.exceptions.ReauthError: if reauth failed
     """
-    msg = _get_challenges(
+    msg = await _get_challenges(
         request,
         list(challenges.AVAILABLE_CHALLENGES.keys()),
         access_token,
         requested_scopes,
     )
 
-    if msg["status"] == _AUTHENTICATED:
+    if msg["status"] == reauth._AUTHENTICATED:
         return msg["encodedProofOfReauthToken"]
 
-    for _ in range(0, RUN_CHALLENGE_RETRY_LIMIT):
+    for _ in range(0, reauth.RUN_CHALLENGE_RETRY_LIMIT):
         if not (
-            msg["status"] == _CHALLENGE_REQUIRED or msg["status"] == _CHALLENGE_PENDING
+            msg["status"] == reauth._CHALLENGE_REQUIRED
+            or msg["status"] == reauth._CHALLENGE_PENDING
         ):
             raise exceptions.ReauthFailError(
                 "Reauthentication challenge failed due to API error: {}".format(
@@ -217,29 +190,29 @@ def _obtain_rapt(request, access_token, requested_scopes):
                 )
             )
 
-        if not is_interactive():
+        if not reauth.is_interactive():
             raise exceptions.ReauthFailError(
                 "Reauthentication challenge could not be answered because you are not"
                 " in an interactive session."
             )
 
-        msg = _run_next_challenge(msg, request, access_token)
+        msg = await _run_next_challenge(msg, request, access_token)
 
-        if msg["status"] == _AUTHENTICATED:
+        if msg["status"] == reauth._AUTHENTICATED:
             return msg["encodedProofOfReauthToken"]
 
     # If we got here it means we didn't get authenticated.
     raise exceptions.ReauthFailError("Failed to obtain rapt token.")
 
 
-def get_rapt_token(
+async def get_rapt_token(
     request, client_id, client_secret, refresh_token, token_uri, scopes=None
 ):
     """Given an http request method and refresh_token, get rapt token.
 
     Args:
         request (google.auth.transport.Request): A callable used to make
-            HTTP requests.
+            HTTP requests. This must be an aiohttp request.
         client_id (str): client id to get access token for reauth scope.
         client_secret (str): client secret for the client_id
         refresh_token (str): refresh token to refresh access token
@@ -254,22 +227,22 @@ def get_rapt_token(
     sys.stderr.write("Reauthentication required.\n")
 
     # Get access token for reauth.
-    access_token, _, _, _ = _client.refresh_grant(
+    access_token, _, _, _ = await _client_async.refresh_grant(
         request=request,
         client_id=client_id,
         client_secret=client_secret,
         refresh_token=refresh_token,
         token_uri=token_uri,
-        scopes=[_REAUTH_SCOPE],
+        scopes=[reauth._REAUTH_SCOPE],
     )
 
     # Get rapt token from reauth API.
-    rapt_token = _obtain_rapt(request, access_token, requested_scopes=scopes)
+    rapt_token = await _obtain_rapt(request, access_token, requested_scopes=scopes)
 
     return rapt_token
 
 
-def refresh_grant(
+async def refresh_grant(
     request,
     token_uri,
     refresh_token,
@@ -282,7 +255,7 @@ def refresh_grant(
 
     Args:
         request (google.auth.transport.Request): A callable used to make
-            HTTP requests.
+            HTTP requests. This must be an aiohttp request.
         token_uri (str): The OAuth 2.0 authorizations server's token endpoint
             URI.
         refresh_token (str): The refresh token to use to get a new access
@@ -315,27 +288,33 @@ def refresh_grant(
     if rapt_token:
         body["rapt"] = rapt_token
 
-    response_status_ok, response_data = _client._token_endpoint_request_no_throw(
+    response_status_ok, response_data = await _client_async._token_endpoint_request_no_throw(
         request, token_uri, body
     )
     if (
         not response_status_ok
-        and response_data.get("error") == _REAUTH_NEEDED_ERROR
+        and response_data.get("error") == reauth._REAUTH_NEEDED_ERROR
         and (
-            response_data.get("error_subtype") == _REAUTH_NEEDED_ERROR_INVALID_RAPT
-            or response_data.get("error_subtype") == _REAUTH_NEEDED_ERROR_RAPT_REQUIRED
+            response_data.get("error_subtype")
+            == reauth._REAUTH_NEEDED_ERROR_INVALID_RAPT
+            or response_data.get("error_subtype")
+            == reauth._REAUTH_NEEDED_ERROR_RAPT_REQUIRED
         )
     ):
-        rapt_token = get_rapt_token(
+        rapt_token = await get_rapt_token(
             request, client_id, client_secret, refresh_token, token_uri, scopes=scopes
         )
         body["rapt"] = rapt_token
-        (response_status_ok, response_data) = _client._token_endpoint_request_no_throw(
+        (
+            response_status_ok,
+            response_data,
+        ) = await _client_async._token_endpoint_request_no_throw(
             request, token_uri, body
         )
 
     if not response_status_ok:
         _client._handle_error_response(response_data)
-    return _client._handle_refresh_grant_response(response_data, refresh_token) + (
-        rapt_token,
+    refresh_response = _client._handle_refresh_grant_response(
+        response_data, refresh_token
     )
+    return refresh_response + (rapt_token,)

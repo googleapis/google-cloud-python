@@ -34,7 +34,7 @@ Authorization Code grant flow.
 from google.auth import _credentials_async as credentials
 from google.auth import _helpers
 from google.auth import exceptions
-from google.oauth2 import _client_async as _client
+from google.oauth2 import _reauth_async as reauth
 from google.oauth2 import credentials as oauth2_credentials
 
 
@@ -66,23 +66,26 @@ class Credentials(oauth2_credentials.Credentials):
             refresh_token,
             expiry,
             grant_response,
-        ) = await _client.refresh_grant(
+            rapt_token,
+        ) = await reauth.refresh_grant(
             request,
             self._token_uri,
             self._refresh_token,
             self._client_id,
             self._client_secret,
-            self._scopes,
+            scopes=self._scopes,
+            rapt_token=self._rapt_token,
         )
 
         self.token = access_token
         self.expiry = expiry
         self._refresh_token = refresh_token
         self._id_token = grant_response.get("id_token")
+        self._rapt_token = rapt_token
 
-        if self._scopes and "scopes" in grant_response:
+        if self._scopes and "scope" in grant_response:
             requested_scopes = frozenset(self._scopes)
-            granted_scopes = frozenset(grant_response["scopes"].split())
+            granted_scopes = frozenset(grant_response["scope"].split())
             scopes_requested_but_not_granted = requested_scopes - granted_scopes
             if scopes_requested_but_not_granted:
                 raise exceptions.RefreshError(

@@ -29,34 +29,6 @@ from google.oauth2 import _client_async as _client
 from tests.oauth2 import test__client as test_client
 
 
-def test__handle_error_response():
-    response_data = json.dumps({"error": "help", "error_description": "I'm alive"})
-
-    with pytest.raises(exceptions.RefreshError) as excinfo:
-        _client._handle_error_response(response_data)
-
-    assert excinfo.match(r"help: I\'m alive")
-
-
-def test__handle_error_response_non_json():
-    response_data = "Help, I'm alive"
-
-    with pytest.raises(exceptions.RefreshError) as excinfo:
-        _client._handle_error_response(response_data)
-
-    assert excinfo.match(r"Help, I\'m alive")
-
-
-@mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
-def test__parse_expiry(unused_utcnow):
-    result = _client._parse_expiry({"expires_in": 500})
-    assert result == datetime.datetime.min + datetime.timedelta(seconds=500)
-
-
-def test__parse_expiry_none():
-    assert _client._parse_expiry({}) is None
-
-
 def make_request(response_data, status=http_client.OK):
     response = mock.AsyncMock(spec=["transport.Response"])
     response.status = status
@@ -82,8 +54,37 @@ async def test__token_endpoint_request():
     request.assert_called_with(
         method="POST",
         url="http://example.com",
-        headers={"content-type": "application/x-www-form-urlencoded"},
+        headers={"Content-Type": "application/x-www-form-urlencoded"},
         body="test=params".encode("utf-8"),
+    )
+
+    # Check result
+    assert result == {"test": "response"}
+
+
+@pytest.mark.asyncio
+async def test__token_endpoint_request_json():
+
+    request = make_request({"test": "response"})
+    access_token = "access_token"
+
+    result = await _client._token_endpoint_request(
+        request,
+        "http://example.com",
+        {"test": "params"},
+        access_token=access_token,
+        use_json=True,
+    )
+
+    # Check request call
+    request.assert_called_with(
+        method="POST",
+        url="http://example.com",
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": "Bearer access_token",
+        },
+        body=b'{"test": "params"}',
     )
 
     # Check result
@@ -218,7 +219,12 @@ async def test_refresh_grant(unused_utcnow):
     )
 
     token, refresh_token, expiry, extra_data = await _client.refresh_grant(
-        request, "http://example.com", "refresh_token", "client_id", "client_secret"
+        request,
+        "http://example.com",
+        "refresh_token",
+        "client_id",
+        "client_secret",
+        rapt_token="rapt_token",
     )
 
     # Check request call
@@ -229,6 +235,7 @@ async def test_refresh_grant(unused_utcnow):
             "refresh_token": "refresh_token",
             "client_id": "client_id",
             "client_secret": "client_secret",
+            "rapt": "rapt_token",
         },
     )
 

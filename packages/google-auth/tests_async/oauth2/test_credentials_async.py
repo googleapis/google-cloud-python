@@ -58,7 +58,7 @@ class TestCredentials:
         assert credentials.client_id == self.CLIENT_ID
         assert credentials.client_secret == self.CLIENT_SECRET
 
-    @mock.patch("google.oauth2._client_async.refresh_grant", autospec=True)
+    @mock.patch("google.oauth2._reauth_async.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
         return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
@@ -68,6 +68,7 @@ class TestCredentials:
         token = "token"
         expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)
         grant_response = {"id_token": mock.sentinel.id_token}
+        rapt_token = "rapt_token"
         refresh_grant.return_value = (
             # Access token
             token,
@@ -77,6 +78,8 @@ class TestCredentials:
             expiry,
             # Extra data
             grant_response,
+            # Rapt token
+            rapt_token,
         )
 
         request = mock.AsyncMock(spec=["transport.Request"])
@@ -93,12 +96,14 @@ class TestCredentials:
             self.CLIENT_ID,
             self.CLIENT_SECRET,
             None,
+            None,
         )
 
         # Check that the credentials have the token and expiry
         assert creds.token == token
         assert creds.expiry == expiry
         assert creds.id_token == mock.sentinel.id_token
+        assert creds.rapt_token == rapt_token
 
         # Check that the credentials are valid (have a token and are not
         # expired)
@@ -114,7 +119,7 @@ class TestCredentials:
 
         request.assert_not_called()
 
-    @mock.patch("google.oauth2._client_async.refresh_grant", autospec=True)
+    @mock.patch("google.oauth2._reauth_async.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
         return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
@@ -127,6 +132,7 @@ class TestCredentials:
         token = "token"
         expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)
         grant_response = {"id_token": mock.sentinel.id_token}
+        rapt_token = "rapt_token"
         refresh_grant.return_value = (
             # Access token
             token,
@@ -136,6 +142,8 @@ class TestCredentials:
             expiry,
             # Extra data
             grant_response,
+            # Rapt token
+            rapt_token,
         )
 
         request = mock.AsyncMock(spec=["transport.Request"])
@@ -146,6 +154,7 @@ class TestCredentials:
             client_id=self.CLIENT_ID,
             client_secret=self.CLIENT_SECRET,
             scopes=scopes,
+            rapt_token="old_rapt_token",
         )
 
         # Refresh credentials
@@ -159,6 +168,7 @@ class TestCredentials:
             self.CLIENT_ID,
             self.CLIENT_SECRET,
             scopes,
+            "old_rapt_token",
         )
 
         # Check that the credentials have the token and expiry
@@ -166,12 +176,13 @@ class TestCredentials:
         assert creds.expiry == expiry
         assert creds.id_token == mock.sentinel.id_token
         assert creds.has_scopes(scopes)
+        assert creds.rapt_token == rapt_token
 
         # Check that the credentials are valid (have a token and are not
         # expired.)
         assert creds.valid
 
-    @mock.patch("google.oauth2._client_async.refresh_grant", autospec=True)
+    @mock.patch("google.oauth2._reauth_async.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
         return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
@@ -183,10 +194,8 @@ class TestCredentials:
         scopes = ["email", "profile"]
         token = "token"
         expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)
-        grant_response = {
-            "id_token": mock.sentinel.id_token,
-            "scopes": " ".join(scopes),
-        }
+        grant_response = {"id_token": mock.sentinel.id_token, "scope": " ".join(scopes)}
+        rapt_token = "rapt_token"
         refresh_grant.return_value = (
             # Access token
             token,
@@ -196,6 +205,8 @@ class TestCredentials:
             expiry,
             # Extra data
             grant_response,
+            # Rapt token
+            rapt_token,
         )
 
         request = mock.AsyncMock(spec=["transport.Request"])
@@ -219,6 +230,7 @@ class TestCredentials:
             self.CLIENT_ID,
             self.CLIENT_SECRET,
             scopes,
+            None,
         )
 
         # Check that the credentials have the token and expiry
@@ -226,12 +238,13 @@ class TestCredentials:
         assert creds.expiry == expiry
         assert creds.id_token == mock.sentinel.id_token
         assert creds.has_scopes(scopes)
+        assert creds.rapt_token == rapt_token
 
         # Check that the credentials are valid (have a token and are not
         # expired.)
         assert creds.valid
 
-    @mock.patch("google.oauth2._client_async.refresh_grant", autospec=True)
+    @mock.patch("google.oauth2._reauth_async.refresh_grant", autospec=True)
     @mock.patch(
         "google.auth._helpers.utcnow",
         return_value=datetime.datetime.min + _helpers.CLOCK_SKEW,
@@ -246,8 +259,9 @@ class TestCredentials:
         expiry = _helpers.utcnow() + datetime.timedelta(seconds=500)
         grant_response = {
             "id_token": mock.sentinel.id_token,
-            "scopes": " ".join(scopes_returned),
+            "scope": " ".join(scopes_returned),
         }
+        rapt_token = "rapt_token"
         refresh_grant.return_value = (
             # Access token
             token,
@@ -257,6 +271,8 @@ class TestCredentials:
             expiry,
             # Extra data
             grant_response,
+            # Rapt token
+            rapt_token,
         )
 
         request = mock.AsyncMock(spec=["transport.Request"])
@@ -267,6 +283,7 @@ class TestCredentials:
             client_id=self.CLIENT_ID,
             client_secret=self.CLIENT_SECRET,
             scopes=scopes,
+            rapt_token=None,
         )
 
         # Refresh credentials
@@ -283,6 +300,7 @@ class TestCredentials:
             self.CLIENT_ID,
             self.CLIENT_SECRET,
             scopes,
+            None,
         )
 
         # Check that the credentials have the token and expiry
