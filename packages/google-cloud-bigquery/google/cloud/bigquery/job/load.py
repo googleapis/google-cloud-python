@@ -733,7 +733,7 @@ class LoadJob(_AsyncJob):
         }
 
     @classmethod
-    def from_api_repr(cls, resource, client):
+    def from_api_repr(cls, resource: dict, client) -> "LoadJob":
         """Factory:  construct a job given its API representation
 
         .. note:

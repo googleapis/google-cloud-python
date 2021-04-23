@@ -149,7 +149,7 @@ class BigtableColumn(object):
     def type_(self, value):
         self._properties["type"] = value
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Build an API representation of this object.
 
         Returns:
@@ -159,7 +159,7 @@ class BigtableColumn(object):
         return copy.deepcopy(self._properties)
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "BigtableColumn":
         """Factory: construct a :class:`~.external_config.BigtableColumn`
         instance given its API representation.
 
@@ -251,7 +251,7 @@ class BigtableColumnFamily(object):
     def columns(self, value):
         self._properties["columns"] = [col.to_api_repr() for col in value]
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Build an API representation of this object.
 
         Returns:
@@ -261,7 +261,7 @@ class BigtableColumnFamily(object):
         return copy.deepcopy(self._properties)
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "BigtableColumnFamily":
         """Factory: construct a :class:`~.external_config.BigtableColumnFamily`
         instance given its API representation.
 
@@ -333,7 +333,7 @@ class BigtableOptions(object):
     def column_families(self, value):
         self._properties["columnFamilies"] = [cf.to_api_repr() for cf in value]
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Build an API representation of this object.
 
         Returns:
@@ -343,7 +343,7 @@ class BigtableOptions(object):
         return copy.deepcopy(self._properties)
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "BigtableOptions":
         """Factory: construct a :class:`~.external_config.BigtableOptions`
         instance given its API representation.
 
@@ -450,7 +450,7 @@ class CSVOptions(object):
     def skip_leading_rows(self, value):
         self._properties["skipLeadingRows"] = str(value)
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Build an API representation of this object.
 
         Returns:
@@ -459,7 +459,7 @@ class CSVOptions(object):
         return copy.deepcopy(self._properties)
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "CSVOptions":
         """Factory: construct a :class:`~.external_config.CSVOptions` instance
         given its API representation.
 
@@ -513,7 +513,7 @@ class GoogleSheetsOptions(object):
     def range(self, value):
         self._properties["range"] = value
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Build an API representation of this object.
 
         Returns:
@@ -522,7 +522,7 @@ class GoogleSheetsOptions(object):
         return copy.deepcopy(self._properties)
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "GoogleSheetsOptions":
         """Factory: construct a :class:`~.external_config.GoogleSheetsOptions`
         instance given its API representation.
 
@@ -601,7 +601,7 @@ class HivePartitioningOptions(object):
     def require_partition_filter(self, value):
         self._properties["requirePartitionFilter"] = value
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Build an API representation of this object.
 
         Returns:
@@ -610,7 +610,7 @@ class HivePartitioningOptions(object):
         return copy.deepcopy(self._properties)
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "HivePartitioningOptions":
         """Factory: construct a :class:`~.external_config.HivePartitioningOptions`
         instance given its API representation.
 
@@ -784,7 +784,7 @@ class ExternalConfig(object):
             prop = {"fields": [field.to_api_repr() for field in value]}
         self._properties["schema"] = prop
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Build an API representation of this object.
 
         Returns:
@@ -799,7 +799,7 @@ class ExternalConfig(object):
         return config
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "ExternalConfig":
         """Factory: construct an :class:`~.external_config.ExternalConfig`
         instance given its API representation.
 

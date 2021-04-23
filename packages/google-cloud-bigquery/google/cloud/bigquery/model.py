@@ -279,7 +279,7 @@ class Model(object):
         self._properties["encryptionConfiguration"] = api_repr
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "Model":
         """Factory: construct a model resource given its API representation
 
         Args:
@@ -322,7 +322,7 @@ class Model(object):
     def __repr__(self):
         return "Model(reference={})".format(repr(self.reference))
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Construct the API resource representation of this model.
 
         Returns:
@@ -389,7 +389,9 @@ class ModelReference(object):
         return ref
 
     @classmethod
-    def from_string(cls, model_id, default_project=None):
+    def from_string(
+        cls, model_id: str, default_project: str = None
+    ) -> "ModelReference":
         """Construct a model reference from model ID string.
 
         Args:
@@ -417,7 +419,7 @@ class ModelReference(object):
             {"projectId": proj, "datasetId": dset, "modelId": model}
         )
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Construct the API resource representation of this model reference.
 
         Returns:

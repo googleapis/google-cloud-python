@@ -21,6 +21,7 @@ import shutil
 import nox
 
 
+PYTYPE_VERSION = "pytype==2021.4.9"
 BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ("docs", "google", "samples", "tests", "noxfile.py", "setup.py")
 
@@ -39,6 +40,7 @@ nox.options.sessions = [
     "lint",
     "lint_setup_py",
     "blacken",
+    "pytype",
     "docs",
 ]
 
@@ -96,6 +98,15 @@ def unit(session):
 def unit_noextras(session):
     """Run the unit test suite."""
     default(session, install_extras=False)
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def pytype(session):
+    """Run type checks."""
+    session.install("-e", ".[all]")
+    session.install("ipython")
+    session.install(PYTYPE_VERSION)
+    session.run("pytype")
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)

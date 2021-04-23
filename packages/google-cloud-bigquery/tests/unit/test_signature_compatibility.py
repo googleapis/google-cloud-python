@@ -31,20 +31,12 @@ def row_iterator_class():
     return RowIterator
 
 
-@pytest.mark.skipif(
-    not hasattr(inspect, "signature"),
-    reason="inspect.signature() is not availalbe in older Python versions",
-)
 def test_to_arrow_method_signatures_match(query_job_class, row_iterator_class):
     sig = inspect.signature(query_job_class.to_arrow)
     sig2 = inspect.signature(row_iterator_class.to_arrow)
     assert sig == sig2
 
 
-@pytest.mark.skipif(
-    not hasattr(inspect, "signature"),
-    reason="inspect.signature() is not availalbe in older Python versions",
-)
 def test_to_dataframe_method_signatures_match(query_job_class, row_iterator_class):
     sig = inspect.signature(query_job_class.to_dataframe)
     sig2 = inspect.signature(row_iterator_class.to_dataframe)

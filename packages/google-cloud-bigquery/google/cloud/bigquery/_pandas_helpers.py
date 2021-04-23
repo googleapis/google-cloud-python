@@ -373,6 +373,7 @@ def augment_schema(dataframe, current_bq_schema):
     Returns:
         Optional[Sequence[google.cloud.bigquery.schema.SchemaField]]
     """
+    # pytype: disable=attribute-error
     augmented_schema = []
     unknown_type_fields = []
 
@@ -406,6 +407,7 @@ def augment_schema(dataframe, current_bq_schema):
         return None
 
     return augmented_schema
+    # pytype: enable=attribute-error
 
 
 def dataframe_to_arrow(dataframe, bq_schema):

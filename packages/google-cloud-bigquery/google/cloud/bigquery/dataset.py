@@ -220,7 +220,7 @@ class AccessEntry(object):
         return resource
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "AccessEntry":
         """Factory: construct an access entry given its API representation
 
         Args:
@@ -288,7 +288,7 @@ class DatasetReference(object):
     routine = _get_routine_reference
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "DatasetReference":
         """Factory: construct a dataset reference given its API representation
 
         Args:
@@ -304,7 +304,9 @@ class DatasetReference(object):
         return cls(project, dataset_id)
 
     @classmethod
-    def from_string(cls, dataset_id, default_project=None):
+    def from_string(
+        cls, dataset_id: str, default_project: str = None
+    ) -> "DatasetReference":
         """Construct a dataset reference from dataset ID string.
 
         Args:
@@ -350,7 +352,7 @@ class DatasetReference(object):
 
         return cls(output_project_id, output_dataset_id)
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Construct the API resource representation of this dataset reference
 
         Returns:
@@ -640,7 +642,7 @@ class Dataset(object):
         self._properties["defaultEncryptionConfiguration"] = api_repr
 
     @classmethod
-    def from_string(cls, full_dataset_id):
+    def from_string(cls, full_dataset_id: str) -> "Dataset":
         """Construct a dataset from fully-qualified dataset ID.
 
         Args:
@@ -664,7 +666,7 @@ class Dataset(object):
         return cls(DatasetReference.from_string(full_dataset_id))
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "Dataset":
         """Factory: construct a dataset given its API representation
 
         Args:
@@ -689,7 +691,7 @@ class Dataset(object):
         dataset._properties = copy.deepcopy(resource)
         return dataset
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Construct the API resource representation of this dataset
 
         Returns:

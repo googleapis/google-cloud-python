@@ -241,7 +241,7 @@ class ExtractJob(_AsyncJob):
         }
 
     @classmethod
-    def from_api_repr(cls, resource, client):
+    def from_api_repr(cls, resource: dict, client) -> "ExtractJob":
         """Factory:  construct a job given its API representation
 
         .. note:

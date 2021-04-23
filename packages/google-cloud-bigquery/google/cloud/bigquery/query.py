@@ -286,7 +286,7 @@ class _AbstractQueryParameter(object):
     """
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "ScalarQueryParameter":
         """Factory: construct parameter from JSON resource.
 
         Args:
@@ -297,7 +297,7 @@ class _AbstractQueryParameter(object):
         """
         raise NotImplementedError
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Construct JSON API representation for the parameter.
 
         Returns:
@@ -329,7 +329,7 @@ class ScalarQueryParameter(_AbstractQueryParameter):
         self.value = value
 
     @classmethod
-    def positional(cls, type_, value):
+    def positional(cls, type_: str, value) -> "ScalarQueryParameter":
         """Factory for positional paramater.
 
         Args:
@@ -347,7 +347,7 @@ class ScalarQueryParameter(_AbstractQueryParameter):
         return cls(None, type_, value)
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "ScalarQueryParameter":
         """Factory: construct parameter from JSON resource.
 
         Args:
@@ -369,7 +369,7 @@ class ScalarQueryParameter(_AbstractQueryParameter):
 
         return cls(name, type_, converted)
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Construct JSON API representation for the parameter.
 
         Returns:
@@ -441,7 +441,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
         self.array_type = array_type
 
     @classmethod
-    def positional(cls, array_type, values):
+    def positional(cls, array_type: str, values: list) -> "ArrayQueryParameter":
         """Factory for positional parameters.
 
         Args:
@@ -490,7 +490,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
         return cls(name, array_type, converted)
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "ArrayQueryParameter":
         """Factory: construct parameter from JSON resource.
 
         Args:
@@ -504,7 +504,7 @@ class ArrayQueryParameter(_AbstractQueryParameter):
             return cls._from_api_repr_struct(resource)
         return cls._from_api_repr_scalar(resource)
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Construct JSON API representation for the parameter.
 
         Returns:
@@ -623,7 +623,7 @@ class StructQueryParameter(_AbstractQueryParameter):
         return cls(None, *sub_params)
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "StructQueryParameter":
         """Factory: construct parameter from JSON resource.
 
         Args:
@@ -663,7 +663,7 @@ class StructQueryParameter(_AbstractQueryParameter):
             instance.struct_values[key] = converted
         return instance
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Construct JSON API representation for the parameter.
 
         Returns:

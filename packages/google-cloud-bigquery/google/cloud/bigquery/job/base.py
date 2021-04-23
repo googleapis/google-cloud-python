@@ -18,12 +18,16 @@ from collections import namedtuple
 import copy
 import http
 import threading
+import typing
 
 from google.api_core import exceptions
 import google.api_core.future.polling
 
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.retry import DEFAULT_RETRY
+
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    from google.api_core import retry as retries
 
 
 _DONE_STATE = "DONE"
@@ -466,7 +470,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         )
         self._set_properties(api_response)
 
-    def exists(self, client=None, retry=DEFAULT_RETRY, timeout=None):
+    def exists(
+        self, client=None, retry: "retries.Retry" = DEFAULT_RETRY, timeout: float = None
+    ) -> bool:
         """API call:  test for the existence of the job via a GET request
 
         See
@@ -509,7 +515,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         else:
             return True
 
-    def reload(self, client=None, retry=DEFAULT_RETRY, timeout=None):
+    def reload(
+        self, client=None, retry: "retries.Retry" = DEFAULT_RETRY, timeout: float = None
+    ):
         """API call:  refresh job properties via a GET request.
 
         See
@@ -544,7 +552,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
         )
         self._set_properties(api_response)
 
-    def cancel(self, client=None, retry=DEFAULT_RETRY, timeout=None):
+    def cancel(
+        self, client=None, retry: "retries.Retry" = DEFAULT_RETRY, timeout: float = None
+    ) -> bool:
         """API call:  cancel job via a POST request
 
         See
@@ -610,7 +620,12 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             else:
                 self.set_result(self)
 
-    def done(self, retry=DEFAULT_RETRY, timeout=None, reload=True):
+    def done(
+        self,
+        retry: "retries.Retry" = DEFAULT_RETRY,
+        timeout: float = None,
+        reload: bool = True,
+    ) -> bool:
         """Checks if the job is complete.
 
         Args:
@@ -633,7 +648,9 @@ class _AsyncJob(google.api_core.future.polling.PollingFuture):
             self.reload(retry=retry, timeout=timeout)
         return self.state == _DONE_STATE
 
-    def result(self, retry=DEFAULT_RETRY, timeout=None):
+    def result(
+        self, retry: "retries.Retry" = DEFAULT_RETRY, timeout: float = None
+    ) -> "_AsyncJob":
         """Start the job and wait for it to complete and get the result.
 
         Args:
@@ -788,7 +805,7 @@ class _JobConfig(object):
         """
         _helpers._del_sub_prop(self._properties, [self._job_type, key])
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Build an API representation of the job config.
 
         Returns:
@@ -818,7 +835,10 @@ class _JobConfig(object):
                 + repr(default_job_config._job_type)
             )
 
-        new_job_config = self.__class__()
+        # cls is one of the job config subclasses that provides the job_type argument to
+        # this base class on instantiation, thus missing-parameter warning is a false
+        # positive here.
+        new_job_config = self.__class__()  # pytype: disable=missing-parameter
 
         default_job_properties = copy.deepcopy(default_job_config._properties)
         for key in self._properties:
@@ -831,7 +851,7 @@ class _JobConfig(object):
         return new_job_config
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "_JobConfig":
         """Factory: construct a job configuration given its API representation
 
         Args:
@@ -842,7 +862,10 @@ class _JobConfig(object):
         Returns:
             google.cloud.bigquery.job._JobConfig: Configuration parsed from ``resource``.
         """
-        job_config = cls()
+        # cls is one of the job config subclasses that provides the job_type argument to
+        # this base class on instantiation, thus missing-parameter warning is a false
+        # positive here.
+        job_config = cls()  # pytype: disable=missing-parameter
         job_config._properties = resource
         return job_config
 
@@ -929,7 +952,7 @@ class UnknownJob(_AsyncJob):
     """A job whose type cannot be determined."""
 
     @classmethod
-    def from_api_repr(cls, resource, client):
+    def from_api_repr(cls, resource: dict, client) -> "UnknownJob":
         """Construct an UnknownJob from the JSON representation.
 
         Args:

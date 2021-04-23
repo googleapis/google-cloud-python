@@ -17,6 +17,8 @@
 import concurrent.futures
 import copy
 import re
+import typing
+from typing import Any, Dict, Union
 
 from google.api_core import exceptions
 from google.api_core.future import polling as polling_future
@@ -45,6 +47,15 @@ from google.cloud.bigquery._tqdm_helpers import wait_for_query
 from google.cloud.bigquery.job.base import _AsyncJob
 from google.cloud.bigquery.job.base import _JobConfig
 from google.cloud.bigquery.job.base import _JobReference
+
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    # Assumption: type checks are only used by library developers and CI environments
+    # that have all optional dependencies installed, thus no conditional imports.
+    import pandas
+    import pyarrow
+    from google.api_core import retry as retries
+    from google.cloud import bigquery_storage
+    from google.cloud.bigquery.table import RowIterator
 
 
 _CONTAINS_ORDER_BY = re.compile(r"ORDER\s+BY", re.IGNORECASE)
@@ -491,7 +502,7 @@ class QueryJobConfig(_JobConfig):
     def schema_update_options(self, values):
         self._set_sub_prop("schemaUpdateOptions", values)
 
-    def to_api_repr(self):
+    def to_api_repr(self) -> dict:
         """Build an API representation of the query job config.
 
         Returns:
@@ -718,7 +729,7 @@ class QueryJob(_AsyncJob):
         }
 
     @classmethod
-    def from_api_repr(cls, resource, client):
+    def from_api_repr(cls, resource: dict, client) -> "QueryJob":
         """Factory:  construct a job given its API representation
 
         Args:
@@ -1036,7 +1047,9 @@ class QueryJob(_AsyncJob):
             exc.query_job = self
             raise
 
-    def _reload_query_results(self, retry=DEFAULT_RETRY, timeout=None):
+    def _reload_query_results(
+        self, retry: "retries.Retry" = DEFAULT_RETRY, timeout: float = None
+    ):
         """Refresh the cached query results.
 
         Args:
@@ -1111,12 +1124,12 @@ class QueryJob(_AsyncJob):
 
     def result(
         self,
-        page_size=None,
-        max_results=None,
-        retry=DEFAULT_RETRY,
-        timeout=None,
-        start_index=None,
-    ):
+        page_size: int = None,
+        max_results: int = None,
+        retry: "retries.Retry" = DEFAULT_RETRY,
+        timeout: float = None,
+        start_index: int = None,
+    ) -> Union["RowIterator", _EmptyRowIterator]:
         """Start the job and wait for it to complete and get the result.
 
         Args:
@@ -1196,10 +1209,10 @@ class QueryJob(_AsyncJob):
     # changes to table.RowIterator.to_arrow()
     def to_arrow(
         self,
-        progress_bar_type=None,
-        bqstorage_client=None,
-        create_bqstorage_client=True,
-    ):
+        progress_bar_type: str = None,
+        bqstorage_client: "bigquery_storage.BigQueryReadClient" = None,
+        create_bqstorage_client: bool = True,
+    ) -> "pyarrow.Table":
         """[Beta] Create a class:`pyarrow.Table` by loading all pages of a
         table or query.
 
@@ -1265,12 +1278,12 @@ class QueryJob(_AsyncJob):
     # changes to table.RowIterator.to_dataframe()
     def to_dataframe(
         self,
-        bqstorage_client=None,
-        dtypes=None,
-        progress_bar_type=None,
-        create_bqstorage_client=True,
-        date_as_object=True,
-    ):
+        bqstorage_client: "bigquery_storage.BigQueryReadClient" = None,
+        dtypes: Dict[str, Any] = None,
+        progress_bar_type: str = None,
+        create_bqstorage_client: bool = True,
+        date_as_object: bool = True,
+    ) -> "pandas.DataFrame":
         """Return a pandas DataFrame from a QueryJob
 
         Args:
@@ -1350,7 +1363,7 @@ class QueryPlanEntryStep(object):
         self.substeps = list(substeps)
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "QueryPlanEntryStep":
         """Factory: construct instance from the JSON repr.
 
         Args:
@@ -1380,7 +1393,7 @@ class QueryPlanEntry(object):
         self._properties = {}
 
     @classmethod
-    def from_api_repr(cls, resource):
+    def from_api_repr(cls, resource: dict) -> "QueryPlanEntry":
         """Factory: construct instance from the JSON repr.
 
         Args:
