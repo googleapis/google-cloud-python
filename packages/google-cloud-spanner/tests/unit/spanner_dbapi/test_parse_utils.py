@@ -353,6 +353,7 @@ class TestParseUtils(unittest.TestCase):
     @unittest.skipIf(skip_condition, skip_message)
     def test_get_param_types(self):
         import datetime
+        import decimal
 
         from google.cloud.spanner_dbapi.parse_utils import DateStr
         from google.cloud.spanner_dbapi.parse_utils import TimestampStr
@@ -369,6 +370,7 @@ class TestParseUtils(unittest.TestCase):
             "h1": datetime.date(2011, 9, 1),
             "i1": b"bytes",
             "j1": None,
+            "k1": decimal.Decimal("3.194387483193242e+19"),
         }
         want_types = {
             "a1": param_types.INT64,
@@ -380,6 +382,7 @@ class TestParseUtils(unittest.TestCase):
             "g1": param_types.TIMESTAMP,
             "h1": param_types.DATE,
             "i1": param_types.BYTES,
+            "k1": param_types.NUMERIC,
         }
         got_types = get_param_types(params)
         self.assertEqual(got_types, want_types)

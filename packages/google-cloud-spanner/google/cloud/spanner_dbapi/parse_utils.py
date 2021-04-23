@@ -37,6 +37,7 @@ TYPES_MAP = {
     datetime.date: spanner.param_types.DATE,
     DateStr: spanner.param_types.DATE,
     TimestampStr: spanner.param_types.TIMESTAMP,
+    decimal.Decimal: spanner.param_types.NUMERIC,
 }
 
 SPANNER_RESERVED_KEYWORDS = {
