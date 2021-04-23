@@ -51,6 +51,12 @@ class Test_should_retry(unittest.TestCase):
         exc = requests.exceptions.ConnectionError()
         self.assertTrue(self._call_fut(exc))
 
+    def test_w_auth_transporterror(self):
+        from google.auth.exceptions import TransportError
+
+        exc = TransportError("testing")
+        self.assertTrue(self._call_fut(exc))
+
     def test_w_unstructured_too_many_requests(self):
         from google.api_core.exceptions import TooManyRequests
 

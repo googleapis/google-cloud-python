@@ -14,6 +14,7 @@
 
 from google.api_core import exceptions
 from google.api_core import retry
+from google.auth import exceptions as auth_exceptions
 import requests.exceptions
 
 
@@ -27,6 +28,7 @@ _UNSTRUCTURED_RETRYABLE_TYPES = (
     exceptions.InternalServerError,
     exceptions.BadGateway,
     requests.exceptions.ConnectionError,
+    auth_exceptions.TransportError,
 )
 
 
