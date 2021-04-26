@@ -76,6 +76,7 @@ _MISSING_ORDER_BY = (
     "if passed to one of ``start_at()`` / ``start_after()`` / "
     "``end_before()`` / ``end_at()`` to define a cursor."
 )
+
 _NO_ORDERS_FOR_CURSOR = (
     "Attempting to create a cursor with no fields to order on. "
     "When defining a cursor with one of ``start_at()`` / ``start_after()`` / "
@@ -745,7 +746,10 @@ class BaseQuery(object):
             # Transform to list using orders
             values = []
             data = document_fields
-            for order_key in order_keys:
+
+            # It isn't required that all order by have a cursor.
+            # However, we need to be sure they are specified in order without gaps
+            for order_key in order_keys[: len(data)]:
                 try:
                     if order_key in data:
                         values.append(data[order_key])
@@ -756,9 +760,10 @@ class BaseQuery(object):
                 except KeyError:
                     msg = _MISSING_ORDER_BY.format(order_key, data)
                     raise ValueError(msg)
+
             document_fields = values
 
-        if len(document_fields) != len(orders):
+        if len(document_fields) > len(orders):
             msg = _MISMATCH_CURSOR_W_ORDER_BY.format(document_fields, order_keys)
             raise ValueError(msg)
 

@@ -751,6 +751,19 @@ class TestBaseQuery(unittest.TestCase):
         with self.assertRaises(ValueError):
             query._normalize_cursor(cursor, query._orders)
 
+    def test__normalize_cursor_as_dict_extra_orders_ok(self):
+        cursor = ({"name": "Springfield"}, True)
+        query = self._make_one(mock.sentinel.parent).order_by("name").order_by("state")
+
+        normalized = query._normalize_cursor(cursor, query._orders)
+        self.assertEqual(normalized, (["Springfield"], True))
+
+    def test__normalize_cursor_extra_orders_ok(self):
+        cursor = (["Springfield"], True)
+        query = self._make_one(mock.sentinel.parent).order_by("name").order_by("state")
+
+        query._normalize_cursor(cursor, query._orders)
+
     def test__normalize_cursor_w_delete(self):
         from google.cloud.firestore_v1 import DELETE_FIELD
 
