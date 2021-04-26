@@ -41,16 +41,21 @@ _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
 )
 
 
-def _restart_on_unavailable(restart, trace_name=None, session=None, attributes=None):
+def _restart_on_unavailable(
+    method, request, trace_name=None, session=None, attributes=None
+):
     """Restart iteration after :exc:`.ServiceUnavailable`.
 
-    :type restart: callable
-    :param restart: curried function returning iterator
+    :type method: callable
+    :param method: function returning iterator
+
+    :type request: proto
+    :param request: request proto to call the method with
     """
     resume_token = b""
     item_buffer = []
     with trace_call(trace_name, session, attributes):
-        iterator = restart()
+        iterator = method(request=request)
     while True:
         try:
             for item in iterator:
@@ -61,7 +66,8 @@ def _restart_on_unavailable(restart, trace_name=None, session=None, attributes=N
         except ServiceUnavailable:
             del item_buffer[:]
             with trace_call(trace_name, session, attributes):
-                iterator = restart(resume_token=resume_token)
+                request.resume_token = resume_token
+                iterator = method(request=request)
             continue
         except InternalServerError as exc:
             resumable_error = any(
@@ -72,7 +78,8 @@ def _restart_on_unavailable(restart, trace_name=None, session=None, attributes=N
                 raise
             del item_buffer[:]
             with trace_call(trace_name, session, attributes):
-                iterator = restart(resume_token=resume_token)
+                request.resume_token = resume_token
+                iterator = method(request=request)
             continue
 
         if len(item_buffer) == 0:
@@ -189,7 +196,11 @@ class _SnapshotBase(_SessionWrapper):
 
         trace_attributes = {"table_id": table, "columns": columns}
         iterator = _restart_on_unavailable(
-            restart, "CloudSpanner.ReadOnlyTransaction", self._session, trace_attributes
+            restart,
+            request,
+            "CloudSpanner.ReadOnlyTransaction",
+            self._session,
+            trace_attributes,
         )
 
         self._read_request_count += 1
@@ -302,6 +313,7 @@ class _SnapshotBase(_SessionWrapper):
         trace_attributes = {"db.statement": sql}
         iterator = _restart_on_unavailable(
             restart,
+            request,
             "CloudSpanner.ReadWriteTransaction",
             self._session,
             trace_attributes,
