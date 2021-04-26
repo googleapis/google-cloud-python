@@ -26,7 +26,7 @@ common = gcp.CommonTemplates()
 # Generate Private CA GAPIC layer
 # ----------------------------------------------------------------------------
 
-for library in s.get_staging_dirs("v1beta1"):
+for library in s.get_staging_dirs("v1"):
     # Fix name
     s.replace(library / "google/**/*.py", "google-cloud-security-privateca", "google-cloud-security-private-ca")
 
