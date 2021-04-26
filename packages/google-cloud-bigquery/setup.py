@@ -100,7 +100,7 @@ if "google.cloud" in packages:
 
 setuptools.setup(
     name=name,
-    version=setuptools.sic(version),
+    version=version,
     description=description,
     long_description=readme,
     author="Google LLC",
