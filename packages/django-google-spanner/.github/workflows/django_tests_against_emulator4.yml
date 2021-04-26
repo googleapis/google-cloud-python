@@ -29,4 +29,4 @@ jobs:
           GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE: true
           RUNNING_SPANNER_BACKEND_TESTS: 1
           SPANNER_TEST_INSTANCE: google-cloud-django-backend-tests
-          DJANGO_TEST_APPS: admin_inlines admin_ordering aggregation
+          DJANGO_TEST_APPS: admin_inlines admin_ordering aggregation migrations

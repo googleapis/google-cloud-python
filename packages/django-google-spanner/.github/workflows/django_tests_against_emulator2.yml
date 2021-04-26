@@ -29,4 +29,4 @@ jobs:
           GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE: true
           RUNNING_SPANNER_BACKEND_TESTS: 1
           SPANNER_TEST_INSTANCE: google-cloud-django-backend-tests
-          DJANGO_TEST_APPS: migration_test_data_persistence max_lengths migrate_signals migrations select_for_update queries
+          DJANGO_TEST_APPS: migration_test_data_persistence max_lengths migrate_signals select_for_update queries
