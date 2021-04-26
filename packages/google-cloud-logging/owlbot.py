@@ -17,38 +17,33 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate logging GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="logging",
-    version="v2",
-    bazel_target="//google/logging/v2:logging-v2-py",
-    include_protos=True,
-)
+default_version = "v2"
 
-s.move(
-    library,
-    excludes=[
-        "setup.py",
-        "README.rst",
-        "google/cloud/logging/__init__.py",  # generated types are hidden from users
-        "google/cloud/logging_v2/__init__.py",  
-        "docs/index.rst",
-        "docs/logging_v2",  # Don't include gapic library docs. Users should use the hand-written layer instead
-        "scripts/fixup_logging_v2_keywords.py",  # don't include script since it only works for generated layer
-    ],
-)
+for library in s.get_staging_dirs(default_version):
+    if library.name == "v2":
+        # Fix generated unit tests
+        s.replace(
+            library / "tests/unit/gapic/logging_v2/test_logging_service_v2.py",
+            "MonitoredResource\(\s*type_",
+            "MonitoredResource(type"
+        )
 
-# Fix generated unit tests
-s.replace(
-    "tests/unit/gapic/logging_v2/test_logging_service_v2.py",
-    "MonitoredResource\(\s*type_",
-    "MonitoredResource(type"
-)
+    s.move(
+        library,
+        excludes=[
+            "setup.py",
+            "README.rst",
+            "google/cloud/logging/__init__.py",  # generated types are hidden from users
+            "google/cloud/logging_v2/__init__.py",
+            "docs/index.rst",
+            "docs/logging_v2",  # Don't include gapic library docs. Users should use the hand-written layer instead
+            "scripts/fixup_logging_v2_keywords.py",  # don't include script since it only works for generated layer
+        ],
+    )
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
