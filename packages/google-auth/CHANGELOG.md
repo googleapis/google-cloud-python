@@ -4,12 +4,19 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.30.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.29.0...v1.30.0) (2021-04-23)
+
+
+### Features
+
+* add reauth support to async user credentials for gcloud ([#738](https://www.github.com/googleapis/google-auth-library-python/issues/738)) ([9e10823](https://www.github.com/googleapis/google-auth-library-python/commit/9e1082366d113286bc063051fd76b4799791d943)). This internal feature is for gcloud developers only. 
+
 ## [1.29.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.28.1...v1.29.0) (2021-04-15)
 
 
 ### Features
 
-* add reauth feature to user credentials ([#727](https://www.github.com/googleapis/google-auth-library-python/issues/727)) ([82293fe](https://www.github.com/googleapis/google-auth-library-python/commit/82293fe2caaf5258babb5df1cff0a5ddc9e44b38))
+* add reauth feature to user credentials for gcloud ([#727](https://www.github.com/googleapis/google-auth-library-python/issues/727)) ([82293fe](https://www.github.com/googleapis/google-auth-library-python/commit/82293fe2caaf5258babb5df1cff0a5ddc9e44b38)). This internal feature is for gcloud developers only.
 
 
 ### Bug Fixes
