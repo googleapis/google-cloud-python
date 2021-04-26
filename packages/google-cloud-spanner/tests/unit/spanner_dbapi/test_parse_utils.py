@@ -307,7 +307,7 @@ class TestParseUtils(unittest.TestCase):
                 ),
                 (
                     "SELECT (an.p + @a0) AS np FROM an WHERE (an.p + @a1) = @a2",
-                    {"a0": 1, "a1": 1.0, "a2": str(31)},
+                    {"a0": 1, "a1": 1.0, "a2": decimal.Decimal("31")},
                 ),
             ),
         ]
@@ -338,17 +338,6 @@ class TestParseUtils(unittest.TestCase):
                     "pyformat_args mismatch",
                     lambda: sql_pyformat_args_to_spanner(sql, params),
                 )
-
-    def test_cast_for_spanner(self):
-        import decimal
-
-        from google.cloud.spanner_dbapi.parse_utils import cast_for_spanner
-
-        dec = 3
-        value = decimal.Decimal(dec)
-        self.assertEqual(cast_for_spanner(value), str(dec))
-        self.assertEqual(cast_for_spanner(5), 5)
-        self.assertEqual(cast_for_spanner("string"), "string")
 
     @unittest.skipIf(skip_condition, skip_message)
     def test_get_param_types(self):
