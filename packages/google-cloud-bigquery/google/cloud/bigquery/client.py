@@ -1545,6 +1545,77 @@ class Client(ClientWithProject):
             if not not_found_ok:
                 raise
 
+    def delete_job_metadata(
+        self,
+        job_id,
+        project=None,
+        location=None,
+        retry=DEFAULT_RETRY,
+        timeout=None,
+        not_found_ok=False,
+    ):
+        """[Beta] Delete job metadata from job history.
+
+        Note: This does not stop a running job. Use
+        :func:`~google.cloud.bigquery.client.Client.cancel_job` instead.
+
+        Args:
+            job_id (Union[ \
+                str, \
+                google.cloud.bigquery.job.LoadJob, \
+                google.cloud.bigquery.job.CopyJob, \
+                google.cloud.bigquery.job.ExtractJob, \
+                google.cloud.bigquery.job.QueryJob \
+            ]): Job identifier.
+
+        Keyword Arguments:
+            project (Optional[str]):
+                ID of the project which owns the job (defaults to the client's project).
+            location (Optional[str]):
+                Location where the job was run. Ignored if ``job_id`` is a job
+                object.
+            retry (Optional[google.api_core.retry.Retry]):
+                How to retry the RPC.
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying HTTP transport
+                before using ``retry``.
+            not_found_ok (Optional[bool]):
+                Defaults to ``False``. If ``True``, ignore "not found" errors
+                when deleting the job.
+        """
+        extra_params = {}
+
+        project, location, job_id = _extract_job_reference(
+            job_id, project=project, location=location
+        )
+
+        if project is None:
+            project = self.project
+
+        if location is None:
+            location = self.location
+
+        # Location is always required for jobs.delete()
+        extra_params["location"] = location
+
+        path = f"/projects/{project}/jobs/{job_id}/delete"
+
+        span_attributes = {"path": path, "job_id": job_id, "location": location}
+
+        try:
+            self._call_api(
+                retry,
+                span_name="BigQuery.deleteJob",
+                span_attributes=span_attributes,
+                method="DELETE",
+                path=path,
+                query_params=extra_params,
+                timeout=timeout,
+            )
+        except google.api_core.exceptions.NotFound:
+            if not not_found_ok:
+                raise
+
     def delete_routine(
         self,
         routine: Union[Routine, RoutineReference, str],

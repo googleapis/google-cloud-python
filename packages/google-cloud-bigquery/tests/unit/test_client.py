@@ -2498,6 +2498,66 @@ class TestClient(unittest.TestCase):
         self.assertEqual(req[1]["data"], sent)
         self.assertIsNone(table3.description)
 
+    def test_delete_job_metadata_not_found(self):
+        creds = _make_credentials()
+        client = self._make_one("client-proj", creds, location="client-loc")
+        conn = client._connection = make_connection(
+            google.api_core.exceptions.NotFound("job not found"),
+            google.api_core.exceptions.NotFound("job not found"),
+        )
+
+        with self.assertRaises(google.api_core.exceptions.NotFound):
+            client.delete_job_metadata("my-job")
+
+        conn.api_request.reset_mock()
+        client.delete_job_metadata("my-job", not_found_ok=True)
+
+        conn.api_request.assert_called_once_with(
+            method="DELETE",
+            path="/projects/client-proj/jobs/my-job/delete",
+            query_params={"location": "client-loc"},
+            timeout=None,
+        )
+
+    def test_delete_job_metadata_with_id(self):
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = make_connection({})
+
+        client.delete_job_metadata("my-job", project="param-proj", location="param-loc")
+
+        conn.api_request.assert_called_once_with(
+            method="DELETE",
+            path="/projects/param-proj/jobs/my-job/delete",
+            query_params={"location": "param-loc"},
+            timeout=None,
+        )
+
+    def test_delete_job_metadata_with_resource(self):
+        from google.cloud.bigquery.job import QueryJob
+
+        query_resource = {
+            "jobReference": {
+                "projectId": "job-based-proj",
+                "jobId": "query_job",
+                "location": "us-east1",
+            },
+            "configuration": {"query": {}},
+        }
+        creds = _make_credentials()
+        client = self._make_one(self.PROJECT, creds)
+        conn = client._connection = make_connection(query_resource)
+        job_from_resource = QueryJob.from_api_repr(query_resource, client)
+
+        client.delete_job_metadata(job_from_resource)
+
+        conn.api_request.assert_called_once_with(
+            method="DELETE",
+            path="/projects/job-based-proj/jobs/query_job/delete",
+            query_params={"location": "us-east1"},
+            timeout=None,
+        )
+
     def test_delete_model(self):
         from google.cloud.bigquery.model import Model
 

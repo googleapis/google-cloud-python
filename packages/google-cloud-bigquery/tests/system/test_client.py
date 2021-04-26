@@ -25,6 +25,7 @@ import pathlib
 import time
 import unittest
 import uuid
+from typing import Optional
 
 import psutil
 import pytest
@@ -62,6 +63,7 @@ from google.cloud import bigquery
 from google.cloud import bigquery_v2
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import Table
 from google.cloud._helpers import UTC
 from google.cloud.bigquery import dbapi, enums
@@ -123,7 +125,7 @@ def _has_rows(result):
 
 
 def _make_dataset_id(prefix):
-    return "%s%s" % (prefix, unique_resource_id())
+    return f"python_bigquery_tests_system_{prefix}{unique_resource_id()}"
 
 
 def _load_json_schema(filename="schema.json"):
@@ -142,7 +144,7 @@ class Config(object):
     global state.
     """
 
-    CLIENT = None
+    CLIENT: Optional[bigquery.Client] = None
     CURSOR = None
     DATASET = None
 
@@ -429,6 +431,22 @@ class TestBigQuery(unittest.TestCase):
         helpers.retry_403(Config.CLIENT.create_table)(table_arg)
         with self.assertRaises(exceptions.BadRequest):
             Config.CLIENT.delete_dataset(dataset)
+
+    def test_delete_job_metadata(self):
+        dataset_id = _make_dataset_id("us_east1")
+        self.temp_dataset(dataset_id, location="us-east1")
+        full_table_id = f"{Config.CLIENT.project}.{dataset_id}.test_delete_job_metadata"
+        table = Table(full_table_id, schema=[SchemaField("col", "STRING")])
+        Config.CLIENT.create_table(table)
+        query_job: bigquery.QueryJob = Config.CLIENT.query(
+            f"SELECT COUNT(*) FROM `{full_table_id}`", location="us-east1",
+        )
+        query_job.result()
+        self.assertIsNotNone(Config.CLIENT.get_job(query_job))
+
+        Config.CLIENT.delete_job_metadata(query_job)
+        with self.assertRaises(NotFound):
+            Config.CLIENT.get_job(query_job)
 
     def test_get_table_w_public_dataset(self):
         public = "bigquery-public-data"
