@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [2.14.0](https://www.github.com/googleapis/python-bigquery/compare/v2.13.1...v2.14.0) (2021-04-26)
+
+
+### Features
+
+* accept DatasetListItem where DatasetReference is accepted ([#597](https://www.github.com/googleapis/python-bigquery/issues/597)) ([c8b5581](https://www.github.com/googleapis/python-bigquery/commit/c8b5581ea3c94005d69755c4a3b5a0d8900f3fe2))
+* accept job object as argument to `get_job` and `cancel_job` ([#617](https://www.github.com/googleapis/python-bigquery/issues/617)) ([f75dcdf](https://www.github.com/googleapis/python-bigquery/commit/f75dcdf3943b87daba60011c9a3b42e34ff81910))
+* add `Client.delete_job_metadata` method to remove job metadata ([#610](https://www.github.com/googleapis/python-bigquery/issues/610)) ([0abb566](https://www.github.com/googleapis/python-bigquery/commit/0abb56669c097c59fbffce007c702e7a55f2d9c1))
+* add `max_queue_size` argument to `RowIterator.to_dataframe_iterable` ([#575](https://www.github.com/googleapis/python-bigquery/issues/575)) ([f95f415](https://www.github.com/googleapis/python-bigquery/commit/f95f415d3441b3928f6cc705cb8a75603d790fd6))
+* add type hints for public methods ([#613](https://www.github.com/googleapis/python-bigquery/issues/613)) ([f8d4aaa](https://www.github.com/googleapis/python-bigquery/commit/f8d4aaa335a0eef915e73596fc9b43b11d11be9f))
+* DB API cursors are now iterable ([#618](https://www.github.com/googleapis/python-bigquery/issues/618)) ([e0b373d](https://www.github.com/googleapis/python-bigquery/commit/e0b373d0e721a70656ed8faceb7f5c70f642d144))
+* retry google.auth TransportError by default ([#624](https://www.github.com/googleapis/python-bigquery/issues/624)) ([34ecc3f](https://www.github.com/googleapis/python-bigquery/commit/34ecc3f1ca0ff073330c0c605673d89b43af7ed9))
+* use pyarrow stream compression, if available ([#593](https://www.github.com/googleapis/python-bigquery/issues/593)) ([dde9dc5](https://www.github.com/googleapis/python-bigquery/commit/dde9dc5114c2311fb76fafc5b222fff561e8abf1))
+
+
+### Bug Fixes
+
+* consistent percents handling in DB API query ([#619](https://www.github.com/googleapis/python-bigquery/issues/619)) ([6502a60](https://www.github.com/googleapis/python-bigquery/commit/6502a602337ae562652a20b20270949f2c9d5073))
+* missing license headers in new test files ([#604](https://www.github.com/googleapis/python-bigquery/issues/604)) ([df48cc5](https://www.github.com/googleapis/python-bigquery/commit/df48cc5a0be99ad39d5835652d1b7422209afc5d))
+* unsetting clustering fields on Table is now possible ([#622](https://www.github.com/googleapis/python-bigquery/issues/622)) ([33a871f](https://www.github.com/googleapis/python-bigquery/commit/33a871f06329f9bf5a6a92fab9ead65bf2bee75d))
+
+
+### Documentation
+
+* add sample to run DML query ([#591](https://www.github.com/googleapis/python-bigquery/issues/591)) ([ff2ec3a](https://www.github.com/googleapis/python-bigquery/commit/ff2ec3abe418a443cd07751c08e654f94e8b3155))
+* update the description of the return value of `_QueryResults.rows()` ([#594](https://www.github.com/googleapis/python-bigquery/issues/594)) ([8f4c0b8](https://www.github.com/googleapis/python-bigquery/commit/8f4c0b84dac3840532d7865247b8ad94b625b897))
+
 ### [2.13.1](https://www.github.com/googleapis/python-bigquery/compare/v2.13.0...v2.13.1) (2021-03-23)
 
 
