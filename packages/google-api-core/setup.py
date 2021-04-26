@@ -17,21 +17,6 @@ import os
 
 import setuptools
 
-# Disable version normalization performed by setuptools.setup()
-# Including this workaround for Python2.7 support
-try:
-    # Try the approach of using sic(), added in setuptools 46.1.0
-    from setuptools import sic
-except ImportError:
-    # Try the approach of replacing packaging.version.Version
-    sic = lambda v: v
-    try:
-        # setuptools >=39.0.0 uses packaging from setuptools.extern
-        from setuptools.extern import packaging
-    except ImportError:
-        # setuptools <39.0.0 uses packaging from pkg_resources.extern
-        from pkg_resources.extern import packaging
-    packaging.version.Version = packaging.version.LegacyVersion
 
 # Package metadata.
 
@@ -89,7 +74,7 @@ if "google.cloud" in packages:
 
 setuptools.setup(
     name=name,
-    version=sic(version),
+    version=version,
     description=description,
     long_description=readme,
     author="Google LLC",
