@@ -19,7 +19,6 @@ from __future__ import absolute_import
 import copy
 import datetime
 import functools
-import logging
 import operator
 import pytz
 import typing
@@ -57,12 +56,6 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud import bigquery_storage
 
 
-_LOGGER = logging.getLogger(__name__)
-
-_NO_BQSTORAGE_ERROR = (
-    "The google-cloud-bigquery-storage library is not installed, "
-    "please install google-cloud-bigquery-storage to use bqstorage features."
-)
 _NO_PANDAS_ERROR = (
     "The pandas library is not installed, please install "
     "pandas to use the to_dataframe() function."
@@ -302,16 +295,36 @@ class Table(object):
     """
 
     _PROPERTY_TO_API_FIELD = {
+        "clustering_fields": "clustering",
+        "created": "creationTime",
+        "dataset_id": ["tableReference", "datasetId"],
+        "description": "description",
         "encryption_configuration": "encryptionConfiguration",
+        "etag": "etag",
         "expires": "expirationTime",
         "external_data_configuration": "externalDataConfiguration",
         "friendly_name": "friendlyName",
+        "full_table_id": "id",
+        "labels": "labels",
+        "location": "location",
+        "modified": "lastModifiedTime",
         "mview_enable_refresh": "materializedView",
+        "mview_last_refresh_time": ["materializedView", "lastRefreshTime"],
         "mview_query": "materializedView",
         "mview_refresh_interval": "materializedView",
+        "num_bytes": "numBytes",
+        "num_rows": "numRows",
         "partition_expiration": "timePartitioning",
         "partitioning_type": "timePartitioning",
+        "project": ["tableReference", "projectId"],
+        "range_partitioning": "rangePartitioning",
         "time_partitioning": "timePartitioning",
+        "schema": "schema",
+        "streaming_buffer": "streamingBuffer",
+        "self_link": "selfLink",
+        "table_id": ["tableReference", "tableId"],
+        "time_partitioning": "timePartitioning",
+        "type": "type",
         "view_use_legacy_sql": "view",
         "view_query": "view",
         "require_partition_filter": "requirePartitionFilter",
@@ -327,17 +340,23 @@ class Table(object):
     @property
     def project(self):
         """str: Project bound to the table."""
-        return self._properties["tableReference"]["projectId"]
+        return _helpers._get_sub_prop(
+            self._properties, self._PROPERTY_TO_API_FIELD["project"]
+        )
 
     @property
     def dataset_id(self):
         """str: ID of dataset containing the table."""
-        return self._properties["tableReference"]["datasetId"]
+        return _helpers._get_sub_prop(
+            self._properties, self._PROPERTY_TO_API_FIELD["dataset_id"]
+        )
 
     @property
     def table_id(self):
         """str: ID of the table."""
-        return self._properties["tableReference"]["tableId"]
+        return _helpers._get_sub_prop(
+            self._properties, self._PROPERTY_TO_API_FIELD["table_id"]
+        )
 
     reference = property(_reference_getter)
 
@@ -356,11 +375,15 @@ class Table(object):
         partition filter that can be used for partition elimination to be
         specified.
         """
-        return self._properties.get("requirePartitionFilter")
+        return self._properties.get(
+            self._PROPERTY_TO_API_FIELD["require_partition_filter"]
+        )
 
     @require_partition_filter.setter
     def require_partition_filter(self, value):
-        self._properties["requirePartitionFilter"] = value
+        self._properties[
+            self._PROPERTY_TO_API_FIELD["require_partition_filter"]
+        ] = value
 
     @property
     def schema(self):
@@ -376,7 +399,7 @@ class Table(object):
                 is not a :class:`~google.cloud.bigquery.schema.SchemaField`
                 instance or a compatible mapping representation of the field.
         """
-        prop = self._properties.get("schema")
+        prop = self._properties.get(self._PROPERTY_TO_API_FIELD["schema"])
         if not prop:
             return []
         else:
@@ -384,11 +407,13 @@ class Table(object):
 
     @schema.setter
     def schema(self, value):
+        api_field = self._PROPERTY_TO_API_FIELD["schema"]
+
         if value is None:
-            self._properties["schema"] = None
+            self._properties[api_field] = None
         else:
             value = _to_schema_fields(value)
-            self._properties["schema"] = {"fields": _build_schema_resource(value)}
+            self._properties[api_field] = {"fields": _build_schema_resource(value)}
 
     @property
     def labels(self):
@@ -401,13 +426,13 @@ class Table(object):
         Raises:
             ValueError: If ``value`` type is invalid.
         """
-        return self._properties.setdefault("labels", {})
+        return self._properties.setdefault(self._PROPERTY_TO_API_FIELD["labels"], {})
 
     @labels.setter
     def labels(self, value):
         if not isinstance(value, dict):
             raise ValueError("Pass a dict")
-        self._properties["labels"] = value
+        self._properties[self._PROPERTY_TO_API_FIELD["labels"]] = value
 
     @property
     def encryption_configuration(self):
@@ -421,7 +446,9 @@ class Table(object):
         <https://cloud.google.com/bigquery/docs/customer-managed-encryption>`_
         in the BigQuery documentation.
         """
-        prop = self._properties.get("encryptionConfiguration")
+        prop = self._properties.get(
+            self._PROPERTY_TO_API_FIELD["encryption_configuration"]
+        )
         if prop is not None:
             prop = EncryptionConfiguration.from_api_repr(prop)
         return prop
@@ -431,14 +458,16 @@ class Table(object):
         api_repr = value
         if value is not None:
             api_repr = value.to_api_repr()
-        self._properties["encryptionConfiguration"] = api_repr
+        self._properties[
+            self._PROPERTY_TO_API_FIELD["encryption_configuration"]
+        ] = api_repr
 
     @property
     def created(self):
         """Union[datetime.datetime, None]: Datetime at which the table was
         created (:data:`None` until set from the server).
         """
-        creation_time = self._properties.get("creationTime")
+        creation_time = self._properties.get(self._PROPERTY_TO_API_FIELD["created"])
         if creation_time is not None:
             # creation_time will be in milliseconds.
             return google.cloud._helpers._datetime_from_microseconds(
@@ -450,14 +479,14 @@ class Table(object):
         """Union[str, None]: ETag for the table resource (:data:`None` until
         set from the server).
         """
-        return self._properties.get("etag")
+        return self._properties.get(self._PROPERTY_TO_API_FIELD["etag"])
 
     @property
     def modified(self):
         """Union[datetime.datetime, None]: Datetime at which the table was last
         modified (:data:`None` until set from the server).
         """
-        modified_time = self._properties.get("lastModifiedTime")
+        modified_time = self._properties.get(self._PROPERTY_TO_API_FIELD["modified"])
         if modified_time is not None:
             # modified_time will be in milliseconds.
             return google.cloud._helpers._datetime_from_microseconds(
@@ -469,21 +498,25 @@ class Table(object):
         """Union[int, None]: The size of the table in bytes (:data:`None` until
         set from the server).
         """
-        return _helpers._int_or_none(self._properties.get("numBytes"))
+        return _helpers._int_or_none(
+            self._properties.get(self._PROPERTY_TO_API_FIELD["num_bytes"])
+        )
 
     @property
     def num_rows(self):
         """Union[int, None]: The number of rows in the table (:data:`None`
         until set from the server).
         """
-        return _helpers._int_or_none(self._properties.get("numRows"))
+        return _helpers._int_or_none(
+            self._properties.get(self._PROPERTY_TO_API_FIELD["num_rows"])
+        )
 
     @property
     def self_link(self):
         """Union[str, None]: URL for the table resource (:data:`None` until set
         from the server).
         """
-        return self._properties.get("selfLink")
+        return self._properties.get(self._PROPERTY_TO_API_FIELD["self_link"])
 
     @property
     def full_table_id(self):
@@ -492,7 +525,7 @@ class Table(object):
 
         In the format ``project-id:dataset_id.table_id``.
         """
-        return self._properties.get("id")
+        return self._properties.get(self._PROPERTY_TO_API_FIELD["full_table_id"])
 
     @property
     def table_type(self):
@@ -502,7 +535,7 @@ class Table(object):
         Possible values are ``'TABLE'``, ``'VIEW'``, ``'MATERIALIZED_VIEW'`` or
         ``'EXTERNAL'``.
         """
-        return self._properties.get("type")
+        return self._properties.get(self._PROPERTY_TO_API_FIELD["type"])
 
     @property
     def range_partitioning(self):
@@ -523,7 +556,9 @@ class Table(object):
                 :class:`~google.cloud.bigquery.table.RangePartitioning` or
                 :data:`None`.
         """
-        resource = self._properties.get("rangePartitioning")
+        resource = self._properties.get(
+            self._PROPERTY_TO_API_FIELD["range_partitioning"]
+        )
         if resource is not None:
             return RangePartitioning(_properties=resource)
 
@@ -536,7 +571,7 @@ class Table(object):
             raise ValueError(
                 "Expected value to be RangePartitioning or None, got {}.".format(value)
             )
-        self._properties["rangePartitioning"] = resource
+        self._properties[self._PROPERTY_TO_API_FIELD["range_partitioning"]] = resource
 
     @property
     def time_partitioning(self):
@@ -553,7 +588,7 @@ class Table(object):
                 :class:`~google.cloud.bigquery.table.TimePartitioning` or
                 :data:`None`.
         """
-        prop = self._properties.get("timePartitioning")
+        prop = self._properties.get(self._PROPERTY_TO_API_FIELD["time_partitioning"])
         if prop is not None:
             return TimePartitioning.from_api_repr(prop)
 
@@ -566,7 +601,7 @@ class Table(object):
             raise ValueError(
                 "value must be google.cloud.bigquery.table.TimePartitioning " "or None"
             )
-        self._properties["timePartitioning"] = api_repr
+        self._properties[self._PROPERTY_TO_API_FIELD["time_partitioning"]] = api_repr
 
     @property
     def partitioning_type(self):
@@ -591,9 +626,10 @@ class Table(object):
             PendingDeprecationWarning,
             stacklevel=2,
         )
+        api_field = self._PROPERTY_TO_API_FIELD["partitioning_type"]
         if self.time_partitioning is None:
-            self._properties["timePartitioning"] = {}
-        self._properties["timePartitioning"]["type"] = value
+            self._properties[api_field] = {}
+        self._properties[api_field]["type"] = value
 
     @property
     def partition_expiration(self):
@@ -620,9 +656,11 @@ class Table(object):
             PendingDeprecationWarning,
             stacklevel=2,
         )
+        api_field = self._PROPERTY_TO_API_FIELD["partition_expiration"]
+
         if self.time_partitioning is None:
-            self._properties["timePartitioning"] = {"type": TimePartitioningType.DAY}
-        self._properties["timePartitioning"]["expirationMs"] = str(value)
+            self._properties[api_field] = {"type": TimePartitioningType.DAY}
+        self._properties[api_field]["expirationMs"] = str(value)
 
     @property
     def clustering_fields(self):
@@ -637,7 +675,7 @@ class Table(object):
            BigQuery supports clustering for both partitioned and
            non-partitioned tables.
         """
-        prop = self._properties.get("clustering")
+        prop = self._properties.get(self._PROPERTY_TO_API_FIELD["clustering_fields"])
         if prop is not None:
             return list(prop.get("fields", ()))
 
@@ -647,12 +685,15 @@ class Table(object):
 
         (Defaults to :data:`None`).
         """
+        api_field = self._PROPERTY_TO_API_FIELD["clustering_fields"]
+
         if value is not None:
-            prop = self._properties.setdefault("clustering", {})
+            prop = self._properties.setdefault(api_field, {})
             prop["fields"] = value
         else:
-            if "clustering" in self._properties:
-                del self._properties["clustering"]
+            # In order to allow unsetting clustering fields completely, we explicitly
+            # set this property to None (as oposed to merely removing the key).
+            self._properties[api_field] = None
 
     @property
     def description(self):
@@ -662,13 +703,13 @@ class Table(object):
         Raises:
             ValueError: For invalid value types.
         """
-        return self._properties.get("description")
+        return self._properties.get(self._PROPERTY_TO_API_FIELD["description"])
 
     @description.setter
     def description(self, value):
         if not isinstance(value, str) and value is not None:
             raise ValueError("Pass a string, or None")
-        self._properties["description"] = value
+        self._properties[self._PROPERTY_TO_API_FIELD["description"]] = value
 
     @property
     def expires(self):
@@ -678,7 +719,7 @@ class Table(object):
         Raises:
             ValueError: For invalid value types.
         """
-        expiration_time = self._properties.get("expirationTime")
+        expiration_time = self._properties.get(self._PROPERTY_TO_API_FIELD["expires"])
         if expiration_time is not None:
             # expiration_time will be in milliseconds.
             return google.cloud._helpers._datetime_from_microseconds(
@@ -690,7 +731,9 @@ class Table(object):
         if not isinstance(value, datetime.datetime) and value is not None:
             raise ValueError("Pass a datetime, or None")
         value_ms = google.cloud._helpers._millis_from_datetime(value)
-        self._properties["expirationTime"] = _helpers._str_or_none(value_ms)
+        self._properties[
+            self._PROPERTY_TO_API_FIELD["expires"]
+        ] = _helpers._str_or_none(value_ms)
 
     @property
     def friendly_name(self):
@@ -699,13 +742,13 @@ class Table(object):
         Raises:
             ValueError: For invalid value types.
         """
-        return self._properties.get("friendlyName")
+        return self._properties.get(self._PROPERTY_TO_API_FIELD["friendly_name"])
 
     @friendly_name.setter
     def friendly_name(self, value):
         if not isinstance(value, str) and value is not None:
             raise ValueError("Pass a string, or None")
-        self._properties["friendlyName"] = value
+        self._properties[self._PROPERTY_TO_API_FIELD["friendly_name"]] = value
 
     @property
     def location(self):
@@ -713,7 +756,7 @@ class Table(object):
 
         Defaults to :data:`None`.
         """
-        return self._properties.get("location")
+        return self._properties.get(self._PROPERTY_TO_API_FIELD["location"])
 
     @property
     def view_query(self):
@@ -726,14 +769,17 @@ class Table(object):
         Raises:
             ValueError: For invalid value types.
         """
-        return _helpers._get_sub_prop(self._properties, ["view", "query"])
+        api_field = self._PROPERTY_TO_API_FIELD["view_query"]
+        return _helpers._get_sub_prop(self._properties, [api_field, "query"])
 
     @view_query.setter
     def view_query(self, value):
         if not isinstance(value, str):
             raise ValueError("Pass a string")
-        _helpers._set_sub_prop(self._properties, ["view", "query"], value)
-        view = self._properties["view"]
+
+        api_field = self._PROPERTY_TO_API_FIELD["view_query"]
+        _helpers._set_sub_prop(self._properties, [api_field, "query"], value)
+        view = self._properties[api_field]
         # The service defaults useLegacySql to True, but this
         # client uses Standard SQL by default.
         if view.get("useLegacySql") is None:
@@ -742,7 +788,7 @@ class Table(object):
     @view_query.deleter
     def view_query(self):
         """Delete SQL query defining the table as a view."""
-        self._properties.pop("view", None)
+        self._properties.pop(self._PROPERTY_TO_API_FIELD["view_query"], None)
 
     view_use_legacy_sql = property(_view_use_legacy_sql_getter)
 
@@ -750,27 +796,29 @@ class Table(object):
     def view_use_legacy_sql(self, value):
         if not isinstance(value, bool):
             raise ValueError("Pass a boolean")
-        if self._properties.get("view") is None:
-            self._properties["view"] = {}
-        self._properties["view"]["useLegacySql"] = value
+
+        api_field = self._PROPERTY_TO_API_FIELD["view_query"]
+        if self._properties.get(api_field) is None:
+            self._properties[api_field] = {}
+        self._properties[api_field]["useLegacySql"] = value
 
     @property
     def mview_query(self):
         """Optional[str]: SQL query defining the table as a materialized
         view (defaults to :data:`None`).
         """
-        return _helpers._get_sub_prop(self._properties, ["materializedView", "query"])
+        api_field = self._PROPERTY_TO_API_FIELD["mview_query"]
+        return _helpers._get_sub_prop(self._properties, [api_field, "query"])
 
     @mview_query.setter
     def mview_query(self, value):
-        _helpers._set_sub_prop(
-            self._properties, ["materializedView", "query"], str(value)
-        )
+        api_field = self._PROPERTY_TO_API_FIELD["mview_query"]
+        _helpers._set_sub_prop(self._properties, [api_field, "query"], str(value))
 
     @mview_query.deleter
     def mview_query(self):
         """Delete SQL query defining the table as a materialized view."""
-        self._properties.pop("materializedView", None)
+        self._properties.pop(self._PROPERTY_TO_API_FIELD["mview_query"], None)
 
     @property
     def mview_last_refresh_time(self):
@@ -778,7 +826,7 @@ class Table(object):
         refreshed (:data:`None` until set from the server).
         """
         refresh_time = _helpers._get_sub_prop(
-            self._properties, ["materializedView", "lastRefreshTime"]
+            self._properties, self._PROPERTY_TO_API_FIELD["mview_last_refresh_time"]
         )
         if refresh_time is not None:
             # refresh_time will be in milliseconds.
@@ -791,14 +839,14 @@ class Table(object):
         """Optional[bool]: Enable automatic refresh of the materialized view
         when the base table is updated. The default value is :data:`True`.
         """
-        return _helpers._get_sub_prop(
-            self._properties, ["materializedView", "enableRefresh"]
-        )
+        api_field = self._PROPERTY_TO_API_FIELD["mview_enable_refresh"]
+        return _helpers._get_sub_prop(self._properties, [api_field, "enableRefresh"])
 
     @mview_enable_refresh.setter
     def mview_enable_refresh(self, value):
+        api_field = self._PROPERTY_TO_API_FIELD["mview_enable_refresh"]
         return _helpers._set_sub_prop(
-            self._properties, ["materializedView", "enableRefresh"], value
+            self._properties, [api_field, "enableRefresh"], value
         )
 
     @property
@@ -807,8 +855,9 @@ class Table(object):
         materialized view will be refreshed. The default value is 1800000
         milliseconds (30 minutes).
         """
+        api_field = self._PROPERTY_TO_API_FIELD["mview_refresh_interval"]
         refresh_interval = _helpers._get_sub_prop(
-            self._properties, ["materializedView", "refreshIntervalMs"]
+            self._properties, [api_field, "refreshIntervalMs"]
         )
         if refresh_interval is not None:
             return datetime.timedelta(milliseconds=int(refresh_interval))
@@ -820,10 +869,9 @@ class Table(object):
         else:
             refresh_interval_ms = str(value // datetime.timedelta(milliseconds=1))
 
+        api_field = self._PROPERTY_TO_API_FIELD["mview_refresh_interval"]
         _helpers._set_sub_prop(
-            self._properties,
-            ["materializedView", "refreshIntervalMs"],
-            refresh_interval_ms,
+            self._properties, [api_field, "refreshIntervalMs"], refresh_interval_ms,
         )
 
     @property
@@ -831,7 +879,7 @@ class Table(object):
         """google.cloud.bigquery.StreamingBuffer: Information about a table's
         streaming buffer.
         """
-        sb = self._properties.get("streamingBuffer")
+        sb = self._properties.get(self._PROPERTY_TO_API_FIELD["streaming_buffer"])
         if sb is not None:
             return StreamingBuffer(sb)
 
@@ -843,7 +891,9 @@ class Table(object):
         Raises:
             ValueError: For invalid value types.
         """
-        prop = self._properties.get("externalDataConfiguration")
+        prop = self._properties.get(
+            self._PROPERTY_TO_API_FIELD["external_data_configuration"]
+        )
         if prop is not None:
             prop = ExternalConfig.from_api_repr(prop)
         return prop
@@ -855,7 +905,9 @@ class Table(object):
         api_repr = value
         if value is not None:
             api_repr = value.to_api_repr()
-        self._properties["externalDataConfiguration"] = api_repr
+        self._properties[
+            self._PROPERTY_TO_API_FIELD["external_data_configuration"]
+        ] = api_repr
 
     @classmethod
     def from_string(cls, full_table_id: str) -> "Table":
@@ -908,9 +960,15 @@ class Table(object):
                 "Resource lacks required identity information:"
                 '["tableReference"]["tableId"]'
             )
-        project_id = resource["tableReference"]["projectId"]
-        table_id = resource["tableReference"]["tableId"]
-        dataset_id = resource["tableReference"]["datasetId"]
+        project_id = _helpers._get_sub_prop(
+            resource, cls._PROPERTY_TO_API_FIELD["project"]
+        )
+        table_id = _helpers._get_sub_prop(
+            resource, cls._PROPERTY_TO_API_FIELD["table_id"]
+        )
+        dataset_id = _helpers._get_sub_prop(
+            resource, cls._PROPERTY_TO_API_FIELD["dataset_id"]
+        )
         dataset_ref = dataset.DatasetReference(project_id, dataset_id)
 
         table = cls(dataset_ref.table(table_id))

@@ -1210,8 +1210,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
 
         table._properties["clustering"] = {"fields": fields}
         table.clustering_fields = None
-        self.assertEqual(table.clustering_fields, None)
-        self.assertFalse("clustering" in table._properties)
+        self.assertIsNone(table.clustering_fields)
+        self.assertTrue("clustering" in table._properties)  # None stored explicitly
 
     def test_clustering_fields_setter_w_none_noop(self):
         dataset = DatasetReference(self.PROJECT, self.DS_ID)
@@ -1219,8 +1219,8 @@ class TestTable(unittest.TestCase, _SchemaBase):
         table = self._make_one(table_ref)
 
         table.clustering_fields = None
-        self.assertEqual(table.clustering_fields, None)
-        self.assertFalse("clustering" in table._properties)
+        self.assertIsNone(table.clustering_fields)
+        self.assertTrue("clustering" in table._properties)  # None stored explicitly
 
     def test_encryption_configuration_setter(self):
         # Previously, the EncryptionConfiguration class was in the table module, not the

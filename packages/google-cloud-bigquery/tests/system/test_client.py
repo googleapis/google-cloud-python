@@ -90,6 +90,12 @@ SCHEMA = [
     bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
     bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
 ]
+CLUSTERING_SCHEMA = [
+    bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
+    bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
+    bigquery.SchemaField("body_height_cm", "INTEGER", mode="REQUIRED"),
+    bigquery.SchemaField("date_of_birth", "DATE", mode="REQUIRED"),
+]
 TIME_PARTITIONING_CLUSTERING_FIELDS_SCHEMA = [
     bigquery.SchemaField("transaction_time", "TIMESTAMP", mode="REQUIRED"),
     bigquery.SchemaField("transaction_id", "INTEGER", mode="REQUIRED"),
@@ -578,6 +584,25 @@ class TestBigQuery(unittest.TestCase):
             self.assertEqual(found.name, expected.name)
             self.assertEqual(found.field_type, expected.field_type)
             self.assertEqual(found.mode, expected.mode)
+
+    def test_update_table_clustering_configuration(self):
+        dataset = self.temp_dataset(_make_dataset_id("update_table"))
+
+        TABLE_NAME = "test_table"
+        table_arg = Table(dataset.table(TABLE_NAME), schema=CLUSTERING_SCHEMA)
+        self.assertFalse(_table_exists(table_arg))
+
+        table = helpers.retry_403(Config.CLIENT.create_table)(table_arg)
+        self.to_delete.insert(0, table)
+        self.assertTrue(_table_exists(table))
+
+        table.clustering_fields = ["full_name", "date_of_birth"]
+        table2 = Config.CLIENT.update_table(table, ["clustering_fields"])
+        self.assertEqual(table2.clustering_fields, ["full_name", "date_of_birth"])
+
+        table2.clustering_fields = None
+        table3 = Config.CLIENT.update_table(table2, ["clustering_fields"])
+        self.assertIsNone(table3.clustering_fields, None)
 
     @staticmethod
     def _fetch_single_page(table, selected_fields=None):
