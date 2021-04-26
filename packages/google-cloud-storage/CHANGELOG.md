@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [1.38.0](https://www.github.com/googleapis/python-storage/compare/v1.37.1...v1.38.0) (2021-04-26)
+
+
+### Features
+
+* add getters and setters for encryption_key and kms_key_name ([#409](https://www.github.com/googleapis/python-storage/issues/409)) ([2adfb59](https://www.github.com/googleapis/python-storage/commit/2adfb593d5ad19320affe480455568c1410b9d93))
+
+
+### Bug Fixes
+
+* retry auth.TransportError errors ([#418](https://www.github.com/googleapis/python-storage/issues/418)) ([23a8db8](https://www.github.com/googleapis/python-storage/commit/23a8db839909a0781343cb18edffaea06a0b7092))
+
+
+### Documentation
+
+* revise docstrings for generate_signed_url ([#408](https://www.github.com/googleapis/python-storage/issues/408)) ([f090548](https://www.github.com/googleapis/python-storage/commit/f090548437142b635191e90dcee1acd4c38e565c))
+
 ### [1.37.1](https://www.github.com/googleapis/python-storage/compare/v1.37.0...v1.37.1) (2021-04-02)
 
 
