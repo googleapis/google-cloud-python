@@ -18,22 +18,11 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
+default_version = "v1beta1"
 
-# ----------------------------------------------------------------------------
-# Generate datacatalog GAPIC layer
-# ----------------------------------------------------------------------------
-versions = ['v1', 'v1beta1']
-for version in versions:
-    library = gapic.py_library(
-        service='datacatalog',
-        version=version,
-        bazel_target=f"//google/cloud/datacatalog/{version}:datacatalog-{version}-py",
-        include_protos=True,
-    )
-
+for library in s.get_staging_dirs(default_version):
     s.move(
         library,
         excludes=[
@@ -45,6 +34,8 @@ for version in versions:
             'setup.cfg',
         ],
     )
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
