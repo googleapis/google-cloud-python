@@ -17,32 +17,21 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v1p1beta1", "v1beta1", "v1"]
 
-# ----------------------------------------------------------------------------
-# Generate securitycenter GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="securitycenter",
-        version=version,
-        bazel_target=f"//google/cloud/securitycenter/{version}:securitycenter-{version}-py",
-        include_protos=True,
+default_version = "v1"
+
+for library in s.get_staging_dirs(default_version):
+    # fix bad indentation
+    s.replace(library / "google/**/*service.py",
+        r"(\s+)settings resource.\n"
+        r"\s+If empty all mutable fields will be updated.",
+        r"\g<1>settings resource.\n"
+        r"\g<1>If empty all mutable fields will be updated.",
     )
     s.move(library, excludes=["README.rst", "docs/index.rst", "setup.py"])
 
-
-
-# fix bad indentation
-s.replace(
-    "google/**/*service.py",
-    """(\s+)settings resource.
-\s+If empty all mutable fields will be updated.""",
-    """\g<1>settings resource.
-\g<1>If empty all mutable fields will be updated.""",
-)
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
