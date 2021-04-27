@@ -8,23 +8,21 @@
     them again.
 -#}
 __all__ = (
-    {% filter sort_lines %}
-    {% for subpackage in api.subpackages.keys() %}
+    {% for subpackage in api.subpackages|dictsort %}
     '{{ subpackage }}',
     {% endfor %}
-    {% for service in api.services.values()
+    {% for service in api.services.values()|sort(attribute='client_name')
             if service.meta.address.subpackage == api.subpackage_view %}
     '{{ service.client_name }}',
     {% endfor %}
-    {% for proto in api.protos.values()
+    {% for proto in api.protos.values()|sort(attribute='name')
             if proto.meta.address.subpackage == api.subpackage_view %}
     {% for message in proto.messages.values() %}
     '{{ message.name }}',
     {% endfor %}
-    {% for enum in proto.enums.values() %}
+    {% for enum in proto.enums.values()|sort(attribute='name') %}
     '{{ enum.name }}',
     {% endfor %}
     {% endfor %}
-    {% endfilter %}
 )
 {% endblock %}

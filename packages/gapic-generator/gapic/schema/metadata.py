@@ -50,8 +50,8 @@ class Address:
     collisions: FrozenSet[str] = dataclasses.field(default_factory=frozenset)
 
     def __eq__(self, other) -> bool:
-        return all([getattr(self, i) == getattr(other, i) for i
-                    in ('name', 'module', 'module_path', 'package', 'parent')])
+        return all(getattr(self, i) == getattr(other, i)
+                   for i in ('name', 'module', 'module_path', 'package', 'parent'))
 
     def __hash__(self):
         # Do NOT include collisions; they are not relevant.
@@ -188,7 +188,7 @@ class Address:
         if self.proto_package.startswith(self.api_naming.proto_package):
             return '.'.join(self.api_naming.module_namespace + (
                 self.api_naming.versioned_module_name,
-                ) + self.subpackage + ('types',) + self.parent + (self.name, ))
+            ) + self.subpackage + ('types',) + self.parent + (self.name, ))
 
         # Anything left is a standard _pb2 type
         return f'{self.proto_package}.{self.module}_pb2.{self.name}'

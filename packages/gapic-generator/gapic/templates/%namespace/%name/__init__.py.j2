@@ -2,8 +2,7 @@
 {% block content %}
 
 {#  Import subpackages. -#}
-{% filter sort_lines %}
-{% for subpackage in api.subpackages.keys() %}
+{% for subpackage in api.subpackages|dictsort %}
 from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif %}
     {{- api.naming.versioned_module_name }} import {{ subpackage }}
 {% endfor %}
@@ -39,7 +38,6 @@ from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.'
 from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.') }}.{% endif %}
     {{- api.naming.versioned_module_name }}.types.{{ proto.module_name }} import {{ enum.name }}
 {% endfor %}{% endfor %}
-{% endfilter %}
 {#  Define __all__.
     This requires the full set of imported names, so we iterate over
     them again.
@@ -47,7 +45,6 @@ from {% if api.naming.module_namespace %}{{ api.naming.module_namespace|join('.'
 
 __all__ = (
 {%- filter indent %}
-{% filter sort_lines %}
 {% for subpackage, _ in api.subpackages|dictsort %}
 '{{ subpackage }}',
 {% endfor %}
@@ -67,7 +64,6 @@ __all__ = (
    if proto.meta.address.subpackage == api.subpackage_view %}
 '{{ enum.name }}',
 {% endfor %}{% endfor %}
-{% endfilter %}
 {% endfilter %}
 )
 {% endblock %}
