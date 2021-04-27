@@ -25,11 +25,12 @@ project = os.getenv(
 client = Client(project=project)
 
 config = f"{client.project_name}/instanceConfigs/regional-us-central1"
-
 instance = client.instance("sqlalchemy-dialect-test", config)
-created_op = instance.create()
-created_op.result(120)  # block until completion
 
-database = instance.database("compliance-test")
-created_op = database.create()
-created_op.result(120)
+if not instance.exists():
+    created_op = instance.create()
+    created_op.result(120)  # block until completion
+
+    database = instance.database("compliance-test")
+    created_op = database.create()
+    created_op.result(120)
