@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.44.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.44.0...v0.44.1) (2021-04-28)
+
+
+### Bug Fixes
+
+* fix syntax errors and failing unit tests ([#849](https://www.github.com/googleapis/gapic-generator-python/issues/849)) ([9046261](https://www.github.com/googleapis/gapic-generator-python/commit/90462617e3e2b90eb8684210b6a70e890bdc0d96)), closes [#848](https://www.github.com/googleapis/gapic-generator-python/issues/848)
+
 ## [0.44.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.43.3...v0.44.0) (2021-04-23)
 
 
