@@ -85,17 +85,37 @@ def default(session):
     )
 
 
+@nox.session(python=UNIT_TEST_PYTHON_VERSIONS)
+def unit(session):
+    """Run the unit test suite."""
+    default(session)
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def cover(session):
+    """Run the final coverage report.
+
+    This outputs the coverage report aggregating coverage from the unit
+    test runs (not system test runs), and then erases coverage data.
+    """
+    session.install("coverage", "pytest-cov")
+    session.run("coverage", "report", "--show-missing", "--fail-under=20")
+
+    session.run("coverage", "erase")
+
+
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".[tracing]")
-    session.install("sphinx", "alabaster", "recommonmark")
+    session.install("sphinx", "alabaster", "recommonmark", "django==2.2")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
+    # Warnings as errors is disabled for `sphinx-build` because django module
+    # has warnings.
     session.run(
         "sphinx-build",
-        "-W",  # warnings as errors
         "-T",  # show full traceback on exception
         "-N",  # no colors
         "-b",

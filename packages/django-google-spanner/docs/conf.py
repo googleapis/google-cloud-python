@@ -18,8 +18,7 @@
 
 import sys
 import os
-
-from version import __version__
+import shlex
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add this directory to sys.path here. If the directory is relative to the
@@ -30,10 +29,12 @@ sys.path.insert(0, os.path.abspath(".."))
 # See also: https://github.com/docascode/sphinx-docfx-yaml/issues/85
 sys.path.insert(0, os.path.abspath("."))
 
+__version__ = ""
+
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-needs_sphinx = "1.6.3"
+needs_sphinx = "1.5.5"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -43,6 +44,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
     "sphinx.ext.coverage",
+    "sphinx.ext.doctest",
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
@@ -171,7 +173,7 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ["_static"]
+html_static_path = ["_static"]
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -255,28 +257,28 @@ suppress_warnings = [
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
-    # # The paper size ('letterpaper' or 'a4paper').
+    # The paper size ('letterpaper' or 'a4paper').
     # 'papersize': 'letterpaper',
-    # # The font size ('10pt', '11pt' or '12pt').
+    # The font size ('10pt', '11pt' or '12pt').
     # 'pointsize': '10pt',
-    # # Additional stuff for the LaTeX preamble.
+    # Additional stuff for the LaTeX preamble.
     # 'preamble': '',
-    # # Latex figure (float) alignment
+    # Latex figure (float) alignment
     # 'figure_align': 'htbp',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source_start_file, target_name, title, author,
 # documentclass ["howto", "manual", or "own class"]). E.g.,
-# latex_documents = [
-#     (
-#         master_doc,
-#         "django-google-spanner.tex",
-#         u"Spanner Django Documentation",
-#         author,
-#         "manual",
-#     )
-# ]
+latex_documents = [
+    (
+        master_doc,
+        "django-google-spanner.tex",
+        u"Spanner Django Documentation",
+        author,
+        "manual",
+    )
+]
 
 # The name of an image file (relative to this directory)
 # to place at the top of the title page.
@@ -349,13 +351,13 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    "python": ("http://python.readthedocs.org/en/latest/", None),
-    "google-auth": ("https://google-auth.readthedocs.io/en/stable", None),
+    "python": ("https://python.readthedocs.org/en/latest/", None),
+    "google-auth": ("https://googleapis.dev/python/google-auth/latest/", None),
     "google.api_core": (
         "https://googleapis.dev/python/google-api-core/latest/",
         None,
     ),
-    "grpc": ("https://grpc.io/grpc/python/", None),
+    "grpc": ("https://grpc.github.io/grpc/python/", None),
 }
 
 

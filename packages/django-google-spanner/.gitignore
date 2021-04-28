@@ -12,7 +12,8 @@ bin
 MANIFEST
 django_tests
 __pycache__
-
+# The directory into which Django has been cloned to run the test suite.
+django_tests_dir
 # Unit test / coverage reports
 .coverage
 .nox

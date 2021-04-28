@@ -6,15 +6,18 @@
 
 import sys
 import unittest
+import os
 
 from mock_import import mock_import
 from unittest import mock
 
 
 @mock_import()
-@unittest.skipIf(sys.version_info < (3, 6), reason="Skipping Python 3.5")
+@unittest.skipIf(
+    sys.version_info < (3, 6), reason="Skipping Python versions <= 3.5"
+)
 class TestBase(unittest.TestCase):
-    PROJECT = "project"
+    PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
     INSTANCE_ID = "instance_id"
     DATABASE_ID = "database_id"
     USER_AGENT = "django_spanner/2.2.0a1"
@@ -64,10 +67,10 @@ class TestBase(unittest.TestCase):
     def test_get_new_connection(self):
         db_wrapper = self._make_one(self.settings_dict)
         db_wrapper.Database = mock_database = mock.MagicMock()
-        mock_database.connect = mock_connect = mock.MagicMock()
+        mock_database.connect = mock_connection = mock.MagicMock()
         conn_params = {"test_param": "dummy"}
         db_wrapper.get_new_connection(conn_params)
-        mock_connect.assert_called_once_with(**conn_params)
+        mock_connection.assert_called_once_with(**conn_params)
 
     def test_init_connection_state(self):
         db_wrapper = self._make_one(self.settings_dict)
@@ -106,3 +109,10 @@ class TestBase(unittest.TestCase):
 
         mock_connection.cursor = mock.MagicMock(side_effect=Error)
         self.assertFalse(db_wrapper.is_usable())
+
+    def test__start_transaction_under_autocommit(self):
+        db_wrapper = self._make_one(self.settings_dict)
+        db_wrapper.connection = mock_connection = mock.MagicMock()
+        mock_connection.cursor = mock_cursor = mock.MagicMock()
+        db_wrapper._start_transaction_under_autocommit()
+        mock_cursor.assert_called_once_with()

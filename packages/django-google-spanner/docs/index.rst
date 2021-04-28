@@ -1,5 +1,13 @@
 .. include:: README.rst
 
+Usage Documentation
+-------------------
+.. toctree::
+  :maxdepth: 1
+  :titlesonly:
+
+  schema-usage
+
 API Documentation
 -----------------
 .. toctree::
