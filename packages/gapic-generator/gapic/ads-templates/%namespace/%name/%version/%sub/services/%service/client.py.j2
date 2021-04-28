@@ -305,7 +305,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             {% if not method.client_streaming %}
             request (:class:`{{ method.input.ident.sphinx }}`):
                 The request object.{{ ' ' }}
-                {{ method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
+                {{- method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
             {% for key, field in method.flattened_fields.items() %}
             {{ field.name }} (:class:`{{ field.ident.sphinx }}`):
                 {{ field.meta.doc|rst(width=72, indent=16) }}
@@ -316,7 +316,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             {% else %}
             requests (Iterator[`{{ method.input.ident.sphinx }}`]):
                 The request object iterator.{{ ' ' }}
-                {{ method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
+                {{- method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
             {% endif %}
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -344,7 +344,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                              'the individual field arguments should be set.')
 
         {% endif %} {# method.flattened_fields #}
-        {% if method.input.ident.package != method.ident.package %} {# request lives in a different package, so there is no proto wrapper #}
+        {% if method.input.ident.package != method.ident.package %}{# request lives in a different package, so there is no proto wrapper #}
         # The request isn't a proto-plus wrapped type.
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):

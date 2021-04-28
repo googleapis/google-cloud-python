@@ -244,10 +244,10 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
     def {{ method.name|snake_case }}(self) -> Callable[
             [{{ method.input.ident }}],
             {{ method.output.ident }}]:
-        r"""Return a callable for the {{ ' ' }}
-        {{ (method.name|snake_case).replace('_',' ')|wrap(
-                width=70, offset=40, indent=8) }}
-        {{ ' ' }} method over gRPC.
+        r"""Return a callable for the{{ ' ' }}
+        {{- (method.name|snake_case).replace('_',' ')|wrap(
+                width=70, offset=40, indent=8) -}}
+        {{ ' ' }}method over gRPC.
 
         {{ method.meta.doc|rst(width=72, indent=8) }}
 

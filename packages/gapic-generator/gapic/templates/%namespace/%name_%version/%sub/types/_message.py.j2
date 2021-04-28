@@ -37,7 +37,7 @@ class {{ message.name }}({{ p }}.Message):
     {{ field.name }} = {{ p }}.MapField(
         {{ p }}.{{ key_field.proto_type }},
         {{ p }}.{{ value_field.proto_type }},
-        number={{ field.number }}
+        number={{ field.number }},
     {% if value_field.enum or value_field.message %}
         {{ value_field.proto_type.lower() }}={{ value_field.type.ident.rel(message.ident) }},
     {% endif %}{# enum or message#}

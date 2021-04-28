@@ -141,8 +141,8 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
 
         Args:
             request (~.{{ method.input.ident }}):
-                The request object.
-                {{ method.input.meta.doc|rst(width=72, indent=16) }}
+                The request object.{{ ' ' }}
+                {{- method.input.meta.doc|rst(width=72, indent=16) }}
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         {% if not method.void %}

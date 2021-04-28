@@ -1485,10 +1485,9 @@ def test_{{ service.name|snake_case }}_base_transport_with_credentials_file():
         load_creds.assert_called_once_with("credentials.json",
             scopes=None,
             default_scopes=(
-            {%- for scope in service.oauth_scopes %}
+            {% for scope in service.oauth_scopes %}
             '{{ scope }}',
-            {%- endfor %}
-            ),
+            {% endfor %}),
             quota_project_id="octopus",
         )
 
@@ -1533,7 +1532,6 @@ def test_{{ service.name|snake_case }}_auth_adc():
             {% for scope in service.oauth_scopes %}
             '{{ scope }}',
             {% endfor %}),
-
             quota_project_id=None,
         )
 
@@ -1623,14 +1621,14 @@ def test_{{ service.name|snake_case }}_transport_create_channel(transport_class,
 
         {% with host = (service.host|default('localhost', true)) %}
         create_channel.assert_called_with(
-            "{{ host }}",
+            "{{ host }}{% if ":" not in service.host %}:443{% endif %}",
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
             default_scopes=(
-                {%- for scope in service.oauth_scopes %}
+                {% for scope in service.oauth_scopes %}
                 '{{ scope }}',
-                {%- endfor %}),
+                {% endfor %}),
             scopes=["1", "2"],
             default_host="{{ host }}",
             ssl_credentials=None,
@@ -1667,9 +1665,9 @@ def test_{{ service.name|snake_case }}_transport_create_channel_old_api_core(tra
             credentials_file=None,
             quota_project_id="octopus",
             scopes=(
-                {%- for scope in service.oauth_scopes %}
+                {% for scope in service.oauth_scopes %}
                 '{{ scope }}',
-                {%- endfor %}),
+                {% endfor %}),
             ssl_credentials=None,
             options=[
                 ("grpc.max_send_message_length", -1),
