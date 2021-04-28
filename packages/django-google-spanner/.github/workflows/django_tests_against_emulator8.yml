@@ -29,4 +29,4 @@ jobs:
           GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE: true
           RUNNING_SPANNER_BACKEND_TESTS: 1
           SPANNER_TEST_INSTANCE: google-cloud-django-backend-tests
-          DJANGO_TEST_APPS: model_inheritance model_inheritance_regress model_options model_package multiple_database
+          DJANGO_TEST_APPS: inspectdb custom_managers migrations validation get_earliest_or_latest proxy_model_inheritance one_to_one raw_query bulk_create

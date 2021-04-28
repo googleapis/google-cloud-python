@@ -29,4 +29,4 @@ jobs:
           GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE: true
           RUNNING_SPANNER_BACKEND_TESTS: 1
           SPANNER_TEST_INSTANCE: google-cloud-django-backend-tests
-          DJANGO_TEST_APPS: admin_inlines admin_ordering aggregation migrations
+          DJANGO_TEST_APPS: introspection multiple_database null_fk_ordering ordering m2m_intermediary null_fk max_lengths dates force_insert_update test_client m2m_multiple test_client_regress sitemaps_tests admin_inlines transactions null_queries test_runner m2m_and_m2o prefetch_related m2m_regress file_uploads sites_framework auth_tests forms_tests inline_formsets order_with_respect_to contenttypes_tests defer

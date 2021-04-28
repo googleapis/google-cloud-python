@@ -66,4 +66,9 @@ PASSWORD_HASHERS = [
 cd $TESTS_DIR/django/tests
 create_settings
 
-python3 runtests.py $DJANGO_TEST_APPS --verbosity=3 --noinput --settings $SETTINGS_FILE
+EXIT_STATUS=0
+for DJANGO_TEST_APP in $DJANGO_TEST_APPS
+do
+   python3 runtests.py $DJANGO_TEST_APP --verbosity=3 --noinput --settings $SETTINGS_FILE || EXIT_STATUS=$?
+done
+exit $EXIT_STATUS

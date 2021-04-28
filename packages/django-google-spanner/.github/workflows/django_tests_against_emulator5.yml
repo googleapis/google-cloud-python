@@ -29,4 +29,4 @@ jobs:
           GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE: true
           RUNNING_SPANNER_BACKEND_TESTS: 1
           SPANNER_TEST_INSTANCE: google-cloud-django-backend-tests
-          DJANGO_TEST_APPS: custom_columns custom_managers custom_methods custom_pk datatypes dates datetimes db_functions defer defer_regress
+          DJANGO_TEST_APPS: file_storage m2m_recursive reverse_lookup managers_regress basic annotations unmanaged_models string_lookup aggregation_regress reserved_names select_for_update many_to_one cache select_related_regress flatpages_tests model_formsets_regress
