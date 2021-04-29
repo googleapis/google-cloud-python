@@ -18,6 +18,7 @@ import collections
 from collections import abc as collections_abc
 import copy
 import logging
+import re
 
 try:
     from google.cloud.bigquery_storage import ArrowSerializationOptions
@@ -161,6 +162,14 @@ class Cursor(object):
             job_config (google.cloud.bigquery.job.QueryJobConfig):
                 (Optional) Extra configuration options for the query job.
         """
+        formatted_operation, parameter_types = _format_operation(operation, parameters)
+        self._execute(
+            formatted_operation, parameters, job_id, job_config, parameter_types
+        )
+
+    def _execute(
+        self, formatted_operation, parameters, job_id, job_config, parameter_types
+    ):
         self._query_data = None
         self._query_job = None
         client = self.connection._client
@@ -169,8 +178,7 @@ class Cursor(object):
         # query parameters was not one of the standard options. Convert both
         # the query and the parameters to the format expected by the client
         # libraries.
-        formatted_operation = _format_operation(operation, parameters=parameters)
-        query_parameters = _helpers.to_query_parameters(parameters)
+        query_parameters = _helpers.to_query_parameters(parameters, parameter_types)
 
         if client._default_query_job_config:
             if job_config:
@@ -209,8 +217,19 @@ class Cursor(object):
             seq_of_parameters (Union[Sequence[Mapping[str, Any], Sequence[Any]]]):
                 Sequence of many sets of parameter values.
         """
-        for parameters in seq_of_parameters:
-            self.execute(operation, parameters)
+        if seq_of_parameters:
+            # There's no reason to format the line more than once, as
+            # the operation only barely depends on the parameters.  So
+            # we just use the first set of parameters. If there are
+            # different numbers or types of parameters, we'll error
+            # anyway.
+            formatted_operation, parameter_types = _format_operation(
+                operation, seq_of_parameters[0]
+            )
+            for parameters in seq_of_parameters:
+                self._execute(
+                    formatted_operation, parameters, None, None, parameter_types
+                )
 
     def _try_fetch(self, size=None):
         """Try to start fetching data, if not yet started.
@@ -427,7 +446,7 @@ def _format_operation_dict(operation, parameters):
         raise exceptions.ProgrammingError(exc)
 
 
-def _format_operation(operation, parameters=None):
+def _format_operation(operation, parameters):
     """Formats parameters in operation in way BigQuery expects.
 
     Args:
@@ -445,9 +464,67 @@ def _format_operation(operation, parameters=None):
             ``parameters`` argument.
     """
     if parameters is None or len(parameters) == 0:
-        return operation.replace("%%", "%")  # Still do percent de-escaping.
+        return operation.replace("%%", "%"), None  # Still do percent de-escaping.
+
+    operation, parameter_types = _extract_types(operation)
+    if parameter_types is None:
+        raise exceptions.ProgrammingError(
+            f"Parameters were provided, but {repr(operation)} has no placeholders."
+        )
 
     if isinstance(parameters, collections_abc.Mapping):
-        return _format_operation_dict(operation, parameters)
+        return _format_operation_dict(operation, parameters), parameter_types
 
-    return _format_operation_list(operation, parameters)
+    return _format_operation_list(operation, parameters), parameter_types
+
+
+def _extract_types(
+    operation, extra_type_sub=re.compile(r"(%*)%(?:\(([^:)]*)(?::(\w+))?\))?s").sub
+):
+    """Remove type information from parameter placeholders.
+
+    For every parameter of the form %(name:type)s, replace with %(name)s and add the
+    item name->type to dict that's returned.
+
+    Returns operation without type information and a dictionary of names and types.
+    """
+    parameter_types = None
+
+    def repl(m):
+        nonlocal parameter_types
+        prefix, name, type_ = m.groups()
+        if len(prefix) % 2:
+            # The prefix has an odd number of %s, the last of which
+            # escapes the % we're looking for, so we don't want to
+            # change anything.
+            return m.group(0)
+
+        try:
+            if name:
+                if not parameter_types:
+                    parameter_types = {}
+                if type_:
+                    if name in parameter_types:
+                        if type_ != parameter_types[name]:
+                            raise exceptions.ProgrammingError(
+                                f"Conflicting types for {name}: "
+                                f"{parameter_types[name]} and {type_}."
+                            )
+                    else:
+                        parameter_types[name] = type_
+                else:
+                    if not isinstance(parameter_types, dict):
+                        raise TypeError()
+
+                return f"{prefix}%({name})s"
+            else:
+                if parameter_types is None:
+                    parameter_types = []
+                parameter_types.append(type_)
+                return f"{prefix}%s"
+        except (AttributeError, TypeError):
+            raise exceptions.ProgrammingError(
+                f"{repr(operation)} mixes named and unamed parameters."
+            )
+
+    return extra_type_sub(repl, operation), parameter_types

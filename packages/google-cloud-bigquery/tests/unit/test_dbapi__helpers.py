@@ -18,13 +18,15 @@ import math
 import operator as op
 import unittest
 
+import pytest
+
 try:
     import pyarrow
 except ImportError:  # pragma: NO COVER
     pyarrow = None
 
 import google.cloud._helpers
-from google.cloud.bigquery import table
+from google.cloud.bigquery import table, enums
 from google.cloud.bigquery.dbapi import _helpers
 from google.cloud.bigquery.dbapi import exceptions
 from tests.unit.helpers import _to_pyarrow
@@ -142,7 +144,7 @@ class TestQueryParameters(unittest.TestCase):
 
     def test_to_query_parameters_w_dict(self):
         parameters = {"somebool": True, "somestring": "a-string-value"}
-        query_parameters = _helpers.to_query_parameters(parameters)
+        query_parameters = _helpers.to_query_parameters(parameters, {})
         query_parameter_tuples = []
         for param in query_parameters:
             query_parameter_tuples.append((param.name, param.type_, param.value))
@@ -158,7 +160,7 @@ class TestQueryParameters(unittest.TestCase):
 
     def test_to_query_parameters_w_dict_array_param(self):
         parameters = {"somelist": [10, 20]}
-        query_parameters = _helpers.to_query_parameters(parameters)
+        query_parameters = _helpers.to_query_parameters(parameters, {})
 
         self.assertEqual(len(query_parameters), 1)
         param = query_parameters[0]
@@ -171,11 +173,11 @@ class TestQueryParameters(unittest.TestCase):
         parameters = {"my_param": {"foo": "bar"}}
 
         with self.assertRaises(NotImplementedError):
-            _helpers.to_query_parameters(parameters)
+            _helpers.to_query_parameters(parameters, {})
 
     def test_to_query_parameters_w_list(self):
         parameters = [True, "a-string-value"]
-        query_parameters = _helpers.to_query_parameters(parameters)
+        query_parameters = _helpers.to_query_parameters(parameters, [None, None])
         query_parameter_tuples = []
         for param in query_parameters:
             query_parameter_tuples.append((param.name, param.type_, param.value))
@@ -186,7 +188,7 @@ class TestQueryParameters(unittest.TestCase):
 
     def test_to_query_parameters_w_list_array_param(self):
         parameters = [[10, 20]]
-        query_parameters = _helpers.to_query_parameters(parameters)
+        query_parameters = _helpers.to_query_parameters(parameters, [None])
 
         self.assertEqual(len(query_parameters), 1)
         param = query_parameters[0]
@@ -199,10 +201,10 @@ class TestQueryParameters(unittest.TestCase):
         parameters = [{"foo": "bar"}]
 
         with self.assertRaises(NotImplementedError):
-            _helpers.to_query_parameters(parameters)
+            _helpers.to_query_parameters(parameters, [None])
 
     def test_to_query_parameters_none_argument(self):
-        query_parameters = _helpers.to_query_parameters(None)
+        query_parameters = _helpers.to_query_parameters(None, None)
         self.assertEqual(query_parameters, [])
 
 
@@ -338,3 +340,79 @@ class TestRaiseOnClosedDecorator(unittest.TestCase):
 
         with self.assertRaisesRegex(RuntimeError, "I'm closed!"):
             instance.instance_method()
+
+
+VALID_BQ_TYPES = [
+    (name, getattr(enums.SqlParameterScalarTypes, name)._type)
+    for name in dir(enums.SqlParameterScalarTypes)
+    if not name.startswith("_")
+]
+
+
+@pytest.mark.parametrize("alias, type_", VALID_BQ_TYPES)
+def test_scalar_to_query_parameter_honors_given_type(alias, type_):
+    from google.cloud import bigquery
+
+    assert _helpers.scalar_to_query_parameter(1.23, None, alias) == (
+        bigquery.ScalarQueryParameter(None, type_, 1.23)
+    )
+    assert _helpers.scalar_to_query_parameter(None, "foo", alias) == (
+        bigquery.ScalarQueryParameter("foo", type_, None)
+    )
+
+
+def test_scalar_to_query_parameter_honors_given_type_errors_on_invalid():
+    with pytest.raises(
+        google.cloud.bigquery.dbapi.exceptions.ProgrammingError,
+        match="The given parameter type, INT, for foo is not a valid BigQuery scalar type.",
+    ):
+        _helpers.scalar_to_query_parameter(None, "foo", "INT")
+
+
+@pytest.mark.parametrize("alias, type_", VALID_BQ_TYPES)
+def test_array_to_query_parameter_honors_given_type(alias, type_):
+    from google.cloud import bigquery
+
+    assert _helpers.array_to_query_parameter([1.23], None, alias) == (
+        bigquery.ArrayQueryParameter(None, type_, [1.23])
+    )
+    assert _helpers.array_to_query_parameter((), "foo", alias) == (
+        bigquery.ArrayQueryParameter("foo", type_, ())
+    )
+
+
+def test_array_to_query_parameter_honors_given_type_errors_on_invalid():
+    with pytest.raises(
+        google.cloud.bigquery.dbapi.exceptions.ProgrammingError,
+        match="The given parameter type, INT, for foo is not a valid BigQuery scalar type.",
+    ):
+        _helpers.array_to_query_parameter((), "foo", "INT")
+
+
+def test_to_query_parameters_dict_w_types():
+    from google.cloud import bigquery
+
+    assert sorted(
+        _helpers.to_query_parameters(
+            dict(i=1, x=1.2, y=None, z=[]), dict(x="numeric", y="string", z="float64")
+        ),
+        key=lambda p: p.name,
+    ) == [
+        bigquery.ScalarQueryParameter("i", "INT64", 1),
+        bigquery.ScalarQueryParameter("x", "NUMERIC", 1.2),
+        bigquery.ScalarQueryParameter("y", "STRING", None),
+        bigquery.ArrayQueryParameter("z", "FLOAT64", []),
+    ]
+
+
+def test_to_query_parameters_list_w_types():
+    from google.cloud import bigquery
+
+    assert _helpers.to_query_parameters(
+        [1, 1.2, None, []], [None, "numeric", "string", "float64"]
+    ) == [
+        bigquery.ScalarQueryParameter(None, "INT64", 1),
+        bigquery.ScalarQueryParameter(None, "NUMERIC", 1.2),
+        bigquery.ScalarQueryParameter(None, "STRING", None),
+        bigquery.ArrayQueryParameter(None, "FLOAT64", []),
+    ]

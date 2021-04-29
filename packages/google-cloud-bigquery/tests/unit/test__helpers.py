@@ -1159,3 +1159,18 @@ def _field_isinstance_patcher():
         "google.cloud.bigquery.schema.isinstance", side_effect=fake_isinstance
     )
     return patcher
+
+
+def test_decimal_as_float_api_repr():
+    """Make sure decimals get converted to float."""
+    import google.cloud.bigquery.query
+    from decimal import Decimal
+
+    param = google.cloud.bigquery.query.ScalarQueryParameter(
+        "x", "FLOAT64", Decimal(42)
+    )
+    assert param.to_api_repr() == {
+        "parameterType": {"type": "FLOAT64"},
+        "parameterValue": {"value": 42.0},
+        "name": "x",
+    }

@@ -20,7 +20,7 @@ import functools
 import numbers
 
 from google.cloud import bigquery
-from google.cloud.bigquery import table
+from google.cloud.bigquery import table, enums
 from google.cloud.bigquery.dbapi import exceptions
 
 
@@ -28,7 +28,28 @@ _NUMERIC_SERVER_MIN = decimal.Decimal("-9.9999999999999999999999999999999999999E
 _NUMERIC_SERVER_MAX = decimal.Decimal("9.9999999999999999999999999999999999999E+28")
 
 
-def scalar_to_query_parameter(value, name=None):
+def _parameter_type(name, value, query_parameter_type=None, value_doc=""):
+    if query_parameter_type:
+        try:
+            parameter_type = getattr(
+                enums.SqlParameterScalarTypes, query_parameter_type.upper()
+            )._type
+        except AttributeError:
+            raise exceptions.ProgrammingError(
+                f"The given parameter type, {query_parameter_type},"
+                f" for {name} is not a valid BigQuery scalar type."
+            )
+    else:
+        parameter_type = bigquery_scalar_type(value)
+        if parameter_type is None:
+            raise exceptions.ProgrammingError(
+                f"Encountered parameter {name} with "
+                f"{value_doc} value {value} of unexpected type."
+            )
+    return parameter_type
+
+
+def scalar_to_query_parameter(value, name=None, query_parameter_type=None):
     """Convert a scalar value into a query parameter.
 
     Args:
@@ -37,6 +58,7 @@ def scalar_to_query_parameter(value, name=None):
 
         name (str):
             (Optional) Name of the query parameter.
+        query_parameter_type (Optional[str]): Given type for the parameter.
 
     Returns:
         google.cloud.bigquery.ScalarQueryParameter:
@@ -47,24 +69,19 @@ def scalar_to_query_parameter(value, name=None):
         google.cloud.bigquery.dbapi.exceptions.ProgrammingError:
             if the type cannot be determined.
     """
-    parameter_type = bigquery_scalar_type(value)
-
-    if parameter_type is None:
-        raise exceptions.ProgrammingError(
-            "encountered parameter {} with value {} of unexpected type".format(
-                name, value
-            )
-        )
-    return bigquery.ScalarQueryParameter(name, parameter_type, value)
+    return bigquery.ScalarQueryParameter(
+        name, _parameter_type(name, value, query_parameter_type), value
+    )
 
 
-def array_to_query_parameter(value, name=None):
+def array_to_query_parameter(value, name=None, query_parameter_type=None):
     """Convert an array-like value into a query parameter.
 
     Args:
         value (Sequence[Any]): The elements of the array (should not be a
             string-like Sequence).
         name (Optional[str]): Name of the query parameter.
+        query_parameter_type (Optional[str]): Given type for the parameter.
 
     Returns:
         A query parameter corresponding with the type and value of the plain
@@ -80,29 +97,30 @@ def array_to_query_parameter(value, name=None):
             "not string-like.".format(name)
         )
 
-    if not value:
+    if query_parameter_type or value:
+        array_type = _parameter_type(
+            name,
+            value[0] if value else None,
+            query_parameter_type,
+            value_doc="array element ",
+        )
+    else:
         raise exceptions.ProgrammingError(
             "Encountered an empty array-like value of parameter {}, cannot "
             "determine array elements type.".format(name)
         )
 
-    # Assume that all elements are of the same type, and let the backend handle
-    # any type incompatibilities among the array elements
-    array_type = bigquery_scalar_type(value[0])
-    if array_type is None:
-        raise exceptions.ProgrammingError(
-            "Encountered unexpected first array element of parameter {}, "
-            "cannot determine array elements type.".format(name)
-        )
-
     return bigquery.ArrayQueryParameter(name, array_type, value)
 
 
-def to_query_parameters_list(parameters):
+def to_query_parameters_list(parameters, parameter_types):
     """Converts a sequence of parameter values into query parameters.
 
     Args:
         parameters (Sequence[Any]): Sequence of query parameter values.
+        parameter_types:
+            A list of parameter types, one for each parameter.
+            Unknown types are provided as None.
 
     Returns:
         List[google.cloud.bigquery.query._AbstractQueryParameter]:
@@ -110,23 +128,27 @@ def to_query_parameters_list(parameters):
     """
     result = []
 
-    for value in parameters:
+    for value, type_ in zip(parameters, parameter_types):
         if isinstance(value, collections_abc.Mapping):
             raise NotImplementedError("STRUCT-like parameter values are not supported.")
         elif array_like(value):
-            param = array_to_query_parameter(value)
+            param = array_to_query_parameter(value, None, type_)
         else:
-            param = scalar_to_query_parameter(value)
+            param = scalar_to_query_parameter(value, None, type_)
+
         result.append(param)
 
     return result
 
 
-def to_query_parameters_dict(parameters):
+def to_query_parameters_dict(parameters, query_parameter_types):
     """Converts a dictionary of parameter values into query parameters.
 
     Args:
         parameters (Mapping[str, Any]): Dictionary of query parameter values.
+        parameter_types:
+            A dictionary of parameter types. It needn't have a key for each
+            parameter.
 
     Returns:
         List[google.cloud.bigquery.query._AbstractQueryParameter]:
@@ -140,21 +162,38 @@ def to_query_parameters_dict(parameters):
                 "STRUCT-like parameter values are not supported "
                 "(parameter {}).".format(name)
             )
-        elif array_like(value):
-            param = array_to_query_parameter(value, name=name)
         else:
-            param = scalar_to_query_parameter(value, name=name)
+            query_parameter_type = query_parameter_types.get(name)
+            if array_like(value):
+                param = array_to_query_parameter(
+                    value, name=name, query_parameter_type=query_parameter_type
+                )
+            else:
+                param = scalar_to_query_parameter(
+                    value, name=name, query_parameter_type=query_parameter_type,
+                )
+
         result.append(param)
 
     return result
 
 
-def to_query_parameters(parameters):
+def to_query_parameters(parameters, parameter_types):
     """Converts DB-API parameter values into query parameters.
 
     Args:
         parameters (Union[Mapping[str, Any], Sequence[Any]]):
             A dictionary or sequence of query parameter values.
+        parameter_types (Union[Mapping[str, str], Sequence[str]]):
+            A dictionary or list of parameter types.
+
+            If parameters is a mapping, then this must be a dictionary
+            of parameter types.  It needn't have a key for each
+            parameter.
+
+            If parameters is a sequence, then this must be a list of
+            parameter types, one for each paramater.  Unknown types
+            are provided as None.
 
     Returns:
         List[google.cloud.bigquery.query._AbstractQueryParameter]:
@@ -164,9 +203,9 @@ def to_query_parameters(parameters):
         return []
 
     if isinstance(parameters, collections_abc.Mapping):
-        return to_query_parameters_dict(parameters)
-
-    return to_query_parameters_list(parameters)
+        return to_query_parameters_dict(parameters, parameter_types)
+    else:
+        return to_query_parameters_list(parameters, parameter_types)
 
 
 def bigquery_scalar_type(value):

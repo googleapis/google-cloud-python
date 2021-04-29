@@ -12,10 +12,12 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+import mock
 import operator as op
 import unittest
 
-import mock
+import pytest
+
 
 try:
     import pyarrow
@@ -612,6 +614,15 @@ class TestCursor(unittest.TestCase):
         self.assertIsNone(cursor.description)
         self.assertEqual(cursor.rowcount, 12)
 
+    def test_executemany_empty(self):
+        from google.cloud.bigquery.dbapi import connect
+
+        connection = connect(self._mock_client(rows=[], num_dml_affected_rows=12))
+        cursor = connection.cursor()
+        cursor.executemany((), ())
+        self.assertIsNone(cursor.description)
+        self.assertEqual(cursor.rowcount, -1)
+
     def test_is_iterable(self):
         from google.cloud.bigquery import dbapi
 
@@ -638,13 +649,15 @@ class TestCursor(unittest.TestCase):
     def test__format_operation_w_dict(self):
         from google.cloud.bigquery.dbapi import cursor
 
-        formatted_operation = cursor._format_operation(
-            "SELECT %(somevalue)s, %(a `weird` one)s;",
+        parameter_types = {}
+        formatted_operation, parameter_types = cursor._format_operation(
+            "SELECT %(somevalue)s, %(a `weird` one:STRING)s;",
             {"somevalue": "hi", "a `weird` one": "world"},
         )
         self.assertEqual(
             formatted_operation, "SELECT @`somevalue`, @`a \\`weird\\` one`;"
         )
+        self.assertEqual(parameter_types, {"a `weird` one": "STRING"})
 
     def test__format_operation_w_wrong_dict(self):
         from google.cloud.bigquery import dbapi
@@ -660,7 +673,7 @@ class TestCursor(unittest.TestCase):
     def test__format_operation_w_redundant_dict_key(self):
         from google.cloud.bigquery.dbapi import cursor
 
-        formatted_operation = cursor._format_operation(
+        formatted_operation, _ = cursor._format_operation(
             "SELECT %(somevalue)s;", {"somevalue": "foo", "value-not-used": "bar"}
         )
         self.assertEqual(formatted_operation, "SELECT @`somevalue`;")
@@ -668,7 +681,7 @@ class TestCursor(unittest.TestCase):
     def test__format_operation_w_sequence(self):
         from google.cloud.bigquery.dbapi import cursor
 
-        formatted_operation = cursor._format_operation(
+        formatted_operation, _ = cursor._format_operation(
             "SELECT %s, %s;", ("hello", "world")
         )
         self.assertEqual(formatted_operation, "SELECT ?, ?;")
@@ -698,19 +711,19 @@ class TestCursor(unittest.TestCase):
     def test__format_operation_w_empty_dict(self):
         from google.cloud.bigquery.dbapi import cursor
 
-        formatted_operation = cursor._format_operation("SELECT '%f'", {})
+        formatted_operation, _ = cursor._format_operation("SELECT '%f'", {})
         self.assertEqual(formatted_operation, "SELECT '%f'")
 
     def test__format_operation_wo_params_single_percent(self):
         from google.cloud.bigquery.dbapi import cursor
 
-        formatted_operation = cursor._format_operation("SELECT '%'", {})
+        formatted_operation, _ = cursor._format_operation("SELECT '%'", {})
         self.assertEqual(formatted_operation, "SELECT '%'")
 
     def test__format_operation_wo_params_double_percents(self):
         from google.cloud.bigquery.dbapi import cursor
 
-        formatted_operation = cursor._format_operation("SELECT '%%'", {})
+        formatted_operation, _ = cursor._format_operation("SELECT '%%'", {})
         self.assertEqual(formatted_operation, "SELECT '%'")
 
     def test__format_operation_unescaped_percent_w_dict_param(self):
@@ -734,3 +747,80 @@ class TestCursor(unittest.TestCase):
             "SELECT %s, %s, '100 %';",
             ["foo", "bar"],
         )
+
+    def test__format_operation_no_placeholders(self):
+        from google.cloud.bigquery import dbapi
+        from google.cloud.bigquery.dbapi import cursor
+
+        self.assertRaises(
+            dbapi.ProgrammingError,
+            cursor._format_operation,
+            "SELECT 42",
+            ["foo", "bar"],
+        )
+
+
+@pytest.mark.parametrize(
+    "inp,expect",
+    [
+        ("", ("", None)),
+        ("values(%(foo)s, %(bar)s)", ("values(%(foo)s, %(bar)s)", {})),
+        (
+            "values('%%(oof:INT64)s', %(foo)s, %(bar)s)",
+            ("values('%%(oof:INT64)s', %(foo)s, %(bar)s)", {}),
+        ),
+        (
+            "values(%(foo:INT64)s, %(bar)s)",
+            ("values(%(foo)s, %(bar)s)", dict(foo="INT64")),
+        ),
+        (
+            "values('%%(oof:INT64)s, %(foo:INT64)s, %(foo)s)",
+            ("values('%%(oof:INT64)s, %(foo)s, %(foo)s)", dict(foo="INT64")),
+        ),
+        (
+            "values(%(foo:INT64)s, %(foo:INT64)s)",
+            ("values(%(foo)s, %(foo)s)", dict(foo="INT64")),
+        ),
+        (
+            "values(%(foo:INT64)s, %(bar:NUMERIC)s) 100 %",
+            ("values(%(foo)s, %(bar)s) 100 %", dict(foo="INT64", bar="NUMERIC")),
+        ),
+        (" %s %()s %(:int64)s ", (" %s %s %s ", [None, None, "int64"])),
+        (" %%s %s %()s %(:int64)s ", (" %%s %s %s %s ", [None, None, "int64"])),
+        (
+            "values(%%%(foo:INT64)s, %(bar)s)",
+            ("values(%%%(foo)s, %(bar)s)", dict(foo="INT64")),
+        ),
+        (
+            "values(%%%%(foo:INT64)s, %(bar)s)",
+            ("values(%%%%(foo:INT64)s, %(bar)s)", dict()),
+        ),
+        (
+            "values(%%%%%(foo:INT64)s, %(bar)s)",
+            ("values(%%%%%(foo)s, %(bar)s)", dict(foo="INT64")),
+        ),
+    ],
+)
+def test__extract_types(inp, expect):
+    from google.cloud.bigquery.dbapi.cursor import _extract_types as et
+
+    assert et(inp) == expect
+
+
+@pytest.mark.parametrize(
+    "match,inp",
+    [
+        (
+            "Conflicting types for foo: numeric and int64.",
+            " %(foo:numeric)s %(foo:int64)s ",
+        ),
+        (r"' %s %\(foo\)s ' mixes named and unamed parameters.", " %s %(foo)s "),
+        (r"' %\(foo\)s %s ' mixes named and unamed parameters.", " %(foo)s %s "),
+    ],
+)
+def test__extract_types_fail(match, inp):
+    from google.cloud.bigquery.dbapi.cursor import _extract_types as et
+    from google.cloud.bigquery.dbapi import exceptions
+
+    with pytest.raises(exceptions.ProgrammingError, match=match):
+        et(inp)

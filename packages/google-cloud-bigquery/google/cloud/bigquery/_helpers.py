@@ -275,7 +275,7 @@ def _int_to_json(value):
 
 def _float_to_json(value):
     """Coerce 'value' to an JSON-compatible representation."""
-    return value
+    return value if value is None else float(value)
 
 
 def _decimal_to_json(value):

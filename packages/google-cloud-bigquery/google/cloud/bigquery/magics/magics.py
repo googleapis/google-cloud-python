@@ -615,7 +615,7 @@ def _cell_magic(line, query):
             )
             raise NameError(msg)
 
-        params = _helpers.to_query_parameters(ast.literal_eval(params_option_value))
+        params = _helpers.to_query_parameters(ast.literal_eval(params_option_value), {})
 
     project = args.project or context.project
 
