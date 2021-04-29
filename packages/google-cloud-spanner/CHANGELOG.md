@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.4.0](https://www.github.com/googleapis/python-spanner/compare/v3.3.0...v3.4.0) (2021-04-29)
+
+
+### Features
+
+* add samples for CMEK support ([#275](https://www.github.com/googleapis/python-spanner/issues/275)) ([f8d9bd3](https://www.github.com/googleapis/python-spanner/commit/f8d9bd33e04675a8dca148c2fae4a9133beebbca))
+* added support for numeric field for python decimal value ([#316](https://www.github.com/googleapis/python-spanner/issues/316)) ([070a171](https://www.github.com/googleapis/python-spanner/commit/070a1712dc34afb68105194060bb2fe6177fbac5))
+* **dbapi:** remove string conversion for numeric fields ([#317](https://www.github.com/googleapis/python-spanner/issues/317)) ([772aa3c](https://www.github.com/googleapis/python-spanner/commit/772aa3c2ffbdf3f863c09db176697b3ad70adbcf))
+
+
+### Bug Fixes
+
+* correctly set resume token when restarting streams ([#314](https://www.github.com/googleapis/python-spanner/issues/314)) ([0fcfc23](https://www.github.com/googleapis/python-spanner/commit/0fcfc2301246d3f20b6fbffc1deae06f16721ec7))
+* support INSERT from SELECT clause with args ([#306](https://www.github.com/googleapis/python-spanner/issues/306)) ([0dcda5e](https://www.github.com/googleapis/python-spanner/commit/0dcda5e21f8fb30ee611fddf0829684d86ced0ef))
+
+
+### Performance Improvements
+
+* use protobuf for metadata to reduce type conversions ([#325](https://www.github.com/googleapis/python-spanner/issues/325)) ([5110b9b](https://www.github.com/googleapis/python-spanner/commit/5110b9bc31804db9777a23fca60360119840640c))
+
 ## [3.3.0](https://www.github.com/googleapis/python-spanner/compare/v3.2.0...v3.3.0) (2021-03-25)
 
 
