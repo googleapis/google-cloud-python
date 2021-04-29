@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [2.15.0](https://www.github.com/googleapis/python-bigquery/compare/v2.14.0...v2.15.0) (2021-04-29)
+
+
+### Features
+
+* Extended DB API parameter syntax to optionally provide parameter types ([#626](https://www.github.com/googleapis/python-bigquery/issues/626)) ([8bcf397](https://www.github.com/googleapis/python-bigquery/commit/8bcf397fbe2527e06317741875a059b109cfcd9c))
+
+
+### Bug Fixes
+
+* add DECIMAL and BIGDECIMAL as aliases for NUMERIC and BIGNUMERIC ([#638](https://www.github.com/googleapis/python-bigquery/issues/638)) ([aa59023](https://www.github.com/googleapis/python-bigquery/commit/aa59023317b1c63720fb717b3544f755652da58d))
+* The DB API Binary function accepts bytes data ([#630](https://www.github.com/googleapis/python-bigquery/issues/630)) ([4396e70](https://www.github.com/googleapis/python-bigquery/commit/4396e70771af6889d3242c37c5ff2e80241023a2))
+
 ## [2.14.0](https://www.github.com/googleapis/python-bigquery/compare/v2.13.1...v2.14.0) (2021-04-26)
 
 
