@@ -17,6 +17,7 @@ import re
 from sqlalchemy import types, ForeignKeyConstraint
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.engine.default import DefaultDialect
+from sqlalchemy import util
 from sqlalchemy.sql.compiler import (
     selectable,
     DDLCompiler,
@@ -101,6 +102,19 @@ class SpannerIdentifierPreparer(IdentifierPreparer):
     def __init__(self, dialect):
         super(SpannerIdentifierPreparer, self).__init__(
             dialect, initial_quote="`", final_quote="`"
+        )
+
+    def _requires_quotes(self, value):
+        """Return True if the given identifier requires quoting."""
+        lc_value = value.lower()
+        if lc_value == '"unicode"':  # don't escape default Spanner colation
+            return False
+
+        return (
+            lc_value in self.reserved_words
+            or value[0] in self.illegal_initial_characters
+            or not self.legal_characters.match(util.text_type(value))
+            or (lc_value != value)
         )
 
 
