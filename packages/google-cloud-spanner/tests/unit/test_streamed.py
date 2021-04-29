@@ -147,7 +147,7 @@ class TestStreamedResultSet(unittest.TestCase):
         metadata = streamed._metadata = self._make_result_set_metadata(FIELDS)
         stats = streamed._stats = self._make_result_set_stats()
         self.assertEqual(list(streamed.fields), FIELDS)
-        self.assertIs(streamed.metadata, metadata)
+        self.assertIs(streamed.metadata._pb, metadata)
         self.assertIs(streamed.stats, stats)
 
     def test__merge_chunk_bool(self):

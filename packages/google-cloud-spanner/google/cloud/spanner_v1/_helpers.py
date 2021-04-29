@@ -205,7 +205,7 @@ def _parse_value_pb(value_pb, field_type):
             _parse_value_pb(item_pb, field_type.struct_type.fields[i].type_)
             for (i, item_pb) in enumerate(value_pb.list_value.values)
         ]
-    elif field_type.code == TypeCode.NUMERIC:
+    elif type_code == TypeCode.NUMERIC:
         return decimal.Decimal(value_pb.string_value)
     else:
         raise ValueError("Unknown type: %s" % (field_type,))

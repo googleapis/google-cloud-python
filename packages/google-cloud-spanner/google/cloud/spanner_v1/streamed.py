@@ -18,6 +18,7 @@ from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
 from google.cloud import exceptions
 from google.cloud.spanner_v1 import PartialResultSet
+from google.cloud.spanner_v1 import ResultSetMetadata
 from google.cloud.spanner_v1 import TypeCode
 import six
 
@@ -65,7 +66,9 @@ class StreamedResultSet(object):
         :rtype: :class:`~google.cloud.spanner_v1.types.ResultSetMetadata`
         :returns: structure describing the results
         """
-        return self._metadata
+        if self._metadata:
+            return ResultSetMetadata.wrap(self._metadata)
+        return None
 
     @property
     def stats(self):
@@ -119,7 +122,7 @@ class StreamedResultSet(object):
         response_pb = PartialResultSet.pb(response)
 
         if self._metadata is None:  # first response
-            metadata = self._metadata = response.metadata
+            metadata = self._metadata = response_pb.metadata
 
             source = self._source
             if source is not None and source._transaction_id is None:
