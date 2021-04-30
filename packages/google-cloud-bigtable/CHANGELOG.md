@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-bigtable/compare/v2.1.0...v2.2.0) (2021-04-30)
+
+
+### Features
+
+* backup restore to different instance ([#300](https://www.github.com/googleapis/python-bigtable/issues/300)) ([049a25f](https://www.github.com/googleapis/python-bigtable/commit/049a25f903bb6b062e41430b6e7ce6d7b164f22c))
+
 ## [2.1.0](https://www.github.com/googleapis/python-bigtable/compare/v2.0.0...v2.1.0) (2021-04-21)
 
 
