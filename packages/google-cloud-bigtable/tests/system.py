@@ -1119,11 +1119,32 @@ class TestTableAdminAPI(unittest.TestCase):
         restored_table_id = "test-backup-table-restored"
         restored_table = Config.INSTANCE_DATA.table(restored_table_id)
         temp_table.restore(
-            restored_table_id, cluster_id=CLUSTER_ID_DATA, backup_id=temp_backup_id
+            restored_table_id, cluster_id=CLUSTER_ID_DATA, backup_id=temp_backup_id,
         ).result()
         tables = Config.INSTANCE_DATA.list_tables()
         self.assertIn(restored_table, tables)
         restored_table.delete()
+
+        # Testing `Backup.restore()` into a different instance:
+        # Setting up another instance...
+        alt_instance_id = "gcp-alt-" + UNIQUE_SUFFIX
+        alt_cluster_id = alt_instance_id + "-cluster"
+        alt_instance = Config.CLIENT.instance(alt_instance_id, labels=LABELS)
+        alt_cluster = alt_instance.cluster(
+            cluster_id=alt_cluster_id, location_id=LOCATION_ID, serve_nodes=SERVE_NODES,
+        )
+        if not Config.IN_EMULATOR:
+            alt_instance.create(clusters=[alt_cluster]).result(timeout=10)
+
+        # Testing `restore()`...
+        temp_backup.restore(restored_table_id, alt_instance_id).result()
+        restored_table = alt_instance.table(restored_table_id)
+        self.assertIn(restored_table, alt_instance.list_tables())
+        restored_table.delete()
+
+        # Tearing down the resources...
+        if not Config.IN_EMULATOR:
+            retry_429(alt_instance.delete)()
 
 
 class TestDataAPI(unittest.TestCase):

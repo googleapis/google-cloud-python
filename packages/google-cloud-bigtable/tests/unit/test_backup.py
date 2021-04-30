@@ -32,6 +32,11 @@ class TestBackup(unittest.TestCase):
     BACKUP_ID = "backup-id"
     BACKUP_NAME = CLUSTER_NAME + "/backups/" + BACKUP_ID
 
+    ALT_INSTANCE = "other-instance-id"
+    ALT_INSTANCE_NAME = "projects/" + PROJECT_ID + "/instances/" + ALT_INSTANCE
+    ALT_CLUSTER_NAME = ALT_INSTANCE_NAME + "/clusters/" + CLUSTER_ID
+    ALT_BACKUP_NAME = ALT_CLUSTER_NAME + "/backups/" + BACKUP_ID
+
     @staticmethod
     def _get_target_class():
         from google.cloud.bigtable.backup import Backup
@@ -736,7 +741,7 @@ class TestBackup(unittest.TestCase):
         with self.assertRaises(ValueError):
             backup.restore(self.TABLE_ID)
 
-    def test_restore_success(self):
+    def _restore_helper(self, instance_id=None, instance_name=None):
         op_future = object()
         client = _Client()
         api = client._table_admin_client = self._make_table_admin_client()
@@ -751,17 +756,24 @@ class TestBackup(unittest.TestCase):
             expire_time=timestamp,
         )
 
-        future = backup.restore(self.TABLE_ID)
+        future = backup.restore(self.TABLE_ID, instance_id)
         self.assertEqual(backup._cluster, self.CLUSTER_ID)
         self.assertIs(future, op_future)
 
         api.restore_table.assert_called_once_with(
             request={
-                "parent": self.INSTANCE_NAME,
+                "parent": instance_name or self.INSTANCE_NAME,
                 "table_id": self.TABLE_ID,
                 "backup": self.BACKUP_NAME,
             }
         )
+        api.restore_table.reset_mock()
+
+    def test_restore_default(self):
+        self._restore_helper()
+
+    def test_restore_to_another_instance(self):
+        self._restore_helper(self.ALT_INSTANCE, self.ALT_INSTANCE_NAME)
 
     def test_get_iam_policy(self):
         from google.cloud.bigtable.client import Client
