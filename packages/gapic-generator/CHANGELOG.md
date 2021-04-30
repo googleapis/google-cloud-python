@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.44.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.44.1...v0.44.2) (2021-04-30)
+
+
+### Bug Fixes
+
+* remove auth, policy, and options from the reserved names list ([#851](https://www.github.com/googleapis/gapic-generator-python/issues/851)) ([d3f31a0](https://www.github.com/googleapis/gapic-generator-python/commit/d3f31a0d33411b3248871ddbe51135e83b699a73))
+
 ### [0.44.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.44.0...v0.44.1) (2021-04-28)
 
 
