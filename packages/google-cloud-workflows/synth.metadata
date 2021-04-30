@@ -3,7 +3,8 @@
     {
       "git": {
         "name": ".",
-        "remote": "git@github.com:googleapis/python-workflows"
+        "remote": "https://github.com/googleapis/python-workflows.git",
+        "sha": "4c39eca1787e3b3b2a499ee948040887fd1ba4ce"
       }
     },
     {
@@ -18,14 +19,14 @@
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "86ed43d4f56e6404d068e62e497029018879c771"
+        "sha": "043cc620d6a6111816d9e09f2a97208565fde958"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "86ed43d4f56e6404d068e62e497029018879c771"
+        "sha": "043cc620d6a6111816d9e09f2a97208565fde958"
       }
     }
   ],
@@ -127,16 +128,35 @@
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/conf.py",
+    "docs/executions_v1/executions.rst",
+    "docs/executions_v1/services.rst",
+    "docs/executions_v1/types.rst",
     "docs/executions_v1beta/executions.rst",
     "docs/executions_v1beta/services.rst",
     "docs/executions_v1beta/types.rst",
     "docs/multiprocessing.rst",
+    "docs/workflows_v1/services.rst",
+    "docs/workflows_v1/types.rst",
+    "docs/workflows_v1/workflows.rst",
     "docs/workflows_v1beta/services.rst",
     "docs/workflows_v1beta/types.rst",
     "docs/workflows_v1beta/workflows.rst",
     "google/cloud/workflows/__init__.py",
     "google/cloud/workflows/executions/__init__.py",
     "google/cloud/workflows/executions/py.typed",
+    "google/cloud/workflows/executions_v1/__init__.py",
+    "google/cloud/workflows/executions_v1/py.typed",
+    "google/cloud/workflows/executions_v1/services/__init__.py",
+    "google/cloud/workflows/executions_v1/services/executions/__init__.py",
+    "google/cloud/workflows/executions_v1/services/executions/async_client.py",
+    "google/cloud/workflows/executions_v1/services/executions/client.py",
+    "google/cloud/workflows/executions_v1/services/executions/pagers.py",
+    "google/cloud/workflows/executions_v1/services/executions/transports/__init__.py",
+    "google/cloud/workflows/executions_v1/services/executions/transports/base.py",
+    "google/cloud/workflows/executions_v1/services/executions/transports/grpc.py",
+    "google/cloud/workflows/executions_v1/services/executions/transports/grpc_asyncio.py",
+    "google/cloud/workflows/executions_v1/types/__init__.py",
+    "google/cloud/workflows/executions_v1/types/executions.py",
     "google/cloud/workflows/executions_v1beta/__init__.py",
     "google/cloud/workflows/executions_v1beta/py.typed",
     "google/cloud/workflows/executions_v1beta/services/__init__.py",
@@ -151,6 +171,19 @@
     "google/cloud/workflows/executions_v1beta/types/__init__.py",
     "google/cloud/workflows/executions_v1beta/types/executions.py",
     "google/cloud/workflows/py.typed",
+    "google/cloud/workflows_v1/__init__.py",
+    "google/cloud/workflows_v1/py.typed",
+    "google/cloud/workflows_v1/services/__init__.py",
+    "google/cloud/workflows_v1/services/workflows/__init__.py",
+    "google/cloud/workflows_v1/services/workflows/async_client.py",
+    "google/cloud/workflows_v1/services/workflows/client.py",
+    "google/cloud/workflows_v1/services/workflows/pagers.py",
+    "google/cloud/workflows_v1/services/workflows/transports/__init__.py",
+    "google/cloud/workflows_v1/services/workflows/transports/base.py",
+    "google/cloud/workflows_v1/services/workflows/transports/grpc.py",
+    "google/cloud/workflows_v1/services/workflows/transports/grpc_asyncio.py",
+    "google/cloud/workflows_v1/types/__init__.py",
+    "google/cloud/workflows_v1/types/workflows.py",
     "google/cloud/workflows_v1beta/__init__.py",
     "google/cloud/workflows_v1beta/py.typed",
     "google/cloud/workflows_v1beta/services/__init__.py",
@@ -176,8 +209,12 @@
     "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
     "setup.cfg",
     "testing/.gitignore",
+    "tests/unit/gapic/executions_v1/__init__.py",
+    "tests/unit/gapic/executions_v1/test_executions.py",
     "tests/unit/gapic/executions_v1beta/__init__.py",
     "tests/unit/gapic/executions_v1beta/test_executions.py",
+    "tests/unit/gapic/workflows_v1/__init__.py",
+    "tests/unit/gapic/workflows_v1/test_workflows.py",
     "tests/unit/gapic/workflows_v1beta/__init__.py",
     "tests/unit/gapic/workflows_v1beta/test_workflows.py"
   ]
