@@ -7,15 +7,15 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 import packaging.version
 import pkg_resources
 
-from google import auth  # type: ignore
+import google.auth  # type: ignore
 import google.api_core  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1    # type: ignore
 from google.api_core import retry as retries  # type: ignore
 {% if service.has_lro %}
 from google.api_core import operations_v1  # type: ignore
 {% endif %}
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 
 {% filter sort_lines %}
 {% for method in service.methods.values() %}
@@ -23,8 +23,8 @@ from google.auth import credentials  # type: ignore
 {{ method.output.ident.python_import }}
 {% endfor %}
 {% if opts.add_iam_methods %}
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% endfilter %}
 
@@ -39,7 +39,7 @@ except pkg_resources.DistributionNotFound:
 
 try:
     # google.auth.__version__ was added in 1.26.0
-    _GOOGLE_AUTH_VERSION = auth.__version__
+    _GOOGLE_AUTH_VERSION = google.auth.__version__
 except AttributeError:
     try:  # try pkg_resources if it is available
         _GOOGLE_AUTH_VERSION = pkg_resources.get_distribution("google-auth").version
@@ -63,7 +63,7 @@ class {{ service.name }}Transport(abc.ABC):
     def __init__(
             self, *,
             host: str = DEFAULT_HOST,
-            credentials: credentials.Credentials = None,
+            credentials: ga_credentials.Credentials = None,
             credentials_file: Optional[str] = None,
             scopes: Optional[Sequence[str]] = None,
             quota_project_id: Optional[str] = None,
@@ -105,17 +105,17 @@ class {{ service.name }}Transport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = auth.load_credentials_from_file(
+            credentials, _ = google.auth.load_credentials_from_file(
                                 credentials_file,
                                 **scopes_kwargs,
                                 quota_project_id=quota_project_id
                             )
 
         elif credentials is None:
-            credentials, _ = auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
 
         # Save the credentials.
         self._credentials = credentials
@@ -176,7 +176,7 @@ class {{ service.name }}Transport(abc.ABC):
                     {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
                     predicate=retries.if_exception_type(
                         {% for ex in method.retry.retryable_exceptions|sort(attribute='__name__') %}
-                        exceptions.{{ ex.__name__ }},
+                        core_exceptions.{{ ex.__name__ }},
                         {% endfor %}
                     ),
                     deadline={{ method.timeout }},
@@ -214,8 +214,8 @@ class {{ service.name }}Transport(abc.ABC):
     def set_iam_policy(
         self,
     ) -> Callable[
-        [iam_policy.SetIamPolicyRequest],
-        Union[policy.Policy, Awaitable[policy.Policy]],
+        [iam_policy_pb2.SetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
     ]:
         raise NotImplementedError()
 
@@ -223,8 +223,8 @@ class {{ service.name }}Transport(abc.ABC):
     def get_iam_policy(
         self,
     ) -> Callable[
-        [iam_policy.GetIamPolicyRequest],
-        Union[policy.Policy, Awaitable[policy.Policy]],
+        [iam_policy_pb2.GetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
     ]:
         raise NotImplementedError()
 
@@ -232,10 +232,10 @@ class {{ service.name }}Transport(abc.ABC):
     def test_iam_permissions(
         self,
     ) -> Callable[
-        [iam_policy.TestIamPermissionsRequest],
+        [iam_policy_pb2.TestIamPermissionsRequest],
         Union[
-            iam_policy.TestIamPermissionsResponse,
-            Awaitable[iam_policy.TestIamPermissionsResponse],
+            iam_policy_pb2.TestIamPermissionsResponse,
+            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
         ],
     ]:
         raise NotImplementedError()

@@ -74,9 +74,16 @@ class Address:
         """
         # Most (but not all) types are in a module.
         if self.module:
+            module_name = self.module
+
+            # This module is from a different proto package
+            # Most commonly happens for a common proto
+            # https://pypi.org/project/googleapis-common-protos/
+            if not self.proto_package.startswith(self.api_naming.proto_package):
+                module_name = f'{self.module}_pb2'
+
             # If collisions are registered and conflict with our module,
             # use the module alias instead.
-            module_name = self.module
             if self.module_alias:
                 module_name = self.module_alias
 
@@ -170,7 +177,6 @@ class Address:
         return imp.Import(
             package=self.package,
             module=f'{self.module}_pb2',
-            alias=self.module_alias if self.module_alias else self.module,
         )
 
     @property

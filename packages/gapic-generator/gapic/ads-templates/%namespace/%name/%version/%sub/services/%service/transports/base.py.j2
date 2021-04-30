@@ -6,13 +6,13 @@ import abc
 import typing
 import pkg_resources
 
-from google import auth
+import google.auth  # type: ignore
 from google.api_core import gapic_v1    # type: ignore
 from google.api_core import retry as retries  # type: ignore
 {% if service.has_lro %}
 from google.api_core import operations_v1  # type: ignore
 {% endif %}
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 
 {% filter sort_lines %}
 {% for method in service.methods.values() %}
@@ -43,7 +43,7 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
     def __init__(
             self, *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
-            credentials: credentials.Credentials = None,
+            credentials: ga_credentials.Credentials = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
         """Instantiate the transport.
@@ -70,7 +70,7 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials is None:
-            credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
+            credentials, _ = google.auth.default(scopes=self.AUTH_SCOPES)
 
         # Save the credentials.
         self._credentials = credentials

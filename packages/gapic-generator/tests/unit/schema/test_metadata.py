@@ -43,6 +43,12 @@ def test_address_str_parent():
     assert str(addr) == 'baz.spam.eggs.Bacon'
 
 
+def test_address_str_different_proto_package():
+    addr = metadata.Address(package=('google', 'iam', 'v1'), module='options', name='GetPolicyOptions',
+        api_naming=naming.NewNaming(proto_package='foo.bar.baz.v1'))
+    assert str(addr) == 'options_pb2.GetPolicyOptions'
+
+
 def test_address_proto():
     addr = metadata.Address(package=('foo', 'bar'), module='baz', name='Bacon')
     assert addr.proto == 'foo.bar.Bacon'

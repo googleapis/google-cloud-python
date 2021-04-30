@@ -12,8 +12,8 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 
 {# Import the service itself as well as every proto module that it imports. -#}
 {% filter sort_lines %}
-from google import auth
-from google.auth import credentials
+import google.auth
+from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import {{ service.client_name }}
@@ -63,7 +63,7 @@ def test__get_default_mtls_endpoint():
 
 
 def test_{{ service.client_name|snake_case }}_from_service_account_info():
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_info') as factory:
         factory.return_value = creds
         info = {"valid": True}
@@ -76,7 +76,7 @@ def test_{{ service.client_name|snake_case }}_from_service_account_info():
 
 
 def test_{{ service.client_name|snake_case }}_from_service_account_file():
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
         factory.return_value = creds
         client = {{ service.client_name }}.from_service_account_file("dummy/file/path.json")
@@ -103,7 +103,7 @@ def test_{{ service.client_name|snake_case }}_client_options():
     # Check that if channel is provided we won't create a new one.
     with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.{{ service.client_name }}.get_transport_class') as gtc:
         transport = transports.{{ service.name }}GrpcTransport(
-            credentials=credentials.AnonymousCredentials()
+            credentials=ga_credentials.AnonymousCredentials()
         )
         client = {{ service.client_name }}(transport=transport)
         gtc.assert_not_called()
@@ -254,7 +254,7 @@ def test_{{ service.client_name|snake_case }}_client_options_from_dict():
 {% for method in service.methods.values() %}
 def test_{{ method.name|snake_case }}(transport: str = 'grpc', request_type={{ method.input.ident }}):
     client = {{ service.client_name }}(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -340,7 +340,7 @@ def test_{{ method.name|snake_case }}_from_dict():
 {% if method.field_headers and not method.client_streaming %}
 def test_{{ method.name|snake_case }}_field_headers():
     client = {{ service.client_name }}(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -385,7 +385,7 @@ def test_{{ method.name|snake_case }}_field_headers():
 {% if method.ident.package != method.input.ident.package %}
 def test_{{ method.name|snake_case }}_from_dict():
     client = {{ service.client_name }}(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -414,7 +414,7 @@ def test_{{ method.name|snake_case }}_from_dict():
 {% if method.flattened_fields %}
 def test_{{ method.name|snake_case }}_flattened():
     client = {{ service.client_name }}(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -461,7 +461,7 @@ def test_{{ method.name|snake_case }}_flattened():
 
 def test_{{ method.name|snake_case }}_flattened_error():
     client = {{ service.client_name }}(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -479,7 +479,7 @@ def test_{{ method.name|snake_case }}_flattened_error():
 {% if method.paged_result_field %}
 def test_{{ method.name|snake_case }}_pager():
     client = {{ service.client_name }}(
-        credentials=credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -538,7 +538,7 @@ def test_{{ method.name|snake_case }}_pager():
 
 def test_{{ method.name|snake_case }}_pages():
     client = {{ service.client_name }}(
-        credentials=credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -587,11 +587,11 @@ def test_{{ method.name|snake_case }}_raw_page_lro():
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.{{ service.name }}GrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = {{ service.client_name }}(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
@@ -599,7 +599,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.{{ service.name }}GrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = {{ service.client_name }}(transport=transport)
     assert client.transport is transport
@@ -608,7 +608,7 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.{{ service.name }}GrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -617,7 +617,7 @@ def test_transport_get_channel():
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = {{ service.client_name }}(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
@@ -629,8 +629,8 @@ def test_transport_grpc_default():
 ])
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
-    with mock.patch.object(auth, 'default') as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, 'default') as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
@@ -640,7 +640,7 @@ def test_{{ service.name|snake_case }}_base_transport():
     with mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}Transport.__init__') as Transport:
         Transport.return_value = None
         transport = transports.{{ service.name }}Transport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -664,17 +664,17 @@ def test_{{ service.name|snake_case }}_base_transport():
 
 def test_{{ service.name|snake_case }}_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(auth, 'default') as adc, mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}Transport._prep_wrapped_messages') as Transport:
+    with mock.patch.object(google.auth, 'default') as adc, mock.patch('{{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.{{ service.name }}Transport._prep_wrapped_messages') as Transport:
         Transport.return_value = None
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.{{ service.name }}Transport()
         adc.assert_called_once()
 
 
 def test_{{ service.name|snake_case }}_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
-    with mock.patch.object(auth, 'default') as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, 'default') as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         {{ service.client_name }}()
         adc.assert_called_once_with(scopes=(
             {% for scope in service.oauth_scopes %}
@@ -686,8 +686,8 @@ def test_{{ service.name|snake_case }}_auth_adc():
 def test_{{ service.name|snake_case }}_transport_auth_adc():
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(auth, 'default') as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, 'default') as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transports.{{ service.name }}GrpcTransport(host="squid.clam.whelk")
         adc.assert_called_once_with(scopes=(
             {% for scope in service.oauth_scopes %}
@@ -699,7 +699,7 @@ def test_{{ service.name|snake_case }}_transport_auth_adc():
 def test_{{ service.name|snake_case }}_host_no_port():
     {% with host = (service.host|default('localhost', true)).split(':')[0] %}
     client = {{ service.client_name }}(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='{{ host }}'),
     )
     assert client.transport._host == '{{ host }}:443'
@@ -709,7 +709,7 @@ def test_{{ service.name|snake_case }}_host_no_port():
 def test_{{ service.name|snake_case }}_host_with_port():
     {% with host = (service.host|default('localhost', true)).split(':')[0] %}
     client = {{ service.client_name }}(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint='{{ host }}:8000'),
     )
     assert client.transport._host == '{{ host }}:8000'
@@ -741,9 +741,9 @@ def test_{{ service.name|snake_case }}_transport_channel_mtls_with_client_cert_s
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = credentials.AnonymousCredentials()
+            cred = ga_credentials.AnonymousCredentials()
             with pytest.warns(DeprecationWarning):
-                with mock.patch.object(auth, 'default') as adc:
+                with mock.patch.object(google.auth, 'default') as adc:
                     adc.return_value = (cred, None)
                     transport = transport_class(
                         host="squid.clam.whelk",
@@ -820,7 +820,7 @@ def test_{{ service.name|snake_case }}_transport_channel_mtls_with_adc(
 {% if service.has_lro %}
 def test_{{ service.name|snake_case }}_grpc_lro_client():
     client = {{ service.client_name }}(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
     transport = client.transport
@@ -890,7 +890,7 @@ def test_client_withDEFAULT_CLIENT_INFO():
 
     with mock.patch.object(transports.{{ service.name }}Transport, '_prep_wrapped_messages') as prep:
         client = {{ service.client_name }}(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -898,7 +898,7 @@ def test_client_withDEFAULT_CLIENT_INFO():
     with mock.patch.object(transports.{{ service.name }}Transport, '_prep_wrapped_messages') as prep:
         transport_class = {{ service.client_name }}.get_transport_class()
         transport = transport_class(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)

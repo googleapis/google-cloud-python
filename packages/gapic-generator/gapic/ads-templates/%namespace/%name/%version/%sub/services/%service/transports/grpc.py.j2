@@ -10,8 +10,8 @@ from google.api_core import grpc_helpers   # type: ignore
 from google.api_core import operations_v1  # type: ignore
 {% endif %}
 from google.api_core import gapic_v1       # type: ignore
-from google import auth                    # type: ignore
-from google.auth import credentials        # type: ignore
+import google.auth                         # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
@@ -39,7 +39,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
     """
     def __init__(self, *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
-            credentials: credentials.Credentials = None,
+            credentials: ga_credentials.Credentials = None,
             credentials_file: str = None,
             scopes: Sequence[str] = None,
             channel: grpc.Channel = None,
@@ -105,7 +105,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
             host = api_mtls_endpoint if ":" in api_mtls_endpoint else api_mtls_endpoint + ":443"
 
             if credentials is None:
-                credentials, _ = auth.default(scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id)
+                credentials, _ = google.auth.default(scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id)
 
             # Create SSL credentials with client_cert_source or application
             # default SSL credentials.
@@ -135,7 +135,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
             host = host if ":" in host else host + ":443"
 
             if credentials is None:
-                credentials, _ = auth.default(scopes=self.AUTH_SCOPES)
+                credentials, _ = google.auth.default(scopes=self.AUTH_SCOPES)
 
             # create a new channel. The provided one is ignored.
             self._grpc_channel = type(self).create_channel(
@@ -162,7 +162,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
     @classmethod
     def create_channel(cls,
                        host: str{% if service.host %} = '{{ service.host }}'{% endif %},
-                       credentials: credentials.Credentials = None,
+                       credentials: ga_credentials.Credentials = None,
                        scopes: Optional[Sequence[str]] = None,
                        **kwargs) -> grpc.Channel:
         """Create and return a gRPC channel object.

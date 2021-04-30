@@ -10,10 +10,10 @@ from typing import Callable, Dict, Optional, {% if service.any_server_streaming 
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions                            # type: ignore
+from google.api_core import exceptions as core_exceptions         # type: ignore
 from google.api_core import gapic_v1                              # type: ignore
 from google.api_core import retry as retries                      # type: ignore
-from google.auth import credentials                               # type: ignore
+from google.auth import credentials as ga_credentials             # type: ignore
 from google.auth.transport import mtls                            # type: ignore
 from google.auth.transport.grpc import SslCredentials             # type: ignore
 from google.auth.exceptions import MutualTLSChannelError          # type: ignore
@@ -174,7 +174,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     {% endfor %} {# common resources #}
 
     def __init__(self, *,
-            credentials: Optional[credentials.Credentials] = None,
+            credentials: Optional[ga_credentials.Credentials] = None,
             transport: Union[str, {{ service.name }}Transport, None] = None,
             client_options: Optional[client_options_lib.ClientOptions] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,

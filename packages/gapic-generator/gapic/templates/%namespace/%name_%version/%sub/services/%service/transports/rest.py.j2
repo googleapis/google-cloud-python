@@ -9,8 +9,7 @@ from typing import Callable, Dict, Optional, Sequence, Tuple
 from google.api_core import operations_v1
 {% endif %}
 from google.api_core import gapic_v1       # type: ignore
-from google import auth                    # type: ignore
-from google.auth import credentials        # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
@@ -24,8 +23,8 @@ from google.auth.transport.requests import AuthorizedSession
 {{ method.output.ident.python_import }}
 {% endfor %}
 {% if opts.add_iam_methods %}
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% endfilter %}
 
@@ -46,7 +45,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
     {# TODO(yon-mg): handle mtls stuff if that's relevant for rest transport #}
     def __init__(self, *,
             host: str{% if service.host %} = '{{ service.host }}'{% endif %},
-            credentials: credentials.Credentials = None,
+            credentials: ga_credentials.Credentials = None,
             credentials_file: str = None,
             scopes: Sequence[str] = None,
             client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
