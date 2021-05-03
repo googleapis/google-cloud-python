@@ -90,6 +90,8 @@ templated_files = common.py_library(
     samples=False,  # set to True only if there are samples
     unit_test_python_versions=["3.6", "3.7", "3.8"],
     system_test_python_versions=["3.7"],
+    unit_test_external_dependencies=["aiounittest"],
+    system_test_external_dependencies=["pytest-asyncio"],
     microgenerator=True,
     cov_level=100,
 )
@@ -181,26 +183,6 @@ def pytype(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint_setup_py(session):
 ''',
-)
-
-# Fix up unit test dependencies
-
-s.replace(
-    "noxfile.py",
-    """\
-    session.install\("asyncmock", "pytest-asyncio"\)
-""",
-    """\
-    session.install("pytest-asyncio", "aiounittest")
-""",
-)
-
-# Fix up system test dependencies
-
-s.replace(
-    "noxfile.py",
-    """"mock", "pytest", "google-cloud-testutils",""",
-    """"mock", "pytest", "pytest-asyncio", "google-cloud-testutils",""",
 )
 
 

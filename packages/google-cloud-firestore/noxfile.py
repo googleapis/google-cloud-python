@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import
 import os
+import pathlib
 import shutil
 
 import nox
@@ -31,6 +32,8 @@ DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.7"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8"]
 
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
     "unit",
@@ -41,6 +44,9 @@ nox.options.sessions = [
     "blacken",
     "docs",
 ]
+
+# Error if a python version is missing
+nox.options.error_on_missing_interpreters = True
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -90,13 +96,17 @@ def lint_setup_py(session):
 
 def default(session):
     # Install all test dependencies, then install this package in-place.
-    session.install("pytest-asyncio", "aiounittest")
+
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    session.install("asyncmock", "pytest-asyncio", "-c", constraints_path)
 
     session.install(
-        "mock", "pytest", "pytest-cov",
+        "mock", "pytest", "pytest-cov", "aiounittest", "-c", constraints_path
     )
 
-    session.install("-e", ".")
+    session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the unit tests.
     session.run(
@@ -123,6 +133,9 @@ def unit(session):
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
     """Run the system test suite."""
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
 
@@ -148,9 +161,14 @@ def system(session):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install(
-        "mock", "pytest", "pytest-asyncio", "google-cloud-testutils",
+        "mock",
+        "pytest",
+        "google-cloud-testutils",
+        "pytest-asyncio",
+        "-c",
+        constraints_path,
     )
-    session.install("-e", ".")
+    session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the system tests.
     if system_test_exists:
