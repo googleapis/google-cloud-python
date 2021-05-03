@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.44.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.44.2...v0.44.3) (2021-05-03)
+
+
+### Performance Improvements
+
+* reduce unnecessary copies, optimize Address comparison ([#855](https://www.github.com/googleapis/gapic-generator-python/issues/855)) ([e843540](https://www.github.com/googleapis/gapic-generator-python/commit/e8435400257707458e83424019c9b1a16fac9a99))
+
 ### [0.44.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.44.1...v0.44.2) (2021-04-30)
 
 
