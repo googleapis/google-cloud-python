@@ -5,6 +5,14 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+### [2.1.1](https://www.github.com/googleapis/python-firestore/compare/v2.1.0...v2.1.1) (2021-05-03)
+
+
+### Bug Fixes
+
+* Allow underspecifying a cursor ([#340](https://www.github.com/googleapis/python-firestore/issues/340)) ([abe9e8a](https://www.github.com/googleapis/python-firestore/commit/abe9e8ab66ba55e43ae7da9e7d9febd1e63a5183))
+* bump minimum versions for google-api-core and proto-plus ([#334](https://www.github.com/googleapis/python-firestore/issues/334)) ([08554dc](https://www.github.com/googleapis/python-firestore/commit/08554dc803a59f7ecd2310ce6860ed4f8aacf78d))
+
 ## [2.1.0](https://www.github.com/googleapis/python-firestore/compare/v2.0.2...v2.1.0) (2021-03-30)
 
 
