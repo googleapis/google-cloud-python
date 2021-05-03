@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+### [2.1.2](https://www.github.com/googleapis/python-datastore/compare/v2.1.1...v2.1.2) (2021-05-03)
+
+
+### Bug Fixes
+
+* pass transaction's options to API in 'begin' ([#143](https://www.github.com/googleapis/python-datastore/issues/143)) ([924b10b](https://www.github.com/googleapis/python-datastore/commit/924b10b11eb7ff52367f388cf5c8e16aa9b2e32e))
+
+
+### Documentation
+
+* update intersphinx URLs for grpc and auth ([#93](https://www.github.com/googleapis/python-datastore/issues/93)) ([4f90d04](https://www.github.com/googleapis/python-datastore/commit/4f90d04c81aacdbaf83f5a9dc996898fa9c7ba26))
+
 ### [2.1.1](https://www.github.com/googleapis/python-datastore/compare/v2.1.0...v2.1.1) (2021-04-20)
 
 
