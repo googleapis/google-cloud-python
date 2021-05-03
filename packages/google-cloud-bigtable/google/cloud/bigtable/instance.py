@@ -643,6 +643,9 @@ class Instance(object):
         :type table_id: str
         :param table_id: The ID of the table.
 
+        :type mutation_timeout: int
+        :param mutation_timeout: (Optional) The overriding mutation timeout.
+
         :type app_profile_id: str
         :param app_profile_id: (Optional) The unique name of the AppProfile.
 
