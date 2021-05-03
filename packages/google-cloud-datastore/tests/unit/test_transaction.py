@@ -24,27 +24,49 @@ class TestTransaction(unittest.TestCase):
 
         return Transaction
 
-    def _get_options_class(self, **kw):
-        from google.cloud.datastore_v1.types import TransactionOptions
-
-        return TransactionOptions
-
     def _make_one(self, client, **kw):
         return self._get_target_class()(client, **kw)
 
-    def _make_options(self, **kw):
-        return self._get_options_class()(**kw)
+    def _make_options(self, read_only=False, previous_transaction=None):
+        from google.cloud.datastore_v1.types import TransactionOptions
+
+        kw = {}
+
+        if read_only:
+            kw["read_only"] = TransactionOptions.ReadOnly()
+
+        return TransactionOptions(**kw)
 
     def test_ctor_defaults(self):
         project = "PROJECT"
         client = _Client(project)
+
         xact = self._make_one(client)
+
         self.assertEqual(xact.project, project)
         self.assertIs(xact._client, client)
         self.assertIsNone(xact.id)
         self.assertEqual(xact._status, self._get_target_class()._INITIAL)
         self.assertEqual(xact._mutations, [])
         self.assertEqual(len(xact._partial_key_entities), 0)
+
+    def test_constructor_read_only(self):
+        project = "PROJECT"
+        id_ = 850302
+        ds_api = _make_datastore_api(xact=id_)
+        client = _Client(project, datastore_api=ds_api)
+        options = self._make_options(read_only=True)
+
+        xact = self._make_one(client, read_only=True)
+
+        self.assertEqual(xact._options, options)
+
+    def _make_begin_request(self, project, read_only=False):
+        expected_options = self._make_options(read_only=read_only)
+        return {
+            "project_id": project,
+            "transaction_options": expected_options,
+        }
 
     def test_current(self):
         from google.cloud.datastore_v1.types import datastore as datastore_pb2
@@ -57,24 +79,34 @@ class TestTransaction(unittest.TestCase):
         xact2 = self._make_one(client)
         self.assertIsNone(xact1.current())
         self.assertIsNone(xact2.current())
+
         with xact1:
             self.assertIs(xact1.current(), xact1)
             self.assertIs(xact2.current(), xact1)
+
             with _NoCommitBatch(client):
                 self.assertIsNone(xact1.current())
                 self.assertIsNone(xact2.current())
+
             with xact2:
                 self.assertIs(xact1.current(), xact2)
                 self.assertIs(xact2.current(), xact2)
+
                 with _NoCommitBatch(client):
                     self.assertIsNone(xact1.current())
                     self.assertIsNone(xact2.current())
+
             self.assertIs(xact1.current(), xact1)
             self.assertIs(xact2.current(), xact1)
+
         self.assertIsNone(xact1.current())
         self.assertIsNone(xact2.current())
 
-        ds_api.rollback.assert_not_called()
+        begin_txn = ds_api.begin_transaction
+        self.assertEqual(begin_txn.call_count, 2)
+        expected_request = self._make_begin_request(project)
+        begin_txn.assert_called_with(request=expected_request)
+
         commit_method = ds_api.commit
         self.assertEqual(commit_method.call_count, 2)
         mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
@@ -87,9 +119,7 @@ class TestTransaction(unittest.TestCase):
             }
         )
 
-        begin_txn = ds_api.begin_transaction
-        self.assertEqual(begin_txn.call_count, 2)
-        begin_txn.assert_called_with(request={"project_id": project})
+        ds_api.rollback.assert_not_called()
 
     def test_begin(self):
         project = "PROJECT"
@@ -97,11 +127,27 @@ class TestTransaction(unittest.TestCase):
         ds_api = _make_datastore_api(xact_id=id_)
         client = _Client(project, datastore_api=ds_api)
         xact = self._make_one(client)
+
         xact.begin()
+
         self.assertEqual(xact.id, id_)
-        ds_api.begin_transaction.assert_called_once_with(
-            request={"project_id": project}
-        )
+
+        expected_request = self._make_begin_request(project)
+        ds_api.begin_transaction.assert_called_once_with(request=expected_request)
+
+    def test_begin_w_readonly(self):
+        project = "PROJECT"
+        id_ = 889
+        ds_api = _make_datastore_api(xact_id=id_)
+        client = _Client(project, datastore_api=ds_api)
+        xact = self._make_one(client, read_only=True)
+
+        xact.begin()
+
+        self.assertEqual(xact.id, id_)
+
+        expected_request = self._make_begin_request(project, read_only=True)
+        ds_api.begin_transaction.assert_called_once_with(request=expected_request)
 
     def test_begin_w_retry_w_timeout(self):
         project = "PROJECT"
@@ -116,8 +162,10 @@ class TestTransaction(unittest.TestCase):
         xact.begin(retry=retry, timeout=timeout)
 
         self.assertEqual(xact.id, id_)
+
+        expected_request = self._make_begin_request(project)
         ds_api.begin_transaction.assert_called_once_with(
-            request={"project_id": project}, retry=retry, timeout=timeout
+            request=expected_request, retry=retry, timeout=timeout,
         )
 
     def test_begin_tombstoned(self):
@@ -126,19 +174,23 @@ class TestTransaction(unittest.TestCase):
         ds_api = _make_datastore_api(xact_id=id_)
         client = _Client(project, datastore_api=ds_api)
         xact = self._make_one(client)
+
         xact.begin()
+
         self.assertEqual(xact.id, id_)
-        ds_api.begin_transaction.assert_called_once_with(
-            request={"project_id": project}
-        )
+
+        expected_request = self._make_begin_request(project)
+        ds_api.begin_transaction.assert_called_once_with(request=expected_request)
 
         xact.rollback()
+
         client._datastore_api.rollback.assert_called_once_with(
             request={"project_id": project, "transaction": id_}
         )
         self.assertIsNone(xact.id)
 
-        self.assertRaises(ValueError, xact.begin)
+        with self.assertRaises(ValueError):
+            xact.begin()
 
     def test_begin_w_begin_transaction_failure(self):
         project = "PROJECT"
@@ -152,9 +204,9 @@ class TestTransaction(unittest.TestCase):
             xact.begin()
 
         self.assertIsNone(xact.id)
-        ds_api.begin_transaction.assert_called_once_with(
-            request={"project_id": project}
-        )
+
+        expected_request = self._make_begin_request(project)
+        ds_api.begin_transaction.assert_called_once_with(request=expected_request)
 
     def test_rollback(self):
         project = "PROJECT"
@@ -256,11 +308,14 @@ class TestTransaction(unittest.TestCase):
         ds_api = _make_datastore_api(xact_id=id_)
         client = _Client(project, datastore_api=ds_api)
         xact = self._make_one(client)
+
         with xact:
-            self.assertEqual(xact.id, id_)
-            ds_api.begin_transaction.assert_called_once_with(
-                request={"project_id": project}
-            )
+            self.assertEqual(xact.id, id_)  # only set between begin / commit
+
+        self.assertIsNone(xact.id)
+
+        expected_request = self._make_begin_request(project)
+        ds_api.begin_transaction.assert_called_once_with(request=expected_request)
 
         mode = datastore_pb2.CommitRequest.Mode.TRANSACTIONAL
         client._datastore_api.commit.assert_called_once_with(
@@ -271,9 +326,6 @@ class TestTransaction(unittest.TestCase):
                 "transaction": id_,
             },
         )
-
-        self.assertIsNone(xact.id)
-        self.assertEqual(ds_api.begin_transaction.call_count, 1)
 
     def test_context_manager_w_raise(self):
         class Foo(Exception):
@@ -288,29 +340,20 @@ class TestTransaction(unittest.TestCase):
         try:
             with xact:
                 self.assertEqual(xact.id, id_)
-                ds_api.begin_transaction.assert_called_once_with(
-                    request={"project_id": project}
-                )
                 raise Foo()
         except Foo:
-            self.assertIsNone(xact.id)
-            client._datastore_api.rollback.assert_called_once_with(
-                request={"project_id": project, "transaction": id_}
-            )
+            pass
+
+        self.assertIsNone(xact.id)
+
+        expected_request = self._make_begin_request(project)
+        ds_api.begin_transaction.assert_called_once_with(request=expected_request)
 
         client._datastore_api.commit.assert_not_called()
-        self.assertIsNone(xact.id)
-        self.assertEqual(ds_api.begin_transaction.call_count, 1)
 
-    def test_constructor_read_only(self):
-        project = "PROJECT"
-        id_ = 850302
-        ds_api = _make_datastore_api(xact=id_)
-        client = _Client(project, datastore_api=ds_api)
-        read_only = self._get_options_class().ReadOnly()
-        options = self._make_options(read_only=read_only)
-        xact = self._make_one(client, read_only=True)
-        self.assertEqual(xact._options, options)
+        client._datastore_api.rollback.assert_called_once_with(
+            request={"project_id": project, "transaction": id_}
+        )
 
     def test_put_read_only(self):
         project = "PROJECT"

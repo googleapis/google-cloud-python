@@ -176,10 +176,12 @@ class Transaction(Batch):
     def __init__(self, client, read_only=False):
         super(Transaction, self).__init__(client)
         self._id = None
+
         if read_only:
             options = TransactionOptions(read_only=TransactionOptions.ReadOnly())
         else:
             options = TransactionOptions()
+
         self._options = options
 
     @property
@@ -231,9 +233,13 @@ class Transaction(Batch):
 
         kwargs = _make_retry_timeout_kwargs(retry, timeout)
 
+        request = {
+            "project_id": self.project,
+            "transaction_options": self._options,
+        }
         try:
             response_pb = self._client._datastore_api.begin_transaction(
-                request={"project_id": self.project}, **kwargs
+                request=request, **kwargs
             )
             self._id = response_pb.transaction
         except:  # noqa: E722 do not use bare except, specify exception instead
