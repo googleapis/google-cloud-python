@@ -18,9 +18,11 @@ import re
 
 import mock
 import pytest
+import requests.exceptions
 
 from google.api_core import exceptions
 from google.api_core import retry
+from google.auth import exceptions as auth_exceptions
 
 
 def test_if_exception_type():
@@ -42,6 +44,8 @@ def test_if_transient_error():
     assert retry.if_transient_error(exceptions.InternalServerError(""))
     assert retry.if_transient_error(exceptions.TooManyRequests(""))
     assert retry.if_transient_error(exceptions.ServiceUnavailable(""))
+    assert retry.if_transient_error(requests.exceptions.ConnectionError(""))
+    assert retry.if_transient_error(auth_exceptions.TransportError(""))
     assert not retry.if_transient_error(exceptions.InvalidArgument(""))
 
 

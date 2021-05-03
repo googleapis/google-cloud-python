@@ -62,11 +62,13 @@ import logging
 import random
 import time
 
+import requests.exceptions
 import six
 
 from google.api_core import datetime_helpers
 from google.api_core import exceptions
 from google.api_core import general_helpers
+from google.auth import exceptions as auth_exceptions
 
 _LOGGER = logging.getLogger(__name__)
 _DEFAULT_INITIAL_DELAY = 1.0  # seconds
@@ -101,6 +103,8 @@ if_transient_error = if_exception_type(
     exceptions.InternalServerError,
     exceptions.TooManyRequests,
     exceptions.ServiceUnavailable,
+    requests.exceptions.ConnectionError,
+    auth_exceptions.TransportError,
 )
 """A predicate that checks if an exception is a transient API error.
 
