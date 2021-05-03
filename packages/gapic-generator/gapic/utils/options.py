@@ -37,6 +37,7 @@ class Options:
     warehouse_package_name: str = ''
     retry: Optional[Dict[str, Any]] = None
     sample_configs: Tuple[str, ...] = dataclasses.field(default=())
+    autogen_snippets: bool = False
     templates: Tuple[str, ...] = dataclasses.field(default=('DEFAULT',))
     lazy_import: bool = False
     old_naming: bool = False
@@ -54,6 +55,7 @@ class Options:
         'old-naming',           # TODO(dovs): Come up with a better comment
         'retry-config',         # takes a path
         'samples',              # output dir
+        'autogen-snippets',     # produce auto-generated snippets
         # transport type(s) delineated by '+' (i.e. grpc, rest, custom.[something], etc?)
         'transport',
         'warehouse-package-name',  # change the package name on PyPI
@@ -141,6 +143,7 @@ class Options:
                 for s in sample_paths
                 for cfg_path in samplegen_utils.generate_all_sample_fpaths(s)
             ),
+            autogen_snippets=bool(opts.pop("autogen-snippets", False)),
             templates=tuple(path.expanduser(i) for i in templates),
             lazy_import=bool(opts.pop('lazy-import', False)),
             old_naming=bool(opts.pop('old-naming', False)),

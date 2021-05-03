@@ -20,14 +20,17 @@ import keyword
 import os
 import re
 import time
+import yaml
 
 from gapic import utils
 
 from gapic.samplegen_utils import types
+from gapic.samplegen_utils.utils import is_valid_sample_cfg
+from gapic.schema import api
 from gapic.schema import wrappers
 
-from collections import (defaultdict, namedtuple, ChainMap as chainmap)
-from typing import (ChainMap, Dict, FrozenSet, List, Mapping, Optional, Tuple)
+from collections import defaultdict, namedtuple, ChainMap as chainmap
+from typing import Any, ChainMap, Dict, FrozenSet, Generator, List, Mapping, Optional, Tuple, Sequence
 
 # There is no library stub file for this module, so ignore it.
 from google.api import resource_pb2  # type: ignore
@@ -71,6 +74,7 @@ class AttributeRequestSetup:
     that contains the value for the attribute.
 
     """
+
     value: str
     field: Optional[str] = None
     value_is_file: bool = False
@@ -98,6 +102,7 @@ class TransformedRequest:
 
     The Optional[single]/Optional[body] is workaround for not having tagged unions.
     """
+
     base: str
     single: Optional[AttributeRequestSetup]
     body: Optional[List[AttributeRequestSetup]]
@@ -108,8 +113,14 @@ class TransformedRequest:
     RESOURCE_RE = re.compile(r"\{([^}/]+)\}")
 
     @classmethod
-    def build(cls, request_type: wrappers.MessageType, api_schema, base: str,
-              attrs: List[AttributeRequestSetup], is_resource_request: bool):
+    def build(
+        cls,
+        request_type: wrappers.MessageType,
+        api_schema,
+        base: str,
+        attrs: List[AttributeRequestSetup],
+        is_resource_request: bool,
+    ):
         """Build a TransformedRequest based on parsed input.
 
         Acts as a factory to hide complicated logic for resource-based requests.
@@ -152,34 +163,44 @@ class TransformedRequest:
             #
             # It's a precondition that the base field is
             # a valid field of the request message type.
-            resource_typestr = (request_type.
-                                fields[base].
-                                options.
-                                Extensions[resource_pb2.resource_reference].
-                                type)
+            resource_typestr = (
+                request_type.fields[base]
+                .options.Extensions[resource_pb2.resource_reference]
+                .type
+            )
 
             resource_message_descriptor = next(
-                (msg.options.Extensions[resource_pb2.resource]
-                 for msg in api_schema.messages.values()
-                 if msg.options.Extensions[resource_pb2.resource].type == resource_typestr),
-                None
+                (
+                    msg.options.Extensions[resource_pb2.resource]
+                    for msg in api_schema.messages.values()
+                    if msg.options.Extensions[resource_pb2.resource].type
+                    == resource_typestr
+                ),
+                None,
             )
             if not resource_message_descriptor:
                 raise types.NoSuchResource(
-                    f"No message exists for resource: {resource_typestr}")
+                    f"No message exists for resource: {resource_typestr}"
+                )
 
             # The field is only ever empty for singleton attributes.
             attr_names: List[str] = [a.field for a in attrs]  # type: ignore
 
             # A single resource may be found under multiple paths and have many patterns.
             # We want to find an _exact_ match, if one exists.
-            pattern = next((p
-                            for p in resource_message_descriptor.pattern
-                            if cls.RESOURCE_RE.findall(p) == attr_names), None)
+            pattern = next(
+                (
+                    p
+                    for p in resource_message_descriptor.pattern
+                    if cls.RESOURCE_RE.findall(p) == attr_names
+                ),
+                None,
+            )
             if not pattern:
                 attr_name_str = ", ".join(attr_names)
                 raise types.NoSuchResourcePattern(
-                    f"Resource {resource_typestr} has no pattern with params: {attr_name_str}")
+                    f"Resource {resource_typestr} has no pattern with params: {attr_name_str}"
+                )
 
             return cls(base=base, body=attrs, single=None, pattern=pattern)
 
@@ -222,10 +243,12 @@ class Validator:
     EXPRESSION_ATTR_RE = re.compile(
         r"""
         (?P<attr_name>\$?\w+)(?:\[(?P<index>\d+)\]|\{["'](?P<key>[^"']+)["']\})?$
-        """.strip())
+        """.strip()
+    )
 
     VALID_REQUEST_KWORDS = frozenset(
-        ("value", "field", "value_is_file", "input_parameter", "comment"))
+        ("value", "field", "value_is_file", "input_parameter", "comment")
+    )
 
     # TODO(dovs): make the schema a required param.
     def __init__(self, method: wrappers.Method, api_schema=None):
@@ -234,7 +257,7 @@ class Validator:
         self.request_type_ = method.input
         response_type = method.output
         if method.paged_result_field:
-            response_type = method.paged_result_field
+            response_type = method.paged_result_field.message
         elif method.lro:
             response_type = method.lro.response_type
 
@@ -258,21 +281,30 @@ class Validator:
         )
 
     @staticmethod
-    def preprocess_sample(sample, api_schema):
+    def preprocess_sample(sample, api_schema: api.API, rpc: wrappers.Method):
         """Modify a sample to set default or missing fields.
 
         Args:
            sample (Any): A definition for a single sample generated from parsed yaml.
            api_schema (api.API): The schema that defines the API to which the sample belongs.
+           rpc (wrappers.Method): The rpc method used in the sample.
         """
         sample["package_name"] = api_schema.naming.warehouse_package_name
-        sample.setdefault("response", [{"print": ["%s", "$resp"]}])
+        sample["module_name"] = api_schema.naming.versioned_module_name
+        sample["module_namespace"] = api_schema.naming.module_namespace
+
+        sample["client_name"] = api_schema.services[sample["service"]].client_name
+        # the type of the request object passed to the rpc e.g, `ListRequest`
+        sample["request_type"] = rpc.input.ident.name
+
+        # If no response was specified in the config
+        # Add reasonable defaults depending on the type of the sample
+        if not rpc.void:
+            sample.setdefault("response", [{"print": ["%s", "$resp"]}])
 
     @utils.cached_property
     def flattenable_fields(self) -> FrozenSet[str]:
-        return frozenset(
-            field.name for field in self.method.flattened_fields.values()
-        )
+        return frozenset(field.name for field in self.method.flattened_fields.values())
 
     def var_field(self, var_name: str) -> Optional[wrappers.Field]:
         return self.var_defs_.get(var_name)
@@ -299,7 +331,9 @@ class Validator:
             if not attr:
                 raise types.BadAttributeLookup(
                     "Method request type {} has no attribute: '{}'".format(
-                        self.request_type_, attr_name))
+                        self.request_type_, attr_name
+                    )
+                )
 
             if attr.message:
                 base = attr.message
@@ -309,20 +343,23 @@ class Validator:
                 witness = any(e.name == val for e in attr.enum.values)
                 if not witness:
                     raise types.InvalidEnumVariant(
-                        "Invalid variant for enum {}: '{}'".format(attr, val))
+                        "Invalid variant for enum {}: '{}'".format(attr, val)
+                    )
                 break
             elif attr.is_primitive:
                 # Only valid if this is the last attribute in the chain.
                 break
             else:
                 raise TypeError(
-                    f"Could not handle attribute '{attr_name}' of type: {attr.type}")
+                    f"Could not handle attribute '{attr_name}' of type: {attr.type}"
+                )
 
         if i != len(attr_chain) - 1:
             # We broke out of the loop after processing an enum or a primitive.
             extra_attrs = ".".join(attr_chain[i:])
             raise types.NonTerminalPrimitiveOrEnum(
-                f"Attempted to reference attributes of enum value or primitive type: '{extra_attrs}'")
+                f"Attempted to reference attributes of enum value or primitive type: '{extra_attrs}'"
+            )
 
         if len(attr_chain) > 1:
             request["field"] = ".".join(attr_chain[1:])
@@ -333,7 +370,9 @@ class Validator:
             if attr_chain[0] in base_param_to_attrs:
                 raise types.InvalidRequestSetup(
                     "Duplicated top level field in request block: '{}'".format(
-                        attr_chain[0]))
+                        attr_chain[0]
+                    )
+                )
             del request["field"]
 
         if isinstance(request["value"], str):
@@ -351,9 +390,9 @@ class Validator:
         # so disable it for the AttributeRequestSetup ctor call.
         return attr_chain[0], AttributeRequestSetup(**request)  # type: ignore
 
-    def validate_and_transform_request(self,
-                                       calling_form: types.CallingForm,
-                                       request: List[Mapping[str, str]]) -> FullRequest:
+    def validate_and_transform_request(
+        self, calling_form: types.CallingForm, request: List[Mapping[str, str]]
+    ) -> FullRequest:
         """Validates and transforms the "request" block from a sample config.
 
            In the initial request, each dict has a "field" key that maps to a dotted
@@ -427,61 +466,76 @@ class Validator:
 
         """
         base_param_to_attrs: Dict[str,
-                                  RequestEntry] = defaultdict(RequestEntry)
+            RequestEntry] = defaultdict(RequestEntry)
         for r in request:
             r_dup = dict(r)
             val = r_dup.get("value")
             if not val:
                 raise types.InvalidRequestSetup(
-                    "Missing keyword in request entry: 'value'")
+                    "Missing keyword in request entry: 'value'"
+                )
 
             field = r_dup.get("field")
             if not field:
                 raise types.InvalidRequestSetup(
-                    "Missing keyword in request entry: 'field'")
+                    "Missing keyword in request entry: 'field'"
+                )
 
             spurious_kwords = set(r_dup.keys()) - self.VALID_REQUEST_KWORDS
             if spurious_kwords:
                 raise types.InvalidRequestSetup(
                     "Spurious keyword(s) in request entry: {}".format(
-                        ", ".join(f"'{kword}'" for kword in spurious_kwords)))
+                        ", ".join(f"'{kword}'" for kword in spurious_kwords)
+                    )
+                )
 
             input_parameter = r_dup.get("input_parameter")
             if input_parameter:
-                self._handle_lvalue(input_parameter, wrappers.Field(
-                    field_pb=descriptor_pb2.FieldDescriptorProto()))
+                self._handle_lvalue(
+                    input_parameter,
+                    wrappers.Field(
+                        field_pb=descriptor_pb2.FieldDescriptorProto()),
+                )
 
             # The percentage sign is used for setting up resource based requests
-            percent_idx = field.find('%')
+            percent_idx = field.find("%")
             if percent_idx == -1:
                 base_param, attr = self._normal_request_setup(
-                    base_param_to_attrs, val, r_dup, field)
+                    base_param_to_attrs, val, r_dup, field
+                )
 
                 request_entry = base_param_to_attrs.get(base_param)
                 if request_entry and request_entry.is_resource_request:
                     raise types.ResourceRequestMismatch(
-                        f"Request setup mismatch for base: {base_param}")
+                        f"Request setup mismatch for base: {base_param}"
+                    )
 
                 base_param_to_attrs[base_param].attrs.append(attr)
             else:
                 # It's a resource based request.
-                base_param, resource_attr = (field[:percent_idx],
-                                             field[percent_idx + 1:])
+                base_param, resource_attr = (
+                    field[:percent_idx],
+                    field[percent_idx + 1:],
+                )
                 request_entry = base_param_to_attrs.get(base_param)
                 if request_entry and not request_entry.is_resource_request:
                     raise types.ResourceRequestMismatch(
-                        f"Request setup mismatch for base: {base_param}")
+                        f"Request setup mismatch for base: {base_param}"
+                    )
 
                 if not self.request_type_.fields.get(base_param):
                     raise types.BadAttributeLookup(
                         "Method request type {} has no attribute: '{}'".format(
-                            self.request_type_, base_param))
+                            self.request_type_, base_param
+                        )
+                    )
 
                 r_dup["field"] = resource_attr
                 request_entry = base_param_to_attrs[base_param]
                 request_entry.is_resource_request = True
                 request_entry.attrs.append(
-                    AttributeRequestSetup(**r_dup))  # type: ignore
+                    AttributeRequestSetup(**r_dup)  # type: ignore
+                )
 
         client_streaming_forms = {
             types.CallingForm.RequestStreamingClient,
@@ -490,7 +544,8 @@ class Validator:
 
         if len(base_param_to_attrs) > 1 and calling_form in client_streaming_forms:
             raise types.InvalidRequestSetup(
-                "Too many base parameters for client side streaming form")
+                "Too many base parameters for client side streaming form"
+            )
 
         # We can only flatten a collection of request parameters if they're a
         # subset of the flattened fields of the method.
@@ -502,11 +557,11 @@ class Validator:
                     self.api_schema_,
                     key,
                     val.attrs,
-                    val.is_resource_request
+                    val.is_resource_request,
                 )
                 for key, val in base_param_to_attrs.items()
             ],
-            flattenable=flattenable
+            flattenable=False,
         )
 
     def validate_response(self, response):
@@ -535,7 +590,8 @@ class Validator:
             validater = self.STATEMENT_DISPATCH_TABLE.get(keyword)
             if not validater:
                 raise types.InvalidStatement(
-                    "Invalid statement keyword: {}".format(keyword))
+                    "Invalid statement keyword: {}".format(keyword)
+                )
 
             validater(self, body)
 
@@ -558,34 +614,45 @@ class Validator:
         Returns:
             wrappers.Field: The final field in the chain.
         """
+
         def validate_recursively(expression, scope, depth=0):
             first_dot = expression.find(".")
             base = expression[:first_dot] if first_dot > 0 else expression
             match = self.EXPRESSION_ATTR_RE.match(base)
             if not match:
                 raise types.BadAttributeLookup(
-                    f"Badly formed attribute expression: {expression}")
+                    f"Badly formed attribute expression: {expression}"
+                )
 
-            name, idxed, mapped = (match.groupdict()["attr_name"],
-                                   bool(match.groupdict()["index"]),
-                                   bool(match.groupdict()["key"]))
+            name, idxed, mapped = (
+                match.groupdict()["attr_name"],
+                bool(match.groupdict()["index"]),
+                bool(match.groupdict()["key"]),
+            )
             field = scope.get(name)
+
             if not field:
-                exception_class = (types.BadAttributeLookup if depth else
-                                   types.UndefinedVariableReference)
+                exception_class = (
+                    types.BadAttributeLookup
+                    if depth
+                    else types.UndefinedVariableReference
+                )
                 raise exception_class(f"No such variable or attribute: {name}")
 
             # Invalid input
             if (idxed or mapped) and not field.repeated:
                 raise types.BadAttributeLookup(
-                    f"Collection lookup on non-repeated field: {base}")
+                    f"Collection lookup on non-repeated field: {base}"
+                )
 
             # Can only ignore indexing or mapping in an indexed (or mapped) field
             # if it is the terminal point in the expression.
             if field.repeated and not (idxed or mapped) and first_dot != -1:
                 raise types.BadAttributeLookup(
-                    ("Accessing attribute on a non-terminal collection without"
-                     f"indexing into the collection: {base}")
+                    (
+                        "Accessing attribute on a non-terminal collection without"
+                        f"indexing into the collection: {base}"
+                    )
                 )
 
             message = field.message
@@ -601,12 +668,14 @@ class Validator:
                 value_field = message.fields.get("value")
                 if not value_field:
                     raise types.BadAttributeLookup(
-                        f"Mapped attribute has no value field: {base}")
+                        f"Mapped attribute has no value field: {base}"
+                    )
 
                 value_message = value_field.message
                 if not value_message:
                     raise types.BadAttributeLookup(
-                        f"Mapped value field is not a message: {base}")
+                        f"Mapped value field is not a message: {base}"
+                    )
 
                 if first_dot != -1:
                     scope = value_message.fields
@@ -618,11 +687,10 @@ class Validator:
             # Enums and primitives are only allowed at the tail of an expression.
             if not message:
                 raise types.BadAttributeLookup(
-                    f"Non-terminal attribute is not a message: {base}")
+                    f"Non-terminal attribute is not a message: {base}"
+                )
 
-            return validate_recursively(expression[first_dot + 1:],
-                                        scope,
-                                        depth + 1)
+            return validate_recursively(expression[first_dot + 1:], scope, depth + 1)
 
         return validate_recursively(exp, self.var_defs_)
 
@@ -664,9 +732,7 @@ class Validator:
         if num_prints != len(body) - 1:
             raise types.MismatchedFormatSpecifier(
                 "Expected {} expresssions in format string '{}' but found {}".format(
-                    num_prints,
-                    fmt_str,
-                    len(body) - 1
+                    num_prints, fmt_str, len(body) - 1
                 )
             )
 
@@ -714,14 +780,16 @@ class Validator:
         fname_fmt = body.get("filename")
         if not fname_fmt:
             raise types.InvalidStatement(
-                "Missing key in 'write_file' statement: 'filename'")
+                "Missing key in 'write_file' statement: 'filename'"
+            )
 
         self._validate_format(fname_fmt)
 
         contents_var = body.get("contents")
         if not contents_var:
             raise types.InvalidStatement(
-                "Missing key in 'write_file' statement: 'contents'")
+                "Missing key in 'write_file' statement: 'contents'"
+            )
 
         self.validate_expression(contents_var)
 
@@ -775,13 +843,14 @@ class Validator:
             # TODO: resolve the implicit $resp dilemma
             # if collection_name.startswith("."):
             #     collection_name = "$resp" + collection_name
-            collection_field = self.validate_expression(
-                loop[self.COLL_KWORD])
+            collection_field = self.validate_expression(loop[self.COLL_KWORD])
 
             if not collection_field.repeated:
                 raise types.BadLoop(
                     "Tried to use a non-repeated field as a collection: {}".format(
-                        tokens[-1]))
+                        tokens[-1]
+                    )
+                )
 
             var = loop[self.VAR_KWORD]
             # The collection_field is repeated,
@@ -792,8 +861,8 @@ class Validator:
                     field_pb=collection_field.field_pb,
                     message=collection_field.message,
                     enum=collection_field.enum,
-                    meta=collection_field.meta
-                )
+                    meta=collection_field.meta,
+                ),
             )
 
         elif map_args <= segments:
@@ -817,7 +886,8 @@ class Validator:
 
             if not (key or val):
                 raise types.BadLoop(
-                    "Need at least one of 'key' or 'value' in a map loop")
+                    "Need at least one of 'key' or 'value' in a map loop"
+                )
 
         else:
             raise types.BadLoop("Unexpected loop form: {}".format(segments))
@@ -838,17 +908,70 @@ class Validator:
     }
 
 
-def generate_sample(
-        sample,
-        api_schema,
-        sample_template: jinja2.Template
-) -> str:
+def parse_handwritten_specs(sample_configs: Sequence[str]) -> Generator[Dict[str, Any], None, None]:
+    """Parse a handwritten sample spec"""
+
+    STANDALONE_TYPE = "standalone"
+
+    for config_fpath in sample_configs:
+        with open(config_fpath) as f:
+            configs = yaml.safe_load_all(f.read())
+
+            for cfg in configs:
+                valid = is_valid_sample_cfg(cfg)
+                if not valid:
+                    raise types.InvalidConfig(
+                        "Sample config is invalid", valid)
+                for spec in cfg.get("samples", []):
+                    # If unspecified, assume a sample config describes a standalone.
+                    # If sample_types are specified, standalone samples must be
+                    # explicitly enabled.
+                    if STANDALONE_TYPE in spec.get("sample_type", [STANDALONE_TYPE]):
+                        yield spec
+
+
+def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, Any], None, None]:
+    """Given an API, generate basic sample specs for each method.
+
+    Args:
+        api_schema (api.API): The schema that defines the API.
+
+    Yields:
+        Dict[str, Any]: A sample spec.
+    """
+
+    gapic_metadata = api_schema.gapic_metadata(opts)
+
+    for service_name, service in gapic_metadata.services.items():
+        api_short_name = api_schema.services[f"{api_schema.naming.proto_package}.{service_name}"].shortname
+        for transport_type, client in service.clients.items():
+            if transport_type == "grpc-async":
+                # TODO(busunkim): Enable generation of async samples
+                continue
+            for rpc_name, method_list in client.rpcs.items():
+                # Region Tag Format:
+                # [{START|END} ${apishortname}_generated_${api}_${apiVersion}_${serviceName}_${rpcName}_{sync|async}_${overloadDisambiguation}]
+                region_tag = f"{api_short_name}_generated_{api_schema.naming.versioned_module_name}_{service_name}_{rpc_name}_{transport_type}"
+                spec = {
+                    "sample_type": "standalone",
+                    "rpc": rpc_name,
+                    "request": [],
+                    # response is populated in `preprocess_sample`
+                    "service": f"{api_schema.naming.proto_package}.{service_name}",
+                    "region_tag": region_tag,
+                    "description": f"Snippet for {utils.to_snake_case(rpc_name)}"
+                }
+
+                yield spec
+
+
+def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> str:
     """Generate a standalone, runnable sample.
 
     Writing the rendered output is left for the caller.
 
     Args:
-        sample (Any): A definition for a single sample generated from parsed yaml.
+        sample (Any): A definition for a single sample.
         api_schema (api.API): The schema that defines the API to which the sample belongs.
         sample_template (jinja2.Template): The template representing a generic sample.
 
@@ -871,21 +994,19 @@ def generate_sample(
     calling_form = types.CallingForm.method_default(rpc)
 
     v = Validator(rpc)
-    # Tweak some small aspects of the sample to set sane defaults for optional
+    # Tweak some small aspects of the sample to set defaults for optional
     # fields, add fields that are required for the template, and so forth.
-    v.preprocess_sample(sample, api_schema)
-    sample["request"] = v.validate_and_transform_request(calling_form,
-                                                         sample["request"])
+    v.preprocess_sample(sample, api_schema, rpc)
+    sample["request"] = v.validate_and_transform_request(
+        calling_form, sample["request"]
+    )
     v.validate_response(sample["response"])
 
     return sample_template.render(
         sample=sample,
-        imports=[
-            "from google import auth",
-            "from google.auth import credentials",
-        ],
+        imports=[],
         calling_form=calling_form,
         calling_form_enum=types.CallingForm,
-        api=api_schema,
-        service=service,
+        trim_blocks=True,
+        lstrip_blocks=True,
     )

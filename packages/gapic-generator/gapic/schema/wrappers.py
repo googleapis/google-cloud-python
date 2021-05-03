@@ -1090,6 +1090,19 @@ class Service:
         return ''
 
     @property
+    def shortname(self) -> str:
+        """Return the API short name. DRIFT uses this to identify
+        APIs.
+
+        Returns:
+            str: The api shortname.
+        """
+        # Get the shortname from the host
+        # Real APIs are expected to have format:
+        # "{api_shortname}.googleapis.com"
+        return self.host.split(".")[0]
+
+    @property
     def oauth_scopes(self) -> Sequence[str]:
         """Return a sequence of oauth scopes, if applicable.
 

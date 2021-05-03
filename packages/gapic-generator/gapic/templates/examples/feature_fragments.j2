@@ -13,23 +13,17 @@
  # See the License for the specific language governing permissions and
  # limitations under the License.
  #}
-
-{#
-A careful reader may comment that there is duplication of effort
-between the python verification step and the dispatch/rendering here.
-There is a little, but not enough for it to be important because
-1) Other python artifacts (client libraries, unit tests, and so forth)
-   are generated using templates, so doing the same for generated samples is consistent.
-2) Using jinja for anything requiring real logic or data structures is a bad idea.
-#}
-
 {# response handling macros #}
 
 {% macro sample_header(sample, calling_form) %}
-# DO NOT EDIT! This is a generated sample ("{{ calling_form }}",  "{{ sample.id }}")
+# Generated code. DO NOT EDIT!
 #
+# Snippet for {{ sample.rpc }}
+# NOTE: This snippet has been automatically generated for illustrative purposes only.
+# It may require modifications to work in your environment.
+
 # To install the latest published package dependency, execute the following:
-#   pip3 install {{ sample.package_name }}
+#   python3 -m pip install {{ sample.package_name }}
 {% endmacro %}
 
 {% macro print_string_formatting(string_list) %}
@@ -147,7 +141,14 @@ with open({{ attr.input_parameter }}, "rb") as f:
 {% endif %}
 {% endmacro %}
 
-{% macro render_request_setup(full_request) %}
+
+{% macro render_client_setup(module_name, client_name) %}
+# Create a client
+client = {{ module_name }}.{{ client_name }}()
+{% endmacro %}}
+
+{% macro render_request_setup(full_request, module_name, request_type) %}
+# Initialize request argument(s)
 {% for parameter_block in full_request.request_list if parameter_block.body %}
 {% if parameter_block.pattern %}
 {# This is a resource-name patterned lookup parameter #}
@@ -165,15 +166,16 @@ with open({{ attr.input_parameter }}, "rb") as f:
 {% endif %}
 {% endfor %}
 {% if not full_request.flattenable %}
-request = {
+request = {{ module_name }}.{{ request_type }}(
 {% for parameter in full_request.request_list %}
-    '{{ parameter.base  }}': {{ parameter.base if parameter.body else parameter.single }},
-{% endfor %}}
+    {{ parameter.base }}={{ parameter.base if parameter.body else parameter.single }},
+{% endfor %}
+)
 {% endif %}
 {% endmacro %}
 
 {% macro render_request_params(request) %}
-{# Provide the top level parameters last and as keyword params #}
+  {# Provide the top level parameters last and as keyword params #}
   {% with params = [] %}
     {% for r in request if r.body %}
       {% do params.append(r.base) %}
@@ -186,13 +188,13 @@ request = {
 {% endmacro %}
 
 {% macro render_request_params_unary(request) %}
-{# Provide the top level parameters last and as keyword params #}
+  {# Provide the top level parameters last and as keyword params #}
   {% if request.flattenable %}
   {% with params = [] %}
     {% for r in request.request_list %}
       {% do params.append("%s=%s"|format(r.base, r.single.value if r.single else r.base)) %}
     {% endfor %}
-{{ params|join(", ") }}
+{{ params|join(", ") -}}
   {% endwith %}
   {% else %}
 request=request
@@ -214,8 +216,11 @@ client.{{ sample.rpc|snake_case }}({{ render_request_params_unary(sample.request
 {# Setting up the method invocation is the responsibility of the caller: #}
 {# it's just easier to set up client side streaming and other things from outside this macro. #}
 {% macro render_calling_form(method_invocation_text, calling_form, calling_form_enum, response_statements ) %}
+# Make the request
 {% if calling_form == calling_form_enum.Request %}
 response = {{ method_invocation_text|trim }}
+
+# Handle response
 {% for statement in response_statements %}
 {{ dispatch_statement(statement)|trim }}
 {% endfor %}

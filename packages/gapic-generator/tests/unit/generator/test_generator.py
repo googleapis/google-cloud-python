@@ -448,33 +448,36 @@ def test_samplegen_config_to_output_files(
     expected_response = CodeGeneratorResponse(
         file=[
             CodeGeneratorResponse.File(
-                name="samples/squid_sample.py", content="\n",),
+                name="samples/generated_samples/squid_sample.py", content="\n",),
             CodeGeneratorResponse.File(
-                name="samples/clam_sample.py", content="\n",),
-            CodeGeneratorResponse.File(
-                name="samples/mollusc.v6.python.21120601.131313.manifest.yaml",
-                content=dedent(
-                    """\
-                ---
-                type: manifest/samples
-                schema_version: 3
-                python: &python
-                  environment: python
-                  bin: python3
-                  base_path: samples
-                  invocation: '{bin} {path} @args'
-                samples:
-                - <<: *python
-                  sample: squid_sample
-                  path: '{base_path}/squid_sample.py'
-                  region_tag: humboldt_tag
-                - <<: *python
-                  sample: clam_sample
-                  path: '{base_path}/clam_sample.py'
-                  region_tag: clam_sample
-                """
-                ),
-            ),
+                name="samples/generated_samples/clam_sample.py", content="\n",),
+            # TODO(busunkim): Re-enable manifest generation once metadata
+            # format has been formalized.
+            # https://docs.google.com/document/d/1ghBam8vMj3xdoe4xfXhzVcOAIwrkbTpkMLgKc9RPD9k/edit#heading=h.sakzausv6hue
+            # CodeGeneratorResponse.File(
+            #     name="samples/generated_samples/mollusc.v6.python.21120601.131313.manifest.yaml",
+            #     content=dedent(
+            #         """\
+            #     ---
+            #     type: manifest/samples
+            #     schema_version: 3
+            #     python: &python
+            #       environment: python
+            #       bin: python3
+            #       base_path: samples
+            #       invocation: '{bin} {path} @args'
+            #     samples:
+            #     - <<: *python
+            #       sample: squid_sample
+            #       path: '{base_path}/squid_sample.py'
+            #       region_tag: humboldt_tag
+            #     - <<: *python
+            #       sample: clam_sample
+            #       path: '{base_path}/clam_sample.py'
+            #       region_tag: clam_sample
+            #     """
+            #     ),
+            # ),
         ]
     )
     expected_response.supported_features |= (
@@ -482,6 +485,31 @@ def test_samplegen_config_to_output_files(
     )
 
     assert actual_response == expected_response
+
+
+@mock.patch(
+    "gapic.samplegen.samplegen.generate_sample_specs", return_value=[]
+)
+@mock.patch(
+    "gapic.samplegen.samplegen.generate_sample", return_value="",
+)
+def test_generate_autogen_samples(mock_generate_sample, mock_generate_specs):
+    opts = Options.build("autogen-snippets")
+    g = generator.Generator(opts)
+    # Need to have the sample template visible to the generator.
+    g._env.loader = jinja2.DictLoader({"sample.py.j2": ""})
+
+    api_schema = make_api(naming=naming.NewNaming(
+        name="Mollusc", version="v6"))
+
+    actual_response = g.get_response(api_schema, opts=opts)
+
+    # Just check that generate_sample_specs was called
+    # Correctness of the spec is tested in samplegen unit tests
+    mock_generate_specs.assert_called_once_with(
+        api_schema,
+        opts=opts
+    )
 
 
 @mock.patch(
@@ -534,40 +562,43 @@ def test_samplegen_id_disambiguation(mock_gmtime, mock_generate_sample, fs):
     expected_response = CodeGeneratorResponse(
         file=[
             CodeGeneratorResponse.File(
-                name="samples/squid_sample_91a465c6.py", content="\n",
+                name="samples/generated_samples/squid_sample_91a465c6.py", content="\n",
             ),
             CodeGeneratorResponse.File(
-                name="samples/squid_sample_55051b38.py", content="\n",
+                name="samples/generated_samples/squid_sample_55051b38.py", content="\n",
             ),
-            CodeGeneratorResponse.File(name="samples/157884ee.py",
+            CodeGeneratorResponse.File(name="samples/generated_samples/157884ee.py",
                                        content="\n",),
-            CodeGeneratorResponse.File(
-                name="samples/mollusc.v6.python.21120601.131313.manifest.yaml",
-                content=dedent(
-                    """\
-                ---
-                type: manifest/samples
-                schema_version: 3
-                python: &python
-                  environment: python
-                  bin: python3
-                  base_path: samples
-                  invocation: '{bin} {path} @args'
-                samples:
-                - <<: *python
-                  sample: squid_sample_91a465c6
-                  path: '{base_path}/squid_sample_91a465c6.py'
-                  region_tag: humboldt_tag
-                - <<: *python
-                  sample: squid_sample_55051b38
-                  path: '{base_path}/squid_sample_55051b38.py'
-                  region_tag: squid_sample
-                - <<: *python
-                  sample: 157884ee
-                  path: '{base_path}/157884ee.py'
-                """
-                ),
-            ),
+            # TODO(busunkim): Re-enable manifest generation once metadata
+            # format has been formalized.
+            # https://docs.google.com/document/d/1ghBam8vMj3xdoe4xfXhzVcOAIwrkbTpkMLgKc9RPD9k/edit#heading=h.sakzausv6hue
+            # CodeGeneratorResponse.File(
+            #     name="samples/generated_samples/mollusc.v6.python.21120601.131313.manifest.yaml",
+            #     content=dedent(
+            #         """\
+            #     ---
+            #     type: manifest/samples
+            #     schema_version: 3
+            #     python: &python
+            #       environment: python
+            #       bin: python3
+            #       base_path: samples
+            #       invocation: '{bin} {path} @args'
+            #     samples:
+            #     - <<: *python
+            #       sample: squid_sample_91a465c6
+            #       path: '{base_path}/squid_sample_91a465c6.py'
+            #       region_tag: humboldt_tag
+            #     - <<: *python
+            #       sample: squid_sample_55051b38
+            #       path: '{base_path}/squid_sample_55051b38.py'
+            #       region_tag: squid_sample
+            #     - <<: *python
+            #       sample: 157884ee
+            #       path: '{base_path}/157884ee.py'
+            #     """
+            #     ),
+            # ),
         ]
     )
     expected_response.supported_features |= (
@@ -675,35 +706,38 @@ def test_dont_generate_in_code_samples(mock_gmtime, mock_generate_sample, fs):
     expected = CodeGeneratorResponse(
         file=[
             CodeGeneratorResponse.File(
-                name="samples/squid_sample.py", content="\n",),
+                name="samples/generated_samples/squid_sample.py", content="\n",),
             CodeGeneratorResponse.File(
-                name="samples/whelk_sample.py", content="\n",),
+                name="samples/generated_samples/whelk_sample.py", content="\n",),
             CodeGeneratorResponse.File(
-                name="samples/octopus_sample.py", content="\n",),
-            CodeGeneratorResponse.File(
-                name="samples/mollusc.v6.python.21120601.131313.manifest.yaml",
-                content=dedent(
-                    """                ---
-                type: manifest/samples
-                schema_version: 3
-                python: &python
-                  environment: python
-                  bin: python3
-                  base_path: samples
-                  invocation: \'{bin} {path} @args\'
-                samples:
-                - <<: *python
-                  sample: squid_sample
-                  path: \'{base_path}/squid_sample.py\'
-                - <<: *python
-                  sample: whelk_sample
-                  path: \'{base_path}/whelk_sample.py\'
-                - <<: *python
-                  sample: octopus_sample
-                  path: \'{base_path}/octopus_sample.py\'
-                """
-                ),
-            ),
+                name="samples/generated_samples/octopus_sample.py", content="\n",),
+            # TODO(busunkim): Re-enable manifest generation once metadata
+            # format has been formalized.
+            # https://docs.google.com/document/d/1ghBam8vMj3xdoe4xfXhzVcOAIwrkbTpkMLgKc9RPD9k/edit#heading=h.sakzausv6hue
+            # CodeGeneratorResponse.File(
+            #     name="samples/generated_samples/mollusc.v6.python.21120601.131313.manifest.yaml",
+            #     content=dedent(
+            #         """                ---
+            #     type: manifest/samples
+            #     schema_version: 3
+            #     python: &python
+            #       environment: python
+            #       bin: python3
+            #       base_path: samples
+            #       invocation: \'{bin} {path} @args\'
+            #     samples:
+            #     - <<: *python
+            #       sample: squid_sample
+            #       path: \'{base_path}/squid_sample.py\'
+            #     - <<: *python
+            #       sample: whelk_sample
+            #       path: \'{base_path}/whelk_sample.py\'
+            #     - <<: *python
+            #       sample: octopus_sample
+            #       path: \'{base_path}/octopus_sample.py\'
+            #     """
+            #     ),
+            # ),
         ]
     )
     expected.supported_features |= CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL

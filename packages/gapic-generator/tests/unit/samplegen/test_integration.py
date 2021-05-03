@@ -15,6 +15,7 @@
 import jinja2
 import os.path as path
 import pytest
+from pathlib import Path
 
 import gapic.utils as utils
 
@@ -22,7 +23,8 @@ from gapic.samplegen import samplegen
 from gapic.samplegen_utils import (types, utils as gapic_utils)
 from gapic.schema import (naming, wrappers)
 
-from common_types import (DummyField, DummyMessage, DummyMethod, DummyService,
+from tests.unit.samplegen.common_types import (DummyField, DummyMessage,
+                          DummyMethod, DummyService, DummyIdent,
                           DummyApiSchema, DummyNaming, enum_factory, message_factory)
 
 from collections import namedtuple
@@ -43,12 +45,19 @@ env.filters['snake_case'] = utils.to_snake_case
 env.filters['coerce_response_name'] = gapic_utils.coerce_response_name
 
 
+def golden_snippet(filename: str) -> str:
+    """Load the golden snippet with the name provided"""
+    snippet_path = Path(__file__).parent / "golden_snippets" / filename
+    return snippet_path.read_text()
+
+
 def test_generate_sample_basic():
     # Note: the sample integration tests are needfully large
     # and difficult to eyeball parse. They are intended to be integration tests
     # that catch errors in behavior that is emergent from combining smaller features
     # or in features that are sufficiently small and trivial that it doesn't make sense
     # to have standalone tests.
+
     input_type = DummyMessage(
         type="REQUEST TYPE",
         fields={
@@ -65,7 +74,8 @@ def test_generate_sample_basic():
                     },
                 )
             )
-        }
+        },
+        ident=DummyIdent(name="molluscs.v1.ClassifyRequest")
     )
 
     api_naming = naming.NewNaming(
@@ -110,76 +120,7 @@ def test_generate_sample_basic():
         env.get_template('examples/sample.py.j2')
     )
 
-    sample_id = ("mollusc_classify_sync")
-    expected_str = '''# -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-# DO NOT EDIT! This is a generated sample ("request",  "%s")
-#
-# To install the latest published package dependency, execute the following:
-#   pip3 install molluscs-v1-molluscclient
-
-
-# [START %s]
-from google import auth
-from google.auth import credentials
-from molluscs.v1.molluscclient.services.mollusc_service import MolluscServiceClient
-
-def sample_classify(video, location):
-    """Determine the full taxonomy of input mollusc"""
-
-    client = MolluscServiceClient(
-        credentials=credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    classify_target = {}
-    # video = "path/to/mollusc/video.mkv"
-    with open(video, "rb") as f:
-        classify_target["video"] = f.read()
-
-    # location = "New Zealand"
-    classify_target["location_annotation"] = location
-
-
-    response = client.classify(classify_target=classify_target)
-    print("Mollusc is a \\"{}\\"".format(response.taxonomy))
-
-
-# [END %s]
-
-def main():
-    import argparse
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--video",
-                        type=str,
-                        default="path/to/mollusc/video.mkv")
-    parser.add_argument("--location",
-                        type=str,
-                        default="New Zealand")
-    args = parser.parse_args()
-
-    sample_classify(args.video, args.location)
-
-
-if __name__ == "__main__":
-    main()
-''' % (sample_id, sample_id, sample_id)
-
-    assert sample_str == expected_str
+    assert sample_str == golden_snippet("sample_basic.py")
 
 
 def test_generate_sample_basic_unflattenable():
@@ -204,7 +145,8 @@ def test_generate_sample_basic_unflattenable():
                     },
                 )
             )
-        }
+        },
+        ident=DummyIdent(name="molluscs.v1.ClassifyRequest")
     )
 
     api_naming = naming.NewNaming(
@@ -246,79 +188,7 @@ def test_generate_sample_basic_unflattenable():
         env.get_template('examples/sample.py.j2')
     )
 
-    sample_id = ("mollusc_classify_sync")
-    expected_str = '''# -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-# DO NOT EDIT! This is a generated sample ("request",  "%s")
-#
-# To install the latest published package dependency, execute the following:
-#   pip3 install molluscs-v1-molluscclient
-
-
-# [START %s]
-from google import auth
-from google.auth import credentials
-from molluscs.v1.molluscclient.services.mollusc_service import MolluscServiceClient
-
-def sample_classify(video, location):
-    """Determine the full taxonomy of input mollusc"""
-
-    client = MolluscServiceClient(
-        credentials=credentials.AnonymousCredentials(),
-        transport="grpc",
-    )
-
-    classify_target = {}
-    # video = "path/to/mollusc/video.mkv"
-    with open(video, "rb") as f:
-        classify_target["video"] = f.read()
-
-    # location = "New Zealand"
-    classify_target["location_annotation"] = location
-
-    request = {
-        'classify_target': classify_target,
-    }
-
-    response = client.classify(request=request)
-    print("Mollusc is a \\"{}\\"".format(response.taxonomy))
-
-
-# [END %s]
-
-def main():
-    import argparse
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--video",
-                        type=str,
-                        default="path/to/mollusc/video.mkv")
-    parser.add_argument("--location",
-                        type=str,
-                        default="New Zealand")
-    args = parser.parse_args()
-
-    sample_classify(args.video, args.location)
-
-
-if __name__ == "__main__":
-    main()
-''' % (sample_id, sample_id, sample_id)
-
-    assert sample_str == expected_str
+    assert sample_str == golden_snippet("sample_basic_unflattenable.py")
 
 
 def test_generate_sample_service_not_found():
@@ -335,7 +205,7 @@ def test_generate_sample_service_not_found():
 
 def test_generate_sample_rpc_not_found():
     schema = DummyApiSchema(
-        {"Mollusc": DummyService({})}, DummyNaming("pkg_name"))
+        {"Mollusc": DummyService(methods={}, client_name="ClassifyClient")}, DummyNaming("pkg_name"))
     sample = {"service": "Mollusc", "rpc": "Classify"}
 
     with pytest.raises(types.RpcMethodNotFound):

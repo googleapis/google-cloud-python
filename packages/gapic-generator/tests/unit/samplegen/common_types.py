@@ -30,13 +30,17 @@ class DummyMethod:
     input: bool = False
     output: bool = False
     lro: bool = False
+    void: bool = False
     paged_result_field: bool = False
     client_streaming: bool = False
     server_streaming: bool = False
     flattened_fields: Dict[str, Any] = dataclasses.field(default_factory=dict)
 
 
-DummyMessage = namedtuple("DummyMessage", ["fields", "type", "options"])
+DummyIdent = namedtuple("DummyIdent", ["name"])
+
+DummyMessage = namedtuple(
+    "DummyMessage", ["fields", "type", "options", "ident"])
 DummyMessage.__new__.__defaults__ = (False,) * len(DummyMessage._fields)
 
 DummyField = namedtuple("DummyField",
@@ -50,20 +54,21 @@ DummyField = namedtuple("DummyField",
                          "type"])
 DummyField.__new__.__defaults__ = (False,) * len(DummyField._fields)
 
-DummyService = namedtuple("DummyService", ["methods"])
+DummyService = namedtuple("DummyService", ["methods", "client_name"])
 
 DummyApiSchema = namedtuple("DummyApiSchema",
                             ["services", "naming", "messages"])
 DummyApiSchema.__new__.__defaults__ = (False,) * len(DummyApiSchema._fields)
 
 DummyNaming = namedtuple(
-    "DummyNaming", ["warehouse_package_name", "name", "version"])
+    "DummyNaming", ["warehouse_package_name", "name", "version", "versioned_module_name", "module_namespace"])
 DummyNaming.__new__.__defaults__ = (False,) * len(DummyNaming._fields)
 
 
 def message_factory(exp: str,
                     repeated_iter=itertools.repeat(False),
-                    enum: Optional[wrappers.EnumType] = None) -> DummyMessage:
+                    enum: Optional[wrappers.EnumType] = None,
+                    ) -> DummyMessage:
     # This mimics the structure of MessageType in the wrappers module:
     # A MessageType has a map from field names to Fields,
     # and a Field has an (optional) MessageType.
@@ -81,7 +86,6 @@ def message_factory(exp: str,
         base.fields[attr_name] = (DummyField(message=field, repeated=repeated_field)
                                   if isinstance(field, DummyMessage)
                                   else DummyField(enum=field))
-
     return messages[0]
 
 

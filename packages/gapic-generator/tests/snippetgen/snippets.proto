@@ -1,0 +1,106 @@
+// -*- coding: utf-8 -*-
+// Copyright 2021 Google LLC
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//     http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+
+syntax = "proto3";
+
+package animalia.mollusca.v1;
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/wrappers.proto";
+
+service Snippets {
+  option (google.api.default_host) = "mollusca.example.com";
+
+  rpc MethodOneSignature(SignatureRequest) returns(Response) {
+    option (google.api.method_signature) = "a_string,an_int,a_bool";
+  }
+
+  rpc MethodLroSignatures(SignatureRequest) returns(google.longrunning.Operation) {
+    option (google.api.method_signature) = "a_string,an_int,a_bool";
+    option (google.longrunning.operation_info) = {
+      response_type: "LroResponse"
+      metadata_type: "LroMetadata"
+    };
+  }
+
+  rpc ListResources(ListResourcesRequest) returns (ListResourcesResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=items/*}/resources"
+    };
+    option (google.api.method_signature) = "parent";
+  }
+
+  rpc MethodServerStreaming(SignatureRequest) returns(stream Response) {
+    option (google.api.method_signature) = "a_string,a_bool";
+    option (google.api.method_signature) = "";
+  }
+
+  rpc MethodBidiStreaming(stream SignatureRequest) returns (stream Response);
+}
+
+message ListResourcesRequest {
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      child_type: "snippets.example.com/Resource"
+    }];
+
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListResourcesResponse {
+  repeated Resource resources = 1;
+  string next_page_token = 2;
+}
+
+message ParentResource {
+  option (google.api.resource) = {
+    type: "snippets.example.com/ParentResource"
+    pattern: "items/{item_id}"
+  };
+  string name = 1;
+}
+
+message Resource {
+  option (google.api.resource) = {
+    type: "snippets.example.com/Resource"
+    pattern: "items/{item_id}/parts/{part_id}"
+  };
+  string name = 1;
+}
+
+
+message SignatureRequest {
+  string a_string = 1;
+  int32 an_int = 2;
+  bool a_bool = 3;
+  map<int32, string> map_int_string = 4;
+}
+
+message Response {
+}
+
+message LroResponse {
+}
+
+message LroMetadata {
+}
+

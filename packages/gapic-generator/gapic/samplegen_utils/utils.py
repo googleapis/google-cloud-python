@@ -47,7 +47,7 @@ def is_valid_sample_cfg(
         min_version: Tuple[int, int, int] = MIN_SCHEMA_VERSION,
         config_type: str = VALID_CONFIG_TYPE,
 ) -> bool:
-    """Predicate that takes a parsed yaml doc checks if it is a valid sampel config.
+    """Predicate that takes a parsed yaml doc checks if it is a valid sample config.
 
     Arguments:
         doc (Any): The yaml document to be assessed

@@ -13,13 +13,16 @@
 # limitations under the License.
 
 from __future__ import absolute_import
+from pathlib import Path
 import os
+import sys
 import tempfile
 import typing
 import nox  # type: ignore
 
 from contextlib import contextmanager
 from os import path
+import shutil
 
 
 showcase_version = "0.11.0"
@@ -74,6 +77,9 @@ def showcase_library(
     # Install gapic-generator-python
     session.install("-e", ".")
 
+    # Install grpcio-tools for protoc
+    session.install("grpcio-tools")
+
     # Install a client library for Showcase.
     with tempfile.TemporaryDirectory() as tmp_dir:
         # Download the Showcase descriptor.
@@ -96,7 +102,9 @@ def showcase_library(
         opts = "--python_gapic_opt="
         opts += ",".join(other_opts + (f"{template_opt}",))
         cmd_tup = (
-            f"protoc",
+            "python",
+            "-m",
+            "grpc_tools.protoc",
             f"--experimental_allow_proto3_optional",
             f"--descriptor_set_in={tmp_dir}{path.sep}showcase.desc",
             opts,
@@ -205,11 +213,11 @@ def showcase_unit(
 
     with showcase_library(session, templates=templates, other_opts=other_opts) as lib:
         session.chdir(lib)
-    
+
         # Unit tests are run twice with different dependencies to exercise
         # all code paths.
         # TODO(busunkim): remove when default templates require google-auth>=1.25.0
-        
+
         # 1. Run tests at lower bound of dependencies
         session.install("nox")
         session.run("nox", "-s", "update_lower_bounds")
@@ -217,7 +225,7 @@ def showcase_unit(
         # Some code paths require an older version of google-auth.
         # google-auth is a transitive dependency so it isn't in the
         # lower bound constraints file produced above.
-        session.install("google-auth==1.21.1")  
+        session.install("google-auth==1.21.1")
         run_showcase_unit_tests(session, fail_under=0)
 
         # 2. Run the tests again with latest version of dependencies
@@ -241,7 +249,7 @@ def showcase_unit_add_iam_methods(session):
         # Unit tests are run twice with different dependencies to exercise
         # all code paths.
         # TODO(busunkim): remove when default templates require google-auth>=1.25.0
-        
+
         # 1. Run tests at lower bound of dependencies
         session.install("nox")
         session.run("nox", "-s", "update_lower_bounds")
@@ -249,7 +257,7 @@ def showcase_unit_add_iam_methods(session):
         # Some code paths require an older version of google-auth.
         # google-auth is a transitive dependency so it isn't in the
         # lower bound constraints file produced above.
-        session.install("google-auth==1.21.1")  
+        session.install("google-auth==1.21.1")
         run_showcase_unit_tests(session, fail_under=0)
 
         # 2. Run the tests again with latest version of dependencies
@@ -277,6 +285,34 @@ def showcase_mypy(
 @nox.session(python="3.8")
 def showcase_mypy_alternative_templates(session):
     showcase_mypy(session, templates=ADS_TEMPLATES, other_opts=("old-naming",))
+
+
+@nox.session(python="3.8")
+def snippetgen(session):
+    # Clone googleapis/api-common-protos which are referenced by the snippet
+    # protos
+    api_common_protos = "api-common-protos"
+    try:
+        session.run("git", "-C", api_common_protos, "pull", external=True)
+    except nox.command.CommandFailed:
+        session.run(
+            "git",
+            "clone",
+            "--single-branch",
+            f"https://github.com/googleapis/{api_common_protos}",
+            external=True,
+        )
+
+    # Install gapic-generator-python
+    session.install("-e", ".")
+
+    session.install("grpcio-tools", "mock", "pytest", "pytest-asyncio")
+
+    session.run(
+        "py.test",
+        "--quiet",
+        "tests/snippetgen"
+    )
 
 
 @nox.session(python="3.8")

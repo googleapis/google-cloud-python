@@ -21,6 +21,7 @@ import gapic.utils as utils
 
 from gapic.samplegen_utils.types import CallingForm
 from textwrap import dedent
+from tests.unit.samplegen import common_types
 
 
 def check_template(template_fragment, expected_output, **kwargs):
@@ -112,6 +113,7 @@ def test_render_request_basic():
         {{ frags.render_request_setup(request) }}
         ''',
         '''
+        # Initialize request argument(s)
         cephalopod = {}
         # cephalopod_mass = '10 kg'
         cephalopod["mantle_mass"] = cephalopod_mass
@@ -182,9 +184,10 @@ def test_render_request_unflattened():
     check_template(
         '''
         {% import "feature_fragments.j2" as frags %}
-        {{ frags.render_request_setup(request) }}
+        {{ frags.render_request_setup(request, "mollusca", "CreateMolluscRequest") }}
         ''',
         '''
+        # Initialize request argument(s)
         cephalopod = {}
         # cephalopod_mass = '10 kg'
         cephalopod["mantle_mass"] = cephalopod_mass
@@ -205,11 +208,11 @@ def test_render_request_unflattened():
         with open(movie_path, "rb") as f:
             gastropod["movie"] = f.read()
 
-        request = {
-            'cephalopod': cephalopod,
-            'gastropod': gastropod,
-            'bivalve': "humboldt",
-        }
+        request = mollusca.CreateMolluscRequest(
+            cephalopod=cephalopod,
+            gastropod=gastropod,
+            bivalve="humboldt",
+        )
         ''',
         request=samplegen.FullRequest(
             request_list=[
@@ -254,7 +257,9 @@ def test_render_request_unflattened():
                                              body=None,
                                              single='"humboldt"'),
             ]
-        )
+        ),
+        api=common_types.DummyApiSchema(),
+
     )
 
 
@@ -265,6 +270,7 @@ def test_render_request_resource_name():
         {{ frags.render_request_setup(request) }}
         ''',
         '''
+        # Initialize request argument(s)
         taxon = "kingdom/{kingdom}/phylum/{phylum}".format(kingdom="animalia", phylum=mollusca)
         ''',
         request=samplegen.FullRequest(
@@ -287,7 +293,7 @@ def test_render_request_resource_name():
                 ),
             ],
             flattenable=True
-        )
+        ),
     )
 
 
@@ -538,7 +544,7 @@ def test_dispatch_map_loop():
             print("A {} is a {}".format(example, cls))
 
 
-        
+
         ''',
         statement={"loop": {"map": "molluscs",
                             "key": "cls",
@@ -586,11 +592,11 @@ def test_render_nested_loop_collection():
                     print("Sucker: {}".format(s))
 
 
-        
-        
-        
-        
-        
+
+
+
+
+
         """,
         statement=statement
     )
@@ -639,11 +645,11 @@ def test_render_nested_loop_map():
                     print("Example: {}".format(ex))
 
 
-        
-        
-        
-        
-        
+
+
+
+
+
         """,
         statement=statement
     )
@@ -702,7 +708,10 @@ CALLING_FORM_TEMPLATE_TEST_STR = '''
 def test_render_calling_form_request():
     check_template(CALLING_FORM_TEMPLATE_TEST_STR,
                    '''
+                   # Make the request
                    response = TEST_INVOCATION_TXT
+
+                   # Handle response
                    print("Test print statement")
                    ''',
                    calling_form_enum=CallingForm,
@@ -712,6 +721,7 @@ def test_render_calling_form_request():
 def test_render_calling_form_paged_all():
     check_template(CALLING_FORM_TEMPLATE_TEST_STR,
                    '''
+                   # Make the request
                    page_result = TEST_INVOCATION_TXT
                    for response in page_result:
                        print("Test print statement")
@@ -723,6 +733,7 @@ def test_render_calling_form_paged_all():
 def test_render_calling_form_paged():
     check_template(CALLING_FORM_TEMPLATE_TEST_STR,
                    '''
+                    # Make the request
                     page_result = TEST_INVOCATION_TXT
                     for page in page_result.pages():
                         for response in page:
@@ -735,6 +746,7 @@ def test_render_calling_form_paged():
 def test_render_calling_form_streaming_server():
     check_template(CALLING_FORM_TEMPLATE_TEST_STR,
                    '''
+                   # Make the request
                    stream = TEST_INVOCATION_TXT
                    for response in stream:
                        print("Test print statement")
@@ -746,6 +758,7 @@ def test_render_calling_form_streaming_server():
 def test_render_calling_form_streaming_bidi():
     check_template(CALLING_FORM_TEMPLATE_TEST_STR,
                    '''
+                   # Make the request
                    stream = TEST_INVOCATION_TXT
                    for response in stream:
                        print("Test print statement")
@@ -757,6 +770,7 @@ def test_render_calling_form_streaming_bidi():
 def test_render_calling_form_longrunning():
     check_template(CALLING_FORM_TEMPLATE_TEST_STR,
                    '''
+                   # Make the request
                    operation = TEST_INVOCATION_TXT
 
                    print("Waiting for operation to complete...")

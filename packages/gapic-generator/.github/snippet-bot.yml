@@ -1,0 +1,3 @@
+# https://github.com/googleapis/repo-automation-bots/tree/master/packages/snippet-bot
+ignoreFiles:
+  - "**/*.py"
