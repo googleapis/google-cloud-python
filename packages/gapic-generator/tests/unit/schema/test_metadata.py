@@ -33,7 +33,7 @@ def test_address_str_with_context():
         package=('foo', 'bar'),
         module='baz',
         name='Bacon',
-    ).with_context(collisions={'baz'})
+    ).with_context(collisions=frozenset({'baz'}))
     assert str(addr) == 'fb_baz.Bacon'
 
 

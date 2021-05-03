@@ -36,22 +36,30 @@ from gapic.schema import naming
 from gapic.utils import cached_property
 from gapic.utils import RESERVED_NAMES
 
+# This class is a minor hack to optimize Address's __eq__ method.
+
 
 @dataclasses.dataclass(frozen=True)
-class Address:
+class BaseAddress:
     name: str = ''
     module: str = ''
     module_path: Tuple[int, ...] = dataclasses.field(default_factory=tuple)
     package: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
     parent: Tuple[str, ...] = dataclasses.field(default_factory=tuple)
+
+
+@dataclasses.dataclass(frozen=True)
+class Address(BaseAddress):
     api_naming: naming.Naming = dataclasses.field(
         default_factory=naming.NewNaming,
     )
     collisions: FrozenSet[str] = dataclasses.field(default_factory=frozenset)
 
     def __eq__(self, other) -> bool:
-        return all(getattr(self, i) == getattr(other, i)
-                   for i in ('name', 'module', 'module_path', 'package', 'parent'))
+        # We don't want to use api_naming or collisions to determine equality,
+        # so defer to the parent class's eq method.
+        # This is an fairly important optimization for large APIs.
+        return super().__eq__(other)
 
     def __hash__(self):
         # Do NOT include collisions; they are not relevant.
@@ -94,7 +102,8 @@ class Address:
         # Return the Python identifier.
         return '.'.join(self.parent + (self.name,))
 
-    def __repr__(self) -> str:
+    @cached_property
+    def __cached_string_repr(self):
         return "({})".format(
             ", ".join(
                 (
@@ -108,6 +117,9 @@ class Address:
             )
         )
 
+    def __repr__(self) -> str:
+        return self.__cached_string_repr
+
     @property
     def module_alias(self) -> str:
         """Return an appropriate module alias if necessary.
@@ -118,16 +130,15 @@ class Address:
         while still providing names that are fundamentally readable
         to users (albeit looking auto-generated).
         """
-        if self.module in self.collisions | RESERVED_NAMES:
+        # This is a minor optimization to prevent constructing a temporary set.
+        if self.module in self.collisions or self.module in RESERVED_NAMES:
             return '_'.join(
                 (
                     ''.join(
-                        [
-                            partial_name[0]
-                            for i in self.package
-                            for partial_name in i.split("_")
-                            if i != self.api_naming.version
-                        ]
+                        partial_name[0]
+                        for i in self.package
+                        for partial_name in i.split("_")
+                        if i != self.api_naming.version
                     ),
                     self.module,
                 )
@@ -302,7 +313,11 @@ class Address:
         ``Address`` object aliases module names to avoid naming collisions in
         the file being written.
         """
-        return dataclasses.replace(self, collisions=collisions)
+        return (
+            dataclasses.replace(self, collisions=collisions)
+            if collisions and collisions != self.collisions
+            else self
+        )
 
 
 @dataclasses.dataclass(frozen=True)
@@ -340,7 +355,7 @@ class Metadata:
         return dataclasses.replace(
             self,
             address=self.address.with_context(collisions=collisions),
-        )
+        ) if collisions and collisions != self.address.collisions else self
 
 
 @dataclasses.dataclass(frozen=True)

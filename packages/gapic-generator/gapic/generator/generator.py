@@ -378,7 +378,7 @@ class Generator:
         # Replace the %namespace variable.
         filename = filename.replace(
             "%namespace",
-            os.path.sep.join([i.lower() for i in api_schema.naming.namespace]),
+            os.path.sep.join(i.lower() for i in api_schema.naming.namespace),
         ).lstrip(os.path.sep)
 
         # Replace the %name, %version, and %sub variables.

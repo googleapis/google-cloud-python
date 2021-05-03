@@ -33,21 +33,23 @@ from .types.{{ proto.module_name }} import {{ enum.name }}
     them again.
 -#}
 __all__ = (
-    {% for subpackage in api.subpackages|dictsort %}
+    {% filter sort_lines -%}
+    {% for subpackage in api.subpackages -%}
     '{{ subpackage }}',
-    {% endfor %}
-    {% for service in api.services.values()|sort(attribute='client_name')
-            if service.meta.address.subpackage == api.subpackage_view %}
+    {% endfor -%}
+    {% for service in api.services.values()
+            if service.meta.address.subpackage == api.subpackage_view -%}
     '{{ service.client_name }}',
-    {% endfor %}
-    {% for proto in api.protos.values()|sort(attribute='name')
-            if proto.meta.address.subpackage == api.subpackage_view %}
-    {% for message in proto.messages.values()|sort(attribute='name') %}
+    {% endfor -%}
+    {% for proto in api.protos.values()
+            if proto.meta.address.subpackage == api.subpackage_view -%}
+    {% for message in proto.messages.values()|sort(attribute='name') -%}
     '{{ message.name }}',
-    {% endfor %}
-    {% for enum in proto.enums.values()|sort(attribute='name') %}
+    {% endfor -%}
+    {% for enum in proto.enums.values() -%}
     '{{ enum.name }}',
-    {% endfor %}
-    {% endfor %}
+    {% endfor -%}
+    {% endfor -%}
+    {% endfilter %}
 )
 {% endblock %}

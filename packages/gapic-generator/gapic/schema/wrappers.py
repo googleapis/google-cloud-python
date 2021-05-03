@@ -463,24 +463,24 @@ class MessageType:
         visited_messages = visited_messages | {self}
         return dataclasses.replace(
             self,
-            fields=collections.OrderedDict(
-                (k, v.with_context(
+            fields={
+                k: v.with_context(
                     collisions=collisions,
                     visited_messages=visited_messages
-                ))
-                for k, v in self.fields.items()
-            ) if not skip_fields else self.fields,
-            nested_enums=collections.OrderedDict(
-                (k, v.with_context(collisions=collisions))
+                ) for k, v in self.fields.items()
+            } if not skip_fields else self.fields,
+            nested_enums={
+                k: v.with_context(collisions=collisions)
                 for k, v in self.nested_enums.items()
-            ),
-            nested_messages=collections.OrderedDict(
-                (k, v.with_context(
+            },
+            nested_messages={
+                k: v.with_context(
                     collisions=collisions,
                     skip_fields=skip_fields,
                     visited_messages=visited_messages,
-                ))
-                for k, v in self.nested_messages.items()),
+                )
+                for k, v in self.nested_messages.items()
+            },
             meta=self.meta.with_context(collisions=collisions),
         )
 
@@ -535,7 +535,7 @@ class EnumType:
         return dataclasses.replace(
             self,
             meta=self.meta.with_context(collisions=collisions),
-        )
+        ) if collisions else self
 
     @property
     def options_dict(self) -> Dict:
@@ -957,9 +957,11 @@ class Method:
         ``Method`` object aliases module names to avoid naming collisions
         in the file being written.
         """
-        maybe_lro = self.lro.with_context(
-            collisions=collisions
-        ) if self.lro else None
+        maybe_lro = None
+        if self.lro:
+            maybe_lro = self.lro.with_context(
+                collisions=collisions
+            ) if collisions else self.lro
 
         return dataclasses.replace(
             self,
@@ -1195,13 +1197,12 @@ class Service:
         """
         return dataclasses.replace(
             self,
-            methods=collections.OrderedDict(
-                (k, v.with_context(
-                    # A methodd's flattened fields create additional names
+            methods={
+                k: v.with_context(
+                    # A method's flattened fields create additional names
                     # that may conflict with module imports.
                     collisions=collisions | frozenset(v.flattened_fields.keys()))
-                 )
                 for k, v in self.methods.items()
-            ),
+            },
             meta=self.meta.with_context(collisions=collisions),
         )

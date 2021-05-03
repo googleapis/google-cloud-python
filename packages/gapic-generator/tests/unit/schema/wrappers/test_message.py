@@ -56,7 +56,7 @@ def test_message_ident():
 
 def test_message_ident_collisions():
     message = make_message('Baz', package='foo.v1', module='bar').with_context(
-        collisions={'bar'},
+        collisions=frozenset({'bar'}),
     )
     assert str(message.ident) == 'fv_bar.Baz'
     assert message.ident.sphinx == 'foo.v1.bar.Baz'
