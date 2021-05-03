@@ -22,7 +22,7 @@ from ..common.common import Common
 
 
 class CommonPython:
-    def pylogging_test_receive_log(self):
+    def test_pylogging_receive_log(self):
         log_text = f"{inspect.currentframe().f_code.co_name}"
         log_list = self.trigger_and_retrieve(log_text, "pylogging")
 
@@ -36,6 +36,21 @@ class CommonPython:
             if message and log_text in message:
                 found_log = log
         self.assertIsNotNone(found_log, "expected log text not found")
+
+    def test_pylogging_receive_unicode_log(self):
+        log_text = f"{inspect.currentframe().f_code.co_name} 嗨 世界 😀"
+        log_list = self.trigger_and_retrieve(log_text, "pylogging")
+
+        found_log = None
+        for log in log_list:
+            message = (
+                log.payload.get("message", None)
+                if isinstance(log.payload, dict)
+                else str(log.payload)
+            )
+            if message and log_text in message:
+                found_log = log
+        self.assertIsNotNone(found_log, "expected unicode log not found")
 
     def test_monitored_resource_pylogging(self):
         log_text = f"{inspect.currentframe().f_code.co_name}"
@@ -90,12 +105,14 @@ class CommonPython:
         expected_base_url = "http://test"
         expected_path = "/pylogging"
         expected_trace = "123"
+        expected_span = "456"
+        trace_header = f"{expected_trace}/{expected_span};o=1"
 
         log_list = self.trigger_and_retrieve(
             log_text,
             "pylogging_flask",
             path=expected_path,
-            trace=expected_trace,
+            trace=trace_header,
             base_url=expected_base_url,
             agent=expected_agent,
         )
@@ -112,8 +129,13 @@ class CommonPython:
         self.assertEqual(found_request["protocol"], "HTTP/1.1")
 
         found_trace = log_list[-1].trace
+        found_span = log_list[-1].span_id
         self.assertIsNotNone(found_trace)
         self.assertIn("projects/", found_trace)
+        if self.environment != "functions":
+            # functions seems to override the user's trace value
+            self.assertIn(expected_trace, found_trace)
+            self.assertEqual(expected_span, found_span)
 
     def test_pylogging_extras(self):
         if self.environment == "kubernetes" or "appengine" in self.environment:
@@ -123,6 +145,7 @@ class CommonPython:
         log_text = f"{inspect.currentframe().f_code.co_name}"
         kwargs = {
             "trace": "123",
+            "span_id": "456",
             "requestMethod": "POST",
             "requestUrl": "http://test",
             "userAgent": "agent",
@@ -138,6 +161,7 @@ class CommonPython:
         if self.environment != "functions":
             # functions seems to override the user's trace value
             self.assertEqual(found_log.trace, kwargs["trace"])
+            self.assertEqual(found_log.span_id, kwargs["span_id"])
 
         # check that custom http request fields were set
         self.assertIsNotNone(found_log.http_request)

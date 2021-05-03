@@ -59,7 +59,7 @@ class CloudLoggingFilter(logging.Filter):
                 }
         record.msg = "" if record.msg is None else record.msg
         # find http request data
-        inferred_http, inferred_trace = get_request_data()
+        inferred_http, inferred_trace, inferred_span = get_request_data()
         if inferred_trace is not None and self.project is not None:
             inferred_trace = f"projects/{self.project}/traces/{inferred_trace}"
         # set labels
@@ -70,6 +70,7 @@ class CloudLoggingFilter(logging.Filter):
         )
 
         record.trace = getattr(record, "trace", inferred_trace) or ""
+        record.span_id = getattr(record, "span_id", inferred_span) or ""
         record.http_request = getattr(record, "http_request", inferred_http) or {}
         record.request_method = record.http_request.get("requestMethod", "")
         record.request_url = record.http_request.get("requestUrl", "")

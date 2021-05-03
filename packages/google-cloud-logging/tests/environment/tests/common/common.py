@@ -137,6 +137,21 @@ class Common:
                 found_log = log
         self.assertIsNotNone(found_log, "expected log text not found")
 
+    def test_receive_unicode_log(self):
+        log_text = f"{inspect.currentframe().f_code.co_name} 嗨 世界 😀"
+        log_list = self.trigger_and_retrieve(log_text, "simplelog")
+
+        found_log = None
+        for log in log_list:
+            message = (
+                log.payload.get("message", None)
+                if isinstance(log.payload, dict)
+                else str(log.payload)
+            )
+            if message and log_text in message:
+                found_log = log
+        self.assertIsNotNone(found_log, "expected unicode log not found")
+
     # add back after v3.0.0
     # def test_monitored_resource(self):
     #     if self.language != "python":

@@ -64,6 +64,7 @@ class TestStructuredLogHandler(unittest.TestCase):
             "message": message,
             "severity": record.levelname,
             "logging.googleapis.com/trace": "",
+            "logging.googleapis.com/spanId": "",
             "logging.googleapis.com/sourceLocation": {
                 "file": pathname,
                 "line": str(lineno),
@@ -128,8 +129,11 @@ class TestStructuredLogHandler(unittest.TestCase):
         expected_path = "http://testserver/123"
         expected_agent = "Mozilla/5.0"
         expected_trace = "123"
+        expected_span = "456"
+        trace_header = f"{expected_trace}/{expected_span};o=0"
         expected_payload = {
             "logging.googleapis.com/trace": expected_trace,
+            "logging.googleapis.com/spanId": expected_span,
             "httpRequest": {
                 "requestMethod": "PUT",
                 "requestUrl": expected_path,
@@ -145,7 +149,7 @@ class TestStructuredLogHandler(unittest.TestCase):
                 data="body",
                 headers={
                     "User-Agent": expected_agent,
-                    "X_CLOUD_TRACE_CONTEXT": expected_trace,
+                    "X_CLOUD_TRACE_CONTEXT": trace_header,
                 },
             )
             handler.filter(record)
@@ -173,16 +177,19 @@ class TestStructuredLogHandler(unittest.TestCase):
         record = logging.LogRecord(logname, logging.INFO, "", 0, message, None, None)
         overwrite_path = "http://overwrite"
         inferred_path = "http://testserver/123"
-        overwrite_trace = "456"
-        inferred_trace = "123"
+        overwrite_trace = "abc"
+        overwrite_span = "def"
+        inferred_trace_span = "123/456;"
         overwrite_file = "test-file"
         record.http_request = {"requestUrl": overwrite_path}
         record.source_location = {"file": overwrite_file}
         record.trace = overwrite_trace
+        record.span_id = overwrite_span
         added_labels = {"added_key": "added_value", "overwritten_key": "new_value"}
         record.labels = added_labels
         expected_payload = {
             "logging.googleapis.com/trace": overwrite_trace,
+            "logging.googleapis.com/spanId": overwrite_span,
             "logging.googleapis.com/sourceLocation": {
                 "file": overwrite_file,
                 "function": "",
@@ -206,7 +213,7 @@ class TestStructuredLogHandler(unittest.TestCase):
             c.put(
                 path=inferred_path,
                 data="body",
-                headers={"X_CLOUD_TRACE_CONTEXT": inferred_trace},
+                headers={"X_CLOUD_TRACE_CONTEXT": inferred_trace_span},
             )
             handler.filter(record)
             result = json.loads(handler.format(record))

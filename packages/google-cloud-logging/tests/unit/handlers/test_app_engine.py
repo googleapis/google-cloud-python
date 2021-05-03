@@ -97,7 +97,7 @@ class TestAppEngineHandler(unittest.TestCase):
         expected_trace_id = f"projects/{self.PROJECT}/traces/{trace_id}"
         get_request_patch = mock.patch(
             "google.cloud.logging_v2.handlers.app_engine.get_request_data",
-            return_value=(expected_http_request, trace_id),
+            return_value=(expected_http_request, trace_id, None),
         )
         with get_request_patch:
             # library integrations mocked to return test data
@@ -135,7 +135,7 @@ class TestAppEngineHandler(unittest.TestCase):
         inferred_trace_id = "trace-test"
         get_request_patch = mock.patch(
             "google.cloud.logging_v2.handlers.app_engine.get_request_data",
-            return_value=(inferred_http_request, inferred_trace_id),
+            return_value=(inferred_http_request, inferred_trace_id, None),
         )
         with get_request_patch:
             # library integrations mocked to return test data
@@ -180,7 +180,7 @@ class TestAppEngineHandler(unittest.TestCase):
     def _get_gae_labels_helper(self, trace_id):
         get_request_patch = mock.patch(
             "google.cloud.logging_v2.handlers.app_engine.get_request_data",
-            return_value=(None, trace_id),
+            return_value=(None, trace_id, None),
         )
 
         client = mock.Mock(project=self.PROJECT, spec=["project"])
