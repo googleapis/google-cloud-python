@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.45.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.45.0...v0.45.1) (2021-05-04)
+
+
+### Bug Fixes
+
+* add async client to %name_%version/__init__.py ([#859](https://www.github.com/googleapis/gapic-generator-python/issues/859)) ([391fdb8](https://www.github.com/googleapis/gapic-generator-python/commit/391fdb84b13c5628c21d81ad311c689da8971f6a))
+
 ## [0.45.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.44.3...v0.45.0) (2021-05-03)
 
 
