@@ -14,7 +14,7 @@
 # limitations under the License.
 
 import os
-import random
+import uuid
 
 from tableadmin import create_table
 from tableadmin import delete_table
@@ -22,18 +22,16 @@ from tableadmin import run_table_operations
 
 PROJECT = os.environ['GOOGLE_CLOUD_PROJECT']
 BIGTABLE_INSTANCE = os.environ['BIGTABLE_INSTANCE']
-TABLE_NAME_FORMAT = 'tableadmin-test-{}'
-TABLE_NAME_RANGE = 10000
+TABLE_ID_FORMAT = 'tableadmin-test-{}'
 
 
 def test_run_table_operations(capsys):
-    table_name = TABLE_NAME_FORMAT.format(
-        random.randrange(TABLE_NAME_RANGE))
+    table_id = TABLE_ID_FORMAT.format(uuid.uuid4().hex[:8])
 
-    run_table_operations(PROJECT, BIGTABLE_INSTANCE, table_name)
+    run_table_operations(PROJECT, BIGTABLE_INSTANCE, table_id)
     out, _ = capsys.readouterr()
 
-    assert 'Creating the ' + table_name + ' table.' in out
+    assert 'Creating the ' + table_id + ' table.' in out
     assert 'Listing tables in current project.' in out
     assert 'Creating column family cf1 with with MaxAge GC Rule' in out
     assert 'Created column family cf1 with MaxAge GC Rule.' in out
@@ -50,17 +48,16 @@ def test_run_table_operations(capsys):
     assert 'Delete a column family cf2...' in out
     assert 'Column family cf2 deleted successfully.' in out
 
-    delete_table(PROJECT, BIGTABLE_INSTANCE, table_name)
+    delete_table(PROJECT, BIGTABLE_INSTANCE, table_id)
 
 
 def test_delete_table(capsys):
-    table_name = TABLE_NAME_FORMAT.format(
-        random.randrange(TABLE_NAME_RANGE))
-    create_table(PROJECT, BIGTABLE_INSTANCE, table_name)
+    table_id = TABLE_ID_FORMAT.format(uuid.uuid4().hex[:8])
+    create_table(PROJECT, BIGTABLE_INSTANCE, table_id)
 
-    delete_table(PROJECT, BIGTABLE_INSTANCE, table_name)
+    delete_table(PROJECT, BIGTABLE_INSTANCE, table_id)
     out, _ = capsys.readouterr()
 
-    assert 'Table ' + table_name + ' exists.' in out
-    assert 'Deleting ' + table_name + ' table.' in out
-    assert 'Deleted ' + table_name + ' table.' in out
+    assert 'Table ' + table_id + ' exists.' in out
+    assert 'Deleting ' + table_id + ' table.' in out
+    assert 'Deleted ' + table_id + ' table.' in out

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import os
-import random
+import uuid
 
 from google.cloud import bigtable
 import pytest
@@ -24,13 +24,11 @@ from main import main
 PROJECT = os.environ['GOOGLE_CLOUD_PROJECT']
 BIGTABLE_INSTANCE = os.environ['BIGTABLE_INSTANCE']
 TABLE_ID_FORMAT = 'quickstart-test-{}'
-TABLE_ID_RANGE = 10000
 
 
 @pytest.fixture()
 def table():
-    table_id = TABLE_ID_FORMAT.format(
-        random.randrange(TABLE_ID_RANGE))
+    table_id = TABLE_ID_FORMAT.format(uuid.uuid4().hex[:8])
     client = bigtable.Client(project=PROJECT, admin=True)
     instance = client.instance(BIGTABLE_INSTANCE)
     table = instance.table(table_id)
