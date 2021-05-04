@@ -11,6 +11,9 @@ from . import {{ subpackage }}
 {% for service in api.services.values()|sort(attribute='name')
         if service.meta.address.subpackage == api.subpackage_view %}
 from .services.{{ service.name|snake_case }} import {{ service.client_name }}
+{% if 'grpc' in opts.transport %}
+from .services.{{ service.name|snake_case }} import {{ service.async_client_name }}
+{% endif %}
 {% endfor %}
 
 {#  Import messages and enums from each proto.
