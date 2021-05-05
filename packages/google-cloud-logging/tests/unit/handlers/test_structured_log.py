@@ -67,15 +67,10 @@ class TestStructuredLogHandler(unittest.TestCase):
             "logging.googleapis.com/spanId": "",
             "logging.googleapis.com/sourceLocation": {
                 "file": pathname,
-                "line": str(lineno),
+                "line": lineno,
                 "function": func,
             },
-            "httpRequest": {
-                "requestMethod": "",
-                "requestUrl": "",
-                "userAgent": "",
-                "protocol": "",
-            },
+            "httpRequest": {},
             "logging.googleapis.com/labels": labels,
         }
         handler.filter(record)
@@ -98,17 +93,8 @@ class TestStructuredLogHandler(unittest.TestCase):
         expected_payload = {
             "message": "",
             "logging.googleapis.com/trace": "",
-            "logging.googleapis.com/sourceLocation": {
-                "file": "",
-                "line": "0",
-                "function": "",
-            },
-            "httpRequest": {
-                "requestMethod": "",
-                "requestUrl": "",
-                "userAgent": "",
-                "protocol": "",
-            },
+            "logging.googleapis.com/sourceLocation": {},
+            "httpRequest": {},
             "logging.googleapis.com/labels": {},
         }
         handler.filter(record)
@@ -190,17 +176,8 @@ class TestStructuredLogHandler(unittest.TestCase):
         expected_payload = {
             "logging.googleapis.com/trace": overwrite_trace,
             "logging.googleapis.com/spanId": overwrite_span,
-            "logging.googleapis.com/sourceLocation": {
-                "file": overwrite_file,
-                "function": "",
-                "line": "0",
-            },
-            "httpRequest": {
-                "requestMethod": "",
-                "requestUrl": overwrite_path,
-                "userAgent": "",
-                "protocol": "",
-            },
+            "logging.googleapis.com/sourceLocation": {"file": overwrite_file},
+            "httpRequest": {"requestUrl": overwrite_path},
             "logging.googleapis.com/labels": {
                 "default_key": "default-value",
                 "overwritten_key": "new_value",

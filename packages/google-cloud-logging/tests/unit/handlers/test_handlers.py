@@ -16,6 +16,7 @@ import logging
 import unittest
 from unittest.mock import patch
 import mock
+import json
 
 from google.cloud.logging_v2.handlers._monitored_resources import (
     _FUNCTION_ENV_VARS,
@@ -57,26 +58,38 @@ class TestCloudLoggingFilter(unittest.TestCase):
         filter_obj = self._make_one()
         logname = "loggername"
         message = "hello world，嗨 世界"
-        pathname = "testpath"
-        lineno = 1
-        func = "test-function"
+        expected_location = {
+            "line": 1,
+            "file": "testpath",
+            "function": "test-function",
+        }
         record = logging.LogRecord(
-            logname, logging.INFO, pathname, lineno, message, None, None, func=func
+            logname,
+            logging.INFO,
+            expected_location["file"],
+            expected_location["line"],
+            message,
+            None,
+            None,
+            func=expected_location["function"],
         )
 
         success = filter_obj.filter(record)
         self.assertTrue(success)
 
-        self.assertEqual(record.line, lineno)
         self.assertEqual(record.msg, message)
-        self.assertEqual(record.function, func)
-        self.assertEqual(record.file, pathname)
-        self.assertEqual(record.trace, "")
-        self.assertEqual(record.http_request, {})
-        self.assertEqual(record.request_method, "")
-        self.assertEqual(record.request_url, "")
-        self.assertEqual(record.user_agent, "")
-        self.assertEqual(record.protocol, "")
+        self.assertEqual(record._msg_str, message)
+        self.assertEqual(record._source_location, expected_location)
+        self.assertEqual(record._source_location_str, json.dumps(expected_location))
+        self.assertIsNone(record._resource)
+        self.assertIsNone(record._trace)
+        self.assertEqual(record._trace_str, "")
+        self.assertIsNone(record._span_id)
+        self.assertEqual(record._span_id_str, "")
+        self.assertIsNone(record._http_request)
+        self.assertEqual(record._http_request_str, "{}")
+        self.assertIsNone(record._labels)
+        self.assertEqual(record._labels_str, "{}")
 
     def test_minimal_record(self):
         """
@@ -91,16 +104,19 @@ class TestCloudLoggingFilter(unittest.TestCase):
         success = filter_obj.filter(record)
         self.assertTrue(success)
 
-        self.assertEqual(record.line, 0)
-        self.assertEqual(record.msg, "")
-        self.assertEqual(record.function, "")
-        self.assertEqual(record.file, "")
-        self.assertEqual(record.trace, "")
-        self.assertEqual(record.http_request, {})
-        self.assertEqual(record.request_method, "")
-        self.assertEqual(record.request_url, "")
-        self.assertEqual(record.user_agent, "")
-        self.assertEqual(record.protocol, "")
+        self.assertIsNone(record.msg)
+        self.assertEqual(record._msg_str, "")
+        self.assertIsNone(record._source_location)
+        self.assertEqual(record._source_location_str, "{}")
+        self.assertIsNone(record._resource)
+        self.assertIsNone(record._trace)
+        self.assertEqual(record._trace_str, "")
+        self.assertIsNone(record._span_id)
+        self.assertEqual(record._span_id_str, "")
+        self.assertIsNone(record._http_request)
+        self.assertEqual(record._http_request_str, "{}")
+        self.assertIsNone(record._labels)
+        self.assertEqual(record._labels_str, "{}")
 
     def test_record_with_request(self):
         """
@@ -115,6 +131,8 @@ class TestCloudLoggingFilter(unittest.TestCase):
         expected_path = "http://testserver/123"
         expected_agent = "Mozilla/5.0"
         expected_trace = "123"
+        expected_span = "456"
+        combined_trace = f"{expected_trace}/{expected_span}"
         expected_request = {
             "requestMethod": "PUT",
             "requestUrl": expected_path,
@@ -129,19 +147,18 @@ class TestCloudLoggingFilter(unittest.TestCase):
                 data="body",
                 headers={
                     "User-Agent": expected_agent,
-                    "X_CLOUD_TRACE_CONTEXT": expected_trace,
+                    "X_CLOUD_TRACE_CONTEXT": combined_trace,
                 },
             )
             success = filter_obj.filter(record)
             self.assertTrue(success)
 
-            self.assertEqual(record.trace, expected_trace)
-            for key, val in expected_request.items():
-                self.assertEqual(record.http_request[key], val)
-            self.assertEqual(record.request_method, "PUT")
-            self.assertEqual(record.request_url, expected_path)
-            self.assertEqual(record.user_agent, expected_agent)
-            self.assertEqual(record.protocol, "HTTP/1.1")
+            self.assertEqual(record._trace, expected_trace)
+            self.assertEqual(record._trace_str, expected_trace)
+            self.assertEqual(record._span_id, expected_span)
+            self.assertEqual(record._span_id_str, expected_span)
+            self.assertEqual(record._http_request, expected_request)
+            self.assertEqual(record._http_request_str, json.dumps(expected_request))
 
     def test_user_overrides(self):
         """
@@ -163,8 +180,12 @@ class TestCloudLoggingFilter(unittest.TestCase):
                 headers={"User-Agent": "default", "X_CLOUD_TRACE_CONTEXT": "default"},
             )
             # override values
+            overwritten_resource = "test"
+            record.resource = overwritten_resource
             overwritten_trace = "456"
             record.trace = overwritten_trace
+            overwritten_span = "789"
+            record.span_id = overwritten_span
             overwritten_method = "GET"
             overwritten_url = "www.google.com"
             overwritten_agent = "custom"
@@ -188,15 +209,19 @@ class TestCloudLoggingFilter(unittest.TestCase):
             success = filter_obj.filter(record)
             self.assertTrue(success)
 
-            self.assertEqual(record.trace, overwritten_trace)
-            self.assertEqual(record.http_request, overwritten_request_object)
-            self.assertEqual(record.request_method, overwritten_method)
-            self.assertEqual(record.request_url, overwritten_url)
-            self.assertEqual(record.user_agent, overwritten_agent)
-            self.assertEqual(record.protocol, overwritten_protocol)
-            self.assertEqual(record.line, overwritten_line)
-            self.assertEqual(record.function, overwritten_function)
-            self.assertEqual(record.file, overwritten_file)
+            self.assertEqual(record._trace, overwritten_trace)
+            self.assertEqual(record._trace_str, overwritten_trace)
+            self.assertEqual(record._span_id, overwritten_span)
+            self.assertEqual(record._span_id_str, overwritten_span)
+            self.assertEqual(record._http_request, overwritten_request_object)
+            self.assertEqual(
+                record._http_request_str, json.dumps(overwritten_request_object)
+            )
+            self.assertEqual(record._source_location, overwritten_source_location)
+            self.assertEqual(
+                record._source_location_str, json.dumps(overwritten_source_location)
+            )
+            self.assertEqual(record._resource, overwritten_resource)
 
 
 class TestCloudLoggingHandler(unittest.TestCase):

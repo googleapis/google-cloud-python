@@ -68,10 +68,7 @@ def get_request_data_from_flask():
     http_request = {
         "requestMethod": flask.request.method,
         "requestUrl": flask.request.url,
-        "requestSize": flask.request.content_length,
         "userAgent": flask.request.user_agent.string,
-        "remoteIp": flask.request.remote_addr,
-        "referer": flask.request.referrer,
         "protocol": flask.request.environ.get(_PROTOCOL_HEADER),
     }
 
@@ -96,20 +93,11 @@ def get_request_data_from_django():
     if request is None:
         return None, None, None
 
-    # convert content_length to int if it exists
-    content_length = None
-    try:
-        content_length = int(request.META.get(_DJANGO_CONTENT_LENGTH))
-    except (ValueError, TypeError):
-        content_length = None
     # build http_request
     http_request = {
         "requestMethod": request.method,
         "requestUrl": request.build_absolute_uri(),
-        "requestSize": content_length,
         "userAgent": request.META.get(_DJANGO_USERAGENT_HEADER),
-        "remoteIp": request.META.get(_DJANGO_REMOTE_ADDR_HEADER),
-        "referer": request.META.get(_DJANGO_REFERER_HEADER),
         "protocol": request.META.get(_PROTOCOL_HEADER),
     }
 
