@@ -94,9 +94,6 @@ class Test_get_request_data_from_flask(unittest.TestCase):
         self.assertEqual(http_request["requestMethod"], "PUT")
         self.assertEqual(http_request["requestUrl"], expected_path)
         self.assertEqual(http_request["userAgent"], expected_agent)
-        self.assertEqual(http_request["referer"], expected_referrer)
-        self.assertEqual(http_request["remoteIp"], expected_ip)
-        self.assertEqual(http_request["requestSize"], len(body_content))
         self.assertEqual(http_request["protocol"], "HTTP/1.1")
 
     def test_http_request_sparse(self):
@@ -191,9 +188,6 @@ class Test_get_request_data_from_django(unittest.TestCase):
         self.assertEqual(http_request["requestMethod"], "PUT")
         self.assertEqual(http_request["requestUrl"], expected_path)
         self.assertEqual(http_request["userAgent"], expected_agent)
-        self.assertEqual(http_request["referer"], expected_referrer)
-        self.assertEqual(http_request["remoteIp"], "127.0.0.1")
-        self.assertEqual(http_request["requestSize"], len(body_content))
         self.assertEqual(http_request["protocol"], "HTTP/1.1")
 
     def test_http_request_sparse(self):
@@ -207,7 +201,6 @@ class Test_get_request_data_from_django(unittest.TestCase):
         http_request, *_ = self._call_fut()
         self.assertEqual(http_request["requestMethod"], "PUT")
         self.assertEqual(http_request["requestUrl"], expected_path)
-        self.assertEqual(http_request["remoteIp"], "127.0.0.1")
         self.assertEqual(http_request["protocol"], "HTTP/1.1")
 
 
