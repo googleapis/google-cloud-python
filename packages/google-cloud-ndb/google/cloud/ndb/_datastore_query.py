@@ -25,7 +25,7 @@ from google.cloud import environment_vars
 from google.cloud.datastore_v1.proto import datastore_pb2
 from google.cloud.datastore_v1.proto import entity_pb2
 from google.cloud.datastore_v1.proto import query_pb2
-from google.cloud.datastore import helpers
+from google.cloud.datastore import helpers, Key
 
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _datastore_api
@@ -801,10 +801,26 @@ class _Result(object):
             return NotImplemented
 
         for order in self.order_by:
-            this_value_pb = self.result_pb.entity.properties[order.name]
-            this_value = helpers._get_value_from_value_pb(this_value_pb)
-            other_value_pb = other.result_pb.entity.properties[order.name]
-            other_value = helpers._get_value_from_value_pb(other_value_pb)
+
+            if order.name == "__key__":
+                this_value = helpers.key_from_protobuf(
+                    self.result_pb.entity.key
+                ).flat_path
+                other_value = helpers.key_from_protobuf(
+                    other.result_pb.entity.key
+                ).flat_path
+            else:
+                this_value_pb = self.result_pb.entity.properties[order.name]
+                this_value = helpers._get_value_from_value_pb(this_value_pb)
+                other_value_pb = other.result_pb.entity.properties[order.name]
+                other_value = helpers._get_value_from_value_pb(other_value_pb)
+
+                # Compare key paths if ordering by key property
+                if isinstance(this_value, Key):
+                    this_value = this_value.flat_path
+
+                if isinstance(other_value, Key):
+                    other_value = other_value.flat_path
 
             direction = -1 if order.reverse else 1
 

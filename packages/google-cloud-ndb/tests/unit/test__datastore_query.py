@@ -1551,6 +1551,83 @@ class Test_Result:
         assert result._compare("other") == NotImplemented
 
     @staticmethod
+    def test__compare_with_order_by_entity_key():
+        def result(key_path):
+            key_pb = entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[key_path],
+            )
+            return _datastore_query._Result(
+                result_type=None,
+                result_pb=query_pb2.EntityResult(entity=entity_pb2.Entity(key=key_pb)),
+                order_by=[
+                    query_module.PropertyOrder("__key__"),
+                ],
+            )
+
+        assert result(entity_pb2.Key.PathElement(kind="ThisKind", name="a")) < result(
+            entity_pb2.Key.PathElement(kind="ThisKind", name="b")
+        )
+        assert result(entity_pb2.Key.PathElement(kind="ThisKind", name="b")) > result(
+            entity_pb2.Key.PathElement(kind="ThisKind", name="a")
+        )
+        assert result(entity_pb2.Key.PathElement(kind="ThisKind", name="a")) != result(
+            entity_pb2.Key.PathElement(kind="ThisKind", name="b")
+        )
+
+        assert result(entity_pb2.Key.PathElement(kind="ThisKind", id=1)) < result(
+            entity_pb2.Key.PathElement(kind="ThisKind", id=2)
+        )
+        assert result(entity_pb2.Key.PathElement(kind="ThisKind", id=2)) > result(
+            entity_pb2.Key.PathElement(kind="ThisKind", id=1)
+        )
+        assert result(entity_pb2.Key.PathElement(kind="ThisKind", id=1)) != result(
+            entity_pb2.Key.PathElement(kind="ThisKind", id=2)
+        )
+
+    @staticmethod
+    def test__compare_with_order_by_key_property():
+        def result(foo_key_path):
+            foo_key = entity_pb2.Key(
+                partition_id=entity_pb2.PartitionId(project_id="testing"),
+                path=[foo_key_path],
+            )
+
+            return _datastore_query._Result(
+                result_type=None,
+                result_pb=query_pb2.EntityResult(
+                    entity=entity_pb2.Entity(
+                        properties={
+                            "foo": entity_pb2.Value(key_value=foo_key),
+                        }
+                    )
+                ),
+                order_by=[
+                    query_module.PropertyOrder("foo"),
+                ],
+            )
+
+        assert result(entity_pb2.Key.PathElement(kind="ThisKind", name="a")) < result(
+            entity_pb2.Key.PathElement(kind="ThisKind", name="b")
+        )
+        assert result(entity_pb2.Key.PathElement(kind="ThisKind", name="b")) > result(
+            entity_pb2.Key.PathElement(kind="ThisKind", name="a")
+        )
+        assert result(entity_pb2.Key.PathElement(kind="ThisKind", name="a")) != result(
+            entity_pb2.Key.PathElement(kind="ThisKind", name="b")
+        )
+
+        assert result(entity_pb2.Key.PathElement(kind="ThisKind", id=1)) < result(
+            entity_pb2.Key.PathElement(kind="ThisKind", id=2)
+        )
+        assert result(entity_pb2.Key.PathElement(kind="ThisKind", id=2)) > result(
+            entity_pb2.Key.PathElement(kind="ThisKind", id=1)
+        )
+        assert result(entity_pb2.Key.PathElement(kind="ThisKind", id=1)) != result(
+            entity_pb2.Key.PathElement(kind="ThisKind", id=2)
+        )
+
+    @staticmethod
     @mock.patch("google.cloud.ndb._datastore_query.model")
     def test_entity_unsupported_result_type(model):
         model._entity_from_protobuf.return_value = "bar"
