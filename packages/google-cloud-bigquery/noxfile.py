@@ -77,8 +77,8 @@ def default(session, install_extras=True):
     session.run(
         "py.test",
         "--quiet",
-        "--cov=google.cloud.bigquery",
-        "--cov=tests.unit",
+        "--cov=google/cloud/bigquery",
+        "--cov=tests/unit",
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
