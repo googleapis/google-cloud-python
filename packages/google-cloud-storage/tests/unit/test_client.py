@@ -39,8 +39,11 @@ _POST_POLICY_TESTS = [test for test in _CONFORMANCE_TESTS if "policyInput" in te
 _FAKE_CREDENTIALS = Credentials.from_service_account_info(_SERVICE_ACCOUNT_JSON)
 
 
-def _make_credentials():
+def _make_credentials(project=None):
     import google.auth.credentials
+
+    if project is not None:
+        return mock.Mock(spec=google.auth.credentials.Credentials, project_id=project)
 
     return mock.Mock(spec=google.auth.credentials.Credentials)
 
@@ -174,14 +177,9 @@ class TestClient(unittest.TestCase):
         from google.cloud.storage._http import Connection
 
         PROJECT = "PROJECT"
-        credentials = _make_credentials()
+        credentials = _make_credentials(project=PROJECT)
 
-        ddp_patch = mock.patch(
-            "google.cloud.client._determine_default_project", return_value=PROJECT
-        )
-
-        with ddp_patch:
-            client = self._make_one(credentials=credentials)
+        client = self._make_one(credentials=credentials)
 
         self.assertEqual(client.project, PROJECT)
         self.assertIsInstance(client._connection, Connection)
