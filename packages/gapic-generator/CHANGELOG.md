@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.45.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.45.1...v0.45.2) (2021-05-06)
+
+
+### Bug Fixes
+
+* remove extra space before_pb_options ([#863](https://www.github.com/googleapis/gapic-generator-python/issues/863)) ([f0532e7](https://www.github.com/googleapis/gapic-generator-python/commit/f0532e7a88479aeb805c1509239008bdd19e9d85))
+
 ### [0.45.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.45.0...v0.45.1) (2021-05-04)
 
 
