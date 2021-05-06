@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [2.16.0](https://www.github.com/googleapis/python-bigquery/compare/v2.15.0...v2.16.0) (2021-05-05)
+
+
+### Features
+
+* add with_name() to ScalarQueryParameterType ([#644](https://www.github.com/googleapis/python-bigquery/issues/644)) ([6cc6876](https://www.github.com/googleapis/python-bigquery/commit/6cc6876eb0e5bf49fdc047256a945dcf1b289576))
+
+
+### Dependencies
+
+* expand supported pyarrow versions to v4 ([#643](https://www.github.com/googleapis/python-bigquery/issues/643)) ([9e1d386](https://www.github.com/googleapis/python-bigquery/commit/9e1d3869c2024fe7a8af57ff59838d904ca5db03))
+
 ## [2.15.0](https://www.github.com/googleapis/python-bigquery/compare/v2.14.0...v2.15.0) (2021-04-29)
 
 
