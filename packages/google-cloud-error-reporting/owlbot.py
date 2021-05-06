@@ -17,19 +17,14 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate error_reporting GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="errorreporting",
-    version="v1beta1",
-    bazel_target="//google/devtools/clouderrorreporting/v1beta1:devtools-clouderrorreporting-v1beta1-py",
-    include_protos=True,
-)
-s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst", "google/cloud/errorreporting/"])
+default_version = "v1beta1"
+
+for library in s.get_staging_dirs(default_version):
+    s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst", "google/cloud/errorreporting/"])
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
