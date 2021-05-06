@@ -122,15 +122,19 @@ def system(session):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
+    # 2021-05-06: defer installing 'google-cloud-*' to after this package,
+    #             in order to work around Python 2.7 googolapis-common-protos
+    #             issue.
     session.install(
-        "mock",
-        "pytest",
+        "mock", "pytest",
+    )
+    session.install("-e", ".")
+    session.install(
         "google-cloud-testutils",
         "google-cloud-iam",
         "google-cloud-pubsub < 2.0.0",
         "google-cloud-kms < 2.0dev",
     )
-    session.install("-e", ".")
 
     # Run py.test against the system tests.
     if system_test_exists:
