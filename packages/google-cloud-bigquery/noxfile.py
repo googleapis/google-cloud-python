@@ -103,6 +103,10 @@ def unit_noextras(session):
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def pytype(session):
     """Run type checks."""
+    # An indirect dependecy attrs==21.1.0 breaks the check, and installing a less
+    # recent version avoids the error until a possibly better fix is found.
+    # https://github.com/googleapis/python-bigquery/issues/655
+    session.install("attrs==20.3.0")
     session.install("-e", ".[all]")
     session.install("ipython")
     session.install(PYTYPE_VERSION)
