@@ -43,6 +43,9 @@ __all__ = (
     {% for service in api.services.values()
             if service.meta.address.subpackage == api.subpackage_view -%}
     '{{ service.client_name }}',
+    {% if 'grpc' in opts.transport %}
+    '{{ service.async_client_name }}',
+    {% endif %}
     {% endfor -%}
     {% for proto in api.protos.values()
             if proto.meta.address.subpackage == api.subpackage_view -%}

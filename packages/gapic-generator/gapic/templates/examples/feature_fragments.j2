@@ -145,7 +145,7 @@ with open({{ attr.input_parameter }}, "rb") as f:
 {% macro render_client_setup(module_name, client_name) %}
 # Create a client
 client = {{ module_name }}.{{ client_name }}()
-{% endmacro %}}
+{% endmacro %}
 
 {% macro render_request_setup(full_request, module_name, request_type) %}
 # Initialize request argument(s)
