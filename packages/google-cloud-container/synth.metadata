@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-container.git",
-        "sha": "21e89174026d0976d44c04dc50487e271bf15c40"
+        "sha": "f908d5415c30ec66617ed63e7851f7d13cc06337"
       }
     },
     {
@@ -13,13 +13,6 @@
         "remote": "https://github.com/googleapis/googleapis.git",
         "sha": "149a3a84c29c9b8189576c7442ccb6dcf6a8f95b",
         "internalRef": "364411656"
-      }
-    },
-    {
-      "git": {
-        "name": "synthtool",
-        "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "043cc620d6a6111816d9e09f2a97208565fde958"
       }
     }
   ],
