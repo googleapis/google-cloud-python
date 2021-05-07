@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.46.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.45.2...v0.46.0) (2021-05-07)
+
+
+### Features
+
+* Support field presence for query parameters in REST clients ([#866](https://www.github.com/googleapis/gapic-generator-python/issues/866)) ([5339db1](https://www.github.com/googleapis/gapic-generator-python/commit/5339db1308326d91a05a34d38e31cf91b79a9225))
+
+
+### Bug Fixes
+
+* Check for default value presence for non-optional fields in REST ([#868](https://www.github.com/googleapis/gapic-generator-python/issues/868)) ([5748001](https://www.github.com/googleapis/gapic-generator-python/commit/57480019c3e77c6b3a85bdaf8441334170b318e8))
+
 ### [0.45.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.45.1...v0.45.2) (2021-05-06)
 
 
