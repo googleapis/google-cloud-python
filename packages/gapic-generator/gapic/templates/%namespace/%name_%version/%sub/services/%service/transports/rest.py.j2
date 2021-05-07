@@ -89,7 +89,7 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
             client_info=client_info,
         )
         self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
-        {%- if service.has_lro %}
+        {% if service.has_lro %}
         self._operations_client = None
         {% endif %}
         if client_cert_source_for_mtls:
@@ -133,10 +133,10 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
             request: {{ method.input.ident }}, *,
             metadata: Sequence[Tuple[str, str]] = (),
             ) -> {{ method.output.ident }}:
-        r"""Call the {{ ' ' }}
+        r"""Call the {{- ' ' -}}
         {{ (method.name|snake_case).replace('_',' ')|wrap(
                 width=70, offset=45, indent=8) }}
-        {{ ' ' }} method over HTTP.
+        {{- ' ' -}} method over HTTP.
 
         Args:
             request (~.{{ method.input.ident }}):
@@ -189,11 +189,16 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         #}
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            {% for field in method.query_params | sort%}
-            '{{ field|camel_case }}': request.{{ field }},
-            {% endfor %}
-        }
+        query_params = {}
+        {% for field in method.query_params | sort%}
+        {% if method.input.fields[field].proto3_optional %}
+        if {{ method.input.ident }}.{{ field }} in request:
+            query_params['{{ field|camel_case }}'] = request.{{ field }}
+        {% else %}
+        query_params['{{ field|camel_case }}'] = request.{{ field }}
+        {% endif %}
+        {% endfor %}
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
@@ -201,9 +206,9 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         url += '?{}'.format('&'.join(query_params)).replace(' ', '+')
 
         # Send the request
-        {% if not method.void %}response = {% endif %}self._session.{{ method.http_opt['verb'] }}(
-            url
-            {% if 'body' in method.http_opt %},
+        response = self._session.{{ method.http_opt['verb'] }}(
+            url,
+            {% if 'body' in method.http_opt %}
             data=body,
             {% endif %}
         )

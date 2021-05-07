@@ -15,7 +15,7 @@ def gapic_generator_python():
         requirements = "@gapic_generator_python//:requirements.txt",
     )
 
-    _protobuf_version = "3.14.0"
+    _protobuf_version = "3.15.8"
     _protobuf_version_in_link = "v%s" % _protobuf_version
     _maybe(
         http_archive,
@@ -34,8 +34,8 @@ def gapic_generator_python():
     _maybe(
         http_archive,
         name = "com_github_grpc_grpc",
-        strip_prefix = "grpc-8347f4753568b5b66e49111c60ae2841278d3f33",  # this is 1.25.0 with fixes
-        urls = ["https://github.com/grpc/grpc/archive/8347f4753568b5b66e49111c60ae2841278d3f33.zip"],
+        strip_prefix = "grpc-1.36.4",
+        urls = ["https://github.com/grpc/grpc/archive/v1.36.4.zip"],
     )
 
     _maybe(
