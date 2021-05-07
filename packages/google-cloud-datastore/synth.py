@@ -142,9 +142,12 @@ s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 # tests.
 num = s.replace(
     "CONTRIBUTING.rst",
-    'app_credentials.json"',
-    """app_credentials.json"
-
+    """\
+\*\*\*\*\*\*\*\*\*\*\*\*\*
+Test Coverage
+\*\*\*\*\*\*\*\*\*\*\*\*\*
+""",
+    """\
 - You'll need to create composite
   `indexes <https://cloud.google.com/datastore/docs/tools/indexconfig>`__
   with the ``gcloud`` command line
@@ -169,7 +172,12 @@ num = s.replace(
   prevents clean-up) you can clear all system test data from your
   datastore instance via::
 
-   $ python tests/system/utils/clear_datastore.py""")
+   $ python tests/system/utils/clear_datastore.py
+
+*************
+Test Coverage
+*************
+""")
 
 if num != 1:
     raise Exception("Required replacement not made.")
