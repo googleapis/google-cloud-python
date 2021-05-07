@@ -195,14 +195,15 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         if {{ method.input.ident }}.{{ field }} in request:
             query_params['{{ field|camel_case }}'] = request.{{ field }}
         {% else %}
-        query_params['{{ field|camel_case }}'] = request.{{ field }}
+        if request.{{ field }}:
+            query_params['{{ field|camel_case }}'] = request.{{ field }}
         {% endif %}
         {% endfor %}
 
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = ['{k}={v}'.format(k=k, v=v) for k, v in query_params.items() if v]
+        query_params = ['{k}={v}'.format(k=k, v=v) for k, v in query_params.items()]
         url += '?{}'.format('&'.join(query_params)).replace(' ', '+')
 
         # Send the request
