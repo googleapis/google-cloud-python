@@ -58,7 +58,7 @@ class SuggestQueriesRequest(proto.Message):
             are returned. This allows UIs to display
             suggestions right away, helping the user to get
             a sense of what a query might look like.
-        suggestion_types (Sequence[~.auto_suggestion_service.SuggestionType]):
+        suggestion_types (Sequence[google.cloud.dataqna_v1alpha.types.SuggestionType]):
             The requested suggestion type. Multiple
             suggestion types can be requested, but there is
             no guarantee that the service will return
@@ -81,14 +81,14 @@ class Suggestion(proto.Message):
     r"""A suggestion for a query with a ranking score.
 
     Attributes:
-        suggestion_info (~.auto_suggestion_service.SuggestionInfo):
+        suggestion_info (google.cloud.dataqna_v1alpha.types.SuggestionInfo):
             Detailed information about the suggestion.
         ranking_score (float):
             The score of the suggestion. This can be used to define
             ordering in UI. The score represents confidence in the
             suggestion where higher is better. All score values must be
             in the range [0, 1).
-        suggestion_type (~.auto_suggestion_service.SuggestionType):
+        suggestion_type (google.cloud.dataqna_v1alpha.types.SuggestionType):
             The type of the suggestion.
     """
 
@@ -103,12 +103,12 @@ class SuggestionInfo(proto.Message):
     r"""Detailed information about the suggestion.
 
     Attributes:
-        annotated_suggestion (~.annotated_string.AnnotatedString):
+        annotated_suggestion (google.cloud.dataqna_v1alpha.types.AnnotatedString):
             Annotations for the suggestion. This provides
             information about which part of the suggestion
             corresponds to what semantic meaning (e.g. a
             metric).
-        query_matches (Sequence[~.auto_suggestion_service.SuggestionInfo.MatchInfo]):
+        query_matches (Sequence[google.cloud.dataqna_v1alpha.types.SuggestionInfo.MatchInfo]):
             Matches between user query and the annotated
             string.
     """
@@ -163,7 +163,7 @@ class SuggestQueriesResponse(proto.Message):
     r"""Response to SuggestQueries.
 
     Attributes:
-        suggestions (Sequence[~.auto_suggestion_service.Suggestion]):
+        suggestions (Sequence[google.cloud.dataqna_v1alpha.types.Suggestion]):
             A list of suggestions.
     """
 

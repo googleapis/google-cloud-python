@@ -33,7 +33,7 @@ class UserFeedback(proto.Message):
             ``projects/foo/locations/bar/questions/1234/userFeedback``
         free_form_feedback (str):
             Free form user feedback, such as a text box.
-        rating (~.user_feedback.UserFeedback.UserFeedbackRating):
+        rating (google.cloud.dataqna_v1alpha.types.UserFeedback.UserFeedbackRating):
             The user feedback rating
     """
 

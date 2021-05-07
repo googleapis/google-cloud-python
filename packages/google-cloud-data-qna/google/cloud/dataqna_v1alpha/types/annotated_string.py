@@ -60,7 +60,7 @@ class AnnotatedString(proto.Message):
             Text version of the string.
         html_formatted (str):
             HTML version of the string annotation.
-        markups (Sequence[~.annotated_string.AnnotatedString.SemanticMarkup]):
+        markups (Sequence[google.cloud.dataqna_v1alpha.types.AnnotatedString.SemanticMarkup]):
             Semantic version of the string annotation.
     """
 
@@ -79,7 +79,7 @@ class AnnotatedString(proto.Message):
         with markup information.
 
         Attributes:
-            type_ (~.annotated_string.AnnotatedString.SemanticMarkupType):
+            type_ (google.cloud.dataqna_v1alpha.types.AnnotatedString.SemanticMarkupType):
                 The semantic type of the markup substring.
             start_char_index (int):
                 Unicode character index of the query.

@@ -76,7 +76,7 @@ class Question(proto.Message):
             data source reference resource). There must not
             be more than one annotation with the same data
             source reference.
-        interpret_error (~.question.InterpretError):
+        interpret_error (google.cloud.dataqna_v1alpha.types.InterpretError):
             An error field explaining why interpretation
             failed. This is only populated if the
             interpretation failed.
@@ -87,17 +87,17 @@ class Question(proto.Message):
             interpret the question. Clients should present
             the error to the user so the user can rephrase
             the question.
-        interpretations (Sequence[~.question.Interpretation]):
+        interpretations (Sequence[google.cloud.dataqna_v1alpha.types.Interpretation]):
             A list of interpretations for this question.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the question was created.
         user_email (str):
             Output only. The e-mail address of the user
             that created this question.
-        debug_flags (~.question.DebugFlags):
+        debug_flags (google.cloud.dataqna_v1alpha.types.DebugFlags):
             Input only. Immutable. Flags to request
             additional information for debugging purposes.
-        debug_info (~.gp_any.Any):
+        debug_info (google.protobuf.any_pb2.Any):
             Top level debug information.
             This will be stored as the type
             DebugInformation. Using Any so clients don't
@@ -135,10 +135,10 @@ class InterpretError(proto.Message):
         message (str):
             Error message explaining why this question
             could not be interpreted.
-        code (~.question.InterpretError.InterpretErrorCode):
+        code (google.cloud.dataqna_v1alpha.types.InterpretError.InterpretErrorCode):
             The code for the error category why the
             interpretation failed.
-        details (~.question.InterpretError.InterpretErrorDetails):
+        details (google.cloud.dataqna_v1alpha.types.InterpretError.InterpretErrorDetails):
             Details on interpretation failure.
     """
 
@@ -155,12 +155,12 @@ class InterpretError(proto.Message):
         r"""Details on interpretation failure.
 
         Attributes:
-            unsupported_details (~.question.InterpretError.InterpretUnsupportedDetails):
+            unsupported_details (google.cloud.dataqna_v1alpha.types.InterpretError.InterpretUnsupportedDetails):
                 Populated if parts of the query are
                 unsupported.
-            incomplete_query_details (~.question.InterpretError.InterpretIncompleteQueryDetails):
+            incomplete_query_details (google.cloud.dataqna_v1alpha.types.InterpretError.InterpretIncompleteQueryDetails):
                 Populated if the query is incomplete.
-            ambiguity_details (~.question.InterpretError.InterpretAmbiguityDetails):
+            ambiguity_details (google.cloud.dataqna_v1alpha.types.InterpretError.InterpretAmbiguityDetails):
                 Populated if the query was too ambiguous.
         """
 
@@ -198,7 +198,7 @@ class InterpretError(proto.Message):
         r"""Details about an incomplete query.
 
         Attributes:
-            entities (Sequence[~.question.InterpretEntity]):
+            entities (Sequence[google.cloud.dataqna_v1alpha.types.InterpretEntity]):
                 List of missing interpret entities.
         """
 
@@ -222,14 +222,14 @@ class ExecutionInfo(proto.Message):
     the execution.
 
     Attributes:
-        job_creation_status (~.status.Status):
+        job_creation_status (google.rpc.status_pb2.Status):
             Status returned by the backend when the job
             was created.
-        job_execution_state (~.question.ExecutionInfo.JobExecutionState):
+        job_execution_state (google.cloud.dataqna_v1alpha.types.ExecutionInfo.JobExecutionState):
             Status of the job execution.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the execution was triggered.
-        bigquery_job (~.question.BigQueryJob):
+        bigquery_job (google.cloud.dataqna_v1alpha.types.BigQueryJob):
             BigQuery job information.
             Future versions will have different backends.
             Hence, clients must make sure they can handle it
@@ -290,16 +290,16 @@ class Interpretation(proto.Message):
             display a Did You Mean (DYM)  dialog if this is
             non-empty, even if this is the only
             interpretation.
-        human_readable (~.question.HumanReadable):
+        human_readable (google.cloud.dataqna_v1alpha.types.HumanReadable):
             Human readable representation of the query.
-        interpretation_structure (~.question.InterpretationStructure):
+        interpretation_structure (google.cloud.dataqna_v1alpha.types.InterpretationStructure):
             Information about the interpretation
             structure that helps to understand and visualize
             the response.
-        data_query (~.question.DataQuery):
+        data_query (google.cloud.dataqna_v1alpha.types.DataQuery):
             Representation of the data query to be sent
             to the backend.
-        execution_info (~.question.ExecutionInfo):
+        execution_info (google.cloud.dataqna_v1alpha.types.ExecutionInfo):
             Information about the backend response. This
             is populated only if execution of an
             interpretation was requested.
@@ -343,10 +343,10 @@ class HumanReadable(proto.Message):
     r"""Human readable interpretation.
 
     Attributes:
-        generated_interpretation (~.annotated_string.AnnotatedString):
+        generated_interpretation (google.cloud.dataqna_v1alpha.types.AnnotatedString):
             Generated query explaining the
             interpretation.
-        original_question (~.annotated_string.AnnotatedString):
+        original_question (google.cloud.dataqna_v1alpha.types.AnnotatedString):
             Annotations on the original query.
     """
 
@@ -364,11 +364,11 @@ class InterpretationStructure(proto.Message):
     understand and visualize the response.
 
     Attributes:
-        visualization_types (Sequence[~.question.InterpretationStructure.VisualizationType]):
+        visualization_types (Sequence[google.cloud.dataqna_v1alpha.types.InterpretationStructure.VisualizationType]):
             List of possible visualization types to apply
             for this interpretation. The order has no
             relevance.
-        column_info (Sequence[~.question.InterpretationStructure.ColumnInfo]):
+        column_info (Sequence[google.cloud.dataqna_v1alpha.types.InterpretationStructure.ColumnInfo]):
             Information about the output columns, that
             is, the columns that will be returned by the
             backend.

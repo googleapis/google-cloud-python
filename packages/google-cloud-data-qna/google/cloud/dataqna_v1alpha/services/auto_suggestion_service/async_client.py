@@ -145,7 +145,36 @@ class AutoSuggestionServiceAsyncClient:
         AutoSuggestionServiceClient.parse_common_location_path
     )
 
-    from_service_account_file = AutoSuggestionServiceClient.from_service_account_file
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            AutoSuggestionServiceAsyncClient: The constructed client.
+        """
+        return AutoSuggestionServiceClient.from_service_account_info.__func__(AutoSuggestionServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @classmethod
+    def from_service_account_file(cls, filename: str, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+        file.
+
+        Args:
+            filename (str): The path to the service account private key json
+                file.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            AutoSuggestionServiceAsyncClient: The constructed client.
+        """
+        return AutoSuggestionServiceClient.from_service_account_file.__func__(AutoSuggestionServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+
     from_service_account_json = from_service_account_file
 
     @property
@@ -222,7 +251,7 @@ class AutoSuggestionServiceAsyncClient:
         AutoSuggestion tolerance should be less than 1 second.
 
         Args:
-            request (:class:`~.auto_suggestion_service.SuggestQueriesRequest`):
+            request (:class:`google.cloud.dataqna_v1alpha.types.SuggestQueriesRequest`):
                 The request object. Request for query suggestions.
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -232,7 +261,7 @@ class AutoSuggestionServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.auto_suggestion_service.SuggestQueriesResponse:
+            google.cloud.dataqna_v1alpha.types.SuggestQueriesResponse:
                 Response to SuggestQueries.
         """
         # Create or coerce a protobuf request object.

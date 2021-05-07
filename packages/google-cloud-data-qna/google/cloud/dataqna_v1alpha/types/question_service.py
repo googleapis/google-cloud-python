@@ -42,7 +42,7 @@ class GetQuestionRequest(proto.Message):
         name (str):
             Required. The unique identifier for the question. Example:
             ``projects/foo/locations/bar/questions/1234``
-        read_mask (~.field_mask.FieldMask):
+        read_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to be retrieved.
     """
 
@@ -58,7 +58,7 @@ class CreateQuestionRequest(proto.Message):
         parent (str):
             Required. The name of the project this data source reference
             belongs to. Example: ``projects/foo/locations/bar``
-        question (~.gcd_question.Question):
+        question (google.cloud.dataqna_v1alpha.types.Question):
             Required. The question to create.
     """
 
@@ -101,13 +101,13 @@ class UpdateUserFeedbackRequest(proto.Message):
     r"""Request to updates user feedback.
 
     Attributes:
-        user_feedback (~.gcd_user_feedback.UserFeedback):
+        user_feedback (google.cloud.dataqna_v1alpha.types.UserFeedback):
             Required. The user feedback to update. This
             can be called even if there is no user feedback
             so far. The feedback's name field is used to
             identify the user feedback (and the
             corresponding question) to update.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to be updated.
     """
 
