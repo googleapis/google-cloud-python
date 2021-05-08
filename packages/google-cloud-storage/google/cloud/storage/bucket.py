@@ -2361,7 +2361,13 @@ class Bucket(_PropertyMixin):
             elif action_type == "SetStorageClass":
                 yield LifecycleRuleSetStorageClass.from_api_repr(rule)
             else:
-                raise ValueError("Unknown lifecycle rule: {}".format(rule))
+                warnings.warn(
+                    "Unknown lifecycle rule type received: {}. Please upgrade to the latest version of google-cloud-storage.".format(
+                        rule
+                    ),
+                    UserWarning,
+                    stacklevel=1,
+                )
 
     @lifecycle_rules.setter
     def lifecycle_rules(self, rules):

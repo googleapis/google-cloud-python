@@ -1783,15 +1783,22 @@ class Test_Bucket(unittest.TestCase):
         self.assertTrue(config.uniform_bucket_level_access_enabled)
         self.assertEqual(config.uniform_bucket_level_access_locked_time, now)
 
-    def test_lifecycle_rules_getter_unknown_action_type(self):
+    @mock.patch("warnings.warn")
+    def test_lifecycle_rules_getter_unknown_action_type(self, mock_warn):
         NAME = "name"
         BOGUS_RULE = {"action": {"type": "Bogus"}, "condition": {"age": 42}}
         rules = [BOGUS_RULE]
         properties = {"lifecycle": {"rule": rules}}
         bucket = self._make_one(name=NAME, properties=properties)
 
-        with self.assertRaises(ValueError):
-            list(bucket.lifecycle_rules)
+        list(bucket.lifecycle_rules)
+        mock_warn.assert_called_with(
+            "Unknown lifecycle rule type received: {}. Please upgrade to the latest version of google-cloud-storage.".format(
+                BOGUS_RULE
+            ),
+            UserWarning,
+            stacklevel=1,
+        )
 
     def test_lifecycle_rules_getter(self):
         from google.cloud.storage.bucket import (
