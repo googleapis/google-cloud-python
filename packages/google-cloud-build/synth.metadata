@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-cloudbuild.git",
-        "sha": "bea78b7b3d0510d9625947bcbb8c32d244b41bb9"
+        "sha": "91078e3c1f1a62cef9c6ea76d854acf0896da804"
       }
     },
     {
@@ -13,13 +13,6 @@
         "remote": "https://github.com/googleapis/googleapis.git",
         "sha": "56fc6d43fed71188d7e18f3ca003544646c4ab35",
         "internalRef": "366346972"
-      }
-    },
-    {
-      "git": {
-        "name": "synthtool",
-        "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "043cc620d6a6111816d9e09f2a97208565fde958"
       }
     }
   ],
