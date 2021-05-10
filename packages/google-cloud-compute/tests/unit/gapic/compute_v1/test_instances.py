@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,31 +13,59 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import os
 import mock
+import packaging.version
 
 import grpc
 from grpc.experimental import aio
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
+
 from requests import Response
 from requests.sessions import Session
 
-from google import auth
 from google.api_core import client_options
-from google.api_core import exceptions
+from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
-from google.auth import credentials
+from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.instances import InstancesClient
 from google.cloud.compute_v1.services.instances import pagers
 from google.cloud.compute_v1.services.instances import transports
+from google.cloud.compute_v1.services.instances.transports.base import _API_CORE_VERSION
+from google.cloud.compute_v1.services.instances.transports.base import (
+    _GOOGLE_AUTH_VERSION,
+)
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
+import google.auth
+
+
+# TODO(busunkim): Once google-api-core >= 1.26.0 is required:
+# - Delete all the api-core and auth "less than" test cases
+# - Delete these pytest markers (Make the "greater than or equal to" tests the default).
+requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
+    packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
+    reason="This test requires google-auth < 1.25.0",
+)
+requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
+    packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
+    reason="This test requires google-auth >= 1.25.0",
+)
+
+requires_api_core_lt_1_26_0 = pytest.mark.skipif(
+    packaging.version.parse(_API_CORE_VERSION) >= packaging.version.parse("1.26.0"),
+    reason="This test requires google-api-core < 1.26.0",
+)
+
+requires_api_core_gte_1_26_0 = pytest.mark.skipif(
+    packaging.version.parse(_API_CORE_VERSION) < packaging.version.parse("1.26.0"),
+    reason="This test requires google-api-core >= 1.26.0",
+)
 
 
 def client_cert_source_callback():
@@ -82,7 +109,7 @@ def test__get_default_mtls_endpoint():
 
 @pytest.mark.parametrize("client_class", [InstancesClient,])
 def test_instances_client_from_service_account_info(client_class):
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -97,7 +124,7 @@ def test_instances_client_from_service_account_info(client_class):
 
 @pytest.mark.parametrize("client_class", [InstancesClient,])
 def test_instances_client_from_service_account_file(client_class):
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -134,7 +161,7 @@ def test_instances_client_get_transport_class():
 def test_instances_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(InstancesClient, "get_transport_class") as gtc:
-        transport = transport_class(credentials=credentials.AnonymousCredentials())
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -370,7 +397,7 @@ def test_add_access_config_rest(
     transport: str = "rest", request_type=compute.AddAccessConfigInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -405,17 +432,16 @@ def test_add_access_config_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.add_access_config(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -449,7 +475,7 @@ def test_add_access_config_rest_from_dict():
 
 
 def test_add_access_config_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -466,7 +492,6 @@ def test_add_access_config_rest_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         access_config_resource = compute.AccessConfig(kind="kind_value")
-
         client.add_access_config(
             project="project_value",
             zone="zone_value",
@@ -480,15 +505,10 @@ def test_add_access_config_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert "network_interface_value" in http_call[1] + str(body)
-
         assert compute.AccessConfig.to_json(
             access_config_resource,
             including_default_value_fields=False,
@@ -497,7 +517,7 @@ def test_add_access_config_rest_flattened():
 
 
 def test_add_access_config_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -516,7 +536,7 @@ def test_add_resource_policies_rest(
     transport: str = "rest", request_type=compute.AddResourcePoliciesInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -551,17 +571,16 @@ def test_add_resource_policies_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.add_resource_policies(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -595,7 +614,7 @@ def test_add_resource_policies_rest_from_dict():
 
 
 def test_add_resource_policies_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -614,7 +633,6 @@ def test_add_resource_policies_rest_flattened():
         instances_add_resource_policies_request_resource = compute.InstancesAddResourcePoliciesRequest(
             resource_policies=["resource_policies_value"]
         )
-
         client.add_resource_policies(
             project="project_value",
             zone="zone_value",
@@ -627,13 +645,9 @@ def test_add_resource_policies_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert compute.InstancesAddResourcePoliciesRequest.to_json(
             instances_add_resource_policies_request_resource,
             including_default_value_fields=False,
@@ -642,7 +656,7 @@ def test_add_resource_policies_rest_flattened():
 
 
 def test_add_resource_policies_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -662,7 +676,7 @@ def test_aggregated_list_rest(
     transport: str = "rest", request_type=compute.AggregatedListInstancesRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -685,17 +699,16 @@ def test_aggregated_list_rest(
             unreachables=["unreachables_value"],
             warning=compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED),
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceAggregatedList.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.aggregated_list(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.AggregatedListPager)
     assert response.id == "id_value"
     assert response.items == {
@@ -715,7 +728,7 @@ def test_aggregated_list_rest_from_dict():
 
 
 def test_aggregated_list_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -738,12 +751,11 @@ def test_aggregated_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
 
 
 def test_aggregated_list_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -754,12 +766,11 @@ def test_aggregated_list_rest_flattened_error():
 
 
 def test_aggregated_list_pager():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # Set the response as a series of pages
-
         response = (
             compute.InstanceAggregatedList(
                 items={
@@ -780,7 +791,6 @@ def test_aggregated_list_pager():
                 },
             ),
         )
-
         # Two responses for two calls
         response = response + response
 
@@ -802,7 +812,6 @@ def test_aggregated_list_pager():
 
         results = list(pager)
         assert len(results) == 6
-
         assert all(isinstance(i, tuple) for i in results)
         for result in results:
             assert isinstance(result, tuple)
@@ -820,7 +829,7 @@ def test_attach_disk_rest(
     transport: str = "rest", request_type=compute.AttachDiskInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -855,17 +864,16 @@ def test_attach_disk_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.attach_disk(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -899,7 +907,7 @@ def test_attach_disk_rest_from_dict():
 
 
 def test_attach_disk_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -916,7 +924,6 @@ def test_attach_disk_rest_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         attached_disk_resource = compute.AttachedDisk(auto_delete=True)
-
         client.attach_disk(
             project="project_value",
             zone="zone_value",
@@ -929,13 +936,9 @@ def test_attach_disk_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert compute.AttachedDisk.to_json(
             attached_disk_resource,
             including_default_value_fields=False,
@@ -944,7 +947,7 @@ def test_attach_disk_rest_flattened():
 
 
 def test_attach_disk_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -962,7 +965,7 @@ def test_delete_rest(
     transport: str = "rest", request_type=compute.DeleteInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -997,17 +1000,16 @@ def test_delete_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.delete(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -1041,7 +1043,7 @@ def test_delete_rest_from_dict():
 
 
 def test_delete_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1066,16 +1068,13 @@ def test_delete_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
 
 
 def test_delete_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1092,7 +1091,7 @@ def test_delete_access_config_rest(
     transport: str = "rest", request_type=compute.DeleteAccessConfigInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1127,17 +1126,16 @@ def test_delete_access_config_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.delete_access_config(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -1171,7 +1169,7 @@ def test_delete_access_config_rest_from_dict():
 
 
 def test_delete_access_config_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1200,20 +1198,15 @@ def test_delete_access_config_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert "access_config_value" in http_call[1] + str(body)
-
         assert "network_interface_value" in http_call[1] + str(body)
 
 
 def test_delete_access_config_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1232,7 +1225,7 @@ def test_detach_disk_rest(
     transport: str = "rest", request_type=compute.DetachDiskInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1267,17 +1260,16 @@ def test_detach_disk_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.detach_disk(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -1311,7 +1303,7 @@ def test_detach_disk_rest_from_dict():
 
 
 def test_detach_disk_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1339,18 +1331,14 @@ def test_detach_disk_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert "device_name_value" in http_call[1] + str(body)
 
 
 def test_detach_disk_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1366,7 +1354,7 @@ def test_detach_disk_rest_flattened_error():
 
 def test_get_rest(transport: str = "rest", request_type=compute.GetInstanceRequest):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1426,26 +1414,23 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInstanceReque
             tags=compute.Tags(fingerprint="fingerprint_value"),
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Instance.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.get(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Instance)
-
     assert response.can_ip_forward is True
     assert response.confidential_instance_config == compute.ConfidentialInstanceConfig(
         enable_confidential_compute=True
     )
     assert response.cpu_platform == "cpu_platform_value"
     assert response.creation_timestamp == "creation_timestamp_value"
-
     assert response.deletion_protection is True
     assert response.description == "description_value"
     assert response.disks == [compute.AttachedDisk(auto_delete=True)]
@@ -1489,7 +1474,6 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInstanceReque
         response.shielded_instance_integrity_policy
         == compute.ShieldedInstanceIntegrityPolicy(update_auto_learn_policy=True)
     )
-
     assert response.start_restricted is True
     assert response.status == compute.Instance.Status.DEPROVISIONING
     assert response.status_message == "status_message_value"
@@ -1502,7 +1486,7 @@ def test_get_rest_from_dict():
 
 
 def test_get_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1527,16 +1511,13 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
 
 
 def test_get_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1553,7 +1534,7 @@ def test_get_guest_attributes_rest(
     transport: str = "rest", request_type=compute.GetGuestAttributesInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1573,17 +1554,16 @@ def test_get_guest_attributes_rest(
             variable_key="variable_key_value",
             variable_value="variable_value_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.GuestAttributes.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.get_guest_attributes(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.GuestAttributes)
     assert response.kind == "kind_value"
     assert response.query_path == "query_path_value"
@@ -1600,7 +1580,7 @@ def test_get_guest_attributes_rest_from_dict():
 
 
 def test_get_guest_attributes_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1625,16 +1605,13 @@ def test_get_guest_attributes_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
 
 
 def test_get_guest_attributes_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1651,7 +1628,7 @@ def test_get_iam_policy_rest(
     transport: str = "rest", request_type=compute.GetIamPolicyInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1677,17 +1654,16 @@ def test_get_iam_policy_rest(
             rules=[compute.Rule(action=compute.Rule.Action.ALLOW)],
             version=774,
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Policy.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.get_iam_policy(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Policy)
     assert response.audit_configs == [
         compute.AuditConfig(
@@ -1698,7 +1674,6 @@ def test_get_iam_policy_rest(
     ]
     assert response.bindings == [compute.Binding(binding_id="binding_id_value")]
     assert response.etag == "etag_value"
-
     assert response.iam_owned is True
     assert response.rules == [compute.Rule(action=compute.Rule.Action.ALLOW)]
     assert response.version == 774
@@ -1709,7 +1684,7 @@ def test_get_iam_policy_rest_from_dict():
 
 
 def test_get_iam_policy_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1734,16 +1709,13 @@ def test_get_iam_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "resource_value" in http_call[1] + str(body)
 
 
 def test_get_iam_policy_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1760,7 +1732,7 @@ def test_get_screenshot_rest(
     transport: str = "rest", request_type=compute.GetScreenshotInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1771,17 +1743,16 @@ def test_get_screenshot_rest(
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Screenshot(contents="contents_value", kind="kind_value",)
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Screenshot.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.get_screenshot(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Screenshot)
     assert response.contents == "contents_value"
     assert response.kind == "kind_value"
@@ -1792,7 +1763,7 @@ def test_get_screenshot_rest_from_dict():
 
 
 def test_get_screenshot_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1817,16 +1788,13 @@ def test_get_screenshot_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
 
 
 def test_get_screenshot_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1843,7 +1811,7 @@ def test_get_serial_port_output_rest(
     transport: str = "rest", request_type=compute.GetSerialPortOutputInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1860,17 +1828,16 @@ def test_get_serial_port_output_rest(
             self_link="self_link_value",
             start="start_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.SerialPortOutput.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.get_serial_port_output(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.SerialPortOutput)
     assert response.contents == "contents_value"
     assert response.kind == "kind_value"
@@ -1884,7 +1851,7 @@ def test_get_serial_port_output_rest_from_dict():
 
 
 def test_get_serial_port_output_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1909,16 +1876,13 @@ def test_get_serial_port_output_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
 
 
 def test_get_serial_port_output_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1936,7 +1900,7 @@ def test_get_shielded_instance_identity_rest(
     request_type=compute.GetShieldedInstanceIdentityInstanceRequest,
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1953,17 +1917,16 @@ def test_get_shielded_instance_identity_rest(
             kind="kind_value",
             signing_key=compute.ShieldedInstanceIdentityEntry(ek_cert="ek_cert_value"),
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.ShieldedInstanceIdentity.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.get_shielded_instance_identity(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.ShieldedInstanceIdentity)
     assert response.encryption_key == compute.ShieldedInstanceIdentityEntry(
         ek_cert="ek_cert_value"
@@ -1979,7 +1942,7 @@ def test_get_shielded_instance_identity_rest_from_dict():
 
 
 def test_get_shielded_instance_identity_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2004,16 +1967,13 @@ def test_get_shielded_instance_identity_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
 
 
 def test_get_shielded_instance_identity_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2030,7 +1990,7 @@ def test_insert_rest(
     transport: str = "rest", request_type=compute.InsertInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2065,17 +2025,16 @@ def test_insert_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.insert(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -2109,7 +2068,7 @@ def test_insert_rest_from_dict():
 
 
 def test_insert_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2126,7 +2085,6 @@ def test_insert_rest_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         instance_resource = compute.Instance(can_ip_forward=True)
-
         client.insert(
             project="project_value",
             zone="zone_value",
@@ -2138,11 +2096,8 @@ def test_insert_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert compute.Instance.to_json(
             instance_resource,
             including_default_value_fields=False,
@@ -2151,7 +2106,7 @@ def test_insert_rest_flattened():
 
 
 def test_insert_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2166,7 +2121,7 @@ def test_insert_rest_flattened_error():
 
 def test_list_rest(transport: str = "rest", request_type=compute.ListInstancesRequest):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2184,17 +2139,16 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListInstancesRe
             self_link="self_link_value",
             warning=compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED),
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceList.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.list(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [compute.Instance(can_ip_forward=True)]
@@ -2209,7 +2163,7 @@ def test_list_rest_from_dict():
 
 
 def test_list_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2234,14 +2188,12 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
 
 
 def test_list_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2252,12 +2204,11 @@ def test_list_rest_flattened_error():
 
 
 def test_list_pager():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # Set the response as a series of pages
-
         response = (
             compute.InstanceList(
                 items=[compute.Instance(), compute.Instance(), compute.Instance(),],
@@ -2267,7 +2218,6 @@ def test_list_pager():
             compute.InstanceList(items=[compute.Instance(),], next_page_token="ghi",),
             compute.InstanceList(items=[compute.Instance(), compute.Instance(),],),
         )
-
         # Two responses for two calls
         response = response + response
 
@@ -2286,7 +2236,6 @@ def test_list_pager():
 
         results = list(pager)
         assert len(results) == 6
-
         assert all(isinstance(i, compute.Instance) for i in results)
 
         pages = list(client.list(request={}).pages)
@@ -2298,7 +2247,7 @@ def test_list_referrers_rest(
     transport: str = "rest", request_type=compute.ListReferrersInstancesRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2316,17 +2265,16 @@ def test_list_referrers_rest(
             self_link="self_link_value",
             warning=compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED),
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceListReferrers.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.list_referrers(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.ListReferrersPager)
     assert response.id == "id_value"
     assert response.items == [compute.Reference(kind="kind_value")]
@@ -2341,7 +2289,7 @@ def test_list_referrers_rest_from_dict():
 
 
 def test_list_referrers_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2366,16 +2314,13 @@ def test_list_referrers_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
 
 
 def test_list_referrers_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2389,12 +2334,11 @@ def test_list_referrers_rest_flattened_error():
 
 
 def test_list_referrers_pager():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # Set the response as a series of pages
-
         response = (
             compute.InstanceListReferrers(
                 items=[compute.Reference(), compute.Reference(), compute.Reference(),],
@@ -2408,7 +2352,6 @@ def test_list_referrers_pager():
                 items=[compute.Reference(), compute.Reference(),],
             ),
         )
-
         # Two responses for two calls
         response = response + response
 
@@ -2427,7 +2370,6 @@ def test_list_referrers_pager():
 
         results = list(pager)
         assert len(results) == 6
-
         assert all(isinstance(i, compute.Reference) for i in results)
 
         pages = list(client.list_referrers(request={}).pages)
@@ -2439,7 +2381,7 @@ def test_remove_resource_policies_rest(
     transport: str = "rest", request_type=compute.RemoveResourcePoliciesInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2474,17 +2416,16 @@ def test_remove_resource_policies_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.remove_resource_policies(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -2518,7 +2459,7 @@ def test_remove_resource_policies_rest_from_dict():
 
 
 def test_remove_resource_policies_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2537,7 +2478,6 @@ def test_remove_resource_policies_rest_flattened():
         instances_remove_resource_policies_request_resource = compute.InstancesRemoveResourcePoliciesRequest(
             resource_policies=["resource_policies_value"]
         )
-
         client.remove_resource_policies(
             project="project_value",
             zone="zone_value",
@@ -2550,13 +2490,9 @@ def test_remove_resource_policies_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert compute.InstancesRemoveResourcePoliciesRequest.to_json(
             instances_remove_resource_policies_request_resource,
             including_default_value_fields=False,
@@ -2565,7 +2501,7 @@ def test_remove_resource_policies_rest_flattened():
 
 
 def test_remove_resource_policies_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2583,7 +2519,7 @@ def test_remove_resource_policies_rest_flattened_error():
 
 def test_reset_rest(transport: str = "rest", request_type=compute.ResetInstanceRequest):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2618,17 +2554,16 @@ def test_reset_rest(transport: str = "rest", request_type=compute.ResetInstanceR
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.reset(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -2662,7 +2597,7 @@ def test_reset_rest_from_dict():
 
 
 def test_reset_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2687,16 +2622,13 @@ def test_reset_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
 
 
 def test_reset_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2713,7 +2645,7 @@ def test_set_deletion_protection_rest(
     transport: str = "rest", request_type=compute.SetDeletionProtectionInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2748,17 +2680,16 @@ def test_set_deletion_protection_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.set_deletion_protection(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -2792,7 +2723,7 @@ def test_set_deletion_protection_rest_from_dict():
 
 
 def test_set_deletion_protection_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2817,16 +2748,13 @@ def test_set_deletion_protection_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "resource_value" in http_call[1] + str(body)
 
 
 def test_set_deletion_protection_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2843,7 +2771,7 @@ def test_set_disk_auto_delete_rest(
     transport: str = "rest", request_type=compute.SetDiskAutoDeleteInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2878,17 +2806,16 @@ def test_set_disk_auto_delete_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.set_disk_auto_delete(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -2922,7 +2849,7 @@ def test_set_disk_auto_delete_rest_from_dict():
 
 
 def test_set_disk_auto_delete_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -2951,20 +2878,15 @@ def test_set_disk_auto_delete_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert str(True) in http_call[1] + str(body)
-
         assert "device_name_value" in http_call[1] + str(body)
 
 
 def test_set_disk_auto_delete_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2983,7 +2905,7 @@ def test_set_iam_policy_rest(
     transport: str = "rest", request_type=compute.SetIamPolicyInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3009,17 +2931,16 @@ def test_set_iam_policy_rest(
             rules=[compute.Rule(action=compute.Rule.Action.ALLOW)],
             version=774,
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Policy.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.set_iam_policy(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Policy)
     assert response.audit_configs == [
         compute.AuditConfig(
@@ -3030,7 +2951,6 @@ def test_set_iam_policy_rest(
     ]
     assert response.bindings == [compute.Binding(binding_id="binding_id_value")]
     assert response.etag == "etag_value"
-
     assert response.iam_owned is True
     assert response.rules == [compute.Rule(action=compute.Rule.Action.ALLOW)]
     assert response.version == 774
@@ -3041,7 +2961,7 @@ def test_set_iam_policy_rest_from_dict():
 
 
 def test_set_iam_policy_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3060,7 +2980,6 @@ def test_set_iam_policy_rest_flattened():
         zone_set_policy_request_resource = compute.ZoneSetPolicyRequest(
             bindings=[compute.Binding(binding_id="binding_id_value")]
         )
-
         client.set_iam_policy(
             project="project_value",
             zone="zone_value",
@@ -3073,13 +2992,9 @@ def test_set_iam_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "resource_value" in http_call[1] + str(body)
-
         assert compute.ZoneSetPolicyRequest.to_json(
             zone_set_policy_request_resource,
             including_default_value_fields=False,
@@ -3088,7 +3003,7 @@ def test_set_iam_policy_rest_flattened():
 
 
 def test_set_iam_policy_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3108,7 +3023,7 @@ def test_set_labels_rest(
     transport: str = "rest", request_type=compute.SetLabelsInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3143,17 +3058,16 @@ def test_set_labels_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.set_labels(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -3187,7 +3101,7 @@ def test_set_labels_rest_from_dict():
 
 
 def test_set_labels_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3206,7 +3120,6 @@ def test_set_labels_rest_flattened():
         instances_set_labels_request_resource = compute.InstancesSetLabelsRequest(
             label_fingerprint="label_fingerprint_value"
         )
-
         client.set_labels(
             project="project_value",
             zone="zone_value",
@@ -3219,13 +3132,9 @@ def test_set_labels_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert compute.InstancesSetLabelsRequest.to_json(
             instances_set_labels_request_resource,
             including_default_value_fields=False,
@@ -3234,7 +3143,7 @@ def test_set_labels_rest_flattened():
 
 
 def test_set_labels_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3254,7 +3163,7 @@ def test_set_machine_resources_rest(
     transport: str = "rest", request_type=compute.SetMachineResourcesInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3289,17 +3198,16 @@ def test_set_machine_resources_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.set_machine_resources(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -3333,7 +3241,7 @@ def test_set_machine_resources_rest_from_dict():
 
 
 def test_set_machine_resources_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3352,7 +3260,6 @@ def test_set_machine_resources_rest_flattened():
         instances_set_machine_resources_request_resource = compute.InstancesSetMachineResourcesRequest(
             guest_accelerators=[compute.AcceleratorConfig(accelerator_count=1805)]
         )
-
         client.set_machine_resources(
             project="project_value",
             zone="zone_value",
@@ -3365,13 +3272,9 @@ def test_set_machine_resources_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert compute.InstancesSetMachineResourcesRequest.to_json(
             instances_set_machine_resources_request_resource,
             including_default_value_fields=False,
@@ -3380,7 +3283,7 @@ def test_set_machine_resources_rest_flattened():
 
 
 def test_set_machine_resources_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3400,7 +3303,7 @@ def test_set_machine_type_rest(
     transport: str = "rest", request_type=compute.SetMachineTypeInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3435,17 +3338,16 @@ def test_set_machine_type_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.set_machine_type(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -3479,7 +3381,7 @@ def test_set_machine_type_rest_from_dict():
 
 
 def test_set_machine_type_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3498,7 +3400,6 @@ def test_set_machine_type_rest_flattened():
         instances_set_machine_type_request_resource = compute.InstancesSetMachineTypeRequest(
             machine_type="machine_type_value"
         )
-
         client.set_machine_type(
             project="project_value",
             zone="zone_value",
@@ -3511,13 +3412,9 @@ def test_set_machine_type_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert compute.InstancesSetMachineTypeRequest.to_json(
             instances_set_machine_type_request_resource,
             including_default_value_fields=False,
@@ -3526,7 +3423,7 @@ def test_set_machine_type_rest_flattened():
 
 
 def test_set_machine_type_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3546,7 +3443,7 @@ def test_set_metadata_rest(
     transport: str = "rest", request_type=compute.SetMetadataInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3581,17 +3478,16 @@ def test_set_metadata_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.set_metadata(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -3625,7 +3521,7 @@ def test_set_metadata_rest_from_dict():
 
 
 def test_set_metadata_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3642,7 +3538,6 @@ def test_set_metadata_rest_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         metadata_resource = compute.Metadata(fingerprint="fingerprint_value")
-
         client.set_metadata(
             project="project_value",
             zone="zone_value",
@@ -3655,13 +3550,9 @@ def test_set_metadata_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert compute.Metadata.to_json(
             metadata_resource,
             including_default_value_fields=False,
@@ -3670,7 +3561,7 @@ def test_set_metadata_rest_flattened():
 
 
 def test_set_metadata_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3688,7 +3579,7 @@ def test_set_min_cpu_platform_rest(
     transport: str = "rest", request_type=compute.SetMinCpuPlatformInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3723,17 +3614,16 @@ def test_set_min_cpu_platform_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.set_min_cpu_platform(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -3767,7 +3657,7 @@ def test_set_min_cpu_platform_rest_from_dict():
 
 
 def test_set_min_cpu_platform_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3786,7 +3676,6 @@ def test_set_min_cpu_platform_rest_flattened():
         instances_set_min_cpu_platform_request_resource = compute.InstancesSetMinCpuPlatformRequest(
             min_cpu_platform="min_cpu_platform_value"
         )
-
         client.set_min_cpu_platform(
             project="project_value",
             zone="zone_value",
@@ -3799,13 +3688,9 @@ def test_set_min_cpu_platform_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert compute.InstancesSetMinCpuPlatformRequest.to_json(
             instances_set_min_cpu_platform_request_resource,
             including_default_value_fields=False,
@@ -3814,7 +3699,7 @@ def test_set_min_cpu_platform_rest_flattened():
 
 
 def test_set_min_cpu_platform_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3834,7 +3719,7 @@ def test_set_scheduling_rest(
     transport: str = "rest", request_type=compute.SetSchedulingInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3869,17 +3754,16 @@ def test_set_scheduling_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.set_scheduling(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -3913,7 +3797,7 @@ def test_set_scheduling_rest_from_dict():
 
 
 def test_set_scheduling_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -3930,7 +3814,6 @@ def test_set_scheduling_rest_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         scheduling_resource = compute.Scheduling(automatic_restart=True)
-
         client.set_scheduling(
             project="project_value",
             zone="zone_value",
@@ -3943,13 +3826,9 @@ def test_set_scheduling_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert compute.Scheduling.to_json(
             scheduling_resource,
             including_default_value_fields=False,
@@ -3958,7 +3837,7 @@ def test_set_scheduling_rest_flattened():
 
 
 def test_set_scheduling_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3976,7 +3855,7 @@ def test_set_service_account_rest(
     transport: str = "rest", request_type=compute.SetServiceAccountInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4011,17 +3890,16 @@ def test_set_service_account_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.set_service_account(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -4055,7 +3933,7 @@ def test_set_service_account_rest_from_dict():
 
 
 def test_set_service_account_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4074,7 +3952,6 @@ def test_set_service_account_rest_flattened():
         instances_set_service_account_request_resource = compute.InstancesSetServiceAccountRequest(
             email="email_value"
         )
-
         client.set_service_account(
             project="project_value",
             zone="zone_value",
@@ -4087,13 +3964,9 @@ def test_set_service_account_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert compute.InstancesSetServiceAccountRequest.to_json(
             instances_set_service_account_request_resource,
             including_default_value_fields=False,
@@ -4102,7 +3975,7 @@ def test_set_service_account_rest_flattened():
 
 
 def test_set_service_account_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4123,7 +3996,7 @@ def test_set_shielded_instance_integrity_policy_rest(
     request_type=compute.SetShieldedInstanceIntegrityPolicyInstanceRequest,
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4158,17 +4031,16 @@ def test_set_shielded_instance_integrity_policy_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.set_shielded_instance_integrity_policy(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -4202,7 +4074,7 @@ def test_set_shielded_instance_integrity_policy_rest_from_dict():
 
 
 def test_set_shielded_instance_integrity_policy_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4221,7 +4093,6 @@ def test_set_shielded_instance_integrity_policy_rest_flattened():
         shielded_instance_integrity_policy_resource = compute.ShieldedInstanceIntegrityPolicy(
             update_auto_learn_policy=True
         )
-
         client.set_shielded_instance_integrity_policy(
             project="project_value",
             zone="zone_value",
@@ -4234,13 +4105,9 @@ def test_set_shielded_instance_integrity_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert compute.ShieldedInstanceIntegrityPolicy.to_json(
             shielded_instance_integrity_policy_resource,
             including_default_value_fields=False,
@@ -4249,7 +4116,7 @@ def test_set_shielded_instance_integrity_policy_rest_flattened():
 
 
 def test_set_shielded_instance_integrity_policy_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4269,7 +4136,7 @@ def test_set_tags_rest(
     transport: str = "rest", request_type=compute.SetTagsInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4304,17 +4171,16 @@ def test_set_tags_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.set_tags(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -4348,7 +4214,7 @@ def test_set_tags_rest_from_dict():
 
 
 def test_set_tags_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4365,7 +4231,6 @@ def test_set_tags_rest_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         tags_resource = compute.Tags(fingerprint="fingerprint_value")
-
         client.set_tags(
             project="project_value",
             zone="zone_value",
@@ -4378,13 +4243,9 @@ def test_set_tags_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert compute.Tags.to_json(
             tags_resource,
             including_default_value_fields=False,
@@ -4393,7 +4254,7 @@ def test_set_tags_rest_flattened():
 
 
 def test_set_tags_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4412,7 +4273,7 @@ def test_simulate_maintenance_event_rest(
     request_type=compute.SimulateMaintenanceEventInstanceRequest,
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4447,17 +4308,16 @@ def test_simulate_maintenance_event_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.simulate_maintenance_event(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -4491,7 +4351,7 @@ def test_simulate_maintenance_event_rest_from_dict():
 
 
 def test_simulate_maintenance_event_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4516,16 +4376,13 @@ def test_simulate_maintenance_event_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
 
 
 def test_simulate_maintenance_event_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4540,7 +4397,7 @@ def test_simulate_maintenance_event_rest_flattened_error():
 
 def test_start_rest(transport: str = "rest", request_type=compute.StartInstanceRequest):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4575,17 +4432,16 @@ def test_start_rest(transport: str = "rest", request_type=compute.StartInstanceR
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.start(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -4619,7 +4475,7 @@ def test_start_rest_from_dict():
 
 
 def test_start_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4644,16 +4500,13 @@ def test_start_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
 
 
 def test_start_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4670,7 +4523,7 @@ def test_start_with_encryption_key_rest(
     transport: str = "rest", request_type=compute.StartWithEncryptionKeyInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4705,17 +4558,16 @@ def test_start_with_encryption_key_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.start_with_encryption_key(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -4749,7 +4601,7 @@ def test_start_with_encryption_key_rest_from_dict():
 
 
 def test_start_with_encryption_key_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4774,7 +4626,6 @@ def test_start_with_encryption_key_rest_flattened():
                 )
             ]
         )
-
         client.start_with_encryption_key(
             project="project_value",
             zone="zone_value",
@@ -4787,13 +4638,9 @@ def test_start_with_encryption_key_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert compute.InstancesStartWithEncryptionKeyRequest.to_json(
             instances_start_with_encryption_key_request_resource,
             including_default_value_fields=False,
@@ -4802,7 +4649,7 @@ def test_start_with_encryption_key_rest_flattened():
 
 
 def test_start_with_encryption_key_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4826,7 +4673,7 @@ def test_start_with_encryption_key_rest_flattened_error():
 
 def test_stop_rest(transport: str = "rest", request_type=compute.StopInstanceRequest):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4861,17 +4708,16 @@ def test_stop_rest(transport: str = "rest", request_type=compute.StopInstanceReq
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.stop(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -4905,7 +4751,7 @@ def test_stop_rest_from_dict():
 
 
 def test_stop_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -4930,16 +4776,13 @@ def test_stop_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
 
 
 def test_stop_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4956,7 +4799,7 @@ def test_test_iam_permissions_rest(
     transport: str = "rest", request_type=compute.TestIamPermissionsInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4969,17 +4812,16 @@ def test_test_iam_permissions_rest(
         return_value = compute.TestPermissionsResponse(
             permissions=["permissions_value"],
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.TestPermissionsResponse.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.test_iam_permissions(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.TestPermissionsResponse)
     assert response.permissions == ["permissions_value"]
 
@@ -4989,7 +4831,7 @@ def test_test_iam_permissions_rest_from_dict():
 
 
 def test_test_iam_permissions_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5008,7 +4850,6 @@ def test_test_iam_permissions_rest_flattened():
         test_permissions_request_resource = compute.TestPermissionsRequest(
             permissions=["permissions_value"]
         )
-
         client.test_iam_permissions(
             project="project_value",
             zone="zone_value",
@@ -5021,13 +4862,9 @@ def test_test_iam_permissions_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "resource_value" in http_call[1] + str(body)
-
         assert compute.TestPermissionsRequest.to_json(
             test_permissions_request_resource,
             including_default_value_fields=False,
@@ -5036,7 +4873,7 @@ def test_test_iam_permissions_rest_flattened():
 
 
 def test_test_iam_permissions_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5056,7 +4893,7 @@ def test_update_rest(
     transport: str = "rest", request_type=compute.UpdateInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5091,17 +4928,16 @@ def test_update_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.update(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -5135,7 +4971,7 @@ def test_update_rest_from_dict():
 
 
 def test_update_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5152,7 +4988,6 @@ def test_update_rest_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         instance_resource = compute.Instance(can_ip_forward=True)
-
         client.update(
             project="project_value",
             zone="zone_value",
@@ -5165,13 +5000,9 @@ def test_update_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert compute.Instance.to_json(
             instance_resource,
             including_default_value_fields=False,
@@ -5180,7 +5011,7 @@ def test_update_rest_flattened():
 
 
 def test_update_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5198,7 +5029,7 @@ def test_update_access_config_rest(
     transport: str = "rest", request_type=compute.UpdateAccessConfigInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5233,17 +5064,16 @@ def test_update_access_config_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.update_access_config(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -5277,7 +5107,7 @@ def test_update_access_config_rest_from_dict():
 
 
 def test_update_access_config_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5294,7 +5124,6 @@ def test_update_access_config_rest_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         access_config_resource = compute.AccessConfig(kind="kind_value")
-
         client.update_access_config(
             project="project_value",
             zone="zone_value",
@@ -5308,15 +5137,10 @@ def test_update_access_config_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert "network_interface_value" in http_call[1] + str(body)
-
         assert compute.AccessConfig.to_json(
             access_config_resource,
             including_default_value_fields=False,
@@ -5325,7 +5149,7 @@ def test_update_access_config_rest_flattened():
 
 
 def test_update_access_config_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5344,7 +5168,7 @@ def test_update_display_device_rest(
     transport: str = "rest", request_type=compute.UpdateDisplayDeviceInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5379,17 +5203,16 @@ def test_update_display_device_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.update_display_device(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -5423,7 +5246,7 @@ def test_update_display_device_rest_from_dict():
 
 
 def test_update_display_device_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5440,7 +5263,6 @@ def test_update_display_device_rest_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         display_device_resource = compute.DisplayDevice(enable_display=True)
-
         client.update_display_device(
             project="project_value",
             zone="zone_value",
@@ -5453,13 +5275,9 @@ def test_update_display_device_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert compute.DisplayDevice.to_json(
             display_device_resource,
             including_default_value_fields=False,
@@ -5468,7 +5286,7 @@ def test_update_display_device_rest_flattened():
 
 
 def test_update_display_device_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5486,7 +5304,7 @@ def test_update_network_interface_rest(
     transport: str = "rest", request_type=compute.UpdateNetworkInterfaceInstanceRequest
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5521,17 +5339,16 @@ def test_update_network_interface_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.update_network_interface(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -5565,7 +5382,7 @@ def test_update_network_interface_rest_from_dict():
 
 
 def test_update_network_interface_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5584,7 +5401,6 @@ def test_update_network_interface_rest_flattened():
         network_interface_resource = compute.NetworkInterface(
             access_configs=[compute.AccessConfig(kind="kind_value")]
         )
-
         client.update_network_interface(
             project="project_value",
             zone="zone_value",
@@ -5598,15 +5414,10 @@ def test_update_network_interface_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert "network_interface_value" in http_call[1] + str(body)
-
         assert compute.NetworkInterface.to_json(
             network_interface_resource,
             including_default_value_fields=False,
@@ -5615,7 +5426,7 @@ def test_update_network_interface_rest_flattened():
 
 
 def test_update_network_interface_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5637,7 +5448,7 @@ def test_update_shielded_instance_config_rest(
     request_type=compute.UpdateShieldedInstanceConfigInstanceRequest,
 ):
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5672,17 +5483,16 @@ def test_update_shielded_instance_config_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.update_shielded_instance_config(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -5716,7 +5526,7 @@ def test_update_shielded_instance_config_rest_from_dict():
 
 
 def test_update_shielded_instance_config_rest_flattened():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -5735,7 +5545,6 @@ def test_update_shielded_instance_config_rest_flattened():
         shielded_instance_config_resource = compute.ShieldedInstanceConfig(
             enable_integrity_monitoring=True
         )
-
         client.update_shielded_instance_config(
             project="project_value",
             zone="zone_value",
@@ -5748,13 +5557,9 @@ def test_update_shielded_instance_config_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_value" in http_call[1] + str(body)
-
         assert compute.ShieldedInstanceConfig.to_json(
             shielded_instance_config_resource,
             including_default_value_fields=False,
@@ -5763,7 +5568,7 @@ def test_update_shielded_instance_config_rest_flattened():
 
 
 def test_update_shielded_instance_config_rest_flattened_error():
-    client = InstancesClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5782,16 +5587,16 @@ def test_update_shielded_instance_config_rest_flattened_error():
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.InstancesRestTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = InstancesClient(
-            credentials=credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.InstancesRestTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = InstancesClient(
@@ -5801,7 +5606,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.InstancesRestTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = InstancesClient(
@@ -5812,7 +5617,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.InstancesRestTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = InstancesClient(transport=transport)
     assert client.transport is transport
@@ -5821,17 +5626,17 @@ def test_transport_instance():
 @pytest.mark.parametrize("transport_class", [transports.InstancesRestTransport,])
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, "default") as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
 
 def test_instances_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
-    with pytest.raises(exceptions.DuplicateCredentialArgs):
+    with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.InstancesTransport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -5843,7 +5648,7 @@ def test_instances_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.InstancesTransport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -5895,15 +5700,40 @@ def test_instances_base_transport():
             getattr(transport, method)(request=object())
 
 
+@requires_google_auth_gte_1_25_0
 def test_instances_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
-        auth, "load_credentials_from_file"
+        google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
         "google.cloud.compute_v1.services.instances.transports.InstancesTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (credentials.AnonymousCredentials(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport = transports.InstancesTransport(
+            credentials_file="credentials.json", quota_project_id="octopus",
+        )
+        load_creds.assert_called_once_with(
+            "credentials.json",
+            scopes=None,
+            default_scopes=(
+                "https://www.googleapis.com/auth/compute",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
+            quota_project_id="octopus",
+        )
+
+
+@requires_google_auth_lt_1_25_0
+def test_instances_base_transport_with_credentials_file_old_google_auth():
+    # Instantiate the base transport with a credentials file
+    with mock.patch.object(
+        google.auth, "load_credentials_from_file", autospec=True
+    ) as load_creds, mock.patch(
+        "google.cloud.compute_v1.services.instances.transports.InstancesTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.InstancesTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
         )
@@ -5919,19 +5749,36 @@ def test_instances_base_transport_with_credentials_file():
 
 def test_instances_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(auth, "default") as adc, mock.patch(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
         "google.cloud.compute_v1.services.instances.transports.InstancesTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.InstancesTransport()
         adc.assert_called_once()
 
 
+@requires_google_auth_gte_1_25_0
 def test_instances_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        InstancesClient()
+        adc.assert_called_once_with(
+            scopes=None,
+            default_scopes=(
+                "https://www.googleapis.com/auth/compute",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
+            quota_project_id=None,
+        )
+
+
+@requires_google_auth_lt_1_25_0
+def test_instances_auth_adc_old_google_auth():
+    # If no credentials are provided, we should use ADC credentials.
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         InstancesClient()
         adc.assert_called_once_with(
             scopes=(
@@ -5943,7 +5790,7 @@ def test_instances_auth_adc():
 
 
 def test_instances_http_transport_client_cert_source_for_mtls():
-    cred = credentials.AnonymousCredentials()
+    cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
@@ -5955,7 +5802,7 @@ def test_instances_http_transport_client_cert_source_for_mtls():
 
 def test_instances_host_no_port():
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com"
         ),
@@ -5965,7 +5812,7 @@ def test_instances_host_no_port():
 
 def test_instances_host_with_port():
     client = InstancesClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com:8000"
         ),
@@ -5975,7 +5822,6 @@ def test_instances_host_with_port():
 
 def test_common_billing_account_path():
     billing_account = "squid"
-
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5996,7 +5842,6 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-
     expected = "folders/{folder}".format(folder=folder,)
     actual = InstancesClient.common_folder_path(folder)
     assert expected == actual
@@ -6015,7 +5860,6 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-
     expected = "organizations/{organization}".format(organization=organization,)
     actual = InstancesClient.common_organization_path(organization)
     assert expected == actual
@@ -6034,7 +5878,6 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-
     expected = "projects/{project}".format(project=project,)
     actual = InstancesClient.common_project_path(project)
     assert expected == actual
@@ -6054,7 +5897,6 @@ def test_parse_common_project_path():
 def test_common_location_path():
     project = "winkle"
     location = "nautilus"
-
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -6081,7 +5923,7 @@ def test_client_withDEFAULT_CLIENT_INFO():
         transports.InstancesTransport, "_prep_wrapped_messages"
     ) as prep:
         client = InstancesClient(
-            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -6090,6 +5932,6 @@ def test_client_withDEFAULT_CLIENT_INFO():
     ) as prep:
         transport_class = InstancesClient.get_transport_class()
         transport = transport_class(
-            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)

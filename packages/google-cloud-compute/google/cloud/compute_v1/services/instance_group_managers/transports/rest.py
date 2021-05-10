@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple
 
-
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.auth.transport.requests import AuthorizedSession
 
-
 from google.cloud.compute_v1.types import compute
-
 
 from .base import InstanceGroupManagersTransport, DEFAULT_CLIENT_INFO
 
@@ -51,7 +45,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         self,
         *,
         host: str = "compute.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
@@ -61,7 +55,8 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -78,20 +73,25 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
                 if ``channel`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
+        # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
+        # credentials object
         super().__init__(
             host=host, credentials=credentials, client_info=client_info,
         )
-        self._session = AuthorizedSession(self._credentials)
+        self._session = AuthorizedSession(
+            self._credentials, default_host=self.DEFAULT_HOST
+        )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        self._prep_wrapped_messages(client_info)
 
     def abandon_instances(
         self,
@@ -103,8 +103,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.AbandonInstancesInstanceGroupManagerRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.AbandonInstances.
                 See the method description for details.
 
@@ -162,15 +161,14 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "requestId": request.request_id,
-        }
+        query_params = {}
+        if compute.AbandonInstancesInstanceGroupManagerRequest.request_id in request:
+            query_params["requestId"] = request.request_id
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
@@ -192,8 +190,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.AggregatedListInstanceGroupManagersRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.AggregatedList.
                 See the method description for details.
 
@@ -213,24 +210,34 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "filter": request.filter,
-            "includeAllScopes": request.include_all_scopes,
-            "maxResults": request.max_results,
-            "orderBy": request.order_by,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
-        }
+        query_params = {}
+        if compute.AggregatedListInstanceGroupManagersRequest.filter in request:
+            query_params["filter"] = request.filter
+        if (
+            compute.AggregatedListInstanceGroupManagersRequest.include_all_scopes
+            in request
+        ):
+            query_params["includeAllScopes"] = request.include_all_scopes
+        if compute.AggregatedListInstanceGroupManagersRequest.max_results in request:
+            query_params["maxResults"] = request.max_results
+        if compute.AggregatedListInstanceGroupManagersRequest.order_by in request:
+            query_params["orderBy"] = request.order_by
+        if compute.AggregatedListInstanceGroupManagersRequest.page_token in request:
+            query_params["pageToken"] = request.page_token
+        if (
+            compute.AggregatedListInstanceGroupManagersRequest.return_partial_success
+            in request
+        ):
+            query_params["returnPartialSuccess"] = request.return_partial_success
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.get(url)
+        response = self._session.get(url,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -251,8 +258,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.ApplyUpdatesToInstances.
                 See the method description for details.
 
@@ -311,12 +317,11 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {}
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
@@ -338,8 +343,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.CreateInstancesInstanceGroupManagerRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.CreateInstances.
                 See the method description for details.
 
@@ -397,15 +401,14 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "requestId": request.request_id,
-        }
+        query_params = {}
+        if compute.CreateInstancesInstanceGroupManagerRequest.request_id in request:
+            query_params["requestId"] = request.request_id
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
@@ -427,8 +430,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.DeleteInstanceGroupManagerRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.Delete. See the
                 method description for details.
 
@@ -479,19 +481,18 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "requestId": request.request_id,
-        }
+        query_params = {}
+        if compute.DeleteInstanceGroupManagerRequest.request_id in request:
+            query_params["requestId"] = request.request_id
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.delete(url)
+        response = self._session.delete(url,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -509,8 +510,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.DeleteInstancesInstanceGroupManagerRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.DeleteInstances.
                 See the method description for details.
 
@@ -568,15 +568,14 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "requestId": request.request_id,
-        }
+        query_params = {}
+        if compute.DeleteInstancesInstanceGroupManagerRequest.request_id in request:
+            query_params["requestId"] = request.request_id
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
@@ -599,8 +598,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.DeletePerInstanceConfigsInstanceGroupManagerRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.DeletePerInstanceConfigs.
                 See the method description for details.
 
@@ -659,12 +657,11 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {}
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
@@ -686,8 +683,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.GetInstanceGroupManagerRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.Get. See the
                 method description for details.
 
@@ -725,16 +721,15 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {}
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.get(url)
+        response = self._session.get(url,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -754,8 +749,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.InsertInstanceGroupManagerRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.Insert. See the
                 method description for details.
 
@@ -810,15 +804,14 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "requestId": request.request_id,
-        }
+        query_params = {}
+        if compute.InsertInstanceGroupManagerRequest.request_id in request:
+            query_params["requestId"] = request.request_id
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
@@ -840,8 +833,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.ListInstanceGroupManagersRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.List. See the
                 method description for details.
 
@@ -861,23 +853,26 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "filter": request.filter,
-            "maxResults": request.max_results,
-            "orderBy": request.order_by,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
-        }
+        query_params = {}
+        if compute.ListInstanceGroupManagersRequest.filter in request:
+            query_params["filter"] = request.filter
+        if compute.ListInstanceGroupManagersRequest.max_results in request:
+            query_params["maxResults"] = request.max_results
+        if compute.ListInstanceGroupManagersRequest.order_by in request:
+            query_params["orderBy"] = request.order_by
+        if compute.ListInstanceGroupManagersRequest.page_token in request:
+            query_params["pageToken"] = request.page_token
+        if compute.ListInstanceGroupManagersRequest.return_partial_success in request:
+            query_params["returnPartialSuccess"] = request.return_partial_success
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.get(url)
+        response = self._session.get(url,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -897,8 +892,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.ListErrorsInstanceGroupManagersRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.ListErrors. See
                 the method description for details.
 
@@ -921,23 +915,29 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "filter": request.filter,
-            "maxResults": request.max_results,
-            "orderBy": request.order_by,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
-        }
+        query_params = {}
+        if compute.ListErrorsInstanceGroupManagersRequest.filter in request:
+            query_params["filter"] = request.filter
+        if compute.ListErrorsInstanceGroupManagersRequest.max_results in request:
+            query_params["maxResults"] = request.max_results
+        if compute.ListErrorsInstanceGroupManagersRequest.order_by in request:
+            query_params["orderBy"] = request.order_by
+        if compute.ListErrorsInstanceGroupManagersRequest.page_token in request:
+            query_params["pageToken"] = request.page_token
+        if (
+            compute.ListErrorsInstanceGroupManagersRequest.return_partial_success
+            in request
+        ):
+            query_params["returnPartialSuccess"] = request.return_partial_success
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.get(url)
+        response = self._session.get(url,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -957,8 +957,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.ListManagedInstancesInstanceGroupManagersRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.ListManagedInstances.
                 See the method description for details.
 
@@ -981,23 +980,35 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "filter": request.filter,
-            "maxResults": request.max_results,
-            "orderBy": request.order_by,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
-        }
+        query_params = {}
+        if compute.ListManagedInstancesInstanceGroupManagersRequest.filter in request:
+            query_params["filter"] = request.filter
+        if (
+            compute.ListManagedInstancesInstanceGroupManagersRequest.max_results
+            in request
+        ):
+            query_params["maxResults"] = request.max_results
+        if compute.ListManagedInstancesInstanceGroupManagersRequest.order_by in request:
+            query_params["orderBy"] = request.order_by
+        if (
+            compute.ListManagedInstancesInstanceGroupManagersRequest.page_token
+            in request
+        ):
+            query_params["pageToken"] = request.page_token
+        if (
+            compute.ListManagedInstancesInstanceGroupManagersRequest.return_partial_success
+            in request
+        ):
+            query_params["returnPartialSuccess"] = request.return_partial_success
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url)
+        response = self._session.post(url,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1017,8 +1028,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.ListPerInstanceConfigsInstanceGroupManagersRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.ListPerInstanceConfigs.
                 See the method description for details.
 
@@ -1041,23 +1051,38 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "filter": request.filter,
-            "maxResults": request.max_results,
-            "orderBy": request.order_by,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
-        }
+        query_params = {}
+        if compute.ListPerInstanceConfigsInstanceGroupManagersRequest.filter in request:
+            query_params["filter"] = request.filter
+        if (
+            compute.ListPerInstanceConfigsInstanceGroupManagersRequest.max_results
+            in request
+        ):
+            query_params["maxResults"] = request.max_results
+        if (
+            compute.ListPerInstanceConfigsInstanceGroupManagersRequest.order_by
+            in request
+        ):
+            query_params["orderBy"] = request.order_by
+        if (
+            compute.ListPerInstanceConfigsInstanceGroupManagersRequest.page_token
+            in request
+        ):
+            query_params["pageToken"] = request.page_token
+        if (
+            compute.ListPerInstanceConfigsInstanceGroupManagersRequest.return_partial_success
+            in request
+        ):
+            query_params["returnPartialSuccess"] = request.return_partial_success
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url)
+        response = self._session.post(url,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1077,8 +1102,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.PatchInstanceGroupManagerRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.Patch. See the
                 method description for details.
 
@@ -1136,15 +1160,14 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "requestId": request.request_id,
-        }
+        query_params = {}
+        if compute.PatchInstanceGroupManagerRequest.request_id in request:
+            query_params["requestId"] = request.request_id
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
@@ -1167,8 +1190,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.PatchPerInstanceConfigsInstanceGroupManagerRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.PatchPerInstanceConfigs.
                 See the method description for details.
 
@@ -1226,15 +1248,17 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "requestId": request.request_id,
-        }
+        query_params = {}
+        if (
+            compute.PatchPerInstanceConfigsInstanceGroupManagerRequest.request_id
+            in request
+        ):
+            query_params["requestId"] = request.request_id
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
@@ -1256,8 +1280,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.RecreateInstancesInstanceGroupManagerRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.RecreateInstances.
                 See the method description for details.
 
@@ -1315,15 +1338,14 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "requestId": request.request_id,
-        }
+        query_params = {}
+        if compute.RecreateInstancesInstanceGroupManagerRequest.request_id in request:
+            query_params["requestId"] = request.request_id
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
@@ -1345,8 +1367,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.ResizeInstanceGroupManagerRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.Resize. See the
                 method description for details.
 
@@ -1397,20 +1418,20 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "requestId": request.request_id,
-            "size": request.size,
-        }
+        query_params = {}
+        if compute.ResizeInstanceGroupManagerRequest.request_id in request:
+            query_params["requestId"] = request.request_id
+        if request.size:
+            query_params["size"] = request.size
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.post(url)
+        response = self._session.post(url,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -1428,8 +1449,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.SetInstanceTemplateInstanceGroupManagerRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.SetInstanceTemplate.
                 See the method description for details.
 
@@ -1487,15 +1507,14 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "requestId": request.request_id,
-        }
+        query_params = {}
+        if compute.SetInstanceTemplateInstanceGroupManagerRequest.request_id in request:
+            query_params["requestId"] = request.request_id
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
@@ -1517,8 +1536,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.SetTargetPoolsInstanceGroupManagerRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.SetTargetPools.
                 See the method description for details.
 
@@ -1576,15 +1594,14 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "requestId": request.request_id,
-        }
+        query_params = {}
+        if compute.SetTargetPoolsInstanceGroupManagerRequest.request_id in request:
+            query_params["requestId"] = request.request_id
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
@@ -1607,8 +1624,7 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         Args:
             request (~.compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 InstanceGroupManagers.UpdatePerInstanceConfigs.
                 See the method description for details.
 
@@ -1666,15 +1682,17 @@ class InstanceGroupManagersRestTransport(InstanceGroupManagersTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "requestId": request.request_id,
-        }
+        query_params = {}
+        if (
+            compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest.request_id
+            in request
+        ):
+            query_params["requestId"] = request.request_id
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request

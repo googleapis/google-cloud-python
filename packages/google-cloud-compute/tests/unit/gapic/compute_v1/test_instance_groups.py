@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,31 +13,61 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import os
 import mock
+import packaging.version
 
 import grpc
 from grpc.experimental import aio
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
+
 from requests import Response
 from requests.sessions import Session
 
-from google import auth
 from google.api_core import client_options
-from google.api_core import exceptions
+from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
-from google.auth import credentials
+from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.instance_groups import InstanceGroupsClient
 from google.cloud.compute_v1.services.instance_groups import pagers
 from google.cloud.compute_v1.services.instance_groups import transports
+from google.cloud.compute_v1.services.instance_groups.transports.base import (
+    _API_CORE_VERSION,
+)
+from google.cloud.compute_v1.services.instance_groups.transports.base import (
+    _GOOGLE_AUTH_VERSION,
+)
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
+import google.auth
+
+
+# TODO(busunkim): Once google-api-core >= 1.26.0 is required:
+# - Delete all the api-core and auth "less than" test cases
+# - Delete these pytest markers (Make the "greater than or equal to" tests the default).
+requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
+    packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
+    reason="This test requires google-auth < 1.25.0",
+)
+requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
+    packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
+    reason="This test requires google-auth >= 1.25.0",
+)
+
+requires_api_core_lt_1_26_0 = pytest.mark.skipif(
+    packaging.version.parse(_API_CORE_VERSION) >= packaging.version.parse("1.26.0"),
+    reason="This test requires google-api-core < 1.26.0",
+)
+
+requires_api_core_gte_1_26_0 = pytest.mark.skipif(
+    packaging.version.parse(_API_CORE_VERSION) < packaging.version.parse("1.26.0"),
+    reason="This test requires google-api-core >= 1.26.0",
+)
 
 
 def client_cert_source_callback():
@@ -87,7 +116,7 @@ def test__get_default_mtls_endpoint():
 
 @pytest.mark.parametrize("client_class", [InstanceGroupsClient,])
 def test_instance_groups_client_from_service_account_info(client_class):
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -102,7 +131,7 @@ def test_instance_groups_client_from_service_account_info(client_class):
 
 @pytest.mark.parametrize("client_class", [InstanceGroupsClient,])
 def test_instance_groups_client_from_service_account_file(client_class):
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -143,7 +172,7 @@ def test_instance_groups_client_client_options(
 ):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(InstanceGroupsClient, "get_transport_class") as gtc:
-        transport = transport_class(credentials=credentials.AnonymousCredentials())
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -381,7 +410,7 @@ def test_add_instances_rest(
     transport: str = "rest", request_type=compute.AddInstancesInstanceGroupRequest
 ):
     client = InstanceGroupsClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -416,17 +445,16 @@ def test_add_instances_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.add_instances(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -460,7 +488,7 @@ def test_add_instances_rest_from_dict():
 
 
 def test_add_instances_rest_flattened():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -479,7 +507,6 @@ def test_add_instances_rest_flattened():
         instance_groups_add_instances_request_resource = compute.InstanceGroupsAddInstancesRequest(
             instances=[compute.InstanceReference(instance="instance_value")]
         )
-
         client.add_instances(
             project="project_value",
             zone="zone_value",
@@ -492,13 +519,9 @@ def test_add_instances_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_group_value" in http_call[1] + str(body)
-
         assert compute.InstanceGroupsAddInstancesRequest.to_json(
             instance_groups_add_instances_request_resource,
             including_default_value_fields=False,
@@ -507,7 +530,7 @@ def test_add_instances_rest_flattened():
 
 
 def test_add_instances_rest_flattened_error():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -527,7 +550,7 @@ def test_aggregated_list_rest(
     transport: str = "rest", request_type=compute.AggregatedListInstanceGroupsRequest
 ):
     client = InstanceGroupsClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -554,17 +577,16 @@ def test_aggregated_list_rest(
             unreachables=["unreachables_value"],
             warning=compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED),
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceGroupAggregatedList.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.aggregated_list(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.AggregatedListPager)
     assert response.id == "id_value"
     assert response.items == {
@@ -586,7 +608,7 @@ def test_aggregated_list_rest_from_dict():
 
 
 def test_aggregated_list_rest_flattened():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -609,12 +631,11 @@ def test_aggregated_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
 
 
 def test_aggregated_list_rest_flattened_error():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -625,12 +646,11 @@ def test_aggregated_list_rest_flattened_error():
 
 
 def test_aggregated_list_pager():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # Set the response as a series of pages
-
         response = (
             compute.InstanceGroupAggregatedList(
                 items={
@@ -651,7 +671,6 @@ def test_aggregated_list_pager():
                 },
             ),
         )
-
         # Two responses for two calls
         response = response + response
 
@@ -675,7 +694,6 @@ def test_aggregated_list_pager():
 
         results = list(pager)
         assert len(results) == 6
-
         assert all(isinstance(i, tuple) for i in results)
         for result in results:
             assert isinstance(result, tuple)
@@ -696,7 +714,7 @@ def test_delete_rest(
     transport: str = "rest", request_type=compute.DeleteInstanceGroupRequest
 ):
     client = InstanceGroupsClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -731,17 +749,16 @@ def test_delete_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.delete(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -775,7 +792,7 @@ def test_delete_rest_from_dict():
 
 
 def test_delete_rest_flattened():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -802,16 +819,13 @@ def test_delete_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_group_value" in http_call[1] + str(body)
 
 
 def test_delete_rest_flattened_error():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -828,7 +842,7 @@ def test_get_rest(
     transport: str = "rest", request_type=compute.GetInstanceGroupRequest
 ):
     client = InstanceGroupsClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -853,17 +867,16 @@ def test_get_rest(
             subnetwork="subnetwork_value",
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceGroup.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.get(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.InstanceGroup)
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
@@ -885,7 +898,7 @@ def test_get_rest_from_dict():
 
 
 def test_get_rest_flattened():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -912,16 +925,13 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_group_value" in http_call[1] + str(body)
 
 
 def test_get_rest_flattened_error():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -938,7 +948,7 @@ def test_insert_rest(
     transport: str = "rest", request_type=compute.InsertInstanceGroupRequest
 ):
     client = InstanceGroupsClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -973,17 +983,16 @@ def test_insert_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.insert(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -1017,7 +1026,7 @@ def test_insert_rest_from_dict():
 
 
 def test_insert_rest_flattened():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1036,7 +1045,6 @@ def test_insert_rest_flattened():
         instance_group_resource = compute.InstanceGroup(
             creation_timestamp="creation_timestamp_value"
         )
-
         client.insert(
             project="project_value",
             zone="zone_value",
@@ -1048,11 +1056,8 @@ def test_insert_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert compute.InstanceGroup.to_json(
             instance_group_resource,
             including_default_value_fields=False,
@@ -1061,7 +1066,7 @@ def test_insert_rest_flattened():
 
 
 def test_insert_rest_flattened_error():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1080,7 +1085,7 @@ def test_list_rest(
     transport: str = "rest", request_type=compute.ListInstanceGroupsRequest
 ):
     client = InstanceGroupsClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1100,17 +1105,16 @@ def test_list_rest(
             self_link="self_link_value",
             warning=compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED),
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceGroupList.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.list(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [
@@ -1127,7 +1131,7 @@ def test_list_rest_from_dict():
 
 
 def test_list_rest_flattened():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1152,14 +1156,12 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
 
 
 def test_list_rest_flattened_error():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1172,12 +1174,11 @@ def test_list_rest_flattened_error():
 
 
 def test_list_pager():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # Set the response as a series of pages
-
         response = (
             compute.InstanceGroupList(
                 items=[
@@ -1195,7 +1196,6 @@ def test_list_pager():
                 items=[compute.InstanceGroup(), compute.InstanceGroup(),],
             ),
         )
-
         # Two responses for two calls
         response = response + response
 
@@ -1214,7 +1214,6 @@ def test_list_pager():
 
         results = list(pager)
         assert len(results) == 6
-
         assert all(isinstance(i, compute.InstanceGroup) for i in results)
 
         pages = list(client.list(request={}).pages)
@@ -1226,7 +1225,7 @@ def test_list_instances_rest(
     transport: str = "rest", request_type=compute.ListInstancesInstanceGroupsRequest
 ):
     client = InstanceGroupsClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1244,17 +1243,16 @@ def test_list_instances_rest(
             self_link="self_link_value",
             warning=compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED),
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.InstanceGroupsListInstances.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.list_instances(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.ListInstancesPager)
     assert response.id == "id_value"
     assert response.items == [compute.InstanceWithNamedPorts(instance="instance_value")]
@@ -1269,7 +1267,7 @@ def test_list_instances_rest_from_dict():
 
 
 def test_list_instances_rest_flattened():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1288,7 +1286,6 @@ def test_list_instances_rest_flattened():
         instance_groups_list_instances_request_resource = compute.InstanceGroupsListInstancesRequest(
             instance_state=compute.InstanceGroupsListInstancesRequest.InstanceState.ALL
         )
-
         client.list_instances(
             project="project_value",
             zone="zone_value",
@@ -1301,13 +1298,9 @@ def test_list_instances_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_group_value" in http_call[1] + str(body)
-
         assert compute.InstanceGroupsListInstancesRequest.to_json(
             instance_groups_list_instances_request_resource,
             including_default_value_fields=False,
@@ -1316,7 +1309,7 @@ def test_list_instances_rest_flattened():
 
 
 def test_list_instances_rest_flattened_error():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1333,12 +1326,11 @@ def test_list_instances_rest_flattened_error():
 
 
 def test_list_instances_pager():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # Set the response as a series of pages
-
         response = (
             compute.InstanceGroupsListInstances(
                 items=[
@@ -1359,7 +1351,6 @@ def test_list_instances_pager():
                 ],
             ),
         )
-
         # Two responses for two calls
         response = response + response
 
@@ -1380,7 +1371,6 @@ def test_list_instances_pager():
 
         results = list(pager)
         assert len(results) == 6
-
         assert all(isinstance(i, compute.InstanceWithNamedPorts) for i in results)
 
         pages = list(client.list_instances(request={}).pages)
@@ -1392,7 +1382,7 @@ def test_remove_instances_rest(
     transport: str = "rest", request_type=compute.RemoveInstancesInstanceGroupRequest
 ):
     client = InstanceGroupsClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1427,17 +1417,16 @@ def test_remove_instances_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.remove_instances(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -1471,7 +1460,7 @@ def test_remove_instances_rest_from_dict():
 
 
 def test_remove_instances_rest_flattened():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1490,7 +1479,6 @@ def test_remove_instances_rest_flattened():
         instance_groups_remove_instances_request_resource = compute.InstanceGroupsRemoveInstancesRequest(
             instances=[compute.InstanceReference(instance="instance_value")]
         )
-
         client.remove_instances(
             project="project_value",
             zone="zone_value",
@@ -1503,13 +1491,9 @@ def test_remove_instances_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_group_value" in http_call[1] + str(body)
-
         assert compute.InstanceGroupsRemoveInstancesRequest.to_json(
             instance_groups_remove_instances_request_resource,
             including_default_value_fields=False,
@@ -1518,7 +1502,7 @@ def test_remove_instances_rest_flattened():
 
 
 def test_remove_instances_rest_flattened_error():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1538,7 +1522,7 @@ def test_set_named_ports_rest(
     transport: str = "rest", request_type=compute.SetNamedPortsInstanceGroupRequest
 ):
     client = InstanceGroupsClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1573,17 +1557,16 @@ def test_set_named_ports_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.set_named_ports(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -1617,7 +1600,7 @@ def test_set_named_ports_rest_from_dict():
 
 
 def test_set_named_ports_rest_flattened():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1636,7 +1619,6 @@ def test_set_named_ports_rest_flattened():
         instance_groups_set_named_ports_request_resource = compute.InstanceGroupsSetNamedPortsRequest(
             fingerprint="fingerprint_value"
         )
-
         client.set_named_ports(
             project="project_value",
             zone="zone_value",
@@ -1649,13 +1631,9 @@ def test_set_named_ports_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "zone_value" in http_call[1] + str(body)
-
         assert "instance_group_value" in http_call[1] + str(body)
-
         assert compute.InstanceGroupsSetNamedPortsRequest.to_json(
             instance_groups_set_named_ports_request_resource,
             including_default_value_fields=False,
@@ -1664,7 +1642,7 @@ def test_set_named_ports_rest_flattened():
 
 
 def test_set_named_ports_rest_flattened_error():
-    client = InstanceGroupsClient(credentials=credentials.AnonymousCredentials(),)
+    client = InstanceGroupsClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1683,16 +1661,16 @@ def test_set_named_ports_rest_flattened_error():
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.InstanceGroupsRestTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = InstanceGroupsClient(
-            credentials=credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.InstanceGroupsRestTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = InstanceGroupsClient(
@@ -1702,7 +1680,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.InstanceGroupsRestTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = InstanceGroupsClient(
@@ -1713,7 +1691,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.InstanceGroupsRestTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = InstanceGroupsClient(transport=transport)
     assert client.transport is transport
@@ -1722,17 +1700,17 @@ def test_transport_instance():
 @pytest.mark.parametrize("transport_class", [transports.InstanceGroupsRestTransport,])
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, "default") as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
 
 def test_instance_groups_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
-    with pytest.raises(exceptions.DuplicateCredentialArgs):
+    with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.InstanceGroupsTransport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -1744,7 +1722,7 @@ def test_instance_groups_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.InstanceGroupsTransport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -1765,15 +1743,40 @@ def test_instance_groups_base_transport():
             getattr(transport, method)(request=object())
 
 
+@requires_google_auth_gte_1_25_0
 def test_instance_groups_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
-        auth, "load_credentials_from_file"
+        google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
         "google.cloud.compute_v1.services.instance_groups.transports.InstanceGroupsTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (credentials.AnonymousCredentials(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport = transports.InstanceGroupsTransport(
+            credentials_file="credentials.json", quota_project_id="octopus",
+        )
+        load_creds.assert_called_once_with(
+            "credentials.json",
+            scopes=None,
+            default_scopes=(
+                "https://www.googleapis.com/auth/compute",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
+            quota_project_id="octopus",
+        )
+
+
+@requires_google_auth_lt_1_25_0
+def test_instance_groups_base_transport_with_credentials_file_old_google_auth():
+    # Instantiate the base transport with a credentials file
+    with mock.patch.object(
+        google.auth, "load_credentials_from_file", autospec=True
+    ) as load_creds, mock.patch(
+        "google.cloud.compute_v1.services.instance_groups.transports.InstanceGroupsTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.InstanceGroupsTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
         )
@@ -1789,19 +1792,36 @@ def test_instance_groups_base_transport_with_credentials_file():
 
 def test_instance_groups_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(auth, "default") as adc, mock.patch(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
         "google.cloud.compute_v1.services.instance_groups.transports.InstanceGroupsTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.InstanceGroupsTransport()
         adc.assert_called_once()
 
 
+@requires_google_auth_gte_1_25_0
 def test_instance_groups_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        InstanceGroupsClient()
+        adc.assert_called_once_with(
+            scopes=None,
+            default_scopes=(
+                "https://www.googleapis.com/auth/compute",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
+            quota_project_id=None,
+        )
+
+
+@requires_google_auth_lt_1_25_0
+def test_instance_groups_auth_adc_old_google_auth():
+    # If no credentials are provided, we should use ADC credentials.
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         InstanceGroupsClient()
         adc.assert_called_once_with(
             scopes=(
@@ -1813,7 +1833,7 @@ def test_instance_groups_auth_adc():
 
 
 def test_instance_groups_http_transport_client_cert_source_for_mtls():
-    cred = credentials.AnonymousCredentials()
+    cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
@@ -1825,7 +1845,7 @@ def test_instance_groups_http_transport_client_cert_source_for_mtls():
 
 def test_instance_groups_host_no_port():
     client = InstanceGroupsClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com"
         ),
@@ -1835,7 +1855,7 @@ def test_instance_groups_host_no_port():
 
 def test_instance_groups_host_with_port():
     client = InstanceGroupsClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com:8000"
         ),
@@ -1845,7 +1865,6 @@ def test_instance_groups_host_with_port():
 
 def test_common_billing_account_path():
     billing_account = "squid"
-
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -1866,7 +1885,6 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-
     expected = "folders/{folder}".format(folder=folder,)
     actual = InstanceGroupsClient.common_folder_path(folder)
     assert expected == actual
@@ -1885,7 +1903,6 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-
     expected = "organizations/{organization}".format(organization=organization,)
     actual = InstanceGroupsClient.common_organization_path(organization)
     assert expected == actual
@@ -1904,7 +1921,6 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-
     expected = "projects/{project}".format(project=project,)
     actual = InstanceGroupsClient.common_project_path(project)
     assert expected == actual
@@ -1924,7 +1940,6 @@ def test_parse_common_project_path():
 def test_common_location_path():
     project = "winkle"
     location = "nautilus"
-
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -1951,7 +1966,7 @@ def test_client_withDEFAULT_CLIENT_INFO():
         transports.InstanceGroupsTransport, "_prep_wrapped_messages"
     ) as prep:
         client = InstanceGroupsClient(
-            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1960,6 +1975,6 @@ def test_client_withDEFAULT_CLIENT_INFO():
     ) as prep:
         transport_class = InstanceGroupsClient.get_transport_class()
         transport = transport_class(
-            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -1097,14 +1095,12 @@ class AcceleratorConfig(proto.Message):
             Engine for a full list of accelerator types.
     """
 
-    accelerator_count = proto.Field(proto.INT32, number=236444219)
-
-    accelerator_type = proto.Field(proto.STRING, number=138031246)
+    accelerator_count = proto.Field(proto.INT32, number=504879675, optional=True,)
+    accelerator_type = proto.Field(proto.STRING, number=138031246, optional=True,)
 
 
 class DeprecationStatus(proto.Message):
     r"""Deprecation status for a public resource.
-
     Attributes:
         deleted (str):
             An optional RFC3339 timestamp on or after
@@ -1153,20 +1149,16 @@ class DeprecationStatus(proto.Message):
         result in an error.
         """
         UNDEFINED_STATE = 0
-        ACTIVE = 46297862
+        ACTIVE = 314733318
         DELETED = 120962041
-        DEPRECATED = 194924979
+        DEPRECATED = 463360435
         OBSOLETE = 66532761
 
-    deleted = proto.Field(proto.STRING, number=208285721)
-
-    deprecated = proto.Field(proto.STRING, number=246703539)
-
-    obsolete = proto.Field(proto.STRING, number=89212313)
-
-    replacement = proto.Field(proto.STRING, number=162483730)
-
-    state = proto.Field(proto.ENUM, number=109757585, enum=State,)
+    deleted = proto.Field(proto.STRING, number=476721177, optional=True,)
+    deprecated = proto.Field(proto.STRING, number=515138995, optional=True,)
+    obsolete = proto.Field(proto.STRING, number=357647769, optional=True,)
+    replacement = proto.Field(proto.STRING, number=430919186, optional=True,)
+    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
 
 
 class AcceleratorType(proto.Message):
@@ -1208,30 +1200,23 @@ class AcceleratorType(proto.Message):
             a field in the request body.
     """
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     deprecated = proto.Field(
-        proto.MESSAGE, number=246703539, message="DeprecationStatus",
+        proto.MESSAGE, number=515138995, optional=True, message="DeprecationStatus",
     )
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    maximum_cards_per_instance = proto.Field(proto.INT32, number=263814482)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    maximum_cards_per_instance = proto.Field(
+        proto.INT32, number=263814482, optional=True,
+    )
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
 class AcceleratorTypesScopedList(proto.Message):
     r"""
-
     Attributes:
         accelerator_types (Sequence[google.cloud.compute_v1.types.AcceleratorType]):
             [Output Only] A list of accelerator types contained in this
@@ -1242,15 +1227,15 @@ class AcceleratorTypesScopedList(proto.Message):
     """
 
     accelerator_types = proto.RepeatedField(
-        proto.MESSAGE, number=252436901, message="AcceleratorType",
+        proto.MESSAGE, number=520872357, message="AcceleratorType",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class Data(proto.Message):
     r"""
-
     Attributes:
         key (str):
             [Output Only] A key that provides more detail on the warning
@@ -1266,14 +1251,12 @@ class Data(proto.Message):
             [Output Only] A warning data value corresponding to the key.
     """
 
-    key = proto.Field(proto.STRING, number=106079)
-
-    value = proto.Field(proto.STRING, number=111972721)
+    key = proto.Field(proto.STRING, number=106079, optional=True,)
+    value = proto.Field(proto.STRING, number=111972721, optional=True,)
 
 
 class Warning(proto.Message):
     r"""[Output Only] Informational warning message.
-
     Attributes:
         code (google.cloud.compute_v1.types.Warning.Code):
             [Output Only] A warning code, if applicable. For example,
@@ -1295,41 +1278,38 @@ class Warning(proto.Message):
         """
         UNDEFINED_CODE = 0
         CLEANUP_FAILED = 150308440
-        DEPRECATED_RESOURCE_USED = 123400130
-        DEPRECATED_TYPE_USED = 78090774
-        DISK_SIZE_LARGER_THAN_IMAGE_SIZE = 101007511
-        EXPERIMENTAL_TYPE_USED = 183518987
+        DEPRECATED_RESOURCE_USED = 391835586
+        DEPRECATED_TYPE_USED = 346526230
+        DISK_SIZE_LARGER_THAN_IMAGE_SIZE = 369442967
+        EXPERIMENTAL_TYPE_USED = 451954443
         EXTERNAL_API_WARNING = 175546307
-        FIELD_VALUE_OVERRIDEN = 61233967
-        INJECTED_KERNELS_DEPRECATED = 148941963
-        LARGE_DEPLOYMENT_WARNING = 213005222
-        MISSING_TYPE_DEPENDENCY = 76070007
-        NEXT_HOP_ADDRESS_NOT_ASSIGNED = 56529543
-        NEXT_HOP_CANNOT_IP_FORWARD = 114947431
-        NEXT_HOP_INSTANCE_NOT_FOUND = 195814990
+        FIELD_VALUE_OVERRIDEN = 329669423
+        INJECTED_KERNELS_DEPRECATED = 417377419
+        LARGE_DEPLOYMENT_WARNING = 481440678
+        MISSING_TYPE_DEPENDENCY = 344505463
+        NEXT_HOP_ADDRESS_NOT_ASSIGNED = 324964999
+        NEXT_HOP_CANNOT_IP_FORWARD = 383382887
+        NEXT_HOP_INSTANCE_NOT_FOUND = 464250446
         NEXT_HOP_INSTANCE_NOT_ON_NETWORK = 243758146
-        NEXT_HOP_NOT_RUNNING = 148645809
+        NEXT_HOP_NOT_RUNNING = 417081265
         NOT_CRITICAL_ERROR = 105763924
         NO_RESULTS_ON_PAGE = 30036744
         PARTIAL_SUCCESS = 39966469
         REQUIRED_TOS_AGREEMENT = 3745539
-        RESOURCE_IN_USE_BY_OTHER_RESOURCE_WARNING = 228293185
+        RESOURCE_IN_USE_BY_OTHER_RESOURCE_WARNING = 496728641
         RESOURCE_NOT_DELETED = 168598460
-        SCHEMA_VALIDATION_IGNORED = 6810186
+        SCHEMA_VALIDATION_IGNORED = 275245642
         SINGLE_INSTANCE_PROPERTY_TEMPLATE = 268305617
-        UNDECLARED_PROPERTIES = 122077983
+        UNDECLARED_PROPERTIES = 390513439
         UNREACHABLE = 13328052
 
-    code = proto.Field(proto.ENUM, number=3059181, enum=Code,)
-
+    code = proto.Field(proto.ENUM, number=3059181, optional=True, enum=Code,)
     data = proto.RepeatedField(proto.MESSAGE, number=3076010, message="Data",)
-
-    message = proto.Field(proto.STRING, number=149618695)
+    message = proto.Field(proto.STRING, number=418054151, optional=True,)
 
 
 class AcceleratorTypeAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -1360,29 +1340,24 @@ class AcceleratorTypeAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=100526016,
         message="AcceleratorTypesScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class AcceleratorTypeList(proto.Message):
     r"""Contains a list of accelerator types.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -1409,19 +1384,16 @@ class AcceleratorTypeList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="AcceleratorType",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class AccessConfig(proto.Message):
@@ -1480,8 +1452,8 @@ class AccessConfig(proto.Message):
         the Address resource owning that IP.
         """
         UNDEFINED_NETWORK_TIER = 0
-        PREMIUM = 131095095
-        STANDARD = 216207037
+        PREMIUM = 399530551
+        STANDARD = 484642493
 
     class Type(proto.Enum):
         r"""The type of configuration. The default and only option is
@@ -1490,19 +1462,15 @@ class AccessConfig(proto.Message):
         UNDEFINED_TYPE = 0
         ONE_TO_ONE_NAT = 84090205
 
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    nat_i_p = proto.Field(proto.STRING, number=117634556)
-
-    network_tier = proto.Field(proto.ENUM, number=248962387, enum=NetworkTier,)
-
-    public_ptr_domain_name = proto.Field(proto.STRING, number=48163711)
-
-    set_public_ptr = proto.Field(proto.BOOL, number=255434773)
-
-    type_ = proto.Field(proto.ENUM, number=3575610, enum=Type,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    nat_i_p = proto.Field(proto.STRING, number=117634556, optional=True,)
+    network_tier = proto.Field(
+        proto.ENUM, number=517397843, optional=True, enum=NetworkTier,
+    )
+    public_ptr_domain_name = proto.Field(proto.STRING, number=316599167, optional=True,)
+    set_public_ptr = proto.Field(proto.BOOL, number=523870229, optional=True,)
+    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
 
 
 class Address(proto.Message):
@@ -1631,7 +1599,7 @@ class Address(proto.Message):
         """
         UNDEFINED_ADDRESS_TYPE = 0
         EXTERNAL = 35607499
-        INTERNAL = 10860221
+        INTERNAL = 279295677
         UNSPECIFIED_TYPE = 53933922
 
     class IpVersion(proto.Enum):
@@ -1656,8 +1624,8 @@ class Address(proto.Message):
         be PREMIUM.
         """
         UNDEFINED_NETWORK_TIER = 0
-        PREMIUM = 131095095
-        STANDARD = 216207037
+        PREMIUM = 399530551
+        STANDARD = 484642493
 
     class Purpose(proto.Enum):
         r"""The purpose of this resource, which can be one of the following
@@ -1676,11 +1644,11 @@ class Address(proto.Message):
            regional resources.
         """
         UNDEFINED_PURPOSE = 0
-        DNS_RESOLVER = 207679100
+        DNS_RESOLVER = 476114556
         GCE_ENDPOINT = 230515243
         NAT_AUTO = 163666477
-        SHARED_LOADBALANCER_VIP = 26012116
-        VPC_PEERING = 132364714
+        SHARED_LOADBALANCER_VIP = 294447572
+        VPC_PEERING = 400800170
 
     class Status(proto.Enum):
         r"""[Output Only] The status of the address, which can be one of
@@ -1691,47 +1659,36 @@ class Address(proto.Message):
         """
         UNDEFINED_STATUS = 0
         IN_USE = 17393485
-        RESERVED = 163805992
-        RESERVING = 246151769
+        RESERVED = 432241448
+        RESERVING = 514587225
 
-    address = proto.Field(proto.STRING, number=194485236)
-
-    address_type = proto.Field(proto.ENUM, number=264307877, enum=AddressType,)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    ip_version = proto.Field(proto.ENUM, number=26524096, enum=IpVersion,)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    network = proto.Field(proto.STRING, number=232872494)
-
-    network_tier = proto.Field(proto.ENUM, number=248962387, enum=NetworkTier,)
-
-    prefix_length = proto.Field(proto.INT32, number=185130291)
-
-    purpose = proto.Field(proto.ENUM, number=47971614, enum=Purpose,)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
-
-    subnetwork = proto.Field(proto.STRING, number=39392238)
-
-    users = proto.RepeatedField(proto.STRING, number=111578632)
+    address = proto.Field(proto.STRING, number=462920692, optional=True,)
+    address_type = proto.Field(
+        proto.ENUM, number=264307877, optional=True, enum=AddressType,
+    )
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    ip_version = proto.Field(
+        proto.ENUM, number=294959552, optional=True, enum=IpVersion,
+    )
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    network = proto.Field(proto.STRING, number=232872494, optional=True,)
+    network_tier = proto.Field(
+        proto.ENUM, number=517397843, optional=True, enum=NetworkTier,
+    )
+    prefix_length = proto.Field(proto.INT32, number=453565747, optional=True,)
+    purpose = proto.Field(proto.ENUM, number=316407070, optional=True, enum=Purpose,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    subnetwork = proto.Field(proto.STRING, number=307827694, optional=True,)
+    users = proto.RepeatedField(proto.STRING, number=111578632,)
 
 
 class AddressesScopedList(proto.Message):
     r"""
-
     Attributes:
         addresses (Sequence[google.cloud.compute_v1.types.Address]):
             [Output Only] A list of addresses contained in this scope.
@@ -1740,14 +1697,14 @@ class AddressesScopedList(proto.Message):
             of addresses when the list is empty.
     """
 
-    addresses = proto.RepeatedField(proto.MESSAGE, number=69237666, message="Address",)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    addresses = proto.RepeatedField(proto.MESSAGE, number=337673122, message="Address",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class AddressAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -1777,26 +1734,21 @@ class AddressAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="AddressesScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class AddressList(proto.Message):
     r"""Contains a list of addresses.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -1823,17 +1775,14 @@ class AddressList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Address",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class AliasIpRange(proto.Message):
@@ -1857,16 +1806,14 @@ class AliasIpRange(proto.Message):
             is used.
     """
 
-    ip_cidr_range = proto.Field(proto.STRING, number=98117322)
-
-    subnetwork_range_name = proto.Field(proto.STRING, number=119560510)
+    ip_cidr_range = proto.Field(proto.STRING, number=98117322, optional=True,)
+    subnetwork_range_name = proto.Field(proto.STRING, number=387995966, optional=True,)
 
 
 class AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk(
     proto.Message
 ):
     r"""
-
     Attributes:
         disk_size_gb (str):
             Specifies the size of the disk in base-2 GB.
@@ -1888,14 +1835,14 @@ class AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk(
         NVME = 2408800
         SCSI = 2539686
 
-    disk_size_gb = proto.Field(proto.STRING, number=47828279)
-
-    interface = proto.Field(proto.ENUM, number=234188089, enum=Interface,)
+    disk_size_gb = proto.Field(proto.STRING, number=316263735, optional=True,)
+    interface = proto.Field(
+        proto.ENUM, number=502623545, optional=True, enum=Interface,
+    )
 
 
 class AllocationSpecificSKUAllocationReservedInstanceProperties(proto.Message):
     r"""Properties of the SKU instances being reserved. Next ID: 9
-
     Attributes:
         guest_accelerators (Sequence[google.cloud.compute_v1.types.AcceleratorConfig]):
             Specifies accelerator type and count.
@@ -1912,18 +1859,15 @@ class AllocationSpecificSKUAllocationReservedInstanceProperties(proto.Message):
     """
 
     guest_accelerators = proto.RepeatedField(
-        proto.MESSAGE, number=195159663, message="AcceleratorConfig",
+        proto.MESSAGE, number=463595119, message="AcceleratorConfig",
     )
-
     local_ssds = proto.RepeatedField(
         proto.MESSAGE,
         number=229951299,
         message="AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk",
     )
-
-    machine_type = proto.Field(proto.STRING, number=227711026)
-
-    min_cpu_platform = proto.Field(proto.STRING, number=242912759)
+    machine_type = proto.Field(proto.STRING, number=227711026, optional=True,)
+    min_cpu_platform = proto.Field(proto.STRING, number=242912759, optional=True,)
 
 
 class AllocationSpecificSKUReservation(proto.Message):
@@ -1940,20 +1884,18 @@ class AllocationSpecificSKUReservation(proto.Message):
             The instance properties for the reservation.
     """
 
-    count = proto.Field(proto.STRING, number=94851343)
-
-    in_use_count = proto.Field(proto.STRING, number=225023421)
-
+    count = proto.Field(proto.STRING, number=94851343, optional=True,)
+    in_use_count = proto.Field(proto.STRING, number=493458877, optional=True,)
     instance_properties = proto.Field(
         proto.MESSAGE,
         number=215355165,
+        optional=True,
         message="AllocationSpecificSKUAllocationReservedInstanceProperties",
     )
 
 
 class CustomerEncryptionKey(proto.Message):
     r"""
-
     Attributes:
         kms_key_name (str):
             The name of the encryption key that is stored
@@ -1973,18 +1915,16 @@ class CustomerEncryptionKey(proto.Message):
             resource.
     """
 
-    kms_key_name = proto.Field(proto.STRING, number=215938457)
-
-    kms_key_service_account = proto.Field(proto.STRING, number=209986261)
-
-    raw_key = proto.Field(proto.STRING, number=180761032)
-
-    sha256 = proto.Field(proto.STRING, number=170112551)
+    kms_key_name = proto.Field(proto.STRING, number=484373913, optional=True,)
+    kms_key_service_account = proto.Field(
+        proto.STRING, number=209986261, optional=True,
+    )
+    raw_key = proto.Field(proto.STRING, number=449196488, optional=True,)
+    sha256 = proto.Field(proto.STRING, number=170112551, optional=True,)
 
 
 class GuestOsFeature(proto.Message):
     r"""Guest OS features.
-
     Attributes:
         type_ (google.cloud.compute_v1.types.GuestOsFeature.Type):
             The ID of a supported feature. Read  Enabling
@@ -1997,16 +1937,16 @@ class GuestOsFeature(proto.Message):
         system features to see a list of available options.
         """
         UNDEFINED_TYPE = 0
-        FEATURE_TYPE_UNSPECIFIED = 263331803
+        FEATURE_TYPE_UNSPECIFIED = 531767259
         GVNIC = 68209305
         MULTI_IP_SUBNET = 151776719
-        SECURE_BOOT = 108375738
+        SECURE_BOOT = 376811194
         SEV_CAPABLE = 87083793
         UEFI_COMPATIBLE = 195865408
         VIRTIO_SCSI_MULTIQUEUE = 201597069
-        WINDOWS = 188427875
+        WINDOWS = 456863331
 
-    type_ = proto.Field(proto.ENUM, number=3575610, enum=Type,)
+    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
 
 
 class AttachedDiskInitializeParams(proto.Message):
@@ -2125,34 +2065,26 @@ class AttachedDiskInitializeParams(proto.Message):
         disk. Default is to use the existing disk.
         """
         UNDEFINED_ON_UPDATE_ACTION = 0
-        RECREATE_DISK = 226332397
-        RECREATE_DISK_IF_SOURCE_CHANGED = 129664256
+        RECREATE_DISK = 494767853
+        RECREATE_DISK_IF_SOURCE_CHANGED = 398099712
         USE_EXISTING_DISK = 232682233
 
-    description = proto.Field(proto.STRING, number=154502140)
-
-    disk_name = proto.Field(proto.STRING, number=92807149)
-
-    disk_size_gb = proto.Field(proto.STRING, number=47828279)
-
-    disk_type = proto.Field(proto.STRING, number=93009052)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=231759871)
-
-    on_update_action = proto.Field(proto.ENUM, number=202451980, enum=OnUpdateAction,)
-
-    resource_policies = proto.RepeatedField(proto.STRING, number=22220385)
-
-    source_image = proto.Field(proto.STRING, number=50443319)
-
-    source_image_encryption_key = proto.Field(
-        proto.MESSAGE, number=113068203, message="CustomerEncryptionKey",
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    disk_name = proto.Field(proto.STRING, number=92807149, optional=True,)
+    disk_size_gb = proto.Field(proto.STRING, number=316263735, optional=True,)
+    disk_type = proto.Field(proto.STRING, number=93009052, optional=True,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
+    on_update_action = proto.Field(
+        proto.ENUM, number=202451980, optional=True, enum=OnUpdateAction,
     )
-
-    source_snapshot = proto.Field(proto.STRING, number=126061928)
-
+    resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
+    source_image = proto.Field(proto.STRING, number=50443319, optional=True,)
+    source_image_encryption_key = proto.Field(
+        proto.MESSAGE, number=381503659, optional=True, message="CustomerEncryptionKey",
+    )
+    source_snapshot = proto.Field(proto.STRING, number=126061928, optional=True,)
     source_snapshot_encryption_key = proto.Field(
-        proto.MESSAGE, number=35243866, message="CustomerEncryptionKey",
+        proto.MESSAGE, number=303679322, optional=True, message="CustomerEncryptionKey",
     )
 
 
@@ -2172,21 +2104,19 @@ class InitialStateConfig(proto.Message):
     """
 
     dbs = proto.RepeatedField(proto.MESSAGE, number=99253, message="FileContentBuffer",)
-
     dbxs = proto.RepeatedField(
         proto.MESSAGE, number=3077113, message="FileContentBuffer",
     )
-
     keks = proto.RepeatedField(
         proto.MESSAGE, number=3288130, message="FileContentBuffer",
     )
-
-    pk = proto.Field(proto.MESSAGE, number=3579, message="FileContentBuffer",)
+    pk = proto.Field(
+        proto.MESSAGE, number=3579, optional=True, message="FileContentBuffer",
+    )
 
 
 class AttachedDisk(proto.Message):
     r"""An instance-attached disk resource.
-
     Attributes:
         auto_delete (bool):
             Specifies whether the disk will be auto-
@@ -2315,46 +2245,37 @@ class AttachedDisk(proto.Message):
         If not specified, the default is PERSISTENT.
         """
         UNDEFINED_TYPE = 0
-        PERSISTENT = 192248471
-        SCRATCH = 228343514
+        PERSISTENT = 460683927
+        SCRATCH = 496778970
 
-    auto_delete = proto.Field(proto.BOOL, number=196325947)
-
-    boot = proto.Field(proto.BOOL, number=3029746)
-
-    device_name = proto.Field(proto.STRING, number=67541716)
-
+    auto_delete = proto.Field(proto.BOOL, number=464761403, optional=True,)
+    boot = proto.Field(proto.BOOL, number=3029746, optional=True,)
+    device_name = proto.Field(proto.STRING, number=67541716, optional=True,)
     disk_encryption_key = proto.Field(
-        proto.MESSAGE, number=3225221, message="CustomerEncryptionKey",
+        proto.MESSAGE, number=271660677, optional=True, message="CustomerEncryptionKey",
     )
-
-    disk_size_gb = proto.Field(proto.STRING, number=47828279)
-
+    disk_size_gb = proto.Field(proto.STRING, number=316263735, optional=True,)
     guest_os_features = proto.RepeatedField(
         proto.MESSAGE, number=79294545, message="GuestOsFeature",
     )
-
-    index = proto.Field(proto.INT32, number=100346066)
-
+    index = proto.Field(proto.INT32, number=100346066, optional=True,)
     initialize_params = proto.Field(
-        proto.MESSAGE, number=17697045, message="AttachedDiskInitializeParams",
+        proto.MESSAGE,
+        number=17697045,
+        optional=True,
+        message="AttachedDiskInitializeParams",
     )
-
-    interface = proto.Field(proto.ENUM, number=234188089, enum=Interface,)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    licenses = proto.RepeatedField(proto.STRING, number=69207122)
-
-    mode = proto.Field(proto.ENUM, number=3357091, enum=Mode,)
-
+    interface = proto.Field(
+        proto.ENUM, number=502623545, optional=True, enum=Interface,
+    )
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    licenses = proto.RepeatedField(proto.STRING, number=337642578,)
+    mode = proto.Field(proto.ENUM, number=3357091, optional=True, enum=Mode,)
     shielded_instance_initial_state = proto.Field(
-        proto.MESSAGE, number=192356867, message="InitialStateConfig",
+        proto.MESSAGE, number=192356867, optional=True, message="InitialStateConfig",
     )
-
-    source = proto.Field(proto.STRING, number=177235995)
-
-    type_ = proto.Field(proto.ENUM, number=3575610, enum=Type,)
+    source = proto.Field(proto.STRING, number=177235995, optional=True,)
+    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
 
 
 class AuditLogConfig(proto.Message):
@@ -2383,15 +2304,13 @@ class AuditLogConfig(proto.Message):
         r"""The log type that this config enables."""
         UNDEFINED_LOG_TYPE = 0
         ADMIN_READ = 128951462
-        DATA_READ = 36789515
-        DATA_WRITE = 71746282
+        DATA_READ = 305224971
+        DATA_WRITE = 340181738
         LOG_TYPE_UNSPECIFIED = 154527053
 
-    exempted_members = proto.RepeatedField(proto.STRING, number=232615576)
-
-    ignore_child_exemptions = proto.Field(proto.BOOL, number=70141850)
-
-    log_type = proto.Field(proto.ENUM, number=134680405, enum=LogType,)
+    exempted_members = proto.RepeatedField(proto.STRING, number=232615576,)
+    ignore_child_exemptions = proto.Field(proto.BOOL, number=70141850, optional=True,)
+    log_type = proto.Field(proto.ENUM, number=403115861, optional=True, enum=LogType,)
 
 
 class AuditConfig(proto.Message):
@@ -2433,12 +2352,10 @@ class AuditConfig(proto.Message):
     """
 
     audit_log_configs = proto.RepeatedField(
-        proto.MESSAGE, number=219985170, message="AuditLogConfig",
+        proto.MESSAGE, number=488420626, message="AuditLogConfig",
     )
-
-    exempted_members = proto.RepeatedField(proto.STRING, number=232615576)
-
-    service = proto.Field(proto.STRING, number=105105077)
+    exempted_members = proto.RepeatedField(proto.STRING, number=232615576,)
+    service = proto.Field(proto.STRING, number=373540533, optional=True,)
 
 
 class AuthorizationLoggingOptions(proto.Message):
@@ -2455,16 +2372,17 @@ class AuthorizationLoggingOptions(proto.Message):
         UNDEFINED_PERMISSION_TYPE = 0
         ADMIN_READ = 128951462
         ADMIN_WRITE = 244412079
-        DATA_READ = 36789515
-        DATA_WRITE = 71746282
-        PERMISSION_TYPE_UNSPECIFIED = 171877890
+        DATA_READ = 305224971
+        DATA_WRITE = 340181738
+        PERMISSION_TYPE_UNSPECIFIED = 440313346
 
-    permission_type = proto.Field(proto.ENUM, number=257543082, enum=PermissionType,)
+    permission_type = proto.Field(
+        proto.ENUM, number=525978538, optional=True, enum=PermissionType,
+    )
 
 
 class AutoscalingPolicy(proto.Message):
     r"""Cloud Autoscaler policy.
-
     Attributes:
         cool_down_period_sec (int):
             The number of seconds that the autoscaler
@@ -2514,40 +2432,39 @@ class AutoscalingPolicy(proto.Message):
         OFF = 78159
         ON = 2527
         ONLY_SCALE_OUT = 152713670
-        ONLY_UP = 209659918
+        ONLY_UP = 478095374
 
-    cool_down_period_sec = proto.Field(proto.INT32, number=107692954)
-
+    cool_down_period_sec = proto.Field(proto.INT32, number=107692954, optional=True,)
     cpu_utilization = proto.Field(
-        proto.MESSAGE, number=112775691, message="AutoscalingPolicyCpuUtilization",
+        proto.MESSAGE,
+        number=381211147,
+        optional=True,
+        message="AutoscalingPolicyCpuUtilization",
     )
-
     custom_metric_utilizations = proto.RepeatedField(
         proto.MESSAGE,
         number=131972850,
         message="AutoscalingPolicyCustomMetricUtilization",
     )
-
     load_balancing_utilization = proto.Field(
         proto.MESSAGE,
-        number=161310947,
+        number=429746403,
+        optional=True,
         message="AutoscalingPolicyLoadBalancingUtilization",
     )
-
-    max_num_replicas = proto.Field(proto.INT32, number=62327375)
-
-    min_num_replicas = proto.Field(proto.INT32, number=266894369)
-
-    mode = proto.Field(proto.ENUM, number=3357091, enum=Mode,)
-
+    max_num_replicas = proto.Field(proto.INT32, number=62327375, optional=True,)
+    min_num_replicas = proto.Field(proto.INT32, number=535329825, optional=True,)
+    mode = proto.Field(proto.ENUM, number=3357091, optional=True, enum=Mode,)
     scale_in_control = proto.Field(
-        proto.MESSAGE, number=259235416, message="AutoscalingPolicyScaleInControl",
+        proto.MESSAGE,
+        number=527670872,
+        optional=True,
+        message="AutoscalingPolicyScaleInControl",
     )
 
 
 class AutoscalerStatusDetails(proto.Message):
     r"""
-
     Attributes:
         message (str):
             The status message.
@@ -2654,28 +2571,27 @@ class AutoscalerStatusDetails(proto.Message):
            values might not be available in all API versions.
         """
         UNDEFINED_TYPE = 0
-        ALL_INSTANCES_UNHEALTHY = 136530021
+        ALL_INSTANCES_UNHEALTHY = 404965477
         BACKEND_SERVICE_DOES_NOT_EXIST = 191417626
         CAPPED_AT_MAX_NUM_REPLICAS = 518617
-        CUSTOM_METRIC_DATA_POINTS_TOO_SPARSE = 60529203
+        CUSTOM_METRIC_DATA_POINTS_TOO_SPARSE = 328964659
         CUSTOM_METRIC_INVALID = 204430550
         MIN_EQUALS_MAX = 2821361
         MISSING_CUSTOM_METRIC_DATA_POINTS = 94885086
-        MISSING_LOAD_BALANCING_DATA_POINTS = 241423442
+        MISSING_LOAD_BALANCING_DATA_POINTS = 509858898
         MODE_OFF = 164169907
         MODE_ONLY_SCALE_OUT = 3840994
         MODE_ONLY_UP = 100969842
         MORE_THAN_ONE_BACKEND_SERVICE = 151922141
-        NOT_ENOUGH_QUOTA_AVAILABLE = 134666175
-        REGION_RESOURCE_STOCKOUT = 260187390
+        NOT_ENOUGH_QUOTA_AVAILABLE = 403101631
+        REGION_RESOURCE_STOCKOUT = 528622846
         SCALING_TARGET_DOES_NOT_EXIST = 122636699
-        UNKNOWN = 164706346
-        UNSUPPORTED_MAX_RATE_LOAD_BALANCING_CONFIGURATION = 62409553
+        UNKNOWN = 433141802
+        UNSUPPORTED_MAX_RATE_LOAD_BALANCING_CONFIGURATION = 330845009
         ZONE_RESOURCE_STOCKOUT = 210200502
 
-    message = proto.Field(proto.STRING, number=149618695)
-
-    type_ = proto.Field(proto.ENUM, number=3575610, enum=Type,)
+    message = proto.Field(proto.STRING, number=418054151, optional=True,)
+    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
 
 
 class Autoscaler(proto.Message):
@@ -2781,45 +2697,32 @@ class Autoscaler(proto.Message):
            in the future.
         """
         UNDEFINED_STATUS = 0
-        ACTIVE = 46297862
-        DELETING = 260166568
+        ACTIVE = 314733318
+        DELETING = 528602024
         ERROR = 66247144
         PENDING = 35394935
 
     autoscaling_policy = proto.Field(
-        proto.MESSAGE, number=221950041, message="AutoscalingPolicy",
+        proto.MESSAGE, number=221950041, optional=True, message="AutoscalingPolicy",
     )
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    recommended_size = proto.Field(proto.INT32, number=257915749)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    recommended_size = proto.Field(proto.INT32, number=257915749, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
     status_details = proto.RepeatedField(
-        proto.MESSAGE, number=94918389, message="AutoscalerStatusDetails",
+        proto.MESSAGE, number=363353845, message="AutoscalerStatusDetails",
     )
-
-    target = proto.Field(proto.STRING, number=192835985)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    target = proto.Field(proto.STRING, number=192835985, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
 class AutoscalersScopedList(proto.Message):
     r"""
-
     Attributes:
         autoscalers (Sequence[google.cloud.compute_v1.types.Autoscaler]):
             [Output Only] A list of autoscalers contained in this scope.
@@ -2829,15 +2732,15 @@ class AutoscalersScopedList(proto.Message):
     """
 
     autoscalers = proto.RepeatedField(
-        proto.MESSAGE, number=197336188, message="Autoscaler",
+        proto.MESSAGE, number=465771644, message="Autoscaler",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class AutoscalerAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -2867,26 +2770,21 @@ class AutoscalerAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="AutoscalersScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class AutoscalerList(proto.Message):
     r"""Contains a list of Autoscaler resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -2913,22 +2811,18 @@ class AutoscalerList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Autoscaler",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class AutoscalingPolicyCpuUtilization(proto.Message):
     r"""CPU utilization policy.
-
     Attributes:
         utilization_target (float):
             The target CPU utilization that the autoscaler maintains.
@@ -2947,12 +2841,11 @@ class AutoscalingPolicyCpuUtilization(proto.Message):
             reaches the target utilization.
     """
 
-    utilization_target = proto.Field(proto.DOUBLE, number=215905870)
+    utilization_target = proto.Field(proto.DOUBLE, number=215905870, optional=True,)
 
 
 class AutoscalingPolicyCustomMetricUtilization(proto.Message):
     r"""Custom utilization metric policy.
-
     Attributes:
         filter (str):
             A filter string, compatible with a Stackdriver Monitoring
@@ -3039,16 +2932,14 @@ class AutoscalingPolicyCustomMetricUtilization(proto.Message):
         DELTA_PER_SECOND = 255180029
         GAUGE = 67590361
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    metric = proto.Field(proto.STRING, number=264631728)
-
-    single_instance_assignment = proto.Field(proto.DOUBLE, number=236332608)
-
-    utilization_target = proto.Field(proto.DOUBLE, number=215905870)
-
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    metric = proto.Field(proto.STRING, number=533067184, optional=True,)
+    single_instance_assignment = proto.Field(
+        proto.DOUBLE, number=504768064, optional=True,
+    )
+    utilization_target = proto.Field(proto.DOUBLE, number=215905870, optional=True,)
     utilization_target_type = proto.Field(
-        proto.ENUM, number=71733899, enum=UtilizationTargetType,
+        proto.ENUM, number=340169355, optional=True, enum=UtilizationTargetType,
     )
 
 
@@ -3064,7 +2955,7 @@ class AutoscalingPolicyLoadBalancingUtilization(proto.Message):
             float value. If not defined, the default is 0.8.
     """
 
-    utilization_target = proto.Field(proto.DOUBLE, number=215905870)
+    utilization_target = proto.Field(proto.DOUBLE, number=215905870, optional=True,)
 
 
 class AutoscalingPolicyScaleInControl(proto.Message):
@@ -3087,10 +2978,9 @@ class AutoscalingPolicyScaleInControl(proto.Message):
     """
 
     max_scaled_in_replicas = proto.Field(
-        proto.MESSAGE, number=180710123, message="FixedOrPercent",
+        proto.MESSAGE, number=180710123, optional=True, message="FixedOrPercent",
     )
-
-    time_window_sec = proto.Field(proto.INT32, number=36405300)
+    time_window_sec = proto.Field(proto.INT32, number=36405300, optional=True,)
 
 
 class FixedOrPercent(proto.Message):
@@ -3118,16 +3008,13 @@ class FixedOrPercent(proto.Message):
             80%.
     """
 
-    calculated = proto.Field(proto.INT32, number=203647422)
-
-    fixed = proto.Field(proto.INT32, number=97445748)
-
-    percent = proto.Field(proto.INT32, number=126379077)
+    calculated = proto.Field(proto.INT32, number=472082878, optional=True,)
+    fixed = proto.Field(proto.INT32, number=97445748, optional=True,)
+    percent = proto.Field(proto.INT32, number=394814533, optional=True,)
 
 
 class Backend(proto.Message):
     r"""Message containing information of one individual backend.
-
     Attributes:
         balancing_mode (google.cloud.compute_v1.types.Backend.BalancingMode):
             Specifies the balancing mode for the backend.
@@ -3365,29 +3252,24 @@ class Backend(proto.Message):
         RATE = 2508000
         UTILIZATION = 157008386
 
-    balancing_mode = proto.Field(proto.ENUM, number=161850761, enum=BalancingMode,)
-
-    capacity_scaler = proto.Field(proto.FLOAT, number=47522701)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    failover = proto.Field(proto.BOOL, number=138892530)
-
-    group = proto.Field(proto.STRING, number=98629247)
-
-    max_connections = proto.Field(proto.INT32, number=110652154)
-
-    max_connections_per_endpoint = proto.Field(proto.INT32, number=216904604)
-
-    max_connections_per_instance = proto.Field(proto.INT32, number=104671900)
-
-    max_rate = proto.Field(proto.INT32, number=139599579)
-
-    max_rate_per_endpoint = proto.Field(proto.FLOAT, number=129832283)
-
-    max_rate_per_instance = proto.Field(proto.FLOAT, number=17599579)
-
-    max_utilization = proto.Field(proto.FLOAT, number=148192199)
+    balancing_mode = proto.Field(
+        proto.ENUM, number=430286217, optional=True, enum=BalancingMode,
+    )
+    capacity_scaler = proto.Field(proto.FLOAT, number=315958157, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    failover = proto.Field(proto.BOOL, number=138892530, optional=True,)
+    group = proto.Field(proto.STRING, number=98629247, optional=True,)
+    max_connections = proto.Field(proto.INT32, number=110652154, optional=True,)
+    max_connections_per_endpoint = proto.Field(
+        proto.INT32, number=216904604, optional=True,
+    )
+    max_connections_per_instance = proto.Field(
+        proto.INT32, number=104671900, optional=True,
+    )
+    max_rate = proto.Field(proto.INT32, number=408035035, optional=True,)
+    max_rate_per_endpoint = proto.Field(proto.FLOAT, number=129832283, optional=True,)
+    max_rate_per_instance = proto.Field(proto.FLOAT, number=17599579, optional=True,)
+    max_utilization = proto.Field(proto.FLOAT, number=148192199, optional=True,)
 
 
 class BackendBucketCdnPolicy(proto.Message):
@@ -3482,22 +3364,21 @@ class BackendBucketCdnPolicy(proto.Message):
         be cached.
         """
         UNDEFINED_CACHE_MODE = 0
-        CACHE_ALL_STATIC = 86592489
-        FORCE_CACHE_ALL = 217591472
-        INVALID_CACHE_MODE = 112860104
+        CACHE_ALL_STATIC = 355027945
+        FORCE_CACHE_ALL = 486026928
+        INVALID_CACHE_MODE = 381295560
         USE_ORIGIN_HEADERS = 55380261
 
-    cache_mode = proto.Field(proto.ENUM, number=28877888, enum=CacheMode,)
-
-    client_ttl = proto.Field(proto.INT32, number=29034360)
-
-    default_ttl = proto.Field(proto.INT32, number=100253422)
-
-    max_ttl = proto.Field(proto.INT32, number=39142545)
-
-    signed_url_cache_max_age_sec = proto.Field(proto.STRING, number=939078)
-
-    signed_url_key_names = proto.RepeatedField(proto.STRING, number=103413429)
+    cache_mode = proto.Field(
+        proto.ENUM, number=28877888, optional=True, enum=CacheMode,
+    )
+    client_ttl = proto.Field(proto.INT32, number=29034360, optional=True,)
+    default_ttl = proto.Field(proto.INT32, number=100253422, optional=True,)
+    max_ttl = proto.Field(proto.INT32, number=307578001, optional=True,)
+    signed_url_cache_max_age_sec = proto.Field(
+        proto.STRING, number=269374534, optional=True,
+    )
+    signed_url_key_names = proto.RepeatedField(proto.STRING, number=371848885,)
 
 
 class BackendBucket(proto.Message):
@@ -3541,32 +3422,25 @@ class BackendBucket(proto.Message):
             [Output Only] Server-defined URL for the resource.
     """
 
-    bucket_name = proto.Field(proto.STRING, number=15174592)
-
+    bucket_name = proto.Field(proto.STRING, number=283610048, optional=True,)
     cdn_policy = proto.Field(
-        proto.MESSAGE, number=213976452, message="BackendBucketCdnPolicy",
+        proto.MESSAGE,
+        number=213976452,
+        optional=True,
+        message="BackendBucketCdnPolicy",
     )
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    custom_response_headers = proto.RepeatedField(proto.STRING, number=119103638)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    enable_cdn = proto.Field(proto.BOOL, number=14506865)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    custom_response_headers = proto.RepeatedField(proto.STRING, number=387539094,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    enable_cdn = proto.Field(proto.BOOL, number=282942321, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
 
 
 class BackendBucketList(proto.Message):
     r"""Contains a list of BackendBucket resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -3592,19 +3466,16 @@ class BackendBucketList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="BackendBucket",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class BackendServiceCdnPolicy(proto.Message):
@@ -3701,26 +3572,24 @@ class BackendServiceCdnPolicy(proto.Message):
         be cached.
         """
         UNDEFINED_CACHE_MODE = 0
-        CACHE_ALL_STATIC = 86592489
-        FORCE_CACHE_ALL = 217591472
-        INVALID_CACHE_MODE = 112860104
+        CACHE_ALL_STATIC = 355027945
+        FORCE_CACHE_ALL = 486026928
+        INVALID_CACHE_MODE = 381295560
         USE_ORIGIN_HEADERS = 55380261
 
     cache_key_policy = proto.Field(
-        proto.MESSAGE, number=159263727, message="CacheKeyPolicy",
+        proto.MESSAGE, number=159263727, optional=True, message="CacheKeyPolicy",
     )
-
-    cache_mode = proto.Field(proto.ENUM, number=28877888, enum=CacheMode,)
-
-    client_ttl = proto.Field(proto.INT32, number=29034360)
-
-    default_ttl = proto.Field(proto.INT32, number=100253422)
-
-    max_ttl = proto.Field(proto.INT32, number=39142545)
-
-    signed_url_cache_max_age_sec = proto.Field(proto.STRING, number=939078)
-
-    signed_url_key_names = proto.RepeatedField(proto.STRING, number=103413429)
+    cache_mode = proto.Field(
+        proto.ENUM, number=28877888, optional=True, enum=CacheMode,
+    )
+    client_ttl = proto.Field(proto.INT32, number=29034360, optional=True,)
+    default_ttl = proto.Field(proto.INT32, number=100253422, optional=True,)
+    max_ttl = proto.Field(proto.INT32, number=307578001, optional=True,)
+    signed_url_cache_max_age_sec = proto.Field(
+        proto.STRING, number=269374534, optional=True,
+    )
+    signed_url_key_names = proto.RepeatedField(proto.STRING, number=371848885,)
 
 
 class CircuitBreakers(proto.Message):
@@ -3753,20 +3622,17 @@ class CircuitBreakers(proto.Message):
             specified, the default is 1.
     """
 
-    max_connections = proto.Field(proto.INT32, number=110652154)
-
-    max_pending_requests = proto.Field(proto.INT32, number=107123431)
-
-    max_requests = proto.Field(proto.INT32, number=28097599)
-
-    max_requests_per_connection = proto.Field(proto.INT32, number=93195072)
-
-    max_retries = proto.Field(proto.INT32, number=55546219)
+    max_connections = proto.Field(proto.INT32, number=110652154, optional=True,)
+    max_pending_requests = proto.Field(proto.INT32, number=375558887, optional=True,)
+    max_requests = proto.Field(proto.INT32, number=28097599, optional=True,)
+    max_requests_per_connection = proto.Field(
+        proto.INT32, number=361630528, optional=True,
+    )
+    max_retries = proto.Field(proto.INT32, number=55546219, optional=True,)
 
 
 class ConnectionDraining(proto.Message):
     r"""Message containing connection draining configuration.
-
     Attributes:
         draining_timeout_sec (int):
             The amount of time in seconds to allow existing connections
@@ -3774,7 +3640,7 @@ class ConnectionDraining(proto.Message):
             if the protocol is not UDP. The valid range is [0, 3600].
     """
 
-    draining_timeout_sec = proto.Field(proto.INT32, number=225127070)
+    draining_timeout_sec = proto.Field(proto.INT32, number=225127070, optional=True,)
 
 
 class ConsistentHashLoadBalancerSettings(proto.Message):
@@ -3805,12 +3671,11 @@ class ConsistentHashLoadBalancerSettings(proto.Message):
     http_cookie = proto.Field(
         proto.MESSAGE,
         number=6673915,
+        optional=True,
         message="ConsistentHashLoadBalancerSettingsHttpCookie",
     )
-
-    http_header_name = proto.Field(proto.STRING, number=234798022)
-
-    minimum_ring_size = proto.Field(proto.STRING, number=234380735)
+    http_header_name = proto.Field(proto.STRING, number=234798022, optional=True,)
+    minimum_ring_size = proto.Field(proto.STRING, number=234380735, optional=True,)
 
 
 class BackendServiceFailoverPolicy(proto.Message):
@@ -3849,16 +3714,17 @@ class BackendServiceFailoverPolicy(proto.Message):
             healthy primary VMs is less than this ratio.
     """
 
-    disable_connection_drain_on_failover = proto.Field(proto.BOOL, number=182150753)
-
-    drop_traffic_if_unhealthy = proto.Field(proto.BOOL, number=112289428)
-
-    failover_ratio = proto.Field(proto.FLOAT, number=212667006)
+    disable_connection_drain_on_failover = proto.Field(
+        proto.BOOL, number=182150753, optional=True,
+    )
+    drop_traffic_if_unhealthy = proto.Field(
+        proto.BOOL, number=112289428, optional=True,
+    )
+    failover_ratio = proto.Field(proto.FLOAT, number=212667006, optional=True,)
 
 
 class BackendServiceIAP(proto.Message):
     r"""Identity-Aware Proxy
-
     Attributes:
         enabled (bool):
             Whether the serving infrastructure will
@@ -3879,13 +3745,12 @@ class BackendServiceIAP(proto.Message):
             oauth2_client_secret above.
     """
 
-    enabled = proto.Field(proto.BOOL, number=1018689)
-
-    oauth2_client_id = proto.Field(proto.STRING, number=45582155)
-
-    oauth2_client_secret = proto.Field(proto.STRING, number=50999520)
-
-    oauth2_client_secret_sha256 = proto.Field(proto.STRING, number=112903782)
+    enabled = proto.Field(proto.BOOL, number=1018689, optional=True,)
+    oauth2_client_id = proto.Field(proto.STRING, number=314017611, optional=True,)
+    oauth2_client_secret = proto.Field(proto.STRING, number=50999520, optional=True,)
+    oauth2_client_secret_sha256 = proto.Field(
+        proto.STRING, number=112903782, optional=True,
+    )
 
 
 class BackendServiceLogConfig(proto.Message):
@@ -3906,9 +3771,8 @@ class BackendServiceLogConfig(proto.Message):
             default value is 1.0.
     """
 
-    enable = proto.Field(proto.BOOL, number=43328899)
-
-    sample_rate = proto.Field(proto.FLOAT, number=153193045)
+    enable = proto.Field(proto.BOOL, number=311764355, optional=True,)
+    sample_rate = proto.Field(proto.FLOAT, number=153193045, optional=True,)
 
 
 class OutlierDetection(proto.Message):
@@ -3986,28 +3850,32 @@ class OutlierDetection(proto.Message):
     """
 
     base_ejection_time = proto.Field(
-        proto.MESSAGE, number=80997255, message="Duration",
+        proto.MESSAGE, number=80997255, optional=True, message="Duration",
     )
-
-    consecutive_errors = proto.Field(proto.INT32, number=118757792)
-
-    consecutive_gateway_failure = proto.Field(proto.INT32, number=149068794)
-
-    enforcing_consecutive_errors = proto.Field(proto.INT32, number=213133760)
-
-    enforcing_consecutive_gateway_failure = proto.Field(proto.INT32, number=126005210)
-
-    enforcing_success_rate = proto.Field(proto.INT32, number=194508732)
-
-    interval = proto.Field(proto.MESSAGE, number=33547461, message="Duration",)
-
-    max_ejection_percent = proto.Field(proto.INT32, number=18436888)
-
-    success_rate_minimum_hosts = proto.Field(proto.INT32, number=257331447)
-
-    success_rate_request_volume = proto.Field(proto.INT32, number=12989901)
-
-    success_rate_stdev_factor = proto.Field(proto.INT32, number=174735773)
+    consecutive_errors = proto.Field(proto.INT32, number=387193248, optional=True,)
+    consecutive_gateway_failure = proto.Field(
+        proto.INT32, number=417504250, optional=True,
+    )
+    enforcing_consecutive_errors = proto.Field(
+        proto.INT32, number=213133760, optional=True,
+    )
+    enforcing_consecutive_gateway_failure = proto.Field(
+        proto.INT32, number=394440666, optional=True,
+    )
+    enforcing_success_rate = proto.Field(proto.INT32, number=194508732, optional=True,)
+    interval = proto.Field(
+        proto.MESSAGE, number=33547461, optional=True, message="Duration",
+    )
+    max_ejection_percent = proto.Field(proto.INT32, number=18436888, optional=True,)
+    success_rate_minimum_hosts = proto.Field(
+        proto.INT32, number=525766903, optional=True,
+    )
+    success_rate_request_volume = proto.Field(
+        proto.INT32, number=281425357, optional=True,
+    )
+    success_rate_stdev_factor = proto.Field(
+        proto.INT32, number=174735773, optional=True,
+    )
 
 
 class SecuritySettings(proto.Message):
@@ -4042,9 +3910,8 @@ class SecuritySettings(proto.Message):
             mode). Note: This field currently has no impact.
     """
 
-    client_tls_policy = proto.Field(proto.STRING, number=193889770)
-
-    subject_alt_names = proto.RepeatedField(proto.STRING, number=61594079)
+    client_tls_policy = proto.Field(proto.STRING, number=462325226, optional=True,)
+    subject_alt_names = proto.RepeatedField(proto.STRING, number=330029535,)
 
 
 class BackendService(proto.Message):
@@ -4361,10 +4228,10 @@ class BackendService(proto.Message):
         """
         UNDEFINED_LOAD_BALANCING_SCHEME = 0
         EXTERNAL = 35607499
-        INTERNAL = 10860221
+        INTERNAL = 279295677
         INTERNAL_MANAGED = 37350397
         INTERNAL_SELF_MANAGED = 236211150
-        INVALID_LOAD_BALANCING_SCHEME = 6916604
+        INVALID_LOAD_BALANCING_SCHEME = 275352060
 
     class LocalityLbPolicy(proto.Enum):
         r"""The load balancing algorithm used within the scope of the locality.
@@ -4406,12 +4273,12 @@ class BackendService(proto.Message):
         proxy that has validateForProxyless field set to true.
         """
         UNDEFINED_LOCALITY_LB_POLICY = 0
-        INVALID_LB_POLICY = 54883251
+        INVALID_LB_POLICY = 323318707
         LEAST_REQUEST = 46604921
         MAGLEV = 119180266
         ORIGINAL_DESTINATION = 166297216
         RANDOM = 262527171
-        RING_HASH = 164359613
+        RING_HASH = 432795069
         ROUND_ROBIN = 153895801
 
     class Protocol(proto.Enum):
@@ -4455,102 +4322,86 @@ class BackendService(proto.Message):
         field set to true.
         """
         UNDEFINED_SESSION_AFFINITY = 0
-        CLIENT_IP = 77229595
+        CLIENT_IP = 345665051
         CLIENT_IP_PORT_PROTO = 221722926
         CLIENT_IP_PROTO = 25322148
-        GENERATED_COOKIE = 101885748
+        GENERATED_COOKIE = 370321204
         HEADER_FIELD = 200737960
-        HTTP_COOKIE = 226546171
+        HTTP_COOKIE = 494981627
         NONE = 2402104
 
-    affinity_cookie_ttl_sec = proto.Field(proto.INT32, number=101561498)
-
-    backends = proto.RepeatedField(proto.MESSAGE, number=242404447, message="Backend",)
-
+    affinity_cookie_ttl_sec = proto.Field(proto.INT32, number=369996954, optional=True,)
+    backends = proto.RepeatedField(proto.MESSAGE, number=510839903, message="Backend",)
     cdn_policy = proto.Field(
-        proto.MESSAGE, number=213976452, message="BackendServiceCdnPolicy",
+        proto.MESSAGE,
+        number=213976452,
+        optional=True,
+        message="BackendServiceCdnPolicy",
     )
-
     circuit_breakers = proto.Field(
-        proto.MESSAGE, number=152904605, message="CircuitBreakers",
+        proto.MESSAGE, number=421340061, optional=True, message="CircuitBreakers",
     )
-
     connection_draining = proto.Field(
-        proto.MESSAGE, number=192661291, message="ConnectionDraining",
+        proto.MESSAGE, number=461096747, optional=True, message="ConnectionDraining",
     )
-
     consistent_hash = proto.Field(
-        proto.MESSAGE, number=905883, message="ConsistentHashLoadBalancerSettings",
+        proto.MESSAGE,
+        number=905883,
+        optional=True,
+        message="ConsistentHashLoadBalancerSettings",
     )
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    custom_request_headers = proto.RepeatedField(proto.STRING, number=27977992)
-
-    custom_response_headers = proto.RepeatedField(proto.STRING, number=119103638)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    enable_c_d_n = proto.Field(proto.BOOL, number=250733499)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    custom_request_headers = proto.RepeatedField(proto.STRING, number=27977992,)
+    custom_response_headers = proto.RepeatedField(proto.STRING, number=387539094,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    enable_c_d_n = proto.Field(proto.BOOL, number=250733499, optional=True,)
     failover_policy = proto.Field(
-        proto.MESSAGE, number=105658655, message="BackendServiceFailoverPolicy",
+        proto.MESSAGE,
+        number=105658655,
+        optional=True,
+        message="BackendServiceFailoverPolicy",
     )
-
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
-    health_checks = proto.RepeatedField(proto.STRING, number=179935150)
-
-    iap = proto.Field(proto.MESSAGE, number=104024, message="BackendServiceIAP",)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    health_checks = proto.RepeatedField(proto.STRING, number=448370606,)
+    iap = proto.Field(
+        proto.MESSAGE, number=104024, optional=True, message="BackendServiceIAP",
+    )
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     load_balancing_scheme = proto.Field(
-        proto.ENUM, number=95454788, enum=LoadBalancingScheme,
+        proto.ENUM, number=363890244, optional=True, enum=LoadBalancingScheme,
     )
-
     locality_lb_policy = proto.Field(
-        proto.ENUM, number=131431487, enum=LocalityLbPolicy,
+        proto.ENUM, number=131431487, optional=True, enum=LocalityLbPolicy,
     )
-
     log_config = proto.Field(
-        proto.MESSAGE, number=82864285, message="BackendServiceLogConfig",
+        proto.MESSAGE,
+        number=351299741,
+        optional=True,
+        message="BackendServiceLogConfig",
     )
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    network = proto.Field(proto.STRING, number=232872494)
-
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    network = proto.Field(proto.STRING, number=232872494, optional=True,)
     outlier_detection = proto.Field(
-        proto.MESSAGE, number=86189630, message="OutlierDetection",
+        proto.MESSAGE, number=354625086, optional=True, message="OutlierDetection",
     )
-
-    port = proto.Field(proto.INT32, number=3446913)
-
-    port_name = proto.Field(proto.STRING, number=41534345)
-
-    protocol = proto.Field(proto.ENUM, number=84577944, enum=Protocol,)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    security_policy = proto.Field(proto.STRING, number=171082513)
-
+    port = proto.Field(proto.INT32, number=3446913, optional=True,)
+    port_name = proto.Field(proto.STRING, number=41534345, optional=True,)
+    protocol = proto.Field(proto.ENUM, number=84577944, optional=True, enum=Protocol,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    security_policy = proto.Field(proto.STRING, number=171082513, optional=True,)
     security_settings = proto.Field(
-        proto.MESSAGE, number=210214466, message="SecuritySettings",
+        proto.MESSAGE, number=478649922, optional=True, message="SecuritySettings",
     )
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    session_affinity = proto.Field(proto.ENUM, number=195453105, enum=SessionAffinity,)
-
-    timeout_sec = proto.Field(proto.INT32, number=79994995)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    session_affinity = proto.Field(
+        proto.ENUM, number=463888561, optional=True, enum=SessionAffinity,
+    )
+    timeout_sec = proto.Field(proto.INT32, number=79994995, optional=True,)
 
 
 class BackendServicesScopedList(proto.Message):
     r"""
-
     Attributes:
         backend_services (Sequence[google.cloud.compute_v1.types.BackendService]):
             A list of BackendServices contained in this
@@ -4561,15 +4412,15 @@ class BackendServicesScopedList(proto.Message):
     """
 
     backend_services = proto.RepeatedField(
-        proto.MESSAGE, number=120086953, message="BackendService",
+        proto.MESSAGE, number=388522409, message="BackendService",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class BackendServiceAggregatedList(proto.Message):
     r"""Contains a list of BackendServicesScopedList.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -4598,24 +4449,20 @@ class BackendServiceAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=100526016,
         message="BackendServicesScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class CacheKeyPolicy(proto.Message):
@@ -4649,20 +4496,15 @@ class CacheKeyPolicy(proto.Message):
             delimiters.
     """
 
-    include_host = proto.Field(proto.BOOL, number=218432223)
-
-    include_protocol = proto.Field(proto.BOOL, number=35072079)
-
-    include_query_string = proto.Field(proto.BOOL, number=205601183)
-
-    query_string_blacklist = proto.RepeatedField(proto.STRING, number=86529286)
-
-    query_string_whitelist = proto.RepeatedField(proto.STRING, number=52456496)
+    include_host = proto.Field(proto.BOOL, number=486867679, optional=True,)
+    include_protocol = proto.Field(proto.BOOL, number=303507535, optional=True,)
+    include_query_string = proto.Field(proto.BOOL, number=474036639, optional=True,)
+    query_string_blacklist = proto.RepeatedField(proto.STRING, number=354964742,)
+    query_string_whitelist = proto.RepeatedField(proto.STRING, number=52456496,)
 
 
 class HealthStatus(proto.Message):
     r"""
-
     Attributes:
         annotations (Sequence[google.cloud.compute_v1.types.HealthStatus.AnnotationsEntry]):
             Metadata defined as annotations for network
@@ -4686,35 +4528,32 @@ class HealthStatus(proto.Message):
     class HealthState(proto.Enum):
         r"""Health state of the instance."""
         UNDEFINED_HEALTH_STATE = 0
-        HEALTHY = 171365757
-        UNHEALTHY = 193682628
+        HEALTHY = 439801213
+        UNHEALTHY = 462118084
 
     class WeightError(proto.Enum):
         r""""""
         UNDEFINED_WEIGHT_ERROR = 0
-        INVALID_WEIGHT = 115262944
-        MISSING_WEIGHT = 115592081
-        UNAVAILABLE_WEIGHT = 171028839
-        WEIGHT_NONE = 233993375
+        INVALID_WEIGHT = 383698400
+        MISSING_WEIGHT = 384027537
+        UNAVAILABLE_WEIGHT = 439464295
+        WEIGHT_NONE = 502428831
 
-    annotations = proto.MapField(proto.STRING, proto.STRING, number=112032548)
-
-    health_state = proto.Field(proto.ENUM, number=55571694, enum=HealthState,)
-
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    ip_address = proto.Field(proto.STRING, number=137836764)
-
-    port = proto.Field(proto.INT32, number=3446913)
-
-    weight = proto.Field(proto.STRING, number=13714040)
-
-    weight_error = proto.Field(proto.ENUM, number=254066049, enum=WeightError,)
+    annotations = proto.MapField(proto.STRING, proto.STRING, number=112032548,)
+    health_state = proto.Field(
+        proto.ENUM, number=324007150, optional=True, enum=HealthState,
+    )
+    instance = proto.Field(proto.STRING, number=18257045, optional=True,)
+    ip_address = proto.Field(proto.STRING, number=406272220, optional=True,)
+    port = proto.Field(proto.INT32, number=3446913, optional=True,)
+    weight = proto.Field(proto.STRING, number=282149496, optional=True,)
+    weight_error = proto.Field(
+        proto.ENUM, number=522501505, optional=True, enum=WeightError,
+    )
 
 
 class BackendServiceGroupHealth(proto.Message):
     r"""
-
     Attributes:
         annotations (Sequence[google.cloud.compute_v1.types.BackendServiceGroupHealth.AnnotationsEntry]):
             Metadata defined as annotations on the
@@ -4730,18 +4569,15 @@ class BackendServiceGroupHealth(proto.Message):
             services.
     """
 
-    annotations = proto.MapField(proto.STRING, proto.STRING, number=112032548)
-
+    annotations = proto.MapField(proto.STRING, proto.STRING, number=112032548,)
     health_status = proto.RepeatedField(
-        proto.MESSAGE, number=112110389, message="HealthStatus",
+        proto.MESSAGE, number=380545845, message="HealthStatus",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
 
 
 class BackendServiceList(proto.Message):
     r"""Contains a list of BackendService resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -4768,30 +4604,26 @@ class BackendServiceList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="BackendService",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class BackendServiceReference(proto.Message):
     r"""
-
     Attributes:
         backend_service (str):
 
     """
 
-    backend_service = proto.Field(proto.STRING, number=38510602)
+    backend_service = proto.Field(proto.STRING, number=306946058, optional=True,)
 
 
 class Expr(proto.Message):
@@ -4846,18 +4678,14 @@ class Expr(proto.Message):
             expression.
     """
 
-    description = proto.Field(proto.STRING, number=154502140)
-
-    expression = proto.Field(proto.STRING, number=83595928)
-
-    location = proto.Field(proto.STRING, number=21995445)
-
-    title = proto.Field(proto.STRING, number=110371416)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    expression = proto.Field(proto.STRING, number=352031384, optional=True,)
+    location = proto.Field(proto.STRING, number=290430901, optional=True,)
+    title = proto.Field(proto.STRING, number=110371416, optional=True,)
 
 
 class Binding(proto.Message):
     r"""Associates ``members`` with a ``role``.
-
     Attributes:
         binding_id (str):
 
@@ -4931,18 +4759,16 @@ class Binding(proto.Message):
             ``roles/viewer``, ``roles/editor``, or ``roles/owner``.
     """
 
-    binding_id = proto.Field(proto.STRING, number=172652821)
-
-    condition = proto.Field(proto.MESSAGE, number=212430107, message="Expr",)
-
-    members = proto.RepeatedField(proto.STRING, number=143575321)
-
-    role = proto.Field(proto.STRING, number=3506294)
+    binding_id = proto.Field(proto.STRING, number=441088277, optional=True,)
+    condition = proto.Field(
+        proto.MESSAGE, number=212430107, optional=True, message="Expr",
+    )
+    members = proto.RepeatedField(proto.STRING, number=412010777,)
+    role = proto.Field(proto.STRING, number=3506294, optional=True,)
 
 
 class CacheInvalidationRule(proto.Message):
     r"""
-
     Attributes:
         host (str):
             If set, this invalidation rule will only
@@ -4952,14 +4778,12 @@ class CacheInvalidationRule(proto.Message):
 
     """
 
-    host = proto.Field(proto.STRING, number=3208616)
-
-    path = proto.Field(proto.STRING, number=3433509)
+    host = proto.Field(proto.STRING, number=3208616, optional=True,)
+    path = proto.Field(proto.STRING, number=3433509, optional=True,)
 
 
 class LicenseResourceCommitment(proto.Message):
     r"""Commitment for a particular license resource.
-
     Attributes:
         amount (str):
             The number of licenses purchased.
@@ -4970,11 +4794,9 @@ class LicenseResourceCommitment(proto.Message):
             Any applicable license URI.
     """
 
-    amount = proto.Field(proto.STRING, number=196759640)
-
-    cores_per_license = proto.Field(proto.STRING, number=32482324)
-
-    license_ = proto.Field(proto.STRING, number=166757441)
+    amount = proto.Field(proto.STRING, number=196759640, optional=True,)
+    cores_per_license = proto.Field(proto.STRING, number=32482324, optional=True,)
+    license_ = proto.Field(proto.STRING, number=166757441, optional=True,)
 
 
 class Reservation(proto.Message):
@@ -5032,35 +4854,30 @@ class Reservation(proto.Message):
     class Status(proto.Enum):
         r"""[Output Only] The status of the reservation."""
         UNDEFINED_STATUS = 0
-        CREATING = 187129529
-        DELETING = 260166568
-        INVALID = 261848535
+        CREATING = 455564985
+        DELETING = 528602024
+        INVALID = 530283991
         READY = 77848963
-        UPDATING = 226178886
+        UPDATING = 494614342
 
-    commitment = proto.Field(proto.STRING, number=213699349)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
+    commitment = proto.Field(proto.STRING, number=482134805, optional=True,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     specific_reservation = proto.Field(
-        proto.MESSAGE, number=136466495, message="AllocationSpecificSKUReservation",
+        proto.MESSAGE,
+        number=404901951,
+        optional=True,
+        message="AllocationSpecificSKUReservation",
     )
-
-    specific_reservation_required = proto.Field(proto.BOOL, number=226550687)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    specific_reservation_required = proto.Field(
+        proto.BOOL, number=226550687, optional=True,
+    )
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
 class ResourceCommitment(proto.Message):
@@ -5088,17 +4905,15 @@ class ResourceCommitment(proto.Message):
         values are VCPU and MEMORY
         """
         UNDEFINED_TYPE = 0
-        ACCELERATOR = 161379915
-        LOCAL_SSD = 240499440
+        ACCELERATOR = 429815371
+        LOCAL_SSD = 508934896
         MEMORY = 123056385
-        UNSPECIFIED = 258350871
+        UNSPECIFIED = 526786327
         VCPU = 2628978
 
-    accelerator_type = proto.Field(proto.STRING, number=138031246)
-
-    amount = proto.Field(proto.STRING, number=196759640)
-
-    type_ = proto.Field(proto.ENUM, number=3575610, enum=Type,)
+    accelerator_type = proto.Field(proto.STRING, number=138031246, optional=True,)
+    amount = proto.Field(proto.STRING, number=196759640, optional=True,)
+    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
 
 
 class Commitment(proto.Message):
@@ -5182,9 +4997,9 @@ class Commitment(proto.Message):
         a Type specified.
         """
         UNDEFINED_CATEGORY = 0
-        CATEGORY_UNSPECIFIED = 240754006
-        LICENSE = 79433761
-        MACHINE = 201117735
+        CATEGORY_UNSPECIFIED = 509189462
+        LICENSE = 347869217
+        MACHINE = 469553191
 
     class Plan(proto.Enum):
         r"""The plan for this commitment, which determines duration and discount
@@ -5192,7 +5007,7 @@ class Commitment(proto.Message):
         THIRTY_SIX_MONTH (3 years).
         """
         UNDEFINED_PLAN = 0
-        INVALID = 261848535
+        INVALID = 530283991
         THIRTY_SIX_MONTH = 266295942
         TWELVE_MONTH = 173083962
 
@@ -5202,53 +5017,40 @@ class Commitment(proto.Message):
         following values: NOT_YET_ACTIVE, ACTIVE, EXPIRED.
         """
         UNDEFINED_STATUS = 0
-        ACTIVE = 46297862
-        CREATING = 187129529
-        EXPIRED = 214053637
+        ACTIVE = 314733318
+        CREATING = 455564985
+        EXPIRED = 482489093
         NOT_YET_ACTIVE = 20607337
 
-    category = proto.Field(proto.ENUM, number=50511102, enum=Category,)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    end_timestamp = proto.Field(proto.STRING, number=199661234)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
+    category = proto.Field(proto.ENUM, number=50511102, optional=True, enum=Category,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    end_timestamp = proto.Field(proto.STRING, number=468096690, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     license_resource = proto.Field(
-        proto.MESSAGE, number=169519692, message="LicenseResourceCommitment",
+        proto.MESSAGE,
+        number=437955148,
+        optional=True,
+        message="LicenseResourceCommitment",
     )
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    plan = proto.Field(proto.ENUM, number=3443497, enum=Plan,)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    plan = proto.Field(proto.ENUM, number=3443497, optional=True, enum=Plan,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
     reservations = proto.RepeatedField(
-        proto.MESSAGE, number=131282471, message="Reservation",
+        proto.MESSAGE, number=399717927, message="Reservation",
     )
-
     resources = proto.RepeatedField(
         proto.MESSAGE, number=164412965, message="ResourceCommitment",
     )
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    start_timestamp = proto.Field(proto.STRING, number=83645817)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
-
-    status_message = proto.Field(proto.STRING, number=28992698)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    start_timestamp = proto.Field(proto.STRING, number=83645817, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status_message = proto.Field(proto.STRING, number=297428154, optional=True,)
 
 
 class CommitmentsScopedList(proto.Message):
     r"""
-
     Attributes:
         commitments (Sequence[google.cloud.compute_v1.types.Commitment]):
             [Output Only] A list of commitments contained in this scope.
@@ -5258,15 +5060,15 @@ class CommitmentsScopedList(proto.Message):
     """
 
     commitments = proto.RepeatedField(
-        proto.MESSAGE, number=182228990, message="Commitment",
+        proto.MESSAGE, number=450664446, message="Commitment",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class CommitmentAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -5296,26 +5098,21 @@ class CommitmentAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="CommitmentsScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class CommitmentList(proto.Message):
     r"""Contains a list of Commitment resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -5342,22 +5139,18 @@ class CommitmentList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Commitment",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class Condition(proto.Message):
     r"""A condition to be met.
-
     Attributes:
         iam (str):
             Trusted attributes supplied by the IAM
@@ -5374,27 +5167,24 @@ class Condition(proto.Message):
             The objects of the condition.
     """
 
-    iam = proto.Field(proto.STRING, number=104021)
-
-    op = proto.Field(proto.STRING, number=3553)
-
-    svc = proto.Field(proto.STRING, number=114272)
-
-    sys = proto.Field(proto.STRING, number=114381)
-
-    values = proto.RepeatedField(proto.STRING, number=249928994)
+    iam = proto.Field(proto.STRING, number=104021, optional=True,)
+    op = proto.Field(proto.STRING, number=3553, optional=True,)
+    svc = proto.Field(proto.STRING, number=114272, optional=True,)
+    sys = proto.Field(proto.STRING, number=114381, optional=True,)
+    values = proto.RepeatedField(proto.STRING, number=249928994,)
 
 
 class ConfidentialInstanceConfig(proto.Message):
     r"""A set of Confidential Instance options.
-
     Attributes:
         enable_confidential_compute (bool):
             Defines whether the instance should have
             confidential compute enabled.
     """
 
-    enable_confidential_compute = proto.Field(proto.BOOL, number=102135228)
+    enable_confidential_compute = proto.Field(
+        proto.BOOL, number=102135228, optional=True,
+    )
 
 
 class ConsistentHashLoadBalancerSettingsHttpCookie(proto.Message):
@@ -5411,11 +5201,9 @@ class ConsistentHashLoadBalancerSettingsHttpCookie(proto.Message):
             Lifetime of the cookie.
     """
 
-    name = proto.Field(proto.STRING, number=3373707)
-
-    path = proto.Field(proto.STRING, number=3433509)
-
-    ttl = proto.Field(proto.MESSAGE, number=115180, message="Duration",)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    path = proto.Field(proto.STRING, number=3433509, optional=True,)
+    ttl = proto.Field(proto.MESSAGE, number=115180, optional=True, message="Duration",)
 
 
 class Duration(proto.Message):
@@ -5437,9 +5225,8 @@ class Duration(proto.Message):
             days/year \* 10000 years
     """
 
-    nanos = proto.Field(proto.INT32, number=104586303)
-
-    seconds = proto.Field(proto.STRING, number=91048575)
+    nanos = proto.Field(proto.INT32, number=104586303, optional=True,)
+    seconds = proto.Field(proto.STRING, number=359484031, optional=True,)
 
 
 class CorsPolicy(proto.Message):
@@ -5486,26 +5273,18 @@ class CorsPolicy(proto.Message):
             translates to the Access-Control-Max-Age header.
     """
 
-    allow_credentials = proto.Field(proto.BOOL, number=212827910)
-
-    allow_headers = proto.RepeatedField(proto.STRING, number=45179024)
-
-    allow_methods = proto.RepeatedField(proto.STRING, number=205405372)
-
-    allow_origin_regexes = proto.RepeatedField(proto.STRING, number=215385810)
-
-    allow_origins = proto.RepeatedField(proto.STRING, number=194914071)
-
-    disabled = proto.Field(proto.BOOL, number=2505340)
-
-    expose_headers = proto.RepeatedField(proto.STRING, number=247604747)
-
-    max_age = proto.Field(proto.INT32, number=39123876)
+    allow_credentials = proto.Field(proto.BOOL, number=481263366, optional=True,)
+    allow_headers = proto.RepeatedField(proto.STRING, number=45179024,)
+    allow_methods = proto.RepeatedField(proto.STRING, number=205405372,)
+    allow_origin_regexes = proto.RepeatedField(proto.STRING, number=215385810,)
+    allow_origins = proto.RepeatedField(proto.STRING, number=194914071,)
+    disabled = proto.Field(proto.BOOL, number=270940796, optional=True,)
+    expose_headers = proto.RepeatedField(proto.STRING, number=247604747,)
+    max_age = proto.Field(proto.INT32, number=307559332, optional=True,)
 
 
 class CustomerEncryptionKeyProtectedDisk(proto.Message):
     r"""
-
     Attributes:
         disk_encryption_key (google.cloud.compute_v1.types.CustomerEncryptionKey):
             Decrypts data associated with the disk with a
@@ -5517,10 +5296,9 @@ class CustomerEncryptionKeyProtectedDisk(proto.Message):
     """
 
     disk_encryption_key = proto.Field(
-        proto.MESSAGE, number=3225221, message="CustomerEncryptionKey",
+        proto.MESSAGE, number=271660677, optional=True, message="CustomerEncryptionKey",
     )
-
-    source = proto.Field(proto.STRING, number=177235995)
+    source = proto.Field(proto.STRING, number=177235995, optional=True,)
 
 
 class Disk(proto.Message):
@@ -5746,88 +5524,58 @@ class Disk(proto.Message):
         DELETING: Disk is deleting.
         """
         UNDEFINED_STATUS = 0
-        CREATING = 187129529
-        DELETING = 260166568
-        FAILED = 187271229
+        CREATING = 455564985
+        DELETING = 528602024
+        FAILED = 455706685
         READY = 77848963
-        RESTORING = 135828395
+        RESTORING = 404263851
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
     disk_encryption_key = proto.Field(
-        proto.MESSAGE, number=3225221, message="CustomerEncryptionKey",
+        proto.MESSAGE, number=271660677, optional=True, message="CustomerEncryptionKey",
     )
-
     guest_os_features = proto.RepeatedField(
         proto.MESSAGE, number=79294545, message="GuestOsFeature",
     )
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    label_fingerprint = proto.Field(proto.STRING, number=178124825)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=231759871)
-
-    last_attach_timestamp = proto.Field(proto.STRING, number=42159653)
-
-    last_detach_timestamp = proto.Field(proto.STRING, number=56471027)
-
-    license_codes = proto.RepeatedField(proto.STRING, number=45482664)
-
-    licenses = proto.RepeatedField(proto.STRING, number=69207122)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    options = proto.Field(proto.STRING, number=92702366)
-
-    physical_block_size_bytes = proto.Field(proto.STRING, number=151572487)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    replica_zones = proto.RepeatedField(proto.STRING, number=48438272)
-
-    resource_policies = proto.RepeatedField(proto.STRING, number=22220385)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    size_gb = proto.Field(proto.STRING, number=226493913)
-
-    source_disk = proto.Field(proto.STRING, number=183318337)
-
-    source_disk_id = proto.Field(proto.STRING, number=185755353)
-
-    source_image = proto.Field(proto.STRING, number=50443319)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
+    last_attach_timestamp = proto.Field(proto.STRING, number=42159653, optional=True,)
+    last_detach_timestamp = proto.Field(proto.STRING, number=56471027, optional=True,)
+    license_codes = proto.RepeatedField(proto.STRING, number=45482664,)
+    licenses = proto.RepeatedField(proto.STRING, number=337642578,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    options = proto.Field(proto.STRING, number=361137822, optional=True,)
+    physical_block_size_bytes = proto.Field(
+        proto.STRING, number=420007943, optional=True,
+    )
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    replica_zones = proto.RepeatedField(proto.STRING, number=48438272,)
+    resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    size_gb = proto.Field(proto.STRING, number=494929369, optional=True,)
+    source_disk = proto.Field(proto.STRING, number=451753793, optional=True,)
+    source_disk_id = proto.Field(proto.STRING, number=454190809, optional=True,)
+    source_image = proto.Field(proto.STRING, number=50443319, optional=True,)
     source_image_encryption_key = proto.Field(
-        proto.MESSAGE, number=113068203, message="CustomerEncryptionKey",
+        proto.MESSAGE, number=381503659, optional=True, message="CustomerEncryptionKey",
     )
-
-    source_image_id = proto.Field(proto.STRING, number=55328291)
-
-    source_snapshot = proto.Field(proto.STRING, number=126061928)
-
+    source_image_id = proto.Field(proto.STRING, number=55328291, optional=True,)
+    source_snapshot = proto.Field(proto.STRING, number=126061928, optional=True,)
     source_snapshot_encryption_key = proto.Field(
-        proto.MESSAGE, number=35243866, message="CustomerEncryptionKey",
+        proto.MESSAGE, number=303679322, optional=True, message="CustomerEncryptionKey",
     )
-
-    source_snapshot_id = proto.Field(proto.STRING, number=98962258)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
-
-    type_ = proto.Field(proto.STRING, number=3575610)
-
-    users = proto.RepeatedField(proto.STRING, number=111578632)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    source_snapshot_id = proto.Field(proto.STRING, number=98962258, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
+    users = proto.RepeatedField(proto.STRING, number=111578632,)
+    zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
 class DisksScopedList(proto.Message):
     r"""
-
     Attributes:
         disks (Sequence[google.cloud.compute_v1.types.Disk]):
             [Output Only] A list of disks contained in this scope.
@@ -5837,13 +5585,13 @@ class DisksScopedList(proto.Message):
     """
 
     disks = proto.RepeatedField(proto.MESSAGE, number=95594102, message="Disk",)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class DiskAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -5873,21 +5621,17 @@ class DiskAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="DisksScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class DiskInstantiationConfig(proto.Message):
@@ -5943,7 +5687,7 @@ class DiskInstantiationConfig(proto.Message):
         and read-only disks.
         """
         UNDEFINED_INSTANTIATE_FROM = 0
-        ATTACH_READ_ONLY = 245339963
+        ATTACH_READ_ONLY = 513775419
         BLANK = 63281460
         CUSTOM_IMAGE = 196311789
         DEFAULT = 115302945
@@ -5951,18 +5695,16 @@ class DiskInstantiationConfig(proto.Message):
         SOURCE_IMAGE = 62631959
         SOURCE_IMAGE_FAMILY = 76850316
 
-    auto_delete = proto.Field(proto.BOOL, number=196325947)
-
-    custom_image = proto.Field(proto.STRING, number=184123149)
-
-    device_name = proto.Field(proto.STRING, number=67541716)
-
-    instantiate_from = proto.Field(proto.ENUM, number=124948447, enum=InstantiateFrom,)
+    auto_delete = proto.Field(proto.BOOL, number=464761403, optional=True,)
+    custom_image = proto.Field(proto.STRING, number=184123149, optional=True,)
+    device_name = proto.Field(proto.STRING, number=67541716, optional=True,)
+    instantiate_from = proto.Field(
+        proto.ENUM, number=393383903, optional=True, enum=InstantiateFrom,
+    )
 
 
 class DiskList(proto.Message):
     r"""A list of Disk resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -5989,22 +5731,18 @@ class DiskList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Disk",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class DiskMoveRequest(proto.Message):
     r"""
-
     Attributes:
         destination_zone (str):
             The URL of the destination zone to move the
@@ -6023,9 +5761,8 @@ class DiskMoveRequest(proto.Message):
             - zones/zone/disks/disk
     """
 
-    destination_zone = proto.Field(proto.STRING, number=131854653)
-
-    target_disk = proto.Field(proto.STRING, number=62433163)
+    destination_zone = proto.Field(proto.STRING, number=131854653, optional=True,)
+    target_disk = proto.Field(proto.STRING, number=62433163, optional=True,)
 
 
 class DiskType(proto.Message):
@@ -6082,34 +5819,23 @@ class DiskType(proto.Message):
             It is not settable as a field in the request body.
     """
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    default_disk_size_gb = proto.Field(proto.STRING, number=2183797)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    default_disk_size_gb = proto.Field(proto.STRING, number=270619253, optional=True,)
     deprecated = proto.Field(
-        proto.MESSAGE, number=246703539, message="DeprecationStatus",
+        proto.MESSAGE, number=515138995, optional=True, message="DeprecationStatus",
     )
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    valid_disk_size = proto.Field(proto.STRING, number=225527008)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    valid_disk_size = proto.Field(proto.STRING, number=493962464, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
 class DiskTypesScopedList(proto.Message):
     r"""
-
     Attributes:
         disk_types (Sequence[google.cloud.compute_v1.types.DiskType]):
             [Output Only] A list of disk types contained in this scope.
@@ -6121,13 +5847,13 @@ class DiskTypesScopedList(proto.Message):
     disk_types = proto.RepeatedField(
         proto.MESSAGE, number=198926167, message="DiskType",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class DiskTypeAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -6156,26 +5882,21 @@ class DiskTypeAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="DiskTypesScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class DiskTypeList(proto.Message):
     r"""Contains a list of disk types.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -6202,70 +5923,62 @@ class DiskTypeList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="DiskType",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class DisksAddResourcePoliciesRequest(proto.Message):
     r"""
-
     Attributes:
         resource_policies (Sequence[str]):
             Resource policies to be added to this disk.
             Currently you can only specify one policy here.
     """
 
-    resource_policies = proto.RepeatedField(proto.STRING, number=22220385)
+    resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
 
 
 class DisksRemoveResourcePoliciesRequest(proto.Message):
     r"""
-
     Attributes:
         resource_policies (Sequence[str]):
             Resource policies to be removed from this
             disk.
     """
 
-    resource_policies = proto.RepeatedField(proto.STRING, number=22220385)
+    resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
 
 
 class DisksResizeRequest(proto.Message):
     r"""
-
     Attributes:
         size_gb (str):
             The new size of the persistent disk, which is
             specified in GB.
     """
 
-    size_gb = proto.Field(proto.STRING, number=226493913)
+    size_gb = proto.Field(proto.STRING, number=494929369, optional=True,)
 
 
 class DisplayDevice(proto.Message):
     r"""A set of Display Device options
-
     Attributes:
         enable_display (bool):
             Defines whether the instance has Display
             enabled.
     """
 
-    enable_display = proto.Field(proto.BOOL, number=14266886)
+    enable_display = proto.Field(proto.BOOL, number=14266886, optional=True,)
 
 
 class DistributionPolicyZoneConfiguration(proto.Message):
     r"""
-
     Attributes:
         zone (str):
             The URL of the zone. The zone must exist in
@@ -6273,12 +5986,11 @@ class DistributionPolicyZoneConfiguration(proto.Message):
             located.
     """
 
-    zone = proto.Field(proto.STRING, number=3744684)
+    zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
 class DistributionPolicy(proto.Message):
     r"""
-
     Attributes:
         zones (Sequence[google.cloud.compute_v1.types.DistributionPolicyZoneConfiguration]):
             Zones where the regional managed instance
@@ -6292,7 +6004,6 @@ class DistributionPolicy(proto.Message):
 
 class ExchangedPeeringRoute(proto.Message):
     r"""
-
     Attributes:
         dest_range (str):
             The destination range of the route.
@@ -6316,24 +6027,19 @@ class ExchangedPeeringRoute(proto.Message):
     class Type(proto.Enum):
         r"""The type of the peering route."""
         UNDEFINED_TYPE = 0
-        DYNAMIC_PEERING_ROUTE = 201359402
-        STATIC_PEERING_ROUTE = 204972089
-        SUBNET_PEERING_ROUTE = 197347048
+        DYNAMIC_PEERING_ROUTE = 469794858
+        STATIC_PEERING_ROUTE = 473407545
+        SUBNET_PEERING_ROUTE = 465782504
 
-    dest_range = proto.Field(proto.STRING, number=112892256)
-
-    imported = proto.Field(proto.BOOL, number=114502404)
-
-    next_hop_region = proto.Field(proto.STRING, number=122577014)
-
-    priority = proto.Field(proto.UINT32, number=176716196)
-
-    type_ = proto.Field(proto.ENUM, number=3575610, enum=Type,)
+    dest_range = proto.Field(proto.STRING, number=381327712, optional=True,)
+    imported = proto.Field(proto.BOOL, number=114502404, optional=True,)
+    next_hop_region = proto.Field(proto.STRING, number=122577014, optional=True,)
+    priority = proto.Field(proto.UINT32, number=445151652, optional=True,)
+    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
 
 
 class ExchangedPeeringRoutesList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -6361,24 +6067,20 @@ class ExchangedPeeringRoutesList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="ExchangedPeeringRoute",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class ExternalVpnGatewayInterface(proto.Message):
     r"""The interface for the external VPN gateway.
-
     Attributes:
         id (int):
             The numeric ID of this interface. The allowed input values
@@ -6394,9 +6096,8 @@ class ExternalVpnGatewayInterface(proto.Message):
             Engine.
     """
 
-    id = proto.Field(proto.UINT32, number=3355)
-
-    ip_address = proto.Field(proto.STRING, number=137836764)
+    id = proto.Field(proto.UINT32, number=3355, optional=True,)
+    ip_address = proto.Field(proto.STRING, number=406272220, optional=True,)
 
 
 class ExternalVpnGateway(proto.Message):
@@ -6470,31 +6171,24 @@ class ExternalVpnGateway(proto.Message):
         VPN gateway.
         """
         UNDEFINED_REDUNDANCY_TYPE = 0
-        FOUR_IPS_REDUNDANCY = 251652457
+        FOUR_IPS_REDUNDANCY = 520087913
         SINGLE_IP_INTERNALLY_REDUNDANT = 133914873
-        TWO_IPS_REDUNDANCY = 98614179
+        TWO_IPS_REDUNDANCY = 367049635
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     interfaces = proto.RepeatedField(
         proto.MESSAGE, number=12073562, message="ExternalVpnGatewayInterface",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    label_fingerprint = proto.Field(proto.STRING, number=178124825)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=231759871)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    redundancy_type = proto.Field(proto.ENUM, number=3008284, enum=RedundancyType,)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    redundancy_type = proto.Field(
+        proto.ENUM, number=271443740, optional=True, enum=RedundancyType,
+    )
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
 
 
 class ExternalVpnGatewayList(proto.Message):
@@ -6530,26 +6224,21 @@ class ExternalVpnGatewayList(proto.Message):
     def raw_page(self):
         return self
 
-    etag = proto.Field(proto.STRING, number=3123477)
-
-    id = proto.Field(proto.STRING, number=3355)
-
+    etag = proto.Field(proto.STRING, number=3123477, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="ExternalVpnGateway",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class FileContentBuffer(proto.Message):
     r"""
-
     Attributes:
         content (str):
             The raw content in the secure keys file.
@@ -6564,14 +6253,12 @@ class FileContentBuffer(proto.Message):
         UNDEFINED = 137851184
         X509 = 2674086
 
-    content = proto.Field(proto.STRING, number=146224249)
-
-    file_type = proto.Field(proto.ENUM, number=25911325, enum=FileType,)
+    content = proto.Field(proto.STRING, number=414659705, optional=True,)
+    file_type = proto.Field(proto.ENUM, number=294346781, optional=True, enum=FileType,)
 
 
 class Allowed(proto.Message):
     r"""
-
     Attributes:
         i_p_protocol (str):
             The IP protocol to which this rule applies.
@@ -6591,14 +6278,12 @@ class Allowed(proto.Message):
             ["12345-12349"].
     """
 
-    i_p_protocol = proto.Field(proto.STRING, number=55338781)
-
-    ports = proto.RepeatedField(proto.STRING, number=106854418)
+    i_p_protocol = proto.Field(proto.STRING, number=323774237, optional=True,)
+    ports = proto.RepeatedField(proto.STRING, number=106854418,)
 
 
 class Denied(proto.Message):
     r"""
-
     Attributes:
         i_p_protocol (str):
             The IP protocol to which this rule applies.
@@ -6618,14 +6303,12 @@ class Denied(proto.Message):
             ["12345-12349"].
     """
 
-    i_p_protocol = proto.Field(proto.STRING, number=55338781)
-
-    ports = proto.RepeatedField(proto.STRING, number=106854418)
+    i_p_protocol = proto.Field(proto.STRING, number=323774237, optional=True,)
+    ports = proto.RepeatedField(proto.STRING, number=106854418,)
 
 
 class FirewallLogConfig(proto.Message):
     r"""The available logging options for a firewall rule.
-
     Attributes:
         enable (bool):
             This field denotes whether to enable logging
@@ -6643,12 +6326,11 @@ class FirewallLogConfig(proto.Message):
         whether to include or exclude metadata for firewall logs.
         """
         UNDEFINED_METADATA = 0
-        EXCLUDE_ALL_METADATA = 66084498
+        EXCLUDE_ALL_METADATA = 334519954
         INCLUDE_ALL_METADATA = 164619908
 
-    enable = proto.Field(proto.BOOL, number=43328899)
-
-    metadata = proto.Field(proto.ENUM, number=86866735, enum=Metadata,)
+    enable = proto.Field(proto.BOOL, number=311764355, optional=True,)
+    metadata = proto.Field(proto.ENUM, number=86866735, optional=True, enum=Metadata,)
 
 
 class Firewall(proto.Message):
@@ -6809,53 +6491,36 @@ class Firewall(proto.Message):
         sourceTags fields.
         """
         UNDEFINED_DIRECTION = 0
-        EGRESS = 164445045
-        INGRESS = 248495765
+        EGRESS = 432880501
+        INGRESS = 516931221
 
     allowed = proto.RepeatedField(proto.MESSAGE, number=162398632, message="Allowed",)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    denied = proto.RepeatedField(proto.MESSAGE, number=6781851, message="Denied",)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    destination_ranges = proto.RepeatedField(proto.STRING, number=37264423)
-
-    direction = proto.Field(proto.ENUM, number=111150975, enum=Direction,)
-
-    disabled = proto.Field(proto.BOOL, number=2505340)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    log_config = proto.Field(
-        proto.MESSAGE, number=82864285, message="FirewallLogConfig",
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    denied = proto.RepeatedField(proto.MESSAGE, number=275217307, message="Denied",)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    destination_ranges = proto.RepeatedField(proto.STRING, number=305699879,)
+    direction = proto.Field(
+        proto.ENUM, number=111150975, optional=True, enum=Direction,
     )
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    network = proto.Field(proto.STRING, number=232872494)
-
-    priority = proto.Field(proto.INT32, number=176716196)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    source_ranges = proto.RepeatedField(proto.STRING, number=200097658)
-
-    source_service_accounts = proto.RepeatedField(proto.STRING, number=105100756)
-
-    source_tags = proto.RepeatedField(proto.STRING, number=183786941)
-
-    target_service_accounts = proto.RepeatedField(proto.STRING, number=189204254)
-
-    target_tags = proto.RepeatedField(proto.STRING, number=62901767)
+    disabled = proto.Field(proto.BOOL, number=270940796, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    log_config = proto.Field(
+        proto.MESSAGE, number=351299741, optional=True, message="FirewallLogConfig",
+    )
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    network = proto.Field(proto.STRING, number=232872494, optional=True,)
+    priority = proto.Field(proto.INT32, number=445151652, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    source_ranges = proto.RepeatedField(proto.STRING, number=200097658,)
+    source_service_accounts = proto.RepeatedField(proto.STRING, number=105100756,)
+    source_tags = proto.RepeatedField(proto.STRING, number=452222397,)
+    target_service_accounts = proto.RepeatedField(proto.STRING, number=457639710,)
+    target_tags = proto.RepeatedField(proto.STRING, number=62901767,)
 
 
 class FirewallList(proto.Message):
     r"""Contains a list of firewalls.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -6882,17 +6547,14 @@ class FirewallList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Firewall",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class MetadataFilter(proto.Message):
@@ -6946,11 +6608,10 @@ class MetadataFilter(proto.Message):
         NOT_SET = 163646646
 
     filter_labels = proto.RepeatedField(
-        proto.MESSAGE, number=39467686, message="MetadataFilterLabelMatch",
+        proto.MESSAGE, number=307903142, message="MetadataFilterLabelMatch",
     )
-
     filter_match_criteria = proto.Field(
-        proto.ENUM, number=239970368, enum=FilterMatchCriteria,
+        proto.ENUM, number=239970368, optional=True, enum=FilterMatchCriteria,
     )
 
 
@@ -7312,10 +6973,10 @@ class ForwardingRule(proto.Message):
         """
         UNDEFINED_LOAD_BALANCING_SCHEME = 0
         EXTERNAL = 35607499
-        INTERNAL = 10860221
+        INTERNAL = 279295677
         INTERNAL_MANAGED = 37350397
         INTERNAL_SELF_MANAGED = 236211150
-        INVALID = 261848535
+        INVALID = 530283991
 
     class NetworkTier(proto.Enum):
         r"""This signifies the networking tier used for configuring this
@@ -7328,67 +6989,48 @@ class ForwardingRule(proto.Message):
         networkTier of the Address.
         """
         UNDEFINED_NETWORK_TIER = 0
-        PREMIUM = 131095095
-        STANDARD = 216207037
+        PREMIUM = 399530551
+        STANDARD = 484642493
 
-    all_ports = proto.Field(proto.BOOL, number=176740340)
-
-    allow_global_access = proto.Field(proto.BOOL, number=230974218)
-
-    backend_service = proto.Field(proto.STRING, number=38510602)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
-    i_p_address = proto.Field(proto.STRING, number=254156495)
-
-    i_p_protocol = proto.Field(proto.ENUM, number=55338781, enum=IPProtocol,)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    ip_version = proto.Field(proto.ENUM, number=26524096, enum=IpVersion,)
-
-    is_mirroring_collector = proto.Field(proto.BOOL, number=119255164)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
+    all_ports = proto.Field(proto.BOOL, number=445175796, optional=True,)
+    allow_global_access = proto.Field(proto.BOOL, number=499409674, optional=True,)
+    backend_service = proto.Field(proto.STRING, number=306946058, optional=True,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    i_p_address = proto.Field(proto.STRING, number=522591951, optional=True,)
+    i_p_protocol = proto.Field(
+        proto.ENUM, number=323774237, optional=True, enum=IPProtocol,
+    )
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    ip_version = proto.Field(
+        proto.ENUM, number=294959552, optional=True, enum=IpVersion,
+    )
+    is_mirroring_collector = proto.Field(proto.BOOL, number=119255164, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     load_balancing_scheme = proto.Field(
-        proto.ENUM, number=95454788, enum=LoadBalancingScheme,
+        proto.ENUM, number=363890244, optional=True, enum=LoadBalancingScheme,
     )
-
     metadata_filters = proto.RepeatedField(
-        proto.MESSAGE, number=196290283, message="MetadataFilter",
+        proto.MESSAGE, number=464725739, message="MetadataFilter",
     )
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    network = proto.Field(proto.STRING, number=232872494)
-
-    network_tier = proto.Field(proto.ENUM, number=248962387, enum=NetworkTier,)
-
-    port_range = proto.Field(proto.STRING, number=217518079)
-
-    ports = proto.RepeatedField(proto.STRING, number=106854418)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    service_label = proto.Field(proto.STRING, number=148573418)
-
-    service_name = proto.Field(proto.STRING, number=91444693)
-
-    subnetwork = proto.Field(proto.STRING, number=39392238)
-
-    target = proto.Field(proto.STRING, number=192835985)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    network = proto.Field(proto.STRING, number=232872494, optional=True,)
+    network_tier = proto.Field(
+        proto.ENUM, number=517397843, optional=True, enum=NetworkTier,
+    )
+    port_range = proto.Field(proto.STRING, number=217518079, optional=True,)
+    ports = proto.RepeatedField(proto.STRING, number=106854418,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    service_label = proto.Field(proto.STRING, number=417008874, optional=True,)
+    service_name = proto.Field(proto.STRING, number=359880149, optional=True,)
+    subnetwork = proto.Field(proto.STRING, number=307827694, optional=True,)
+    target = proto.Field(proto.STRING, number=192835985, optional=True,)
 
 
 class ForwardingRulesScopedList(proto.Message):
     r"""
-
     Attributes:
         forwarding_rules (Sequence[google.cloud.compute_v1.types.ForwardingRule]):
             A list of forwarding rules contained in this
@@ -7399,15 +7041,15 @@ class ForwardingRulesScopedList(proto.Message):
     """
 
     forwarding_rules = proto.RepeatedField(
-        proto.MESSAGE, number=47385909, message="ForwardingRule",
+        proto.MESSAGE, number=315821365, message="ForwardingRule",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class ForwardingRuleAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -7438,29 +7080,24 @@ class ForwardingRuleAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=100526016,
         message="ForwardingRulesScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class ForwardingRuleList(proto.Message):
     r"""Contains a list of ForwardingRule resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -7486,35 +7123,30 @@ class ForwardingRuleList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="ForwardingRule",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class ForwardingRuleReference(proto.Message):
     r"""
-
     Attributes:
         forwarding_rule (str):
 
     """
 
-    forwarding_rule = proto.Field(proto.STRING, number=1528574)
+    forwarding_rule = proto.Field(proto.STRING, number=269964030, optional=True,)
 
 
 class GRPCHealthCheck(proto.Message):
     r"""
-
     Attributes:
         grpc_service_name (str):
             The gRPC service name for the health check. This field is
@@ -7563,23 +7195,19 @@ class GRPCHealthCheck(proto.Message):
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
-        USE_NAMED_PORT = 80865215
-        USE_SERVING_PORT = 94202060
+        USE_NAMED_PORT = 349300671
+        USE_SERVING_PORT = 362637516
 
-    grpc_service_name = proto.Field(proto.STRING, number=136533078)
-
-    port = proto.Field(proto.INT32, number=3446913)
-
-    port_name = proto.Field(proto.STRING, number=41534345)
-
+    grpc_service_name = proto.Field(proto.STRING, number=136533078, optional=True,)
+    port = proto.Field(proto.INT32, number=3446913, optional=True,)
+    port_name = proto.Field(proto.STRING, number=41534345, optional=True,)
     port_specification = proto.Field(
-        proto.ENUM, number=51590597, enum=PortSpecification,
+        proto.ENUM, number=51590597, optional=True, enum=PortSpecification,
     )
 
 
 class NetworkEndpoint(proto.Message):
     r"""The network endpoint.
-
     Attributes:
         annotations (Sequence[google.cloud.compute_v1.types.NetworkEndpoint.AnnotationsEntry]):
             Metadata defined as annotations on the
@@ -7612,20 +7240,15 @@ class NetworkEndpoint(proto.Message):
             will be used.
     """
 
-    annotations = proto.MapField(proto.STRING, proto.STRING, number=112032548)
-
-    fqdn = proto.Field(proto.STRING, number=3150485)
-
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    ip_address = proto.Field(proto.STRING, number=137836764)
-
-    port = proto.Field(proto.INT32, number=3446913)
+    annotations = proto.MapField(proto.STRING, proto.STRING, number=112032548,)
+    fqdn = proto.Field(proto.STRING, number=3150485, optional=True,)
+    instance = proto.Field(proto.STRING, number=18257045, optional=True,)
+    ip_address = proto.Field(proto.STRING, number=406272220, optional=True,)
+    port = proto.Field(proto.INT32, number=3446913, optional=True,)
 
 
 class GlobalNetworkEndpointGroupsAttachEndpointsRequest(proto.Message):
     r"""
-
     Attributes:
         network_endpoints (Sequence[google.cloud.compute_v1.types.NetworkEndpoint]):
             The list of network endpoints to be attached.
@@ -7638,7 +7261,6 @@ class GlobalNetworkEndpointGroupsAttachEndpointsRequest(proto.Message):
 
 class GlobalNetworkEndpointGroupsDetachEndpointsRequest(proto.Message):
     r"""
-
     Attributes:
         network_endpoints (Sequence[google.cloud.compute_v1.types.NetworkEndpoint]):
             The list of network endpoints to be detached.
@@ -7651,7 +7273,6 @@ class GlobalNetworkEndpointGroupsDetachEndpointsRequest(proto.Message):
 
 class GlobalSetLabelsRequest(proto.Message):
     r"""
-
     Attributes:
         label_fingerprint (str):
             The fingerprint of the previous set of labels
@@ -7676,9 +7297,8 @@ class GlobalSetLabelsRequest(proto.Message):
             can also be empty (e.g. "my-label": "").
     """
 
-    label_fingerprint = proto.Field(proto.STRING, number=178124825)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=231759871)
+    label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
 
 
 class Policy(proto.Message):
@@ -7796,23 +7416,17 @@ class Policy(proto.Message):
     """
 
     audit_configs = proto.RepeatedField(
-        proto.MESSAGE, number=59645197, message="AuditConfig",
+        proto.MESSAGE, number=328080653, message="AuditConfig",
     )
-
-    bindings = proto.RepeatedField(proto.MESSAGE, number=134816398, message="Binding",)
-
-    etag = proto.Field(proto.STRING, number=3123477)
-
-    iam_owned = proto.Field(proto.BOOL, number=182130747)
-
+    bindings = proto.RepeatedField(proto.MESSAGE, number=403251854, message="Binding",)
+    etag = proto.Field(proto.STRING, number=3123477, optional=True,)
+    iam_owned = proto.Field(proto.BOOL, number=450566203, optional=True,)
     rules = proto.RepeatedField(proto.MESSAGE, number=108873975, message="Rule",)
-
-    version = proto.Field(proto.INT32, number=83172568)
+    version = proto.Field(proto.INT32, number=351608024, optional=True,)
 
 
 class GlobalSetPolicyRequest(proto.Message):
     r"""
-
     Attributes:
         bindings (Sequence[google.cloud.compute_v1.types.Binding]):
             Flatten Policy to create a backward
@@ -7830,16 +7444,15 @@ class GlobalSetPolicyRequest(proto.Message):
             (like Projects) might reject them.
     """
 
-    bindings = proto.RepeatedField(proto.MESSAGE, number=134816398, message="Binding",)
-
-    etag = proto.Field(proto.STRING, number=3123477)
-
-    policy = proto.Field(proto.MESSAGE, number=91071794, message="Policy",)
+    bindings = proto.RepeatedField(proto.MESSAGE, number=403251854, message="Binding",)
+    etag = proto.Field(proto.STRING, number=3123477, optional=True,)
+    policy = proto.Field(
+        proto.MESSAGE, number=91071794, optional=True, message="Policy",
+    )
 
 
 class GuestAttributesValue(proto.Message):
     r"""Array of guest attribute namespace/key/value tuples.
-
     Attributes:
         items (Sequence[google.cloud.compute_v1.types.GuestAttributesEntry]):
 
@@ -7852,7 +7465,6 @@ class GuestAttributesValue(proto.Message):
 
 class GuestAttributes(proto.Message):
     r"""A guest attributes entry.
-
     Attributes:
         kind (str):
             [Output Only] Type of the resource. Always
@@ -7871,24 +7483,18 @@ class GuestAttributes(proto.Message):
             [Output Only] The value found for the requested key.
     """
 
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    query_path = proto.Field(proto.STRING, number=100155708)
-
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    query_path = proto.Field(proto.STRING, number=368591164, optional=True,)
     query_value = proto.Field(
-        proto.MESSAGE, number=157570874, message="GuestAttributesValue",
+        proto.MESSAGE, number=157570874, optional=True, message="GuestAttributesValue",
     )
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    variable_key = proto.Field(proto.STRING, number=164364828)
-
-    variable_value = proto.Field(proto.STRING, number=124582382)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    variable_key = proto.Field(proto.STRING, number=164364828, optional=True,)
+    variable_value = proto.Field(proto.STRING, number=124582382, optional=True,)
 
 
 class GuestAttributesEntry(proto.Message):
     r"""A guest attributes namespace/key/value entry.
-
     Attributes:
         key (str):
             Key for the guest attribute entry.
@@ -7898,16 +7504,13 @@ class GuestAttributesEntry(proto.Message):
             Value for the guest attribute entry.
     """
 
-    key = proto.Field(proto.STRING, number=106079)
-
-    namespace = proto.Field(proto.STRING, number=178476379)
-
-    value = proto.Field(proto.STRING, number=111972721)
+    key = proto.Field(proto.STRING, number=106079, optional=True,)
+    namespace = proto.Field(proto.STRING, number=178476379, optional=True,)
+    value = proto.Field(proto.STRING, number=111972721, optional=True,)
 
 
 class HTTP2HealthCheck(proto.Message):
     r"""
-
     Attributes:
         host (str):
             The value of the host header in the HTTP/2
@@ -7961,8 +7564,8 @@ class HTTP2HealthCheck(proto.Message):
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
-        USE_NAMED_PORT = 80865215
-        USE_SERVING_PORT = 94202060
+        USE_NAMED_PORT = 349300671
+        USE_SERVING_PORT = 362637516
 
     class ProxyHeader(proto.Enum):
         r"""Specifies the type of proxy header to append before sending data to
@@ -7970,28 +7573,23 @@ class HTTP2HealthCheck(proto.Message):
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
-        PROXY_V1 = 65917484
+        PROXY_V1 = 334352940
 
-    host = proto.Field(proto.STRING, number=3208616)
-
-    port = proto.Field(proto.INT32, number=3446913)
-
-    port_name = proto.Field(proto.STRING, number=41534345)
-
+    host = proto.Field(proto.STRING, number=3208616, optional=True,)
+    port = proto.Field(proto.INT32, number=3446913, optional=True,)
+    port_name = proto.Field(proto.STRING, number=41534345, optional=True,)
     port_specification = proto.Field(
-        proto.ENUM, number=51590597, enum=PortSpecification,
+        proto.ENUM, number=51590597, optional=True, enum=PortSpecification,
     )
-
-    proxy_header = proto.Field(proto.ENUM, number=160374142, enum=ProxyHeader,)
-
-    request_path = proto.Field(proto.STRING, number=229403605)
-
-    response = proto.Field(proto.STRING, number=196547649)
+    proxy_header = proto.Field(
+        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
+    )
+    request_path = proto.Field(proto.STRING, number=229403605, optional=True,)
+    response = proto.Field(proto.STRING, number=196547649, optional=True,)
 
 
 class HTTPHealthCheck(proto.Message):
     r"""
-
     Attributes:
         host (str):
             The value of the host header in the HTTP
@@ -8045,8 +7643,8 @@ class HTTPHealthCheck(proto.Message):
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
-        USE_NAMED_PORT = 80865215
-        USE_SERVING_PORT = 94202060
+        USE_NAMED_PORT = 349300671
+        USE_SERVING_PORT = 362637516
 
     class ProxyHeader(proto.Enum):
         r"""Specifies the type of proxy header to append before sending data to
@@ -8054,28 +7652,23 @@ class HTTPHealthCheck(proto.Message):
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
-        PROXY_V1 = 65917484
+        PROXY_V1 = 334352940
 
-    host = proto.Field(proto.STRING, number=3208616)
-
-    port = proto.Field(proto.INT32, number=3446913)
-
-    port_name = proto.Field(proto.STRING, number=41534345)
-
+    host = proto.Field(proto.STRING, number=3208616, optional=True,)
+    port = proto.Field(proto.INT32, number=3446913, optional=True,)
+    port_name = proto.Field(proto.STRING, number=41534345, optional=True,)
     port_specification = proto.Field(
-        proto.ENUM, number=51590597, enum=PortSpecification,
+        proto.ENUM, number=51590597, optional=True, enum=PortSpecification,
     )
-
-    proxy_header = proto.Field(proto.ENUM, number=160374142, enum=ProxyHeader,)
-
-    request_path = proto.Field(proto.STRING, number=229403605)
-
-    response = proto.Field(proto.STRING, number=196547649)
+    proxy_header = proto.Field(
+        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
+    )
+    request_path = proto.Field(proto.STRING, number=229403605, optional=True,)
+    response = proto.Field(proto.STRING, number=196547649, optional=True,)
 
 
 class HTTPSHealthCheck(proto.Message):
     r"""
-
     Attributes:
         host (str):
             The value of the host header in the HTTPS
@@ -8129,8 +7722,8 @@ class HTTPSHealthCheck(proto.Message):
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
-        USE_NAMED_PORT = 80865215
-        USE_SERVING_PORT = 94202060
+        USE_NAMED_PORT = 349300671
+        USE_SERVING_PORT = 362637516
 
     class ProxyHeader(proto.Enum):
         r"""Specifies the type of proxy header to append before sending data to
@@ -8138,23 +7731,19 @@ class HTTPSHealthCheck(proto.Message):
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
-        PROXY_V1 = 65917484
+        PROXY_V1 = 334352940
 
-    host = proto.Field(proto.STRING, number=3208616)
-
-    port = proto.Field(proto.INT32, number=3446913)
-
-    port_name = proto.Field(proto.STRING, number=41534345)
-
+    host = proto.Field(proto.STRING, number=3208616, optional=True,)
+    port = proto.Field(proto.INT32, number=3446913, optional=True,)
+    port_name = proto.Field(proto.STRING, number=41534345, optional=True,)
     port_specification = proto.Field(
-        proto.ENUM, number=51590597, enum=PortSpecification,
+        proto.ENUM, number=51590597, optional=True, enum=PortSpecification,
     )
-
-    proxy_header = proto.Field(proto.ENUM, number=160374142, enum=ProxyHeader,)
-
-    request_path = proto.Field(proto.STRING, number=229403605)
-
-    response = proto.Field(proto.STRING, number=196547649)
+    proxy_header = proto.Field(
+        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
+    )
+    request_path = proto.Field(proto.STRING, number=229403605, optional=True,)
+    response = proto.Field(proto.STRING, number=196547649, optional=True,)
 
 
 class HealthCheckLogConfig(proto.Message):
@@ -8168,12 +7757,11 @@ class HealthCheckLogConfig(proto.Message):
             logging will be done.
     """
 
-    enable = proto.Field(proto.BOOL, number=43328899)
+    enable = proto.Field(proto.BOOL, number=311764355, optional=True,)
 
 
 class SSLHealthCheck(proto.Message):
     r"""
-
     Attributes:
         port (int):
             The TCP port number for the health check
@@ -8226,8 +7814,8 @@ class SSLHealthCheck(proto.Message):
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
-        USE_NAMED_PORT = 80865215
-        USE_SERVING_PORT = 94202060
+        USE_NAMED_PORT = 349300671
+        USE_SERVING_PORT = 362637516
 
     class ProxyHeader(proto.Enum):
         r"""Specifies the type of proxy header to append before sending data to
@@ -8235,26 +7823,22 @@ class SSLHealthCheck(proto.Message):
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
-        PROXY_V1 = 65917484
+        PROXY_V1 = 334352940
 
-    port = proto.Field(proto.INT32, number=3446913)
-
-    port_name = proto.Field(proto.STRING, number=41534345)
-
+    port = proto.Field(proto.INT32, number=3446913, optional=True,)
+    port_name = proto.Field(proto.STRING, number=41534345, optional=True,)
     port_specification = proto.Field(
-        proto.ENUM, number=51590597, enum=PortSpecification,
+        proto.ENUM, number=51590597, optional=True, enum=PortSpecification,
     )
-
-    proxy_header = proto.Field(proto.ENUM, number=160374142, enum=ProxyHeader,)
-
-    request = proto.Field(proto.STRING, number=21951119)
-
-    response = proto.Field(proto.STRING, number=196547649)
+    proxy_header = proto.Field(
+        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
+    )
+    request = proto.Field(proto.STRING, number=21951119, optional=True,)
+    response = proto.Field(proto.STRING, number=196547649, optional=True,)
 
 
 class TCPHealthCheck(proto.Message):
     r"""
-
     Attributes:
         port (int):
             The TCP port number for the health check
@@ -8307,8 +7891,8 @@ class TCPHealthCheck(proto.Message):
         """
         UNDEFINED_PORT_SPECIFICATION = 0
         USE_FIXED_PORT = 190235748
-        USE_NAMED_PORT = 80865215
-        USE_SERVING_PORT = 94202060
+        USE_NAMED_PORT = 349300671
+        USE_SERVING_PORT = 362637516
 
     class ProxyHeader(proto.Enum):
         r"""Specifies the type of proxy header to append before sending data to
@@ -8316,21 +7900,18 @@ class TCPHealthCheck(proto.Message):
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
-        PROXY_V1 = 65917484
+        PROXY_V1 = 334352940
 
-    port = proto.Field(proto.INT32, number=3446913)
-
-    port_name = proto.Field(proto.STRING, number=41534345)
-
+    port = proto.Field(proto.INT32, number=3446913, optional=True,)
+    port_name = proto.Field(proto.STRING, number=41534345, optional=True,)
     port_specification = proto.Field(
-        proto.ENUM, number=51590597, enum=PortSpecification,
+        proto.ENUM, number=51590597, optional=True, enum=PortSpecification,
     )
-
-    proxy_header = proto.Field(proto.ENUM, number=160374142, enum=ProxyHeader,)
-
-    request = proto.Field(proto.STRING, number=21951119)
-
-    response = proto.Field(proto.STRING, number=196547649)
+    proxy_header = proto.Field(
+        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
+    )
+    request = proto.Field(proto.STRING, number=21951119, optional=True,)
+    response = proto.Field(proto.STRING, number=196547649, optional=True,)
 
 
 class HealthCheck(proto.Message):
@@ -8436,66 +8017,47 @@ class HealthCheck(proto.Message):
         HTTP = 2228360
         HTTP2 = 69079210
         HTTPS = 69079243
-        INVALID = 261848535
+        INVALID = 530283991
         SSL = 82412
         TCP = 82881
 
-    check_interval_sec = proto.Field(proto.INT32, number=77125550)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
+    check_interval_sec = proto.Field(proto.INT32, number=345561006, optional=True,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
     grpc_health_check = proto.Field(
-        proto.MESSAGE, number=85529574, message="GRPCHealthCheck",
+        proto.MESSAGE, number=85529574, optional=True, message="GRPCHealthCheck",
     )
-
-    healthy_threshold = proto.Field(proto.INT32, number=134776905)
-
+    healthy_threshold = proto.Field(proto.INT32, number=403212361, optional=True,)
     http2_health_check = proto.Field(
-        proto.MESSAGE, number=11360986, message="HTTP2HealthCheck",
+        proto.MESSAGE, number=11360986, optional=True, message="HTTP2HealthCheck",
     )
-
     http_health_check = proto.Field(
-        proto.MESSAGE, number=144151484, message="HTTPHealthCheck",
+        proto.MESSAGE, number=412586940, optional=True, message="HTTPHealthCheck",
     )
-
     https_health_check = proto.Field(
-        proto.MESSAGE, number=167611449, message="HTTPSHealthCheck",
+        proto.MESSAGE, number=436046905, optional=True, message="HTTPSHealthCheck",
     )
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     log_config = proto.Field(
-        proto.MESSAGE, number=82864285, message="HealthCheckLogConfig",
+        proto.MESSAGE, number=351299741, optional=True, message="HealthCheckLogConfig",
     )
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     ssl_health_check = proto.Field(
-        proto.MESSAGE, number=11596984, message="SSLHealthCheck",
+        proto.MESSAGE, number=280032440, optional=True, message="SSLHealthCheck",
     )
-
     tcp_health_check = proto.Field(
-        proto.MESSAGE, number=201544963, message="TCPHealthCheck",
+        proto.MESSAGE, number=469980419, optional=True, message="TCPHealthCheck",
     )
-
-    timeout_sec = proto.Field(proto.INT32, number=79994995)
-
-    type_ = proto.Field(proto.ENUM, number=3575610, enum=Type,)
-
-    unhealthy_threshold = proto.Field(proto.INT32, number=227958480)
+    timeout_sec = proto.Field(proto.INT32, number=79994995, optional=True,)
+    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+    unhealthy_threshold = proto.Field(proto.INT32, number=227958480, optional=True,)
 
 
 class HealthCheckList(proto.Message):
     r"""Contains a list of HealthCheck resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -8521,17 +8083,14 @@ class HealthCheckList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="HealthCheck",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class HealthCheckReference(proto.Message):
@@ -8547,7 +8106,7 @@ class HealthCheckReference(proto.Message):
 
     """
 
-    health_check = proto.Field(proto.STRING, number=40441189)
+    health_check = proto.Field(proto.STRING, number=308876645, optional=True,)
 
 
 class HealthCheckService(proto.Message):
@@ -8647,33 +8206,22 @@ class HealthCheckService(proto.Message):
         """
         UNDEFINED_HEALTH_STATUS_AGGREGATION_POLICY = 0
         AND = 64951
-        NO_AGGREGATION = 158009668
+        NO_AGGREGATION = 426445124
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
-    health_checks = proto.RepeatedField(proto.STRING, number=179935150)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    health_checks = proto.RepeatedField(proto.STRING, number=448370606,)
     health_status_aggregation_policy = proto.Field(
-        proto.ENUM, number=253163129, enum=HealthStatusAggregationPolicy,
+        proto.ENUM, number=253163129, optional=True, enum=HealthStatusAggregationPolicy,
     )
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    network_endpoint_groups = proto.RepeatedField(proto.STRING, number=29346733)
-
-    notification_endpoints = proto.RepeatedField(proto.STRING, number=138293034)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    network_endpoint_groups = proto.RepeatedField(proto.STRING, number=29346733,)
+    notification_endpoints = proto.RepeatedField(proto.STRING, number=406728490,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
 
 
 class HealthCheckServiceReference(proto.Message):
@@ -8690,12 +8238,11 @@ class HealthCheckServiceReference(proto.Message):
 
     """
 
-    health_check_service = proto.Field(proto.STRING, number=139939291)
+    health_check_service = proto.Field(proto.STRING, number=408374747, optional=True,)
 
 
 class HealthCheckServicesList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -8723,24 +8270,20 @@ class HealthCheckServicesList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="HealthCheckService",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class HealthChecksScopedList(proto.Message):
     r"""
-
     Attributes:
         health_checks (Sequence[google.cloud.compute_v1.types.HealthCheck]):
             A list of HealthChecks contained in this
@@ -8751,15 +8294,15 @@ class HealthChecksScopedList(proto.Message):
     """
 
     health_checks = proto.RepeatedField(
-        proto.MESSAGE, number=179935150, message="HealthCheck",
+        proto.MESSAGE, number=448370606, message="HealthCheck",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class HealthChecksAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -8787,26 +8330,21 @@ class HealthChecksAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="HealthChecksScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class HealthStatusForNetworkEndpoint(proto.Message):
     r"""
-
     Attributes:
         backend_service (google.cloud.compute_v1.types.BackendServiceReference):
             URL of the backend service associated with
@@ -8831,28 +8369,35 @@ class HealthStatusForNetworkEndpoint(proto.Message):
         health checks configured.
         """
         UNDEFINED_HEALTH_STATE = 0
-        DRAINING = 212019946
-        HEALTHY = 171365757
-        UNHEALTHY = 193682628
-        UNKNOWN = 164706346
+        DRAINING = 480455402
+        HEALTHY = 439801213
+        UNHEALTHY = 462118084
+        UNKNOWN = 433141802
 
     backend_service = proto.Field(
-        proto.MESSAGE, number=38510602, message="BackendServiceReference",
+        proto.MESSAGE,
+        number=306946058,
+        optional=True,
+        message="BackendServiceReference",
     )
-
     forwarding_rule = proto.Field(
-        proto.MESSAGE, number=1528574, message="ForwardingRuleReference",
+        proto.MESSAGE,
+        number=269964030,
+        optional=True,
+        message="ForwardingRuleReference",
     )
-
     health_check = proto.Field(
-        proto.MESSAGE, number=40441189, message="HealthCheckReference",
+        proto.MESSAGE, number=308876645, optional=True, message="HealthCheckReference",
     )
-
     health_check_service = proto.Field(
-        proto.MESSAGE, number=139939291, message="HealthCheckServiceReference",
+        proto.MESSAGE,
+        number=408374747,
+        optional=True,
+        message="HealthCheckServiceReference",
     )
-
-    health_state = proto.Field(proto.ENUM, number=55571694, enum=HealthState,)
+    health_state = proto.Field(
+        proto.ENUM, number=324007150, optional=True, enum=HealthState,
+    )
 
 
 class HostRule(proto.Message):
@@ -8880,11 +8425,9 @@ class HostRule(proto.Message):
             matches the URL's host portion.
     """
 
-    description = proto.Field(proto.STRING, number=154502140)
-
-    hosts = proto.RepeatedField(proto.STRING, number=99467211)
-
-    path_matcher = proto.Field(proto.STRING, number=69377816)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    hosts = proto.RepeatedField(proto.STRING, number=99467211,)
+    path_matcher = proto.Field(proto.STRING, number=337813272, optional=True,)
 
 
 class HttpFaultAbort(proto.Message):
@@ -8903,9 +8446,8 @@ class HttpFaultAbort(proto.Message):
             must be between 0.0 and 100.0 inclusive.
     """
 
-    http_status = proto.Field(proto.UINT32, number=200514441)
-
-    percentage = proto.Field(proto.DOUBLE, number=151909018)
+    http_status = proto.Field(proto.UINT32, number=468949897, optional=True,)
+    percentage = proto.Field(proto.DOUBLE, number=151909018, optional=True,)
 
 
 class HttpFaultDelay(proto.Message):
@@ -8925,9 +8467,10 @@ class HttpFaultDelay(proto.Message):
             inclusive.
     """
 
-    fixed_delay = proto.Field(proto.MESSAGE, number=48602360, message="Duration",)
-
-    percentage = proto.Field(proto.DOUBLE, number=151909018)
+    fixed_delay = proto.Field(
+        proto.MESSAGE, number=317037816, optional=True, message="Duration",
+    )
+    percentage = proto.Field(proto.DOUBLE, number=151909018, optional=True,)
 
 
 class HttpFaultInjection(proto.Message):
@@ -8949,9 +8492,12 @@ class HttpFaultInjection(proto.Message):
             sent to a backend service.
     """
 
-    abort = proto.Field(proto.MESSAGE, number=92611376, message="HttpFaultAbort",)
-
-    delay = proto.Field(proto.MESSAGE, number=95467907, message="HttpFaultDelay",)
+    abort = proto.Field(
+        proto.MESSAGE, number=92611376, optional=True, message="HttpFaultAbort",
+    )
+    delay = proto.Field(
+        proto.MESSAGE, number=95467907, optional=True, message="HttpFaultDelay",
+    )
 
 
 class HttpHeaderOption(proto.Message):
@@ -8971,11 +8517,9 @@ class HttpHeaderOption(proto.Message):
             header. The default value is false.
     """
 
-    header_name = proto.Field(proto.STRING, number=110223613)
-
-    header_value = proto.Field(proto.STRING, number=203094335)
-
-    replace = proto.Field(proto.BOOL, number=20755124)
+    header_name = proto.Field(proto.STRING, number=110223613, optional=True,)
+    header_value = proto.Field(proto.STRING, number=203094335, optional=True,)
+    replace = proto.Field(proto.BOOL, number=20755124, optional=True,)
 
 
 class HttpHeaderAction(proto.Message):
@@ -9003,14 +8547,11 @@ class HttpHeaderAction(proto.Message):
     request_headers_to_add = proto.RepeatedField(
         proto.MESSAGE, number=72111974, message="HttpHeaderOption",
     )
-
-    request_headers_to_remove = proto.RepeatedField(proto.STRING, number=218425247)
-
+    request_headers_to_remove = proto.RepeatedField(proto.STRING, number=218425247,)
     response_headers_to_add = proto.RepeatedField(
         proto.MESSAGE, number=32136052, message="HttpHeaderOption",
     )
-
-    response_headers_to_remove = proto.RepeatedField(proto.STRING, number=75415761)
+    response_headers_to_remove = proto.RepeatedField(proto.STRING, number=75415761,)
 
 
 class Int64RangeMatch(proto.Message):
@@ -9026,14 +8567,12 @@ class Int64RangeMatch(proto.Message):
             long integer format.
     """
 
-    range_end = proto.Field(proto.STRING, number=54004441)
-
-    range_start = proto.Field(proto.STRING, number=103333600)
+    range_end = proto.Field(proto.STRING, number=322439897, optional=True,)
+    range_start = proto.Field(proto.STRING, number=103333600, optional=True,)
 
 
 class HttpHeaderMatch(proto.Message):
     r"""matchRule criteria for request header matches.
-
     Attributes:
         exact_match (str):
             The value should exactly match contents of
@@ -9104,28 +8643,20 @@ class HttpHeaderMatch(proto.Message):
             presentMatch or rangeMatch must be set.
     """
 
-    exact_match = proto.Field(proto.STRING, number=189205637)
-
-    header_name = proto.Field(proto.STRING, number=110223613)
-
-    invert_match = proto.Field(proto.BOOL, number=232694812)
-
-    prefix_match = proto.Field(proto.STRING, number=257898968)
-
-    present_match = proto.Field(proto.BOOL, number=67435841)
-
+    exact_match = proto.Field(proto.STRING, number=457641093, optional=True,)
+    header_name = proto.Field(proto.STRING, number=110223613, optional=True,)
+    invert_match = proto.Field(proto.BOOL, number=501130268, optional=True,)
+    prefix_match = proto.Field(proto.STRING, number=257898968, optional=True,)
+    present_match = proto.Field(proto.BOOL, number=67435841, optional=True,)
     range_match = proto.Field(
-        proto.MESSAGE, number=97244227, message="Int64RangeMatch",
+        proto.MESSAGE, number=97244227, optional=True, message="Int64RangeMatch",
     )
-
-    regex_match = proto.Field(proto.STRING, number=107387853)
-
-    suffix_match = proto.Field(proto.STRING, number=158053207)
+    regex_match = proto.Field(proto.STRING, number=107387853, optional=True,)
+    suffix_match = proto.Field(proto.STRING, number=426488663, optional=True,)
 
 
 class HttpQueryParameterMatch(proto.Message):
     r"""HttpRouteRuleMatch criteria for a request's query parameter.
-
     Attributes:
         exact_match (str):
             The queryParameterMatch matches if the value
@@ -9152,18 +8683,14 @@ class HttpQueryParameterMatch(proto.Message):
             set to INTERNAL_SELF_MANAGED.
     """
 
-    exact_match = proto.Field(proto.STRING, number=189205637)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    present_match = proto.Field(proto.BOOL, number=67435841)
-
-    regex_match = proto.Field(proto.STRING, number=107387853)
+    exact_match = proto.Field(proto.STRING, number=457641093, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    present_match = proto.Field(proto.BOOL, number=67435841, optional=True,)
+    regex_match = proto.Field(proto.STRING, number=107387853, optional=True,)
 
 
 class HttpRedirectAction(proto.Message):
     r"""Specifies settings for an HTTP redirect.
-
     Attributes:
         host_redirect (str):
             The host that will be used in the redirect
@@ -9233,29 +8760,23 @@ class HttpRedirectAction(proto.Message):
         """
         UNDEFINED_REDIRECT_RESPONSE_CODE = 0
         FOUND = 67084130
-        MOVED_PERMANENTLY_DEFAULT = 118262993
-        PERMANENT_REDIRECT = 113570925
-        SEE_OTHER = 176945124
-        TEMPORARY_REDIRECT = 221114922
+        MOVED_PERMANENTLY_DEFAULT = 386698449
+        PERMANENT_REDIRECT = 382006381
+        SEE_OTHER = 445380580
+        TEMPORARY_REDIRECT = 489550378
 
-    host_redirect = proto.Field(proto.STRING, number=107417747)
-
-    https_redirect = proto.Field(proto.BOOL, number=170260656)
-
-    path_redirect = proto.Field(proto.STRING, number=3907254)
-
-    prefix_redirect = proto.Field(proto.STRING, number=177748713)
-
+    host_redirect = proto.Field(proto.STRING, number=107417747, optional=True,)
+    https_redirect = proto.Field(proto.BOOL, number=170260656, optional=True,)
+    path_redirect = proto.Field(proto.STRING, number=272342710, optional=True,)
+    prefix_redirect = proto.Field(proto.STRING, number=446184169, optional=True,)
     redirect_response_code = proto.Field(
-        proto.ENUM, number=168274952, enum=RedirectResponseCode,
+        proto.ENUM, number=436710408, optional=True, enum=RedirectResponseCode,
     )
-
-    strip_query = proto.Field(proto.BOOL, number=52284641)
+    strip_query = proto.Field(proto.BOOL, number=52284641, optional=True,)
 
 
 class HttpRetryPolicy(proto.Message):
     r"""The retry policy associates with HttpRouteRule
-
     Attributes:
         num_retries (int):
             Specifies the allowed number retries. This
@@ -9301,11 +8822,11 @@ class HttpRetryPolicy(proto.Message):
                code in the response header is set to unavailable
     """
 
-    num_retries = proto.Field(proto.UINT32, number=251680141)
-
-    per_try_timeout = proto.Field(proto.MESSAGE, number=11605691, message="Duration",)
-
-    retry_conditions = proto.RepeatedField(proto.STRING, number=28815535)
+    num_retries = proto.Field(proto.UINT32, number=251680141, optional=True,)
+    per_try_timeout = proto.Field(
+        proto.MESSAGE, number=280041147, optional=True, message="Duration",
+    )
+    retry_conditions = proto.RepeatedField(proto.STRING, number=28815535,)
 
 
 class RequestMirrorPolicy(proto.Message):
@@ -9321,7 +8842,7 @@ class RequestMirrorPolicy(proto.Message):
             resource being mirrored to.
     """
 
-    backend_service = proto.Field(proto.STRING, number=38510602)
+    backend_service = proto.Field(proto.STRING, number=306946058, optional=True,)
 
 
 class UrlRewrite(proto.Message):
@@ -9342,9 +8863,8 @@ class UrlRewrite(proto.Message):
             and 1024 characters.
     """
 
-    host_rewrite = proto.Field(proto.STRING, number=159819253)
-
-    path_prefix_rewrite = proto.Field(proto.STRING, number=41186361)
+    host_rewrite = proto.Field(proto.STRING, number=159819253, optional=True,)
+    path_prefix_rewrite = proto.Field(proto.STRING, number=41186361, optional=True,)
 
 
 class WeightedBackendService(proto.Message):
@@ -9387,18 +8907,15 @@ class WeightedBackendService(proto.Message):
             1000
     """
 
-    backend_service = proto.Field(proto.STRING, number=38510602)
-
+    backend_service = proto.Field(proto.STRING, number=306946058, optional=True,)
     header_action = proto.Field(
-        proto.MESSAGE, number=59641896, message="HttpHeaderAction",
+        proto.MESSAGE, number=328077352, optional=True, message="HttpHeaderAction",
     )
-
-    weight = proto.Field(proto.UINT32, number=13714040)
+    weight = proto.Field(proto.UINT32, number=282149496, optional=True,)
 
 
 class HttpRouteAction(proto.Message):
     r"""
-
     Attributes:
         cors_policy (google.cloud.compute_v1.types.CorsPolicy):
             The specification for allowing client side
@@ -9469,26 +8986,26 @@ class HttpRouteAction(proto.Message):
             this HttpRouteAction.
     """
 
-    cors_policy = proto.Field(proto.MESSAGE, number=130508292, message="CorsPolicy",)
-
+    cors_policy = proto.Field(
+        proto.MESSAGE, number=398943748, optional=True, message="CorsPolicy",
+    )
     fault_injection_policy = proto.Field(
-        proto.MESSAGE, number=144345623, message="HttpFaultInjection",
+        proto.MESSAGE, number=412781079, optional=True, message="HttpFaultInjection",
     )
-
     request_mirror_policy = proto.Field(
-        proto.MESSAGE, number=220196866, message="RequestMirrorPolicy",
+        proto.MESSAGE, number=220196866, optional=True, message="RequestMirrorPolicy",
     )
-
     retry_policy = proto.Field(
-        proto.MESSAGE, number=56799913, message="HttpRetryPolicy",
+        proto.MESSAGE, number=56799913, optional=True, message="HttpRetryPolicy",
     )
-
-    timeout = proto.Field(proto.MESSAGE, number=28265825, message="Duration",)
-
-    url_rewrite = proto.Field(proto.MESSAGE, number=4898492, message="UrlRewrite",)
-
+    timeout = proto.Field(
+        proto.MESSAGE, number=296701281, optional=True, message="Duration",
+    )
+    url_rewrite = proto.Field(
+        proto.MESSAGE, number=273333948, optional=True, message="UrlRewrite",
+    )
     weighted_backend_services = proto.RepeatedField(
-        proto.MESSAGE, number=68592593, message="WeightedBackendService",
+        proto.MESSAGE, number=337028049, message="WeightedBackendService",
     )
 
 
@@ -9562,25 +9079,19 @@ class HttpRouteRuleMatch(proto.Message):
             their loadBalancingScheme set to INTERNAL_SELF_MANAGED.
     """
 
-    full_path_match = proto.Field(proto.STRING, number=214598875)
-
+    full_path_match = proto.Field(proto.STRING, number=214598875, optional=True,)
     header_matches = proto.RepeatedField(
-        proto.MESSAGE, number=93468033, message="HttpHeaderMatch",
+        proto.MESSAGE, number=361903489, message="HttpHeaderMatch",
     )
-
-    ignore_case = proto.Field(proto.BOOL, number=195889533)
-
+    ignore_case = proto.Field(proto.BOOL, number=464324989, optional=True,)
     metadata_filters = proto.RepeatedField(
-        proto.MESSAGE, number=196290283, message="MetadataFilter",
+        proto.MESSAGE, number=464725739, message="MetadataFilter",
     )
-
-    prefix_match = proto.Field(proto.STRING, number=257898968)
-
+    prefix_match = proto.Field(proto.STRING, number=257898968, optional=True,)
     query_parameter_matches = proto.RepeatedField(
-        proto.MESSAGE, number=17795814, message="HttpQueryParameterMatch",
+        proto.MESSAGE, number=286231270, message="HttpQueryParameterMatch",
     )
-
-    regex_match = proto.Field(proto.STRING, number=107387853)
+    regex_match = proto.Field(proto.STRING, number=107387853, optional=True,)
 
 
 class HttpRouteRule(proto.Message):
@@ -9665,32 +9176,25 @@ class HttpRouteRule(proto.Message):
             is bound to target gRPC proxy.
     """
 
-    description = proto.Field(proto.STRING, number=154502140)
-
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
     header_action = proto.Field(
-        proto.MESSAGE, number=59641896, message="HttpHeaderAction",
+        proto.MESSAGE, number=328077352, optional=True, message="HttpHeaderAction",
     )
-
     match_rules = proto.RepeatedField(
-        proto.MESSAGE, number=107765245, message="HttpRouteRuleMatch",
+        proto.MESSAGE, number=376200701, message="HttpRouteRuleMatch",
     )
-
-    priority = proto.Field(proto.INT32, number=176716196)
-
+    priority = proto.Field(proto.INT32, number=445151652, optional=True,)
     route_action = proto.Field(
-        proto.MESSAGE, number=156128492, message="HttpRouteAction",
+        proto.MESSAGE, number=424563948, optional=True, message="HttpRouteAction",
     )
-
-    service = proto.Field(proto.STRING, number=105105077)
-
+    service = proto.Field(proto.STRING, number=373540533, optional=True,)
     url_redirect = proto.Field(
-        proto.MESSAGE, number=136712364, message="HttpRedirectAction",
+        proto.MESSAGE, number=405147820, optional=True, message="HttpRedirectAction",
     )
 
 
 class RawDisk(proto.Message):
     r"""The parameters of the raw disk image.
-
     Attributes:
         container_type (google.cloud.compute_v1.types.RawDisk.ContainerType):
             The format used to encode and transmit the
@@ -9718,11 +9222,11 @@ class RawDisk(proto.Message):
         UNDEFINED_CONTAINER_TYPE = 0
         TAR = 82821
 
-    container_type = proto.Field(proto.ENUM, number=50373688, enum=ContainerType,)
-
-    sha1_checksum = proto.Field(proto.STRING, number=46008893)
-
-    source = proto.Field(proto.STRING, number=177235995)
+    container_type = proto.Field(
+        proto.ENUM, number=318809144, optional=True, enum=ContainerType,
+    )
+    sha1_checksum = proto.Field(proto.STRING, number=314444349, optional=True,)
+    source = proto.Field(proto.STRING, number=177235995, optional=True,)
 
 
 class Image(proto.Message):
@@ -9900,89 +9404,63 @@ class Image(proto.Message):
         values are FAILED, PENDING, or READY.
         """
         UNDEFINED_STATUS = 0
-        DELETING = 260166568
-        FAILED = 187271229
+        DELETING = 528602024
+        FAILED = 455706685
         PENDING = 35394935
         READY = 77848963
 
-    archive_size_bytes = proto.Field(proto.STRING, number=112657994)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
+    archive_size_bytes = proto.Field(proto.STRING, number=381093450, optional=True,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     deprecated = proto.Field(
-        proto.MESSAGE, number=246703539, message="DeprecationStatus",
+        proto.MESSAGE, number=515138995, optional=True, message="DeprecationStatus",
     )
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    disk_size_gb = proto.Field(proto.STRING, number=47828279)
-
-    family = proto.Field(proto.STRING, number=60316516)
-
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    disk_size_gb = proto.Field(proto.STRING, number=316263735, optional=True,)
+    family = proto.Field(proto.STRING, number=328751972, optional=True,)
     guest_os_features = proto.RepeatedField(
         proto.MESSAGE, number=79294545, message="GuestOsFeature",
     )
-
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     image_encryption_key = proto.Field(
-        proto.MESSAGE, number=111077127, message="CustomerEncryptionKey",
+        proto.MESSAGE, number=379512583, optional=True, message="CustomerEncryptionKey",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    label_fingerprint = proto.Field(proto.STRING, number=178124825)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=231759871)
-
-    license_codes = proto.RepeatedField(proto.STRING, number=45482664)
-
-    licenses = proto.RepeatedField(proto.STRING, number=69207122)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    raw_disk = proto.Field(proto.MESSAGE, number=234678100, message="RawDisk",)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
+    license_codes = proto.RepeatedField(proto.STRING, number=45482664,)
+    licenses = proto.RepeatedField(proto.STRING, number=337642578,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    raw_disk = proto.Field(
+        proto.MESSAGE, number=503113556, optional=True, message="RawDisk",
+    )
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     shielded_instance_initial_state = proto.Field(
-        proto.MESSAGE, number=192356867, message="InitialStateConfig",
+        proto.MESSAGE, number=192356867, optional=True, message="InitialStateConfig",
     )
-
-    source_disk = proto.Field(proto.STRING, number=183318337)
-
+    source_disk = proto.Field(proto.STRING, number=451753793, optional=True,)
     source_disk_encryption_key = proto.Field(
-        proto.MESSAGE, number=263065697, message="CustomerEncryptionKey",
+        proto.MESSAGE, number=531501153, optional=True, message="CustomerEncryptionKey",
     )
-
-    source_disk_id = proto.Field(proto.STRING, number=185755353)
-
-    source_image = proto.Field(proto.STRING, number=50443319)
-
+    source_disk_id = proto.Field(proto.STRING, number=454190809, optional=True,)
+    source_image = proto.Field(proto.STRING, number=50443319, optional=True,)
     source_image_encryption_key = proto.Field(
-        proto.MESSAGE, number=113068203, message="CustomerEncryptionKey",
+        proto.MESSAGE, number=381503659, optional=True, message="CustomerEncryptionKey",
     )
-
-    source_image_id = proto.Field(proto.STRING, number=55328291)
-
-    source_snapshot = proto.Field(proto.STRING, number=126061928)
-
+    source_image_id = proto.Field(proto.STRING, number=55328291, optional=True,)
+    source_snapshot = proto.Field(proto.STRING, number=126061928, optional=True,)
     source_snapshot_encryption_key = proto.Field(
-        proto.MESSAGE, number=35243866, message="CustomerEncryptionKey",
+        proto.MESSAGE, number=303679322, optional=True, message="CustomerEncryptionKey",
     )
-
-    source_snapshot_id = proto.Field(proto.STRING, number=98962258)
-
-    source_type = proto.Field(proto.ENUM, number=183810270, enum=SourceType,)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
-
-    storage_locations = proto.RepeatedField(proto.STRING, number=59569818)
+    source_snapshot_id = proto.Field(proto.STRING, number=98962258, optional=True,)
+    source_type = proto.Field(
+        proto.ENUM, number=452245726, optional=True, enum=SourceType,
+    )
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    storage_locations = proto.RepeatedField(proto.STRING, number=328005274,)
 
 
 class ImageList(proto.Message):
     r"""Contains a list of images.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -10008,22 +9486,18 @@ class ImageList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Image",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class Metadata(proto.Message):
     r"""A metadata key/value entry.
-
     Attributes:
         fingerprint (str):
             Specifies a fingerprint for this request,
@@ -10045,16 +9519,13 @@ class Metadata(proto.Message):
             for metadata.
     """
 
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Items",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
 
 
 class NetworkInterface(proto.Message):
     r"""A network interface resource attached to an instance.
-
     Attributes:
         access_configs (Sequence[google.cloud.compute_v1.types.AccessConfig]):
             An array of configurations for this interface. Currently,
@@ -10125,31 +9596,22 @@ class NetworkInterface(proto.Message):
         UNDEFINED_NIC_TYPE = 0
         GVNIC = 68209305
         UNSPECIFIED_NIC_TYPE = 67411801
-        VIRTIO_NET = 183688025
+        VIRTIO_NET = 452123481
 
     access_configs = proto.RepeatedField(
         proto.MESSAGE, number=111058326, message="AccessConfig",
     )
-
     alias_ip_ranges = proto.RepeatedField(
         proto.MESSAGE, number=165085631, message="AliasIpRange",
     )
-
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
-    ipv6_address = proto.Field(proto.STRING, number=73128348)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    network = proto.Field(proto.STRING, number=232872494)
-
-    network_i_p = proto.Field(proto.STRING, number=207181961)
-
-    nic_type = proto.Field(proto.ENUM, number=59810577, enum=NicType,)
-
-    subnetwork = proto.Field(proto.STRING, number=39392238)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    ipv6_address = proto.Field(proto.STRING, number=341563804, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    network = proto.Field(proto.STRING, number=232872494, optional=True,)
+    network_i_p = proto.Field(proto.STRING, number=207181961, optional=True,)
+    nic_type = proto.Field(proto.ENUM, number=59810577, optional=True, enum=NicType,)
+    subnetwork = proto.Field(proto.STRING, number=307827694, optional=True,)
 
 
 class ReservationAffinity(proto.Message):
@@ -10181,20 +9643,17 @@ class ReservationAffinity(proto.Message):
         ANY_RESERVATION = 200008121
         NO_RESERVATION = 169322030
         SPECIFIC_RESERVATION = 229889055
-        UNSPECIFIED = 258350871
+        UNSPECIFIED = 526786327
 
     consume_reservation_type = proto.Field(
-        proto.ENUM, number=32301488, enum=ConsumeReservationType,
+        proto.ENUM, number=300736944, optional=True, enum=ConsumeReservationType,
     )
-
-    key = proto.Field(proto.STRING, number=106079)
-
-    values = proto.RepeatedField(proto.STRING, number=249928994)
+    key = proto.Field(proto.STRING, number=106079, optional=True,)
+    values = proto.RepeatedField(proto.STRING, number=249928994,)
 
 
 class Scheduling(proto.Message):
     r"""Sets the scheduling options for an Instance. NextID: 13
-
     Attributes:
         automatic_restart (bool):
             Specifies whether the instance should be
@@ -10243,28 +9702,22 @@ class Scheduling(proto.Message):
         """
         UNDEFINED_ON_HOST_MAINTENANCE = 0
         MIGRATE = 165699979
-        TERMINATE = 259182145
+        TERMINATE = 527617601
 
-    automatic_restart = proto.Field(proto.BOOL, number=82385915)
-
-    location_hint = proto.Field(proto.STRING, number=82084049)
-
-    min_node_cpus = proto.Field(proto.INT32, number=48796219)
-
+    automatic_restart = proto.Field(proto.BOOL, number=350821371, optional=True,)
+    location_hint = proto.Field(proto.STRING, number=350519505, optional=True,)
+    min_node_cpus = proto.Field(proto.INT32, number=317231675, optional=True,)
     node_affinities = proto.RepeatedField(
-        proto.MESSAGE, number=193364515, message="SchedulingNodeAffinity",
+        proto.MESSAGE, number=461799971, message="SchedulingNodeAffinity",
     )
-
     on_host_maintenance = proto.Field(
-        proto.ENUM, number=64616796, enum=OnHostMaintenance,
+        proto.ENUM, number=64616796, optional=True, enum=OnHostMaintenance,
     )
-
-    preemptible = proto.Field(proto.BOOL, number=55767713)
+    preemptible = proto.Field(proto.BOOL, number=324203169, optional=True,)
 
 
 class ServiceAccount(proto.Message):
     r"""A service account.
-
     Attributes:
         email (str):
             Email address of the service account.
@@ -10273,14 +9726,12 @@ class ServiceAccount(proto.Message):
             this service account.
     """
 
-    email = proto.Field(proto.STRING, number=96619420)
-
-    scopes = proto.RepeatedField(proto.STRING, number=165973151)
+    email = proto.Field(proto.STRING, number=96619420, optional=True,)
+    scopes = proto.RepeatedField(proto.STRING, number=165973151,)
 
 
 class ShieldedInstanceConfig(proto.Message):
     r"""A set of Shielded Instance options.
-
     Attributes:
         enable_integrity_monitoring (bool):
             Defines whether the instance has integrity
@@ -10293,11 +9744,11 @@ class ShieldedInstanceConfig(proto.Message):
             enabled. Enabled by default.
     """
 
-    enable_integrity_monitoring = proto.Field(proto.BOOL, number=140635574)
-
-    enable_secure_boot = proto.Field(proto.BOOL, number=123568638)
-
-    enable_vtpm = proto.Field(proto.BOOL, number=181858935)
+    enable_integrity_monitoring = proto.Field(
+        proto.BOOL, number=409071030, optional=True,
+    )
+    enable_secure_boot = proto.Field(proto.BOOL, number=123568638, optional=True,)
+    enable_vtpm = proto.Field(proto.BOOL, number=181858935, optional=True,)
 
 
 class ShieldedInstanceIntegrityPolicy(proto.Message):
@@ -10311,12 +9762,11 @@ class ShieldedInstanceIntegrityPolicy(proto.Message):
             recent boot.
     """
 
-    update_auto_learn_policy = proto.Field(proto.BOOL, number=245490215)
+    update_auto_learn_policy = proto.Field(proto.BOOL, number=245490215, optional=True,)
 
 
 class Tags(proto.Message):
     r"""A set of instance tags.
-
     Attributes:
         fingerprint (str):
             Specifies a fingerprint for this request,
@@ -10333,9 +9783,8 @@ class Tags(proto.Message):
             characters long, and comply with RFC1035.
     """
 
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
-    items = proto.RepeatedField(proto.STRING, number=100526016)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    items = proto.RepeatedField(proto.STRING, number=100526016,)
 
 
 class Instance(proto.Message):
@@ -10522,9 +9971,9 @@ class Instance(proto.Message):
         use INHERIT_FROM_SUBNETWORK as default.
         """
         UNDEFINED_PRIVATE_IPV6_GOOGLE_ACCESS = 0
-        ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE = 159540538
-        ENABLE_OUTBOUND_VM_ACCESS_TO_GOOGLE = 19774807
-        INHERIT_FROM_SUBNETWORK = 261821503
+        ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE = 427975994
+        ENABLE_OUTBOUND_VM_ACCESS_TO_GOOGLE = 288210263
+        INHERIT_FROM_SUBNETWORK = 530256959
 
     class Status(proto.Enum):
         r"""[Output Only] The status of the instance. One of the following
@@ -10533,111 +9982,87 @@ class Instance(proto.Message):
         status of the instance, see Instance life cycle.
         """
         UNDEFINED_STATUS = 0
-        DEPROVISIONING = 160500206
-        PROVISIONING = 22461165
-        REPAIRING = 145047829
+        DEPROVISIONING = 428935662
+        PROVISIONING = 290896621
+        REPAIRING = 413483285
         RUNNING = 121282975
-        STAGING = 162636827
-        STOPPED = 175840685
-        STOPPING = 82356340
+        STAGING = 431072283
+        STOPPED = 444276141
+        STOPPING = 350791796
         SUSPENDED = 51223995
-        SUSPENDING = 245770790
+        SUSPENDING = 514206246
         TERMINATED = 250018339
 
-    can_ip_forward = proto.Field(proto.BOOL, number=199295868)
-
+    can_ip_forward = proto.Field(proto.BOOL, number=467731324, optional=True,)
     confidential_instance_config = proto.Field(
-        proto.MESSAGE, number=222202229, message="ConfidentialInstanceConfig",
+        proto.MESSAGE,
+        number=490637685,
+        optional=True,
+        message="ConfidentialInstanceConfig",
     )
-
-    cpu_platform = proto.Field(proto.STRING, number=141849898)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    deletion_protection = proto.Field(proto.BOOL, number=189579242)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
+    cpu_platform = proto.Field(proto.STRING, number=410285354, optional=True,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    deletion_protection = proto.Field(proto.BOOL, number=458014698, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
     disks = proto.RepeatedField(proto.MESSAGE, number=95594102, message="AttachedDisk",)
-
     display_device = proto.Field(
-        proto.MESSAGE, number=258933875, message="DisplayDevice",
+        proto.MESSAGE, number=258933875, optional=True, message="DisplayDevice",
     )
-
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
     guest_accelerators = proto.RepeatedField(
-        proto.MESSAGE, number=195159663, message="AcceleratorConfig",
+        proto.MESSAGE, number=463595119, message="AcceleratorConfig",
     )
-
-    hostname = proto.Field(proto.STRING, number=237067315)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    label_fingerprint = proto.Field(proto.STRING, number=178124825)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=231759871)
-
-    last_start_timestamp = proto.Field(proto.STRING, number=175395280)
-
-    last_stop_timestamp = proto.Field(proto.STRING, number=144387554)
-
-    last_suspended_timestamp = proto.Field(proto.STRING, number=87839881)
-
-    machine_type = proto.Field(proto.STRING, number=227711026)
-
-    metadata = proto.Field(proto.MESSAGE, number=86866735, message="Metadata",)
-
-    min_cpu_platform = proto.Field(proto.STRING, number=242912759)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    hostname = proto.Field(proto.STRING, number=237067315, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
+    last_start_timestamp = proto.Field(proto.STRING, number=443830736, optional=True,)
+    last_stop_timestamp = proto.Field(proto.STRING, number=412823010, optional=True,)
+    last_suspended_timestamp = proto.Field(
+        proto.STRING, number=356275337, optional=True,
+    )
+    machine_type = proto.Field(proto.STRING, number=227711026, optional=True,)
+    metadata = proto.Field(
+        proto.MESSAGE, number=86866735, optional=True, message="Metadata",
+    )
+    min_cpu_platform = proto.Field(proto.STRING, number=242912759, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     network_interfaces = proto.RepeatedField(
         proto.MESSAGE, number=52735243, message="NetworkInterface",
     )
-
     private_ipv6_google_access = proto.Field(
-        proto.ENUM, number=48277006, enum=PrivateIpv6GoogleAccess,
+        proto.ENUM, number=48277006, optional=True, enum=PrivateIpv6GoogleAccess,
     )
-
     reservation_affinity = proto.Field(
-        proto.MESSAGE, number=157850683, message="ReservationAffinity",
+        proto.MESSAGE, number=157850683, optional=True, message="ReservationAffinity",
     )
-
-    resource_policies = proto.RepeatedField(proto.STRING, number=22220385)
-
-    scheduling = proto.Field(proto.MESSAGE, number=118252948, message="Scheduling",)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
+    resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
+    scheduling = proto.Field(
+        proto.MESSAGE, number=386688404, optional=True, message="Scheduling",
+    )
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     service_accounts = proto.RepeatedField(
-        proto.MESSAGE, number=9101872, message="ServiceAccount",
+        proto.MESSAGE, number=277537328, message="ServiceAccount",
     )
-
     shielded_instance_config = proto.Field(
-        proto.MESSAGE, number=12862901, message="ShieldedInstanceConfig",
+        proto.MESSAGE, number=12862901, optional=True, message="ShieldedInstanceConfig",
     )
-
     shielded_instance_integrity_policy = proto.Field(
-        proto.MESSAGE, number=163696919, message="ShieldedInstanceIntegrityPolicy",
+        proto.MESSAGE,
+        number=163696919,
+        optional=True,
+        message="ShieldedInstanceIntegrityPolicy",
     )
-
-    start_restricted = proto.Field(proto.BOOL, number=123693144)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
-
-    status_message = proto.Field(proto.STRING, number=28992698)
-
-    tags = proto.Field(proto.MESSAGE, number=3552281, message="Tags",)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    start_restricted = proto.Field(proto.BOOL, number=123693144, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status_message = proto.Field(proto.STRING, number=297428154, optional=True,)
+    tags = proto.Field(proto.MESSAGE, number=3552281, optional=True, message="Tags",)
+    zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
 class InstancesScopedList(proto.Message):
     r"""
-
     Attributes:
         instances (Sequence[google.cloud.compute_v1.types.Instance]):
             [Output Only] A list of instances contained in this scope.
@@ -10647,13 +10072,13 @@ class InstancesScopedList(proto.Message):
     """
 
     instances = proto.RepeatedField(proto.MESSAGE, number=29097598, message="Instance",)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class InstanceAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -10684,26 +10109,21 @@ class InstanceAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="InstancesScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class NamedPort(proto.Message):
     r"""The named port. For example: .
-
     Attributes:
         name (str):
             The name for this named port. The name must
@@ -10714,9 +10134,8 @@ class NamedPort(proto.Message):
             1 and 65535.
     """
 
-    name = proto.Field(proto.STRING, number=3373707)
-
-    port = proto.Field(proto.INT32, number=3446913)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    port = proto.Field(proto.INT32, number=3446913, optional=True,)
 
 
 class InstanceGroup(proto.Message):
@@ -10798,38 +10217,25 @@ class InstanceGroup(proto.Message):
             is located (for zonal resources).
     """
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     named_ports = proto.RepeatedField(
-        proto.MESSAGE, number=159163276, message="NamedPort",
+        proto.MESSAGE, number=427598732, message="NamedPort",
     )
-
-    network = proto.Field(proto.STRING, number=232872494)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    size = proto.Field(proto.INT32, number=3530753)
-
-    subnetwork = proto.Field(proto.STRING, number=39392238)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    network = proto.Field(proto.STRING, number=232872494, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    size = proto.Field(proto.INT32, number=3530753, optional=True,)
+    subnetwork = proto.Field(proto.STRING, number=307827694, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
 class InstanceGroupsScopedList(proto.Message):
     r"""
-
     Attributes:
         instance_groups (Sequence[google.cloud.compute_v1.types.InstanceGroup]):
             [Output Only] The list of instance groups that are contained
@@ -10840,15 +10246,15 @@ class InstanceGroupsScopedList(proto.Message):
     """
 
     instance_groups = proto.RepeatedField(
-        proto.MESSAGE, number=98033854, message="InstanceGroup",
+        proto.MESSAGE, number=366469310, message="InstanceGroup",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class InstanceGroupAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -10878,29 +10284,24 @@ class InstanceGroupAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=100526016,
         message="InstanceGroupsScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class InstanceGroupList(proto.Message):
     r"""A list of InstanceGroup resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -10927,24 +10328,20 @@ class InstanceGroupList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="InstanceGroup",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class InstanceGroupManagerAutoHealingPolicy(proto.Message):
     r"""
-
     Attributes:
         health_check (str):
             The URL for the health check that signals
@@ -10960,14 +10357,12 @@ class InstanceGroupManagerAutoHealingPolicy(proto.Message):
             3600].
     """
 
-    health_check = proto.Field(proto.STRING, number=40441189)
-
-    initial_delay_sec = proto.Field(proto.INT32, number=263207002)
+    health_check = proto.Field(proto.STRING, number=308876645, optional=True,)
+    initial_delay_sec = proto.Field(proto.INT32, number=263207002, optional=True,)
 
 
 class InstanceGroupManagerActionsSummary(proto.Message):
     r"""
-
     Attributes:
         abandoning (int):
             [Output Only] The total number of instances in the managed
@@ -11021,41 +10416,36 @@ class InstanceGroupManagerActionsSummary(proto.Message):
             listManagedInstances method documentation.
     """
 
-    abandoning = proto.Field(proto.INT32, number=171587917)
-
-    creating = proto.Field(proto.INT32, number=209809081)
-
-    creating_without_retries = proto.Field(proto.INT32, number=101481289)
-
-    deleting = proto.Field(proto.INT32, number=14410664)
-
-    none = proto.Field(proto.INT32, number=3387192)
-
-    recreating = proto.Field(proto.INT32, number=70621676)
-
-    refreshing = proto.Field(proto.INT32, number=215044903)
-
-    restarting = proto.Field(proto.INT32, number=103877491)
-
-    verifying = proto.Field(proto.INT32, number=183177417)
+    abandoning = proto.Field(proto.INT32, number=440023373, optional=True,)
+    creating = proto.Field(proto.INT32, number=209809081, optional=True,)
+    creating_without_retries = proto.Field(
+        proto.INT32, number=369916745, optional=True,
+    )
+    deleting = proto.Field(proto.INT32, number=282846120, optional=True,)
+    none = proto.Field(proto.INT32, number=3387192, optional=True,)
+    recreating = proto.Field(proto.INT32, number=339057132, optional=True,)
+    refreshing = proto.Field(proto.INT32, number=215044903, optional=True,)
+    restarting = proto.Field(proto.INT32, number=372312947, optional=True,)
+    verifying = proto.Field(proto.INT32, number=451612873, optional=True,)
 
 
 class StatefulPolicy(proto.Message):
     r"""
-
     Attributes:
         preserved_state (google.cloud.compute_v1.types.StatefulPolicyPreservedState):
 
     """
 
     preserved_state = proto.Field(
-        proto.MESSAGE, number=2634026, message="StatefulPolicyPreservedState",
+        proto.MESSAGE,
+        number=2634026,
+        optional=True,
+        message="StatefulPolicyPreservedState",
     )
 
 
 class InstanceGroupManagerStatus(proto.Message):
     r"""
-
     Attributes:
         autoscaler (str):
             [Output Only] The URL of the Autoscaler that targets this
@@ -11077,24 +10467,24 @@ class InstanceGroupManagerStatus(proto.Message):
             Instance Group Manager.
     """
 
-    autoscaler = proto.Field(proto.STRING, number=248823511)
-
-    is_stable = proto.Field(proto.BOOL, number=108410864)
-
+    autoscaler = proto.Field(proto.STRING, number=517258967, optional=True,)
+    is_stable = proto.Field(proto.BOOL, number=108410864, optional=True,)
     stateful = proto.Field(
-        proto.MESSAGE, number=244462412, message="InstanceGroupManagerStatusStateful",
+        proto.MESSAGE,
+        number=244462412,
+        optional=True,
+        message="InstanceGroupManagerStatusStateful",
     )
-
     version_target = proto.Field(
         proto.MESSAGE,
-        number=20950744,
+        number=289386200,
+        optional=True,
         message="InstanceGroupManagerStatusVersionTarget",
     )
 
 
 class InstanceGroupManagerUpdatePolicy(proto.Message):
     r"""
-
     Attributes:
         instance_redistribution_type (str):
             The  instance redistribution policy for
@@ -11159,24 +10549,22 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
             recreateInstances calls).
     """
 
-    instance_redistribution_type = proto.Field(proto.STRING, number=24194968)
-
-    max_surge = proto.Field(proto.MESSAGE, number=34137235, message="FixedOrPercent",)
-
-    max_unavailable = proto.Field(
-        proto.MESSAGE, number=136504821, message="FixedOrPercent",
+    instance_redistribution_type = proto.Field(
+        proto.STRING, number=292630424, optional=True,
     )
-
-    minimal_action = proto.Field(proto.STRING, number=2131604)
-
-    replacement_method = proto.Field(proto.STRING, number=237496238)
-
-    type_ = proto.Field(proto.STRING, number=3575610)
+    max_surge = proto.Field(
+        proto.MESSAGE, number=302572691, optional=True, message="FixedOrPercent",
+    )
+    max_unavailable = proto.Field(
+        proto.MESSAGE, number=404940277, optional=True, message="FixedOrPercent",
+    )
+    minimal_action = proto.Field(proto.STRING, number=270567060, optional=True,)
+    replacement_method = proto.Field(proto.STRING, number=505931694, optional=True,)
+    type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
 
 
 class InstanceGroupManagerVersion(proto.Message):
     r"""
-
     Attributes:
         instance_template (str):
             The URL of the instance template that is specified for this
@@ -11209,11 +10597,11 @@ class InstanceGroupManagerVersion(proto.Message):
                information.
     """
 
-    instance_template = proto.Field(proto.STRING, number=40812772)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    target_size = proto.Field(proto.MESSAGE, number=62880239, message="FixedOrPercent",)
+    instance_template = proto.Field(proto.STRING, number=309248228, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    target_size = proto.Field(
+        proto.MESSAGE, number=62880239, optional=True, message="FixedOrPercent",
+    )
 
 
 class InstanceGroupManager(proto.Message):
@@ -11337,70 +10725,57 @@ class InstanceGroupManager(proto.Message):
 
     auto_healing_policies = proto.RepeatedField(
         proto.MESSAGE,
-        number=188363653,
+        number=456799109,
         message="InstanceGroupManagerAutoHealingPolicy",
     )
-
-    base_instance_name = proto.Field(proto.STRING, number=120670983)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
+    base_instance_name = proto.Field(proto.STRING, number=389106439, optional=True,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     current_actions = proto.Field(
-        proto.MESSAGE, number=164045879, message="InstanceGroupManagerActionsSummary",
+        proto.MESSAGE,
+        number=164045879,
+        optional=True,
+        message="InstanceGroupManagerActionsSummary",
     )
-
-    description = proto.Field(proto.STRING, number=154502140)
-
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
     distribution_policy = proto.Field(
-        proto.MESSAGE, number=266123085, message="DistributionPolicy",
+        proto.MESSAGE, number=534558541, optional=True, message="DistributionPolicy",
     )
-
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    instance_group = proto.Field(proto.STRING, number=81095253)
-
-    instance_template = proto.Field(proto.STRING, number=40812772)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    instance_group = proto.Field(proto.STRING, number=81095253, optional=True,)
+    instance_template = proto.Field(proto.STRING, number=309248228, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     named_ports = proto.RepeatedField(
-        proto.MESSAGE, number=159163276, message="NamedPort",
+        proto.MESSAGE, number=427598732, message="NamedPort",
     )
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     stateful_policy = proto.Field(
-        proto.MESSAGE, number=47538565, message="StatefulPolicy",
+        proto.MESSAGE, number=47538565, optional=True, message="StatefulPolicy",
     )
-
     status = proto.Field(
-        proto.MESSAGE, number=181260274, message="InstanceGroupManagerStatus",
+        proto.MESSAGE,
+        number=181260274,
+        optional=True,
+        message="InstanceGroupManagerStatus",
     )
-
-    target_pools = proto.RepeatedField(proto.STRING, number=67637161)
-
-    target_size = proto.Field(proto.INT32, number=62880239)
-
+    target_pools = proto.RepeatedField(proto.STRING, number=336072617,)
+    target_size = proto.Field(proto.INT32, number=62880239, optional=True,)
     update_policy = proto.Field(
-        proto.MESSAGE, number=175809896, message="InstanceGroupManagerUpdatePolicy",
+        proto.MESSAGE,
+        number=175809896,
+        optional=True,
+        message="InstanceGroupManagerUpdatePolicy",
     )
-
     versions = proto.RepeatedField(
         proto.MESSAGE, number=162430619, message="InstanceGroupManagerVersion",
     )
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
 class InstanceGroupManagersScopedList(proto.Message):
     r"""
-
     Attributes:
         instance_group_managers (Sequence[google.cloud.compute_v1.types.InstanceGroupManager]):
             [Output Only] The list of managed instance groups that are
@@ -11413,13 +10788,13 @@ class InstanceGroupManagersScopedList(proto.Message):
     instance_group_managers = proto.RepeatedField(
         proto.MESSAGE, number=214072592, message="InstanceGroupManager",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class InstanceGroupManagerAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -11450,29 +10825,24 @@ class InstanceGroupManagerAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=100526016,
         message="InstanceGroupManagersScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class InstanceGroupManagerList(proto.Message):
     r"""[Output Only] A list of managed instance groups.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -11500,24 +10870,20 @@ class InstanceGroupManagerList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="InstanceGroupManager",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class InstanceGroupManagerStatusStateful(proto.Message):
     r"""
-
     Attributes:
         has_stateful_config (bool):
             [Output Only] A bit indicating whether the managed instance
@@ -11532,18 +10898,17 @@ class InstanceGroupManagerStatusStateful(proto.Message):
             instance.
     """
 
-    has_stateful_config = proto.Field(proto.BOOL, number=110474224)
-
+    has_stateful_config = proto.Field(proto.BOOL, number=110474224, optional=True,)
     per_instance_configs = proto.Field(
         proto.MESSAGE,
-        number=257829545,
+        number=526265001,
+        optional=True,
         message="InstanceGroupManagerStatusStatefulPerInstanceConfigs",
     )
 
 
 class InstanceGroupManagerStatusVersionTarget(proto.Message):
     r"""
-
     Attributes:
         is_reached (bool):
             [Output Only] A bit indicating whether version target has
@@ -11553,12 +10918,11 @@ class InstanceGroupManagerStatusVersionTarget(proto.Message):
             Manager.
     """
 
-    is_reached = proto.Field(proto.BOOL, number=164773693)
+    is_reached = proto.Field(proto.BOOL, number=433209149, optional=True,)
 
 
 class InstanceGroupManagerStatusStatefulPerInstanceConfigs(proto.Message):
     r"""
-
     Attributes:
         all_effective (bool):
             A bit indicating if all of the group's per-
@@ -11567,12 +10931,11 @@ class InstanceGroupManagerStatusStatefulPerInstanceConfigs(proto.Message):
             EFFECTIVE or there are no per-instance-configs.
     """
 
-    all_effective = proto.Field(proto.BOOL, number=248105097)
+    all_effective = proto.Field(proto.BOOL, number=516540553, optional=True,)
 
 
 class InstanceGroupManagersAbandonInstancesRequest(proto.Message):
     r"""
-
     Attributes:
         instances (Sequence[str]):
             The URLs of one or more instances to abandon. This can be a
@@ -11580,12 +10943,11 @@ class InstanceGroupManagersAbandonInstancesRequest(proto.Message):
             zones/[ZONE]/instances/[INSTANCE_NAME].
     """
 
-    instances = proto.RepeatedField(proto.STRING, number=29097598)
+    instances = proto.RepeatedField(proto.STRING, number=29097598,)
 
 
 class InstanceGroupManagersApplyUpdatesRequest(proto.Message):
     r"""InstanceGroupManagers.applyUpdatesToInstances
-
     Attributes:
         all_instances (bool):
             Flag to update all instances instead of
@@ -11620,18 +10982,16 @@ class InstanceGroupManagersApplyUpdatesRequest(proto.Message):
             the update request will fail.
     """
 
-    all_instances = proto.Field(proto.BOOL, number=135241056)
-
-    instances = proto.RepeatedField(proto.STRING, number=29097598)
-
-    minimal_action = proto.Field(proto.STRING, number=2131604)
-
-    most_disruptive_allowed_action = proto.Field(proto.STRING, number=66103053)
+    all_instances = proto.Field(proto.BOOL, number=403676512, optional=True,)
+    instances = proto.RepeatedField(proto.STRING, number=29097598,)
+    minimal_action = proto.Field(proto.STRING, number=270567060, optional=True,)
+    most_disruptive_allowed_action = proto.Field(
+        proto.STRING, number=66103053, optional=True,
+    )
 
 
 class PerInstanceConfig(proto.Message):
     r"""
-
     Attributes:
         fingerprint (str):
             Fingerprint of this per-instance config. This
@@ -11665,27 +11025,23 @@ class PerInstanceConfig(proto.Message):
         corresponding managed instance.
         """
         UNDEFINED_STATUS = 0
-        APPLYING = 83568052
-        DELETING = 260166568
+        APPLYING = 352003508
+        DELETING = 528602024
         EFFECTIVE = 244201863
         NONE = 2402104
-        UNAPPLIED = 215499684
-        UNAPPLIED_DELETION = 45521417
+        UNAPPLIED = 483935140
+        UNAPPLIED_DELETION = 313956873
 
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     preserved_state = proto.Field(
-        proto.MESSAGE, number=2634026, message="PreservedState",
+        proto.MESSAGE, number=2634026, optional=True, message="PreservedState",
     )
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
 
 
 class InstanceGroupManagersCreateInstancesRequest(proto.Message):
     r"""InstanceGroupManagers.createInstances
-
     Attributes:
         instances (Sequence[google.cloud.compute_v1.types.PerInstanceConfig]):
             [Required] List of specifications of per-instance configs.
@@ -11698,7 +11054,6 @@ class InstanceGroupManagersCreateInstancesRequest(proto.Message):
 
 class InstanceGroupManagersDeleteInstancesRequest(proto.Message):
     r"""
-
     Attributes:
         instances (Sequence[str]):
             The URLs of one or more instances to delete. This can be a
@@ -11706,12 +11061,11 @@ class InstanceGroupManagersDeleteInstancesRequest(proto.Message):
             zones/[ZONE]/instances/[INSTANCE_NAME].
     """
 
-    instances = proto.RepeatedField(proto.STRING, number=29097598)
+    instances = proto.RepeatedField(proto.STRING, number=29097598,)
 
 
 class InstanceGroupManagersDeletePerInstanceConfigsReq(proto.Message):
     r"""InstanceGroupManagers.deletePerInstanceConfigs
-
     Attributes:
         names (Sequence[str]):
             The list of instance names for which we want
@@ -11719,12 +11073,11 @@ class InstanceGroupManagersDeletePerInstanceConfigsReq(proto.Message):
             instance group.
     """
 
-    names = proto.RepeatedField(proto.STRING, number=104585032)
+    names = proto.RepeatedField(proto.STRING, number=104585032,)
 
 
 class InstanceManagedByIgmError(proto.Message):
     r"""
-
     Attributes:
         error (google.cloud.compute_v1.types.InstanceManagedByIgmErrorManagedInstanceError):
             [Output Only] Contents of the error.
@@ -11740,21 +11093,20 @@ class InstanceManagedByIgmError(proto.Message):
     error = proto.Field(
         proto.MESSAGE,
         number=96784904,
+        optional=True,
         message="InstanceManagedByIgmErrorManagedInstanceError",
     )
-
     instance_action_details = proto.Field(
         proto.MESSAGE,
-        number=23789091,
+        number=292224547,
+        optional=True,
         message="InstanceManagedByIgmErrorInstanceActionDetails",
     )
-
-    timestamp = proto.Field(proto.STRING, number=55126294)
+    timestamp = proto.Field(proto.STRING, number=55126294, optional=True,)
 
 
 class InstanceGroupManagersListErrorsResponse(proto.Message):
     r"""
-
     Attributes:
         items (Sequence[google.cloud.compute_v1.types.InstanceManagedByIgmError]):
             [Output Only] The list of errors of the managed instance
@@ -11775,13 +11127,11 @@ class InstanceGroupManagersListErrorsResponse(proto.Message):
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="InstanceManagedByIgmError",
     )
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
 
 
 class ManagedInstance(proto.Message):
     r"""A Managed Instance resource.
-
     Attributes:
         current_action (google.cloud.compute_v1.types.ManagedInstance.CurrentAction):
             [Output Only] The current action that the managed instance
@@ -11867,14 +11217,14 @@ class ManagedInstance(proto.Message):
            it is in the process of being verified.
         """
         UNDEFINED_CURRENT_ACTION = 0
-        ABANDONING = 119809357
-        CREATING = 187129529
-        CREATING_WITHOUT_RETRIES = 160408329
-        DELETING = 260166568
+        ABANDONING = 388244813
+        CREATING = 455564985
+        CREATING_WITHOUT_RETRIES = 428843785
+        DELETING = 528602024
         NONE = 2402104
-        RECREATING = 18843116
+        RECREATING = 287278572
         REFRESHING = 163266343
-        RESTARTING = 52098931
+        RESTARTING = 320534387
         VERIFYING = 16982185
 
     class InstanceStatus(proto.Enum):
@@ -11882,49 +11232,50 @@ class ManagedInstance(proto.Message):
         the instance does not exist.
         """
         UNDEFINED_INSTANCE_STATUS = 0
-        DEPROVISIONING = 160500206
-        PROVISIONING = 22461165
-        REPAIRING = 145047829
+        DEPROVISIONING = 428935662
+        PROVISIONING = 290896621
+        REPAIRING = 413483285
         RUNNING = 121282975
-        STAGING = 162636827
-        STOPPED = 175840685
-        STOPPING = 82356340
+        STAGING = 431072283
+        STOPPED = 444276141
+        STOPPING = 350791796
         SUSPENDED = 51223995
-        SUSPENDING = 245770790
+        SUSPENDING = 514206246
         TERMINATED = 250018339
 
-    current_action = proto.Field(proto.ENUM, number=178475964, enum=CurrentAction,)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    instance = proto.Field(proto.STRING, number=18257045)
-
+    current_action = proto.Field(
+        proto.ENUM, number=178475964, optional=True, enum=CurrentAction,
+    )
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    instance = proto.Field(proto.STRING, number=18257045, optional=True,)
     instance_health = proto.RepeatedField(
-        proto.MESSAGE, number=114231622, message="ManagedInstanceInstanceHealth",
+        proto.MESSAGE, number=382667078, message="ManagedInstanceInstanceHealth",
     )
-
-    instance_status = proto.Field(proto.ENUM, number=174577372, enum=InstanceStatus,)
-
+    instance_status = proto.Field(
+        proto.ENUM, number=174577372, optional=True, enum=InstanceStatus,
+    )
     last_attempt = proto.Field(
-        proto.MESSAGE, number=166336036, message="ManagedInstanceLastAttempt",
+        proto.MESSAGE,
+        number=434771492,
+        optional=True,
+        message="ManagedInstanceLastAttempt",
     )
-
     preserved_state_from_config = proto.Field(
-        proto.MESSAGE, number=98661858, message="PreservedState",
+        proto.MESSAGE, number=98661858, optional=True, message="PreservedState",
     )
-
     preserved_state_from_policy = proto.Field(
-        proto.MESSAGE, number=202348498, message="PreservedState",
+        proto.MESSAGE, number=470783954, optional=True, message="PreservedState",
     )
-
     version = proto.Field(
-        proto.MESSAGE, number=83172568, message="ManagedInstanceVersion",
+        proto.MESSAGE,
+        number=351608024,
+        optional=True,
+        message="ManagedInstanceVersion",
     )
 
 
 class InstanceGroupManagersListManagedInstancesResponse(proto.Message):
     r"""
-
     Attributes:
         managed_instances (Sequence[google.cloud.compute_v1.types.ManagedInstance]):
             [Output Only] The list of instances in the managed instance
@@ -11943,15 +11294,13 @@ class InstanceGroupManagersListManagedInstancesResponse(proto.Message):
         return self
 
     managed_instances = proto.RepeatedField(
-        proto.MESSAGE, number=67784158, message="ManagedInstance",
+        proto.MESSAGE, number=336219614, message="ManagedInstance",
     )
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
 
 
 class InstanceGroupManagersListPerInstanceConfigsResp(proto.Message):
     r"""
-
     Attributes:
         items (Sequence[google.cloud.compute_v1.types.PerInstanceConfig]):
             [Output Only] The list of PerInstanceConfig.
@@ -11973,15 +11322,14 @@ class InstanceGroupManagersListPerInstanceConfigsResp(proto.Message):
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="PerInstanceConfig",
     )
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class InstanceGroupManagersPatchPerInstanceConfigsReq(proto.Message):
     r"""InstanceGroupManagers.patchPerInstanceConfigs
-
     Attributes:
         per_instance_configs (Sequence[google.cloud.compute_v1.types.PerInstanceConfig]):
             The list of per-instance configs to insert or
@@ -11989,13 +11337,12 @@ class InstanceGroupManagersPatchPerInstanceConfigsReq(proto.Message):
     """
 
     per_instance_configs = proto.RepeatedField(
-        proto.MESSAGE, number=257829545, message="PerInstanceConfig",
+        proto.MESSAGE, number=526265001, message="PerInstanceConfig",
     )
 
 
 class InstanceGroupManagersRecreateInstancesRequest(proto.Message):
     r"""
-
     Attributes:
         instances (Sequence[str]):
             The URLs of one or more instances to recreate. This can be a
@@ -12003,12 +11350,11 @@ class InstanceGroupManagersRecreateInstancesRequest(proto.Message):
             zones/[ZONE]/instances/[INSTANCE_NAME].
     """
 
-    instances = proto.RepeatedField(proto.STRING, number=29097598)
+    instances = proto.RepeatedField(proto.STRING, number=29097598,)
 
 
 class InstanceGroupManagersSetInstanceTemplateRequest(proto.Message):
     r"""
-
     Attributes:
         instance_template (str):
             The URL of the instance template that is
@@ -12021,12 +11367,11 @@ class InstanceGroupManagersSetInstanceTemplateRequest(proto.Message):
             updatePolicy.type to PROACTIVE.
     """
 
-    instance_template = proto.Field(proto.STRING, number=40812772)
+    instance_template = proto.Field(proto.STRING, number=309248228, optional=True,)
 
 
 class InstanceGroupManagersSetTargetPoolsRequest(proto.Message):
     r"""
-
     Attributes:
         fingerprint (str):
             The fingerprint of the target pools
@@ -12047,14 +11392,12 @@ class InstanceGroupManagersSetTargetPoolsRequest(proto.Message):
             group all receive these target pool settings.
     """
 
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
-    target_pools = proto.RepeatedField(proto.STRING, number=67637161)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    target_pools = proto.RepeatedField(proto.STRING, number=336072617,)
 
 
 class InstanceGroupManagersUpdatePerInstanceConfigsReq(proto.Message):
     r"""InstanceGroupManagers.updatePerInstanceConfigs
-
     Attributes:
         per_instance_configs (Sequence[google.cloud.compute_v1.types.PerInstanceConfig]):
             The list of per-instance configs to insert or
@@ -12062,24 +11405,22 @@ class InstanceGroupManagersUpdatePerInstanceConfigsReq(proto.Message):
     """
 
     per_instance_configs = proto.RepeatedField(
-        proto.MESSAGE, number=257829545, message="PerInstanceConfig",
+        proto.MESSAGE, number=526265001, message="PerInstanceConfig",
     )
 
 
 class InstanceReference(proto.Message):
     r"""
-
     Attributes:
         instance (str):
             The URL for a specific instance.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
+    instance = proto.Field(proto.STRING, number=18257045, optional=True,)
 
 
 class InstanceGroupsAddInstancesRequest(proto.Message):
     r"""
-
     Attributes:
         instances (Sequence[google.cloud.compute_v1.types.InstanceReference]):
             The list of instances to add to the instance
@@ -12093,7 +11434,6 @@ class InstanceGroupsAddInstancesRequest(proto.Message):
 
 class InstanceWithNamedPorts(proto.Message):
     r"""
-
     Attributes:
         instance (str):
             [Output Only] The URL of the instance.
@@ -12107,29 +11447,26 @@ class InstanceWithNamedPorts(proto.Message):
     class Status(proto.Enum):
         r"""[Output Only] The status of the instance."""
         UNDEFINED_STATUS = 0
-        DEPROVISIONING = 160500206
-        PROVISIONING = 22461165
-        REPAIRING = 145047829
+        DEPROVISIONING = 428935662
+        PROVISIONING = 290896621
+        REPAIRING = 413483285
         RUNNING = 121282975
-        STAGING = 162636827
-        STOPPED = 175840685
-        STOPPING = 82356340
+        STAGING = 431072283
+        STOPPED = 444276141
+        STOPPING = 350791796
         SUSPENDED = 51223995
-        SUSPENDING = 245770790
+        SUSPENDING = 514206246
         TERMINATED = 250018339
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
+    instance = proto.Field(proto.STRING, number=18257045, optional=True,)
     named_ports = proto.RepeatedField(
-        proto.MESSAGE, number=159163276, message="NamedPort",
+        proto.MESSAGE, number=427598732, message="NamedPort",
     )
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
 
 
 class InstanceGroupsListInstances(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -12157,24 +11494,20 @@ class InstanceGroupsListInstances(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="InstanceWithNamedPorts",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class InstanceGroupsListInstancesRequest(proto.Message):
     r"""
-
     Attributes:
         instance_state (google.cloud.compute_v1.types.InstanceGroupsListInstancesRequest.InstanceState):
             A filter for the state of the instances in
@@ -12194,12 +11527,13 @@ class InstanceGroupsListInstancesRequest(proto.Message):
         ALL = 64897
         RUNNING = 121282975
 
-    instance_state = proto.Field(proto.ENUM, number=92223591, enum=InstanceState,)
+    instance_state = proto.Field(
+        proto.ENUM, number=92223591, optional=True, enum=InstanceState,
+    )
 
 
 class InstanceGroupsRemoveInstancesRequest(proto.Message):
     r"""
-
     Attributes:
         instances (Sequence[google.cloud.compute_v1.types.InstanceReference]):
             The list of instances to remove from the
@@ -12213,7 +11547,6 @@ class InstanceGroupsRemoveInstancesRequest(proto.Message):
 
 class InstanceGroupsSetNamedPortsRequest(proto.Message):
     r"""
-
     Attributes:
         fingerprint (str):
             The fingerprint of the named ports
@@ -12232,16 +11565,14 @@ class InstanceGroupsSetNamedPortsRequest(proto.Message):
             instance group.
     """
 
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
     named_ports = proto.RepeatedField(
-        proto.MESSAGE, number=159163276, message="NamedPort",
+        proto.MESSAGE, number=427598732, message="NamedPort",
     )
 
 
 class InstanceList(proto.Message):
     r"""Contains a list of instances.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -12268,22 +11599,18 @@ class InstanceList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Instance",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class Reference(proto.Message):
     r"""Represents a reference to a resource.
-
     Attributes:
         kind (str):
             [Output Only] Type of the resource. Always compute#reference
@@ -12301,18 +11628,14 @@ class Reference(proto.Message):
             points.
     """
 
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    reference_type = proto.Field(proto.STRING, number=247521198)
-
-    referrer = proto.Field(proto.STRING, number=82738207)
-
-    target = proto.Field(proto.STRING, number=192835985)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    reference_type = proto.Field(proto.STRING, number=247521198, optional=True,)
+    referrer = proto.Field(proto.STRING, number=351173663, optional=True,)
+    target = proto.Field(proto.STRING, number=192835985, optional=True,)
 
 
 class InstanceListReferrers(proto.Message):
     r"""Contains a list of instance referrers.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -12340,22 +11663,18 @@ class InstanceListReferrers(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Reference",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class InstanceManagedByIgmErrorManagedInstanceError(proto.Message):
     r"""
-
     Attributes:
         code (str):
             [Output Only] Error code.
@@ -12363,14 +11682,12 @@ class InstanceManagedByIgmErrorManagedInstanceError(proto.Message):
             [Output Only] Error message.
     """
 
-    code = proto.Field(proto.STRING, number=3059181)
-
-    message = proto.Field(proto.STRING, number=149618695)
+    code = proto.Field(proto.STRING, number=3059181, optional=True,)
+    message = proto.Field(proto.STRING, number=418054151, optional=True,)
 
 
 class InstanceManagedByIgmErrorInstanceActionDetails(proto.Message):
     r"""
-
     Attributes:
         action (google.cloud.compute_v1.types.InstanceManagedByIgmErrorInstanceActionDetails.Action):
             [Output Only] Action that managed instance group was
@@ -12392,28 +11709,28 @@ class InstanceManagedByIgmErrorInstanceActionDetails(proto.Message):
         the instance when the error occurred. Possible values:
         """
         UNDEFINED_ACTION = 0
-        ABANDONING = 119809357
-        CREATING = 187129529
-        CREATING_WITHOUT_RETRIES = 160408329
-        DELETING = 260166568
+        ABANDONING = 388244813
+        CREATING = 455564985
+        CREATING_WITHOUT_RETRIES = 428843785
+        DELETING = 528602024
         NONE = 2402104
-        RECREATING = 18843116
+        RECREATING = 287278572
         REFRESHING = 163266343
-        RESTARTING = 52098931
+        RESTARTING = 320534387
         VERIFYING = 16982185
 
-    action = proto.Field(proto.ENUM, number=187661878, enum=Action,)
-
-    instance = proto.Field(proto.STRING, number=18257045)
-
+    action = proto.Field(proto.ENUM, number=187661878, optional=True, enum=Action,)
+    instance = proto.Field(proto.STRING, number=18257045, optional=True,)
     version = proto.Field(
-        proto.MESSAGE, number=83172568, message="ManagedInstanceVersion",
+        proto.MESSAGE,
+        number=351608024,
+        optional=True,
+        message="ManagedInstanceVersion",
     )
 
 
 class ManagedInstanceVersion(proto.Message):
     r"""
-
     Attributes:
         instance_template (str):
             [Output Only] The intended template of the instance. This
@@ -12423,14 +11740,12 @@ class ManagedInstanceVersion(proto.Message):
             [Output Only] Name of the version.
     """
 
-    instance_template = proto.Field(proto.STRING, number=40812772)
-
-    name = proto.Field(proto.STRING, number=3373707)
+    instance_template = proto.Field(proto.STRING, number=309248228, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
 
 
 class InstanceMoveRequest(proto.Message):
     r"""
-
     Attributes:
         destination_zone (str):
             The URL of the destination zone to move the
@@ -12449,14 +11764,12 @@ class InstanceMoveRequest(proto.Message):
             - zones/zone/instances/instance
     """
 
-    destination_zone = proto.Field(proto.STRING, number=131854653)
-
-    target_instance = proto.Field(proto.STRING, number=21333891)
+    destination_zone = proto.Field(proto.STRING, number=131854653, optional=True,)
+    target_instance = proto.Field(proto.STRING, number=289769347, optional=True,)
 
 
 class InstanceProperties(proto.Message):
     r"""
-
     Attributes:
         can_ip_forward (bool):
             Enables instances created based on these
@@ -12541,57 +11854,48 @@ class InstanceProperties(proto.Message):
         INHERIT_FROM_SUBNETWORK as default.
         """
         UNDEFINED_PRIVATE_IPV6_GOOGLE_ACCESS = 0
-        ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE = 159540538
-        ENABLE_OUTBOUND_VM_ACCESS_TO_GOOGLE = 19774807
-        INHERIT_FROM_SUBNETWORK = 261821503
+        ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE = 427975994
+        ENABLE_OUTBOUND_VM_ACCESS_TO_GOOGLE = 288210263
+        INHERIT_FROM_SUBNETWORK = 530256959
 
-    can_ip_forward = proto.Field(proto.BOOL, number=199295868)
-
+    can_ip_forward = proto.Field(proto.BOOL, number=467731324, optional=True,)
     confidential_instance_config = proto.Field(
-        proto.MESSAGE, number=222202229, message="ConfidentialInstanceConfig",
+        proto.MESSAGE,
+        number=490637685,
+        optional=True,
+        message="ConfidentialInstanceConfig",
     )
-
-    description = proto.Field(proto.STRING, number=154502140)
-
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
     disks = proto.RepeatedField(proto.MESSAGE, number=95594102, message="AttachedDisk",)
-
     guest_accelerators = proto.RepeatedField(
-        proto.MESSAGE, number=195159663, message="AcceleratorConfig",
+        proto.MESSAGE, number=463595119, message="AcceleratorConfig",
     )
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=231759871)
-
-    machine_type = proto.Field(proto.STRING, number=227711026)
-
-    metadata = proto.Field(proto.MESSAGE, number=86866735, message="Metadata",)
-
-    min_cpu_platform = proto.Field(proto.STRING, number=242912759)
-
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
+    machine_type = proto.Field(proto.STRING, number=227711026, optional=True,)
+    metadata = proto.Field(
+        proto.MESSAGE, number=86866735, optional=True, message="Metadata",
+    )
+    min_cpu_platform = proto.Field(proto.STRING, number=242912759, optional=True,)
     network_interfaces = proto.RepeatedField(
         proto.MESSAGE, number=52735243, message="NetworkInterface",
     )
-
     private_ipv6_google_access = proto.Field(
-        proto.ENUM, number=48277006, enum=PrivateIpv6GoogleAccess,
+        proto.ENUM, number=48277006, optional=True, enum=PrivateIpv6GoogleAccess,
     )
-
     reservation_affinity = proto.Field(
-        proto.MESSAGE, number=157850683, message="ReservationAffinity",
+        proto.MESSAGE, number=157850683, optional=True, message="ReservationAffinity",
     )
-
-    resource_policies = proto.RepeatedField(proto.STRING, number=22220385)
-
-    scheduling = proto.Field(proto.MESSAGE, number=118252948, message="Scheduling",)
-
+    resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
+    scheduling = proto.Field(
+        proto.MESSAGE, number=386688404, optional=True, message="Scheduling",
+    )
     service_accounts = proto.RepeatedField(
-        proto.MESSAGE, number=9101872, message="ServiceAccount",
+        proto.MESSAGE, number=277537328, message="ServiceAccount",
     )
-
     shielded_instance_config = proto.Field(
-        proto.MESSAGE, number=12862901, message="ShieldedInstanceConfig",
+        proto.MESSAGE, number=12862901, optional=True, message="ShieldedInstanceConfig",
     )
-
-    tags = proto.Field(proto.MESSAGE, number=3552281, message="Tags",)
+    tags = proto.Field(proto.MESSAGE, number=3552281, optional=True, message="Tags",)
 
 
 class SourceInstanceParams(proto.Message):
@@ -12661,32 +11965,23 @@ class InstanceTemplate(proto.Message):
             this instance template.
     """
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     properties = proto.Field(
-        proto.MESSAGE, number=147688755, message="InstanceProperties",
+        proto.MESSAGE, number=147688755, optional=True, message="InstanceProperties",
     )
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    source_instance = proto.Field(proto.STRING, number=127880249)
-
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    source_instance = proto.Field(proto.STRING, number=396315705, optional=True,)
     source_instance_params = proto.Field(
-        proto.MESSAGE, number=135342156, message="SourceInstanceParams",
+        proto.MESSAGE, number=135342156, optional=True, message="SourceInstanceParams",
     )
 
 
 class InstanceTemplateList(proto.Message):
     r"""A list of instance templates.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -12714,48 +12009,42 @@ class InstanceTemplateList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="InstanceTemplate",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class InstancesAddResourcePoliciesRequest(proto.Message):
     r"""
-
     Attributes:
         resource_policies (Sequence[str]):
             Resource policies to be added to this
             instance.
     """
 
-    resource_policies = proto.RepeatedField(proto.STRING, number=22220385)
+    resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
 
 
 class InstancesRemoveResourcePoliciesRequest(proto.Message):
     r"""
-
     Attributes:
         resource_policies (Sequence[str]):
             Resource policies to be removed from this
             instance.
     """
 
-    resource_policies = proto.RepeatedField(proto.STRING, number=22220385)
+    resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
 
 
 class InstancesSetLabelsRequest(proto.Message):
     r"""
-
     Attributes:
         label_fingerprint (str):
             Fingerprint of the previous set of labels for
@@ -12766,14 +12055,12 @@ class InstancesSetLabelsRequest(proto.Message):
 
     """
 
-    label_fingerprint = proto.Field(proto.STRING, number=178124825)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=231759871)
+    label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
 
 
 class InstancesSetMachineResourcesRequest(proto.Message):
     r"""
-
     Attributes:
         guest_accelerators (Sequence[google.cloud.compute_v1.types.AcceleratorConfig]):
             A list of the type and count of accelerator
@@ -12781,13 +12068,12 @@ class InstancesSetMachineResourcesRequest(proto.Message):
     """
 
     guest_accelerators = proto.RepeatedField(
-        proto.MESSAGE, number=195159663, message="AcceleratorConfig",
+        proto.MESSAGE, number=463595119, message="AcceleratorConfig",
     )
 
 
 class InstancesSetMachineTypeRequest(proto.Message):
     r"""
-
     Attributes:
         machine_type (str):
             Full or partial URL of the machine type
@@ -12796,24 +12082,22 @@ class InstancesSetMachineTypeRequest(proto.Message):
             central1-f/machineTypes/n1-standard-1
     """
 
-    machine_type = proto.Field(proto.STRING, number=227711026)
+    machine_type = proto.Field(proto.STRING, number=227711026, optional=True,)
 
 
 class InstancesSetMinCpuPlatformRequest(proto.Message):
     r"""
-
     Attributes:
         min_cpu_platform (str):
             Minimum cpu/platform this instance should be
             started at.
     """
 
-    min_cpu_platform = proto.Field(proto.STRING, number=242912759)
+    min_cpu_platform = proto.Field(proto.STRING, number=242912759, optional=True,)
 
 
 class InstancesSetServiceAccountRequest(proto.Message):
     r"""
-
     Attributes:
         email (str):
             Email address of the service account.
@@ -12822,14 +12106,12 @@ class InstancesSetServiceAccountRequest(proto.Message):
             this service account.
     """
 
-    email = proto.Field(proto.STRING, number=96619420)
-
-    scopes = proto.RepeatedField(proto.STRING, number=165973151)
+    email = proto.Field(proto.STRING, number=96619420, optional=True,)
+    scopes = proto.RepeatedField(proto.STRING, number=165973151,)
 
 
 class InstancesStartWithEncryptionKeyRequest(proto.Message):
     r"""
-
     Attributes:
         disks (Sequence[google.cloud.compute_v1.types.CustomerEncryptionKeyProtectedDisk]):
             Array of disks associated with this instance
@@ -12864,16 +12146,13 @@ class InterconnectCircuitInfo(proto.Message):
             Google to the customer in the LOA.
     """
 
-    customer_demarc_id = proto.Field(proto.STRING, number=28771859)
-
-    google_circuit_id = proto.Field(proto.STRING, number=262014711)
-
-    google_demarc_id = proto.Field(proto.STRING, number=179760814)
+    customer_demarc_id = proto.Field(proto.STRING, number=28771859, optional=True,)
+    google_circuit_id = proto.Field(proto.STRING, number=262014711, optional=True,)
+    google_demarc_id = proto.Field(proto.STRING, number=448196270, optional=True,)
 
 
 class InterconnectOutageNotification(proto.Message):
     r"""Description of a planned outage on this Interconnect.
-
     Attributes:
         affected_circuits (Sequence[str]):
             If issue_type is IT_PARTIAL_OUTAGE, a list of the
@@ -12945,8 +12224,8 @@ class InterconnectOutageNotification(proto.Message):
            value of NSRC_GOOGLE has been deprecated in favor of GOOGLE.
         """
         UNDEFINED_SOURCE = 0
-        GOOGLE = 229003833
-        NSRC_GOOGLE = 242139106
+        GOOGLE = 497439289
+        NSRC_GOOGLE = 510574562
 
     class State(proto.Enum):
         r"""State of this notification, which can take one of the following
@@ -12961,27 +12240,22 @@ class InterconnectOutageNotification(proto.Message):
            favor of the unprefixed values.
         """
         UNDEFINED_STATE = 0
-        ACTIVE = 46297862
+        ACTIVE = 314733318
         CANCELLED = 41957681
-        COMPLETED = 41485867
+        COMPLETED = 309921323
         NS_ACTIVE = 252563136
-        NS_CANCELED = 238143955
+        NS_CANCELED = 506579411
 
-    affected_circuits = proto.RepeatedField(proto.STRING, number=177717013)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    end_time = proto.Field(proto.STRING, number=114938801)
-
-    issue_type = proto.Field(proto.ENUM, number=101203680, enum=IssueType,)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    source = proto.Field(proto.ENUM, number=177235995, enum=Source,)
-
-    start_time = proto.Field(proto.STRING, number=37467274)
-
-    state = proto.Field(proto.ENUM, number=109757585, enum=State,)
+    affected_circuits = proto.RepeatedField(proto.STRING, number=177717013,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    end_time = proto.Field(proto.STRING, number=114938801, optional=True,)
+    issue_type = proto.Field(
+        proto.ENUM, number=369639136, optional=True, enum=IssueType,
+    )
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    source = proto.Field(proto.ENUM, number=177235995, optional=True, enum=Source,)
+    start_time = proto.Field(proto.STRING, number=37467274, optional=True,)
+    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
 
 
 class Interconnect(proto.Message):
@@ -13120,8 +12394,8 @@ class Interconnect(proto.Message):
         """
         UNDEFINED_INTERCONNECT_TYPE = 0
         DEDICATED = 258411983
-        IT_PRIVATE = 67241551
-        PARTNER = 193489064
+        IT_PRIVATE = 335677007
+        PARTNER = 461924520
 
     class LinkType(proto.Enum):
         r"""Type of link requested, which can take one of the following values:
@@ -13132,7 +12406,7 @@ class Interconnect(proto.Message):
            bundle, not the speed of the entire bundle.
         """
         UNDEFINED_LINK_TYPE = 0
-        LINK_TYPE_ETHERNET_100G_LR = 69237095
+        LINK_TYPE_ETHERNET_100G_LR = 337672551
         LINK_TYPE_ETHERNET_10G_LR = 236739749
 
     class OperationalStatus(proto.Enum):
@@ -13164,60 +12438,39 @@ class Interconnect(proto.Message):
            Interconnect.
         """
         UNDEFINED_STATE = 0
-        ACTIVE = 46297862
-        UNPROVISIONED = 248898523
+        ACTIVE = 314733318
+        UNPROVISIONED = 517333979
 
-    admin_enabled = proto.Field(proto.BOOL, number=177239633)
-
+    admin_enabled = proto.Field(proto.BOOL, number=445675089, optional=True,)
     circuit_infos = proto.RepeatedField(
         proto.MESSAGE, number=164839855, message="InterconnectCircuitInfo",
     )
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    customer_name = proto.Field(proto.STRING, number=3665484)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    customer_name = proto.Field(proto.STRING, number=3665484, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
     expected_outages = proto.RepeatedField(
         proto.MESSAGE, number=264484123, message="InterconnectOutageNotification",
     )
-
-    google_ip_address = proto.Field(proto.STRING, number=174670498)
-
-    google_reference_id = proto.Field(proto.STRING, number=266509013)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    interconnect_attachments = proto.RepeatedField(proto.STRING, number=156952959)
-
+    google_ip_address = proto.Field(proto.STRING, number=443105954, optional=True,)
+    google_reference_id = proto.Field(proto.STRING, number=534944469, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    interconnect_attachments = proto.RepeatedField(proto.STRING, number=425388415,)
     interconnect_type = proto.Field(
-        proto.ENUM, number=246729803, enum=InterconnectType,
+        proto.ENUM, number=515165259, optional=True, enum=InterconnectType,
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    link_type = proto.Field(proto.ENUM, number=254772319, enum=LinkType,)
-
-    location = proto.Field(proto.STRING, number=21995445)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    noc_contact_email = proto.Field(proto.STRING, number=14072832)
-
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    link_type = proto.Field(proto.ENUM, number=523207775, optional=True, enum=LinkType,)
+    location = proto.Field(proto.STRING, number=290430901, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    noc_contact_email = proto.Field(proto.STRING, number=14072832, optional=True,)
     operational_status = proto.Field(
-        proto.ENUM, number=201070847, enum=OperationalStatus,
+        proto.ENUM, number=201070847, optional=True, enum=OperationalStatus,
     )
-
-    peer_ip_address = proto.Field(proto.STRING, number=207735769)
-
-    provisioned_link_count = proto.Field(proto.INT32, number=142453109)
-
-    requested_link_count = proto.Field(proto.INT32, number=45051387)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    state = proto.Field(proto.ENUM, number=109757585, enum=State,)
+    peer_ip_address = proto.Field(proto.STRING, number=207735769, optional=True,)
+    provisioned_link_count = proto.Field(proto.INT32, number=410888565, optional=True,)
+    requested_link_count = proto.Field(proto.INT32, number=45051387, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
 
 
 class InterconnectAttachmentPartnerMetadata(proto.Message):
@@ -13245,11 +12498,9 @@ class InterconnectAttachmentPartnerMetadata(proto.Message):
             match approved Partner values.
     """
 
-    interconnect_name = proto.Field(proto.STRING, number=246527900)
-
-    partner_name = proto.Field(proto.STRING, number=161747874)
-
-    portal_url = proto.Field(proto.STRING, number=747292)
+    interconnect_name = proto.Field(proto.STRING, number=514963356, optional=True,)
+    partner_name = proto.Field(proto.STRING, number=161747874, optional=True,)
+    portal_url = proto.Field(proto.STRING, number=269182748, optional=True,)
 
 
 class InterconnectAttachmentPrivateInfo(proto.Message):
@@ -13263,7 +12514,7 @@ class InterconnectAttachmentPrivateInfo(proto.Message):
             this network and region.
     """
 
-    tag8021q = proto.Field(proto.UINT32, number=3385536)
+    tag8021q = proto.Field(proto.UINT32, number=271820992, optional=True,)
 
 
 class InterconnectAttachment(proto.Message):
@@ -13473,17 +12724,17 @@ class InterconnectAttachment(proto.Message):
         """
         UNDEFINED_BANDWIDTH = 0
         BPS_100M = 49547958
-        BPS_10G = 10257550
-        BPS_1G = 86922992
+        BPS_10G = 278693006
+        BPS_1G = 355358448
         BPS_200M = 49577749
-        BPS_20G = 10258511
-        BPS_2G = 86923023
+        BPS_20G = 278693967
+        BPS_2G = 355358479
         BPS_300M = 49607540
         BPS_400M = 49637331
         BPS_500M = 49667122
-        BPS_50G = 10261394
-        BPS_50M = 10261400
-        BPS_5G = 86923116
+        BPS_50G = 278696850
+        BPS_50M = 278696856
+        BPS_5G = 355358572
 
     class EdgeAvailabilityDomain(proto.Enum):
         r"""Desired availability domain for the attachment. Only available for
@@ -13500,9 +12751,9 @@ class InterconnectAttachment(proto.Message):
            AVAILABILITY_DOMAIN_ANY.
         """
         UNDEFINED_EDGE_AVAILABILITY_DOMAIN = 0
-        AVAILABILITY_DOMAIN_1 = 81116634
-        AVAILABILITY_DOMAIN_2 = 81116635
-        AVAILABILITY_DOMAIN_ANY = 106820917
+        AVAILABILITY_DOMAIN_1 = 349552090
+        AVAILABILITY_DOMAIN_2 = 349552091
+        AVAILABILITY_DOMAIN_ANY = 375256373
 
     class OperationalStatus(proto.Enum):
         r"""[Output Only] The current status of whether or not this interconnect
@@ -13542,13 +12793,13 @@ class InterconnectAttachment(proto.Message):
            deleted.
         """
         UNDEFINED_STATE = 0
-        ACTIVE = 46297862
+        ACTIVE = 314733318
         DEFUNCT = 115891759
-        PARTNER_REQUEST_RECEIVED = 245151848
+        PARTNER_REQUEST_RECEIVED = 513587304
         PENDING_CUSTOMER = 167494054
-        PENDING_PARTNER = 119455200
-        STATE_UNSPECIFIED = 202319945
-        UNPROVISIONED = 248898523
+        PENDING_PARTNER = 387890656
+        STATE_UNSPECIFIED = 470755401
+        UNPROVISIONED = 517333979
 
     class Type(proto.Enum):
         r"""The type of interconnect attachment this is, which can take one of
@@ -13562,73 +12813,59 @@ class InterconnectAttachment(proto.Message):
         """
         UNDEFINED_TYPE = 0
         DEDICATED = 258411983
-        PARTNER = 193489064
-        PARTNER_PROVIDER = 214825896
+        PARTNER = 461924520
+        PARTNER_PROVIDER = 483261352
 
-    admin_enabled = proto.Field(proto.BOOL, number=177239633)
-
-    bandwidth = proto.Field(proto.ENUM, number=181715121, enum=Bandwidth,)
-
-    candidate_subnets = proto.RepeatedField(proto.STRING, number=237842938)
-
-    cloud_router_ip_address = proto.Field(proto.STRING, number=18957320)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    customer_router_ip_address = proto.Field(proto.STRING, number=64040305)
-
-    dataplane_version = proto.Field(proto.INT32, number=34920075)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
+    admin_enabled = proto.Field(proto.BOOL, number=445675089, optional=True,)
+    bandwidth = proto.Field(
+        proto.ENUM, number=181715121, optional=True, enum=Bandwidth,
+    )
+    candidate_subnets = proto.RepeatedField(proto.STRING, number=237842938,)
+    cloud_router_ip_address = proto.Field(
+        proto.STRING, number=287392776, optional=True,
+    )
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    customer_router_ip_address = proto.Field(
+        proto.STRING, number=332475761, optional=True,
+    )
+    dataplane_version = proto.Field(proto.INT32, number=34920075, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
     edge_availability_domain = proto.Field(
-        proto.ENUM, number=71289510, enum=EdgeAvailabilityDomain,
+        proto.ENUM, number=71289510, optional=True, enum=EdgeAvailabilityDomain,
     )
-
-    google_reference_id = proto.Field(proto.STRING, number=266509013)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    interconnect = proto.Field(proto.STRING, number=224601230)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    mtu = proto.Field(proto.INT32, number=108462)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    google_reference_id = proto.Field(proto.STRING, number=534944469, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    interconnect = proto.Field(proto.STRING, number=224601230, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    mtu = proto.Field(proto.INT32, number=108462, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     operational_status = proto.Field(
-        proto.ENUM, number=201070847, enum=OperationalStatus,
+        proto.ENUM, number=201070847, optional=True, enum=OperationalStatus,
     )
-
-    pairing_key = proto.Field(proto.STRING, number=171260008)
-
-    partner_asn = proto.Field(proto.STRING, number=169730693)
-
+    pairing_key = proto.Field(proto.STRING, number=439695464, optional=True,)
+    partner_asn = proto.Field(proto.STRING, number=438166149, optional=True,)
     partner_metadata = proto.Field(
-        proto.MESSAGE, number=65908934, message="InterconnectAttachmentPartnerMetadata",
+        proto.MESSAGE,
+        number=65908934,
+        optional=True,
+        message="InterconnectAttachmentPartnerMetadata",
     )
-
     private_interconnect_info = proto.Field(
-        proto.MESSAGE, number=237270531, message="InterconnectAttachmentPrivateInfo",
+        proto.MESSAGE,
+        number=237270531,
+        optional=True,
+        message="InterconnectAttachmentPrivateInfo",
     )
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    router = proto.Field(proto.STRING, number=148608841)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    state = proto.Field(proto.ENUM, number=109757585, enum=State,)
-
-    type_ = proto.Field(proto.ENUM, number=3575610, enum=Type,)
-
-    vlan_tag8021q = proto.Field(proto.INT32, number=119927836)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    router = proto.Field(proto.STRING, number=148608841, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
+    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+    vlan_tag8021q = proto.Field(proto.INT32, number=119927836, optional=True,)
 
 
 class InterconnectAttachmentsScopedList(proto.Message):
     r"""
-
     Attributes:
         interconnect_attachments (Sequence[google.cloud.compute_v1.types.InterconnectAttachment]):
             A list of interconnect attachments contained
@@ -13639,15 +12876,15 @@ class InterconnectAttachmentsScopedList(proto.Message):
     """
 
     interconnect_attachments = proto.RepeatedField(
-        proto.MESSAGE, number=156952959, message="InterconnectAttachment",
+        proto.MESSAGE, number=425388415, message="InterconnectAttachment",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class InterconnectAttachmentAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -13678,24 +12915,20 @@ class InterconnectAttachmentAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=100526016,
         message="InterconnectAttachmentsScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class InterconnectAttachmentList(proto.Message):
@@ -13729,24 +12962,20 @@ class InterconnectAttachmentList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="InterconnectAttachment",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class InterconnectDiagnosticsARPEntry(proto.Message):
     r"""Describing the ARP neighbor entries seen on this link
-
     Attributes:
         ip_address (str):
             The IP address of this ARP neighbor.
@@ -13754,14 +12983,12 @@ class InterconnectDiagnosticsARPEntry(proto.Message):
             The MAC address of this ARP neighbor.
     """
 
-    ip_address = proto.Field(proto.STRING, number=137836764)
-
-    mac_address = proto.Field(proto.STRING, number=64104708)
+    ip_address = proto.Field(proto.STRING, number=406272220, optional=True,)
+    mac_address = proto.Field(proto.STRING, number=332540164, optional=True,)
 
 
 class InterconnectDiagnosticsLinkStatus(proto.Message):
     r"""
-
     Attributes:
         arp_caches (Sequence[google.cloud.compute_v1.types.InterconnectDiagnosticsARPEntry]):
             A list of InterconnectDiagnostics.ARPEntry
@@ -13787,26 +13014,26 @@ class InterconnectDiagnosticsLinkStatus(proto.Message):
     """
 
     arp_caches = proto.RepeatedField(
-        proto.MESSAGE, number=146156305, message="InterconnectDiagnosticsARPEntry",
+        proto.MESSAGE, number=414591761, message="InterconnectDiagnosticsARPEntry",
     )
-
-    circuit_id = proto.Field(proto.STRING, number=225180977)
-
-    google_demarc = proto.Field(proto.STRING, number=51084)
-
+    circuit_id = proto.Field(proto.STRING, number=225180977, optional=True,)
+    google_demarc = proto.Field(proto.STRING, number=51084, optional=True,)
     lacp_status = proto.Field(
-        proto.MESSAGE, number=92774959, message="InterconnectDiagnosticsLinkLACPStatus",
+        proto.MESSAGE,
+        number=361210415,
+        optional=True,
+        message="InterconnectDiagnosticsLinkLACPStatus",
     )
-
     receiving_optical_power = proto.Field(
         proto.MESSAGE,
         number=244717279,
+        optional=True,
         message="InterconnectDiagnosticsLinkOpticalPower",
     )
-
     transmitting_optical_power = proto.Field(
         proto.MESSAGE,
-        number=190995741,
+        number=459431197,
+        optional=True,
         message="InterconnectDiagnosticsLinkOpticalPower",
     )
 
@@ -13833,19 +13060,16 @@ class InterconnectDiagnostics(proto.Message):
     """
 
     arp_caches = proto.RepeatedField(
-        proto.MESSAGE, number=146156305, message="InterconnectDiagnosticsARPEntry",
+        proto.MESSAGE, number=414591761, message="InterconnectDiagnosticsARPEntry",
     )
-
     links = proto.RepeatedField(
         proto.MESSAGE, number=102977465, message="InterconnectDiagnosticsLinkStatus",
     )
-
-    mac_address = proto.Field(proto.STRING, number=64104708)
+    mac_address = proto.Field(proto.STRING, number=332540164, optional=True,)
 
 
 class InterconnectDiagnosticsLinkLACPStatus(proto.Message):
     r"""
-
     Attributes:
         google_system_id (str):
             System ID of the port on Google's side of the
@@ -13869,19 +13093,16 @@ class InterconnectDiagnosticsLinkLACPStatus(proto.Message):
         bundle. This means that the rest of the object should be empty.
         """
         UNDEFINED_STATE = 0
-        ACTIVE = 46297862
+        ACTIVE = 314733318
         DETACHED = 216562546
 
-    google_system_id = proto.Field(proto.STRING, number=91210405)
-
-    neighbor_system_id = proto.Field(proto.STRING, number=75385886)
-
-    state = proto.Field(proto.ENUM, number=109757585, enum=State,)
+    google_system_id = proto.Field(proto.STRING, number=91210405, optional=True,)
+    neighbor_system_id = proto.Field(proto.STRING, number=343821342, optional=True,)
+    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
 
 
 class InterconnectDiagnosticsLinkOpticalPower(proto.Message):
     r"""
-
     Attributes:
         state (google.cloud.compute_v1.types.InterconnectDiagnosticsLinkOpticalPower.State):
             The status of the current value when compared to the warning
@@ -13920,15 +13141,14 @@ class InterconnectDiagnosticsLinkOpticalPower(proto.Message):
         -  HIGH_ALARM: The value has crossed above the high alarm threshold.
         """
         UNDEFINED_STATE = 0
-        HIGH_ALARM = 36927828
+        HIGH_ALARM = 305363284
         HIGH_WARNING = 220984799
-        LOW_ALARM = 48223590
-        LOW_WARNING = 70358385
+        LOW_ALARM = 316659046
+        LOW_WARNING = 338793841
         OK = 2524
 
-    state = proto.Field(proto.ENUM, number=109757585, enum=State,)
-
-    value = proto.Field(proto.FLOAT, number=111972721)
+    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
+    value = proto.Field(proto.FLOAT, number=111972721, optional=True,)
 
 
 class InterconnectList(proto.Message):
@@ -13961,19 +13181,16 @@ class InterconnectList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="Interconnect",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class InterconnectLocationRegionInfo(proto.Message):
@@ -13996,18 +13213,16 @@ class InterconnectLocationRegionInfo(proto.Message):
     class LocationPresence(proto.Enum):
         r"""Identifies the network presence of this location."""
         UNDEFINED_LOCATION_PRESENCE = 0
-        GLOBAL = 226228131
-        LOCAL_REGION = 135100008
-        LP_GLOBAL = 161148606
-        LP_LOCAL_REGION = 220163395
+        GLOBAL = 494663587
+        LOCAL_REGION = 403535464
+        LP_GLOBAL = 429584062
+        LP_LOCAL_REGION = 488598851
 
-    expected_rtt_ms = proto.Field(proto.STRING, number=154108410)
-
+    expected_rtt_ms = proto.Field(proto.STRING, number=422543866, optional=True,)
     location_presence = proto.Field(
-        proto.ENUM, number=101517893, enum=LocationPresence,
+        proto.ENUM, number=101517893, optional=True, enum=LocationPresence,
     )
-
-    region = proto.Field(proto.STRING, number=138946292)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
 
 
 class InterconnectLocation(proto.Message):
@@ -14089,15 +13304,15 @@ class InterconnectLocation(proto.Message):
         -  SOUTH_AMERICA
         """
         UNDEFINED_CONTINENT = 0
-        AFRICA = 49008250
+        AFRICA = 317443706
         ASIA_PAC = 119782269
         C_AFRICA = 71993846
-        C_ASIA_PAC = 197232633
+        C_ASIA_PAC = 465668089
         C_EUROPE = 200369438
-        C_NORTH_AMERICA = 7261592
-        C_SOUTH_AMERICA = 128714336
-        EUROPE = 177383842
-        NORTH_AMERICA = 179580052
+        C_NORTH_AMERICA = 275697048
+        C_SOUTH_AMERICA = 397149792
+        EUROPE = 445819298
+        NORTH_AMERICA = 448015508
         SOUTH_AMERICA = 32597340
 
     class Status(proto.Enum):
@@ -14110,40 +13325,30 @@ class InterconnectLocation(proto.Message):
            new Interconnects.
         """
         UNDEFINED_STATUS = 0
-        AVAILABLE = 173644457
-        CLOSED = 111727980
+        AVAILABLE = 442079913
+        CLOSED = 380163436
 
-    address = proto.Field(proto.STRING, number=194485236)
-
-    availability_zone = proto.Field(proto.STRING, number=158459920)
-
-    city = proto.Field(proto.STRING, number=3053931)
-
-    continent = proto.Field(proto.ENUM, number=133442996, enum=Continent,)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    facility_provider = proto.Field(proto.STRING, number=264867853)
-
-    facility_provider_facility_id = proto.Field(proto.STRING, number=87269125)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    peeringdb_facility_id = proto.Field(proto.STRING, number=268131638)
-
-    region_infos = proto.RepeatedField(
-        proto.MESSAGE, number=43758714, message="InterconnectLocationRegionInfo",
+    address = proto.Field(proto.STRING, number=462920692, optional=True,)
+    availability_zone = proto.Field(proto.STRING, number=158459920, optional=True,)
+    city = proto.Field(proto.STRING, number=3053931, optional=True,)
+    continent = proto.Field(
+        proto.ENUM, number=133442996, optional=True, enum=Continent,
     )
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    facility_provider = proto.Field(proto.STRING, number=533303309, optional=True,)
+    facility_provider_facility_id = proto.Field(
+        proto.STRING, number=87269125, optional=True,
+    )
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    peeringdb_facility_id = proto.Field(proto.STRING, number=536567094, optional=True,)
+    region_infos = proto.RepeatedField(
+        proto.MESSAGE, number=312194170, message="InterconnectLocationRegionInfo",
+    )
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
 
 
 class InterconnectLocationList(proto.Message):
@@ -14177,37 +13382,35 @@ class InterconnectLocationList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="InterconnectLocation",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class InterconnectsGetDiagnosticsResponse(proto.Message):
     r"""Response for the InterconnectsGetDiagnosticsRequest.
-
     Attributes:
         result (google.cloud.compute_v1.types.InterconnectDiagnostics):
 
     """
 
     result = proto.Field(
-        proto.MESSAGE, number=139315229, message="InterconnectDiagnostics",
+        proto.MESSAGE,
+        number=139315229,
+        optional=True,
+        message="InterconnectDiagnostics",
     )
 
 
 class LicenseResourceRequirements(proto.Message):
     r"""
-
     Attributes:
         min_guest_cpu_count (int):
             Minimum number of guest cpus required to use
@@ -14219,9 +13422,8 @@ class LicenseResourceRequirements(proto.Message):
             start.
     """
 
-    min_guest_cpu_count = proto.Field(proto.INT32, number=209529380)
-
-    min_memory_mb = proto.Field(proto.INT32, number=236350438)
+    min_guest_cpu_count = proto.Field(proto.INT32, number=477964836, optional=True,)
+    min_memory_mb = proto.Field(proto.INT32, number=504785894, optional=True,)
 
 
 class License(proto.Message):
@@ -14265,32 +13467,25 @@ class License(proto.Message):
             disk.
     """
 
-    charges_use_fee = proto.Field(proto.BOOL, number=103977166)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    license_code = proto.Field(proto.STRING, number=1467179)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    charges_use_fee = proto.Field(proto.BOOL, number=372412622, optional=True,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    license_code = proto.Field(proto.STRING, number=1467179, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     resource_requirements = proto.Field(
-        proto.MESSAGE, number=214292769, message="LicenseResourceRequirements",
+        proto.MESSAGE,
+        number=214292769,
+        optional=True,
+        message="LicenseResourceRequirements",
     )
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    transferable = proto.Field(proto.BOOL, number=4349893)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    transferable = proto.Field(proto.BOOL, number=4349893, optional=True,)
 
 
 class LicenseCodeLicenseAlias(proto.Message):
     r"""
-
     Attributes:
         description (str):
             [Output Only] Description of this License Code.
@@ -14299,9 +13494,8 @@ class LicenseCodeLicenseAlias(proto.Message):
             Code.
     """
 
-    description = proto.Field(proto.STRING, number=154502140)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
 
 
 class LicenseCode(proto.Message):
@@ -14342,36 +13536,27 @@ class LicenseCode(proto.Message):
     class State(proto.Enum):
         r"""[Output Only] Current state of this License Code."""
         UNDEFINED_STATE = 0
-        DISABLED = 248261244
+        DISABLED = 516696700
         ENABLED = 182130465
         RESTRICTED = 261551195
-        STATE_UNSPECIFIED = 202319945
+        STATE_UNSPECIFIED = 470755401
         TERMINATED = 250018339
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     license_alias = proto.RepeatedField(
         proto.MESSAGE, number=43550930, message="LicenseCodeLicenseAlias",
     )
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    state = proto.Field(proto.ENUM, number=109757585, enum=State,)
-
-    transferable = proto.Field(proto.BOOL, number=4349893)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
+    transferable = proto.Field(proto.BOOL, number=4349893, optional=True,)
 
 
 class LicensesListResponse(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -14395,20 +13580,17 @@ class LicensesListResponse(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="License",)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class LocalDisk(proto.Message):
     r"""
-
     Attributes:
         disk_count (int):
             Specifies the number of such disks.
@@ -14422,16 +13604,13 @@ class LocalDisk(proto.Message):
             its URL.
     """
 
-    disk_count = proto.Field(proto.INT32, number=182933485)
-
-    disk_size_gb = proto.Field(proto.INT32, number=47828279)
-
-    disk_type = proto.Field(proto.STRING, number=93009052)
+    disk_count = proto.Field(proto.INT32, number=182933485, optional=True,)
+    disk_size_gb = proto.Field(proto.INT32, number=316263735, optional=True,)
+    disk_type = proto.Field(proto.STRING, number=93009052, optional=True,)
 
 
 class LogConfigCloudAuditOptions(proto.Message):
     r"""Write a Cloud Audit log
-
     Attributes:
         authorization_logging_options (google.cloud.compute_v1.types.AuthorizationLoggingOptions):
             Information used by the Cloud Audit Logging
@@ -14443,15 +13622,17 @@ class LogConfigCloudAuditOptions(proto.Message):
     class LogName(proto.Enum):
         r"""The log_name to populate in the Cloud Audit Record."""
         UNDEFINED_LOG_NAME = 0
-        ADMIN_ACTIVITY = 159067679
+        ADMIN_ACTIVITY = 427503135
         DATA_ACCESS = 238070681
-        UNSPECIFIED_LOG_NAME = 142079726
+        UNSPECIFIED_LOG_NAME = 410515182
 
     authorization_logging_options = proto.Field(
-        proto.MESSAGE, number=217861624, message="AuthorizationLoggingOptions",
+        proto.MESSAGE,
+        number=217861624,
+        optional=True,
+        message="AuthorizationLoggingOptions",
     )
-
-    log_name = proto.Field(proto.ENUM, number=134478502, enum=LogName,)
+    log_name = proto.Field(proto.ENUM, number=402913958, optional=True, enum=LogName,)
 
 
 class LogConfigCounterOptions(proto.Message):
@@ -14491,15 +13672,12 @@ class LogConfigCounterOptions(proto.Message):
     custom_fields = proto.RepeatedField(
         proto.MESSAGE, number=249651015, message="LogConfigCounterOptionsCustomField",
     )
-
-    field = proto.Field(proto.STRING, number=97427706)
-
-    metric = proto.Field(proto.STRING, number=264631728)
+    field = proto.Field(proto.STRING, number=97427706, optional=True,)
+    metric = proto.Field(proto.STRING, number=533067184, optional=True,)
 
 
 class LogConfigDataAccessOptions(proto.Message):
     r"""Write a Data Access (Gin) log
-
     Attributes:
         log_mode (google.cloud.compute_v1.types.LogConfigDataAccessOptions.LogMode):
 
@@ -14508,15 +13686,14 @@ class LogConfigDataAccessOptions(proto.Message):
     class LogMode(proto.Enum):
         r""""""
         UNDEFINED_LOG_MODE = 0
-        LOG_FAIL_CLOSED = 92034322
+        LOG_FAIL_CLOSED = 360469778
         LOG_MODE_UNSPECIFIED = 88160822
 
-    log_mode = proto.Field(proto.ENUM, number=134461886, enum=LogMode,)
+    log_mode = proto.Field(proto.ENUM, number=402897342, optional=True, enum=LogMode,)
 
 
 class LogConfig(proto.Message):
     r"""Specifies what kind of log the caller must write
-
     Attributes:
         cloud_audit (google.cloud.compute_v1.types.LogConfigCloudAuditOptions):
             Cloud audit options.
@@ -14527,15 +13704,22 @@ class LogConfig(proto.Message):
     """
 
     cloud_audit = proto.Field(
-        proto.MESSAGE, number=144417105, message="LogConfigCloudAuditOptions",
+        proto.MESSAGE,
+        number=412852561,
+        optional=True,
+        message="LogConfigCloudAuditOptions",
     )
-
     counter = proto.Field(
-        proto.MESSAGE, number=152524284, message="LogConfigCounterOptions",
+        proto.MESSAGE,
+        number=420959740,
+        optional=True,
+        message="LogConfigCounterOptions",
     )
-
     data_access = proto.Field(
-        proto.MESSAGE, number=18198425, message="LogConfigDataAccessOptions",
+        proto.MESSAGE,
+        number=286633881,
+        optional=True,
+        message="LogConfigDataAccessOptions",
     )
 
 
@@ -14553,14 +13737,12 @@ class LogConfigCounterOptionsCustomField(proto.Message):
             from the IAMContext.
     """
 
-    name = proto.Field(proto.STRING, number=3373707)
-
-    value = proto.Field(proto.STRING, number=111972721)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    value = proto.Field(proto.STRING, number=111972721, optional=True,)
 
 
 class Accelerators(proto.Message):
     r"""
-
     Attributes:
         guest_accelerator_count (int):
             Number of accelerator cards exposed to the
@@ -14570,20 +13752,18 @@ class Accelerators(proto.Message):
             full URL, e.g. 'nvidia-tesla-k80'.
     """
 
-    guest_accelerator_count = proto.Field(proto.INT32, number=210643860)
-
-    guest_accelerator_type = proto.Field(proto.STRING, number=24629269)
+    guest_accelerator_count = proto.Field(proto.INT32, number=479079316, optional=True,)
+    guest_accelerator_type = proto.Field(proto.STRING, number=293064725, optional=True,)
 
 
 class ScratchDisks(proto.Message):
     r"""
-
     Attributes:
         disk_gb (int):
             Size of the scratch disk, defined in GB.
     """
 
-    disk_gb = proto.Field(proto.INT32, number=60990141)
+    disk_gb = proto.Field(proto.INT32, number=60990141, optional=True,)
 
 
 class MachineType(proto.Message):
@@ -14642,47 +13822,35 @@ class MachineType(proto.Message):
     """
 
     accelerators = proto.RepeatedField(
-        proto.MESSAGE, number=1141608, message="Accelerators",
+        proto.MESSAGE, number=269577064, message="Accelerators",
     )
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     deprecated = proto.Field(
-        proto.MESSAGE, number=246703539, message="DeprecationStatus",
+        proto.MESSAGE, number=515138995, optional=True, message="DeprecationStatus",
     )
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    guest_cpus = proto.Field(proto.INT32, number=124921298)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    image_space_gb = proto.Field(proto.INT32, number=75331864)
-
-    is_shared_cpu = proto.Field(proto.BOOL, number=252964099)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    maximum_persistent_disks = proto.Field(proto.INT32, number=227785485)
-
-    maximum_persistent_disks_size_gb = proto.Field(proto.STRING, number=154274471)
-
-    memory_mb = proto.Field(proto.INT32, number=116001171)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    guest_cpus = proto.Field(proto.INT32, number=393356754, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    image_space_gb = proto.Field(proto.INT32, number=75331864, optional=True,)
+    is_shared_cpu = proto.Field(proto.BOOL, number=521399555, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    maximum_persistent_disks = proto.Field(
+        proto.INT32, number=496220941, optional=True,
+    )
+    maximum_persistent_disks_size_gb = proto.Field(
+        proto.STRING, number=154274471, optional=True,
+    )
+    memory_mb = proto.Field(proto.INT32, number=116001171, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     scratch_disks = proto.RepeatedField(
-        proto.MESSAGE, number=212343025, message="ScratchDisks",
+        proto.MESSAGE, number=480778481, message="ScratchDisks",
     )
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
 class MachineTypesScopedList(proto.Message):
     r"""
-
     Attributes:
         machine_types (Sequence[google.cloud.compute_v1.types.MachineType]):
             [Output Only] A list of machine types contained in this
@@ -14695,13 +13863,13 @@ class MachineTypesScopedList(proto.Message):
     machine_types = proto.RepeatedField(
         proto.MESSAGE, number=79720065, message="MachineType",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class MachineTypeAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -14731,26 +13899,21 @@ class MachineTypeAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="MachineTypesScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class MachineTypeList(proto.Message):
     r"""Contains a list of machine types.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -14777,22 +13940,18 @@ class MachineTypeList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="MachineType",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class ManagedInstanceInstanceHealth(proto.Message):
     r"""
-
     Attributes:
         detailed_health_state (google.cloud.compute_v1.types.ManagedInstanceInstanceHealth.DetailedHealthState):
             [Output Only] The current detailed instance health state.
@@ -14804,34 +13963,33 @@ class ManagedInstanceInstanceHealth(proto.Message):
     class DetailedHealthState(proto.Enum):
         r"""[Output Only] The current detailed instance health state."""
         UNDEFINED_DETAILED_HEALTH_STATE = 0
-        DRAINING = 212019946
-        HEALTHY = 171365757
-        TIMEOUT = 209377601
-        UNHEALTHY = 193682628
-        UNKNOWN = 164706346
+        DRAINING = 480455402
+        HEALTHY = 439801213
+        TIMEOUT = 477813057
+        UNHEALTHY = 462118084
+        UNKNOWN = 433141802
 
     detailed_health_state = proto.Field(
-        proto.ENUM, number=242034717, enum=DetailedHealthState,
+        proto.ENUM, number=510470173, optional=True, enum=DetailedHealthState,
     )
-
-    health_check = proto.Field(proto.STRING, number=40441189)
+    health_check = proto.Field(proto.STRING, number=308876645, optional=True,)
 
 
 class ManagedInstanceLastAttempt(proto.Message):
     r"""
-
     Attributes:
         errors (google.cloud.compute_v1.types.Errors):
             [Output Only] Encountered errors during the last attempt to
             create or delete the instance.
     """
 
-    errors = proto.Field(proto.MESSAGE, number=47542123, message="Errors",)
+    errors = proto.Field(
+        proto.MESSAGE, number=315977579, optional=True, message="Errors",
+    )
 
 
 class PreservedState(proto.Message):
     r"""Preserved state for a given instance.
-
     Attributes:
         disks (Sequence[google.cloud.compute_v1.types.PreservedState.DisksEntry]):
             Preserved disks defined for this instance.
@@ -14847,13 +14005,11 @@ class PreservedState(proto.Message):
         number=95594102,
         message="PreservedStatePreservedDisk",
     )
-
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=86866735)
+    metadata = proto.MapField(proto.STRING, proto.STRING, number=86866735,)
 
 
 class Errors(proto.Message):
     r"""
-
     Attributes:
         code (str):
             [Output Only] The error type identifier for this error.
@@ -14864,16 +14020,13 @@ class Errors(proto.Message):
             [Output Only] An optional, human-readable error message.
     """
 
-    code = proto.Field(proto.STRING, number=3059181)
-
-    location = proto.Field(proto.STRING, number=21995445)
-
-    message = proto.Field(proto.STRING, number=149618695)
+    code = proto.Field(proto.STRING, number=3059181, optional=True,)
+    location = proto.Field(proto.STRING, number=290430901, optional=True,)
+    message = proto.Field(proto.STRING, number=418054151, optional=True,)
 
 
 class Items(proto.Message):
     r"""
-
     Attributes:
         key (str):
             Key for the metadata entry. Keys must conform to the
@@ -14890,9 +14043,8 @@ class Items(proto.Message):
             262144 bytes (256 KiB).
     """
 
-    key = proto.Field(proto.STRING, number=106079)
-
-    value = proto.Field(proto.STRING, number=111972721)
+    key = proto.Field(proto.STRING, number=106079, optional=True,)
+    value = proto.Field(proto.STRING, number=111972721, optional=True,)
 
 
 class MetadataFilterLabelMatch(proto.Message):
@@ -14912,9 +14064,8 @@ class MetadataFilterLabelMatch(proto.Message):
             of 1024 characters.
     """
 
-    name = proto.Field(proto.STRING, number=3373707)
-
-    value = proto.Field(proto.STRING, number=111972721)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    value = proto.Field(proto.STRING, number=111972721, optional=True,)
 
 
 class NetworkPeering(proto.Message):
@@ -14991,30 +14142,24 @@ class NetworkPeering(proto.Message):
         configuration in the peer network.
         """
         UNDEFINED_STATE = 0
-        ACTIVE = 46297862
-        INACTIVE = 1985643
+        ACTIVE = 314733318
+        INACTIVE = 270421099
 
-    auto_create_routes = proto.Field(proto.BOOL, number=57454941)
-
-    exchange_subnet_routes = proto.Field(proto.BOOL, number=26322256)
-
-    export_custom_routes = proto.Field(proto.BOOL, number=60281485)
-
-    export_subnet_routes_with_public_ip = proto.Field(proto.BOOL, number=97940834)
-
-    import_custom_routes = proto.Field(proto.BOOL, number=197982398)
-
-    import_subnet_routes_with_public_ip = proto.Field(proto.BOOL, number=14419729)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    network = proto.Field(proto.STRING, number=232872494)
-
-    peer_mtu = proto.Field(proto.INT32, number=69584721)
-
-    state = proto.Field(proto.ENUM, number=109757585, enum=State,)
-
-    state_details = proto.Field(proto.STRING, number=95566996)
+    auto_create_routes = proto.Field(proto.BOOL, number=57454941, optional=True,)
+    exchange_subnet_routes = proto.Field(proto.BOOL, number=26322256, optional=True,)
+    export_custom_routes = proto.Field(proto.BOOL, number=60281485, optional=True,)
+    export_subnet_routes_with_public_ip = proto.Field(
+        proto.BOOL, number=97940834, optional=True,
+    )
+    import_custom_routes = proto.Field(proto.BOOL, number=197982398, optional=True,)
+    import_subnet_routes_with_public_ip = proto.Field(
+        proto.BOOL, number=14419729, optional=True,
+    )
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    network = proto.Field(proto.STRING, number=232872494, optional=True,)
+    peer_mtu = proto.Field(proto.INT32, number=69584721, optional=True,)
+    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
+    state_details = proto.Field(proto.STRING, number=95566996, optional=True,)
 
 
 class NetworkRoutingConfig(proto.Message):
@@ -15042,10 +14187,12 @@ class NetworkRoutingConfig(proto.Message):
         with all subnets of this network, across regions.
         """
         UNDEFINED_ROUTING_MODE = 0
-        GLOBAL = 226228131
+        GLOBAL = 494663587
         REGIONAL = 92288543
 
-    routing_mode = proto.Field(proto.ENUM, number=206708092, enum=RoutingMode,)
+    routing_mode = proto.Field(
+        proto.ENUM, number=475143548, optional=True, enum=RoutingMode,
+    )
 
 
 class Network(proto.Message):
@@ -15117,35 +14264,23 @@ class Network(proto.Message):
             subnetworks in this VPC network.
     """
 
-    auto_create_subnetworks = proto.Field(proto.BOOL, number=256156690)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    gateway_i_pv4 = proto.Field(proto.STRING, number=178678877)
-
-    i_pv4_range = proto.Field(proto.STRING, number=1978454)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    mtu = proto.Field(proto.INT32, number=108462)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    auto_create_subnetworks = proto.Field(proto.BOOL, number=256156690, optional=True,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    gateway_i_pv4 = proto.Field(proto.STRING, number=178678877, optional=True,)
+    i_pv4_range = proto.Field(proto.STRING, number=1978454, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    mtu = proto.Field(proto.INT32, number=108462, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     peerings = proto.RepeatedField(
         proto.MESSAGE, number=69883187, message="NetworkPeering",
     )
-
     routing_config = proto.Field(
-        proto.MESSAGE, number=255120603, message="NetworkRoutingConfig",
+        proto.MESSAGE, number=523556059, optional=True, message="NetworkRoutingConfig",
     )
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    subnetworks = proto.RepeatedField(proto.STRING, number=147417669)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    subnetworks = proto.RepeatedField(proto.STRING, number=415853125,)
 
 
 class NetworkEndpointGroupAppEngine(proto.Message):
@@ -15182,11 +14317,9 @@ class NetworkEndpointGroupAppEngine(proto.Message):
             Example value: "v1", "v2".
     """
 
-    service = proto.Field(proto.STRING, number=105105077)
-
-    url_mask = proto.Field(proto.STRING, number=103352252)
-
-    version = proto.Field(proto.STRING, number=83172568)
+    service = proto.Field(proto.STRING, number=373540533, optional=True,)
+    url_mask = proto.Field(proto.STRING, number=103352252, optional=True,)
+    version = proto.Field(proto.STRING, number=351608024, optional=True,)
 
 
 class NetworkEndpointGroupCloudFunction(proto.Message):
@@ -15214,9 +14347,8 @@ class NetworkEndpointGroupCloudFunction(proto.Message):
             } and { function = "function2" } respectively.
     """
 
-    function = proto.Field(proto.STRING, number=38761432)
-
-    url_mask = proto.Field(proto.STRING, number=103352252)
+    function = proto.Field(proto.STRING, number=307196888, optional=True,)
+    url_mask = proto.Field(proto.STRING, number=103352252, optional=True,)
 
 
 class NetworkEndpointGroupCloudRun(proto.Message):
@@ -15253,11 +14385,9 @@ class NetworkEndpointGroupCloudRun(proto.Message):
             service="bar2", tag="foo2" } respectively.
     """
 
-    service = proto.Field(proto.STRING, number=105105077)
-
-    tag = proto.Field(proto.STRING, number=114586)
-
-    url_mask = proto.Field(proto.STRING, number=103352252)
+    service = proto.Field(proto.STRING, number=373540533, optional=True,)
+    tag = proto.Field(proto.STRING, number=114586, optional=True,)
+    url_mask = proto.Field(proto.STRING, number=103352252, optional=True,)
 
 
 class NetworkEndpointGroup(proto.Message):
@@ -15342,58 +14472,50 @@ class NetworkEndpointGroup(proto.Message):
         INTERNET_IP_PORT, or SERVERLESS.
         """
         UNDEFINED_NETWORK_ENDPOINT_TYPE = 0
-        GCE_VM_IP_PORT = 233402919
-        INTERNET_FQDN_PORT = 135719021
-        INTERNET_IP_PORT = 209284507
-        NON_GCP_PRIVATE_IP_PORT = 68012512
-        SERVERLESS = 2057052
+        GCE_VM_IP_PORT = 501838375
+        INTERNET_FQDN_PORT = 404154477
+        INTERNET_IP_PORT = 477719963
+        NON_GCP_PRIVATE_IP_PORT = 336447968
+        SERVERLESS = 270492508
 
-    annotations = proto.MapField(proto.STRING, proto.STRING, number=112032548)
-
+    annotations = proto.MapField(proto.STRING, proto.STRING, number=112032548,)
     app_engine = proto.Field(
-        proto.MESSAGE, number=72353312, message="NetworkEndpointGroupAppEngine",
+        proto.MESSAGE,
+        number=340788768,
+        optional=True,
+        message="NetworkEndpointGroupAppEngine",
     )
-
     cloud_function = proto.Field(
-        proto.MESSAGE, number=251458210, message="NetworkEndpointGroupCloudFunction",
+        proto.MESSAGE,
+        number=519893666,
+        optional=True,
+        message="NetworkEndpointGroupCloudFunction",
     )
-
     cloud_run = proto.Field(
-        proto.MESSAGE, number=111060353, message="NetworkEndpointGroupCloudRun",
+        proto.MESSAGE,
+        number=111060353,
+        optional=True,
+        message="NetworkEndpointGroupCloudRun",
     )
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    default_port = proto.Field(proto.INT32, number=154942399)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    network = proto.Field(proto.STRING, number=232872494)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    default_port = proto.Field(proto.INT32, number=423377855, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    network = proto.Field(proto.STRING, number=232872494, optional=True,)
     network_endpoint_type = proto.Field(
-        proto.ENUM, number=118301523, enum=NetworkEndpointType,
+        proto.ENUM, number=118301523, optional=True, enum=NetworkEndpointType,
     )
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    size = proto.Field(proto.INT32, number=3530753)
-
-    subnetwork = proto.Field(proto.STRING, number=39392238)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    size = proto.Field(proto.INT32, number=3530753, optional=True,)
+    subnetwork = proto.Field(proto.STRING, number=307827694, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
 class NetworkEndpointGroupsScopedList(proto.Message):
     r"""
-
     Attributes:
         network_endpoint_groups (Sequence[google.cloud.compute_v1.types.NetworkEndpointGroup]):
             [Output Only] The list of network endpoint groups that are
@@ -15406,13 +14528,13 @@ class NetworkEndpointGroupsScopedList(proto.Message):
     network_endpoint_groups = proto.RepeatedField(
         proto.MESSAGE, number=29346733, message="NetworkEndpointGroup",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class NetworkEndpointGroupAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -15443,29 +14565,24 @@ class NetworkEndpointGroupAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=100526016,
         message="NetworkEndpointGroupsScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class NetworkEndpointGroupList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -15493,24 +14610,20 @@ class NetworkEndpointGroupList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="NetworkEndpointGroup",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class NetworkEndpointGroupsAttachEndpointsRequest(proto.Message):
     r"""
-
     Attributes:
         network_endpoints (Sequence[google.cloud.compute_v1.types.NetworkEndpoint]):
             The list of network endpoints to be attached.
@@ -15523,7 +14636,6 @@ class NetworkEndpointGroupsAttachEndpointsRequest(proto.Message):
 
 class NetworkEndpointGroupsDetachEndpointsRequest(proto.Message):
     r"""
-
     Attributes:
         network_endpoints (Sequence[google.cloud.compute_v1.types.NetworkEndpoint]):
             The list of network endpoints to be detached.
@@ -15536,7 +14648,6 @@ class NetworkEndpointGroupsDetachEndpointsRequest(proto.Message):
 
 class NetworkEndpointGroupsListEndpointsRequest(proto.Message):
     r"""
-
     Attributes:
         health_status (google.cloud.compute_v1.types.NetworkEndpointGroupsListEndpointsRequest.HealthStatus):
             Optional query parameter for showing the
@@ -15556,12 +14667,13 @@ class NetworkEndpointGroupsListEndpointsRequest(proto.Message):
         SHOW = 2544381
         SKIP = 2547071
 
-    health_status = proto.Field(proto.ENUM, number=112110389, enum=HealthStatus,)
+    health_status = proto.Field(
+        proto.ENUM, number=380545845, optional=True, enum=HealthStatus,
+    )
 
 
 class NetworkEndpointWithHealthStatus(proto.Message):
     r"""
-
     Attributes:
         healths (Sequence[google.cloud.compute_v1.types.HealthStatusForNetworkEndpoint]):
             [Output only] The health status of network endpoint;
@@ -15572,15 +14684,13 @@ class NetworkEndpointWithHealthStatus(proto.Message):
     healths = proto.RepeatedField(
         proto.MESSAGE, number=258689431, message="HealthStatusForNetworkEndpoint",
     )
-
     network_endpoint = proto.Field(
-        proto.MESSAGE, number=56789126, message="NetworkEndpoint",
+        proto.MESSAGE, number=56789126, optional=True, message="NetworkEndpoint",
     )
 
 
 class NetworkEndpointGroupsListNetworkEndpoints(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -15608,22 +14718,19 @@ class NetworkEndpointGroupsListNetworkEndpoints(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="NetworkEndpointWithHealthStatus",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class NetworkList(proto.Message):
     r"""Contains a list of networks.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -15650,22 +14757,18 @@ class NetworkList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Network",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class NetworksAddPeeringRequest(proto.Message):
     r"""
-
     Attributes:
         auto_create_routes (bool):
             This field will be deprecated soon. Use
@@ -15694,45 +14797,39 @@ class NetworksAddPeeringRequest(proto.Message):
             current network.
     """
 
-    auto_create_routes = proto.Field(proto.BOOL, number=57454941)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    auto_create_routes = proto.Field(proto.BOOL, number=57454941, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     network_peering = proto.Field(
-        proto.MESSAGE, number=60491311, message="NetworkPeering",
+        proto.MESSAGE, number=328926767, optional=True, message="NetworkPeering",
     )
-
-    peer_network = proto.Field(proto.STRING, number=232190033)
+    peer_network = proto.Field(proto.STRING, number=500625489, optional=True,)
 
 
 class NetworksRemovePeeringRequest(proto.Message):
     r"""
-
     Attributes:
         name (str):
             Name of the peering, which should conform to
             RFC1035.
     """
 
-    name = proto.Field(proto.STRING, number=3373707)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
 
 
 class NetworksUpdatePeeringRequest(proto.Message):
     r"""
-
     Attributes:
         network_peering (google.cloud.compute_v1.types.NetworkPeering):
 
     """
 
     network_peering = proto.Field(
-        proto.MESSAGE, number=60491311, message="NetworkPeering",
+        proto.MESSAGE, number=328926767, optional=True, message="NetworkPeering",
     )
 
 
 class NodeGroupAutoscalingPolicy(proto.Message):
     r"""
-
     Attributes:
         max_nodes (int):
             The maximum number of nodes that the group
@@ -15751,16 +14848,14 @@ class NodeGroupAutoscalingPolicy(proto.Message):
         more information, see Autoscaler modes.
         """
         UNDEFINED_MODE = 0
-        MODE_UNSPECIFIED = 102912635
+        MODE_UNSPECIFIED = 371348091
         OFF = 78159
         ON = 2527
         ONLY_SCALE_OUT = 152713670
 
-    max_nodes = proto.Field(proto.INT32, number=29327382)
-
-    min_nodes = proto.Field(proto.INT32, number=264935044)
-
-    mode = proto.Field(proto.ENUM, number=3357091, enum=Mode,)
+    max_nodes = proto.Field(proto.INT32, number=297762838, optional=True,)
+    min_nodes = proto.Field(proto.INT32, number=533370500, optional=True,)
+    mode = proto.Field(proto.ENUM, number=3357091, optional=True, enum=Mode,)
 
 
 class NodeGroupMaintenanceWindow(proto.Message):
@@ -15780,10 +14875,9 @@ class NodeGroupMaintenanceWindow(proto.Message):
     """
 
     maintenance_duration = proto.Field(
-        proto.MESSAGE, number=256856384, message="Duration",
+        proto.MESSAGE, number=525291840, optional=True, message="Duration",
     )
-
-    start_time = proto.Field(proto.STRING, number=37467274)
+    start_time = proto.Field(proto.STRING, number=37467274, optional=True,)
 
 
 class NodeGroup(proto.Message):
@@ -15859,49 +14953,41 @@ class NodeGroup(proto.Message):
     class Status(proto.Enum):
         r""""""
         UNDEFINED_STATUS = 0
-        CREATING = 187129529
-        DELETING = 260166568
-        INVALID = 261848535
+        CREATING = 455564985
+        DELETING = 528602024
+        INVALID = 530283991
         READY = 77848963
 
     autoscaling_policy = proto.Field(
-        proto.MESSAGE, number=221950041, message="NodeGroupAutoscalingPolicy",
+        proto.MESSAGE,
+        number=221950041,
+        optional=True,
+        message="NodeGroupAutoscalingPolicy",
     )
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     maintenance_policy = proto.Field(
-        proto.ENUM, number=259892190, enum=MaintenancePolicy,
+        proto.ENUM, number=528327646, optional=True, enum=MaintenancePolicy,
     )
-
     maintenance_window = proto.Field(
-        proto.MESSAGE, number=186374812, message="NodeGroupMaintenanceWindow",
+        proto.MESSAGE,
+        number=186374812,
+        optional=True,
+        message="NodeGroupMaintenanceWindow",
     )
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    node_template = proto.Field(proto.STRING, number=54718999)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    size = proto.Field(proto.INT32, number=3530753)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    node_template = proto.Field(proto.STRING, number=323154455, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    size = proto.Field(proto.INT32, number=3530753, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
 class NodeGroupsScopedList(proto.Message):
     r"""
-
     Attributes:
         node_groups (Sequence[google.cloud.compute_v1.types.NodeGroup]):
             [Output Only] A list of node groups contained in this scope.
@@ -15913,13 +14999,13 @@ class NodeGroupsScopedList(proto.Message):
     node_groups = proto.RepeatedField(
         proto.MESSAGE, number=73188017, message="NodeGroup",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class NodeGroupAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -15949,26 +15035,21 @@ class NodeGroupAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="NodeGroupsScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class NodeGroupList(proto.Message):
     r"""Contains a list of nodeGroups.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -15995,22 +15076,18 @@ class NodeGroupList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="NodeGroup",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class ServerBinding(proto.Message):
     r"""
-
     Attributes:
         type_ (google.cloud.compute_v1.types.ServerBinding.Type):
 
@@ -16019,16 +15096,15 @@ class ServerBinding(proto.Message):
     class Type(proto.Enum):
         r""""""
         UNDEFINED_TYPE = 0
-        RESTART_NODE_ON_ANY_SERVER = 234515529
+        RESTART_NODE_ON_ANY_SERVER = 502950985
         RESTART_NODE_ON_MINIMAL_SERVERS = 204166495
         SERVER_BINDING_TYPE_UNSPECIFIED = 180825512
 
-    type_ = proto.Field(proto.ENUM, number=3575610, enum=Type,)
+    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
 
 
 class NodeGroupNode(proto.Message):
     r"""
-
     Attributes:
         accelerators (Sequence[google.cloud.compute_v1.types.AcceleratorConfig]):
             Accelerators for this node.
@@ -16053,70 +15129,59 @@ class NodeGroupNode(proto.Message):
     class CpuOvercommitType(proto.Enum):
         r"""CPU overcommit."""
         UNDEFINED_CPU_OVERCOMMIT_TYPE = 0
-        CPU_OVERCOMMIT_TYPE_UNSPECIFIED = 252230159
+        CPU_OVERCOMMIT_TYPE_UNSPECIFIED = 520665615
         ENABLED = 182130465
         NONE = 2402104
 
     class Status(proto.Enum):
         r""""""
         UNDEFINED_STATUS = 0
-        CREATING = 187129529
-        DELETING = 260166568
-        INVALID = 261848535
+        CREATING = 455564985
+        DELETING = 528602024
+        INVALID = 530283991
         READY = 77848963
-        REPAIRING = 145047829
+        REPAIRING = 413483285
 
     accelerators = proto.RepeatedField(
-        proto.MESSAGE, number=1141608, message="AcceleratorConfig",
+        proto.MESSAGE, number=269577064, message="AcceleratorConfig",
     )
-
     cpu_overcommit_type = proto.Field(
-        proto.ENUM, number=247727959, enum=CpuOvercommitType,
+        proto.ENUM, number=247727959, optional=True, enum=CpuOvercommitType,
     )
-
     disks = proto.RepeatedField(proto.MESSAGE, number=95594102, message="LocalDisk",)
-
-    instances = proto.RepeatedField(proto.STRING, number=29097598)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    node_type = proto.Field(proto.STRING, number=197397335)
-
+    instances = proto.RepeatedField(proto.STRING, number=29097598,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    node_type = proto.Field(proto.STRING, number=465832791, optional=True,)
     server_binding = proto.Field(
-        proto.MESSAGE, number=208179593, message="ServerBinding",
+        proto.MESSAGE, number=208179593, optional=True, message="ServerBinding",
     )
-
-    server_id = proto.Field(proto.STRING, number=70997911)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
+    server_id = proto.Field(proto.STRING, number=339433367, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
 
 
 class NodeGroupsAddNodesRequest(proto.Message):
     r"""
-
     Attributes:
         additional_node_count (int):
             Count of additional nodes to be added to the
             node group.
     """
 
-    additional_node_count = proto.Field(proto.INT32, number=134997930)
+    additional_node_count = proto.Field(proto.INT32, number=134997930, optional=True,)
 
 
 class NodeGroupsDeleteNodesRequest(proto.Message):
     r"""
-
     Attributes:
         nodes (Sequence[str]):
             Names of the nodes to delete.
     """
 
-    nodes = proto.RepeatedField(proto.STRING, number=104993457)
+    nodes = proto.RepeatedField(proto.STRING, number=104993457,)
 
 
 class NodeGroupsListNodes(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -16144,36 +15209,31 @@ class NodeGroupsListNodes(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="NodeGroupNode",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class NodeGroupsSetNodeTemplateRequest(proto.Message):
     r"""
-
     Attributes:
         node_template (str):
             Full or partial URL of the node template
             resource to be updated for this node group.
     """
 
-    node_template = proto.Field(proto.STRING, number=54718999)
+    node_template = proto.Field(proto.STRING, number=323154455, optional=True,)
 
 
 class NodeTemplateNodeTypeFlexibility(proto.Message):
     r"""
-
     Attributes:
         cpus (str):
 
@@ -16183,11 +15243,9 @@ class NodeTemplateNodeTypeFlexibility(proto.Message):
 
     """
 
-    cpus = proto.Field(proto.STRING, number=3060683)
-
-    local_ssd = proto.Field(proto.STRING, number=137305904)
-
-    memory = proto.Field(proto.STRING, number=264420609)
+    cpus = proto.Field(proto.STRING, number=3060683, optional=True,)
+    local_ssd = proto.Field(proto.STRING, number=405741360, optional=True,)
+    memory = proto.Field(proto.STRING, number=532856065, optional=True,)
 
 
 class NodeTemplate(proto.Message):
@@ -16265,7 +15323,7 @@ class NodeTemplate(proto.Message):
     class CpuOvercommitType(proto.Enum):
         r"""CPU overcommit."""
         UNDEFINED_CPU_OVERCOMMIT_TYPE = 0
-        CPU_OVERCOMMIT_TYPE_UNSPECIFIED = 252230159
+        CPU_OVERCOMMIT_TYPE_UNSPECIFIED = 520665615
         ENABLED = 182130465
         NONE = 2402104
 
@@ -16274,55 +15332,42 @@ class NodeTemplate(proto.Message):
         values: CREATING, READY, and DELETING.
         """
         UNDEFINED_STATUS = 0
-        CREATING = 187129529
-        DELETING = 260166568
-        INVALID = 261848535
+        CREATING = 455564985
+        DELETING = 528602024
+        INVALID = 530283991
         READY = 77848963
 
     accelerators = proto.RepeatedField(
-        proto.MESSAGE, number=1141608, message="AcceleratorConfig",
+        proto.MESSAGE, number=269577064, message="AcceleratorConfig",
     )
-
     cpu_overcommit_type = proto.Field(
-        proto.ENUM, number=247727959, enum=CpuOvercommitType,
+        proto.ENUM, number=247727959, optional=True, enum=CpuOvercommitType,
     )
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
     disks = proto.RepeatedField(proto.MESSAGE, number=95594102, message="LocalDisk",)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    node_affinity_labels = proto.MapField(proto.STRING, proto.STRING, number=70571705)
-
-    node_type = proto.Field(proto.STRING, number=197397335)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    node_affinity_labels = proto.MapField(proto.STRING, proto.STRING, number=339007161,)
+    node_type = proto.Field(proto.STRING, number=465832791, optional=True,)
     node_type_flexibility = proto.Field(
-        proto.MESSAGE, number=46822449, message="NodeTemplateNodeTypeFlexibility",
+        proto.MESSAGE,
+        number=315257905,
+        optional=True,
+        message="NodeTemplateNodeTypeFlexibility",
     )
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     server_binding = proto.Field(
-        proto.MESSAGE, number=208179593, message="ServerBinding",
+        proto.MESSAGE, number=208179593, optional=True, message="ServerBinding",
     )
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
-
-    status_message = proto.Field(proto.STRING, number=28992698)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status_message = proto.Field(proto.STRING, number=297428154, optional=True,)
 
 
 class NodeTemplatesScopedList(proto.Message):
     r"""
-
     Attributes:
         node_templates (Sequence[google.cloud.compute_v1.types.NodeTemplate]):
             [Output Only] A list of node templates contained in this
@@ -16333,15 +15378,15 @@ class NodeTemplatesScopedList(proto.Message):
     """
 
     node_templates = proto.RepeatedField(
-        proto.MESSAGE, number=85676348, message="NodeTemplate",
+        proto.MESSAGE, number=354111804, message="NodeTemplate",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class NodeTemplateAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -16371,29 +15416,24 @@ class NodeTemplateAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=100526016,
         message="NodeTemplatesScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class NodeTemplateList(proto.Message):
     r"""Contains a list of node templates.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -16420,19 +15460,16 @@ class NodeTemplateList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="NodeTemplate",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class NodeType(proto.Message):
@@ -16480,36 +15517,24 @@ class NodeType(proto.Message):
             resides, such as us-central1-a.
     """
 
-    cpu_platform = proto.Field(proto.STRING, number=141849898)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
+    cpu_platform = proto.Field(proto.STRING, number=410285354, optional=True,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     deprecated = proto.Field(
-        proto.MESSAGE, number=246703539, message="DeprecationStatus",
+        proto.MESSAGE, number=515138995, optional=True, message="DeprecationStatus",
     )
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    guest_cpus = proto.Field(proto.INT32, number=124921298)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    local_ssd_gb = proto.Field(proto.INT32, number=60802122)
-
-    memory_mb = proto.Field(proto.INT32, number=116001171)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    guest_cpus = proto.Field(proto.INT32, number=393356754, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    local_ssd_gb = proto.Field(proto.INT32, number=329237578, optional=True,)
+    memory_mb = proto.Field(proto.INT32, number=116001171, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
 class NodeTypesScopedList(proto.Message):
     r"""
-
     Attributes:
         node_types (Sequence[google.cloud.compute_v1.types.NodeType]):
             [Output Only] A list of node types contained in this scope.
@@ -16519,15 +15544,15 @@ class NodeTypesScopedList(proto.Message):
     """
 
     node_types = proto.RepeatedField(
-        proto.MESSAGE, number=213737468, message="NodeType",
+        proto.MESSAGE, number=482172924, message="NodeType",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class NodeTypeAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -16557,26 +15582,21 @@ class NodeTypeAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="NodeTypesScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class NodeTypeList(proto.Message):
     r"""Contains a list of node types.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -16603,17 +15623,14 @@ class NodeTypeList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="NodeType",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class NotificationEndpointGrpcSettings(proto.Message):
@@ -16647,15 +15664,13 @@ class NotificationEndpointGrpcSettings(proto.Message):
             Limit is 20m (1200s). Must be a positive number.
     """
 
-    authority = proto.Field(proto.STRING, number=133433155)
-
-    endpoint = proto.Field(proto.STRING, number=130489749)
-
-    payload_name = proto.Field(proto.STRING, number=31922844)
-
-    resend_interval = proto.Field(proto.MESSAGE, number=209853513, message="Duration",)
-
-    retry_duration_sec = proto.Field(proto.UINT32, number=115681117)
+    authority = proto.Field(proto.STRING, number=401868611, optional=True,)
+    endpoint = proto.Field(proto.STRING, number=130489749, optional=True,)
+    payload_name = proto.Field(proto.STRING, number=300358300, optional=True,)
+    resend_interval = proto.Field(
+        proto.MESSAGE, number=478288969, optional=True, message="Duration",
+    )
+    retry_duration_sec = proto.Field(proto.UINT32, number=115681117, optional=True,)
 
 
 class NotificationEndpoint(proto.Message):
@@ -16705,28 +15720,23 @@ class NotificationEndpoint(proto.Message):
             [Output Only] Server-defined URL for the resource.
     """
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
     grpc_settings = proto.Field(
-        proto.MESSAGE, number=187704100, message="NotificationEndpointGrpcSettings",
+        proto.MESSAGE,
+        number=456139556,
+        optional=True,
+        message="NotificationEndpointGrpcSettings",
     )
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
 
 
 class NotificationEndpointList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -16753,19 +15763,16 @@ class NotificationEndpointList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="NotificationEndpoint",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class Error(proto.Message):
@@ -16778,12 +15785,11 @@ class Error(proto.Message):
             processing this operation.
     """
 
-    errors = proto.RepeatedField(proto.MESSAGE, number=47542123, message="Errors",)
+    errors = proto.RepeatedField(proto.MESSAGE, number=315977579, message="Errors",)
 
 
 class Warnings(proto.Message):
     r"""
-
     Attributes:
         code (google.cloud.compute_v1.types.Warnings.Code):
             [Output Only] A warning code, if applicable. For example,
@@ -16805,36 +15811,34 @@ class Warnings(proto.Message):
         """
         UNDEFINED_CODE = 0
         CLEANUP_FAILED = 150308440
-        DEPRECATED_RESOURCE_USED = 123400130
-        DEPRECATED_TYPE_USED = 78090774
-        DISK_SIZE_LARGER_THAN_IMAGE_SIZE = 101007511
-        EXPERIMENTAL_TYPE_USED = 183518987
+        DEPRECATED_RESOURCE_USED = 391835586
+        DEPRECATED_TYPE_USED = 346526230
+        DISK_SIZE_LARGER_THAN_IMAGE_SIZE = 369442967
+        EXPERIMENTAL_TYPE_USED = 451954443
         EXTERNAL_API_WARNING = 175546307
-        FIELD_VALUE_OVERRIDEN = 61233967
-        INJECTED_KERNELS_DEPRECATED = 148941963
-        LARGE_DEPLOYMENT_WARNING = 213005222
-        MISSING_TYPE_DEPENDENCY = 76070007
-        NEXT_HOP_ADDRESS_NOT_ASSIGNED = 56529543
-        NEXT_HOP_CANNOT_IP_FORWARD = 114947431
-        NEXT_HOP_INSTANCE_NOT_FOUND = 195814990
+        FIELD_VALUE_OVERRIDEN = 329669423
+        INJECTED_KERNELS_DEPRECATED = 417377419
+        LARGE_DEPLOYMENT_WARNING = 481440678
+        MISSING_TYPE_DEPENDENCY = 344505463
+        NEXT_HOP_ADDRESS_NOT_ASSIGNED = 324964999
+        NEXT_HOP_CANNOT_IP_FORWARD = 383382887
+        NEXT_HOP_INSTANCE_NOT_FOUND = 464250446
         NEXT_HOP_INSTANCE_NOT_ON_NETWORK = 243758146
-        NEXT_HOP_NOT_RUNNING = 148645809
+        NEXT_HOP_NOT_RUNNING = 417081265
         NOT_CRITICAL_ERROR = 105763924
         NO_RESULTS_ON_PAGE = 30036744
         PARTIAL_SUCCESS = 39966469
         REQUIRED_TOS_AGREEMENT = 3745539
-        RESOURCE_IN_USE_BY_OTHER_RESOURCE_WARNING = 228293185
+        RESOURCE_IN_USE_BY_OTHER_RESOURCE_WARNING = 496728641
         RESOURCE_NOT_DELETED = 168598460
-        SCHEMA_VALIDATION_IGNORED = 6810186
+        SCHEMA_VALIDATION_IGNORED = 275245642
         SINGLE_INSTANCE_PROPERTY_TEMPLATE = 268305617
-        UNDECLARED_PROPERTIES = 122077983
+        UNDECLARED_PROPERTIES = 390513439
         UNREACHABLE = 13328052
 
-    code = proto.Field(proto.ENUM, number=3059181, enum=Code,)
-
+    code = proto.Field(proto.ENUM, number=3059181, optional=True, enum=Code,)
     data = proto.RepeatedField(proto.MESSAGE, number=3076010, message="Data",)
-
-    message = proto.Field(proto.STRING, number=149618695)
+    message = proto.Field(proto.STRING, number=418054151, optional=True,)
 
 
 class Operation(proto.Message):
@@ -16950,56 +15954,33 @@ class Operation(proto.Message):
         PENDING = 35394935
         RUNNING = 121282975
 
-    client_operation_id = proto.Field(proto.STRING, number=28804839)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    end_time = proto.Field(proto.STRING, number=114938801)
-
-    error = proto.Field(proto.MESSAGE, number=96784904, message="Error",)
-
-    http_error_message = proto.Field(proto.STRING, number=202521945)
-
-    http_error_status_code = proto.Field(proto.INT32, number=43909740)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    insert_time = proto.Field(proto.STRING, number=165287059)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    operation_type = proto.Field(proto.STRING, number=177650450)
-
-    progress = proto.Field(proto.INT32, number=72663597)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    start_time = proto.Field(proto.STRING, number=37467274)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
-
-    status_message = proto.Field(proto.STRING, number=28992698)
-
-    target_id = proto.Field(proto.STRING, number=258165385)
-
-    target_link = proto.Field(proto.STRING, number=62671336)
-
-    user = proto.Field(proto.STRING, number=3599307)
-
-    warnings = proto.RepeatedField(proto.MESSAGE, number=229655639, message="Warnings",)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    client_operation_id = proto.Field(proto.STRING, number=297240295, optional=True,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    end_time = proto.Field(proto.STRING, number=114938801, optional=True,)
+    error = proto.Field(proto.MESSAGE, number=96784904, optional=True, message="Error",)
+    http_error_message = proto.Field(proto.STRING, number=202521945, optional=True,)
+    http_error_status_code = proto.Field(proto.INT32, number=312345196, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    insert_time = proto.Field(proto.STRING, number=433722515, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    operation_type = proto.Field(proto.STRING, number=177650450, optional=True,)
+    progress = proto.Field(proto.INT32, number=72663597, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    start_time = proto.Field(proto.STRING, number=37467274, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    status_message = proto.Field(proto.STRING, number=297428154, optional=True,)
+    target_id = proto.Field(proto.STRING, number=258165385, optional=True,)
+    target_link = proto.Field(proto.STRING, number=62671336, optional=True,)
+    user = proto.Field(proto.STRING, number=3599307, optional=True,)
+    warnings = proto.RepeatedField(proto.MESSAGE, number=498091095, message="Warnings",)
+    zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
 class OperationsScopedList(proto.Message):
     r"""
-
     Attributes:
         operations (Sequence[google.cloud.compute_v1.types.Operation]):
             [Output Only] A list of operations contained in this scope.
@@ -17011,13 +15992,13 @@ class OperationsScopedList(proto.Message):
     operations = proto.RepeatedField(
         proto.MESSAGE, number=4184044, message="Operation",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class OperationAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] The unique identifier for the resource. This
@@ -17047,26 +16028,21 @@ class OperationAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="OperationsScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class OperationList(proto.Message):
     r"""Contains a list of Operation resources.
-
     Attributes:
         id (str):
             [Output Only] The unique identifier for the resource. This
@@ -17093,22 +16069,18 @@ class OperationList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Operation",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class PacketMirroringForwardingRuleInfo(proto.Message):
     r"""
-
     Attributes:
         canonical_url (str):
             [Output Only] Unique identifier for the forwarding rule;
@@ -17119,14 +16091,12 @@ class PacketMirroringForwardingRuleInfo(proto.Message):
             of the mirrored traffic.
     """
 
-    canonical_url = proto.Field(proto.STRING, number=243859364)
-
-    url = proto.Field(proto.STRING, number=116079)
+    canonical_url = proto.Field(proto.STRING, number=512294820, optional=True,)
+    url = proto.Field(proto.STRING, number=116079, optional=True,)
 
 
 class PacketMirroringFilter(proto.Message):
     r"""
-
     Attributes:
         cidr_ranges (Sequence[str]):
             IP CIDR ranges that apply as filter on the
@@ -17154,19 +16124,18 @@ class PacketMirroringFilter(proto.Message):
         """
         UNDEFINED_DIRECTION = 0
         BOTH = 2044801
-        EGRESS = 164445045
-        INGRESS = 248495765
+        EGRESS = 432880501
+        INGRESS = 516931221
 
-    cidr_ranges = proto.RepeatedField(proto.STRING, number=219466241)
-
-    direction = proto.Field(proto.ENUM, number=111150975, enum=Direction,)
-
-    i_p_protocols = proto.RepeatedField(proto.STRING, number=104889590)
+    cidr_ranges = proto.RepeatedField(proto.STRING, number=487901697,)
+    direction = proto.Field(
+        proto.ENUM, number=111150975, optional=True, enum=Direction,
+    )
+    i_p_protocols = proto.RepeatedField(proto.STRING, number=373325046,)
 
 
 class PacketMirroringMirroredResourceInfo(proto.Message):
     r"""
-
     Attributes:
         instances (Sequence[google.cloud.compute_v1.types.PacketMirroringMirroredResourceInfoInstanceInfo]):
             A set of virtual machine instances that are
@@ -17194,19 +16163,16 @@ class PacketMirroringMirroredResourceInfo(proto.Message):
         number=29097598,
         message="PacketMirroringMirroredResourceInfoInstanceInfo",
     )
-
     subnetworks = proto.RepeatedField(
         proto.MESSAGE,
-        number=147417669,
+        number=415853125,
         message="PacketMirroringMirroredResourceInfoSubnetInfo",
     )
-
-    tags = proto.RepeatedField(proto.STRING, number=3552281)
+    tags = proto.RepeatedField(proto.STRING, number=3552281,)
 
 
 class PacketMirroringNetworkInfo(proto.Message):
     r"""
-
     Attributes:
         canonical_url (str):
             [Output Only] Unique identifier for the network; defined by
@@ -17215,9 +16181,8 @@ class PacketMirroringNetworkInfo(proto.Message):
             URL of the network resource.
     """
 
-    canonical_url = proto.Field(proto.STRING, number=243859364)
-
-    url = proto.Field(proto.STRING, number=116079)
+    canonical_url = proto.Field(proto.STRING, number=512294820, optional=True,)
+    url = proto.Field(proto.STRING, number=116079, optional=True,)
 
 
 class PacketMirroring(proto.Message):
@@ -17303,43 +16268,39 @@ class PacketMirroring(proto.Message):
         TRUE = 2583950
 
     collector_ilb = proto.Field(
-        proto.MESSAGE, number=158172397, message="PacketMirroringForwardingRuleInfo",
+        proto.MESSAGE,
+        number=426607853,
+        optional=True,
+        message="PacketMirroringForwardingRuleInfo",
     )
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    enable = proto.Field(proto.ENUM, number=43328899, enum=Enable,)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    enable = proto.Field(proto.ENUM, number=311764355, optional=True, enum=Enable,)
     filter = proto.Field(
-        proto.MESSAGE, number=67685240, message="PacketMirroringFilter",
+        proto.MESSAGE, number=336120696, optional=True, message="PacketMirroringFilter",
     )
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     mirrored_resources = proto.Field(
-        proto.MESSAGE, number=124817348, message="PacketMirroringMirroredResourceInfo",
+        proto.MESSAGE,
+        number=124817348,
+        optional=True,
+        message="PacketMirroringMirroredResourceInfo",
     )
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     network = proto.Field(
-        proto.MESSAGE, number=232872494, message="PacketMirroringNetworkInfo",
+        proto.MESSAGE,
+        number=232872494,
+        optional=True,
+        message="PacketMirroringNetworkInfo",
     )
-
-    priority = proto.Field(proto.UINT32, number=176716196)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
+    priority = proto.Field(proto.UINT32, number=445151652, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
 
 
 class PacketMirroringsScopedList(proto.Message):
     r"""
-
     Attributes:
         packet_mirrorings (Sequence[google.cloud.compute_v1.types.PacketMirroring]):
             A list of packetMirrorings contained in this
@@ -17352,13 +16313,13 @@ class PacketMirroringsScopedList(proto.Message):
     packet_mirrorings = proto.RepeatedField(
         proto.MESSAGE, number=154615079, message="PacketMirroring",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class PacketMirroringAggregatedList(proto.Message):
     r"""Contains a list of packetMirrorings.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -17386,29 +16347,24 @@ class PacketMirroringAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=100526016,
         message="PacketMirroringsScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class PacketMirroringList(proto.Message):
     r"""Contains a list of PacketMirroring resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -17435,24 +16391,20 @@ class PacketMirroringList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="PacketMirroring",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class PacketMirroringMirroredResourceInfoInstanceInfo(proto.Message):
     r"""
-
     Attributes:
         canonical_url (str):
             [Output Only] Unique identifier for the instance; defined by
@@ -17462,14 +16414,12 @@ class PacketMirroringMirroredResourceInfoInstanceInfo(proto.Message):
             which is being mirrored.
     """
 
-    canonical_url = proto.Field(proto.STRING, number=243859364)
-
-    url = proto.Field(proto.STRING, number=116079)
+    canonical_url = proto.Field(proto.STRING, number=512294820, optional=True,)
+    url = proto.Field(proto.STRING, number=116079, optional=True,)
 
 
 class PacketMirroringMirroredResourceInfoSubnetInfo(proto.Message):
     r"""
-
     Attributes:
         canonical_url (str):
             [Output Only] Unique identifier for the subnetwork; defined
@@ -17480,9 +16430,8 @@ class PacketMirroringMirroredResourceInfoSubnetInfo(proto.Message):
             mirrored.
     """
 
-    canonical_url = proto.Field(proto.STRING, number=243859364)
-
-    url = proto.Field(proto.STRING, number=116079)
+    canonical_url = proto.Field(proto.STRING, number=512294820, optional=True,)
+    url = proto.Field(proto.STRING, number=116079, optional=True,)
 
 
 class PathRule(proto.Message):
@@ -17531,16 +16480,13 @@ class PathRule(proto.Message):
             the URL map is bound to target gRPC proxy.
     """
 
-    paths = proto.RepeatedField(proto.STRING, number=106438894)
-
+    paths = proto.RepeatedField(proto.STRING, number=106438894,)
     route_action = proto.Field(
-        proto.MESSAGE, number=156128492, message="HttpRouteAction",
+        proto.MESSAGE, number=424563948, optional=True, message="HttpRouteAction",
     )
-
-    service = proto.Field(proto.STRING, number=105105077)
-
+    service = proto.Field(proto.STRING, number=373540533, optional=True,)
     url_redirect = proto.Field(
-        proto.MESSAGE, number=136712364, message="HttpRedirectAction",
+        proto.MESSAGE, number=405147820, optional=True, message="HttpRedirectAction",
     )
 
 
@@ -17636,35 +16582,27 @@ class PathMatcher(proto.Message):
     """
 
     default_route_action = proto.Field(
-        proto.MESSAGE, number=110484010, message="HttpRouteAction",
+        proto.MESSAGE, number=378919466, optional=True, message="HttpRouteAction",
     )
-
-    default_service = proto.Field(proto.STRING, number=101806775)
-
+    default_service = proto.Field(proto.STRING, number=370242231, optional=True,)
     default_url_redirect = proto.Field(
-        proto.MESSAGE, number=91067882, message="HttpRedirectAction",
+        proto.MESSAGE, number=359503338, optional=True, message="HttpRedirectAction",
     )
-
-    description = proto.Field(proto.STRING, number=154502140)
-
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
     header_action = proto.Field(
-        proto.MESSAGE, number=59641896, message="HttpHeaderAction",
+        proto.MESSAGE, number=328077352, optional=True, message="HttpHeaderAction",
     )
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     path_rules = proto.RepeatedField(
         proto.MESSAGE, number=104439901, message="PathRule",
     )
-
     route_rules = proto.RepeatedField(
-        proto.MESSAGE, number=107856769, message="HttpRouteRule",
+        proto.MESSAGE, number=376292225, message="HttpRouteRule",
     )
 
 
 class Rule(proto.Message):
     r"""A rule to be applied in a Policy.
-
     Attributes:
         action (google.cloud.compute_v1.types.Rule.Action):
             Required
@@ -17698,32 +16636,25 @@ class Rule(proto.Message):
         ALLOW = 62368553
         ALLOW_WITH_LOG = 76034177
         DENY = 2094604
-        DENY_WITH_LOG = 82998526
+        DENY_WITH_LOG = 351433982
         LOG = 75556
         NO_ACTION = 260643444
 
-    action = proto.Field(proto.ENUM, number=187661878, enum=Action,)
-
+    action = proto.Field(proto.ENUM, number=187661878, optional=True, enum=Action,)
     conditions = proto.RepeatedField(
         proto.MESSAGE, number=142882488, message="Condition",
     )
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    ins = proto.RepeatedField(proto.STRING, number=104430)
-
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    ins = proto.RepeatedField(proto.STRING, number=104430,)
     log_configs = proto.RepeatedField(
         proto.MESSAGE, number=152873846, message="LogConfig",
     )
-
-    not_ins = proto.RepeatedField(proto.STRING, number=250007682)
-
-    permissions = proto.RepeatedField(proto.STRING, number=59962500)
+    not_ins = proto.RepeatedField(proto.STRING, number=518443138,)
+    permissions = proto.RepeatedField(proto.STRING, number=59962500,)
 
 
 class WafExpressionSet(proto.Message):
     r"""
-
     Attributes:
         aliases (Sequence[str]):
             A list of alternate IDs. The format should
@@ -17739,18 +16670,15 @@ class WafExpressionSet(proto.Message):
             format should be: - E.g. XSS-20170329
     """
 
-    aliases = proto.RepeatedField(proto.STRING, number=159207166)
-
+    aliases = proto.RepeatedField(proto.STRING, number=159207166,)
     expressions = proto.RepeatedField(
         proto.MESSAGE, number=175554779, message="WafExpressionSetExpression",
     )
-
-    id = proto.Field(proto.STRING, number=3355)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
 
 
 class PreconfiguredWafSet(proto.Message):
     r"""
-
     Attributes:
         expression_sets (Sequence[google.cloud.compute_v1.types.WafExpressionSet]):
             List of entities that are currently supported
@@ -17758,13 +16686,12 @@ class PreconfiguredWafSet(proto.Message):
     """
 
     expression_sets = proto.RepeatedField(
-        proto.MESSAGE, number=205575576, message="WafExpressionSet",
+        proto.MESSAGE, number=474011032, message="WafExpressionSet",
     )
 
 
 class PreservedStatePreservedDisk(proto.Message):
     r"""
-
     Attributes:
         auto_delete (google.cloud.compute_v1.types.PreservedStatePreservedDisk.AutoDelete):
             These stateful disks will never be deleted during
@@ -17802,16 +16729,15 @@ class PreservedStatePreservedDisk(proto.Message):
         READ_ONLY = 91950261
         READ_WRITE = 173607894
 
-    auto_delete = proto.Field(proto.ENUM, number=196325947, enum=AutoDelete,)
-
-    mode = proto.Field(proto.ENUM, number=3357091, enum=Mode,)
-
-    source = proto.Field(proto.STRING, number=177235995)
+    auto_delete = proto.Field(
+        proto.ENUM, number=464761403, optional=True, enum=AutoDelete,
+    )
+    mode = proto.Field(proto.ENUM, number=3357091, optional=True, enum=Mode,)
+    source = proto.Field(proto.STRING, number=177235995, optional=True,)
 
 
 class Quota(proto.Message):
     r"""A quotas entry.
-
     Attributes:
         limit (float):
             [Output Only] Quota limit for this metric.
@@ -17829,120 +16755,117 @@ class Quota(proto.Message):
         UNDEFINED_METRIC = 0
         A2_CPUS = 153206585
         AFFINITY_GROUPS = 108303563
-        AUTOSCALERS = 202813532
+        AUTOSCALERS = 471248988
         BACKEND_BUCKETS = 137626846
-        BACKEND_SERVICES = 1188297
-        C2_CPUS = 49165755
-        COMMITMENTS = 187706334
+        BACKEND_SERVICES = 269623753
+        C2_CPUS = 317601211
+        COMMITMENTS = 456141790
         COMMITTED_A2_CPUS = 59330902
         COMMITTED_C2_CPUS = 223725528
-        COMMITTED_CPUS = 23959246
-        COMMITTED_LICENSES = 89171413
-        COMMITTED_LOCAL_SSD_TOTAL_GB = 39958024
-        COMMITTED_MEMORY_OPTIMIZED_CPUS = 220622430
+        COMMITTED_CPUS = 292394702
+        COMMITTED_LICENSES = 357606869
+        COMMITTED_LOCAL_SSD_TOTAL_GB = 308393480
+        COMMITTED_MEMORY_OPTIMIZED_CPUS = 489057886
         COMMITTED_N2D_CPUS = 125951757
-        COMMITTED_N2_CPUS = 54154147
-        COMMITTED_NVIDIA_A100_GPUS = 107363989
+        COMMITTED_N2_CPUS = 322589603
+        COMMITTED_NVIDIA_A100_GPUS = 375799445
         COMMITTED_NVIDIA_K80_GPUS = 3857188
         COMMITTED_NVIDIA_P100_GPUS = 107528100
-        COMMITTED_NVIDIA_P4_GPUS = 79517441
+        COMMITTED_NVIDIA_P4_GPUS = 347952897
         COMMITTED_NVIDIA_T4_GPUS = 139871237
         COMMITTED_NVIDIA_V100_GPUS = 219562
         CPUS = 2075595
-        CPUS_ALL_REGIONS = 202475693
-        DISKS_TOTAL_GB = 85085087
-        EXTERNAL_NETWORK_LB_FORWARDING_RULES = 105862809
+        CPUS_ALL_REGIONS = 470911149
+        DISKS_TOTAL_GB = 353520543
+        EXTERNAL_NETWORK_LB_FORWARDING_RULES = 374298265
         EXTERNAL_PROTOCOL_FORWARDING_RULES = 63478888
-        EXTERNAL_VPN_GATEWAYS = 4021678
-        FIREWALLS = 106050387
-        FORWARDING_RULES = 164233493
+        EXTERNAL_VPN_GATEWAYS = 272457134
+        FIREWALLS = 374485843
+        FORWARDING_RULES = 432668949
         GLOBAL_INTERNAL_ADDRESSES = 42738332
         GPUS_ALL_REGIONS = 39387177
-        HEALTH_CHECKS = 20912046
+        HEALTH_CHECKS = 289347502
         IMAGES = 15562360
         INSTANCES = 131337822
-        INSTANCE_GROUPS = 87483582
+        INSTANCE_GROUPS = 355919038
         INSTANCE_GROUP_MANAGERS = 101798192
         INSTANCE_TEMPLATES = 226188271
-        INTERCONNECTS = 146769285
+        INTERCONNECTS = 415204741
         INTERCONNECT_ATTACHMENTS_PER_REGION = 159968086
-        INTERCONNECT_ATTACHMENTS_TOTAL_MBPS = 156654963
-        INTERCONNECT_TOTAL_GBPS = 16906410
+        INTERCONNECT_ATTACHMENTS_TOTAL_MBPS = 425090419
+        INTERCONNECT_TOTAL_GBPS = 285341866
         INTERNAL_ADDRESSES = 197899392
         INTERNAL_TRAFFIC_DIRECTOR_FORWARDING_RULES = 266433668
         IN_PLACE_SNAPSHOTS = 151359133
-        IN_USE_ADDRESSES = 133689616
+        IN_USE_ADDRESSES = 402125072
         IN_USE_BACKUP_SCHEDULES = 32786705
-        IN_USE_SNAPSHOT_SCHEDULES = 193668627
-        LOCAL_SSD_TOTAL_GB = 62442565
+        IN_USE_SNAPSHOT_SCHEDULES = 462104083
+        LOCAL_SSD_TOTAL_GB = 330878021
         M1_CPUS = 37203366
         M2_CPUS = 65832517
-        MACHINE_IMAGES = 178551184
-        N2D_CPUS = 83307914
-        N2_CPUS = 148029830
-        NETWORKS = 217046021
+        MACHINE_IMAGES = 446986640
+        N2D_CPUS = 351743370
+        N2_CPUS = 416465286
+        NETWORKS = 485481477
         NETWORK_ENDPOINT_GROUPS = 102144909
         NETWORK_FIREWALL_POLICIES = 101117374
         NODE_GROUPS = 24624817
-        NODE_TEMPLATES = 206461212
-        NVIDIA_A100_GPUS = 236437522
+        NODE_TEMPLATES = 474896668
+        NVIDIA_A100_GPUS = 504872978
         NVIDIA_K80_GPUS = 163886599
         NVIDIA_P100_GPUS = 236601633
         NVIDIA_P100_VWS_GPUS = 213970574
-        NVIDIA_P4_GPUS = 15406014
-        NVIDIA_P4_VWS_GPUS = 259861163
+        NVIDIA_P4_GPUS = 283841470
+        NVIDIA_P4_VWS_GPUS = 528296619
         NVIDIA_T4_GPUS = 75759810
-        NVIDIA_T4_VWS_GPUS = 51377583
+        NVIDIA_T4_VWS_GPUS = 319813039
         NVIDIA_V100_GPUS = 129293095
         PACKET_MIRRORINGS = 15578407
         PREEMPTIBLE_CPUS = 251184841
         PREEMPTIBLE_LOCAL_SSD_GB = 260819336
         PREEMPTIBLE_NVIDIA_A100_GPUS = 68832784
-        PREEMPTIBLE_NVIDIA_K80_GPUS = 106524745
-        PREEMPTIBLE_NVIDIA_P100_GPUS = 68996895
-        PREEMPTIBLE_NVIDIA_P100_VWS_GPUS = 45108620
-        PREEMPTIBLE_NVIDIA_P4_GPUS = 160762172
+        PREEMPTIBLE_NVIDIA_K80_GPUS = 374960201
+        PREEMPTIBLE_NVIDIA_P100_GPUS = 337432351
+        PREEMPTIBLE_NVIDIA_P100_VWS_GPUS = 313544076
+        PREEMPTIBLE_NVIDIA_P4_GPUS = 429197628
         PREEMPTIBLE_NVIDIA_P4_VWS_GPUS = 252981545
         PREEMPTIBLE_NVIDIA_T4_GPUS = 221115968
         PREEMPTIBLE_NVIDIA_T4_VWS_GPUS = 44497965
         PREEMPTIBLE_NVIDIA_V100_GPUS = 230123813
         PSC_ILB_CONSUMER_FORWARDING_RULES_PER_PRODUCER_NETWORK = 231164291
-        PUBLIC_ADVERTISED_PREFIXES = 202936524
-        PUBLIC_DELEGATED_PREFIXES = 264030518
+        PUBLIC_ADVERTISED_PREFIXES = 471371980
+        PUBLIC_DELEGATED_PREFIXES = 532465974
         REGIONAL_AUTOSCALERS = 29363772
         REGIONAL_INSTANCE_GROUP_MANAGERS = 37543696
         RESERVATIONS = 32644647
         RESOURCE_POLICIES = 83955297
-        ROUTERS = 224583210
-        ROUTES = 7244618
+        ROUTERS = 493018666
+        ROUTES = 275680074
         SECURITY_POLICIES = 189518703
-        SECURITY_POLICY_CEVAL_RULES = 202380233
+        SECURITY_POLICY_CEVAL_RULES = 470815689
         SECURITY_POLICY_RULES = 203549225
-        SNAPSHOTS = 74969871
+        SNAPSHOTS = 343405327
         SSD_TOTAL_GB = 161732561
-        SSL_CERTIFICATES = 109936943
+        SSL_CERTIFICATES = 378372399
         STATIC_ADDRESSES = 93624049
-        STATIC_BYOIP_ADDRESSES = 7374193
-        SUBNETWORKS = 152895013
+        STATIC_BYOIP_ADDRESSES = 275809649
+        SUBNETWORKS = 421330469
         TARGET_HTTPS_PROXIES = 219522506
         TARGET_HTTP_PROXIES = 164117155
-        TARGET_INSTANCES = 16084272
-        TARGET_POOLS = 79825801
+        TARGET_INSTANCES = 284519728
+        TARGET_POOLS = 348261257
         TARGET_SSL_PROXIES = 159216235
         TARGET_TCP_PROXIES = 182243136
         TARGET_VPN_GATEWAYS = 75029928
-        URL_MAPS = 110225287
+        URL_MAPS = 378660743
         VPN_GATEWAYS = 35620282
         VPN_TUNNELS = 104327296
         XPN_SERVICE_PROJECTS = 95191981
 
-    limit = proto.Field(proto.DOUBLE, number=102976443)
-
-    metric = proto.Field(proto.ENUM, number=264631728, enum=Metric,)
-
-    owner = proto.Field(proto.STRING, number=106164915)
-
-    usage = proto.Field(proto.DOUBLE, number=111574433)
+    limit = proto.Field(proto.DOUBLE, number=102976443, optional=True,)
+    metric = proto.Field(proto.ENUM, number=533067184, optional=True, enum=Metric,)
+    owner = proto.Field(proto.STRING, number=106164915, optional=True,)
+    usage = proto.Field(proto.DOUBLE, number=111574433, optional=True,)
 
 
 class UsageExportLocation(proto.Message):
@@ -17969,9 +16892,8 @@ class UsageExportLocation(proto.Message):
             conventions.
     """
 
-    bucket_name = proto.Field(proto.STRING, number=15174592)
-
-    report_name_prefix = proto.Field(proto.STRING, number=51763259)
+    bucket_name = proto.Field(proto.STRING, number=283610048, optional=True,)
+    report_name_prefix = proto.Field(proto.STRING, number=320198715, optional=True,)
 
 
 class Project(proto.Message):
@@ -18036,8 +16958,8 @@ class Project(proto.Message):
         PREMIUM.
         """
         UNDEFINED_DEFAULT_NETWORK_TIER = 0
-        PREMIUM = 131095095
-        STANDARD = 216207037
+        PREMIUM = 399530551
+        STANDARD = 484642493
 
     class XpnProjectStatus(proto.Enum):
         r"""[Output Only] The role this project has in a shared VPC
@@ -18046,46 +16968,35 @@ class Project(proto.Message):
         """
         UNDEFINED_XPN_PROJECT_STATUS = 0
         HOST = 2223528
-        UNSPECIFIED_XPN_PROJECT_STATUS = 71957801
+        UNSPECIFIED_XPN_PROJECT_STATUS = 340393257
 
     common_instance_metadata = proto.Field(
-        proto.MESSAGE, number=185794117, message="Metadata",
+        proto.MESSAGE, number=185794117, optional=True, message="Metadata",
     )
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     default_network_tier = proto.Field(
-        proto.ENUM, number=203317905, enum=DefaultNetworkTier,
+        proto.ENUM, number=471753361, optional=True, enum=DefaultNetworkTier,
     )
-
-    default_service_account = proto.Field(proto.STRING, number=30276773)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    enabled_features = proto.RepeatedField(proto.STRING, number=200582011)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    default_service_account = proto.Field(
+        proto.STRING, number=298712229, optional=True,
+    )
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    enabled_features = proto.RepeatedField(proto.STRING, number=469017467,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     quotas = proto.RepeatedField(proto.MESSAGE, number=125341947, message="Quota",)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     usage_export_location = proto.Field(
-        proto.MESSAGE, number=79108418, message="UsageExportLocation",
+        proto.MESSAGE, number=347543874, optional=True, message="UsageExportLocation",
     )
-
     xpn_project_status = proto.Field(
-        proto.ENUM, number=228419265, enum=XpnProjectStatus,
+        proto.ENUM, number=228419265, optional=True, enum=XpnProjectStatus,
     )
 
 
 class XpnResourceId(proto.Message):
     r"""Service resource (a.k.a service project) ID.
-
     Attributes:
         id (str):
             The ID of the service resource. In the case
@@ -18099,43 +17010,39 @@ class XpnResourceId(proto.Message):
     class Type(proto.Enum):
         r"""The type of the service resource."""
         UNDEFINED_TYPE = 0
-        PROJECT = 140236537
+        PROJECT = 408671993
         XPN_RESOURCE_TYPE_UNSPECIFIED = 151607034
 
-    id = proto.Field(proto.STRING, number=3355)
-
-    type_ = proto.Field(proto.ENUM, number=3575610, enum=Type,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
 
 
 class ProjectsDisableXpnResourceRequest(proto.Message):
     r"""
-
     Attributes:
         xpn_resource (google.cloud.compute_v1.types.XpnResourceId):
             Service resource (a.k.a service project) ID.
     """
 
     xpn_resource = proto.Field(
-        proto.MESSAGE, number=133384631, message="XpnResourceId",
+        proto.MESSAGE, number=133384631, optional=True, message="XpnResourceId",
     )
 
 
 class ProjectsEnableXpnResourceRequest(proto.Message):
     r"""
-
     Attributes:
         xpn_resource (google.cloud.compute_v1.types.XpnResourceId):
             Service resource (a.k.a service project) ID.
     """
 
     xpn_resource = proto.Field(
-        proto.MESSAGE, number=133384631, message="XpnResourceId",
+        proto.MESSAGE, number=133384631, optional=True, message="XpnResourceId",
     )
 
 
 class ProjectsGetXpnResources(proto.Message):
     r"""
-
     Attributes:
         kind (str):
             [Output Only] Type of resource. Always
@@ -18158,10 +17065,8 @@ class ProjectsGetXpnResources(proto.Message):
     def raw_page(self):
         return self
 
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
     resources = proto.RepeatedField(
         proto.MESSAGE, number=164412965, message="XpnResourceId",
     )
@@ -18169,7 +17074,6 @@ class ProjectsGetXpnResources(proto.Message):
 
 class ProjectsListXpnHostsRequest(proto.Message):
     r"""
-
     Attributes:
         organization (str):
             Optional organization ID managed by Cloud
@@ -18178,12 +17082,11 @@ class ProjectsListXpnHostsRequest(proto.Message):
             organization will be inferred from the project.
     """
 
-    organization = proto.Field(proto.STRING, number=105180467)
+    organization = proto.Field(proto.STRING, number=105180467, optional=True,)
 
 
 class ProjectsSetDefaultNetworkTierRequest(proto.Message):
     r"""
-
     Attributes:
         network_tier (google.cloud.compute_v1.types.ProjectsSetDefaultNetworkTierRequest.NetworkTier):
             Default network tier to be set.
@@ -18192,10 +17095,12 @@ class ProjectsSetDefaultNetworkTierRequest(proto.Message):
     class NetworkTier(proto.Enum):
         r"""Default network tier to be set."""
         UNDEFINED_NETWORK_TIER = 0
-        PREMIUM = 131095095
-        STANDARD = 216207037
+        PREMIUM = 399530551
+        STANDARD = 484642493
 
-    network_tier = proto.Field(proto.ENUM, number=248962387, enum=NetworkTier,)
+    network_tier = proto.Field(
+        proto.ENUM, number=517397843, optional=True, enum=NetworkTier,
+    )
 
 
 class Region(proto.Message):
@@ -18238,32 +17143,22 @@ class Region(proto.Message):
         DOWN = 2104482
         UP = 2715
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     deprecated = proto.Field(
-        proto.MESSAGE, number=246703539, message="DeprecationStatus",
+        proto.MESSAGE, number=515138995, optional=True, message="DeprecationStatus",
     )
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     quotas = proto.RepeatedField(proto.MESSAGE, number=125341947, message="Quota",)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
-
-    zones = proto.RepeatedField(proto.STRING, number=116085319)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    zones = proto.RepeatedField(proto.STRING, number=116085319,)
 
 
 class RegionAutoscalerList(proto.Message):
     r"""Contains a list of autoscalers.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -18289,22 +17184,18 @@ class RegionAutoscalerList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Autoscaler",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class RegionDiskTypeList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -18331,57 +17222,50 @@ class RegionDiskTypeList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="DiskType",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class RegionDisksAddResourcePoliciesRequest(proto.Message):
     r"""
-
     Attributes:
         resource_policies (Sequence[str]):
             Resource policies to be added to this disk.
     """
 
-    resource_policies = proto.RepeatedField(proto.STRING, number=22220385)
+    resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
 
 
 class RegionDisksRemoveResourcePoliciesRequest(proto.Message):
     r"""
-
     Attributes:
         resource_policies (Sequence[str]):
             Resource policies to be removed from this
             disk.
     """
 
-    resource_policies = proto.RepeatedField(proto.STRING, number=22220385)
+    resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
 
 
 class RegionDisksResizeRequest(proto.Message):
     r"""
-
     Attributes:
         size_gb (str):
             The new size of the regional persistent disk,
             which is specified in GB.
     """
 
-    size_gb = proto.Field(proto.STRING, number=226493913)
+    size_gb = proto.Field(proto.STRING, number=494929369, optional=True,)
 
 
 class RegionInstanceGroupList(proto.Message):
     r"""Contains a list of InstanceGroup resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -18407,24 +17291,20 @@ class RegionInstanceGroupList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="InstanceGroup",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class RegionInstanceGroupManagerDeleteInstanceConfigReq(proto.Message):
     r"""RegionInstanceGroupManagers.deletePerInstanceConfigs
-
     Attributes:
         names (Sequence[str]):
             The list of instance names for which we want
@@ -18432,12 +17312,11 @@ class RegionInstanceGroupManagerDeleteInstanceConfigReq(proto.Message):
             instance group.
     """
 
-    names = proto.RepeatedField(proto.STRING, number=104585032)
+    names = proto.RepeatedField(proto.STRING, number=104585032,)
 
 
 class RegionInstanceGroupManagerList(proto.Message):
     r"""Contains a list of managed instance groups.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -18465,24 +17344,20 @@ class RegionInstanceGroupManagerList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="InstanceGroupManager",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class RegionInstanceGroupManagerPatchInstanceConfigReq(proto.Message):
     r"""RegionInstanceGroupManagers.patchPerInstanceConfigs
-
     Attributes:
         per_instance_configs (Sequence[google.cloud.compute_v1.types.PerInstanceConfig]):
             The list of per-instance configs to insert or
@@ -18490,13 +17365,12 @@ class RegionInstanceGroupManagerPatchInstanceConfigReq(proto.Message):
     """
 
     per_instance_configs = proto.RepeatedField(
-        proto.MESSAGE, number=257829545, message="PerInstanceConfig",
+        proto.MESSAGE, number=526265001, message="PerInstanceConfig",
     )
 
 
 class RegionInstanceGroupManagerUpdateInstanceConfigReq(proto.Message):
     r"""RegionInstanceGroupManagers.updatePerInstanceConfigs
-
     Attributes:
         per_instance_configs (Sequence[google.cloud.compute_v1.types.PerInstanceConfig]):
             The list of per-instance configs to insert or
@@ -18504,13 +17378,12 @@ class RegionInstanceGroupManagerUpdateInstanceConfigReq(proto.Message):
     """
 
     per_instance_configs = proto.RepeatedField(
-        proto.MESSAGE, number=257829545, message="PerInstanceConfig",
+        proto.MESSAGE, number=526265001, message="PerInstanceConfig",
     )
 
 
 class RegionInstanceGroupManagersAbandonInstancesRequest(proto.Message):
     r"""
-
     Attributes:
         instances (Sequence[str]):
             The URLs of one or more instances to abandon. This can be a
@@ -18518,12 +17391,11 @@ class RegionInstanceGroupManagersAbandonInstancesRequest(proto.Message):
             zones/[ZONE]/instances/[INSTANCE_NAME].
     """
 
-    instances = proto.RepeatedField(proto.STRING, number=29097598)
+    instances = proto.RepeatedField(proto.STRING, number=29097598,)
 
 
 class RegionInstanceGroupManagersApplyUpdatesRequest(proto.Message):
     r"""RegionInstanceGroupManagers.applyUpdatesToInstances
-
     Attributes:
         all_instances (bool):
             Flag to update all instances instead of
@@ -18558,18 +17430,16 @@ class RegionInstanceGroupManagersApplyUpdatesRequest(proto.Message):
             the update request will fail.
     """
 
-    all_instances = proto.Field(proto.BOOL, number=135241056)
-
-    instances = proto.RepeatedField(proto.STRING, number=29097598)
-
-    minimal_action = proto.Field(proto.STRING, number=2131604)
-
-    most_disruptive_allowed_action = proto.Field(proto.STRING, number=66103053)
+    all_instances = proto.Field(proto.BOOL, number=403676512, optional=True,)
+    instances = proto.RepeatedField(proto.STRING, number=29097598,)
+    minimal_action = proto.Field(proto.STRING, number=270567060, optional=True,)
+    most_disruptive_allowed_action = proto.Field(
+        proto.STRING, number=66103053, optional=True,
+    )
 
 
 class RegionInstanceGroupManagersCreateInstancesRequest(proto.Message):
     r"""RegionInstanceGroupManagers.createInstances
-
     Attributes:
         instances (Sequence[google.cloud.compute_v1.types.PerInstanceConfig]):
             [Required] List of specifications of per-instance configs.
@@ -18582,7 +17452,6 @@ class RegionInstanceGroupManagersCreateInstancesRequest(proto.Message):
 
 class RegionInstanceGroupManagersDeleteInstancesRequest(proto.Message):
     r"""
-
     Attributes:
         instances (Sequence[str]):
             The URLs of one or more instances to delete. This can be a
@@ -18590,12 +17459,11 @@ class RegionInstanceGroupManagersDeleteInstancesRequest(proto.Message):
             zones/[ZONE]/instances/[INSTANCE_NAME].
     """
 
-    instances = proto.RepeatedField(proto.STRING, number=29097598)
+    instances = proto.RepeatedField(proto.STRING, number=29097598,)
 
 
 class RegionInstanceGroupManagersListErrorsResponse(proto.Message):
     r"""
-
     Attributes:
         items (Sequence[google.cloud.compute_v1.types.InstanceManagedByIgmError]):
             [Output Only] The list of errors of the managed instance
@@ -18616,13 +17484,11 @@ class RegionInstanceGroupManagersListErrorsResponse(proto.Message):
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="InstanceManagedByIgmError",
     )
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
 
 
 class RegionInstanceGroupManagersListInstanceConfigsResp(proto.Message):
     r"""
-
     Attributes:
         items (Sequence[google.cloud.compute_v1.types.PerInstanceConfig]):
             [Output Only] The list of PerInstanceConfig.
@@ -18644,15 +17510,14 @@ class RegionInstanceGroupManagersListInstanceConfigsResp(proto.Message):
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="PerInstanceConfig",
     )
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class RegionInstanceGroupManagersListInstancesResponse(proto.Message):
     r"""
-
     Attributes:
         managed_instances (Sequence[google.cloud.compute_v1.types.ManagedInstance]):
             A list of managed instances.
@@ -18670,15 +17535,13 @@ class RegionInstanceGroupManagersListInstancesResponse(proto.Message):
         return self
 
     managed_instances = proto.RepeatedField(
-        proto.MESSAGE, number=67784158, message="ManagedInstance",
+        proto.MESSAGE, number=336219614, message="ManagedInstance",
     )
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
 
 
 class RegionInstanceGroupManagersRecreateRequest(proto.Message):
     r"""
-
     Attributes:
         instances (Sequence[str]):
             The URLs of one or more instances to recreate. This can be a
@@ -18686,12 +17549,11 @@ class RegionInstanceGroupManagersRecreateRequest(proto.Message):
             zones/[ZONE]/instances/[INSTANCE_NAME].
     """
 
-    instances = proto.RepeatedField(proto.STRING, number=29097598)
+    instances = proto.RepeatedField(proto.STRING, number=29097598,)
 
 
 class RegionInstanceGroupManagersSetTargetPoolsRequest(proto.Message):
     r"""
-
     Attributes:
         fingerprint (str):
             Fingerprint of the target pools information,
@@ -18705,26 +17567,23 @@ class RegionInstanceGroupManagersSetTargetPoolsRequest(proto.Message):
             the instances in the managed instance group.
     """
 
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
-    target_pools = proto.RepeatedField(proto.STRING, number=67637161)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    target_pools = proto.RepeatedField(proto.STRING, number=336072617,)
 
 
 class RegionInstanceGroupManagersSetTemplateRequest(proto.Message):
     r"""
-
     Attributes:
         instance_template (str):
             URL of the InstanceTemplate resource from
             which all new instances will be created.
     """
 
-    instance_template = proto.Field(proto.STRING, number=40812772)
+    instance_template = proto.Field(proto.STRING, number=309248228, optional=True,)
 
 
 class RegionInstanceGroupsListInstances(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -18750,24 +17609,20 @@ class RegionInstanceGroupsListInstances(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="InstanceWithNamedPorts",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class RegionInstanceGroupsListInstancesRequest(proto.Message):
     r"""
-
     Attributes:
         instance_state (google.cloud.compute_v1.types.RegionInstanceGroupsListInstancesRequest.InstanceState):
             Instances in which state should be returned.
@@ -18789,14 +17644,14 @@ class RegionInstanceGroupsListInstancesRequest(proto.Message):
         ALL = 64897
         RUNNING = 121282975
 
-    instance_state = proto.Field(proto.ENUM, number=92223591, enum=InstanceState,)
-
-    port_name = proto.Field(proto.STRING, number=41534345)
+    instance_state = proto.Field(
+        proto.ENUM, number=92223591, optional=True, enum=InstanceState,
+    )
+    port_name = proto.Field(proto.STRING, number=41534345, optional=True,)
 
 
 class RegionInstanceGroupsSetNamedPortsRequest(proto.Message):
     r"""
-
     Attributes:
         fingerprint (str):
             The fingerprint of the named ports
@@ -18813,16 +17668,14 @@ class RegionInstanceGroupsSetNamedPortsRequest(proto.Message):
             instance group.
     """
 
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
     named_ports = proto.RepeatedField(
-        proto.MESSAGE, number=159163276, message="NamedPort",
+        proto.MESSAGE, number=427598732, message="NamedPort",
     )
 
 
 class RegionList(proto.Message):
     r"""Contains a list of region resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -18849,22 +17702,18 @@ class RegionList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Region",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class RegionSetLabelsRequest(proto.Message):
     r"""
-
     Attributes:
         label_fingerprint (str):
             The fingerprint of the previous set of labels
@@ -18879,14 +17728,12 @@ class RegionSetLabelsRequest(proto.Message):
             The labels to set for this resource.
     """
 
-    label_fingerprint = proto.Field(proto.STRING, number=178124825)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=231759871)
+    label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
 
 
 class RegionSetPolicyRequest(proto.Message):
     r"""
-
     Attributes:
         bindings (Sequence[google.cloud.compute_v1.types.Binding]):
             Flatten Policy to create a backwacd
@@ -18904,16 +17751,15 @@ class RegionSetPolicyRequest(proto.Message):
             (like Projects) might reject them.
     """
 
-    bindings = proto.RepeatedField(proto.MESSAGE, number=134816398, message="Binding",)
-
-    etag = proto.Field(proto.STRING, number=3123477)
-
-    policy = proto.Field(proto.MESSAGE, number=91071794, message="Policy",)
+    bindings = proto.RepeatedField(proto.MESSAGE, number=403251854, message="Binding",)
+    etag = proto.Field(proto.STRING, number=3123477, optional=True,)
+    policy = proto.Field(
+        proto.MESSAGE, number=91071794, optional=True, message="Policy",
+    )
 
 
 class RegionTargetHttpsProxiesSetSslCertificatesRequest(proto.Message):
     r"""
-
     Attributes:
         ssl_certificates (Sequence[str]):
             New set of SslCertificate resources to
@@ -18922,7 +17768,7 @@ class RegionTargetHttpsProxiesSetSslCertificatesRequest(proto.Message):
             must be specified.
     """
 
-    ssl_certificates = proto.RepeatedField(proto.STRING, number=97571087)
+    ssl_certificates = proto.RepeatedField(proto.STRING, number=366006543,)
 
 
 class UrlMap(proto.Message):
@@ -19062,61 +17908,47 @@ class UrlMap(proto.Message):
             that has validateForProxyless field set to true.
     """
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     default_route_action = proto.Field(
-        proto.MESSAGE, number=110484010, message="HttpRouteAction",
+        proto.MESSAGE, number=378919466, optional=True, message="HttpRouteAction",
     )
-
-    default_service = proto.Field(proto.STRING, number=101806775)
-
+    default_service = proto.Field(proto.STRING, number=370242231, optional=True,)
     default_url_redirect = proto.Field(
-        proto.MESSAGE, number=91067882, message="HttpRedirectAction",
+        proto.MESSAGE, number=359503338, optional=True, message="HttpRedirectAction",
     )
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
     header_action = proto.Field(
-        proto.MESSAGE, number=59641896, message="HttpHeaderAction",
+        proto.MESSAGE, number=328077352, optional=True, message="HttpHeaderAction",
     )
-
     host_rules = proto.RepeatedField(
-        proto.MESSAGE, number=43369376, message="HostRule",
+        proto.MESSAGE, number=311804832, message="HostRule",
     )
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     path_matchers = proto.RepeatedField(
-        proto.MESSAGE, number=3228763, message="PathMatcher",
+        proto.MESSAGE, number=271664219, message="PathMatcher",
     )
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     tests = proto.RepeatedField(proto.MESSAGE, number=110251553, message="UrlMapTest",)
 
 
 class RegionUrlMapsValidateRequest(proto.Message):
     r"""
-
     Attributes:
         resource (google.cloud.compute_v1.types.UrlMap):
             Content of the UrlMap to be validated.
     """
 
-    resource = proto.Field(proto.MESSAGE, number=195806222, message="UrlMap",)
+    resource = proto.Field(
+        proto.MESSAGE, number=195806222, optional=True, message="UrlMap",
+    )
 
 
 class ReservationsScopedList(proto.Message):
     r"""
-
     Attributes:
         reservations (Sequence[google.cloud.compute_v1.types.Reservation]):
             A list of reservations contained in this
@@ -19127,15 +17959,15 @@ class ReservationsScopedList(proto.Message):
     """
 
     reservations = proto.RepeatedField(
-        proto.MESSAGE, number=131282471, message="Reservation",
+        proto.MESSAGE, number=399717927, message="Reservation",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class ReservationAggregatedList(proto.Message):
     r"""Contains a list of reservations.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -19163,26 +17995,21 @@ class ReservationAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="ReservationsScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class ReservationList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] The unique identifier for the resource. This
@@ -19209,34 +18036,29 @@ class ReservationList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Reservation",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class ReservationsResizeRequest(proto.Message):
     r"""
-
     Attributes:
         specific_sku_count (str):
             Number of allocated resources can be resized
             with minimum = 1 and maximum = 1000.
     """
 
-    specific_sku_count = proto.Field(proto.STRING, number=13890720)
+    specific_sku_count = proto.Field(proto.STRING, number=13890720, optional=True,)
 
 
 class ResourceGroupReference(proto.Message):
     r"""
-
     Attributes:
         group (str):
             A URI referencing one of the instance groups
@@ -19244,7 +18066,7 @@ class ResourceGroupReference(proto.Message):
             service.
     """
 
-    group = proto.Field(proto.STRING, number=98629247)
+    group = proto.Field(proto.STRING, number=98629247, optional=True,)
 
 
 class ResourcePolicy(proto.Message):
@@ -19292,39 +18114,35 @@ class ResourcePolicy(proto.Message):
     class Status(proto.Enum):
         r"""[Output Only] The status of resource policy creation."""
         UNDEFINED_STATUS = 0
-        CREATING = 187129529
-        DELETING = 260166568
-        INVALID = 261848535
+        CREATING = 455564985
+        DELETING = 528602024
+        INVALID = 530283991
         READY = 77848963
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
     group_placement_policy = proto.Field(
-        proto.MESSAGE, number=10931596, message="ResourcePolicyGroupPlacementPolicy",
+        proto.MESSAGE,
+        number=10931596,
+        optional=True,
+        message="ResourcePolicyGroupPlacementPolicy",
     )
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     snapshot_schedule_policy = proto.Field(
-        proto.MESSAGE, number=218131295, message="ResourcePolicySnapshotSchedulePolicy",
+        proto.MESSAGE,
+        number=218131295,
+        optional=True,
+        message="ResourcePolicySnapshotSchedulePolicy",
     )
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
 
 
 class ResourcePoliciesScopedList(proto.Message):
     r"""
-
     Attributes:
         resource_policies (Sequence[google.cloud.compute_v1.types.ResourcePolicy]):
             A list of resourcePolicies contained in this
@@ -19337,8 +18155,9 @@ class ResourcePoliciesScopedList(proto.Message):
     resource_policies = proto.RepeatedField(
         proto.MESSAGE, number=22220385, message="ResourcePolicy",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class ResourcePolicyGroupPlacementPolicy(proto.Message):
@@ -19362,13 +18181,15 @@ class ResourcePolicyGroupPlacementPolicy(proto.Message):
         r"""Specifies network collocation"""
         UNDEFINED_COLLOCATION = 0
         COLLOCATED = 103257554
-        UNSPECIFIED_COLLOCATION = 195872749
+        UNSPECIFIED_COLLOCATION = 464308205
 
-    availability_domain_count = proto.Field(proto.INT32, number=12453432)
-
-    collocation = proto.Field(proto.ENUM, number=242721077, enum=Collocation,)
-
-    vm_count = proto.Field(proto.INT32, number=261463431)
+    availability_domain_count = proto.Field(
+        proto.INT32, number=12453432, optional=True,
+    )
+    collocation = proto.Field(
+        proto.ENUM, number=511156533, optional=True, enum=Collocation,
+    )
+    vm_count = proto.Field(proto.INT32, number=261463431, optional=True,)
 
 
 class ResourcePolicySnapshotSchedulePolicy(proto.Message):
@@ -19394,25 +18215,25 @@ class ResourcePolicySnapshotSchedulePolicy(proto.Message):
     retention_policy = proto.Field(
         proto.MESSAGE,
         number=68625779,
+        optional=True,
         message="ResourcePolicySnapshotSchedulePolicyRetentionPolicy",
     )
-
     schedule = proto.Field(
         proto.MESSAGE,
-        number=107385495,
+        number=375820951,
+        optional=True,
         message="ResourcePolicySnapshotSchedulePolicySchedule",
     )
-
     snapshot_properties = proto.Field(
         proto.MESSAGE,
         number=185371278,
+        optional=True,
         message="ResourcePolicySnapshotSchedulePolicySnapshotProperties",
     )
 
 
 class ResourcePolicyAggregatedList(proto.Message):
     r"""Contains a list of resourcePolicies.
-
     Attributes:
         etag (str):
 
@@ -19442,31 +18263,25 @@ class ResourcePolicyAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    etag = proto.Field(proto.STRING, number=3123477)
-
-    id = proto.Field(proto.STRING, number=3355)
-
+    etag = proto.Field(proto.STRING, number=3123477, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=100526016,
         message="ResourcePoliciesScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class ResourcePolicyDailyCycle(proto.Message):
     r"""Time window specified for daily operations.
-
     Attributes:
         days_in_cycle (int):
             Defines a schedule with units measured in
@@ -19483,16 +18298,13 @@ class ResourcePolicyDailyCycle(proto.Message):
             13:00-5 and 08:00 are valid.
     """
 
-    days_in_cycle = proto.Field(proto.INT32, number=101354548)
-
-    duration = proto.Field(proto.STRING, number=155471252)
-
-    start_time = proto.Field(proto.STRING, number=37467274)
+    days_in_cycle = proto.Field(proto.INT32, number=369790004, optional=True,)
+    duration = proto.Field(proto.STRING, number=155471252, optional=True,)
+    start_time = proto.Field(proto.STRING, number=37467274, optional=True,)
 
 
 class ResourcePolicyHourlyCycle(proto.Message):
     r"""Time window specified for hourly operations.
-
     Attributes:
         duration (str):
             [Output only] Duration of the time window, automatically
@@ -19506,16 +18318,13 @@ class ResourcePolicyHourlyCycle(proto.Message):
             in format "HH:MM", where HH : [00-23] and MM : [00-00] GMT.
     """
 
-    duration = proto.Field(proto.STRING, number=155471252)
-
-    hours_in_cycle = proto.Field(proto.INT32, number=258327676)
-
-    start_time = proto.Field(proto.STRING, number=37467274)
+    duration = proto.Field(proto.STRING, number=155471252, optional=True,)
+    hours_in_cycle = proto.Field(proto.INT32, number=526763132, optional=True,)
+    start_time = proto.Field(proto.STRING, number=37467274, optional=True,)
 
 
 class ResourcePolicyList(proto.Message):
     r"""
-
     Attributes:
         etag (str):
 
@@ -19544,26 +18353,21 @@ class ResourcePolicyList(proto.Message):
     def raw_page(self):
         return self
 
-    etag = proto.Field(proto.STRING, number=3123477)
-
-    id = proto.Field(proto.STRING, number=3355)
-
+    etag = proto.Field(proto.STRING, number=3123477, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="ResourcePolicy",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class ResourcePolicySnapshotSchedulePolicyRetentionPolicy(proto.Message):
     r"""Policy for retention of scheduled snapshots.
-
     Attributes:
         max_retention_days (int):
             Maximum age of the snapshot that is allowed
@@ -19578,14 +18382,13 @@ class ResourcePolicySnapshotSchedulePolicyRetentionPolicy(proto.Message):
         the source disk is deleted.
         """
         UNDEFINED_ON_SOURCE_DISK_DELETE = 0
-        APPLY_RETENTION_POLICY = 266635876
+        APPLY_RETENTION_POLICY = 535071332
         KEEP_AUTO_SNAPSHOTS = 258925689
         UNSPECIFIED_ON_SOURCE_DISK_DELETE = 239140769
 
-    max_retention_days = proto.Field(proto.INT32, number=55861523)
-
+    max_retention_days = proto.Field(proto.INT32, number=324296979, optional=True,)
     on_source_disk_delete = proto.Field(
-        proto.ENUM, number=53520073, enum=OnSourceDiskDelete,
+        proto.ENUM, number=321955529, optional=True, enum=OnSourceDiskDelete,
     )
 
 
@@ -19603,15 +18406,22 @@ class ResourcePolicySnapshotSchedulePolicySchedule(proto.Message):
     """
 
     daily_schedule = proto.Field(
-        proto.MESSAGE, number=86159869, message="ResourcePolicyDailyCycle",
+        proto.MESSAGE,
+        number=86159869,
+        optional=True,
+        message="ResourcePolicyDailyCycle",
     )
-
     hourly_schedule = proto.Field(
-        proto.MESSAGE, number=38328485, message="ResourcePolicyHourlyCycle",
+        proto.MESSAGE,
+        number=38328485,
+        optional=True,
+        message="ResourcePolicyHourlyCycle",
     )
-
     weekly_schedule = proto.Field(
-        proto.MESSAGE, number=91112597, message="ResourcePolicyWeeklyCycle",
+        proto.MESSAGE,
+        number=359548053,
+        optional=True,
+        message="ResourcePolicyWeeklyCycle",
     )
 
 
@@ -19634,18 +18444,14 @@ class ResourcePolicySnapshotSchedulePolicySnapshotProperties(proto.Message):
             auto snapshot (regional or multi-regional).
     """
 
-    chain_name = proto.Field(proto.STRING, number=68644169)
-
-    guest_flush = proto.Field(proto.BOOL, number=117115357)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=231759871)
-
-    storage_locations = proto.RepeatedField(proto.STRING, number=59569818)
+    chain_name = proto.Field(proto.STRING, number=68644169, optional=True,)
+    guest_flush = proto.Field(proto.BOOL, number=385550813, optional=True,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
+    storage_locations = proto.RepeatedField(proto.STRING, number=328005274,)
 
 
 class ResourcePolicyWeeklyCycle(proto.Message):
     r"""Time window specified for weekly operations.
-
     Attributes:
         day_of_weeks (Sequence[google.cloud.compute_v1.types.ResourcePolicyWeeklyCycleDayOfWeek]):
             Up to 7 intervals/windows, one for each day
@@ -19659,7 +18465,6 @@ class ResourcePolicyWeeklyCycle(proto.Message):
 
 class ResourcePolicyWeeklyCycleDayOfWeek(proto.Message):
     r"""
-
     Attributes:
         day (google.cloud.compute_v1.types.ResourcePolicyWeeklyCycleDayOfWeek.Day):
             Defines a schedule that runs on specific days
@@ -19681,20 +18486,18 @@ class ResourcePolicyWeeklyCycleDayOfWeek(proto.Message):
         MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY.
         """
         UNDEFINED_DAY = 0
-        FRIDAY = 202963295
-        INVALID = 261848535
+        FRIDAY = 471398751
+        INVALID = 530283991
         MONDAY = 132310288
-        SATURDAY = 10602425
-        SUNDAY = 41190864
+        SATURDAY = 279037881
+        SUNDAY = 309626320
         THURSDAY = 207198682
-        TUESDAY = 9074221
-        WEDNESDAY = 153593654
+        TUESDAY = 277509677
+        WEDNESDAY = 422029110
 
-    day = proto.Field(proto.ENUM, number=99228, enum=Day,)
-
-    duration = proto.Field(proto.STRING, number=155471252)
-
-    start_time = proto.Field(proto.STRING, number=37467274)
+    day = proto.Field(proto.ENUM, number=99228, optional=True, enum=Day,)
+    duration = proto.Field(proto.STRING, number=155471252, optional=True,)
+    start_time = proto.Field(proto.STRING, number=37467274, optional=True,)
 
 
 class Route(proto.Message):
@@ -19785,46 +18588,28 @@ class Route(proto.Message):
             messages.
     """
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    dest_range = proto.Field(proto.STRING, number=112892256)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    network = proto.Field(proto.STRING, number=232872494)
-
-    next_hop_gateway = proto.Field(proto.STRING, number=108739842)
-
-    next_hop_ilb = proto.Field(proto.STRING, number=198679901)
-
-    next_hop_instance = proto.Field(proto.STRING, number=125072791)
-
-    next_hop_ip = proto.Field(proto.STRING, number=110319529)
-
-    next_hop_network = proto.Field(proto.STRING, number=262295788)
-
-    next_hop_peering = proto.Field(proto.STRING, number=144247294)
-
-    next_hop_vpn_tunnel = proto.Field(proto.STRING, number=251409045)
-
-    priority = proto.Field(proto.UINT32, number=176716196)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    tags = proto.RepeatedField(proto.STRING, number=3552281)
-
-    warnings = proto.RepeatedField(proto.MESSAGE, number=229655639, message="Warnings",)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    dest_range = proto.Field(proto.STRING, number=381327712, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    network = proto.Field(proto.STRING, number=232872494, optional=True,)
+    next_hop_gateway = proto.Field(proto.STRING, number=377175298, optional=True,)
+    next_hop_ilb = proto.Field(proto.STRING, number=198679901, optional=True,)
+    next_hop_instance = proto.Field(proto.STRING, number=393508247, optional=True,)
+    next_hop_ip = proto.Field(proto.STRING, number=110319529, optional=True,)
+    next_hop_network = proto.Field(proto.STRING, number=262295788, optional=True,)
+    next_hop_peering = proto.Field(proto.STRING, number=412682750, optional=True,)
+    next_hop_vpn_tunnel = proto.Field(proto.STRING, number=519844501, optional=True,)
+    priority = proto.Field(proto.UINT32, number=445151652, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    tags = proto.RepeatedField(proto.STRING, number=3552281,)
+    warnings = proto.RepeatedField(proto.MESSAGE, number=498091095, message="Warnings",)
 
 
 class RouteList(proto.Message):
     r"""Contains a list of Route resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -19850,22 +18635,18 @@ class RouteList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Route",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class RouterBgp(proto.Message):
     r"""
-
     Attributes:
         advertise_mode (google.cloud.compute_v1.types.RouterBgp.AdvertiseMode):
             User-specified flag to indicate which mode to
@@ -19898,7 +18679,7 @@ class RouterBgp(proto.Message):
         advertisement. The options are DEFAULT or CUSTOM.
         """
         UNDEFINED_ADVERTISE_MODE = 0
-        CUSTOM = 120160113
+        CUSTOM = 388595569
         DEFAULT = 115302945
 
     class AdvertisedGroups(proto.Enum):
@@ -19906,22 +18687,20 @@ class RouterBgp(proto.Message):
         UNDEFINED_ADVERTISED_GROUPS = 0
         ALL_SUBNETS = 3622872
 
-    advertise_mode = proto.Field(proto.ENUM, number=43698875, enum=AdvertiseMode,)
-
+    advertise_mode = proto.Field(
+        proto.ENUM, number=312134331, optional=True, enum=AdvertiseMode,
+    )
     advertised_groups = proto.RepeatedField(
         proto.ENUM, number=21065526, enum=AdvertisedGroups,
     )
-
     advertised_ip_ranges = proto.RepeatedField(
         proto.MESSAGE, number=35449932, message="RouterAdvertisedIpRange",
     )
-
-    asn = proto.Field(proto.UINT32, number=96892)
+    asn = proto.Field(proto.UINT32, number=96892, optional=True,)
 
 
 class RouterBgpPeer(proto.Message):
     r"""
-
     Attributes:
         advertise_mode (google.cloud.compute_v1.types.RouterBgpPeer.AdvertiseMode):
             User-specified flag to indicate which mode to
@@ -19991,7 +18770,7 @@ class RouterBgpPeer(proto.Message):
         advertisement.
         """
         UNDEFINED_ADVERTISE_MODE = 0
-        CUSTOM = 120160113
+        CUSTOM = 388595569
         DEFAULT = 115302945
 
     class AdvertisedGroups(proto.Enum):
@@ -20012,37 +18791,33 @@ class RouterBgpPeer(proto.Message):
            PARTNER InterconnectAttachment is created, updated, or deleted.
         """
         UNDEFINED_MANAGEMENT_TYPE = 0
-        MANAGED_BY_ATTACHMENT = 190490955
-        MANAGED_BY_USER = 48858611
+        MANAGED_BY_ATTACHMENT = 458926411
+        MANAGED_BY_USER = 317294067
 
-    advertise_mode = proto.Field(proto.ENUM, number=43698875, enum=AdvertiseMode,)
-
+    advertise_mode = proto.Field(
+        proto.ENUM, number=312134331, optional=True, enum=AdvertiseMode,
+    )
     advertised_groups = proto.RepeatedField(
         proto.ENUM, number=21065526, enum=AdvertisedGroups,
     )
-
     advertised_ip_ranges = proto.RepeatedField(
         proto.MESSAGE, number=35449932, message="RouterAdvertisedIpRange",
     )
-
-    advertised_route_priority = proto.Field(proto.UINT32, number=186486332)
-
-    interface_name = proto.Field(proto.STRING, number=169419217)
-
-    ip_address = proto.Field(proto.STRING, number=137836764)
-
-    management_type = proto.Field(proto.ENUM, number=173703606, enum=ManagementType,)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    peer_asn = proto.Field(proto.UINT32, number=69573151)
-
-    peer_ip_address = proto.Field(proto.STRING, number=207735769)
+    advertised_route_priority = proto.Field(
+        proto.UINT32, number=186486332, optional=True,
+    )
+    interface_name = proto.Field(proto.STRING, number=437854673, optional=True,)
+    ip_address = proto.Field(proto.STRING, number=406272220, optional=True,)
+    management_type = proto.Field(
+        proto.ENUM, number=173703606, optional=True, enum=ManagementType,
+    )
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    peer_asn = proto.Field(proto.UINT32, number=69573151, optional=True,)
+    peer_ip_address = proto.Field(proto.STRING, number=207735769, optional=True,)
 
 
 class RouterInterface(proto.Message):
     r"""
-
     Attributes:
         ip_range (str):
             IP address and range of the interface. The IP
@@ -20098,18 +18873,18 @@ class RouterInterface(proto.Message):
            PARTNER InterconnectAttachment is created, updated, or deleted.
         """
         UNDEFINED_MANAGEMENT_TYPE = 0
-        MANAGED_BY_ATTACHMENT = 190490955
-        MANAGED_BY_USER = 48858611
+        MANAGED_BY_ATTACHMENT = 458926411
+        MANAGED_BY_USER = 317294067
 
-    ip_range = proto.Field(proto.STRING, number=145092645)
-
-    linked_interconnect_attachment = proto.Field(proto.STRING, number=232650062)
-
-    linked_vpn_tunnel = proto.Field(proto.STRING, number=83861497)
-
-    management_type = proto.Field(proto.ENUM, number=173703606, enum=ManagementType,)
-
-    name = proto.Field(proto.STRING, number=3373707)
+    ip_range = proto.Field(proto.STRING, number=145092645, optional=True,)
+    linked_interconnect_attachment = proto.Field(
+        proto.STRING, number=501085518, optional=True,
+    )
+    linked_vpn_tunnel = proto.Field(proto.STRING, number=352296953, optional=True,)
+    management_type = proto.Field(
+        proto.ENUM, number=173703606, optional=True, enum=ManagementType,
+    )
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
 
 
 class RouterNat(proto.Message):
@@ -20224,41 +18999,35 @@ class RouterNat(proto.Message):
         UNDEFINED_SOURCE_SUBNETWORK_IP_RANGES_TO_NAT = 0
         ALL_SUBNETWORKS_ALL_IP_RANGES = 179964376
         ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES = 185573819
-        LIST_OF_SUBNETWORKS = 249106814
+        LIST_OF_SUBNETWORKS = 517542270
 
-    drain_nat_ips = proto.RepeatedField(proto.STRING, number=235643079)
-
-    enable_endpoint_independent_mapping = proto.Field(proto.BOOL, number=259441819)
-
-    icmp_idle_timeout_sec = proto.Field(proto.INT32, number=3647562)
-
+    drain_nat_ips = proto.RepeatedField(proto.STRING, number=504078535,)
+    enable_endpoint_independent_mapping = proto.Field(
+        proto.BOOL, number=259441819, optional=True,
+    )
+    icmp_idle_timeout_sec = proto.Field(proto.INT32, number=3647562, optional=True,)
     log_config = proto.Field(
-        proto.MESSAGE, number=82864285, message="RouterNatLogConfig",
+        proto.MESSAGE, number=351299741, optional=True, message="RouterNatLogConfig",
     )
-
-    min_ports_per_vm = proto.Field(proto.INT32, number=186193587)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    min_ports_per_vm = proto.Field(proto.INT32, number=186193587, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     nat_ip_allocate_option = proto.Field(
-        proto.ENUM, number=161291389, enum=NatIpAllocateOption,
+        proto.ENUM, number=429726845, optional=True, enum=NatIpAllocateOption,
     )
-
-    nat_ips = proto.RepeatedField(proto.STRING, number=117635086)
-
+    nat_ips = proto.RepeatedField(proto.STRING, number=117635086,)
     source_subnetwork_ip_ranges_to_nat = proto.Field(
-        proto.ENUM, number=252213211, enum=SourceSubnetworkIpRangesToNat,
+        proto.ENUM, number=252213211, optional=True, enum=SourceSubnetworkIpRangesToNat,
     )
-
     subnetworks = proto.RepeatedField(
-        proto.MESSAGE, number=147417669, message="RouterNatSubnetworkToNat",
+        proto.MESSAGE, number=415853125, message="RouterNatSubnetworkToNat",
     )
-
-    tcp_established_idle_timeout_sec = proto.Field(proto.INT32, number=223098349)
-
-    tcp_transitory_idle_timeout_sec = proto.Field(proto.INT32, number=205028774)
-
-    udp_idle_timeout_sec = proto.Field(proto.INT32, number=64919878)
+    tcp_established_idle_timeout_sec = proto.Field(
+        proto.INT32, number=223098349, optional=True,
+    )
+    tcp_transitory_idle_timeout_sec = proto.Field(
+        proto.INT32, number=205028774, optional=True,
+    )
+    udp_idle_timeout_sec = proto.Field(proto.INT32, number=64919878, optional=True,)
 
 
 class Router(proto.Message):
@@ -20315,38 +19084,26 @@ class Router(proto.Message):
             [Output Only] Server-defined URL for the resource.
     """
 
-    bgp = proto.Field(proto.MESSAGE, number=97483, message="RouterBgp",)
-
+    bgp = proto.Field(proto.MESSAGE, number=97483, optional=True, message="RouterBgp",)
     bgp_peers = proto.RepeatedField(
-        proto.MESSAGE, number=184260317, message="RouterBgpPeer",
+        proto.MESSAGE, number=452695773, message="RouterBgpPeer",
     )
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     interfaces = proto.RepeatedField(
         proto.MESSAGE, number=12073562, message="RouterInterface",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     nats = proto.RepeatedField(proto.MESSAGE, number=3373938, message="RouterNat",)
-
-    network = proto.Field(proto.STRING, number=232872494)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
+    network = proto.Field(proto.STRING, number=232872494, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
 
 
 class RouterAdvertisedIpRange(proto.Message):
     r"""Description-tagged IP ranges for the router to advertise.
-
     Attributes:
         description (str):
             User-specified description for the IP range.
@@ -20355,14 +19112,12 @@ class RouterAdvertisedIpRange(proto.Message):
             a CIDR-formatted string.
     """
 
-    description = proto.Field(proto.STRING, number=154502140)
-
-    range_ = proto.Field(proto.STRING, number=108280125)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    range_ = proto.Field(proto.STRING, number=108280125, optional=True,)
 
 
 class RoutersScopedList(proto.Message):
     r"""
-
     Attributes:
         routers (Sequence[google.cloud.compute_v1.types.Router]):
             A list of routers contained in this scope.
@@ -20371,14 +19126,14 @@ class RoutersScopedList(proto.Message):
             of routers when the list is empty.
     """
 
-    routers = proto.RepeatedField(proto.MESSAGE, number=43471434, message="Router",)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    routers = proto.RepeatedField(proto.MESSAGE, number=311906890, message="Router",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class RouterAggregatedList(proto.Message):
     r"""Contains a list of routers.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -20406,26 +19161,21 @@ class RouterAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="RoutersScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class RouterList(proto.Message):
     r"""Contains a list of Router resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -20452,22 +19202,18 @@ class RouterList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Router",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class RouterNatLogConfig(proto.Message):
     r"""Configuration of logging on a NAT.
-
     Attributes:
         enable (bool):
             Indicates whether or not to export logs. This
@@ -20497,17 +19243,15 @@ class RouterNatLogConfig(proto.Message):
         """
         UNDEFINED_FILTER = 0
         ALL = 64897
-        ERRORS_ONLY = 39049216
-        TRANSLATIONS_ONLY = 88777193
+        ERRORS_ONLY = 307484672
+        TRANSLATIONS_ONLY = 357212649
 
-    enable = proto.Field(proto.BOOL, number=43328899)
-
-    filter = proto.Field(proto.ENUM, number=67685240, enum=Filter,)
+    enable = proto.Field(proto.BOOL, number=311764355, optional=True,)
+    filter = proto.Field(proto.ENUM, number=336120696, optional=True, enum=Filter,)
 
 
 class RouterNatSubnetworkToNat(proto.Message):
     r"""Defines the IP ranges that want to use NAT for a subnetwork.
-
     Attributes:
         name (str):
             URL for the subnetwork resource that will use
@@ -20530,20 +19274,17 @@ class RouterNatSubnetworkToNat(proto.Message):
         UNDEFINED_SOURCE_IP_RANGES_TO_NAT = 0
         ALL_IP_RANGES = 35608496
         LIST_OF_SECONDARY_IP_RANGES = 192289308
-        PRIMARY_IP_RANGE = 28674498
+        PRIMARY_IP_RANGE = 297109954
 
-    name = proto.Field(proto.STRING, number=3373707)
-
-    secondary_ip_range_names = proto.RepeatedField(proto.STRING, number=264315097)
-
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    secondary_ip_range_names = proto.RepeatedField(proto.STRING, number=264315097,)
     source_ip_ranges_to_nat = proto.RepeatedField(
-        proto.ENUM, number=119874930, enum=SourceIpRangesToNat,
+        proto.ENUM, number=388310386, enum=SourceIpRangesToNat,
     )
 
 
 class RouterStatusBgpPeerStatus(proto.Message):
     r"""
-
     Attributes:
         advertised_routes (Sequence[google.cloud.compute_v1.types.Route]):
             Routes that were advertised to the remote BGP
@@ -20578,35 +19319,25 @@ class RouterStatusBgpPeerStatus(proto.Message):
         r"""Status of the BGP peer: {UP, DOWN}"""
         UNDEFINED_STATUS = 0
         DOWN = 2104482
-        UNKNOWN = 164706346
+        UNKNOWN = 433141802
         UP = 2715
 
     advertised_routes = proto.RepeatedField(
-        proto.MESSAGE, number=64957612, message="Route",
+        proto.MESSAGE, number=333393068, message="Route",
     )
-
-    ip_address = proto.Field(proto.STRING, number=137836764)
-
-    linked_vpn_tunnel = proto.Field(proto.STRING, number=83861497)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    num_learned_routes = proto.Field(proto.UINT32, number=135457535)
-
-    peer_ip_address = proto.Field(proto.STRING, number=207735769)
-
-    state = proto.Field(proto.STRING, number=109757585)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
-
-    uptime = proto.Field(proto.STRING, number=235379688)
-
-    uptime_seconds = proto.Field(proto.STRING, number=104736040)
+    ip_address = proto.Field(proto.STRING, number=406272220, optional=True,)
+    linked_vpn_tunnel = proto.Field(proto.STRING, number=352296953, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    num_learned_routes = proto.Field(proto.UINT32, number=135457535, optional=True,)
+    peer_ip_address = proto.Field(proto.STRING, number=207735769, optional=True,)
+    state = proto.Field(proto.STRING, number=109757585, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    uptime = proto.Field(proto.STRING, number=235379688, optional=True,)
+    uptime_seconds = proto.Field(proto.STRING, number=104736040, optional=True,)
 
 
 class RouterStatusNatStatus(proto.Message):
     r"""Status of a NAT contained in this router.
-
     Attributes:
         auto_allocated_nat_ips (Sequence[str]):
             A list of IPs auto-allocated for NAT. Example: ["1.1.1.1",
@@ -20635,28 +19366,24 @@ class RouterStatusNatStatus(proto.Message):
             will be raw IP strings like "179.12.26.133".
     """
 
-    auto_allocated_nat_ips = proto.RepeatedField(proto.STRING, number=242358790)
-
-    drain_auto_allocated_nat_ips = proto.RepeatedField(proto.STRING, number=40749101)
-
-    drain_user_allocated_nat_ips = proto.RepeatedField(proto.STRING, number=36833097)
-
-    min_extra_nat_ips_needed = proto.Field(proto.INT32, number=97350882)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    num_vm_endpoints_with_nat_mappings = proto.Field(proto.INT32, number=243932012)
-
-    user_allocated_nat_ip_resources = proto.RepeatedField(
-        proto.STRING, number=212776151
+    auto_allocated_nat_ips = proto.RepeatedField(proto.STRING, number=510794246,)
+    drain_auto_allocated_nat_ips = proto.RepeatedField(proto.STRING, number=309184557,)
+    drain_user_allocated_nat_ips = proto.RepeatedField(proto.STRING, number=305268553,)
+    min_extra_nat_ips_needed = proto.Field(
+        proto.INT32, number=365786338, optional=True,
     )
-
-    user_allocated_nat_ips = proto.RepeatedField(proto.STRING, number=238442786)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    num_vm_endpoints_with_nat_mappings = proto.Field(
+        proto.INT32, number=512367468, optional=True,
+    )
+    user_allocated_nat_ip_resources = proto.RepeatedField(
+        proto.STRING, number=212776151,
+    )
+    user_allocated_nat_ips = proto.RepeatedField(proto.STRING, number=506878242,)
 
 
 class RouterStatus(proto.Message):
     r"""
-
     Attributes:
         best_routes (Sequence[google.cloud.compute_v1.types.Route]):
             Best routes for this router's network.
@@ -20671,26 +19398,21 @@ class RouterStatus(proto.Message):
             belongs.
     """
 
-    best_routes = proto.RepeatedField(proto.MESSAGE, number=127391237, message="Route",)
-
+    best_routes = proto.RepeatedField(proto.MESSAGE, number=395826693, message="Route",)
     best_routes_for_router = proto.RepeatedField(
         proto.MESSAGE, number=119389689, message="Route",
     )
-
     bgp_peer_status = proto.RepeatedField(
         proto.MESSAGE, number=218459131, message="RouterStatusBgpPeerStatus",
     )
-
     nat_status = proto.RepeatedField(
         proto.MESSAGE, number=63098064, message="RouterStatusNatStatus",
     )
-
-    network = proto.Field(proto.STRING, number=232872494)
+    network = proto.Field(proto.STRING, number=232872494, optional=True,)
 
 
 class RouterStatusResponse(proto.Message):
     r"""
-
     Attributes:
         kind (str):
             Type of resource.
@@ -20698,20 +19420,22 @@ class RouterStatusResponse(proto.Message):
 
     """
 
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    result = proto.Field(proto.MESSAGE, number=139315229, message="RouterStatus",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    result = proto.Field(
+        proto.MESSAGE, number=139315229, optional=True, message="RouterStatus",
+    )
 
 
 class RoutersPreviewResponse(proto.Message):
     r"""
-
     Attributes:
         resource (google.cloud.compute_v1.types.Router):
             Preview of given router.
     """
 
-    resource = proto.Field(proto.MESSAGE, number=195806222, message="Router",)
+    resource = proto.Field(
+        proto.MESSAGE, number=195806222, optional=True, message="Router",
+    )
 
 
 class SchedulingNodeAffinity(proto.Message):
@@ -20739,16 +19463,13 @@ class SchedulingNodeAffinity(proto.Message):
         NOT_IN = 161144369
         OPERATOR_UNSPECIFIED = 128892924
 
-    key = proto.Field(proto.STRING, number=106079)
-
-    operator = proto.Field(proto.ENUM, number=36317348, enum=Operator,)
-
-    values = proto.RepeatedField(proto.STRING, number=249928994)
+    key = proto.Field(proto.STRING, number=106079, optional=True,)
+    operator = proto.Field(proto.ENUM, number=36317348, optional=True, enum=Operator,)
+    values = proto.RepeatedField(proto.STRING, number=249928994,)
 
 
 class Screenshot(proto.Message):
     r"""An instance's screenshot.
-
     Attributes:
         contents (str):
             [Output Only] The Base64-encoded screenshot data.
@@ -20757,34 +19478,34 @@ class Screenshot(proto.Message):
             compute#screenshot for the screenshots.
     """
 
-    contents = proto.Field(proto.STRING, number=237984538)
-
-    kind = proto.Field(proto.STRING, number=3292052)
+    contents = proto.Field(proto.STRING, number=506419994, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
 
 
 class SecurityPoliciesWafConfig(proto.Message):
     r"""
-
     Attributes:
         waf_rules (google.cloud.compute_v1.types.PreconfiguredWafSet):
 
     """
 
     waf_rules = proto.Field(
-        proto.MESSAGE, number=74899924, message="PreconfiguredWafSet",
+        proto.MESSAGE, number=74899924, optional=True, message="PreconfiguredWafSet",
     )
 
 
 class SecurityPoliciesListPreconfiguredExpressionSetsResponse(proto.Message):
     r"""
-
     Attributes:
         preconfigured_expression_sets (google.cloud.compute_v1.types.SecurityPoliciesWafConfig):
 
     """
 
     preconfigured_expression_sets = proto.Field(
-        proto.MESSAGE, number=267765370, message="SecurityPoliciesWafConfig",
+        proto.MESSAGE,
+        number=536200826,
+        optional=True,
+        message="SecurityPoliciesWafConfig",
     )
 
 
@@ -20822,19 +19543,17 @@ class SecurityPolicyRule(proto.Message):
             lowest priority.
     """
 
-    action = proto.Field(proto.STRING, number=187661878)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
+    action = proto.Field(proto.STRING, number=187661878, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     match = proto.Field(
-        proto.MESSAGE, number=103668165, message="SecurityPolicyRuleMatcher",
+        proto.MESSAGE,
+        number=103668165,
+        optional=True,
+        message="SecurityPolicyRuleMatcher",
     )
-
-    preview = proto.Field(proto.BOOL, number=218686408)
-
-    priority = proto.Field(proto.INT32, number=176716196)
+    preview = proto.Field(proto.BOOL, number=218686408, optional=True,)
+    priority = proto.Field(proto.INT32, number=445151652, optional=True,)
 
 
 class SecurityPolicy(proto.Message):
@@ -20889,28 +19608,20 @@ class SecurityPolicy(proto.Message):
             [Output Only] Server-defined URL for the resource.
     """
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
     rules = proto.RepeatedField(
         proto.MESSAGE, number=108873975, message="SecurityPolicyRule",
     )
-
-    self_link = proto.Field(proto.STRING, number=187779341)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
 
 
 class SecurityPolicyList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -20935,28 +19646,25 @@ class SecurityPolicyList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="SecurityPolicy",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class SecurityPolicyReference(proto.Message):
     r"""
-
     Attributes:
         security_policy (str):
 
     """
 
-    security_policy = proto.Field(proto.STRING, number=171082513)
+    security_policy = proto.Field(proto.STRING, number=171082513, optional=True,)
 
 
 class SecurityPolicyRuleMatcher(proto.Message):
@@ -20991,29 +19699,30 @@ class SecurityPolicyRuleMatcher(proto.Message):
         SRC_IPS_V1 = 70925961
 
     config = proto.Field(
-        proto.MESSAGE, number=255820610, message="SecurityPolicyRuleMatcherConfig",
+        proto.MESSAGE,
+        number=255820610,
+        optional=True,
+        message="SecurityPolicyRuleMatcherConfig",
     )
-
-    expr = proto.Field(proto.MESSAGE, number=3127797, message="Expr",)
-
-    versioned_expr = proto.Field(proto.ENUM, number=53850557, enum=VersionedExpr,)
+    expr = proto.Field(proto.MESSAGE, number=3127797, optional=True, message="Expr",)
+    versioned_expr = proto.Field(
+        proto.ENUM, number=322286013, optional=True, enum=VersionedExpr,
+    )
 
 
 class SecurityPolicyRuleMatcherConfig(proto.Message):
     r"""
-
     Attributes:
         src_ip_ranges (Sequence[str]):
             CIDR IP address range. Maximum number of src_ip_ranges
             allowed is 10.
     """
 
-    src_ip_ranges = proto.RepeatedField(proto.STRING, number=163692627)
+    src_ip_ranges = proto.RepeatedField(proto.STRING, number=432128083,)
 
 
 class SerialPortOutput(proto.Message):
     r"""An instance's serial console output.
-
     Attributes:
         contents (str):
             [Output Only] The contents of the console output.
@@ -21037,20 +19746,15 @@ class SerialPortOutput(proto.Message):
             ``start`` value that was specified in the request.
     """
 
-    contents = proto.Field(proto.STRING, number=237984538)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_ = proto.Field(proto.STRING, number=3377907)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    start = proto.Field(proto.STRING, number=109757538)
+    contents = proto.Field(proto.STRING, number=506419994, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_ = proto.Field(proto.STRING, number=3377907, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    start = proto.Field(proto.STRING, number=109757538, optional=True,)
 
 
 class ShieldedInstanceIdentityEntry(proto.Message):
     r"""A Shielded Instance Identity Entry.
-
     Attributes:
         ek_cert (str):
             A PEM-encoded X.509 certificate. This field
@@ -21059,14 +19763,12 @@ class ShieldedInstanceIdentityEntry(proto.Message):
             A PEM-encoded public key.
     """
 
-    ek_cert = proto.Field(proto.STRING, number=181743133)
-
-    ek_pub = proto.Field(proto.STRING, number=40512484)
+    ek_cert = proto.Field(proto.STRING, number=450178589, optional=True,)
+    ek_pub = proto.Field(proto.STRING, number=308947940, optional=True,)
 
 
 class ShieldedInstanceIdentity(proto.Message):
     r"""A shielded Instance identity entry.
-
     Attributes:
         encryption_key (google.cloud.compute_v1.types.ShieldedInstanceIdentityEntry):
             An Endorsement Key (EK) made by the RSA 2048
@@ -21083,13 +19785,17 @@ class ShieldedInstanceIdentity(proto.Message):
     """
 
     encryption_key = proto.Field(
-        proto.MESSAGE, number=219833251, message="ShieldedInstanceIdentityEntry",
+        proto.MESSAGE,
+        number=488268707,
+        optional=True,
+        message="ShieldedInstanceIdentityEntry",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     signing_key = proto.Field(
-        proto.MESSAGE, number=52512805, message="ShieldedInstanceIdentityEntry",
+        proto.MESSAGE,
+        number=320948261,
+        optional=True,
+        message="ShieldedInstanceIdentityEntry",
     )
 
 
@@ -21112,9 +19818,8 @@ class SignedUrlKey(proto.Message):
             base64url encoded string.
     """
 
-    key_name = proto.Field(proto.STRING, number=232503403)
-
-    key_value = proto.Field(proto.STRING, number=235671441)
+    key_name = proto.Field(proto.STRING, number=500938859, optional=True,)
+    key_value = proto.Field(proto.STRING, number=504106897, optional=True,)
 
 
 class Snapshot(proto.Message):
@@ -21239,9 +19944,9 @@ class Snapshot(proto.Message):
         DELETING, FAILED, READY, or UPLOADING.
         """
         UNDEFINED_STATUS = 0
-        CREATING = 187129529
-        DELETING = 260166568
-        FAILED = 187271229
+        CREATING = 455564985
+        DELETING = 528602024
+        FAILED = 455706685
         READY = 77848963
         UPLOADING = 267603489
 
@@ -21253,63 +19958,41 @@ class Snapshot(proto.Message):
         up-to-date.
         """
         UNDEFINED_STORAGE_BYTES_STATUS = 0
-        UPDATING = 226178886
+        UPDATING = 494614342
         UP_TO_DATE = 101306702
 
-    auto_created = proto.Field(proto.BOOL, number=195486808)
-
-    chain_name = proto.Field(proto.STRING, number=68644169)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    disk_size_gb = proto.Field(proto.STRING, number=47828279)
-
-    download_bytes = proto.Field(proto.STRING, number=166618612)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    label_fingerprint = proto.Field(proto.STRING, number=178124825)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=231759871)
-
-    license_codes = proto.RepeatedField(proto.STRING, number=45482664)
-
-    licenses = proto.RepeatedField(proto.STRING, number=69207122)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
+    auto_created = proto.Field(proto.BOOL, number=463922264, optional=True,)
+    chain_name = proto.Field(proto.STRING, number=68644169, optional=True,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    disk_size_gb = proto.Field(proto.STRING, number=316263735, optional=True,)
+    download_bytes = proto.Field(proto.STRING, number=435054068, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
+    license_codes = proto.RepeatedField(proto.STRING, number=45482664,)
+    licenses = proto.RepeatedField(proto.STRING, number=337642578,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     snapshot_encryption_key = proto.Field(
-        proto.MESSAGE, number=43334526, message="CustomerEncryptionKey",
+        proto.MESSAGE, number=43334526, optional=True, message="CustomerEncryptionKey",
     )
-
-    source_disk = proto.Field(proto.STRING, number=183318337)
-
+    source_disk = proto.Field(proto.STRING, number=451753793, optional=True,)
     source_disk_encryption_key = proto.Field(
-        proto.MESSAGE, number=263065697, message="CustomerEncryptionKey",
+        proto.MESSAGE, number=531501153, optional=True, message="CustomerEncryptionKey",
     )
-
-    source_disk_id = proto.Field(proto.STRING, number=185755353)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
-
-    storage_bytes = proto.Field(proto.STRING, number=156196263)
-
+    source_disk_id = proto.Field(proto.STRING, number=454190809, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    storage_bytes = proto.Field(proto.STRING, number=424631719, optional=True,)
     storage_bytes_status = proto.Field(
-        proto.ENUM, number=222303626, enum=StorageBytesStatus,
+        proto.ENUM, number=490739082, optional=True, enum=StorageBytesStatus,
     )
-
-    storage_locations = proto.RepeatedField(proto.STRING, number=59569818)
+    storage_locations = proto.RepeatedField(proto.STRING, number=328005274,)
 
 
 class SnapshotList(proto.Message):
     r"""Contains a list of Snapshot resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -21335,22 +20018,18 @@ class SnapshotList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Snapshot",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class SslCertificateManagedSslCertificate(proto.Message):
     r"""Configuration and status of a managed SSL certificate.
-
     Attributes:
         domain_status (Sequence[google.cloud.compute_v1.types.SslCertificateManagedSslCertificate.DomainStatusEntry]):
             [Output only] Detailed statuses of the domains specified for
@@ -21366,23 +20045,20 @@ class SslCertificateManagedSslCertificate(proto.Message):
     class Status(proto.Enum):
         r"""[Output only] Status of the managed certificate resource."""
         UNDEFINED_STATUS = 0
-        ACTIVE = 46297862
-        MANAGED_CERTIFICATE_STATUS_UNSPECIFIED = 206365394
-        PROVISIONING = 22461165
+        ACTIVE = 314733318
+        MANAGED_CERTIFICATE_STATUS_UNSPECIFIED = 474800850
+        PROVISIONING = 290896621
         PROVISIONING_FAILED = 76813775
-        PROVISIONING_FAILED_PERMANENTLY = 6600747
-        RENEWAL_FAILED = 166223620
+        PROVISIONING_FAILED_PERMANENTLY = 275036203
+        RENEWAL_FAILED = 434659076
 
-    domain_status = proto.MapField(proto.STRING, proto.STRING, number=91870157)
-
-    domains = proto.RepeatedField(proto.STRING, number=226935855)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
+    domain_status = proto.MapField(proto.STRING, proto.STRING, number=360305613,)
+    domains = proto.RepeatedField(proto.STRING, number=226935855,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
 
 
 class SslCertificateSelfManagedSslCertificate(proto.Message):
     r"""Configuration and status of a self-managed SSL certificate.
-
     Attributes:
         certificate (str):
             A local certificate file. The certificate
@@ -21394,9 +20070,8 @@ class SslCertificateSelfManagedSslCertificate(proto.Message):
             insert requests will include this field.
     """
 
-    certificate = proto.Field(proto.STRING, number=73351575)
-
-    private_key = proto.Field(proto.STRING, number=92895651)
+    certificate = proto.Field(proto.STRING, number=341787031, optional=True,)
+    private_key = proto.Field(proto.STRING, number=361331107, optional=True,)
 
 
 class SslCertificate(proto.Message):
@@ -21487,48 +20162,38 @@ class SslCertificate(proto.Message):
         self-managed and the fields certificate and private_key are used.
         """
         UNDEFINED_TYPE = 0
-        MANAGED = 211065727
-        SELF_MANAGED = 166002060
-        TYPE_UNSPECIFIED = 169278866
+        MANAGED = 479501183
+        SELF_MANAGED = 434437516
+        TYPE_UNSPECIFIED = 437714322
 
-    certificate = proto.Field(proto.STRING, number=73351575)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    expire_time = proto.Field(proto.STRING, number=172255725)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
+    certificate = proto.Field(proto.STRING, number=341787031, optional=True,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    expire_time = proto.Field(proto.STRING, number=440691181, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     managed = proto.Field(
-        proto.MESSAGE, number=29953951, message="SslCertificateManagedSslCertificate",
+        proto.MESSAGE,
+        number=298389407,
+        optional=True,
+        message="SslCertificateManagedSslCertificate",
     )
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    private_key = proto.Field(proto.STRING, number=92895651)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    private_key = proto.Field(proto.STRING, number=361331107, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     self_managed = proto.Field(
         proto.MESSAGE,
-        number=60848556,
+        number=329284012,
+        optional=True,
         message="SslCertificateSelfManagedSslCertificate",
     )
-
-    subject_alternative_names = proto.RepeatedField(proto.STRING, number=260372451)
-
-    type_ = proto.Field(proto.ENUM, number=3575610, enum=Type,)
+    subject_alternative_names = proto.RepeatedField(proto.STRING, number=528807907,)
+    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
 
 
 class SslCertificatesScopedList(proto.Message):
     r"""
-
     Attributes:
         ssl_certificates (Sequence[google.cloud.compute_v1.types.SslCertificate]):
             List of SslCertificates contained in this
@@ -21539,15 +20204,15 @@ class SslCertificatesScopedList(proto.Message):
     """
 
     ssl_certificates = proto.RepeatedField(
-        proto.MESSAGE, number=97571087, message="SslCertificate",
+        proto.MESSAGE, number=366006543, message="SslCertificate",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class SslCertificateAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -21578,29 +20243,24 @@ class SslCertificateAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=100526016,
         message="SslCertificatesScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class SslCertificateList(proto.Message):
     r"""Contains a list of SslCertificate resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -21626,19 +20286,16 @@ class SslCertificateList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="SslCertificate",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class SslPolicy(proto.Message):
@@ -21727,38 +20384,28 @@ class SslPolicy(proto.Message):
         """
         UNDEFINED_PROFILE = 0
         COMPATIBLE = 179357396
-        CUSTOM = 120160113
+        CUSTOM = 388595569
         MODERN = 132013855
         RESTRICTED = 261551195
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    custom_features = proto.RepeatedField(proto.STRING, number=34789707)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    enabled_features = proto.RepeatedField(proto.STRING, number=200582011)
-
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    min_tls_version = proto.Field(proto.ENUM, number=8155943, enum=MinTlsVersion,)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    profile = proto.Field(proto.ENUM, number=227445161, enum=Profile,)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warnings = proto.RepeatedField(proto.MESSAGE, number=229655639, message="Warnings",)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    custom_features = proto.RepeatedField(proto.STRING, number=34789707,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    enabled_features = proto.RepeatedField(proto.STRING, number=469017467,)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    min_tls_version = proto.Field(
+        proto.ENUM, number=8155943, optional=True, enum=MinTlsVersion,
+    )
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    profile = proto.Field(proto.ENUM, number=227445161, optional=True, enum=Profile,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warnings = proto.RepeatedField(proto.MESSAGE, number=498091095, message="Warnings",)
 
 
 class SslPoliciesList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -21785,33 +20432,28 @@ class SslPoliciesList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="SslPolicy",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class SslPoliciesListAvailableFeaturesResponse(proto.Message):
     r"""
-
     Attributes:
         features (Sequence[str]):
 
     """
 
-    features = proto.RepeatedField(proto.STRING, number=246211645)
+    features = proto.RepeatedField(proto.STRING, number=246211645,)
 
 
 class SslPolicyReference(proto.Message):
     r"""
-
     Attributes:
         ssl_policy (str):
             URL of the SSL policy resource. Set this to
@@ -21819,12 +20461,11 @@ class SslPolicyReference(proto.Message):
             associated with the target proxy resource.
     """
 
-    ssl_policy = proto.Field(proto.STRING, number=26754757)
+    ssl_policy = proto.Field(proto.STRING, number=295190213, optional=True,)
 
 
 class StatefulPolicyPreservedState(proto.Message):
     r"""Configuration of preserved resources.
-
     Attributes:
         disks (Sequence[google.cloud.compute_v1.types.StatefulPolicyPreservedState.DisksEntry]):
             Disks created on the instances that will be
@@ -21842,7 +20483,6 @@ class StatefulPolicyPreservedState(proto.Message):
 
 class StatefulPolicyPreservedStateDiskDevice(proto.Message):
     r"""
-
     Attributes:
         auto_delete (google.cloud.compute_v1.types.StatefulPolicyPreservedStateDiskDevice.AutoDelete):
             These stateful disks will never be deleted during
@@ -21865,12 +20505,13 @@ class StatefulPolicyPreservedStateDiskDevice(proto.Message):
         NEVER = 74175084
         ON_PERMANENT_INSTANCE_DELETION = 95727719
 
-    auto_delete = proto.Field(proto.ENUM, number=196325947, enum=AutoDelete,)
+    auto_delete = proto.Field(
+        proto.ENUM, number=464761403, optional=True, enum=AutoDelete,
+    )
 
 
 class SubnetworkLogConfig(proto.Message):
     r"""The available logging options for this subnetwork.
-
     Attributes:
         aggregation_interval (google.cloud.compute_v1.types.SubnetworkLogConfig.AggregationInterval):
             Can only be specified if VPC flow logging for
@@ -21914,8 +20555,8 @@ class SubnetworkLogConfig(proto.Message):
         interval of 5 seconds per connection.
         """
         UNDEFINED_AGGREGATION_INTERVAL = 0
-        INTERVAL_10_MIN = 218720460
-        INTERVAL_15_MIN = 223338065
+        INTERVAL_10_MIN = 487155916
+        INTERVAL_15_MIN = 491773521
         INTERVAL_1_MIN = 69052714
         INTERVAL_30_SEC = 7548937
         INTERVAL_5_MIN = 72746798
@@ -21929,27 +20570,21 @@ class SubnetworkLogConfig(proto.Message):
         """
         UNDEFINED_METADATA = 0
         CUSTOM_METADATA = 62450749
-        EXCLUDE_ALL_METADATA = 66084498
+        EXCLUDE_ALL_METADATA = 334519954
         INCLUDE_ALL_METADATA = 164619908
 
     aggregation_interval = proto.Field(
-        proto.ENUM, number=174919042, enum=AggregationInterval,
+        proto.ENUM, number=174919042, optional=True, enum=AggregationInterval,
     )
-
-    enable = proto.Field(proto.BOOL, number=43328899)
-
-    filter_expr = proto.Field(proto.STRING, number=183374428)
-
-    flow_sampling = proto.Field(proto.FLOAT, number=261714904)
-
-    metadata = proto.Field(proto.ENUM, number=86866735, enum=Metadata,)
-
-    metadata_fields = proto.RepeatedField(proto.STRING, number=110026185)
+    enable = proto.Field(proto.BOOL, number=311764355, optional=True,)
+    filter_expr = proto.Field(proto.STRING, number=183374428, optional=True,)
+    flow_sampling = proto.Field(proto.FLOAT, number=530150360, optional=True,)
+    metadata = proto.Field(proto.ENUM, number=86866735, optional=True, enum=Metadata,)
+    metadata_fields = proto.RepeatedField(proto.STRING, number=378461641,)
 
 
 class SubnetworkSecondaryRange(proto.Message):
     r"""Represents a secondary IP range of a subnetwork.
-
     Attributes:
         ip_cidr_range (str):
             The range of IP addresses belonging to this
@@ -21968,9 +20603,8 @@ class SubnetworkSecondaryRange(proto.Message):
             name must be unique within the subnetwork.
     """
 
-    ip_cidr_range = proto.Field(proto.STRING, number=98117322)
-
-    range_name = proto.Field(proto.STRING, number=63780941)
+    ip_cidr_range = proto.Field(proto.STRING, number=98117322, optional=True,)
+    range_name = proto.Field(proto.STRING, number=332216397, optional=True,)
 
 
 class Subnetwork(proto.Message):
@@ -22112,9 +20746,9 @@ class Subnetwork(proto.Message):
         using patch.
         """
         UNDEFINED_PRIVATE_IPV6_GOOGLE_ACCESS = 0
-        DISABLE_GOOGLE_ACCESS = 182523123
-        ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE = 159540538
-        ENABLE_OUTBOUND_VM_ACCESS_TO_GOOGLE = 19774807
+        DISABLE_GOOGLE_ACCESS = 450958579
+        ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE = 427975994
+        ENABLE_OUTBOUND_VM_ACCESS_TO_GOOGLE = 288210263
 
     class Purpose(proto.Enum):
         r"""The purpose of the resource. This field can be either
@@ -22127,7 +20761,7 @@ class Subnetwork(proto.Message):
         """
         UNDEFINED_PURPOSE = 0
         INTERNAL_HTTPS_LOAD_BALANCER = 248748889
-        PRIVATE = 135049571
+        PRIVATE = 403485027
         PRIVATE_RFC_1918 = 254902107
 
     class Role(proto.Enum):
@@ -22139,8 +20773,8 @@ class Subnetwork(proto.Message):
         draining. This field can be updated with a patch request.
         """
         UNDEFINED_ROLE = 0
-        ACTIVE = 46297862
-        BACKUP = 72575426
+        ACTIVE = 314733318
+        BACKUP = 341010882
 
     class State(proto.Enum):
         r"""[Output Only] The state of the subnetwork, which can be one of the
@@ -22153,59 +20787,39 @@ class Subnetwork(proto.Message):
         deleted UPDATING: Subnetwork is being updated
         """
         UNDEFINED_STATE = 0
-        DRAINING = 212019946
+        DRAINING = 480455402
         READY = 77848963
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    enable_flow_logs = proto.Field(proto.BOOL, number=151544420)
-
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
-    gateway_address = proto.Field(proto.STRING, number=191431929)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    ip_cidr_range = proto.Field(proto.STRING, number=98117322)
-
-    ipv6_cidr_range = proto.Field(proto.STRING, number=4705802)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    enable_flow_logs = proto.Field(proto.BOOL, number=151544420, optional=True,)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    gateway_address = proto.Field(proto.STRING, number=459867385, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    ip_cidr_range = proto.Field(proto.STRING, number=98117322, optional=True,)
+    ipv6_cidr_range = proto.Field(proto.STRING, number=273141258, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     log_config = proto.Field(
-        proto.MESSAGE, number=82864285, message="SubnetworkLogConfig",
+        proto.MESSAGE, number=351299741, optional=True, message="SubnetworkLogConfig",
     )
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    network = proto.Field(proto.STRING, number=232872494)
-
-    private_ip_google_access = proto.Field(proto.BOOL, number=153056334)
-
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    network = proto.Field(proto.STRING, number=232872494, optional=True,)
+    private_ip_google_access = proto.Field(proto.BOOL, number=421491790, optional=True,)
     private_ipv6_google_access = proto.Field(
-        proto.ENUM, number=48277006, enum=PrivateIpv6GoogleAccess,
+        proto.ENUM, number=48277006, optional=True, enum=PrivateIpv6GoogleAccess,
     )
-
-    purpose = proto.Field(proto.ENUM, number=47971614, enum=Purpose,)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    role = proto.Field(proto.ENUM, number=3506294, enum=Role,)
-
+    purpose = proto.Field(proto.ENUM, number=316407070, optional=True, enum=Purpose,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    role = proto.Field(proto.ENUM, number=3506294, optional=True, enum=Role,)
     secondary_ip_ranges = proto.RepeatedField(
         proto.MESSAGE, number=136658915, message="SubnetworkSecondaryRange",
     )
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    state = proto.Field(proto.ENUM, number=109757585, enum=State,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
 
 
 class SubnetworksScopedList(proto.Message):
     r"""
-
     Attributes:
         subnetworks (Sequence[google.cloud.compute_v1.types.Subnetwork]):
             A list of subnetworks contained in this
@@ -22216,15 +20830,15 @@ class SubnetworksScopedList(proto.Message):
     """
 
     subnetworks = proto.RepeatedField(
-        proto.MESSAGE, number=147417669, message="Subnetwork",
+        proto.MESSAGE, number=415853125, message="Subnetwork",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class SubnetworkAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -22254,26 +20868,21 @@ class SubnetworkAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="SubnetworksScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class SubnetworkList(proto.Message):
     r"""Contains a list of Subnetwork resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -22300,22 +20909,18 @@ class SubnetworkList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Subnetwork",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class SubnetworksExpandIpCidrRangeRequest(proto.Message):
     r"""
-
     Attributes:
         ip_cidr_range (str):
             The IP (in CIDR format or netmask) of
@@ -22327,18 +20932,17 @@ class SubnetworksExpandIpCidrRangeRequest(proto.Message):
             update.
     """
 
-    ip_cidr_range = proto.Field(proto.STRING, number=98117322)
+    ip_cidr_range = proto.Field(proto.STRING, number=98117322, optional=True,)
 
 
 class SubnetworksSetPrivateIpGoogleAccessRequest(proto.Message):
     r"""
-
     Attributes:
         private_ip_google_access (bool):
 
     """
 
-    private_ip_google_access = proto.Field(proto.BOOL, number=153056334)
+    private_ip_google_access = proto.Field(proto.BOOL, number=421491790, optional=True,)
 
 
 class TargetGrpcProxy(proto.Message):
@@ -22408,30 +21012,20 @@ class TargetGrpcProxy(proto.Message):
             target URI of the service it is connecting to
     """
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    self_link_with_id = proto.Field(proto.STRING, number=44520962)
-
-    url_map = proto.Field(proto.STRING, number=98585228)
-
-    validate_for_proxyless = proto.Field(proto.BOOL, number=101822888)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    self_link_with_id = proto.Field(proto.STRING, number=44520962, optional=True,)
+    url_map = proto.Field(proto.STRING, number=367020684, optional=True,)
+    validate_for_proxyless = proto.Field(proto.BOOL, number=101822888, optional=True,)
 
 
 class TargetGrpcProxyList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -22458,19 +21052,16 @@ class TargetGrpcProxyList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="TargetGrpcProxy",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TargetHttpProxy(proto.Message):
@@ -22552,30 +21143,20 @@ class TargetHttpProxy(proto.Message):
             mapping from URL to the BackendService.
     """
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    fingerprint = proto.Field(proto.STRING, number=234678500)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    proxy_bind = proto.Field(proto.BOOL, number=17590126)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    url_map = proto.Field(proto.STRING, number=98585228)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    proxy_bind = proto.Field(proto.BOOL, number=286025582, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    url_map = proto.Field(proto.STRING, number=367020684, optional=True,)
 
 
 class TargetHttpProxiesScopedList(proto.Message):
     r"""
-
     Attributes:
         target_http_proxies (Sequence[google.cloud.compute_v1.types.TargetHttpProxy]):
             A list of TargetHttpProxies contained in this
@@ -22588,13 +21169,13 @@ class TargetHttpProxiesScopedList(proto.Message):
     target_http_proxies = proto.RepeatedField(
         proto.MESSAGE, number=162147011, message="TargetHttpProxy",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TargetHttpProxyAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -22623,27 +21204,21 @@ class TargetHttpProxyAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=100526016,
         message="TargetHttpProxiesScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
 
 
 class TargetHttpProxyList(proto.Message):
     r"""A list of TargetHttpProxy resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -22671,19 +21246,16 @@ class TargetHttpProxyList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="TargetHttpProxy",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TargetHttpsProxy(proto.Message):
@@ -22815,41 +21387,29 @@ class TargetHttpsProxy(proto.Message):
         """
         UNDEFINED_QUIC_OVERRIDE = 0
         DISABLE = 241807048
-        ENABLE = 170400131
+        ENABLE = 438835587
         NONE = 2402104
 
-    authorization_policy = proto.Field(proto.STRING, number=33945528)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    proxy_bind = proto.Field(proto.BOOL, number=17590126)
-
-    quic_override = proto.Field(proto.ENUM, number=188141741, enum=QuicOverride,)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    server_tls_policy = proto.Field(proto.STRING, number=27389810)
-
-    ssl_certificates = proto.RepeatedField(proto.STRING, number=97571087)
-
-    ssl_policy = proto.Field(proto.STRING, number=26754757)
-
-    url_map = proto.Field(proto.STRING, number=98585228)
+    authorization_policy = proto.Field(proto.STRING, number=33945528, optional=True,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    proxy_bind = proto.Field(proto.BOOL, number=286025582, optional=True,)
+    quic_override = proto.Field(
+        proto.ENUM, number=456577197, optional=True, enum=QuicOverride,
+    )
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    server_tls_policy = proto.Field(proto.STRING, number=295825266, optional=True,)
+    ssl_certificates = proto.RepeatedField(proto.STRING, number=366006543,)
+    ssl_policy = proto.Field(proto.STRING, number=295190213, optional=True,)
+    url_map = proto.Field(proto.STRING, number=367020684, optional=True,)
 
 
 class TargetHttpsProxiesScopedList(proto.Message):
     r"""
-
     Attributes:
         target_https_proxies (Sequence[google.cloud.compute_v1.types.TargetHttpsProxy]):
             A list of TargetHttpsProxies contained in
@@ -22860,15 +21420,15 @@ class TargetHttpsProxiesScopedList(proto.Message):
     """
 
     target_https_proxies = proto.RepeatedField(
-        proto.MESSAGE, number=98172426, message="TargetHttpsProxy",
+        proto.MESSAGE, number=366607882, message="TargetHttpsProxy",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TargetHttpsProxiesSetQuicOverrideRequest(proto.Message):
     r"""
-
     Attributes:
         quic_override (google.cloud.compute_v1.types.TargetHttpsProxiesSetQuicOverrideRequest.QuicOverride):
             QUIC policy for the TargetHttpsProxy
@@ -22879,15 +21439,16 @@ class TargetHttpsProxiesSetQuicOverrideRequest(proto.Message):
         r"""QUIC policy for the TargetHttpsProxy resource."""
         UNDEFINED_QUIC_OVERRIDE = 0
         DISABLE = 241807048
-        ENABLE = 170400131
+        ENABLE = 438835587
         NONE = 2402104
 
-    quic_override = proto.Field(proto.ENUM, number=188141741, enum=QuicOverride,)
+    quic_override = proto.Field(
+        proto.ENUM, number=456577197, optional=True, enum=QuicOverride,
+    )
 
 
 class TargetHttpsProxiesSetSslCertificatesRequest(proto.Message):
     r"""
-
     Attributes:
         ssl_certificates (Sequence[str]):
             New set of SslCertificate resources to
@@ -22896,12 +21457,11 @@ class TargetHttpsProxiesSetSslCertificatesRequest(proto.Message):
             must be specified.
     """
 
-    ssl_certificates = proto.RepeatedField(proto.STRING, number=97571087)
+    ssl_certificates = proto.RepeatedField(proto.STRING, number=366006543,)
 
 
 class TargetHttpsProxyAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -22932,29 +21492,24 @@ class TargetHttpsProxyAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=100526016,
         message="TargetHttpsProxiesScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TargetHttpsProxyList(proto.Message):
     r"""Contains a list of TargetHttpsProxy resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -22982,19 +21537,16 @@ class TargetHttpsProxyList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="TargetHttpsProxy",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TargetInstance(proto.Message):
@@ -23057,28 +21609,21 @@ class TargetInstance(proto.Message):
         UNDEFINED_NAT_POLICY = 0
         NO_NAT = 161455491
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    nat_policy = proto.Field(proto.ENUM, number=241345040, enum=NatPolicy,)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    instance = proto.Field(proto.STRING, number=18257045, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    nat_policy = proto.Field(
+        proto.ENUM, number=509780496, optional=True, enum=NatPolicy,
+    )
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684, optional=True,)
 
 
 class TargetInstancesScopedList(proto.Message):
     r"""
-
     Attributes:
         target_instances (Sequence[google.cloud.compute_v1.types.TargetInstance]):
             A list of target instances contained in this
@@ -23089,15 +21634,15 @@ class TargetInstancesScopedList(proto.Message):
     """
 
     target_instances = proto.RepeatedField(
-        proto.MESSAGE, number=124479824, message="TargetInstance",
+        proto.MESSAGE, number=392915280, message="TargetInstance",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TargetInstanceAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -23125,29 +21670,24 @@ class TargetInstanceAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=100526016,
         message="TargetInstancesScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TargetInstanceList(proto.Message):
     r"""Contains a list of TargetInstance resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -23173,19 +21713,16 @@ class TargetInstanceList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="TargetInstance",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TargetPool(proto.Message):
@@ -23294,42 +21831,32 @@ class TargetPool(proto.Message):
         instance remains healthy.
         """
         UNDEFINED_SESSION_AFFINITY = 0
-        CLIENT_IP = 77229595
+        CLIENT_IP = 345665051
         CLIENT_IP_PORT_PROTO = 221722926
         CLIENT_IP_PROTO = 25322148
-        GENERATED_COOKIE = 101885748
+        GENERATED_COOKIE = 370321204
         HEADER_FIELD = 200737960
-        HTTP_COOKIE = 226546171
+        HTTP_COOKIE = 494981627
         NONE = 2402104
 
-    backup_pool = proto.Field(proto.STRING, number=45884537)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    failover_ratio = proto.Field(proto.FLOAT, number=212667006)
-
-    health_checks = proto.RepeatedField(proto.STRING, number=179935150)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    instances = proto.RepeatedField(proto.STRING, number=29097598)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    session_affinity = proto.Field(proto.ENUM, number=195453105, enum=SessionAffinity,)
+    backup_pool = proto.Field(proto.STRING, number=45884537, optional=True,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    failover_ratio = proto.Field(proto.FLOAT, number=212667006, optional=True,)
+    health_checks = proto.RepeatedField(proto.STRING, number=448370606,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    instances = proto.RepeatedField(proto.STRING, number=29097598,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    session_affinity = proto.Field(
+        proto.ENUM, number=463888561, optional=True, enum=SessionAffinity,
+    )
 
 
 class TargetPoolsScopedList(proto.Message):
     r"""
-
     Attributes:
         target_pools (Sequence[google.cloud.compute_v1.types.TargetPool]):
             A list of target pools contained in this
@@ -23340,15 +21867,15 @@ class TargetPoolsScopedList(proto.Message):
     """
 
     target_pools = proto.RepeatedField(
-        proto.MESSAGE, number=67637161, message="TargetPool",
+        proto.MESSAGE, number=336072617, message="TargetPool",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TargetPoolAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -23378,26 +21905,21 @@ class TargetPoolAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="TargetPoolsScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TargetPoolInstanceHealth(proto.Message):
     r"""
-
     Attributes:
         health_status (Sequence[google.cloud.compute_v1.types.HealthStatus]):
 
@@ -23408,15 +21930,13 @@ class TargetPoolInstanceHealth(proto.Message):
     """
 
     health_status = proto.RepeatedField(
-        proto.MESSAGE, number=112110389, message="HealthStatus",
+        proto.MESSAGE, number=380545845, message="HealthStatus",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
 
 
 class TargetPoolList(proto.Message):
     r"""Contains a list of TargetPool resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -23443,22 +21963,18 @@ class TargetPoolList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="TargetPool",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TargetPoolsAddHealthCheckRequest(proto.Message):
     r"""
-
     Attributes:
         health_checks (Sequence[google.cloud.compute_v1.types.HealthCheckReference]):
             The HttpHealthCheck to add to the target
@@ -23466,13 +21982,12 @@ class TargetPoolsAddHealthCheckRequest(proto.Message):
     """
 
     health_checks = proto.RepeatedField(
-        proto.MESSAGE, number=179935150, message="HealthCheckReference",
+        proto.MESSAGE, number=448370606, message="HealthCheckReference",
     )
 
 
 class TargetPoolsAddInstanceRequest(proto.Message):
     r"""
-
     Attributes:
         instances (Sequence[google.cloud.compute_v1.types.InstanceReference]):
             A full or partial URL to an instance to add
@@ -23493,7 +22008,6 @@ class TargetPoolsAddInstanceRequest(proto.Message):
 
 class TargetPoolsRemoveHealthCheckRequest(proto.Message):
     r"""
-
     Attributes:
         health_checks (Sequence[google.cloud.compute_v1.types.HealthCheckReference]):
             Health check URL to be removed. This can be a
@@ -23506,13 +22020,12 @@ class TargetPoolsRemoveHealthCheckRequest(proto.Message):
     """
 
     health_checks = proto.RepeatedField(
-        proto.MESSAGE, number=179935150, message="HealthCheckReference",
+        proto.MESSAGE, number=448370606, message="HealthCheckReference",
     )
 
 
 class TargetPoolsRemoveInstanceRequest(proto.Message):
     r"""
-
     Attributes:
         instances (Sequence[google.cloud.compute_v1.types.InstanceReference]):
             URLs of the instances to be removed from
@@ -23526,30 +22039,27 @@ class TargetPoolsRemoveInstanceRequest(proto.Message):
 
 class TargetReference(proto.Message):
     r"""
-
     Attributes:
         target (str):
 
     """
 
-    target = proto.Field(proto.STRING, number=192835985)
+    target = proto.Field(proto.STRING, number=192835985, optional=True,)
 
 
 class TargetSslProxiesSetBackendServiceRequest(proto.Message):
     r"""
-
     Attributes:
         service (str):
             The URL of the new BackendService resource
             for the targetSslProxy.
     """
 
-    service = proto.Field(proto.STRING, number=105105077)
+    service = proto.Field(proto.STRING, number=373540533, optional=True,)
 
 
 class TargetSslProxiesSetProxyHeaderRequest(proto.Message):
     r"""
-
     Attributes:
         proxy_header (google.cloud.compute_v1.types.TargetSslProxiesSetProxyHeaderRequest.ProxyHeader):
             The new type of proxy header to append before sending data
@@ -23562,14 +22072,15 @@ class TargetSslProxiesSetProxyHeaderRequest(proto.Message):
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
-        PROXY_V1 = 65917484
+        PROXY_V1 = 334352940
 
-    proxy_header = proto.Field(proto.ENUM, number=160374142, enum=ProxyHeader,)
+    proxy_header = proto.Field(
+        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
+    )
 
 
 class TargetSslProxiesSetSslCertificatesRequest(proto.Message):
     r"""
-
     Attributes:
         ssl_certificates (Sequence[str]):
             New set of URLs to SslCertificate resources
@@ -23577,7 +22088,7 @@ class TargetSslProxiesSetSslCertificatesRequest(proto.Message):
             exactly one ssl certificate must be specified.
     """
 
-    ssl_certificates = proto.RepeatedField(proto.STRING, number=97571087)
+    ssl_certificates = proto.RepeatedField(proto.STRING, number=366006543,)
 
 
 class TargetSslProxy(proto.Message):
@@ -23638,32 +22149,24 @@ class TargetSslProxy(proto.Message):
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
-        PROXY_V1 = 65917484
+        PROXY_V1 = 334352940
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    proxy_header = proto.Field(proto.ENUM, number=160374142, enum=ProxyHeader,)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    service = proto.Field(proto.STRING, number=105105077)
-
-    ssl_certificates = proto.RepeatedField(proto.STRING, number=97571087)
-
-    ssl_policy = proto.Field(proto.STRING, number=26754757)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    proxy_header = proto.Field(
+        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
+    )
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    service = proto.Field(proto.STRING, number=373540533, optional=True,)
+    ssl_certificates = proto.RepeatedField(proto.STRING, number=366006543,)
+    ssl_policy = proto.Field(proto.STRING, number=295190213, optional=True,)
 
 
 class TargetSslProxyList(proto.Message):
     r"""Contains a list of TargetSslProxy resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -23689,36 +22192,31 @@ class TargetSslProxyList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="TargetSslProxy",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TargetTcpProxiesSetBackendServiceRequest(proto.Message):
     r"""
-
     Attributes:
         service (str):
             The URL of the new BackendService resource
             for the targetTcpProxy.
     """
 
-    service = proto.Field(proto.STRING, number=105105077)
+    service = proto.Field(proto.STRING, number=373540533, optional=True,)
 
 
 class TargetTcpProxiesSetProxyHeaderRequest(proto.Message):
     r"""
-
     Attributes:
         proxy_header (google.cloud.compute_v1.types.TargetTcpProxiesSetProxyHeaderRequest.ProxyHeader):
             The new type of proxy header to append before sending data
@@ -23731,9 +22229,11 @@ class TargetTcpProxiesSetProxyHeaderRequest(proto.Message):
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
-        PROXY_V1 = 65917484
+        PROXY_V1 = 334352940
 
-    proxy_header = proto.Field(proto.ENUM, number=160374142, enum=ProxyHeader,)
+    proxy_header = proto.Field(
+        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
+    )
 
 
 class TargetTcpProxy(proto.Message):
@@ -23783,28 +22283,22 @@ class TargetTcpProxy(proto.Message):
         """
         UNDEFINED_PROXY_HEADER = 0
         NONE = 2402104
-        PROXY_V1 = 65917484
+        PROXY_V1 = 334352940
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    proxy_header = proto.Field(proto.ENUM, number=160374142, enum=ProxyHeader,)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    service = proto.Field(proto.STRING, number=105105077)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    proxy_header = proto.Field(
+        proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
+    )
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    service = proto.Field(proto.STRING, number=373540533, optional=True,)
 
 
 class TargetTcpProxyList(proto.Message):
     r"""Contains a list of TargetTcpProxy resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -23830,19 +22324,16 @@ class TargetTcpProxyList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="TargetTcpProxy",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TargetVpnGateway(proto.Message):
@@ -23904,37 +22395,26 @@ class TargetVpnGateway(proto.Message):
         following: CREATING, READY, FAILED, or DELETING.
         """
         UNDEFINED_STATUS = 0
-        CREATING = 187129529
-        DELETING = 260166568
-        FAILED = 187271229
+        CREATING = 455564985
+        DELETING = 528602024
+        FAILED = 455706685
         READY = 77848963
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    forwarding_rules = proto.RepeatedField(proto.STRING, number=47385909)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    network = proto.Field(proto.STRING, number=232872494)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
-
-    tunnels = proto.RepeatedField(proto.STRING, number=104561931)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    forwarding_rules = proto.RepeatedField(proto.STRING, number=315821365,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    network = proto.Field(proto.STRING, number=232872494, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    tunnels = proto.RepeatedField(proto.STRING, number=104561931,)
 
 
 class TargetVpnGatewaysScopedList(proto.Message):
     r"""
-
     Attributes:
         target_vpn_gateways (Sequence[google.cloud.compute_v1.types.TargetVpnGateway]):
             [Output Only] A list of target VPN gateways contained in
@@ -23945,15 +22425,15 @@ class TargetVpnGatewaysScopedList(proto.Message):
     """
 
     target_vpn_gateways = proto.RepeatedField(
-        proto.MESSAGE, number=133335432, message="TargetVpnGateway",
+        proto.MESSAGE, number=401770888, message="TargetVpnGateway",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TargetVpnGatewayAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -23982,29 +22462,24 @@ class TargetVpnGatewayAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=100526016,
         message="TargetVpnGatewaysScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TargetVpnGatewayList(proto.Message):
     r"""Contains a list of TargetVpnGateway resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -24031,24 +22506,20 @@ class TargetVpnGatewayList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="TargetVpnGateway",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class TestFailure(proto.Message):
     r"""
-
     Attributes:
         actual_service (str):
             BackendService or BackendBucket returned by
@@ -24063,18 +22534,14 @@ class TestFailure(proto.Message):
             the URL.
     """
 
-    actual_service = proto.Field(proto.STRING, number=171944196)
-
-    expected_service = proto.Field(proto.STRING, number=133987374)
-
-    host = proto.Field(proto.STRING, number=3208616)
-
-    path = proto.Field(proto.STRING, number=3433509)
+    actual_service = proto.Field(proto.STRING, number=440379652, optional=True,)
+    expected_service = proto.Field(proto.STRING, number=133987374, optional=True,)
+    host = proto.Field(proto.STRING, number=3208616, optional=True,)
+    path = proto.Field(proto.STRING, number=3433509, optional=True,)
 
 
 class TestPermissionsRequest(proto.Message):
     r"""
-
     Attributes:
         permissions (Sequence[str]):
             The set of permissions to check for the 'resource'.
@@ -24082,24 +22549,22 @@ class TestPermissionsRequest(proto.Message):
             not allowed.
     """
 
-    permissions = proto.RepeatedField(proto.STRING, number=59962500)
+    permissions = proto.RepeatedField(proto.STRING, number=59962500,)
 
 
 class TestPermissionsResponse(proto.Message):
     r"""
-
     Attributes:
         permissions (Sequence[str]):
             A subset of ``TestPermissionsRequest.permissions`` that the
             caller is allowed.
     """
 
-    permissions = proto.RepeatedField(proto.STRING, number=59962500)
+    permissions = proto.RepeatedField(proto.STRING, number=59962500,)
 
 
 class UrlMapTest(proto.Message):
     r"""Message for the expected URL mappings.
-
     Attributes:
         description (str):
             Description of this test case.
@@ -24116,18 +22581,14 @@ class UrlMapTest(proto.Message):
             expectedRedirectResponseCode is set.
     """
 
-    description = proto.Field(proto.STRING, number=154502140)
-
-    host = proto.Field(proto.STRING, number=3208616)
-
-    path = proto.Field(proto.STRING, number=3433509)
-
-    service = proto.Field(proto.STRING, number=105105077)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    host = proto.Field(proto.STRING, number=3208616, optional=True,)
+    path = proto.Field(proto.STRING, number=3433509, optional=True,)
+    service = proto.Field(proto.STRING, number=373540533, optional=True,)
 
 
 class UrlMapList(proto.Message):
     r"""Contains a list of UrlMap resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -24153,33 +22614,28 @@ class UrlMapList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="UrlMap",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class UrlMapReference(proto.Message):
     r"""
-
     Attributes:
         url_map (str):
 
     """
 
-    url_map = proto.Field(proto.STRING, number=98585228)
+    url_map = proto.Field(proto.STRING, number=367020684, optional=True,)
 
 
 class UrlMapValidationResult(proto.Message):
     r"""Message representing the validation result for a UrlMap.
-
     Attributes:
         load_errors (Sequence[str]):
 
@@ -24195,20 +22651,16 @@ class UrlMapValidationResult(proto.Message):
             'testFailures's indicate the reason of failure.
     """
 
-    load_errors = proto.RepeatedField(proto.STRING, number=41711844)
-
-    load_succeeded = proto.Field(proto.BOOL, number=128326216)
-
+    load_errors = proto.RepeatedField(proto.STRING, number=310147300,)
+    load_succeeded = proto.Field(proto.BOOL, number=128326216, optional=True,)
     test_failures = proto.RepeatedField(
-        proto.MESSAGE, number=237498678, message="TestFailure",
+        proto.MESSAGE, number=505934134, message="TestFailure",
     )
-
-    test_passed = proto.Field(proto.BOOL, number=192708797)
+    test_passed = proto.Field(proto.BOOL, number=192708797, optional=True,)
 
 
 class UrlMapsScopedList(proto.Message):
     r"""
-
     Attributes:
         url_maps (Sequence[google.cloud.compute_v1.types.UrlMap]):
             A list of UrlMaps contained in this scope.
@@ -24218,13 +22670,13 @@ class UrlMapsScopedList(proto.Message):
     """
 
     url_maps = proto.RepeatedField(proto.MESSAGE, number=103352167, message="UrlMap",)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class UrlMapsAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -24252,50 +22704,48 @@ class UrlMapsAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="UrlMapsScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class UrlMapsValidateRequest(proto.Message):
     r"""
-
     Attributes:
         resource (google.cloud.compute_v1.types.UrlMap):
             Content of the UrlMap to be validated.
     """
 
-    resource = proto.Field(proto.MESSAGE, number=195806222, message="UrlMap",)
+    resource = proto.Field(
+        proto.MESSAGE, number=195806222, optional=True, message="UrlMap",
+    )
 
 
 class UrlMapsValidateResponse(proto.Message):
     r"""
-
     Attributes:
         result (google.cloud.compute_v1.types.UrlMapValidationResult):
 
     """
 
     result = proto.Field(
-        proto.MESSAGE, number=139315229, message="UrlMapValidationResult",
+        proto.MESSAGE,
+        number=139315229,
+        optional=True,
+        message="UrlMapValidationResult",
     )
 
 
 class UsableSubnetworkSecondaryRange(proto.Message):
     r"""Secondary IP range of a usable subnetwork.
-
     Attributes:
         ip_cidr_range (str):
             The range of IP addresses belonging to this
@@ -24308,9 +22758,8 @@ class UsableSubnetworkSecondaryRange(proto.Message):
             name must be unique within the subnetwork.
     """
 
-    ip_cidr_range = proto.Field(proto.STRING, number=98117322)
-
-    range_name = proto.Field(proto.STRING, number=63780941)
+    ip_cidr_range = proto.Field(proto.STRING, number=98117322, optional=True,)
+    range_name = proto.Field(proto.STRING, number=332216397, optional=True,)
 
 
 class UsableSubnetwork(proto.Message):
@@ -24329,20 +22778,16 @@ class UsableSubnetwork(proto.Message):
             Subnetwork URL.
     """
 
-    ip_cidr_range = proto.Field(proto.STRING, number=98117322)
-
-    network = proto.Field(proto.STRING, number=232872494)
-
+    ip_cidr_range = proto.Field(proto.STRING, number=98117322, optional=True,)
+    network = proto.Field(proto.STRING, number=232872494, optional=True,)
     secondary_ip_ranges = proto.RepeatedField(
         proto.MESSAGE, number=136658915, message="UsableSubnetworkSecondaryRange",
     )
-
-    subnetwork = proto.Field(proto.STRING, number=39392238)
+    subnetwork = proto.Field(proto.STRING, number=307827694, optional=True,)
 
 
 class UsableSubnetworksAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] The unique identifier for the resource. This
@@ -24370,19 +22815,16 @@ class UsableSubnetworksAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(
         proto.MESSAGE, number=100526016, message="UsableSubnetwork",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class VmEndpointNatMappingsInterfaceNatMappings(proto.Message):
@@ -24416,17 +22858,14 @@ class VmEndpointNatMappingsInterfaceNatMappings(proto.Message):
             Primary IP of the VM for this NIC.
     """
 
-    drain_nat_ip_port_ranges = proto.RepeatedField(proto.STRING, number=127005121)
-
-    nat_ip_port_ranges = proto.RepeatedField(proto.STRING, number=263395354)
-
-    num_total_drain_nat_ports = proto.Field(proto.INT32, number=67097337)
-
-    num_total_nat_ports = proto.Field(proto.INT32, number=31468928)
-
-    source_alias_ip_range = proto.Field(proto.STRING, number=171905496)
-
-    source_virtual_ip = proto.Field(proto.STRING, number=149836159)
+    drain_nat_ip_port_ranges = proto.RepeatedField(proto.STRING, number=395440577,)
+    nat_ip_port_ranges = proto.RepeatedField(proto.STRING, number=531830810,)
+    num_total_drain_nat_ports = proto.Field(
+        proto.INT32, number=335532793, optional=True,
+    )
+    num_total_nat_ports = proto.Field(proto.INT32, number=299904384, optional=True,)
+    source_alias_ip_range = proto.Field(proto.STRING, number=440340952, optional=True,)
+    source_virtual_ip = proto.Field(proto.STRING, number=149836159, optional=True,)
 
 
 class VmEndpointNatMappings(proto.Message):
@@ -24441,8 +22880,7 @@ class VmEndpointNatMappings(proto.Message):
 
     """
 
-    instance_name = proto.Field(proto.STRING, number=227947509)
-
+    instance_name = proto.Field(proto.STRING, number=227947509, optional=True,)
     interface_nat_mappings = proto.RepeatedField(
         proto.MESSAGE,
         number=256196617,
@@ -24452,7 +22890,6 @@ class VmEndpointNatMappings(proto.Message):
 
 class VmEndpointNatMappingsList(proto.Message):
     r"""Contains a list of VmEndpointNatMappings.
-
     Attributes:
         id (str):
             [Output Only] The unique identifier for the resource. This
@@ -24481,24 +22918,20 @@ class VmEndpointNatMappingsList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
     result = proto.RepeatedField(
         proto.MESSAGE, number=139315229, message="VmEndpointNatMappings",
     )
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class VpnGatewayVpnGatewayInterface(proto.Message):
     r"""A VPN gateway interface.
-
     Attributes:
         id (int):
             The numeric ID of this VPN gateway interface.
@@ -24507,9 +22940,8 @@ class VpnGatewayVpnGatewayInterface(proto.Message):
             interface.
     """
 
-    id = proto.Field(proto.UINT32, number=3355)
-
-    ip_address = proto.Field(proto.STRING, number=137836764)
+    id = proto.Field(proto.UINT32, number=3355, optional=True,)
+    ip_address = proto.Field(proto.STRING, number=406272220, optional=True,)
 
 
 class VpnGateway(proto.Message):
@@ -24574,26 +23006,16 @@ class VpnGateway(proto.Message):
             A list of interfaces on this VPN gateway.
     """
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    label_fingerprint = proto.Field(proto.STRING, number=178124825)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=231759871)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    network = proto.Field(proto.STRING, number=232872494)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    network = proto.Field(proto.STRING, number=232872494, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     vpn_interfaces = proto.RepeatedField(
         proto.MESSAGE, number=91842181, message="VpnGatewayVpnGatewayInterface",
     )
@@ -24601,7 +23023,6 @@ class VpnGateway(proto.Message):
 
 class VpnGatewaysScopedList(proto.Message):
     r"""
-
     Attributes:
         vpn_gateways (Sequence[google.cloud.compute_v1.types.VpnGateway]):
             [Output Only] A list of VPN gateways contained in this
@@ -24614,13 +23035,13 @@ class VpnGatewaysScopedList(proto.Message):
     vpn_gateways = proto.RepeatedField(
         proto.MESSAGE, number=259177882, message="VpnGateway",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class VpnGatewayAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -24649,26 +23070,21 @@ class VpnGatewayAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="VpnGatewaysScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class VpnGatewayList(proto.Message):
     r"""Contains a list of VpnGateway resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -24695,17 +23111,14 @@ class VpnGatewayList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="VpnGateway",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class VpnGatewayStatusVpnConnection(proto.Message):
@@ -24730,16 +23143,14 @@ class VpnGatewayStatusVpnConnection(proto.Message):
             connection.
     """
 
-    peer_external_gateway = proto.Field(proto.STRING, number=116520717)
-
-    peer_gcp_gateway = proto.Field(proto.STRING, number=13431996)
-
+    peer_external_gateway = proto.Field(proto.STRING, number=384956173, optional=True,)
+    peer_gcp_gateway = proto.Field(proto.STRING, number=281867452, optional=True,)
     state = proto.Field(
         proto.MESSAGE,
         number=109757585,
+        optional=True,
         message="VpnGatewayStatusHighAvailabilityRequirementState",
     )
-
     tunnels = proto.RepeatedField(
         proto.MESSAGE, number=104561931, message="VpnGatewayStatusTunnel",
     )
@@ -24747,14 +23158,13 @@ class VpnGatewayStatusVpnConnection(proto.Message):
 
 class VpnGatewayStatus(proto.Message):
     r"""
-
     Attributes:
         vpn_connections (Sequence[google.cloud.compute_v1.types.VpnGatewayStatusVpnConnection]):
             List of VPN connection for this VpnGateway.
     """
 
     vpn_connections = proto.RepeatedField(
-        proto.MESSAGE, number=170899082, message="VpnGatewayStatusVpnConnection",
+        proto.MESSAGE, number=439334538, message="VpnGatewayStatusVpnConnection",
     )
 
 
@@ -24779,8 +23189,8 @@ class VpnGatewayStatusHighAvailabilityRequirementState(proto.Message):
         CONNECTION_REDUNDANCY_NOT_MET.
         """
         UNDEFINED_STATE = 0
-        CONNECTION_REDUNDANCY_MET = 236807451
-        CONNECTION_REDUNDANCY_NOT_MET = 243427855
+        CONNECTION_REDUNDANCY_MET = 505242907
+        CONNECTION_REDUNDANCY_NOT_MET = 511863311
 
     class UnsatisfiedReason(proto.Enum):
         r"""Indicates the reason why the VPN connection does not meet the high
@@ -24790,16 +23200,14 @@ class VpnGatewayStatusHighAvailabilityRequirementState(proto.Message):
         UNDEFINED_UNSATISFIED_REASON = 0
         INCOMPLETE_TUNNELS_COVERAGE = 55917437
 
-    state = proto.Field(proto.ENUM, number=109757585, enum=State,)
-
+    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
     unsatisfied_reason = proto.Field(
-        proto.ENUM, number=55016330, enum=UnsatisfiedReason,
+        proto.ENUM, number=55016330, optional=True, enum=UnsatisfiedReason,
     )
 
 
 class VpnGatewayStatusTunnel(proto.Message):
     r"""Contains some information about a VPN tunnel.
-
     Attributes:
         local_gateway_interface (int):
             The VPN gateway interface this VPN tunnel is
@@ -24812,22 +23220,23 @@ class VpnGatewayStatusTunnel(proto.Message):
             URL reference to the VPN tunnel.
     """
 
-    local_gateway_interface = proto.Field(proto.UINT32, number=158764330)
-
-    peer_gateway_interface = proto.Field(proto.UINT32, number=214380385)
-
-    tunnel_url = proto.Field(proto.STRING, number=78975256)
+    local_gateway_interface = proto.Field(
+        proto.UINT32, number=158764330, optional=True,
+    )
+    peer_gateway_interface = proto.Field(proto.UINT32, number=214380385, optional=True,)
+    tunnel_url = proto.Field(proto.STRING, number=78975256, optional=True,)
 
 
 class VpnGatewaysGetStatusResponse(proto.Message):
     r"""
-
     Attributes:
         result (google.cloud.compute_v1.types.VpnGatewayStatus):
 
     """
 
-    result = proto.Field(proto.MESSAGE, number=139315229, message="VpnGatewayStatus",)
+    result = proto.Field(
+        proto.MESSAGE, number=139315229, optional=True, message="VpnGatewayStatus",
+    )
 
 
 class VpnTunnel(proto.Message):
@@ -24998,68 +23407,48 @@ class VpnTunnel(proto.Message):
            for an HA-VPN tunnel.
         """
         UNDEFINED_STATUS = 0
-        ALLOCATING_RESOURCES = 52487360
+        ALLOCATING_RESOURCES = 320922816
         AUTHORIZATION_ERROR = 23580290
-        DEPROVISIONING = 160500206
+        DEPROVISIONING = 428935662
         ESTABLISHED = 88852344
-        FAILED = 187271229
+        FAILED = 455706685
         FIRST_HANDSHAKE = 191393000
-        NEGOTIATION_FAILURE = 91890412
+        NEGOTIATION_FAILURE = 360325868
         NETWORK_ERROR = 193912951
         NO_INCOMING_PACKETS = 119983216
-        PROVISIONING = 22461165
+        PROVISIONING = 290896621
         REJECTED = 174130302
-        STOPPED = 175840685
+        STOPPED = 444276141
         WAITING_FOR_FULL_CONFIG = 41640522
 
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    detailed_status = proto.Field(proto.STRING, number=65065569)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    ike_version = proto.Field(proto.INT32, number=218376220)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    local_traffic_selector = proto.RepeatedField(proto.STRING, number=48879157)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    peer_external_gateway = proto.Field(proto.STRING, number=116520717)
-
-    peer_external_gateway_interface = proto.Field(proto.INT32, number=184332935)
-
-    peer_gcp_gateway = proto.Field(proto.STRING, number=13431996)
-
-    peer_ip = proto.Field(proto.STRING, number=114814244)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    remote_traffic_selector = proto.RepeatedField(proto.STRING, number=90451642)
-
-    router = proto.Field(proto.STRING, number=148608841)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    shared_secret = proto.Field(proto.STRING, number=113497034)
-
-    shared_secret_hash = proto.Field(proto.STRING, number=130446435)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
-
-    target_vpn_gateway = proto.Field(proto.STRING, number=264077387)
-
-    vpn_gateway = proto.Field(proto.STRING, number=138248697)
-
-    vpn_gateway_interface = proto.Field(proto.INT32, number=95979123)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    detailed_status = proto.Field(proto.STRING, number=333501025, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    ike_version = proto.Field(proto.INT32, number=218376220, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    local_traffic_selector = proto.RepeatedField(proto.STRING, number=317314613,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    peer_external_gateway = proto.Field(proto.STRING, number=384956173, optional=True,)
+    peer_external_gateway_interface = proto.Field(
+        proto.INT32, number=452768391, optional=True,
+    )
+    peer_gcp_gateway = proto.Field(proto.STRING, number=281867452, optional=True,)
+    peer_ip = proto.Field(proto.STRING, number=383249700, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    remote_traffic_selector = proto.RepeatedField(proto.STRING, number=358887098,)
+    router = proto.Field(proto.STRING, number=148608841, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    shared_secret = proto.Field(proto.STRING, number=381932490, optional=True,)
+    shared_secret_hash = proto.Field(proto.STRING, number=398881891, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    target_vpn_gateway = proto.Field(proto.STRING, number=532512843, optional=True,)
+    vpn_gateway = proto.Field(proto.STRING, number=406684153, optional=True,)
+    vpn_gateway_interface = proto.Field(proto.INT32, number=95979123, optional=True,)
 
 
 class VpnTunnelsScopedList(proto.Message):
     r"""
-
     Attributes:
         vpn_tunnels (Sequence[google.cloud.compute_v1.types.VpnTunnel]):
             A list of VPN tunnels contained in this
@@ -25072,13 +23461,13 @@ class VpnTunnelsScopedList(proto.Message):
     vpn_tunnels = proto.RepeatedField(
         proto.MESSAGE, number=163494080, message="VpnTunnel",
     )
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class VpnTunnelAggregatedList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -25107,26 +23496,21 @@ class VpnTunnelAggregatedList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.MapField(
         proto.STRING, proto.MESSAGE, number=100526016, message="VpnTunnelsScopedList",
     )
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    unreachables = proto.RepeatedField(proto.STRING, number=243372063)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class VpnTunnelList(proto.Message):
     r"""Contains a list of VpnTunnel resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -25153,22 +23537,18 @@ class VpnTunnelList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="VpnTunnel",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class WafExpressionSetExpression(proto.Message):
     r"""
-
     Attributes:
         id (str):
             Expression ID should uniquely identify the
@@ -25181,12 +23561,11 @@ class WafExpressionSetExpression(proto.Message):
             false positive.
     """
 
-    id = proto.Field(proto.STRING, number=3355)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
 
 
 class XpnHostList(proto.Message):
     r"""
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -25213,17 +23592,14 @@ class XpnHostList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Project",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class Zone(proto.Message):
@@ -25268,32 +23644,22 @@ class Zone(proto.Message):
         DOWN = 2104482
         UP = 2715
 
-    available_cpu_platforms = proto.RepeatedField(proto.STRING, number=175536531)
-
-    creation_timestamp = proto.Field(proto.STRING, number=30525366)
-
+    available_cpu_platforms = proto.RepeatedField(proto.STRING, number=175536531,)
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     deprecated = proto.Field(
-        proto.MESSAGE, number=246703539, message="DeprecationStatus",
+        proto.MESSAGE, number=515138995, optional=True, message="DeprecationStatus",
     )
-
-    description = proto.Field(proto.STRING, number=154502140)
-
-    id = proto.Field(proto.STRING, number=3355)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    name = proto.Field(proto.STRING, number=3373707)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    status = proto.Field(proto.ENUM, number=181260274, enum=Status,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
 
 
 class ZoneList(proto.Message):
     r"""Contains a list of zone resources.
-
     Attributes:
         id (str):
             [Output Only] Unique identifier for the resource; defined by
@@ -25319,22 +23685,18 @@ class ZoneList(proto.Message):
     def raw_page(self):
         return self
 
-    id = proto.Field(proto.STRING, number=3355)
-
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
     items = proto.RepeatedField(proto.MESSAGE, number=100526016, message="Zone",)
-
-    kind = proto.Field(proto.STRING, number=3292052)
-
-    next_page_token = proto.Field(proto.STRING, number=79797525)
-
-    self_link = proto.Field(proto.STRING, number=187779341)
-
-    warning = proto.Field(proto.MESSAGE, number=50704284, message="Warning",)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
 
 
 class ZoneSetLabelsRequest(proto.Message):
     r"""
-
     Attributes:
         label_fingerprint (str):
             The fingerprint of the previous set of labels
@@ -25349,14 +23711,12 @@ class ZoneSetLabelsRequest(proto.Message):
             The labels to set for this resource.
     """
 
-    label_fingerprint = proto.Field(proto.STRING, number=178124825)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=231759871)
+    label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
 
 
 class ZoneSetPolicyRequest(proto.Message):
     r"""
-
     Attributes:
         bindings (Sequence[google.cloud.compute_v1.types.Binding]):
             Flatten Policy to create a backwacd
@@ -25374,11 +23734,11 @@ class ZoneSetPolicyRequest(proto.Message):
             (like Projects) might reject them.
     """
 
-    bindings = proto.RepeatedField(proto.MESSAGE, number=134816398, message="Binding",)
-
-    etag = proto.Field(proto.STRING, number=3123477)
-
-    policy = proto.Field(proto.MESSAGE, number=91071794, message="Policy",)
+    bindings = proto.RepeatedField(proto.MESSAGE, number=403251854, message="Binding",)
+    etag = proto.Field(proto.STRING, number=3123477, optional=True,)
+    policy = proto.Field(
+        proto.MESSAGE, number=91071794, optional=True, message="Policy",
+    )
 
 
 class AggregatedListAcceleratorTypesRequest(proto.Message):
@@ -25457,19 +23817,13 @@ class AggregatedListAcceleratorTypesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class GetAcceleratorTypeRequest(proto.Message):
@@ -25485,11 +23839,9 @@ class GetAcceleratorTypeRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    accelerator_type = proto.Field(proto.STRING, number=138031246)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    accelerator_type = proto.Field(proto.STRING, number=138031246,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListAcceleratorTypesRequest(proto.Message):
@@ -25559,19 +23911,13 @@ class ListAcceleratorTypesRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AggregatedListAddressesRequest(proto.Message):
@@ -25650,19 +23996,13 @@ class AggregatedListAddressesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteAddressRequest(proto.Message):
@@ -25694,13 +24034,10 @@ class DeleteAddressRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    address = proto.Field(proto.STRING, number=194485236)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    address = proto.Field(proto.STRING, number=462920692,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetAddressRequest(proto.Message):
@@ -25716,11 +24053,9 @@ class GetAddressRequest(proto.Message):
             Name of the region for this request.
     """
 
-    address = proto.Field(proto.STRING, number=194485236)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    address = proto.Field(proto.STRING, number=462920692,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class InsertAddressRequest(proto.Message):
@@ -25752,13 +24087,10 @@ class InsertAddressRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    address_resource = proto.Field(proto.MESSAGE, number=215452665, message="Address",)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    address_resource = proto.Field(proto.MESSAGE, number=483888121, message="Address",)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListAddressesRequest(proto.Message):
@@ -25828,19 +24160,13 @@ class ListAddressesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class AggregatedListAutoscalersRequest(proto.Message):
@@ -25919,19 +24245,13 @@ class AggregatedListAutoscalersRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteAutoscalerRequest(proto.Message):
@@ -25963,13 +24283,10 @@ class DeleteAutoscalerRequest(proto.Message):
             Name of the zone for this request.
     """
 
-    autoscaler = proto.Field(proto.STRING, number=248823511)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    autoscaler = proto.Field(proto.STRING, number=517258967,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetAutoscalerRequest(proto.Message):
@@ -25985,11 +24302,9 @@ class GetAutoscalerRequest(proto.Message):
             Name of the zone for this request.
     """
 
-    autoscaler = proto.Field(proto.STRING, number=248823511)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    autoscaler = proto.Field(proto.STRING, number=517258967,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class InsertAutoscalerRequest(proto.Message):
@@ -26024,12 +24339,9 @@ class InsertAutoscalerRequest(proto.Message):
     autoscaler_resource = proto.Field(
         proto.MESSAGE, number=207616118, message="Autoscaler",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListAutoscalersRequest(proto.Message):
@@ -26099,19 +24411,13 @@ class ListAutoscalersRequest(proto.Message):
             Name of the zone for this request.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class PatchAutoscalerRequest(proto.Message):
@@ -26145,17 +24451,13 @@ class PatchAutoscalerRequest(proto.Message):
             Name of the zone for this request.
     """
 
-    autoscaler = proto.Field(proto.STRING, number=248823511)
-
+    autoscaler = proto.Field(proto.STRING, number=517258967, optional=True,)
     autoscaler_resource = proto.Field(
         proto.MESSAGE, number=207616118, message="Autoscaler",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class UpdateAutoscalerRequest(proto.Message):
@@ -26189,17 +24491,13 @@ class UpdateAutoscalerRequest(proto.Message):
             Name of the zone for this request.
     """
 
-    autoscaler = proto.Field(proto.STRING, number=248823511)
-
+    autoscaler = proto.Field(proto.STRING, number=517258967, optional=True,)
     autoscaler_resource = proto.Field(
         proto.MESSAGE, number=207616118, message="Autoscaler",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AddSignedUrlKeyBackendBucketRequest(proto.Message):
@@ -26233,14 +24531,11 @@ class AddSignedUrlKeyBackendBucketRequest(proto.Message):
             The body resource for this request
     """
 
-    backend_bucket = proto.Field(proto.STRING, number=91714037)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    backend_bucket = proto.Field(proto.STRING, number=91714037,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     signed_url_key_resource = proto.Field(
-        proto.MESSAGE, number=189190529, message="SignedUrlKey",
+        proto.MESSAGE, number=457625985, message="SignedUrlKey",
     )
 
 
@@ -26271,11 +24566,9 @@ class DeleteBackendBucketRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    backend_bucket = proto.Field(proto.STRING, number=91714037)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    backend_bucket = proto.Field(proto.STRING, number=91714037,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class DeleteSignedUrlKeyBackendBucketRequest(proto.Message):
@@ -26309,13 +24602,10 @@ class DeleteSignedUrlKeyBackendBucketRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    backend_bucket = proto.Field(proto.STRING, number=91714037)
-
-    key_name = proto.Field(proto.STRING, number=232503403)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    backend_bucket = proto.Field(proto.STRING, number=91714037,)
+    key_name = proto.Field(proto.STRING, number=500938859,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetBackendBucketRequest(proto.Message):
@@ -26329,9 +24619,8 @@ class GetBackendBucketRequest(proto.Message):
             Project ID for this request.
     """
 
-    backend_bucket = proto.Field(proto.STRING, number=91714037)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    backend_bucket = proto.Field(proto.STRING, number=91714037,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class InsertBackendBucketRequest(proto.Message):
@@ -26362,12 +24651,10 @@ class InsertBackendBucketRequest(proto.Message):
     """
 
     backend_bucket_resource = proto.Field(
-        proto.MESSAGE, number=112322328, message="BackendBucket",
+        proto.MESSAGE, number=380757784, message="BackendBucket",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListBackendBucketsRequest(proto.Message):
@@ -26435,17 +24722,12 @@ class ListBackendBucketsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchBackendBucketRequest(proto.Message):
@@ -26477,15 +24759,12 @@ class PatchBackendBucketRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    backend_bucket = proto.Field(proto.STRING, number=91714037)
-
+    backend_bucket = proto.Field(proto.STRING, number=91714037,)
     backend_bucket_resource = proto.Field(
-        proto.MESSAGE, number=112322328, message="BackendBucket",
+        proto.MESSAGE, number=380757784, message="BackendBucket",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class UpdateBackendBucketRequest(proto.Message):
@@ -26517,15 +24796,12 @@ class UpdateBackendBucketRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    backend_bucket = proto.Field(proto.STRING, number=91714037)
-
+    backend_bucket = proto.Field(proto.STRING, number=91714037,)
     backend_bucket_resource = proto.Field(
-        proto.MESSAGE, number=112322328, message="BackendBucket",
+        proto.MESSAGE, number=380757784, message="BackendBucket",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class AddSignedUrlKeyBackendServiceRequest(proto.Message):
@@ -26559,14 +24835,11 @@ class AddSignedUrlKeyBackendServiceRequest(proto.Message):
             The body resource for this request
     """
 
-    backend_service = proto.Field(proto.STRING, number=38510602)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    backend_service = proto.Field(proto.STRING, number=306946058,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     signed_url_key_resource = proto.Field(
-        proto.MESSAGE, number=189190529, message="SignedUrlKey",
+        proto.MESSAGE, number=457625985, message="SignedUrlKey",
     )
 
 
@@ -26646,19 +24919,13 @@ class AggregatedListBackendServicesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteBackendServiceRequest(proto.Message):
@@ -26689,11 +24956,9 @@ class DeleteBackendServiceRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    backend_service = proto.Field(proto.STRING, number=38510602)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    backend_service = proto.Field(proto.STRING, number=306946058,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class DeleteSignedUrlKeyBackendServiceRequest(proto.Message):
@@ -26727,13 +24992,10 @@ class DeleteSignedUrlKeyBackendServiceRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    backend_service = proto.Field(proto.STRING, number=38510602)
-
-    key_name = proto.Field(proto.STRING, number=232503403)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    backend_service = proto.Field(proto.STRING, number=306946058,)
+    key_name = proto.Field(proto.STRING, number=500938859,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetBackendServiceRequest(proto.Message):
@@ -26748,9 +25010,8 @@ class GetBackendServiceRequest(proto.Message):
             Project ID for this request.
     """
 
-    backend_service = proto.Field(proto.STRING, number=38510602)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    backend_service = proto.Field(proto.STRING, number=306946058,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class GetHealthBackendServiceRequest(proto.Message):
@@ -26767,10 +25028,8 @@ class GetHealthBackendServiceRequest(proto.Message):
             The body resource for this request
     """
 
-    backend_service = proto.Field(proto.STRING, number=38510602)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
+    backend_service = proto.Field(proto.STRING, number=306946058,)
+    project = proto.Field(proto.STRING, number=227560217,)
     resource_group_reference_resource = proto.Field(
         proto.MESSAGE, number=112951123, message="ResourceGroupReference",
     )
@@ -26804,12 +25063,10 @@ class InsertBackendServiceRequest(proto.Message):
     """
 
     backend_service_resource = proto.Field(
-        proto.MESSAGE, number=79151267, message="BackendService",
+        proto.MESSAGE, number=347586723, message="BackendService",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListBackendServicesRequest(proto.Message):
@@ -26877,17 +25134,12 @@ class ListBackendServicesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchBackendServiceRequest(proto.Message):
@@ -26919,15 +25171,12 @@ class PatchBackendServiceRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    backend_service = proto.Field(proto.STRING, number=38510602)
-
+    backend_service = proto.Field(proto.STRING, number=306946058,)
     backend_service_resource = proto.Field(
-        proto.MESSAGE, number=79151267, message="BackendService",
+        proto.MESSAGE, number=347586723, message="BackendService",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class SetSecurityPolicyBackendServiceRequest(proto.Message):
@@ -26961,12 +25210,9 @@ class SetSecurityPolicyBackendServiceRequest(proto.Message):
             The body resource for this request
     """
 
-    backend_service = proto.Field(proto.STRING, number=38510602)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    backend_service = proto.Field(proto.STRING, number=306946058,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     security_policy_reference_resource = proto.Field(
         proto.MESSAGE, number=204135024, message="SecurityPolicyReference",
     )
@@ -27002,15 +25248,12 @@ class UpdateBackendServiceRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    backend_service = proto.Field(proto.STRING, number=38510602)
-
+    backend_service = proto.Field(proto.STRING, number=306946058,)
     backend_service_resource = proto.Field(
-        proto.MESSAGE, number=79151267, message="BackendService",
+        proto.MESSAGE, number=347586723, message="BackendService",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class AggregatedListDiskTypesRequest(proto.Message):
@@ -27089,19 +25332,13 @@ class AggregatedListDiskTypesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class GetDiskTypeRequest(proto.Message):
@@ -27117,11 +25354,9 @@ class GetDiskTypeRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    disk_type = proto.Field(proto.STRING, number=93009052)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    disk_type = proto.Field(proto.STRING, number=93009052,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListDiskTypesRequest(proto.Message):
@@ -27191,19 +25426,13 @@ class ListDiskTypesRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AddResourcePoliciesDiskRequest(proto.Message):
@@ -27237,17 +25466,13 @@ class AddResourcePoliciesDiskRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    disk = proto.Field(proto.STRING, number=3083677)
-
+    disk = proto.Field(proto.STRING, number=3083677,)
     disks_add_resource_policies_request_resource = proto.Field(
-        proto.MESSAGE, number=228047907, message="DisksAddResourcePoliciesRequest",
+        proto.MESSAGE, number=496483363, message="DisksAddResourcePoliciesRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AggregatedListDisksRequest(proto.Message):
@@ -27326,19 +25551,13 @@ class AggregatedListDisksRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class CreateSnapshotDiskRequest(proto.Message):
@@ -27377,19 +25596,14 @@ class CreateSnapshotDiskRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    disk = proto.Field(proto.STRING, number=3083677)
-
-    guest_flush = proto.Field(proto.BOOL, number=117115357)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    disk = proto.Field(proto.STRING, number=3083677,)
+    guest_flush = proto.Field(proto.BOOL, number=385550813, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     snapshot_resource = proto.Field(
-        proto.MESSAGE, number=212884521, message="Snapshot",
+        proto.MESSAGE, number=481319977, message="Snapshot",
     )
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class DeleteDiskRequest(proto.Message):
@@ -27421,13 +25635,10 @@ class DeleteDiskRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    disk = proto.Field(proto.STRING, number=3083677)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    disk = proto.Field(proto.STRING, number=3083677,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetDiskRequest(proto.Message):
@@ -27443,11 +25654,9 @@ class GetDiskRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    disk = proto.Field(proto.STRING, number=3083677)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    disk = proto.Field(proto.STRING, number=3083677,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetIamPolicyDiskRequest(proto.Message):
@@ -27465,13 +25674,12 @@ class GetIamPolicyDiskRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    options_requested_policy_version = proto.Field(proto.INT32, number=230784573)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    options_requested_policy_version = proto.Field(
+        proto.INT32, number=499220029, optional=True,
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class InsertDiskRequest(proto.Message):
@@ -27507,14 +25715,10 @@ class InsertDiskRequest(proto.Message):
     """
 
     disk_resource = proto.Field(proto.MESSAGE, number=25880688, message="Disk",)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    source_image = proto.Field(proto.STRING, number=50443319)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    source_image = proto.Field(proto.STRING, number=50443319, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListDisksRequest(proto.Message):
@@ -27584,19 +25788,13 @@ class ListDisksRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class RemoveResourcePoliciesDiskRequest(proto.Message):
@@ -27630,17 +25828,13 @@ class RemoveResourcePoliciesDiskRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    disk = proto.Field(proto.STRING, number=3083677)
-
+    disk = proto.Field(proto.STRING, number=3083677,)
     disks_remove_resource_policies_request_resource = proto.Field(
-        proto.MESSAGE, number=168321262, message="DisksRemoveResourcePoliciesRequest",
+        proto.MESSAGE, number=436756718, message="DisksRemoveResourcePoliciesRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ResizeDiskRequest(proto.Message):
@@ -27674,17 +25868,13 @@ class ResizeDiskRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    disk = proto.Field(proto.STRING, number=3083677)
-
+    disk = proto.Field(proto.STRING, number=3083677,)
     disks_resize_request_resource = proto.Field(
         proto.MESSAGE, number=78307616, message="DisksResizeRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetIamPolicyDiskRequest(proto.Message):
@@ -27702,14 +25892,11 @@ class SetIamPolicyDiskRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
-    zone = proto.Field(proto.STRING, number=3744684)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
+    zone = proto.Field(proto.STRING, number=3744684,)
     zone_set_policy_request_resource = proto.Field(
-        proto.MESSAGE, number=113646651, message="ZoneSetPolicyRequest",
+        proto.MESSAGE, number=382082107, message="ZoneSetPolicyRequest",
     )
 
 
@@ -27744,16 +25931,12 @@ class SetLabelsDiskRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
-    zone = proto.Field(proto.STRING, number=3744684)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    resource = proto.Field(proto.STRING, number=195806222,)
+    zone = proto.Field(proto.STRING, number=3744684,)
     zone_set_labels_request_resource = proto.Field(
-        proto.MESSAGE, number=96515342, message="ZoneSetLabelsRequest",
+        proto.MESSAGE, number=364950798, message="ZoneSetLabelsRequest",
     )
 
 
@@ -27772,15 +25955,12 @@ class TestIamPermissionsDiskRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class DeleteExternalVpnGatewayRequest(proto.Message):
@@ -27810,11 +25990,9 @@ class DeleteExternalVpnGatewayRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    external_vpn_gateway = proto.Field(proto.STRING, number=109898629)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    external_vpn_gateway = proto.Field(proto.STRING, number=109898629,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetExternalVpnGatewayRequest(proto.Message):
@@ -27828,9 +26006,8 @@ class GetExternalVpnGatewayRequest(proto.Message):
             Project ID for this request.
     """
 
-    external_vpn_gateway = proto.Field(proto.STRING, number=109898629)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    external_vpn_gateway = proto.Field(proto.STRING, number=109898629,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class InsertExternalVpnGatewayRequest(proto.Message):
@@ -27861,12 +26038,10 @@ class InsertExternalVpnGatewayRequest(proto.Message):
     """
 
     external_vpn_gateway_resource = proto.Field(
-        proto.MESSAGE, number=218378120, message="ExternalVpnGateway",
+        proto.MESSAGE, number=486813576, message="ExternalVpnGateway",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListExternalVpnGatewaysRequest(proto.Message):
@@ -27934,17 +26109,12 @@ class ListExternalVpnGatewaysRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class SetLabelsExternalVpnGatewayRequest(proto.Message):
@@ -27961,12 +26131,10 @@ class SetLabelsExternalVpnGatewayRequest(proto.Message):
     """
 
     global_set_labels_request_resource = proto.Field(
-        proto.MESSAGE, number=51481733, message="GlobalSetLabelsRequest",
+        proto.MESSAGE, number=319917189, message="GlobalSetLabelsRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class TestIamPermissionsExternalVpnGatewayRequest(proto.Message):
@@ -27982,12 +26150,10 @@ class TestIamPermissionsExternalVpnGatewayRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
 
 
@@ -28018,11 +26184,9 @@ class DeleteFirewallRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    firewall = proto.Field(proto.STRING, number=242580736)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    firewall = proto.Field(proto.STRING, number=511016192,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetFirewallRequest(proto.Message):
@@ -28036,9 +26200,8 @@ class GetFirewallRequest(proto.Message):
             Project ID for this request.
     """
 
-    firewall = proto.Field(proto.STRING, number=242580736)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    firewall = proto.Field(proto.STRING, number=511016192,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class InsertFirewallRequest(proto.Message):
@@ -28069,10 +26232,8 @@ class InsertFirewallRequest(proto.Message):
     """
 
     firewall_resource = proto.Field(proto.MESSAGE, number=41425005, message="Firewall",)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListFirewallsRequest(proto.Message):
@@ -28140,17 +26301,12 @@ class ListFirewallsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchFirewallRequest(proto.Message):
@@ -28182,13 +26338,10 @@ class PatchFirewallRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    firewall = proto.Field(proto.STRING, number=242580736)
-
+    firewall = proto.Field(proto.STRING, number=511016192,)
     firewall_resource = proto.Field(proto.MESSAGE, number=41425005, message="Firewall",)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class UpdateFirewallRequest(proto.Message):
@@ -28220,13 +26373,10 @@ class UpdateFirewallRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    firewall = proto.Field(proto.STRING, number=242580736)
-
+    firewall = proto.Field(proto.STRING, number=511016192,)
     firewall_resource = proto.Field(proto.MESSAGE, number=41425005, message="Firewall",)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class AggregatedListForwardingRulesRequest(proto.Message):
@@ -28305,19 +26455,13 @@ class AggregatedListForwardingRulesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteForwardingRuleRequest(proto.Message):
@@ -28350,13 +26494,10 @@ class DeleteForwardingRuleRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    forwarding_rule = proto.Field(proto.STRING, number=1528574)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    forwarding_rule = proto.Field(proto.STRING, number=269964030,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetForwardingRuleRequest(proto.Message):
@@ -28373,11 +26514,9 @@ class GetForwardingRuleRequest(proto.Message):
             Name of the region scoping this request.
     """
 
-    forwarding_rule = proto.Field(proto.STRING, number=1528574)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    forwarding_rule = proto.Field(proto.STRING, number=269964030,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class InsertForwardingRuleRequest(proto.Message):
@@ -28410,14 +26549,11 @@ class InsertForwardingRuleRequest(proto.Message):
     """
 
     forwarding_rule_resource = proto.Field(
-        proto.MESSAGE, number=32776239, message="ForwardingRule",
+        proto.MESSAGE, number=301211695, message="ForwardingRule",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListForwardingRulesRequest(proto.Message):
@@ -28487,19 +26623,13 @@ class ListForwardingRulesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchForwardingRuleRequest(proto.Message):
@@ -28533,17 +26663,13 @@ class PatchForwardingRuleRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    forwarding_rule = proto.Field(proto.STRING, number=1528574)
-
+    forwarding_rule = proto.Field(proto.STRING, number=269964030,)
     forwarding_rule_resource = proto.Field(
-        proto.MESSAGE, number=32776239, message="ForwardingRule",
+        proto.MESSAGE, number=301211695, message="ForwardingRule",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class SetTargetForwardingRuleRequest(proto.Message):
@@ -28578,16 +26704,12 @@ class SetTargetForwardingRuleRequest(proto.Message):
             The body resource for this request
     """
 
-    forwarding_rule = proto.Field(proto.STRING, number=1528574)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    forwarding_rule = proto.Field(proto.STRING, number=269964030,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_reference_resource = proto.Field(
-        proto.MESSAGE, number=255286256, message="TargetReference",
+        proto.MESSAGE, number=523721712, message="TargetReference",
     )
 
 
@@ -28618,11 +26740,9 @@ class DeleteGlobalAddressRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    address = proto.Field(proto.STRING, number=194485236)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    address = proto.Field(proto.STRING, number=462920692,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetGlobalAddressRequest(proto.Message):
@@ -28636,9 +26756,8 @@ class GetGlobalAddressRequest(proto.Message):
             Project ID for this request.
     """
 
-    address = proto.Field(proto.STRING, number=194485236)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    address = proto.Field(proto.STRING, number=462920692,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class InsertGlobalAddressRequest(proto.Message):
@@ -28668,11 +26787,9 @@ class InsertGlobalAddressRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    address_resource = proto.Field(proto.MESSAGE, number=215452665, message="Address",)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    address_resource = proto.Field(proto.MESSAGE, number=483888121, message="Address",)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListGlobalAddressesRequest(proto.Message):
@@ -28740,17 +26857,12 @@ class ListGlobalAddressesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteGlobalForwardingRuleRequest(proto.Message):
@@ -28781,11 +26893,9 @@ class DeleteGlobalForwardingRuleRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    forwarding_rule = proto.Field(proto.STRING, number=1528574)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    forwarding_rule = proto.Field(proto.STRING, number=269964030,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetGlobalForwardingRuleRequest(proto.Message):
@@ -28800,9 +26910,8 @@ class GetGlobalForwardingRuleRequest(proto.Message):
             Project ID for this request.
     """
 
-    forwarding_rule = proto.Field(proto.STRING, number=1528574)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    forwarding_rule = proto.Field(proto.STRING, number=269964030,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class InsertGlobalForwardingRuleRequest(proto.Message):
@@ -28833,12 +26942,10 @@ class InsertGlobalForwardingRuleRequest(proto.Message):
     """
 
     forwarding_rule_resource = proto.Field(
-        proto.MESSAGE, number=32776239, message="ForwardingRule",
+        proto.MESSAGE, number=301211695, message="ForwardingRule",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListGlobalForwardingRulesRequest(proto.Message):
@@ -28906,17 +27013,12 @@ class ListGlobalForwardingRulesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchGlobalForwardingRuleRequest(proto.Message):
@@ -28948,15 +27050,12 @@ class PatchGlobalForwardingRuleRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    forwarding_rule = proto.Field(proto.STRING, number=1528574)
-
+    forwarding_rule = proto.Field(proto.STRING, number=269964030,)
     forwarding_rule_resource = proto.Field(
-        proto.MESSAGE, number=32776239, message="ForwardingRule",
+        proto.MESSAGE, number=301211695, message="ForwardingRule",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class SetTargetGlobalForwardingRuleRequest(proto.Message):
@@ -28989,14 +27088,11 @@ class SetTargetGlobalForwardingRuleRequest(proto.Message):
             The body resource for this request
     """
 
-    forwarding_rule = proto.Field(proto.STRING, number=1528574)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    forwarding_rule = proto.Field(proto.STRING, number=269964030,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_reference_resource = proto.Field(
-        proto.MESSAGE, number=255286256, message="TargetReference",
+        proto.MESSAGE, number=523721712, message="TargetReference",
     )
 
 
@@ -29037,12 +27133,9 @@ class AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest(proto.Message):
         number=30691563,
         message="GlobalNetworkEndpointGroupsAttachEndpointsRequest",
     )
-
-    network_endpoint_group = proto.Field(proto.STRING, number=165471622)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    network_endpoint_group = proto.Field(proto.STRING, number=433907078,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class DeleteGlobalNetworkEndpointGroupRequest(proto.Message):
@@ -29073,11 +27166,9 @@ class DeleteGlobalNetworkEndpointGroupRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    network_endpoint_group = proto.Field(proto.STRING, number=165471622)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    network_endpoint_group = proto.Field(proto.STRING, number=433907078,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest(proto.Message):
@@ -29117,12 +27208,9 @@ class DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest(proto.Message):
         number=8898269,
         message="GlobalNetworkEndpointGroupsDetachEndpointsRequest",
     )
-
-    network_endpoint_group = proto.Field(proto.STRING, number=165471622)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    network_endpoint_group = proto.Field(proto.STRING, number=433907078,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetGlobalNetworkEndpointGroupRequest(proto.Message):
@@ -29137,9 +27225,8 @@ class GetGlobalNetworkEndpointGroupRequest(proto.Message):
             Project ID for this request.
     """
 
-    network_endpoint_group = proto.Field(proto.STRING, number=165471622)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    network_endpoint_group = proto.Field(proto.STRING, number=433907078,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class InsertGlobalNetworkEndpointGroupRequest(proto.Message):
@@ -29170,12 +27257,10 @@ class InsertGlobalNetworkEndpointGroupRequest(proto.Message):
     """
 
     network_endpoint_group_resource = proto.Field(
-        proto.MESSAGE, number=257353383, message="NetworkEndpointGroup",
+        proto.MESSAGE, number=525788839, message="NetworkEndpointGroup",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListGlobalNetworkEndpointGroupsRequest(proto.Message):
@@ -29243,17 +27328,12 @@ class ListGlobalNetworkEndpointGroupsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest(proto.Message):
@@ -29327,19 +27407,13 @@ class ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    network_endpoint_group = proto.Field(proto.STRING, number=165471622)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    network_endpoint_group = proto.Field(proto.STRING, number=433907078,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class AggregatedListGlobalOperationsRequest(proto.Message):
@@ -29418,19 +27492,13 @@ class AggregatedListGlobalOperationsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteGlobalOperationRequest(proto.Message):
@@ -29444,15 +27512,14 @@ class DeleteGlobalOperationRequest(proto.Message):
             Project ID for this request.
     """
 
-    operation = proto.Field(proto.STRING, number=52090215)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    operation = proto.Field(proto.STRING, number=52090215,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class DeleteGlobalOperationResponse(proto.Message):
     r"""A response message for GlobalOperations.Delete. See the
     method description for details.
-    """
+        """
 
 
 class GetGlobalOperationRequest(proto.Message):
@@ -29466,9 +27533,8 @@ class GetGlobalOperationRequest(proto.Message):
             Project ID for this request.
     """
 
-    operation = proto.Field(proto.STRING, number=52090215)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    operation = proto.Field(proto.STRING, number=52090215,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class ListGlobalOperationsRequest(proto.Message):
@@ -29536,17 +27602,12 @@ class ListGlobalOperationsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class WaitGlobalOperationRequest(proto.Message):
@@ -29560,9 +27621,8 @@ class WaitGlobalOperationRequest(proto.Message):
             Project ID for this request.
     """
 
-    operation = proto.Field(proto.STRING, number=52090215)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    operation = proto.Field(proto.STRING, number=52090215,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class DeleteGlobalOrganizationOperationRequest(proto.Message):
@@ -29576,15 +27636,14 @@ class DeleteGlobalOrganizationOperationRequest(proto.Message):
             Parent ID for this request.
     """
 
-    operation = proto.Field(proto.STRING, number=52090215)
-
-    parent_id = proto.Field(proto.STRING, number=191279312)
+    operation = proto.Field(proto.STRING, number=52090215,)
+    parent_id = proto.Field(proto.STRING, number=459714768, optional=True,)
 
 
 class DeleteGlobalOrganizationOperationResponse(proto.Message):
     r"""A response message for GlobalOrganizationOperations.Delete.
     See the method description for details.
-    """
+        """
 
 
 class GetGlobalOrganizationOperationRequest(proto.Message):
@@ -29598,9 +27657,8 @@ class GetGlobalOrganizationOperationRequest(proto.Message):
             Parent ID for this request.
     """
 
-    operation = proto.Field(proto.STRING, number=52090215)
-
-    parent_id = proto.Field(proto.STRING, number=191279312)
+    operation = proto.Field(proto.STRING, number=52090215,)
+    parent_id = proto.Field(proto.STRING, number=459714768, optional=True,)
 
 
 class ListGlobalOrganizationOperationsRequest(proto.Message):
@@ -29668,17 +27726,12 @@ class ListGlobalOrganizationOperationsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    parent_id = proto.Field(proto.STRING, number=191279312)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    parent_id = proto.Field(proto.STRING, number=459714768, optional=True,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class AggregatedListHealthChecksRequest(proto.Message):
@@ -29757,19 +27810,13 @@ class AggregatedListHealthChecksRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteHealthCheckRequest(proto.Message):
@@ -29799,11 +27846,9 @@ class DeleteHealthCheckRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    health_check = proto.Field(proto.STRING, number=40441189)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    health_check = proto.Field(proto.STRING, number=308876645,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetHealthCheckRequest(proto.Message):
@@ -29817,9 +27862,8 @@ class GetHealthCheckRequest(proto.Message):
             Project ID for this request.
     """
 
-    health_check = proto.Field(proto.STRING, number=40441189)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    health_check = proto.Field(proto.STRING, number=308876645,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class InsertHealthCheckRequest(proto.Message):
@@ -29852,10 +27896,8 @@ class InsertHealthCheckRequest(proto.Message):
     health_check_resource = proto.Field(
         proto.MESSAGE, number=201925032, message="HealthCheck",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListHealthChecksRequest(proto.Message):
@@ -29923,17 +27965,12 @@ class ListHealthChecksRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchHealthCheckRequest(proto.Message):
@@ -29965,15 +28002,12 @@ class PatchHealthCheckRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    health_check = proto.Field(proto.STRING, number=40441189)
-
+    health_check = proto.Field(proto.STRING, number=308876645,)
     health_check_resource = proto.Field(
         proto.MESSAGE, number=201925032, message="HealthCheck",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class UpdateHealthCheckRequest(proto.Message):
@@ -30005,15 +28039,12 @@ class UpdateHealthCheckRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    health_check = proto.Field(proto.STRING, number=40441189)
-
+    health_check = proto.Field(proto.STRING, number=308876645,)
     health_check_resource = proto.Field(
         proto.MESSAGE, number=201925032, message="HealthCheck",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class DeleteImageRequest(proto.Message):
@@ -30043,11 +28074,9 @@ class DeleteImageRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    image = proto.Field(proto.STRING, number=100313435)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    image = proto.Field(proto.STRING, number=100313435,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class DeprecateImageRequest(proto.Message):
@@ -30080,14 +28109,11 @@ class DeprecateImageRequest(proto.Message):
     """
 
     deprecation_status_resource = proto.Field(
-        proto.MESSAGE, number=64570608, message="DeprecationStatus",
+        proto.MESSAGE, number=333006064, message="DeprecationStatus",
     )
-
-    image = proto.Field(proto.STRING, number=100313435)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    image = proto.Field(proto.STRING, number=100313435,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetImageRequest(proto.Message):
@@ -30101,9 +28127,8 @@ class GetImageRequest(proto.Message):
             Project ID for this request.
     """
 
-    image = proto.Field(proto.STRING, number=100313435)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    image = proto.Field(proto.STRING, number=100313435,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class GetFromFamilyImageRequest(proto.Message):
@@ -30117,9 +28142,8 @@ class GetFromFamilyImageRequest(proto.Message):
             Project ID for this request.
     """
 
-    family = proto.Field(proto.STRING, number=60316516)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    family = proto.Field(proto.STRING, number=328751972,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class GetIamPolicyImageRequest(proto.Message):
@@ -30135,11 +28159,11 @@ class GetIamPolicyImageRequest(proto.Message):
             Name or id of the resource for this request.
     """
 
-    options_requested_policy_version = proto.Field(proto.INT32, number=230784573)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    options_requested_policy_version = proto.Field(
+        proto.INT32, number=499220029, optional=True,
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class InsertImageRequest(proto.Message):
@@ -30171,13 +28195,10 @@ class InsertImageRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    force_create = proto.Field(proto.BOOL, number=197723344)
-
-    image_resource = proto.Field(proto.MESSAGE, number=102736498, message="Image",)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    force_create = proto.Field(proto.BOOL, number=197723344, optional=True,)
+    image_resource = proto.Field(proto.MESSAGE, number=371171954, message="Image",)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListImagesRequest(proto.Message):
@@ -30245,17 +28266,12 @@ class ListImagesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchImageRequest(proto.Message):
@@ -30287,13 +28303,10 @@ class PatchImageRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    image = proto.Field(proto.STRING, number=100313435)
-
-    image_resource = proto.Field(proto.MESSAGE, number=102736498, message="Image",)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    image = proto.Field(proto.STRING, number=100313435,)
+    image_resource = proto.Field(proto.MESSAGE, number=371171954, message="Image",)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class SetIamPolicyImageRequest(proto.Message):
@@ -30310,12 +28323,10 @@ class SetIamPolicyImageRequest(proto.Message):
     """
 
     global_set_policy_request_resource = proto.Field(
-        proto.MESSAGE, number=68613042, message="GlobalSetPolicyRequest",
+        proto.MESSAGE, number=337048498, message="GlobalSetPolicyRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class SetLabelsImageRequest(proto.Message):
@@ -30332,12 +28343,10 @@ class SetLabelsImageRequest(proto.Message):
     """
 
     global_set_labels_request_resource = proto.Field(
-        proto.MESSAGE, number=51481733, message="GlobalSetLabelsRequest",
+        proto.MESSAGE, number=319917189, message="GlobalSetLabelsRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class TestIamPermissionsImageRequest(proto.Message):
@@ -30353,12 +28362,10 @@ class TestIamPermissionsImageRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
 
 
@@ -30394,19 +28401,15 @@ class AbandonInstancesInstanceGroupManagerRequest(proto.Message):
             instance group is located.
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
     instance_group_managers_abandon_instances_request_resource = proto.Field(
         proto.MESSAGE,
-        number=52493560,
+        number=320929016,
         message="InstanceGroupManagersAbandonInstancesRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AggregatedListInstanceGroupManagersRequest(proto.Message):
@@ -30485,19 +28488,13 @@ class AggregatedListInstanceGroupManagersRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class ApplyUpdatesToInstancesInstanceGroupManagerRequest(proto.Message):
@@ -30519,17 +28516,14 @@ class ApplyUpdatesToInstancesInstanceGroupManagerRequest(proto.Message):
             RFC1035.
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
     instance_group_managers_apply_updates_request_resource = proto.Field(
         proto.MESSAGE,
         number=259242835,
         message="InstanceGroupManagersApplyUpdatesRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class CreateInstancesInstanceGroupManagerRequest(proto.Message):
@@ -30565,19 +28559,15 @@ class CreateInstancesInstanceGroupManagerRequest(proto.Message):
             RFC1035.
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
     instance_group_managers_create_instances_request_resource = proto.Field(
         proto.MESSAGE,
         number=24558867,
         message="InstanceGroupManagersCreateInstancesRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class DeleteInstanceGroupManagerRequest(proto.Message):
@@ -30611,13 +28601,10 @@ class DeleteInstanceGroupManagerRequest(proto.Message):
             instance group is located.
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class DeleteInstancesInstanceGroupManagerRequest(proto.Message):
@@ -30652,19 +28639,15 @@ class DeleteInstancesInstanceGroupManagerRequest(proto.Message):
             instance group is located.
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
     instance_group_managers_delete_instances_request_resource = proto.Field(
         proto.MESSAGE,
         number=166421252,
         message="InstanceGroupManagersDeleteInstancesRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class DeletePerInstanceConfigsInstanceGroupManagerRequest(proto.Message):
@@ -30686,17 +28669,14 @@ class DeletePerInstanceConfigsInstanceGroupManagerRequest(proto.Message):
             RFC1035.
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
     instance_group_managers_delete_per_instance_configs_req_resource = proto.Field(
         proto.MESSAGE,
-        number=93992224,
+        number=362427680,
         message="InstanceGroupManagersDeletePerInstanceConfigsReq",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetInstanceGroupManagerRequest(proto.Message):
@@ -30713,11 +28693,9 @@ class GetInstanceGroupManagerRequest(proto.Message):
             instance group is located.
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class InsertInstanceGroupManagerRequest(proto.Message):
@@ -30753,12 +28731,9 @@ class InsertInstanceGroupManagerRequest(proto.Message):
     instance_group_manager_resource = proto.Field(
         proto.MESSAGE, number=261063946, message="InstanceGroupManager",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListInstanceGroupManagersRequest(proto.Message):
@@ -30829,19 +28804,13 @@ class ListInstanceGroupManagersRequest(proto.Message):
             instance group is located.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListErrorsInstanceGroupManagersRequest(proto.Message):
@@ -30918,21 +28887,14 @@ class ListErrorsInstanceGroupManagersRequest(proto.Message):
             RFC1035.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListManagedInstancesInstanceGroupManagersRequest(proto.Message):
@@ -31006,21 +28968,14 @@ class ListManagedInstancesInstanceGroupManagersRequest(proto.Message):
             instance group is located.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListPerInstanceConfigsInstanceGroupManagersRequest(proto.Message):
@@ -31096,21 +29051,14 @@ class ListPerInstanceConfigsInstanceGroupManagersRequest(proto.Message):
             RFC1035.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class PatchInstanceGroupManagerRequest(proto.Message):
@@ -31145,17 +29093,13 @@ class PatchInstanceGroupManagerRequest(proto.Message):
             the managed instance group.
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
     instance_group_manager_resource = proto.Field(
         proto.MESSAGE, number=261063946, message="InstanceGroupManager",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class PatchPerInstanceConfigsInstanceGroupManagerRequest(proto.Message):
@@ -31193,19 +29137,15 @@ class PatchPerInstanceConfigsInstanceGroupManagerRequest(proto.Message):
             RFC1035.
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
     instance_group_managers_patch_per_instance_configs_req_resource = proto.Field(
         proto.MESSAGE,
-        number=88215039,
+        number=356650495,
         message="InstanceGroupManagersPatchPerInstanceConfigsReq",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class RecreateInstancesInstanceGroupManagerRequest(proto.Message):
@@ -31241,19 +29181,15 @@ class RecreateInstancesInstanceGroupManagerRequest(proto.Message):
             instance group is located.
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
     instance_group_managers_recreate_instances_request_resource = proto.Field(
         proto.MESSAGE,
         number=21405952,
         message="InstanceGroupManagersRecreateInstancesRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ResizeInstanceGroupManagerRequest(proto.Message):
@@ -31292,15 +29228,11 @@ class ResizeInstanceGroupManagerRequest(proto.Message):
             instance group is located.
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    size = proto.Field(proto.INT32, number=3530753)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    size = proto.Field(proto.INT32, number=3530753,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetInstanceTemplateInstanceGroupManagerRequest(proto.Message):
@@ -31336,19 +29268,15 @@ class SetInstanceTemplateInstanceGroupManagerRequest(proto.Message):
             instance group is located.
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
     instance_group_managers_set_instance_template_request_resource = proto.Field(
         proto.MESSAGE,
         number=9809093,
         message="InstanceGroupManagersSetInstanceTemplateRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetTargetPoolsInstanceGroupManagerRequest(proto.Message):
@@ -31383,19 +29311,15 @@ class SetTargetPoolsInstanceGroupManagerRequest(proto.Message):
             instance group is located.
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
     instance_group_managers_set_target_pools_request_resource = proto.Field(
         proto.MESSAGE,
-        number=12714760,
+        number=281150216,
         message="InstanceGroupManagersSetTargetPoolsRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class UpdatePerInstanceConfigsInstanceGroupManagerRequest(proto.Message):
@@ -31433,19 +29357,15 @@ class UpdatePerInstanceConfigsInstanceGroupManagerRequest(proto.Message):
             RFC1035.
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
     instance_group_managers_update_per_instance_configs_req_resource = proto.Field(
         proto.MESSAGE,
         number=141402302,
         message="InstanceGroupManagersUpdatePerInstanceConfigsReq",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AddInstancesInstanceGroupRequest(proto.Message):
@@ -31481,17 +29401,13 @@ class AddInstancesInstanceGroupRequest(proto.Message):
             is located.
     """
 
-    instance_group = proto.Field(proto.STRING, number=81095253)
-
+    instance_group = proto.Field(proto.STRING, number=81095253,)
     instance_groups_add_instances_request_resource = proto.Field(
-        proto.MESSAGE, number=185277790, message="InstanceGroupsAddInstancesRequest",
+        proto.MESSAGE, number=453713246, message="InstanceGroupsAddInstancesRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AggregatedListInstanceGroupsRequest(proto.Message):
@@ -31570,19 +29486,13 @@ class AggregatedListInstanceGroupsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteInstanceGroupRequest(proto.Message):
@@ -31615,13 +29525,10 @@ class DeleteInstanceGroupRequest(proto.Message):
             is located.
     """
 
-    instance_group = proto.Field(proto.STRING, number=81095253)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance_group = proto.Field(proto.STRING, number=81095253,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetInstanceGroupRequest(proto.Message):
@@ -31638,11 +29545,9 @@ class GetInstanceGroupRequest(proto.Message):
             is located.
     """
 
-    instance_group = proto.Field(proto.STRING, number=81095253)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance_group = proto.Field(proto.STRING, number=81095253,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class InsertInstanceGroupRequest(proto.Message):
@@ -31676,14 +29581,11 @@ class InsertInstanceGroupRequest(proto.Message):
     """
 
     instance_group_resource = proto.Field(
-        proto.MESSAGE, number=18176696, message="InstanceGroup",
+        proto.MESSAGE, number=286612152, message="InstanceGroup",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListInstanceGroupsRequest(proto.Message):
@@ -31754,19 +29656,13 @@ class ListInstanceGroupsRequest(proto.Message):
             is located.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListInstancesInstanceGroupsRequest(proto.Message):
@@ -31842,25 +29738,17 @@ class ListInstancesInstanceGroupsRequest(proto.Message):
             is located.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    instance_group = proto.Field(proto.STRING, number=81095253)
-
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    instance_group = proto.Field(proto.STRING, number=81095253,)
     instance_groups_list_instances_request_resource = proto.Field(
-        proto.MESSAGE, number=207819807, message="InstanceGroupsListInstancesRequest",
+        proto.MESSAGE, number=476255263, message="InstanceGroupsListInstancesRequest",
     )
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class RemoveInstancesInstanceGroupRequest(proto.Message):
@@ -31896,17 +29784,13 @@ class RemoveInstancesInstanceGroupRequest(proto.Message):
             is located.
     """
 
-    instance_group = proto.Field(proto.STRING, number=81095253)
-
+    instance_group = proto.Field(proto.STRING, number=81095253,)
     instance_groups_remove_instances_request_resource = proto.Field(
-        proto.MESSAGE, number=122546361, message="InstanceGroupsRemoveInstancesRequest",
+        proto.MESSAGE, number=390981817, message="InstanceGroupsRemoveInstancesRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetNamedPortsInstanceGroupRequest(proto.Message):
@@ -31942,17 +29826,13 @@ class SetNamedPortsInstanceGroupRequest(proto.Message):
             is located.
     """
 
-    instance_group = proto.Field(proto.STRING, number=81095253)
-
+    instance_group = proto.Field(proto.STRING, number=81095253,)
     instance_groups_set_named_ports_request_resource = proto.Field(
-        proto.MESSAGE, number=116716079, message="InstanceGroupsSetNamedPortsRequest",
+        proto.MESSAGE, number=385151535, message="InstanceGroupsSetNamedPortsRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class DeleteInstanceTemplateRequest(proto.Message):
@@ -31982,11 +29862,9 @@ class DeleteInstanceTemplateRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    instance_template = proto.Field(proto.STRING, number=40812772)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    instance_template = proto.Field(proto.STRING, number=309248228,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetInstanceTemplateRequest(proto.Message):
@@ -32000,9 +29878,8 @@ class GetInstanceTemplateRequest(proto.Message):
             Project ID for this request.
     """
 
-    instance_template = proto.Field(proto.STRING, number=40812772)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    instance_template = proto.Field(proto.STRING, number=309248228,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class GetIamPolicyInstanceTemplateRequest(proto.Message):
@@ -32018,11 +29895,11 @@ class GetIamPolicyInstanceTemplateRequest(proto.Message):
             Name or id of the resource for this request.
     """
 
-    options_requested_policy_version = proto.Field(proto.INT32, number=230784573)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    options_requested_policy_version = proto.Field(
+        proto.INT32, number=499220029, optional=True,
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class InsertInstanceTemplateRequest(proto.Message):
@@ -32055,10 +29932,8 @@ class InsertInstanceTemplateRequest(proto.Message):
     instance_template_resource = proto.Field(
         proto.MESSAGE, number=10679561, message="InstanceTemplate",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListInstanceTemplatesRequest(proto.Message):
@@ -32126,17 +30001,12 @@ class ListInstanceTemplatesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class SetIamPolicyInstanceTemplateRequest(proto.Message):
@@ -32153,12 +30023,10 @@ class SetIamPolicyInstanceTemplateRequest(proto.Message):
     """
 
     global_set_policy_request_resource = proto.Field(
-        proto.MESSAGE, number=68613042, message="GlobalSetPolicyRequest",
+        proto.MESSAGE, number=337048498, message="GlobalSetPolicyRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class TestIamPermissionsInstanceTemplateRequest(proto.Message):
@@ -32174,12 +30042,10 @@ class TestIamPermissionsInstanceTemplateRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
 
 
@@ -32218,18 +30084,13 @@ class AddAccessConfigInstanceRequest(proto.Message):
     """
 
     access_config_resource = proto.Field(
-        proto.MESSAGE, number=119390096, message="AccessConfig",
+        proto.MESSAGE, number=387825552, message="AccessConfig",
     )
-
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    network_interface = proto.Field(proto.STRING, number=96952424)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    network_interface = proto.Field(proto.STRING, number=365387880,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AddResourcePoliciesInstanceRequest(proto.Message):
@@ -32263,17 +30124,13 @@ class AddResourcePoliciesInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
+    instance = proto.Field(proto.STRING, number=18257045,)
     instances_add_resource_policies_request_resource = proto.Field(
-        proto.MESSAGE, number=220916507, message="InstancesAddResourcePoliciesRequest",
+        proto.MESSAGE, number=489351963, message="InstancesAddResourcePoliciesRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AggregatedListInstancesRequest(proto.Message):
@@ -32352,19 +30209,13 @@ class AggregatedListInstancesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class AttachDiskInstanceRequest(proto.Message):
@@ -32406,16 +30257,11 @@ class AttachDiskInstanceRequest(proto.Message):
     attached_disk_resource = proto.Field(
         proto.MESSAGE, number=90605845, message="AttachedDisk",
     )
-
-    force_attach = proto.Field(proto.BOOL, number=142758425)
-
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    force_attach = proto.Field(proto.BOOL, number=142758425, optional=True,)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class DeleteInstanceRequest(proto.Message):
@@ -32447,13 +30293,10 @@ class DeleteInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class DeleteAccessConfigInstanceRequest(proto.Message):
@@ -32489,17 +30332,12 @@ class DeleteAccessConfigInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    access_config = proto.Field(proto.STRING, number=72856189)
-
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    network_interface = proto.Field(proto.STRING, number=96952424)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    access_config = proto.Field(proto.STRING, number=72856189,)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    network_interface = proto.Field(proto.STRING, number=365387880,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class DetachDiskInstanceRequest(proto.Message):
@@ -32535,15 +30373,11 @@ class DetachDiskInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    device_name = proto.Field(proto.STRING, number=67541716)
-
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    device_name = proto.Field(proto.STRING, number=67541716,)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetInstanceRequest(proto.Message):
@@ -32559,11 +30393,9 @@ class GetInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetGuestAttributesInstanceRequest(proto.Message):
@@ -32585,15 +30417,11 @@ class GetGuestAttributesInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    query_path = proto.Field(proto.STRING, number=100155708)
-
-    variable_key = proto.Field(proto.STRING, number=164364828)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    query_path = proto.Field(proto.STRING, number=368591164, optional=True,)
+    variable_key = proto.Field(proto.STRING, number=164364828, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetIamPolicyInstanceRequest(proto.Message):
@@ -32611,13 +30439,12 @@ class GetIamPolicyInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    options_requested_policy_version = proto.Field(proto.INT32, number=230784573)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    options_requested_policy_version = proto.Field(
+        proto.INT32, number=499220029, optional=True,
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetScreenshotInstanceRequest(proto.Message):
@@ -32633,11 +30460,9 @@ class GetScreenshotInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetSerialPortOutputInstanceRequest(proto.Message):
@@ -32674,15 +30499,11 @@ class GetSerialPortOutputInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    port = proto.Field(proto.INT32, number=3446913)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    start = proto.Field(proto.STRING, number=109757538)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    port = proto.Field(proto.INT32, number=3446913, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    start = proto.Field(proto.STRING, number=109757538, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetShieldedInstanceIdentityInstanceRequest(proto.Message):
@@ -32699,11 +30520,9 @@ class GetShieldedInstanceIdentityInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class InsertInstanceRequest(proto.Message):
@@ -32748,14 +30567,12 @@ class InsertInstanceRequest(proto.Message):
     instance_resource = proto.Field(
         proto.MESSAGE, number=215988344, message="Instance",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    source_instance_template = proto.Field(proto.STRING, number=63988160)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    source_instance_template = proto.Field(
+        proto.STRING, number=332423616, optional=True,
+    )
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListInstancesRequest(proto.Message):
@@ -32825,19 +30642,13 @@ class ListInstancesRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListReferrersInstancesRequest(proto.Message):
@@ -32911,21 +30722,14 @@ class ListReferrersInstancesRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class RemoveResourcePoliciesInstanceRequest(proto.Message):
@@ -32959,19 +30763,15 @@ class RemoveResourcePoliciesInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
+    instance = proto.Field(proto.STRING, number=18257045,)
     instances_remove_resource_policies_request_resource = proto.Field(
         proto.MESSAGE,
         number=49229558,
         message="InstancesRemoveResourcePoliciesRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ResetInstanceRequest(proto.Message):
@@ -33003,13 +30803,10 @@ class ResetInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetDeletionProtectionInstanceRequest(proto.Message):
@@ -33044,15 +30841,11 @@ class SetDeletionProtectionInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    deletion_protection = proto.Field(proto.BOOL, number=189579242)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    deletion_protection = proto.Field(proto.BOOL, number=458014698, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    resource = proto.Field(proto.STRING, number=195806222,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetDiskAutoDeleteInstanceRequest(proto.Message):
@@ -33091,17 +30884,12 @@ class SetDiskAutoDeleteInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    auto_delete = proto.Field(proto.BOOL, number=196325947)
-
-    device_name = proto.Field(proto.STRING, number=67541716)
-
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    auto_delete = proto.Field(proto.BOOL, number=464761403,)
+    device_name = proto.Field(proto.STRING, number=67541716,)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetIamPolicyInstanceRequest(proto.Message):
@@ -33119,14 +30907,11 @@ class SetIamPolicyInstanceRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
-    zone = proto.Field(proto.STRING, number=3744684)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
+    zone = proto.Field(proto.STRING, number=3744684,)
     zone_set_policy_request_resource = proto.Field(
-        proto.MESSAGE, number=113646651, message="ZoneSetPolicyRequest",
+        proto.MESSAGE, number=382082107, message="ZoneSetPolicyRequest",
     )
 
 
@@ -33161,17 +30946,13 @@ class SetLabelsInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
+    instance = proto.Field(proto.STRING, number=18257045,)
     instances_set_labels_request_resource = proto.Field(
         proto.MESSAGE, number=207749344, message="InstancesSetLabelsRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetMachineResourcesInstanceRequest(proto.Message):
@@ -33205,17 +30986,13 @@ class SetMachineResourcesInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
+    instance = proto.Field(proto.STRING, number=18257045,)
     instances_set_machine_resources_request_resource = proto.Field(
         proto.MESSAGE, number=196286318, message="InstancesSetMachineResourcesRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetMachineTypeInstanceRequest(proto.Message):
@@ -33249,17 +31026,13 @@ class SetMachineTypeInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
+    instance = proto.Field(proto.STRING, number=18257045,)
     instances_set_machine_type_request_resource = proto.Field(
         proto.MESSAGE, number=254157709, message="InstancesSetMachineTypeRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetMetadataInstanceRequest(proto.Message):
@@ -33293,15 +31066,13 @@ class SetMetadataInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    metadata_resource = proto.Field(proto.MESSAGE, number=22650654, message="Metadata",)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    metadata_resource = proto.Field(
+        proto.MESSAGE, number=291086110, message="Metadata",
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetMinCpuPlatformInstanceRequest(proto.Message):
@@ -33335,17 +31106,13 @@ class SetMinCpuPlatformInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
+    instance = proto.Field(proto.STRING, number=18257045,)
     instances_set_min_cpu_platform_request_resource = proto.Field(
         proto.MESSAGE, number=148459368, message="InstancesSetMinCpuPlatformRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetSchedulingInstanceRequest(proto.Message):
@@ -33379,17 +31146,13 @@ class SetSchedulingInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     scheduling_resource = proto.Field(
-        proto.MESSAGE, number=194745945, message="Scheduling",
+        proto.MESSAGE, number=463181401, message="Scheduling",
     )
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetServiceAccountInstanceRequest(proto.Message):
@@ -33423,17 +31186,13 @@ class SetServiceAccountInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
+    instance = proto.Field(proto.STRING, number=18257045,)
     instances_set_service_account_request_resource = proto.Field(
-        proto.MESSAGE, number=7114552, message="InstancesSetServiceAccountRequest",
+        proto.MESSAGE, number=275550008, message="InstancesSetServiceAccountRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetShieldedInstanceIntegrityPolicyInstanceRequest(proto.Message):
@@ -33469,17 +31228,13 @@ class SetShieldedInstanceIntegrityPolicyInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     shielded_instance_integrity_policy_resource = proto.Field(
-        proto.MESSAGE, number=140734006, message="ShieldedInstanceIntegrityPolicy",
+        proto.MESSAGE, number=409169462, message="ShieldedInstanceIntegrityPolicy",
     )
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetTagsInstanceRequest(proto.Message):
@@ -33513,15 +31268,11 @@ class SetTagsInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    tags_resource = proto.Field(proto.MESSAGE, number=62999924, message="Tags",)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    tags_resource = proto.Field(proto.MESSAGE, number=331435380, message="Tags",)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SimulateMaintenanceEventInstanceRequest(proto.Message):
@@ -33537,11 +31288,9 @@ class SimulateMaintenanceEventInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class StartInstanceRequest(proto.Message):
@@ -33573,13 +31322,10 @@ class StartInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class StartWithEncryptionKeyInstanceRequest(proto.Message):
@@ -33613,19 +31359,15 @@ class StartWithEncryptionKeyInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
+    instance = proto.Field(proto.STRING, number=18257045,)
     instances_start_with_encryption_key_request_resource = proto.Field(
         proto.MESSAGE,
-        number=173277055,
+        number=441712511,
         message="InstancesStartWithEncryptionKeyRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class StopInstanceRequest(proto.Message):
@@ -33657,13 +31399,10 @@ class StopInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class TestIamPermissionsInstanceRequest(proto.Message):
@@ -33681,15 +31420,12 @@ class TestIamPermissionsInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class UpdateInstanceRequest(proto.Message):
@@ -33736,21 +31472,17 @@ class UpdateInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
+    instance = proto.Field(proto.STRING, number=18257045,)
     instance_resource = proto.Field(
         proto.MESSAGE, number=215988344, message="Instance",
     )
-
-    minimal_action = proto.Field(proto.STRING, number=2131604)
-
-    most_disruptive_allowed_action = proto.Field(proto.STRING, number=66103053)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    minimal_action = proto.Field(proto.STRING, number=270567060, optional=True,)
+    most_disruptive_allowed_action = proto.Field(
+        proto.STRING, number=66103053, optional=True,
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class UpdateAccessConfigInstanceRequest(proto.Message):
@@ -33788,18 +31520,13 @@ class UpdateAccessConfigInstanceRequest(proto.Message):
     """
 
     access_config_resource = proto.Field(
-        proto.MESSAGE, number=119390096, message="AccessConfig",
+        proto.MESSAGE, number=387825552, message="AccessConfig",
     )
-
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    network_interface = proto.Field(proto.STRING, number=96952424)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    network_interface = proto.Field(proto.STRING, number=365387880,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class UpdateDisplayDeviceInstanceRequest(proto.Message):
@@ -33834,16 +31561,12 @@ class UpdateDisplayDeviceInstanceRequest(proto.Message):
     """
 
     display_device_resource = proto.Field(
-        proto.MESSAGE, number=21250650, message="DisplayDevice",
+        proto.MESSAGE, number=289686106, message="DisplayDevice",
     )
-
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class UpdateNetworkInterfaceInstanceRequest(proto.Message):
@@ -33879,19 +31602,14 @@ class UpdateNetworkInterfaceInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    network_interface = proto.Field(proto.STRING, number=96952424)
-
+    instance = proto.Field(proto.STRING, number=18257045,)
+    network_interface = proto.Field(proto.STRING, number=365387880,)
     network_interface_resource = proto.Field(
-        proto.MESSAGE, number=57379333, message="NetworkInterface",
+        proto.MESSAGE, number=325814789, message="NetworkInterface",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class UpdateShieldedInstanceConfigInstanceRequest(proto.Message):
@@ -33926,17 +31644,13 @@ class UpdateShieldedInstanceConfigInstanceRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    instance = proto.Field(proto.STRING, number=18257045)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     shielded_instance_config_resource = proto.Field(
-        proto.MESSAGE, number=3623768, message="ShieldedInstanceConfig",
+        proto.MESSAGE, number=272059224, message="ShieldedInstanceConfig",
     )
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AggregatedListInterconnectAttachmentsRequest(proto.Message):
@@ -34015,19 +31729,13 @@ class AggregatedListInterconnectAttachmentsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteInterconnectAttachmentRequest(proto.Message):
@@ -34060,13 +31768,10 @@ class DeleteInterconnectAttachmentRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    interconnect_attachment = proto.Field(proto.STRING, number=39699828)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    interconnect_attachment = proto.Field(proto.STRING, number=308135284,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetInterconnectAttachmentRequest(proto.Message):
@@ -34083,11 +31788,9 @@ class GetInterconnectAttachmentRequest(proto.Message):
             Name of the region for this request.
     """
 
-    interconnect_attachment = proto.Field(proto.STRING, number=39699828)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    interconnect_attachment = proto.Field(proto.STRING, number=308135284,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class InsertInterconnectAttachmentRequest(proto.Message):
@@ -34124,14 +31827,10 @@ class InsertInterconnectAttachmentRequest(proto.Message):
     interconnect_attachment_resource = proto.Field(
         proto.MESSAGE, number=212341369, message="InterconnectAttachment",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    validate_only = proto.Field(proto.BOOL, number=242744629)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    validate_only = proto.Field(proto.BOOL, number=242744629, optional=True,)
 
 
 class ListInterconnectAttachmentsRequest(proto.Message):
@@ -34201,19 +31900,13 @@ class ListInterconnectAttachmentsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchInterconnectAttachmentRequest(proto.Message):
@@ -34247,17 +31940,13 @@ class PatchInterconnectAttachmentRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    interconnect_attachment = proto.Field(proto.STRING, number=39699828)
-
+    interconnect_attachment = proto.Field(proto.STRING, number=308135284,)
     interconnect_attachment_resource = proto.Field(
         proto.MESSAGE, number=212341369, message="InterconnectAttachment",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetInterconnectLocationRequest(proto.Message):
@@ -34271,9 +31960,8 @@ class GetInterconnectLocationRequest(proto.Message):
             Project ID for this request.
     """
 
-    interconnect_location = proto.Field(proto.STRING, number=223800390)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    interconnect_location = proto.Field(proto.STRING, number=492235846,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class ListInterconnectLocationsRequest(proto.Message):
@@ -34341,17 +32029,12 @@ class ListInterconnectLocationsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteInterconnectRequest(proto.Message):
@@ -34381,11 +32064,9 @@ class DeleteInterconnectRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    interconnect = proto.Field(proto.STRING, number=224601230)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    interconnect = proto.Field(proto.STRING, number=224601230,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetInterconnectRequest(proto.Message):
@@ -34399,9 +32080,8 @@ class GetInterconnectRequest(proto.Message):
             Project ID for this request.
     """
 
-    interconnect = proto.Field(proto.STRING, number=224601230)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    interconnect = proto.Field(proto.STRING, number=224601230,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class GetDiagnosticsInterconnectRequest(proto.Message):
@@ -34415,9 +32095,8 @@ class GetDiagnosticsInterconnectRequest(proto.Message):
             Project ID for this request.
     """
 
-    interconnect = proto.Field(proto.STRING, number=224601230)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    interconnect = proto.Field(proto.STRING, number=224601230,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class InsertInterconnectRequest(proto.Message):
@@ -34448,12 +32127,10 @@ class InsertInterconnectRequest(proto.Message):
     """
 
     interconnect_resource = proto.Field(
-        proto.MESSAGE, number=129175711, message="Interconnect",
+        proto.MESSAGE, number=397611167, message="Interconnect",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListInterconnectsRequest(proto.Message):
@@ -34521,17 +32198,12 @@ class ListInterconnectsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchInterconnectRequest(proto.Message):
@@ -34563,15 +32235,12 @@ class PatchInterconnectRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    interconnect = proto.Field(proto.STRING, number=224601230)
-
+    interconnect = proto.Field(proto.STRING, number=224601230,)
     interconnect_resource = proto.Field(
-        proto.MESSAGE, number=129175711, message="Interconnect",
+        proto.MESSAGE, number=397611167, message="Interconnect",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetLicenseCodeRequest(proto.Message):
@@ -34586,9 +32255,8 @@ class GetLicenseCodeRequest(proto.Message):
             Project ID for this request.
     """
 
-    license_code = proto.Field(proto.STRING, number=1467179)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    license_code = proto.Field(proto.STRING, number=1467179,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class TestIamPermissionsLicenseCodeRequest(proto.Message):
@@ -34604,12 +32272,10 @@ class TestIamPermissionsLicenseCodeRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
 
 
@@ -34640,11 +32306,9 @@ class DeleteLicenseRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    license_ = proto.Field(proto.STRING, number=166757441)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    license_ = proto.Field(proto.STRING, number=166757441,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetLicenseRequest(proto.Message):
@@ -34658,9 +32322,8 @@ class GetLicenseRequest(proto.Message):
             Project ID for this request.
     """
 
-    license_ = proto.Field(proto.STRING, number=166757441)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    license_ = proto.Field(proto.STRING, number=166757441,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class GetIamPolicyLicenseRequest(proto.Message):
@@ -34676,11 +32339,11 @@ class GetIamPolicyLicenseRequest(proto.Message):
             Name or id of the resource for this request.
     """
 
-    options_requested_policy_version = proto.Field(proto.INT32, number=230784573)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    options_requested_policy_version = proto.Field(
+        proto.INT32, number=499220029, optional=True,
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class InsertLicenseRequest(proto.Message):
@@ -34710,11 +32373,9 @@ class InsertLicenseRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    license_resource = proto.Field(proto.MESSAGE, number=169519692, message="License",)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    license_resource = proto.Field(proto.MESSAGE, number=437955148, message="License",)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListLicensesRequest(proto.Message):
@@ -34782,17 +32443,12 @@ class ListLicensesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class SetIamPolicyLicenseRequest(proto.Message):
@@ -34809,12 +32465,10 @@ class SetIamPolicyLicenseRequest(proto.Message):
     """
 
     global_set_policy_request_resource = proto.Field(
-        proto.MESSAGE, number=68613042, message="GlobalSetPolicyRequest",
+        proto.MESSAGE, number=337048498, message="GlobalSetPolicyRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class TestIamPermissionsLicenseRequest(proto.Message):
@@ -34830,12 +32484,10 @@ class TestIamPermissionsLicenseRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
 
 
@@ -34915,19 +32567,13 @@ class AggregatedListMachineTypesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class GetMachineTypeRequest(proto.Message):
@@ -34943,11 +32589,9 @@ class GetMachineTypeRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    machine_type = proto.Field(proto.STRING, number=227711026)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    machine_type = proto.Field(proto.STRING, number=227711026,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListMachineTypesRequest(proto.Message):
@@ -35017,19 +32661,13 @@ class ListMachineTypesRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AggregatedListNetworkEndpointGroupsRequest(proto.Message):
@@ -35108,19 +32746,13 @@ class AggregatedListNetworkEndpointGroupsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class AttachNetworkEndpointsNetworkEndpointGroupRequest(proto.Message):
@@ -35159,19 +32791,15 @@ class AttachNetworkEndpointsNetworkEndpointGroupRequest(proto.Message):
             RFC1035.
     """
 
-    network_endpoint_group = proto.Field(proto.STRING, number=165471622)
-
+    network_endpoint_group = proto.Field(proto.STRING, number=433907078,)
     network_endpoint_groups_attach_endpoints_request_resource = proto.Field(
         proto.MESSAGE,
         number=531079,
         message="NetworkEndpointGroupsAttachEndpointsRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class DeleteNetworkEndpointGroupRequest(proto.Message):
@@ -35206,13 +32834,10 @@ class DeleteNetworkEndpointGroupRequest(proto.Message):
             RFC1035.
     """
 
-    network_endpoint_group = proto.Field(proto.STRING, number=165471622)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    network_endpoint_group = proto.Field(proto.STRING, number=433907078,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class DetachNetworkEndpointsNetworkEndpointGroupRequest(proto.Message):
@@ -35251,19 +32876,15 @@ class DetachNetworkEndpointsNetworkEndpointGroupRequest(proto.Message):
             RFC1035.
     """
 
-    network_endpoint_group = proto.Field(proto.STRING, number=165471622)
-
+    network_endpoint_group = proto.Field(proto.STRING, number=433907078,)
     network_endpoint_groups_detach_endpoints_request_resource = proto.Field(
         proto.MESSAGE,
-        number=247173241,
+        number=515608697,
         message="NetworkEndpointGroupsDetachEndpointsRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetNetworkEndpointGroupRequest(proto.Message):
@@ -35282,11 +32903,9 @@ class GetNetworkEndpointGroupRequest(proto.Message):
             RFC1035.
     """
 
-    network_endpoint_group = proto.Field(proto.STRING, number=165471622)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    network_endpoint_group = proto.Field(proto.STRING, number=433907078,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class InsertNetworkEndpointGroupRequest(proto.Message):
@@ -35321,14 +32940,11 @@ class InsertNetworkEndpointGroupRequest(proto.Message):
     """
 
     network_endpoint_group_resource = proto.Field(
-        proto.MESSAGE, number=257353383, message="NetworkEndpointGroup",
+        proto.MESSAGE, number=525788839, message="NetworkEndpointGroup",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListNetworkEndpointGroupsRequest(proto.Message):
@@ -35400,19 +33016,13 @@ class ListNetworkEndpointGroupsRequest(proto.Message):
             RFC1035.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListNetworkEndpointsNetworkEndpointGroupsRequest(proto.Message):
@@ -35492,27 +33102,19 @@ class ListNetworkEndpointsNetworkEndpointGroupsRequest(proto.Message):
             RFC1035.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    network_endpoint_group = proto.Field(proto.STRING, number=165471622)
-
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    network_endpoint_group = proto.Field(proto.STRING, number=433907078,)
     network_endpoint_groups_list_endpoints_request_resource = proto.Field(
         proto.MESSAGE,
         number=59493390,
         message="NetworkEndpointGroupsListEndpointsRequest",
     )
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class TestIamPermissionsNetworkEndpointGroupRequest(proto.Message):
@@ -35531,15 +33133,12 @@ class TestIamPermissionsNetworkEndpointGroupRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AddPeeringNetworkRequest(proto.Message):
@@ -35572,15 +33171,12 @@ class AddPeeringNetworkRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    network = proto.Field(proto.STRING, number=232872494)
-
+    network = proto.Field(proto.STRING, number=232872494,)
     networks_add_peering_request_resource = proto.Field(
-        proto.MESSAGE, number=120374965, message="NetworksAddPeeringRequest",
+        proto.MESSAGE, number=388810421, message="NetworksAddPeeringRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class DeleteNetworkRequest(proto.Message):
@@ -35610,11 +33206,9 @@ class DeleteNetworkRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    network = proto.Field(proto.STRING, number=232872494)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    network = proto.Field(proto.STRING, number=232872494,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetNetworkRequest(proto.Message):
@@ -35628,9 +33222,8 @@ class GetNetworkRequest(proto.Message):
             Project ID for this request.
     """
 
-    network = proto.Field(proto.STRING, number=232872494)
-
-    project = proto.Field(proto.STRING, number=227560217)
+    network = proto.Field(proto.STRING, number=232872494,)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class InsertNetworkRequest(proto.Message):
@@ -35661,10 +33254,8 @@ class InsertNetworkRequest(proto.Message):
     """
 
     network_resource = proto.Field(proto.MESSAGE, number=122105599, message="Network",)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListNetworksRequest(proto.Message):
@@ -35732,17 +33323,12 @@ class ListNetworksRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class ListPeeringRoutesNetworksRequest(proto.Message):
@@ -35824,28 +33410,21 @@ class ListPeeringRoutesNetworksRequest(proto.Message):
     class Direction(proto.Enum):
         r"""The direction of the exchanged routes."""
         UNDEFINED_DIRECTION = 0
-        INCOMING = 70117414
-        OUTGOING = 39002988
+        INCOMING = 338552870
+        OUTGOING = 307438444
 
-    direction = proto.Field(proto.ENUM, number=111150975, enum=Direction,)
-
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    network = proto.Field(proto.STRING, number=232872494)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    peering_name = proto.Field(proto.STRING, number=249571370)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    direction = proto.Field(
+        proto.ENUM, number=111150975, optional=True, enum=Direction,
+    )
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    network = proto.Field(proto.STRING, number=232872494,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    peering_name = proto.Field(proto.STRING, number=249571370, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchNetworkRequest(proto.Message):
@@ -35877,13 +33456,10 @@ class PatchNetworkRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    network = proto.Field(proto.STRING, number=232872494)
-
+    network = proto.Field(proto.STRING, number=232872494,)
     network_resource = proto.Field(proto.MESSAGE, number=122105599, message="Network",)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class RemovePeeringNetworkRequest(proto.Message):
@@ -35916,15 +33492,12 @@ class RemovePeeringNetworkRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    network = proto.Field(proto.STRING, number=232872494)
-
+    network = proto.Field(proto.STRING, number=232872494,)
     networks_remove_peering_request_resource = proto.Field(
-        proto.MESSAGE, number=152727038, message="NetworksRemovePeeringRequest",
+        proto.MESSAGE, number=421162494, message="NetworksRemovePeeringRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class SwitchToCustomModeNetworkRequest(proto.Message):
@@ -35954,11 +33527,9 @@ class SwitchToCustomModeNetworkRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    network = proto.Field(proto.STRING, number=232872494)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    network = proto.Field(proto.STRING, number=232872494,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class UpdatePeeringNetworkRequest(proto.Message):
@@ -35991,15 +33562,12 @@ class UpdatePeeringNetworkRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    network = proto.Field(proto.STRING, number=232872494)
-
+    network = proto.Field(proto.STRING, number=232872494,)
     networks_update_peering_request_resource = proto.Field(
         proto.MESSAGE, number=224433497, message="NetworksUpdatePeeringRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class AddNodesNodeGroupRequest(proto.Message):
@@ -36033,17 +33601,13 @@ class AddNodesNodeGroupRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    node_group = proto.Field(proto.STRING, number=201522690)
-
+    node_group = proto.Field(proto.STRING, number=469958146,)
     node_groups_add_nodes_request_resource = proto.Field(
         proto.MESSAGE, number=131263288, message="NodeGroupsAddNodesRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AggregatedListNodeGroupsRequest(proto.Message):
@@ -36122,19 +33686,13 @@ class AggregatedListNodeGroupsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteNodeGroupRequest(proto.Message):
@@ -36166,13 +33724,10 @@ class DeleteNodeGroupRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    node_group = proto.Field(proto.STRING, number=201522690)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    node_group = proto.Field(proto.STRING, number=469958146,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class DeleteNodesNodeGroupRequest(proto.Message):
@@ -36207,17 +33762,13 @@ class DeleteNodesNodeGroupRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    node_group = proto.Field(proto.STRING, number=201522690)
-
+    node_group = proto.Field(proto.STRING, number=469958146,)
     node_groups_delete_nodes_request_resource = proto.Field(
         proto.MESSAGE, number=183298962, message="NodeGroupsDeleteNodesRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetNodeGroupRequest(proto.Message):
@@ -36233,11 +33784,9 @@ class GetNodeGroupRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    node_group = proto.Field(proto.STRING, number=201522690)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    node_group = proto.Field(proto.STRING, number=469958146,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetIamPolicyNodeGroupRequest(proto.Message):
@@ -36255,13 +33804,12 @@ class GetIamPolicyNodeGroupRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    options_requested_policy_version = proto.Field(proto.INT32, number=230784573)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    options_requested_policy_version = proto.Field(
+        proto.INT32, number=499220029, optional=True,
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class InsertNodeGroupRequest(proto.Message):
@@ -36295,17 +33843,13 @@ class InsertNodeGroupRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    initial_node_count = proto.Field(proto.INT32, number=71951469)
-
+    initial_node_count = proto.Field(proto.INT32, number=71951469,)
     node_group_resource = proto.Field(
-        proto.MESSAGE, number=236886443, message="NodeGroup",
+        proto.MESSAGE, number=505321899, message="NodeGroup",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListNodeGroupsRequest(proto.Message):
@@ -36375,19 +33919,13 @@ class ListNodeGroupsRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListNodesNodeGroupsRequest(proto.Message):
@@ -36460,21 +33998,14 @@ class ListNodesNodeGroupsRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    node_group = proto.Field(proto.STRING, number=201522690)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    node_group = proto.Field(proto.STRING, number=469958146,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class PatchNodeGroupRequest(proto.Message):
@@ -36508,17 +34039,13 @@ class PatchNodeGroupRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    node_group = proto.Field(proto.STRING, number=201522690)
-
+    node_group = proto.Field(proto.STRING, number=469958146,)
     node_group_resource = proto.Field(
-        proto.MESSAGE, number=236886443, message="NodeGroup",
+        proto.MESSAGE, number=505321899, message="NodeGroup",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetIamPolicyNodeGroupRequest(proto.Message):
@@ -36536,14 +34063,11 @@ class SetIamPolicyNodeGroupRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
-    zone = proto.Field(proto.STRING, number=3744684)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
+    zone = proto.Field(proto.STRING, number=3744684,)
     zone_set_policy_request_resource = proto.Field(
-        proto.MESSAGE, number=113646651, message="ZoneSetPolicyRequest",
+        proto.MESSAGE, number=382082107, message="ZoneSetPolicyRequest",
     )
 
 
@@ -36578,17 +34102,13 @@ class SetNodeTemplateNodeGroupRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    node_group = proto.Field(proto.STRING, number=201522690)
-
+    node_group = proto.Field(proto.STRING, number=469958146,)
     node_groups_set_node_template_request_resource = proto.Field(
         proto.MESSAGE, number=117382321, message="NodeGroupsSetNodeTemplateRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class TestIamPermissionsNodeGroupRequest(proto.Message):
@@ -36606,15 +34126,12 @@ class TestIamPermissionsNodeGroupRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AggregatedListNodeTemplatesRequest(proto.Message):
@@ -36693,19 +34210,13 @@ class AggregatedListNodeTemplatesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteNodeTemplateRequest(proto.Message):
@@ -36737,13 +34248,10 @@ class DeleteNodeTemplateRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    node_template = proto.Field(proto.STRING, number=54718999)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    node_template = proto.Field(proto.STRING, number=323154455,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetNodeTemplateRequest(proto.Message):
@@ -36759,11 +34267,9 @@ class GetNodeTemplateRequest(proto.Message):
             The name of the region for this request.
     """
 
-    node_template = proto.Field(proto.STRING, number=54718999)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    node_template = proto.Field(proto.STRING, number=323154455,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class GetIamPolicyNodeTemplateRequest(proto.Message):
@@ -36781,13 +34287,12 @@ class GetIamPolicyNodeTemplateRequest(proto.Message):
             Name or id of the resource for this request.
     """
 
-    options_requested_policy_version = proto.Field(proto.INT32, number=230784573)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    options_requested_policy_version = proto.Field(
+        proto.INT32, number=499220029, optional=True,
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class InsertNodeTemplateRequest(proto.Message):
@@ -36822,12 +34327,9 @@ class InsertNodeTemplateRequest(proto.Message):
     node_template_resource = proto.Field(
         proto.MESSAGE, number=127364406, message="NodeTemplate",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListNodeTemplatesRequest(proto.Message):
@@ -36897,19 +34399,13 @@ class ListNodeTemplatesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class SetIamPolicyNodeTemplateRequest(proto.Message):
@@ -36927,15 +34423,12 @@ class SetIamPolicyNodeTemplateRequest(proto.Message):
             Name or id of the resource for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_set_policy_request_resource = proto.Field(
-        proto.MESSAGE, number=8053635, message="RegionSetPolicyRequest",
+        proto.MESSAGE, number=276489091, message="RegionSetPolicyRequest",
     )
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class TestIamPermissionsNodeTemplateRequest(proto.Message):
@@ -36953,14 +34446,11 @@ class TestIamPermissionsNodeTemplateRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
 
 
@@ -37040,19 +34530,13 @@ class AggregatedListNodeTypesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class GetNodeTypeRequest(proto.Message):
@@ -37068,11 +34552,9 @@ class GetNodeTypeRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    node_type = proto.Field(proto.STRING, number=197397335)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    node_type = proto.Field(proto.STRING, number=465832791,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListNodeTypesRequest(proto.Message):
@@ -37142,19 +34624,13 @@ class ListNodeTypesRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AggregatedListPacketMirroringsRequest(proto.Message):
@@ -37233,19 +34709,13 @@ class AggregatedListPacketMirroringsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeletePacketMirroringRequest(proto.Message):
@@ -37278,13 +34748,10 @@ class DeletePacketMirroringRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    packet_mirroring = proto.Field(proto.STRING, number=22305996)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    packet_mirroring = proto.Field(proto.STRING, number=22305996,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetPacketMirroringRequest(proto.Message):
@@ -37301,11 +34768,9 @@ class GetPacketMirroringRequest(proto.Message):
             Name of the region for this request.
     """
 
-    packet_mirroring = proto.Field(proto.STRING, number=22305996)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    packet_mirroring = proto.Field(proto.STRING, number=22305996,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class InsertPacketMirroringRequest(proto.Message):
@@ -37338,14 +34803,11 @@ class InsertPacketMirroringRequest(proto.Message):
     """
 
     packet_mirroring_resource = proto.Field(
-        proto.MESSAGE, number=225066529, message="PacketMirroring",
+        proto.MESSAGE, number=493501985, message="PacketMirroring",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListPacketMirroringsRequest(proto.Message):
@@ -37415,19 +34877,13 @@ class ListPacketMirroringsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchPacketMirroringRequest(proto.Message):
@@ -37462,17 +34918,13 @@ class PatchPacketMirroringRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    packet_mirroring = proto.Field(proto.STRING, number=22305996)
-
+    packet_mirroring = proto.Field(proto.STRING, number=22305996,)
     packet_mirroring_resource = proto.Field(
-        proto.MESSAGE, number=225066529, message="PacketMirroring",
+        proto.MESSAGE, number=493501985, message="PacketMirroring",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class TestIamPermissionsPacketMirroringRequest(proto.Message):
@@ -37490,14 +34942,11 @@ class TestIamPermissionsPacketMirroringRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
 
 
@@ -37526,9 +34975,8 @@ class DisableXpnHostProjectRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class DisableXpnResourceProjectRequest(proto.Message):
@@ -37558,13 +35006,11 @@ class DisableXpnResourceProjectRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
+    project = proto.Field(proto.STRING, number=227560217,)
     projects_disable_xpn_resource_request_resource = proto.Field(
         proto.MESSAGE, number=209136170, message="ProjectsDisableXpnResourceRequest",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class EnableXpnHostProjectRequest(proto.Message):
@@ -37592,9 +35038,8 @@ class EnableXpnHostProjectRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class EnableXpnResourceProjectRequest(proto.Message):
@@ -37624,13 +35069,11 @@ class EnableXpnResourceProjectRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
+    project = proto.Field(proto.STRING, number=227560217,)
     projects_enable_xpn_resource_request_resource = proto.Field(
-        proto.MESSAGE, number=153544751, message="ProjectsEnableXpnResourceRequest",
+        proto.MESSAGE, number=421980207, message="ProjectsEnableXpnResourceRequest",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetProjectRequest(proto.Message):
@@ -37642,7 +35085,7 @@ class GetProjectRequest(proto.Message):
             Project ID for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class GetXpnHostProjectRequest(proto.Message):
@@ -37654,7 +35097,7 @@ class GetXpnHostProjectRequest(proto.Message):
             Project ID for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
+    project = proto.Field(proto.STRING, number=227560217,)
 
 
 class GetXpnResourcesProjectsRequest(proto.Message):
@@ -37722,17 +35165,12 @@ class GetXpnResourcesProjectsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class ListXpnHostsProjectsRequest(proto.Message):
@@ -37802,21 +35240,15 @@ class ListXpnHostsProjectsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
     projects_list_xpn_hosts_request_resource = proto.Field(
         proto.MESSAGE, number=238266391, message="ProjectsListXpnHostsRequest",
     )
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class MoveDiskProjectRequest(proto.Message):
@@ -37847,12 +35279,10 @@ class MoveDiskProjectRequest(proto.Message):
     """
 
     disk_move_request_resource = proto.Field(
-        proto.MESSAGE, number=44573002, message="DiskMoveRequest",
+        proto.MESSAGE, number=313008458, message="DiskMoveRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class MoveInstanceProjectRequest(proto.Message):
@@ -37883,12 +35313,10 @@ class MoveInstanceProjectRequest(proto.Message):
     """
 
     instance_move_request_resource = proto.Field(
-        proto.MESSAGE, number=43228738, message="InstanceMoveRequest",
+        proto.MESSAGE, number=311664194, message="InstanceMoveRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class SetCommonInstanceMetadataProjectRequest(proto.Message):
@@ -37918,11 +35346,11 @@ class SetCommonInstanceMetadataProjectRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    metadata_resource = proto.Field(proto.MESSAGE, number=22650654, message="Metadata",)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    metadata_resource = proto.Field(
+        proto.MESSAGE, number=291086110, message="Metadata",
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class SetDefaultNetworkTierProjectRequest(proto.Message):
@@ -37952,13 +35380,11 @@ class SetDefaultNetworkTierProjectRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
+    project = proto.Field(proto.STRING, number=227560217,)
     projects_set_default_network_tier_request_resource = proto.Field(
         proto.MESSAGE, number=126410762, message="ProjectsSetDefaultNetworkTierRequest",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class SetUsageExportBucketProjectRequest(proto.Message):
@@ -37988,10 +35414,8 @@ class SetUsageExportBucketProjectRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     usage_export_location_resource = proto.Field(
         proto.MESSAGE, number=20260459, message="UsageExportLocation",
     )
@@ -38026,13 +35450,10 @@ class DeleteRegionAutoscalerRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    autoscaler = proto.Field(proto.STRING, number=248823511)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    autoscaler = proto.Field(proto.STRING, number=517258967,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetRegionAutoscalerRequest(proto.Message):
@@ -38048,11 +35469,9 @@ class GetRegionAutoscalerRequest(proto.Message):
             Name of the region scoping this request.
     """
 
-    autoscaler = proto.Field(proto.STRING, number=248823511)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    autoscaler = proto.Field(proto.STRING, number=517258967,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class InsertRegionAutoscalerRequest(proto.Message):
@@ -38087,12 +35506,9 @@ class InsertRegionAutoscalerRequest(proto.Message):
     autoscaler_resource = proto.Field(
         proto.MESSAGE, number=207616118, message="Autoscaler",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListRegionAutoscalersRequest(proto.Message):
@@ -38162,19 +35578,13 @@ class ListRegionAutoscalersRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchRegionAutoscalerRequest(proto.Message):
@@ -38208,17 +35618,13 @@ class PatchRegionAutoscalerRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    autoscaler = proto.Field(proto.STRING, number=248823511)
-
+    autoscaler = proto.Field(proto.STRING, number=517258967, optional=True,)
     autoscaler_resource = proto.Field(
         proto.MESSAGE, number=207616118, message="Autoscaler",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class UpdateRegionAutoscalerRequest(proto.Message):
@@ -38252,17 +35658,13 @@ class UpdateRegionAutoscalerRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    autoscaler = proto.Field(proto.STRING, number=248823511)
-
+    autoscaler = proto.Field(proto.STRING, number=517258967, optional=True,)
     autoscaler_resource = proto.Field(
         proto.MESSAGE, number=207616118, message="Autoscaler",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class DeleteRegionBackendServiceRequest(proto.Message):
@@ -38295,13 +35697,10 @@ class DeleteRegionBackendServiceRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    backend_service = proto.Field(proto.STRING, number=38510602)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    backend_service = proto.Field(proto.STRING, number=306946058,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetRegionBackendServiceRequest(proto.Message):
@@ -38318,11 +35717,9 @@ class GetRegionBackendServiceRequest(proto.Message):
             Name of the region scoping this request.
     """
 
-    backend_service = proto.Field(proto.STRING, number=38510602)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    backend_service = proto.Field(proto.STRING, number=306946058,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class GetHealthRegionBackendServiceRequest(proto.Message):
@@ -38341,12 +35738,9 @@ class GetHealthRegionBackendServiceRequest(proto.Message):
             The body resource for this request
     """
 
-    backend_service = proto.Field(proto.STRING, number=38510602)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    backend_service = proto.Field(proto.STRING, number=306946058,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     resource_group_reference_resource = proto.Field(
         proto.MESSAGE, number=112951123, message="ResourceGroupReference",
     )
@@ -38382,14 +35776,11 @@ class InsertRegionBackendServiceRequest(proto.Message):
     """
 
     backend_service_resource = proto.Field(
-        proto.MESSAGE, number=79151267, message="BackendService",
+        proto.MESSAGE, number=347586723, message="BackendService",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListRegionBackendServicesRequest(proto.Message):
@@ -38459,19 +35850,13 @@ class ListRegionBackendServicesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchRegionBackendServiceRequest(proto.Message):
@@ -38505,17 +35890,13 @@ class PatchRegionBackendServiceRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    backend_service = proto.Field(proto.STRING, number=38510602)
-
+    backend_service = proto.Field(proto.STRING, number=306946058,)
     backend_service_resource = proto.Field(
-        proto.MESSAGE, number=79151267, message="BackendService",
+        proto.MESSAGE, number=347586723, message="BackendService",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class UpdateRegionBackendServiceRequest(proto.Message):
@@ -38550,17 +35931,13 @@ class UpdateRegionBackendServiceRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    backend_service = proto.Field(proto.STRING, number=38510602)
-
+    backend_service = proto.Field(proto.STRING, number=306946058,)
     backend_service_resource = proto.Field(
-        proto.MESSAGE, number=79151267, message="BackendService",
+        proto.MESSAGE, number=347586723, message="BackendService",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class AggregatedListRegionCommitmentsRequest(proto.Message):
@@ -38639,19 +36016,13 @@ class AggregatedListRegionCommitmentsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class GetRegionCommitmentRequest(proto.Message):
@@ -38667,11 +36038,9 @@ class GetRegionCommitmentRequest(proto.Message):
             Name of the region for this request.
     """
 
-    commitment = proto.Field(proto.STRING, number=213699349)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    commitment = proto.Field(proto.STRING, number=482134805,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class InsertRegionCommitmentRequest(proto.Message):
@@ -38706,12 +36075,9 @@ class InsertRegionCommitmentRequest(proto.Message):
     commitment_resource = proto.Field(
         proto.MESSAGE, number=244240888, message="Commitment",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListRegionCommitmentsRequest(proto.Message):
@@ -38781,19 +36147,13 @@ class ListRegionCommitmentsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class GetRegionDiskTypeRequest(proto.Message):
@@ -38809,11 +36169,9 @@ class GetRegionDiskTypeRequest(proto.Message):
             The name of the region for this request.
     """
 
-    disk_type = proto.Field(proto.STRING, number=93009052)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    disk_type = proto.Field(proto.STRING, number=93009052,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class ListRegionDiskTypesRequest(proto.Message):
@@ -38883,19 +36241,13 @@ class ListRegionDiskTypesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class AddResourcePoliciesRegionDiskRequest(proto.Message):
@@ -38929,17 +36281,15 @@ class AddResourcePoliciesRegionDiskRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    disk = proto.Field(proto.STRING, number=3083677)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    disk = proto.Field(proto.STRING, number=3083677,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_disks_add_resource_policies_request_resource = proto.Field(
-        proto.MESSAGE, number=15761294, message="RegionDisksAddResourcePoliciesRequest",
+        proto.MESSAGE,
+        number=284196750,
+        message="RegionDisksAddResourcePoliciesRequest",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class CreateSnapshotRegionDiskRequest(proto.Message):
@@ -38974,16 +36324,12 @@ class CreateSnapshotRegionDiskRequest(proto.Message):
             The body resource for this request
     """
 
-    disk = proto.Field(proto.STRING, number=3083677)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    disk = proto.Field(proto.STRING, number=3083677,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     snapshot_resource = proto.Field(
-        proto.MESSAGE, number=212884521, message="Snapshot",
+        proto.MESSAGE, number=481319977, message="Snapshot",
     )
 
 
@@ -39017,13 +36363,10 @@ class DeleteRegionDiskRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    disk = proto.Field(proto.STRING, number=3083677)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    disk = proto.Field(proto.STRING, number=3083677,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetRegionDiskRequest(proto.Message):
@@ -39040,11 +36383,9 @@ class GetRegionDiskRequest(proto.Message):
             Name of the region for this request.
     """
 
-    disk = proto.Field(proto.STRING, number=3083677)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    disk = proto.Field(proto.STRING, number=3083677,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class GetIamPolicyRegionDiskRequest(proto.Message):
@@ -39062,13 +36403,12 @@ class GetIamPolicyRegionDiskRequest(proto.Message):
             Name or id of the resource for this request.
     """
 
-    options_requested_policy_version = proto.Field(proto.INT32, number=230784573)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    options_requested_policy_version = proto.Field(
+        proto.INT32, number=499220029, optional=True,
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class InsertRegionDiskRequest(proto.Message):
@@ -39104,14 +36444,10 @@ class InsertRegionDiskRequest(proto.Message):
     """
 
     disk_resource = proto.Field(proto.MESSAGE, number=25880688, message="Disk",)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    source_image = proto.Field(proto.STRING, number=50443319)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    source_image = proto.Field(proto.STRING, number=50443319, optional=True,)
 
 
 class ListRegionDisksRequest(proto.Message):
@@ -39181,19 +36517,13 @@ class ListRegionDisksRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class RemoveResourcePoliciesRegionDiskRequest(proto.Message):
@@ -39227,19 +36557,15 @@ class RemoveResourcePoliciesRegionDiskRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    disk = proto.Field(proto.STRING, number=3083677)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    disk = proto.Field(proto.STRING, number=3083677,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_disks_remove_resource_policies_request_resource = proto.Field(
         proto.MESSAGE,
         number=8741283,
         message="RegionDisksRemoveResourcePoliciesRequest",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ResizeRegionDiskRequest(proto.Message):
@@ -39273,17 +36599,13 @@ class ResizeRegionDiskRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    disk = proto.Field(proto.STRING, number=3083677)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    disk = proto.Field(proto.STRING, number=3083677,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_disks_resize_request_resource = proto.Field(
-        proto.MESSAGE, number=178197781, message="RegionDisksResizeRequest",
+        proto.MESSAGE, number=446633237, message="RegionDisksResizeRequest",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class SetIamPolicyRegionDiskRequest(proto.Message):
@@ -39301,15 +36623,12 @@ class SetIamPolicyRegionDiskRequest(proto.Message):
             Name or id of the resource for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_set_policy_request_resource = proto.Field(
-        proto.MESSAGE, number=8053635, message="RegionSetPolicyRequest",
+        proto.MESSAGE, number=276489091, message="RegionSetPolicyRequest",
     )
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class SetLabelsRegionDiskRequest(proto.Message):
@@ -39343,17 +36662,13 @@ class SetLabelsRegionDiskRequest(proto.Message):
             Name or id of the resource for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_set_labels_request_resource = proto.Field(
         proto.MESSAGE, number=259357782, message="RegionSetLabelsRequest",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class TestIamPermissionsRegionDiskRequest(proto.Message):
@@ -39371,14 +36686,11 @@ class TestIamPermissionsRegionDiskRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
 
 
@@ -39413,13 +36725,10 @@ class DeleteRegionHealthCheckServiceRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    health_check_service = proto.Field(proto.STRING, number=139939291)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    health_check_service = proto.Field(proto.STRING, number=408374747,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetRegionHealthCheckServiceRequest(proto.Message):
@@ -39437,11 +36746,9 @@ class GetRegionHealthCheckServiceRequest(proto.Message):
             Name of the region scoping this request.
     """
 
-    health_check_service = proto.Field(proto.STRING, number=139939291)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    health_check_service = proto.Field(proto.STRING, number=408374747,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class InsertRegionHealthCheckServiceRequest(proto.Message):
@@ -39474,14 +36781,11 @@ class InsertRegionHealthCheckServiceRequest(proto.Message):
     """
 
     health_check_service_resource = proto.Field(
-        proto.MESSAGE, number=208932338, message="HealthCheckService",
+        proto.MESSAGE, number=477367794, message="HealthCheckService",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListRegionHealthCheckServicesRequest(proto.Message):
@@ -39551,19 +36855,13 @@ class ListRegionHealthCheckServicesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchRegionHealthCheckServiceRequest(proto.Message):
@@ -39599,17 +36897,13 @@ class PatchRegionHealthCheckServiceRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    health_check_service = proto.Field(proto.STRING, number=139939291)
-
+    health_check_service = proto.Field(proto.STRING, number=408374747,)
     health_check_service_resource = proto.Field(
-        proto.MESSAGE, number=208932338, message="HealthCheckService",
+        proto.MESSAGE, number=477367794, message="HealthCheckService",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class DeleteRegionHealthCheckRequest(proto.Message):
@@ -39641,13 +36935,10 @@ class DeleteRegionHealthCheckRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    health_check = proto.Field(proto.STRING, number=40441189)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    health_check = proto.Field(proto.STRING, number=308876645,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetRegionHealthCheckRequest(proto.Message):
@@ -39663,11 +36954,9 @@ class GetRegionHealthCheckRequest(proto.Message):
             Name of the region scoping this request.
     """
 
-    health_check = proto.Field(proto.STRING, number=40441189)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    health_check = proto.Field(proto.STRING, number=308876645,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class InsertRegionHealthCheckRequest(proto.Message):
@@ -39702,12 +36991,9 @@ class InsertRegionHealthCheckRequest(proto.Message):
     health_check_resource = proto.Field(
         proto.MESSAGE, number=201925032, message="HealthCheck",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListRegionHealthChecksRequest(proto.Message):
@@ -39777,19 +37063,13 @@ class ListRegionHealthChecksRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchRegionHealthCheckRequest(proto.Message):
@@ -39823,17 +37103,13 @@ class PatchRegionHealthCheckRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    health_check = proto.Field(proto.STRING, number=40441189)
-
+    health_check = proto.Field(proto.STRING, number=308876645,)
     health_check_resource = proto.Field(
         proto.MESSAGE, number=201925032, message="HealthCheck",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class UpdateRegionHealthCheckRequest(proto.Message):
@@ -39867,17 +37143,13 @@ class UpdateRegionHealthCheckRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    health_check = proto.Field(proto.STRING, number=40441189)
-
+    health_check = proto.Field(proto.STRING, number=308876645,)
     health_check_resource = proto.Field(
         proto.MESSAGE, number=201925032, message="HealthCheck",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class AbandonInstancesRegionInstanceGroupManagerRequest(proto.Message):
@@ -39912,19 +37184,15 @@ class AbandonInstancesRegionInstanceGroupManagerRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_instance_group_managers_abandon_instances_request_resource = proto.Field(
         proto.MESSAGE,
-        number=220064035,
+        number=488499491,
         message="RegionInstanceGroupManagersAbandonInstancesRequest",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest(proto.Message):
@@ -39945,12 +37213,9 @@ class ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest(proto.Message):
             The body resource for this request
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_instance_group_managers_apply_updates_request_resource = proto.Field(
         proto.MESSAGE,
         number=76248318,
@@ -39992,19 +37257,15 @@ class CreateInstancesRegionInstanceGroupManagerRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_instance_group_managers_create_instances_request_resource = proto.Field(
         proto.MESSAGE,
-        number=90578824,
+        number=359014280,
         message="RegionInstanceGroupManagersCreateInstancesRequest",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class DeleteRegionInstanceGroupManagerRequest(proto.Message):
@@ -40036,13 +37297,10 @@ class DeleteRegionInstanceGroupManagerRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class DeleteInstancesRegionInstanceGroupManagerRequest(proto.Message):
@@ -40077,19 +37335,15 @@ class DeleteInstancesRegionInstanceGroupManagerRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_instance_group_managers_delete_instances_request_resource = proto.Field(
         proto.MESSAGE,
-        number=232441209,
+        number=500876665,
         message="RegionInstanceGroupManagersDeleteInstancesRequest",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class DeletePerInstanceConfigsRegionInstanceGroupManagerRequest(proto.Message):
@@ -40110,12 +37364,9 @@ class DeletePerInstanceConfigsRegionInstanceGroupManagerRequest(proto.Message):
             The body resource for this request
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_instance_group_manager_delete_instance_config_req_resource = proto.Field(
         proto.MESSAGE,
         number=740741,
@@ -40136,11 +37387,9 @@ class GetRegionInstanceGroupManagerRequest(proto.Message):
             Name of the region scoping this request.
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class InsertRegionInstanceGroupManagerRequest(proto.Message):
@@ -40175,12 +37424,9 @@ class InsertRegionInstanceGroupManagerRequest(proto.Message):
     instance_group_manager_resource = proto.Field(
         proto.MESSAGE, number=261063946, message="InstanceGroupManager",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListRegionInstanceGroupManagersRequest(proto.Message):
@@ -40250,19 +37496,13 @@ class ListRegionInstanceGroupManagersRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class ListErrorsRegionInstanceGroupManagersRequest(proto.Message):
@@ -40338,21 +37578,14 @@ class ListErrorsRegionInstanceGroupManagersRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class ListManagedInstancesRegionInstanceGroupManagersRequest(proto.Message):
@@ -40425,21 +37658,14 @@ class ListManagedInstancesRegionInstanceGroupManagersRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class ListPerInstanceConfigsRegionInstanceGroupManagersRequest(proto.Message):
@@ -40514,21 +37740,14 @@ class ListPerInstanceConfigsRegionInstanceGroupManagersRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchRegionInstanceGroupManagerRequest(proto.Message):
@@ -40562,17 +37781,13 @@ class PatchRegionInstanceGroupManagerRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
     instance_group_manager_resource = proto.Field(
         proto.MESSAGE, number=261063946, message="InstanceGroupManager",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class PatchPerInstanceConfigsRegionInstanceGroupManagerRequest(proto.Message):
@@ -40609,19 +37824,15 @@ class PatchPerInstanceConfigsRegionInstanceGroupManagerRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_instance_group_manager_patch_instance_config_req_resource = proto.Field(
         proto.MESSAGE,
         number=197682890,
         message="RegionInstanceGroupManagerPatchInstanceConfigReq",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class RecreateInstancesRegionInstanceGroupManagerRequest(proto.Message):
@@ -40656,19 +37867,15 @@ class RecreateInstancesRegionInstanceGroupManagerRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_instance_group_managers_recreate_request_resource = proto.Field(
         proto.MESSAGE,
         number=170999316,
         message="RegionInstanceGroupManagersRecreateRequest",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ResizeRegionInstanceGroupManagerRequest(proto.Message):
@@ -40703,15 +37910,11 @@ class ResizeRegionInstanceGroupManagerRequest(proto.Message):
             instance group manager.
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    size = proto.Field(proto.INT32, number=3530753)
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    size = proto.Field(proto.INT32, number=3530753,)
 
 
 class SetInstanceTemplateRegionInstanceGroupManagerRequest(proto.Message):
@@ -40746,19 +37949,15 @@ class SetInstanceTemplateRegionInstanceGroupManagerRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_instance_group_managers_set_template_request_resource = proto.Field(
         proto.MESSAGE,
         number=187310412,
         message="RegionInstanceGroupManagersSetTemplateRequest",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class SetTargetPoolsRegionInstanceGroupManagerRequest(proto.Message):
@@ -40793,19 +37992,15 @@ class SetTargetPoolsRegionInstanceGroupManagerRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_instance_group_managers_set_target_pools_request_resource = proto.Field(
         proto.MESSAGE,
         number=78734717,
         message="RegionInstanceGroupManagersSetTargetPoolsRequest",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest(proto.Message):
@@ -40842,19 +38037,15 @@ class UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    instance_group_manager = proto.Field(proto.STRING, number=249363395)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    instance_group_manager = proto.Field(proto.STRING, number=249363395,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_instance_group_manager_update_instance_config_req_resource = proto.Field(
         proto.MESSAGE,
         number=89036583,
         message="RegionInstanceGroupManagerUpdateInstanceConfigReq",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetRegionInstanceGroupRequest(proto.Message):
@@ -40871,11 +38062,9 @@ class GetRegionInstanceGroupRequest(proto.Message):
             Name of the region scoping this request.
     """
 
-    instance_group = proto.Field(proto.STRING, number=81095253)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    instance_group = proto.Field(proto.STRING, number=81095253,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class ListRegionInstanceGroupsRequest(proto.Message):
@@ -40945,19 +38134,13 @@ class ListRegionInstanceGroupsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class ListInstancesRegionInstanceGroupsRequest(proto.Message):
@@ -41032,27 +38215,19 @@ class ListInstancesRegionInstanceGroupsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    instance_group = proto.Field(proto.STRING, number=81095253)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    instance_group = proto.Field(proto.STRING, number=81095253,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_instance_groups_list_instances_request_resource = proto.Field(
         proto.MESSAGE,
         number=48239828,
         message="RegionInstanceGroupsListInstancesRequest",
     )
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class SetNamedPortsRegionInstanceGroupRequest(proto.Message):
@@ -41087,19 +38262,15 @@ class SetNamedPortsRegionInstanceGroupRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    instance_group = proto.Field(proto.STRING, number=81095253)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    instance_group = proto.Field(proto.STRING, number=81095253,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_instance_groups_set_named_ports_request_resource = proto.Field(
         proto.MESSAGE,
         number=1574938,
         message="RegionInstanceGroupsSetNamedPortsRequest",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class DeleteRegionNetworkEndpointGroupRequest(proto.Message):
@@ -41134,13 +38305,10 @@ class DeleteRegionNetworkEndpointGroupRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    network_endpoint_group = proto.Field(proto.STRING, number=165471622)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    network_endpoint_group = proto.Field(proto.STRING, number=433907078,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetRegionNetworkEndpointGroupRequest(proto.Message):
@@ -41159,11 +38327,9 @@ class GetRegionNetworkEndpointGroupRequest(proto.Message):
             RFC1035.
     """
 
-    network_endpoint_group = proto.Field(proto.STRING, number=165471622)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    network_endpoint_group = proto.Field(proto.STRING, number=433907078,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class InsertRegionNetworkEndpointGroupRequest(proto.Message):
@@ -41198,14 +38364,11 @@ class InsertRegionNetworkEndpointGroupRequest(proto.Message):
     """
 
     network_endpoint_group_resource = proto.Field(
-        proto.MESSAGE, number=257353383, message="NetworkEndpointGroup",
+        proto.MESSAGE, number=525788839, message="NetworkEndpointGroup",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListRegionNetworkEndpointGroupsRequest(proto.Message):
@@ -41277,19 +38440,13 @@ class ListRegionNetworkEndpointGroupsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteRegionNotificationEndpointRequest(proto.Message):
@@ -41322,13 +38479,10 @@ class DeleteRegionNotificationEndpointRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    notification_endpoint = proto.Field(proto.STRING, number=108371561)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    notification_endpoint = proto.Field(proto.STRING, number=376807017,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class GetRegionNotificationEndpointRequest(proto.Message):
@@ -41345,11 +38499,9 @@ class GetRegionNotificationEndpointRequest(proto.Message):
             Name of the region scoping this request.
     """
 
-    notification_endpoint = proto.Field(proto.STRING, number=108371561)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    notification_endpoint = proto.Field(proto.STRING, number=376807017,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class InsertRegionNotificationEndpointRequest(proto.Message):
@@ -41382,14 +38534,11 @@ class InsertRegionNotificationEndpointRequest(proto.Message):
     """
 
     notification_endpoint_resource = proto.Field(
-        proto.MESSAGE, number=70024484, message="NotificationEndpoint",
+        proto.MESSAGE, number=338459940, message="NotificationEndpoint",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class ListRegionNotificationEndpointsRequest(proto.Message):
@@ -41459,19 +38608,13 @@ class ListRegionNotificationEndpointsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteRegionOperationRequest(proto.Message):
@@ -41487,17 +38630,15 @@ class DeleteRegionOperationRequest(proto.Message):
             Name of the region for this request.
     """
 
-    operation = proto.Field(proto.STRING, number=52090215)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    operation = proto.Field(proto.STRING, number=52090215,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class DeleteRegionOperationResponse(proto.Message):
     r"""A response message for RegionOperations.Delete. See the
     method description for details.
-    """
+        """
 
 
 class GetRegionOperationRequest(proto.Message):
@@ -41513,11 +38654,9 @@ class GetRegionOperationRequest(proto.Message):
             Name of the region for this request.
     """
 
-    operation = proto.Field(proto.STRING, number=52090215)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    operation = proto.Field(proto.STRING, number=52090215,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class ListRegionOperationsRequest(proto.Message):
@@ -41587,19 +38726,13 @@ class ListRegionOperationsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class WaitRegionOperationRequest(proto.Message):
@@ -41615,11 +38748,9 @@ class WaitRegionOperationRequest(proto.Message):
             Name of the region for this request.
     """
 
-    operation = proto.Field(proto.STRING, number=52090215)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    operation = proto.Field(proto.STRING, number=52090215,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class DeleteRegionSslCertificateRequest(proto.Message):
@@ -41652,13 +38783,10 @@ class DeleteRegionSslCertificateRequest(proto.Message):
             delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    ssl_certificate = proto.Field(proto.STRING, number=46443492)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    ssl_certificate = proto.Field(proto.STRING, number=46443492,)
 
 
 class GetRegionSslCertificateRequest(proto.Message):
@@ -41675,11 +38803,9 @@ class GetRegionSslCertificateRequest(proto.Message):
             return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    ssl_certificate = proto.Field(proto.STRING, number=46443492)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    ssl_certificate = proto.Field(proto.STRING, number=46443492,)
 
 
 class InsertRegionSslCertificateRequest(proto.Message):
@@ -41711,12 +38837,9 @@ class InsertRegionSslCertificateRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     ssl_certificate_resource = proto.Field(
         proto.MESSAGE, number=180709897, message="SslCertificate",
     )
@@ -41789,19 +38912,13 @@ class ListRegionSslCertificatesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteRegionTargetHttpProxyRequest(proto.Message):
@@ -41834,13 +38951,10 @@ class DeleteRegionTargetHttpProxyRequest(proto.Message):
             delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_http_proxy = proto.Field(proto.STRING, number=206872421)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_http_proxy = proto.Field(proto.STRING, number=206872421,)
 
 
 class GetRegionTargetHttpProxyRequest(proto.Message):
@@ -41857,11 +38971,9 @@ class GetRegionTargetHttpProxyRequest(proto.Message):
             return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    target_http_proxy = proto.Field(proto.STRING, number=206872421)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    target_http_proxy = proto.Field(proto.STRING, number=206872421,)
 
 
 class InsertRegionTargetHttpProxyRequest(proto.Message):
@@ -41893,12 +39005,9 @@ class InsertRegionTargetHttpProxyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_http_proxy_resource = proto.Field(
         proto.MESSAGE, number=24696744, message="TargetHttpProxy",
     )
@@ -41971,19 +39080,13 @@ class ListRegionTargetHttpProxiesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class SetUrlMapRegionTargetHttpProxyRequest(proto.Message):
@@ -42018,16 +39121,12 @@ class SetUrlMapRegionTargetHttpProxyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_http_proxy = proto.Field(proto.STRING, number=206872421)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_http_proxy = proto.Field(proto.STRING, number=206872421,)
     url_map_reference_resource = proto.Field(
-        proto.MESSAGE, number=130265877, message="UrlMapReference",
+        proto.MESSAGE, number=398701333, message="UrlMapReference",
     )
 
 
@@ -42061,13 +39160,10 @@ class DeleteRegionTargetHttpsProxyRequest(proto.Message):
             delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_https_proxy = proto.Field(proto.STRING, number=52336748)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_https_proxy = proto.Field(proto.STRING, number=52336748,)
 
 
 class GetRegionTargetHttpsProxyRequest(proto.Message):
@@ -42084,11 +39180,9 @@ class GetRegionTargetHttpsProxyRequest(proto.Message):
             return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    target_https_proxy = proto.Field(proto.STRING, number=52336748)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    target_https_proxy = proto.Field(proto.STRING, number=52336748,)
 
 
 class InsertRegionTargetHttpsProxyRequest(proto.Message):
@@ -42120,14 +39214,11 @@ class InsertRegionTargetHttpsProxyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_https_proxy_resource = proto.Field(
-        proto.MESSAGE, number=165222017, message="TargetHttpsProxy",
+        proto.MESSAGE, number=433657473, message="TargetHttpsProxy",
     )
 
 
@@ -42198,19 +39289,13 @@ class ListRegionTargetHttpsProxiesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class SetSslCertificatesRegionTargetHttpsProxyRequest(proto.Message):
@@ -42246,19 +39331,15 @@ class SetSslCertificatesRegionTargetHttpsProxyRequest(proto.Message):
             an SslCertificates resource for.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_target_https_proxies_set_ssl_certificates_request_resource = proto.Field(
         proto.MESSAGE,
-        number=122257927,
+        number=390693383,
         message="RegionTargetHttpsProxiesSetSslCertificatesRequest",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_https_proxy = proto.Field(proto.STRING, number=52336748)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_https_proxy = proto.Field(proto.STRING, number=52336748,)
 
 
 class SetUrlMapRegionTargetHttpsProxyRequest(proto.Message):
@@ -42293,16 +39374,12 @@ class SetUrlMapRegionTargetHttpsProxyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_https_proxy = proto.Field(proto.STRING, number=52336748)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_https_proxy = proto.Field(proto.STRING, number=52336748,)
     url_map_reference_resource = proto.Field(
-        proto.MESSAGE, number=130265877, message="UrlMapReference",
+        proto.MESSAGE, number=398701333, message="UrlMapReference",
     )
 
 
@@ -42322,13 +39399,10 @@ class DeleteRegionUrlMapRequest(proto.Message):
             Name of the UrlMap resource to delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    url_map = proto.Field(proto.STRING, number=98585228)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    url_map = proto.Field(proto.STRING, number=367020684,)
 
 
 class GetRegionUrlMapRequest(proto.Message):
@@ -42344,11 +39418,9 @@ class GetRegionUrlMapRequest(proto.Message):
             Name of the UrlMap resource to return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    url_map = proto.Field(proto.STRING, number=98585228)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    url_map = proto.Field(proto.STRING, number=367020684,)
 
 
 class InsertRegionUrlMapRequest(proto.Message):
@@ -42367,12 +39439,9 @@ class InsertRegionUrlMapRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     url_map_resource = proto.Field(proto.MESSAGE, number=168675425, message="UrlMap",)
 
 
@@ -42443,19 +39512,13 @@ class ListRegionUrlMapsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchRegionUrlMapRequest(proto.Message):
@@ -42476,14 +39539,10 @@ class PatchRegionUrlMapRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    url_map = proto.Field(proto.STRING, number=98585228)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    url_map = proto.Field(proto.STRING, number=367020684,)
     url_map_resource = proto.Field(proto.MESSAGE, number=168675425, message="UrlMap",)
 
 
@@ -42505,14 +39564,10 @@ class UpdateRegionUrlMapRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    url_map = proto.Field(proto.STRING, number=98585228)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    url_map = proto.Field(proto.STRING, number=367020684,)
     url_map_resource = proto.Field(proto.MESSAGE, number=168675425, message="UrlMap",)
 
 
@@ -42532,15 +39587,12 @@ class ValidateRegionUrlMapRequest(proto.Message):
             as.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_url_maps_validate_request_resource = proto.Field(
         proto.MESSAGE, number=56632858, message="RegionUrlMapsValidateRequest",
     )
-
-    url_map = proto.Field(proto.STRING, number=98585228)
+    url_map = proto.Field(proto.STRING, number=367020684,)
 
 
 class GetRegionRequest(proto.Message):
@@ -42554,9 +39606,8 @@ class GetRegionRequest(proto.Message):
             Name of the region resource to return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
 
 
 class ListRegionsRequest(proto.Message):
@@ -42624,17 +39675,12 @@ class ListRegionsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class AggregatedListReservationsRequest(proto.Message):
@@ -42713,19 +39759,13 @@ class AggregatedListReservationsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteReservationRequest(proto.Message):
@@ -42757,13 +39797,10 @@ class DeleteReservationRequest(proto.Message):
             Name of the zone for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    reservation = proto.Field(proto.STRING, number=47530956)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    reservation = proto.Field(proto.STRING, number=47530956,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetReservationRequest(proto.Message):
@@ -42779,11 +39816,9 @@ class GetReservationRequest(proto.Message):
             Name of the zone for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    reservation = proto.Field(proto.STRING, number=47530956)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    reservation = proto.Field(proto.STRING, number=47530956,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetIamPolicyReservationRequest(proto.Message):
@@ -42801,13 +39836,12 @@ class GetIamPolicyReservationRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    options_requested_policy_version = proto.Field(proto.INT32, number=230784573)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    options_requested_policy_version = proto.Field(
+        proto.INT32, number=499220029, optional=True,
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class InsertReservationRequest(proto.Message):
@@ -42839,15 +39873,12 @@ class InsertReservationRequest(proto.Message):
             Name of the zone for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     reservation_resource = proto.Field(
-        proto.MESSAGE, number=16594721, message="Reservation",
+        proto.MESSAGE, number=285030177, message="Reservation",
     )
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListReservationsRequest(proto.Message):
@@ -42917,19 +39948,13 @@ class ListReservationsRequest(proto.Message):
             Name of the zone for this request.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ResizeReservationRequest(proto.Message):
@@ -42963,17 +39988,13 @@ class ResizeReservationRequest(proto.Message):
             Name of the zone for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    reservation = proto.Field(proto.STRING, number=47530956)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    reservation = proto.Field(proto.STRING, number=47530956,)
     reservations_resize_request_resource = proto.Field(
-        proto.MESSAGE, number=120827345, message="ReservationsResizeRequest",
+        proto.MESSAGE, number=389262801, message="ReservationsResizeRequest",
     )
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class SetIamPolicyReservationRequest(proto.Message):
@@ -42991,14 +40012,11 @@ class SetIamPolicyReservationRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
-    zone = proto.Field(proto.STRING, number=3744684)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
+    zone = proto.Field(proto.STRING, number=3744684,)
     zone_set_policy_request_resource = proto.Field(
-        proto.MESSAGE, number=113646651, message="ZoneSetPolicyRequest",
+        proto.MESSAGE, number=382082107, message="ZoneSetPolicyRequest",
     )
 
 
@@ -43017,15 +40035,12 @@ class TestIamPermissionsReservationRequest(proto.Message):
             The name of the zone for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AggregatedListResourcePoliciesRequest(proto.Message):
@@ -43104,19 +40119,13 @@ class AggregatedListResourcePoliciesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteResourcePolicyRequest(proto.Message):
@@ -43148,13 +40157,10 @@ class DeleteResourcePolicyRequest(proto.Message):
             Name of the resource policy to delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    resource_policy = proto.Field(proto.STRING, number=159240835)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    resource_policy = proto.Field(proto.STRING, number=159240835,)
 
 
 class GetResourcePolicyRequest(proto.Message):
@@ -43170,11 +40176,9 @@ class GetResourcePolicyRequest(proto.Message):
             Name of the resource policy to retrieve.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    resource_policy = proto.Field(proto.STRING, number=159240835)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    resource_policy = proto.Field(proto.STRING, number=159240835,)
 
 
 class GetIamPolicyResourcePolicyRequest(proto.Message):
@@ -43192,13 +40196,12 @@ class GetIamPolicyResourcePolicyRequest(proto.Message):
             Name or id of the resource for this request.
     """
 
-    options_requested_policy_version = proto.Field(proto.INT32, number=230784573)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    options_requested_policy_version = proto.Field(
+        proto.INT32, number=499220029, optional=True,
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class InsertResourcePolicyRequest(proto.Message):
@@ -43230,12 +40233,9 @@ class InsertResourcePolicyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     resource_policy_resource = proto.Field(
         proto.MESSAGE, number=76826186, message="ResourcePolicy",
     )
@@ -43308,19 +40308,13 @@ class ListResourcePoliciesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class SetIamPolicyResourcePolicyRequest(proto.Message):
@@ -43338,15 +40332,12 @@ class SetIamPolicyResourcePolicyRequest(proto.Message):
             Name or id of the resource for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_set_policy_request_resource = proto.Field(
-        proto.MESSAGE, number=8053635, message="RegionSetPolicyRequest",
+        proto.MESSAGE, number=276489091, message="RegionSetPolicyRequest",
     )
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class TestIamPermissionsResourcePolicyRequest(proto.Message):
@@ -43364,14 +40355,11 @@ class TestIamPermissionsResourcePolicyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
 
 
@@ -43451,19 +40439,13 @@ class AggregatedListRoutersRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteRouterRequest(proto.Message):
@@ -43495,13 +40477,10 @@ class DeleteRouterRequest(proto.Message):
             Name of the Router resource to delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    router = proto.Field(proto.STRING, number=148608841)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    router = proto.Field(proto.STRING, number=148608841,)
 
 
 class GetRouterRequest(proto.Message):
@@ -43517,11 +40496,9 @@ class GetRouterRequest(proto.Message):
             Name of the Router resource to return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    router = proto.Field(proto.STRING, number=148608841)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    router = proto.Field(proto.STRING, number=148608841,)
 
 
 class GetNatMappingInfoRoutersRequest(proto.Message):
@@ -43594,21 +40571,14 @@ class GetNatMappingInfoRoutersRequest(proto.Message):
             Mapping information of VM endpoints.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    router = proto.Field(proto.STRING, number=148608841)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    router = proto.Field(proto.STRING, number=148608841,)
 
 
 class GetRouterStatusRouterRequest(proto.Message):
@@ -43624,11 +40594,9 @@ class GetRouterStatusRouterRequest(proto.Message):
             Name of the Router resource to query.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    router = proto.Field(proto.STRING, number=148608841)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    router = proto.Field(proto.STRING, number=148608841,)
 
 
 class InsertRouterRequest(proto.Message):
@@ -43660,12 +40628,9 @@ class InsertRouterRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     router_resource = proto.Field(proto.MESSAGE, number=155222084, message="Router",)
 
 
@@ -43736,19 +40701,13 @@ class ListRoutersRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchRouterRequest(proto.Message):
@@ -43782,14 +40741,10 @@ class PatchRouterRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    router = proto.Field(proto.STRING, number=148608841)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    router = proto.Field(proto.STRING, number=148608841,)
     router_resource = proto.Field(proto.MESSAGE, number=155222084, message="Router",)
 
 
@@ -43808,12 +40763,9 @@ class PreviewRouterRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    router = proto.Field(proto.STRING, number=148608841)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    router = proto.Field(proto.STRING, number=148608841,)
     router_resource = proto.Field(proto.MESSAGE, number=155222084, message="Router",)
 
 
@@ -43848,14 +40800,10 @@ class UpdateRouterRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    router = proto.Field(proto.STRING, number=148608841)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    router = proto.Field(proto.STRING, number=148608841,)
     router_resource = proto.Field(proto.MESSAGE, number=155222084, message="Router",)
 
 
@@ -43886,11 +40834,9 @@ class DeleteRouteRequest(proto.Message):
             Name of the Route resource to delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    route = proto.Field(proto.STRING, number=108704329)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    route = proto.Field(proto.STRING, number=108704329,)
 
 
 class GetRouteRequest(proto.Message):
@@ -43904,9 +40850,8 @@ class GetRouteRequest(proto.Message):
             Name of the Route resource to return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    route = proto.Field(proto.STRING, number=108704329)
+    project = proto.Field(proto.STRING, number=227560217,)
+    route = proto.Field(proto.STRING, number=108704329,)
 
 
 class InsertRouteRequest(proto.Message):
@@ -43936,10 +40881,8 @@ class InsertRouteRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     route_resource = proto.Field(proto.MESSAGE, number=225428804, message="Route",)
 
 
@@ -44008,17 +40951,12 @@ class ListRoutesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class AddRuleSecurityPolicyRequest(proto.Message):
@@ -44034,12 +40972,10 @@ class AddRuleSecurityPolicyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    security_policy = proto.Field(proto.STRING, number=171082513)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    security_policy = proto.Field(proto.STRING, number=171082513,)
     security_policy_rule_resource = proto.Field(
-        proto.MESSAGE, number=134257987, message="SecurityPolicyRule",
+        proto.MESSAGE, number=402693443, message="SecurityPolicyRule",
     )
 
 
@@ -44070,11 +41006,9 @@ class DeleteSecurityPolicyRequest(proto.Message):
             Name of the security policy to delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    security_policy = proto.Field(proto.STRING, number=171082513)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    security_policy = proto.Field(proto.STRING, number=171082513,)
 
 
 class GetSecurityPolicyRequest(proto.Message):
@@ -44088,9 +41022,8 @@ class GetSecurityPolicyRequest(proto.Message):
             Name of the security policy to get.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    security_policy = proto.Field(proto.STRING, number=171082513)
+    project = proto.Field(proto.STRING, number=227560217,)
+    security_policy = proto.Field(proto.STRING, number=171082513,)
 
 
 class GetRuleSecurityPolicyRequest(proto.Message):
@@ -44108,11 +41041,9 @@ class GetRuleSecurityPolicyRequest(proto.Message):
             queried rule belongs.
     """
 
-    priority = proto.Field(proto.INT32, number=176716196)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    security_policy = proto.Field(proto.STRING, number=171082513)
+    priority = proto.Field(proto.INT32, number=445151652, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    security_policy = proto.Field(proto.STRING, number=171082513,)
 
 
 class InsertSecurityPolicyRequest(proto.Message):
@@ -44142,10 +41073,8 @@ class InsertSecurityPolicyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     security_policy_resource = proto.Field(
         proto.MESSAGE, number=216159612, message="SecurityPolicy",
     )
@@ -44216,17 +41145,12 @@ class ListSecurityPoliciesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class ListPreconfiguredExpressionSetsSecurityPoliciesRequest(proto.Message):
@@ -44295,17 +41219,12 @@ class ListPreconfiguredExpressionSetsSecurityPoliciesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchSecurityPolicyRequest(proto.Message):
@@ -44337,12 +41256,9 @@ class PatchSecurityPolicyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    security_policy = proto.Field(proto.STRING, number=171082513)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    security_policy = proto.Field(proto.STRING, number=171082513,)
     security_policy_resource = proto.Field(
         proto.MESSAGE, number=216159612, message="SecurityPolicy",
     )
@@ -44363,14 +41279,11 @@ class PatchRuleSecurityPolicyRequest(proto.Message):
             The body resource for this request
     """
 
-    priority = proto.Field(proto.INT32, number=176716196)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    security_policy = proto.Field(proto.STRING, number=171082513)
-
+    priority = proto.Field(proto.INT32, number=445151652, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    security_policy = proto.Field(proto.STRING, number=171082513,)
     security_policy_rule_resource = proto.Field(
-        proto.MESSAGE, number=134257987, message="SecurityPolicyRule",
+        proto.MESSAGE, number=402693443, message="SecurityPolicyRule",
     )
 
 
@@ -44388,11 +41301,9 @@ class RemoveRuleSecurityPolicyRequest(proto.Message):
             Name of the security policy to update.
     """
 
-    priority = proto.Field(proto.INT32, number=176716196)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    security_policy = proto.Field(proto.STRING, number=171082513)
+    priority = proto.Field(proto.INT32, number=445151652, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    security_policy = proto.Field(proto.STRING, number=171082513,)
 
 
 class DeleteSnapshotRequest(proto.Message):
@@ -44422,11 +41333,9 @@ class DeleteSnapshotRequest(proto.Message):
             Name of the Snapshot resource to delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    snapshot = proto.Field(proto.STRING, number=16438724)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    snapshot = proto.Field(proto.STRING, number=284874180,)
 
 
 class GetSnapshotRequest(proto.Message):
@@ -44440,9 +41349,8 @@ class GetSnapshotRequest(proto.Message):
             Name of the Snapshot resource to return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    snapshot = proto.Field(proto.STRING, number=16438724)
+    project = proto.Field(proto.STRING, number=227560217,)
+    snapshot = proto.Field(proto.STRING, number=284874180,)
 
 
 class GetIamPolicySnapshotRequest(proto.Message):
@@ -44458,11 +41366,11 @@ class GetIamPolicySnapshotRequest(proto.Message):
             Name or id of the resource for this request.
     """
 
-    options_requested_policy_version = proto.Field(proto.INT32, number=230784573)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    options_requested_policy_version = proto.Field(
+        proto.INT32, number=499220029, optional=True,
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class ListSnapshotsRequest(proto.Message):
@@ -44530,17 +41438,12 @@ class ListSnapshotsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class SetIamPolicySnapshotRequest(proto.Message):
@@ -44557,12 +41460,10 @@ class SetIamPolicySnapshotRequest(proto.Message):
     """
 
     global_set_policy_request_resource = proto.Field(
-        proto.MESSAGE, number=68613042, message="GlobalSetPolicyRequest",
+        proto.MESSAGE, number=337048498, message="GlobalSetPolicyRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class SetLabelsSnapshotRequest(proto.Message):
@@ -44579,12 +41480,10 @@ class SetLabelsSnapshotRequest(proto.Message):
     """
 
     global_set_labels_request_resource = proto.Field(
-        proto.MESSAGE, number=51481733, message="GlobalSetLabelsRequest",
+        proto.MESSAGE, number=319917189, message="GlobalSetLabelsRequest",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class TestIamPermissionsSnapshotRequest(proto.Message):
@@ -44600,12 +41499,10 @@ class TestIamPermissionsSnapshotRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
 
 
@@ -44685,19 +41582,13 @@ class AggregatedListSslCertificatesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteSslCertificateRequest(proto.Message):
@@ -44728,11 +41619,9 @@ class DeleteSslCertificateRequest(proto.Message):
             delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    ssl_certificate = proto.Field(proto.STRING, number=46443492)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    ssl_certificate = proto.Field(proto.STRING, number=46443492,)
 
 
 class GetSslCertificateRequest(proto.Message):
@@ -44747,9 +41636,8 @@ class GetSslCertificateRequest(proto.Message):
             return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    ssl_certificate = proto.Field(proto.STRING, number=46443492)
+    project = proto.Field(proto.STRING, number=227560217,)
+    ssl_certificate = proto.Field(proto.STRING, number=46443492,)
 
 
 class InsertSslCertificateRequest(proto.Message):
@@ -44779,10 +41667,8 @@ class InsertSslCertificateRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     ssl_certificate_resource = proto.Field(
         proto.MESSAGE, number=180709897, message="SslCertificate",
     )
@@ -44853,17 +41739,12 @@ class ListSslCertificatesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteSslPolicyRequest(proto.Message):
@@ -44895,11 +41776,9 @@ class DeleteSslPolicyRequest(proto.Message):
             RFC1035.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    ssl_policy = proto.Field(proto.STRING, number=26754757)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    ssl_policy = proto.Field(proto.STRING, number=295190213,)
 
 
 class GetSslPolicyRequest(proto.Message):
@@ -44915,9 +41794,8 @@ class GetSslPolicyRequest(proto.Message):
             RFC1035.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    ssl_policy = proto.Field(proto.STRING, number=26754757)
+    project = proto.Field(proto.STRING, number=227560217,)
+    ssl_policy = proto.Field(proto.STRING, number=295190213,)
 
 
 class InsertSslPolicyRequest(proto.Message):
@@ -44947,12 +41825,10 @@ class InsertSslPolicyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     ssl_policy_resource = proto.Field(
-        proto.MESSAGE, number=6456392, message="SslPolicy",
+        proto.MESSAGE, number=274891848, message="SslPolicy",
     )
 
 
@@ -45021,17 +41897,12 @@ class ListSslPoliciesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class ListAvailableFeaturesSslPoliciesRequest(proto.Message):
@@ -45099,17 +41970,12 @@ class ListAvailableFeaturesSslPoliciesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchSslPolicyRequest(proto.Message):
@@ -45143,14 +42009,11 @@ class PatchSslPolicyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    ssl_policy = proto.Field(proto.STRING, number=26754757)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    ssl_policy = proto.Field(proto.STRING, number=295190213,)
     ssl_policy_resource = proto.Field(
-        proto.MESSAGE, number=6456392, message="SslPolicy",
+        proto.MESSAGE, number=274891848, message="SslPolicy",
     )
 
 
@@ -45230,19 +42093,13 @@ class AggregatedListSubnetworksRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteSubnetworkRequest(proto.Message):
@@ -45274,13 +42131,10 @@ class DeleteSubnetworkRequest(proto.Message):
             Name of the Subnetwork resource to delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    subnetwork = proto.Field(proto.STRING, number=39392238)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    subnetwork = proto.Field(proto.STRING, number=307827694,)
 
 
 class ExpandIpCidrRangeSubnetworkRequest(proto.Message):
@@ -45314,16 +42168,12 @@ class ExpandIpCidrRangeSubnetworkRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    subnetwork = proto.Field(proto.STRING, number=39392238)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    subnetwork = proto.Field(proto.STRING, number=307827694,)
     subnetworks_expand_ip_cidr_range_request_resource = proto.Field(
-        proto.MESSAGE, number=208578654, message="SubnetworksExpandIpCidrRangeRequest",
+        proto.MESSAGE, number=477014110, message="SubnetworksExpandIpCidrRangeRequest",
     )
 
 
@@ -45340,11 +42190,9 @@ class GetSubnetworkRequest(proto.Message):
             Name of the Subnetwork resource to return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    subnetwork = proto.Field(proto.STRING, number=39392238)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    subnetwork = proto.Field(proto.STRING, number=307827694,)
 
 
 class GetIamPolicySubnetworkRequest(proto.Message):
@@ -45362,13 +42210,12 @@ class GetIamPolicySubnetworkRequest(proto.Message):
             Name or id of the resource for this request.
     """
 
-    options_requested_policy_version = proto.Field(proto.INT32, number=230784573)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    options_requested_policy_version = proto.Field(
+        proto.INT32, number=499220029, optional=True,
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class InsertSubnetworkRequest(proto.Message):
@@ -45400,12 +42247,9 @@ class InsertSubnetworkRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     subnetwork_resource = proto.Field(
         proto.MESSAGE, number=42233151, message="Subnetwork",
     )
@@ -45478,19 +42322,13 @@ class ListSubnetworksRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class ListUsableSubnetworksRequest(proto.Message):
@@ -45558,17 +42396,12 @@ class ListUsableSubnetworksRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchSubnetworkRequest(proto.Message):
@@ -45613,16 +42446,11 @@ class PatchSubnetworkRequest(proto.Message):
             The body resource for this request
     """
 
-    drain_timeout_seconds = proto.Field(proto.INT32, number=89271642)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    subnetwork = proto.Field(proto.STRING, number=39392238)
-
+    drain_timeout_seconds = proto.Field(proto.INT32, number=357707098, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    subnetwork = proto.Field(proto.STRING, number=307827694,)
     subnetwork_resource = proto.Field(
         proto.MESSAGE, number=42233151, message="Subnetwork",
     )
@@ -45643,15 +42471,12 @@ class SetIamPolicySubnetworkRequest(proto.Message):
             Name or id of the resource for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_set_policy_request_resource = proto.Field(
-        proto.MESSAGE, number=8053635, message="RegionSetPolicyRequest",
+        proto.MESSAGE, number=276489091, message="RegionSetPolicyRequest",
     )
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class SetPrivateIpGoogleAccessSubnetworkRequest(proto.Message):
@@ -45685,17 +42510,13 @@ class SetPrivateIpGoogleAccessSubnetworkRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    subnetwork = proto.Field(proto.STRING, number=39392238)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    subnetwork = proto.Field(proto.STRING, number=307827694,)
     subnetworks_set_private_ip_google_access_request_resource = proto.Field(
         proto.MESSAGE,
-        number=485240,
+        number=268920696,
         message="SubnetworksSetPrivateIpGoogleAccessRequest",
     )
 
@@ -45715,14 +42536,11 @@ class TestIamPermissionsSubnetworkRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
 
 
@@ -45754,11 +42572,9 @@ class DeleteTargetGrpcProxyRequest(proto.Message):
             delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_grpc_proxy = proto.Field(proto.STRING, number=5020283)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_grpc_proxy = proto.Field(proto.STRING, number=5020283,)
 
 
 class GetTargetGrpcProxyRequest(proto.Message):
@@ -45773,9 +42589,8 @@ class GetTargetGrpcProxyRequest(proto.Message):
             return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    target_grpc_proxy = proto.Field(proto.STRING, number=5020283)
+    project = proto.Field(proto.STRING, number=227560217,)
+    target_grpc_proxy = proto.Field(proto.STRING, number=5020283,)
 
 
 class InsertTargetGrpcProxyRequest(proto.Message):
@@ -45805,12 +42620,10 @@ class InsertTargetGrpcProxyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_grpc_proxy_resource = proto.Field(
-        proto.MESSAGE, number=60486994, message="TargetGrpcProxy",
+        proto.MESSAGE, number=328922450, message="TargetGrpcProxy",
     )
 
 
@@ -45879,17 +42692,12 @@ class ListTargetGrpcProxiesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchTargetGrpcProxyRequest(proto.Message):
@@ -45922,14 +42730,11 @@ class PatchTargetGrpcProxyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_grpc_proxy = proto.Field(proto.STRING, number=5020283)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_grpc_proxy = proto.Field(proto.STRING, number=5020283,)
     target_grpc_proxy_resource = proto.Field(
-        proto.MESSAGE, number=60486994, message="TargetGrpcProxy",
+        proto.MESSAGE, number=328922450, message="TargetGrpcProxy",
     )
 
 
@@ -46009,19 +42814,13 @@ class AggregatedListTargetHttpProxiesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteTargetHttpProxyRequest(proto.Message):
@@ -46052,11 +42851,9 @@ class DeleteTargetHttpProxyRequest(proto.Message):
             delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_http_proxy = proto.Field(proto.STRING, number=206872421)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_http_proxy = proto.Field(proto.STRING, number=206872421,)
 
 
 class GetTargetHttpProxyRequest(proto.Message):
@@ -46071,9 +42868,8 @@ class GetTargetHttpProxyRequest(proto.Message):
             return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    target_http_proxy = proto.Field(proto.STRING, number=206872421)
+    project = proto.Field(proto.STRING, number=227560217,)
+    target_http_proxy = proto.Field(proto.STRING, number=206872421,)
 
 
 class InsertTargetHttpProxyRequest(proto.Message):
@@ -46103,10 +42899,8 @@ class InsertTargetHttpProxyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_http_proxy_resource = proto.Field(
         proto.MESSAGE, number=24696744, message="TargetHttpProxy",
     )
@@ -46177,17 +42971,12 @@ class ListTargetHttpProxiesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchTargetHttpProxyRequest(proto.Message):
@@ -46220,12 +43009,9 @@ class PatchTargetHttpProxyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_http_proxy = proto.Field(proto.STRING, number=206872421)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_http_proxy = proto.Field(proto.STRING, number=206872421,)
     target_http_proxy_resource = proto.Field(
         proto.MESSAGE, number=24696744, message="TargetHttpProxy",
     )
@@ -46261,14 +43047,11 @@ class SetUrlMapTargetHttpProxyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_http_proxy = proto.Field(proto.STRING, number=206872421)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_http_proxy = proto.Field(proto.STRING, number=206872421,)
     url_map_reference_resource = proto.Field(
-        proto.MESSAGE, number=130265877, message="UrlMapReference",
+        proto.MESSAGE, number=398701333, message="UrlMapReference",
     )
 
 
@@ -46348,19 +43131,13 @@ class AggregatedListTargetHttpsProxiesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteTargetHttpsProxyRequest(proto.Message):
@@ -46391,11 +43168,9 @@ class DeleteTargetHttpsProxyRequest(proto.Message):
             delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_https_proxy = proto.Field(proto.STRING, number=52336748)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_https_proxy = proto.Field(proto.STRING, number=52336748,)
 
 
 class GetTargetHttpsProxyRequest(proto.Message):
@@ -46410,9 +43185,8 @@ class GetTargetHttpsProxyRequest(proto.Message):
             return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    target_https_proxy = proto.Field(proto.STRING, number=52336748)
+    project = proto.Field(proto.STRING, number=227560217,)
+    target_https_proxy = proto.Field(proto.STRING, number=52336748,)
 
 
 class InsertTargetHttpsProxyRequest(proto.Message):
@@ -46442,12 +43216,10 @@ class InsertTargetHttpsProxyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_https_proxy_resource = proto.Field(
-        proto.MESSAGE, number=165222017, message="TargetHttpsProxy",
+        proto.MESSAGE, number=433657473, message="TargetHttpsProxy",
     )
 
 
@@ -46516,17 +43288,12 @@ class ListTargetHttpsProxiesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class SetQuicOverrideTargetHttpsProxyRequest(proto.Message):
@@ -46560,17 +43327,14 @@ class SetQuicOverrideTargetHttpsProxyRequest(proto.Message):
             conform to RFC1035.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_https_proxies_set_quic_override_request_resource = proto.Field(
         proto.MESSAGE,
         number=72940258,
         message="TargetHttpsProxiesSetQuicOverrideRequest",
     )
-
-    target_https_proxy = proto.Field(proto.STRING, number=52336748)
+    target_https_proxy = proto.Field(proto.STRING, number=52336748,)
 
 
 class SetSslCertificatesTargetHttpsProxyRequest(proto.Message):
@@ -46603,17 +43367,14 @@ class SetSslCertificatesTargetHttpsProxyRequest(proto.Message):
             an SslCertificates resource for.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_https_proxies_set_ssl_certificates_request_resource = proto.Field(
         proto.MESSAGE,
         number=223122908,
         message="TargetHttpsProxiesSetSslCertificatesRequest",
     )
-
-    target_https_proxy = proto.Field(proto.STRING, number=52336748)
+    target_https_proxy = proto.Field(proto.STRING, number=52336748,)
 
 
 class SetSslPolicyTargetHttpsProxyRequest(proto.Message):
@@ -46647,15 +43408,12 @@ class SetSslPolicyTargetHttpsProxyRequest(proto.Message):
             characters long, and comply with RFC1035.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     ssl_policy_reference_resource = proto.Field(
         proto.MESSAGE, number=235403836, message="SslPolicyReference",
     )
-
-    target_https_proxy = proto.Field(proto.STRING, number=52336748)
+    target_https_proxy = proto.Field(proto.STRING, number=52336748,)
 
 
 class SetUrlMapTargetHttpsProxyRequest(proto.Message):
@@ -46688,14 +43446,11 @@ class SetUrlMapTargetHttpsProxyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_https_proxy = proto.Field(proto.STRING, number=52336748)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_https_proxy = proto.Field(proto.STRING, number=52336748,)
     url_map_reference_resource = proto.Field(
-        proto.MESSAGE, number=130265877, message="UrlMapReference",
+        proto.MESSAGE, number=398701333, message="UrlMapReference",
     )
 
 
@@ -46775,19 +43530,13 @@ class AggregatedListTargetInstancesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteTargetInstanceRequest(proto.Message):
@@ -46820,13 +43569,10 @@ class DeleteTargetInstanceRequest(proto.Message):
             Name of the zone scoping this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_instance = proto.Field(proto.STRING, number=21333891)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_instance = proto.Field(proto.STRING, number=289769347,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetTargetInstanceRequest(proto.Message):
@@ -46843,11 +43589,9 @@ class GetTargetInstanceRequest(proto.Message):
             Name of the zone scoping this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    target_instance = proto.Field(proto.STRING, number=21333891)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    target_instance = proto.Field(proto.STRING, number=289769347,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class InsertTargetInstanceRequest(proto.Message):
@@ -46879,15 +43623,12 @@ class InsertTargetInstanceRequest(proto.Message):
             Name of the zone scoping this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_instance_resource = proto.Field(
-        proto.MESSAGE, number=162017610, message="TargetInstance",
+        proto.MESSAGE, number=430453066, message="TargetInstance",
     )
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListTargetInstancesRequest(proto.Message):
@@ -46957,19 +43698,13 @@ class ListTargetInstancesRequest(proto.Message):
             Name of the zone scoping this request.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class AddHealthCheckTargetPoolRequest(proto.Message):
@@ -47004,16 +43739,12 @@ class AddHealthCheckTargetPoolRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_pool = proto.Field(proto.STRING, number=62796298)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_pool = proto.Field(proto.STRING, number=62796298,)
     target_pools_add_health_check_request_resource = proto.Field(
-        proto.MESSAGE, number=1137956, message="TargetPoolsAddHealthCheckRequest",
+        proto.MESSAGE, number=269573412, message="TargetPoolsAddHealthCheckRequest",
     )
 
 
@@ -47049,16 +43780,12 @@ class AddInstanceTargetPoolRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_pool = proto.Field(proto.STRING, number=62796298)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_pool = proto.Field(proto.STRING, number=62796298,)
     target_pools_add_instance_request_resource = proto.Field(
-        proto.MESSAGE, number=160360948, message="TargetPoolsAddInstanceRequest",
+        proto.MESSAGE, number=428796404, message="TargetPoolsAddInstanceRequest",
     )
 
 
@@ -47138,19 +43865,13 @@ class AggregatedListTargetPoolsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteTargetPoolRequest(proto.Message):
@@ -47182,13 +43903,10 @@ class DeleteTargetPoolRequest(proto.Message):
             Name of the TargetPool resource to delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_pool = proto.Field(proto.STRING, number=62796298)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_pool = proto.Field(proto.STRING, number=62796298,)
 
 
 class GetTargetPoolRequest(proto.Message):
@@ -47204,11 +43922,9 @@ class GetTargetPoolRequest(proto.Message):
             Name of the TargetPool resource to return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    target_pool = proto.Field(proto.STRING, number=62796298)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    target_pool = proto.Field(proto.STRING, number=62796298,)
 
 
 class GetHealthTargetPoolRequest(proto.Message):
@@ -47228,14 +43944,11 @@ class GetHealthTargetPoolRequest(proto.Message):
     """
 
     instance_reference_resource = proto.Field(
-        proto.MESSAGE, number=24490604, message="InstanceReference",
+        proto.MESSAGE, number=292926060, message="InstanceReference",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    target_pool = proto.Field(proto.STRING, number=62796298)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    target_pool = proto.Field(proto.STRING, number=62796298,)
 
 
 class InsertTargetPoolRequest(proto.Message):
@@ -47267,12 +43980,9 @@ class InsertTargetPoolRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_pool_resource = proto.Field(
         proto.MESSAGE, number=101281443, message="TargetPool",
     )
@@ -47345,19 +44055,13 @@ class ListTargetPoolsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class RemoveHealthCheckTargetPoolRequest(proto.Message):
@@ -47392,16 +44096,12 @@ class RemoveHealthCheckTargetPoolRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_pool = proto.Field(proto.STRING, number=62796298)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_pool = proto.Field(proto.STRING, number=62796298,)
     target_pools_remove_health_check_request_resource = proto.Field(
-        proto.MESSAGE, number=36549555, message="TargetPoolsRemoveHealthCheckRequest",
+        proto.MESSAGE, number=304985011, message="TargetPoolsRemoveHealthCheckRequest",
     )
 
 
@@ -47437,14 +44137,10 @@ class RemoveInstanceTargetPoolRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_pool = proto.Field(proto.STRING, number=62796298)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_pool = proto.Field(proto.STRING, number=62796298,)
     target_pools_remove_instance_request_resource = proto.Field(
         proto.MESSAGE, number=29548547, message="TargetPoolsRemoveInstanceRequest",
     )
@@ -47484,18 +44180,13 @@ class SetBackupTargetPoolRequest(proto.Message):
             The body resource for this request
     """
 
-    failover_ratio = proto.Field(proto.FLOAT, number=212667006)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_pool = proto.Field(proto.STRING, number=62796298)
-
+    failover_ratio = proto.Field(proto.FLOAT, number=212667006, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_pool = proto.Field(proto.STRING, number=62796298,)
     target_reference_resource = proto.Field(
-        proto.MESSAGE, number=255286256, message="TargetReference",
+        proto.MESSAGE, number=523721712, message="TargetReference",
     )
 
 
@@ -47527,11 +44218,9 @@ class DeleteTargetSslProxyRequest(proto.Message):
             delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_ssl_proxy = proto.Field(proto.STRING, number=70360397)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_ssl_proxy = proto.Field(proto.STRING, number=338795853,)
 
 
 class GetTargetSslProxyRequest(proto.Message):
@@ -47546,9 +44235,8 @@ class GetTargetSslProxyRequest(proto.Message):
             return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    target_ssl_proxy = proto.Field(proto.STRING, number=70360397)
+    project = proto.Field(proto.STRING, number=227560217,)
+    target_ssl_proxy = proto.Field(proto.STRING, number=338795853,)
 
 
 class InsertTargetSslProxyRequest(proto.Message):
@@ -47578,10 +44266,8 @@ class InsertTargetSslProxyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_ssl_proxy_resource = proto.Field(
         proto.MESSAGE, number=142016192, message="TargetSslProxy",
     )
@@ -47652,17 +44338,12 @@ class ListTargetSslProxiesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class SetBackendServiceTargetSslProxyRequest(proto.Message):
@@ -47695,17 +44376,14 @@ class SetBackendServiceTargetSslProxyRequest(proto.Message):
             BackendService resource is to be set.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_ssl_proxies_set_backend_service_request_resource = proto.Field(
         proto.MESSAGE,
         number=139080868,
         message="TargetSslProxiesSetBackendServiceRequest",
     )
-
-    target_ssl_proxy = proto.Field(proto.STRING, number=70360397)
+    target_ssl_proxy = proto.Field(proto.STRING, number=338795853,)
 
 
 class SetProxyHeaderTargetSslProxyRequest(proto.Message):
@@ -47738,17 +44416,14 @@ class SetProxyHeaderTargetSslProxyRequest(proto.Message):
             ProxyHeader is to be set.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_ssl_proxies_set_proxy_header_request_resource = proto.Field(
         proto.MESSAGE,
         number=205284526,
         message="TargetSslProxiesSetProxyHeaderRequest",
     )
-
-    target_ssl_proxy = proto.Field(proto.STRING, number=70360397)
+    target_ssl_proxy = proto.Field(proto.STRING, number=338795853,)
 
 
 class SetSslCertificatesTargetSslProxyRequest(proto.Message):
@@ -47781,17 +44456,14 @@ class SetSslCertificatesTargetSslProxyRequest(proto.Message):
             SslCertificate resource is to be set.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_ssl_proxies_set_ssl_certificates_request_resource = proto.Field(
         proto.MESSAGE,
         number=147940797,
         message="TargetSslProxiesSetSslCertificatesRequest",
     )
-
-    target_ssl_proxy = proto.Field(proto.STRING, number=70360397)
+    target_ssl_proxy = proto.Field(proto.STRING, number=338795853,)
 
 
 class SetSslPolicyTargetSslProxyRequest(proto.Message):
@@ -47825,15 +44497,12 @@ class SetSslPolicyTargetSslProxyRequest(proto.Message):
             characters long, and comply with RFC1035.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     ssl_policy_reference_resource = proto.Field(
         proto.MESSAGE, number=235403836, message="SslPolicyReference",
     )
-
-    target_ssl_proxy = proto.Field(proto.STRING, number=70360397)
+    target_ssl_proxy = proto.Field(proto.STRING, number=338795853,)
 
 
 class DeleteTargetTcpProxyRequest(proto.Message):
@@ -47864,11 +44533,9 @@ class DeleteTargetTcpProxyRequest(proto.Message):
             delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_tcp_proxy = proto.Field(proto.STRING, number=234629986)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_tcp_proxy = proto.Field(proto.STRING, number=503065442,)
 
 
 class GetTargetTcpProxyRequest(proto.Message):
@@ -47883,9 +44550,8 @@ class GetTargetTcpProxyRequest(proto.Message):
             return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    target_tcp_proxy = proto.Field(proto.STRING, number=234629986)
+    project = proto.Field(proto.STRING, number=227560217,)
+    target_tcp_proxy = proto.Field(proto.STRING, number=503065442,)
 
 
 class InsertTargetTcpProxyRequest(proto.Message):
@@ -47915,10 +44581,8 @@ class InsertTargetTcpProxyRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_tcp_proxy_resource = proto.Field(
         proto.MESSAGE, number=145913931, message="TargetTcpProxy",
     )
@@ -47989,17 +44653,12 @@ class ListTargetTcpProxiesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class SetBackendServiceTargetTcpProxyRequest(proto.Message):
@@ -48032,17 +44691,14 @@ class SetBackendServiceTargetTcpProxyRequest(proto.Message):
             BackendService resource is to be set.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_tcp_proxies_set_backend_service_request_resource = proto.Field(
         proto.MESSAGE,
-        number=5286127,
+        number=273721583,
         message="TargetTcpProxiesSetBackendServiceRequest",
     )
-
-    target_tcp_proxy = proto.Field(proto.STRING, number=234629986)
+    target_tcp_proxy = proto.Field(proto.STRING, number=503065442,)
 
 
 class SetProxyHeaderTargetTcpProxyRequest(proto.Message):
@@ -48075,17 +44731,14 @@ class SetProxyHeaderTargetTcpProxyRequest(proto.Message):
             ProxyHeader is to be set.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_tcp_proxies_set_proxy_header_request_resource = proto.Field(
         proto.MESSAGE,
         number=219958339,
         message="TargetTcpProxiesSetProxyHeaderRequest",
     )
-
-    target_tcp_proxy = proto.Field(proto.STRING, number=234629986)
+    target_tcp_proxy = proto.Field(proto.STRING, number=503065442,)
 
 
 class AggregatedListTargetVpnGatewaysRequest(proto.Message):
@@ -48164,19 +44817,13 @@ class AggregatedListTargetVpnGatewaysRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteTargetVpnGatewayRequest(proto.Message):
@@ -48208,13 +44855,10 @@ class DeleteTargetVpnGatewayRequest(proto.Message):
             Name of the target VPN gateway to delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    target_vpn_gateway = proto.Field(proto.STRING, number=264077387)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_vpn_gateway = proto.Field(proto.STRING, number=532512843,)
 
 
 class GetTargetVpnGatewayRequest(proto.Message):
@@ -48230,11 +44874,9 @@ class GetTargetVpnGatewayRequest(proto.Message):
             Name of the target VPN gateway to return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    target_vpn_gateway = proto.Field(proto.STRING, number=264077387)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    target_vpn_gateway = proto.Field(proto.STRING, number=532512843,)
 
 
 class InsertTargetVpnGatewayRequest(proto.Message):
@@ -48266,12 +44908,9 @@ class InsertTargetVpnGatewayRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     target_vpn_gateway_resource = proto.Field(
         proto.MESSAGE, number=498050, message="TargetVpnGateway",
     )
@@ -48344,19 +44983,13 @@ class ListTargetVpnGatewaysRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class AggregatedListUrlMapsRequest(proto.Message):
@@ -48435,19 +45068,13 @@ class AggregatedListUrlMapsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteUrlMapRequest(proto.Message):
@@ -48477,11 +45104,9 @@ class DeleteUrlMapRequest(proto.Message):
             Name of the UrlMap resource to delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    url_map = proto.Field(proto.STRING, number=98585228)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    url_map = proto.Field(proto.STRING, number=367020684,)
 
 
 class GetUrlMapRequest(proto.Message):
@@ -48495,9 +45120,8 @@ class GetUrlMapRequest(proto.Message):
             Name of the UrlMap resource to return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    url_map = proto.Field(proto.STRING, number=98585228)
+    project = proto.Field(proto.STRING, number=227560217,)
+    url_map = proto.Field(proto.STRING, number=367020684,)
 
 
 class InsertUrlMapRequest(proto.Message):
@@ -48527,10 +45151,8 @@ class InsertUrlMapRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     url_map_resource = proto.Field(proto.MESSAGE, number=168675425, message="UrlMap",)
 
 
@@ -48564,14 +45186,11 @@ class InvalidateCacheUrlMapRequest(proto.Message):
     """
 
     cache_invalidation_rule_resource = proto.Field(
-        proto.MESSAGE, number=44360109, message="CacheInvalidationRule",
+        proto.MESSAGE, number=312795565, message="CacheInvalidationRule",
     )
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    url_map = proto.Field(proto.STRING, number=98585228)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    url_map = proto.Field(proto.STRING, number=367020684,)
 
 
 class ListUrlMapsRequest(proto.Message):
@@ -48639,17 +45258,12 @@ class ListUrlMapsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class PatchUrlMapRequest(proto.Message):
@@ -48681,12 +45295,9 @@ class PatchUrlMapRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    url_map = proto.Field(proto.STRING, number=98585228)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    url_map = proto.Field(proto.STRING, number=367020684,)
     url_map_resource = proto.Field(proto.MESSAGE, number=168675425, message="UrlMap",)
 
 
@@ -48719,12 +45330,9 @@ class UpdateUrlMapRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    url_map = proto.Field(proto.STRING, number=98585228)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    url_map = proto.Field(proto.STRING, number=367020684,)
     url_map_resource = proto.Field(proto.MESSAGE, number=168675425, message="UrlMap",)
 
 
@@ -48742,12 +45350,10 @@ class ValidateUrlMapRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    url_map = proto.Field(proto.STRING, number=98585228)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    url_map = proto.Field(proto.STRING, number=367020684,)
     url_maps_validate_request_resource = proto.Field(
-        proto.MESSAGE, number=127477999, message="UrlMapsValidateRequest",
+        proto.MESSAGE, number=395913455, message="UrlMapsValidateRequest",
     )
 
 
@@ -48827,19 +45433,13 @@ class AggregatedListVpnGatewaysRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteVpnGatewayRequest(proto.Message):
@@ -48871,13 +45471,10 @@ class DeleteVpnGatewayRequest(proto.Message):
             Name of the VPN gateway to delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    vpn_gateway = proto.Field(proto.STRING, number=138248697)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    vpn_gateway = proto.Field(proto.STRING, number=406684153,)
 
 
 class GetVpnGatewayRequest(proto.Message):
@@ -48893,11 +45490,9 @@ class GetVpnGatewayRequest(proto.Message):
             Name of the VPN gateway to return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    vpn_gateway = proto.Field(proto.STRING, number=138248697)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    vpn_gateway = proto.Field(proto.STRING, number=406684153,)
 
 
 class GetStatusVpnGatewayRequest(proto.Message):
@@ -48913,11 +45508,9 @@ class GetStatusVpnGatewayRequest(proto.Message):
             Name of the VPN gateway to return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    vpn_gateway = proto.Field(proto.STRING, number=138248697)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    vpn_gateway = proto.Field(proto.STRING, number=406684153,)
 
 
 class InsertVpnGatewayRequest(proto.Message):
@@ -48949,12 +45542,9 @@ class InsertVpnGatewayRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     vpn_gateway_resource = proto.Field(
         proto.MESSAGE, number=182688660, message="VpnGateway",
     )
@@ -49027,19 +45617,13 @@ class ListVpnGatewaysRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class SetLabelsVpnGatewayRequest(proto.Message):
@@ -49073,17 +45657,13 @@ class SetLabelsVpnGatewayRequest(proto.Message):
             Name or id of the resource for this request.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     region_set_labels_request_resource = proto.Field(
         proto.MESSAGE, number=259357782, message="RegionSetLabelsRequest",
     )
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    resource = proto.Field(proto.STRING, number=195806222)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class TestIamPermissionsVpnGatewayRequest(proto.Message):
@@ -49101,14 +45681,11 @@ class TestIamPermissionsVpnGatewayRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    resource = proto.Field(proto.STRING, number=195806222)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
-        proto.MESSAGE, number=170779302, message="TestPermissionsRequest",
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
     )
 
 
@@ -49188,19 +45765,13 @@ class AggregatedListVpnTunnelsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    include_all_scopes = proto.Field(proto.BOOL, number=122892532)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteVpnTunnelRequest(proto.Message):
@@ -49232,13 +45803,10 @@ class DeleteVpnTunnelRequest(proto.Message):
             Name of the VpnTunnel resource to delete.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
-    vpn_tunnel = proto.Field(proto.STRING, number=143821331)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    vpn_tunnel = proto.Field(proto.STRING, number=143821331,)
 
 
 class GetVpnTunnelRequest(proto.Message):
@@ -49254,11 +45822,9 @@ class GetVpnTunnelRequest(proto.Message):
             Name of the VpnTunnel resource to return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    vpn_tunnel = proto.Field(proto.STRING, number=143821331)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    vpn_tunnel = proto.Field(proto.STRING, number=143821331,)
 
 
 class InsertVpnTunnelRequest(proto.Message):
@@ -49290,12 +45856,9 @@ class InsertVpnTunnelRequest(proto.Message):
             The body resource for this request
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    request_id = proto.Field(proto.STRING, number=37109963)
-
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     vpn_tunnel_resource = proto.Field(
         proto.MESSAGE, number=86839482, message="VpnTunnel",
     )
@@ -49368,19 +45931,13 @@ class ListVpnTunnelsRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    region = proto.Field(proto.STRING, number=138946292)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 class DeleteZoneOperationRequest(proto.Message):
@@ -49396,17 +45953,15 @@ class DeleteZoneOperationRequest(proto.Message):
             Name of the zone for this request.
     """
 
-    operation = proto.Field(proto.STRING, number=52090215)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    operation = proto.Field(proto.STRING, number=52090215,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class DeleteZoneOperationResponse(proto.Message):
     r"""A response message for ZoneOperations.Delete. See the method
     description for details.
-    """
+        """
 
 
 class GetZoneOperationRequest(proto.Message):
@@ -49422,11 +45977,9 @@ class GetZoneOperationRequest(proto.Message):
             Name of the zone for this request.
     """
 
-    operation = proto.Field(proto.STRING, number=52090215)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    operation = proto.Field(proto.STRING, number=52090215,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListZoneOperationsRequest(proto.Message):
@@ -49496,19 +46049,13 @@ class ListZoneOperationsRequest(proto.Message):
             Name of the zone for request.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class WaitZoneOperationRequest(proto.Message):
@@ -49524,11 +46071,9 @@ class WaitZoneOperationRequest(proto.Message):
             Name of the zone for this request.
     """
 
-    operation = proto.Field(proto.STRING, number=52090215)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    operation = proto.Field(proto.STRING, number=52090215,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class GetZoneRequest(proto.Message):
@@ -49542,9 +46087,8 @@ class GetZoneRequest(proto.Message):
             Name of the zone resource to return.
     """
 
-    project = proto.Field(proto.STRING, number=227560217)
-
-    zone = proto.Field(proto.STRING, number=3744684)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
 
 
 class ListZonesRequest(proto.Message):
@@ -49612,17 +46156,12 @@ class ListZonesRequest(proto.Message):
             as today.
     """
 
-    filter = proto.Field(proto.STRING, number=67685240)
-
-    max_results = proto.Field(proto.UINT32, number=54715419)
-
-    order_by = proto.Field(proto.STRING, number=160562920)
-
-    page_token = proto.Field(proto.STRING, number=19994697)
-
-    project = proto.Field(proto.STRING, number=227560217)
-
-    return_partial_success = proto.Field(proto.BOOL, number=248762934)
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

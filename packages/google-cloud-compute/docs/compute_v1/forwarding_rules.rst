@@ -5,7 +5,6 @@ ForwardingRules
     :members:
     :inherited-members:
 
-
 .. automodule:: google.cloud.compute_v1.services.forwarding_rules.pagers
     :members:
     :inherited-members:

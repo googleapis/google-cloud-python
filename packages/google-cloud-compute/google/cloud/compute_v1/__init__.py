@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,8 +19,8 @@ from .services.addresses import AddressesClient
 from .services.autoscalers import AutoscalersClient
 from .services.backend_buckets import BackendBucketsClient
 from .services.backend_services import BackendServicesClient
-from .services.disk_types import DiskTypesClient
 from .services.disks import DisksClient
+from .services.disk_types import DiskTypesClient
 from .services.external_vpn_gateways import ExternalVpnGatewaysClient
 from .services.firewalls import FirewallsClient
 from .services.forwarding_rules import ForwardingRulesClient
@@ -34,8 +33,8 @@ from .services.health_checks import HealthChecksClient
 from .services.images import ImagesClient
 from .services.instance_group_managers import InstanceGroupManagersClient
 from .services.instance_groups import InstanceGroupsClient
-from .services.instance_templates import InstanceTemplatesClient
 from .services.instances import InstancesClient
+from .services.instance_templates import InstanceTemplatesClient
 from .services.interconnect_attachments import InterconnectAttachmentsClient
 from .services.interconnect_locations import InterconnectLocationsClient
 from .services.interconnects import InterconnectsClient
@@ -52,20 +51,20 @@ from .services.projects import ProjectsClient
 from .services.region_autoscalers import RegionAutoscalersClient
 from .services.region_backend_services import RegionBackendServicesClient
 from .services.region_commitments import RegionCommitmentsClient
-from .services.region_disk_types import RegionDiskTypesClient
 from .services.region_disks import RegionDisksClient
-from .services.region_health_check_services import RegionHealthCheckServicesClient
+from .services.region_disk_types import RegionDiskTypesClient
 from .services.region_health_checks import RegionHealthChecksClient
+from .services.region_health_check_services import RegionHealthCheckServicesClient
 from .services.region_instance_group_managers import RegionInstanceGroupManagersClient
 from .services.region_instance_groups import RegionInstanceGroupsClient
 from .services.region_network_endpoint_groups import RegionNetworkEndpointGroupsClient
 from .services.region_notification_endpoints import RegionNotificationEndpointsClient
 from .services.region_operations import RegionOperationsClient
+from .services.regions import RegionsClient
 from .services.region_ssl_certificates import RegionSslCertificatesClient
 from .services.region_target_http_proxies import RegionTargetHttpProxiesClient
 from .services.region_target_https_proxies import RegionTargetHttpsProxiesClient
 from .services.region_url_maps import RegionUrlMapsClient
-from .services.regions import RegionsClient
 from .services.reservations import ReservationsClient
 from .services.resource_policies import ResourcePoliciesClient
 from .services.routers import RoutersClient
@@ -88,37 +87,38 @@ from .services.vpn_gateways import VpnGatewaysClient
 from .services.vpn_tunnels import VpnTunnelsClient
 from .services.zone_operations import ZoneOperationsClient
 from .services.zones import ZonesClient
+
 from .types.compute import AbandonInstancesInstanceGroupManagerRequest
 from .types.compute import AbandonInstancesRegionInstanceGroupManagerRequest
 from .types.compute import AcceleratorConfig
+from .types.compute import Accelerators
 from .types.compute import AcceleratorType
 from .types.compute import AcceleratorTypeAggregatedList
 from .types.compute import AcceleratorTypeList
 from .types.compute import AcceleratorTypesScopedList
-from .types.compute import Accelerators
 from .types.compute import AccessConfig
 from .types.compute import AddAccessConfigInstanceRequest
 from .types.compute import AddHealthCheckTargetPoolRequest
-from .types.compute import AddInstanceTargetPoolRequest
 from .types.compute import AddInstancesInstanceGroupRequest
+from .types.compute import AddInstanceTargetPoolRequest
 from .types.compute import AddNodesNodeGroupRequest
 from .types.compute import AddPeeringNetworkRequest
 from .types.compute import AddResourcePoliciesDiskRequest
 from .types.compute import AddResourcePoliciesInstanceRequest
 from .types.compute import AddResourcePoliciesRegionDiskRequest
+from .types.compute import Address
+from .types.compute import AddressAggregatedList
+from .types.compute import AddressesScopedList
+from .types.compute import AddressList
 from .types.compute import AddRuleSecurityPolicyRequest
 from .types.compute import AddSignedUrlKeyBackendBucketRequest
 from .types.compute import AddSignedUrlKeyBackendServiceRequest
-from .types.compute import Address
-from .types.compute import AddressAggregatedList
-from .types.compute import AddressList
-from .types.compute import AddressesScopedList
 from .types.compute import AggregatedListAcceleratorTypesRequest
 from .types.compute import AggregatedListAddressesRequest
 from .types.compute import AggregatedListAutoscalersRequest
 from .types.compute import AggregatedListBackendServicesRequest
-from .types.compute import AggregatedListDiskTypesRequest
 from .types.compute import AggregatedListDisksRequest
+from .types.compute import AggregatedListDiskTypesRequest
 from .types.compute import AggregatedListForwardingRulesRequest
 from .types.compute import AggregatedListGlobalOperationsRequest
 from .types.compute import AggregatedListHealthChecksRequest
@@ -156,18 +156,18 @@ from .types.compute import Allowed
 from .types.compute import ApplyUpdatesToInstancesInstanceGroupManagerRequest
 from .types.compute import ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest
 from .types.compute import AttachDiskInstanceRequest
-from .types.compute import AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest
-from .types.compute import AttachNetworkEndpointsNetworkEndpointGroupRequest
 from .types.compute import AttachedDisk
 from .types.compute import AttachedDiskInitializeParams
+from .types.compute import AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest
+from .types.compute import AttachNetworkEndpointsNetworkEndpointGroupRequest
 from .types.compute import AuditConfig
 from .types.compute import AuditLogConfig
 from .types.compute import AuthorizationLoggingOptions
 from .types.compute import Autoscaler
 from .types.compute import AutoscalerAggregatedList
 from .types.compute import AutoscalerList
-from .types.compute import AutoscalerStatusDetails
 from .types.compute import AutoscalersScopedList
+from .types.compute import AutoscalerStatusDetails
 from .types.compute import AutoscalingPolicy
 from .types.compute import AutoscalingPolicyCpuUtilization
 from .types.compute import AutoscalingPolicyCustomMetricUtilization
@@ -229,17 +229,17 @@ from .types.compute import DeleteImageRequest
 from .types.compute import DeleteInstanceGroupManagerRequest
 from .types.compute import DeleteInstanceGroupRequest
 from .types.compute import DeleteInstanceRequest
-from .types.compute import DeleteInstanceTemplateRequest
 from .types.compute import DeleteInstancesInstanceGroupManagerRequest
 from .types.compute import DeleteInstancesRegionInstanceGroupManagerRequest
+from .types.compute import DeleteInstanceTemplateRequest
 from .types.compute import DeleteInterconnectAttachmentRequest
 from .types.compute import DeleteInterconnectRequest
 from .types.compute import DeleteLicenseRequest
 from .types.compute import DeleteNetworkEndpointGroupRequest
 from .types.compute import DeleteNetworkRequest
 from .types.compute import DeleteNodeGroupRequest
-from .types.compute import DeleteNodeTemplateRequest
 from .types.compute import DeleteNodesNodeGroupRequest
+from .types.compute import DeleteNodeTemplateRequest
 from .types.compute import DeletePacketMirroringRequest
 from .types.compute import DeletePerInstanceConfigsInstanceGroupManagerRequest
 from .types.compute import DeletePerInstanceConfigsRegionInstanceGroupManagerRequest
@@ -294,14 +294,14 @@ from .types.compute import DiskAggregatedList
 from .types.compute import DiskInstantiationConfig
 from .types.compute import DiskList
 from .types.compute import DiskMoveRequest
-from .types.compute import DiskType
-from .types.compute import DiskTypeAggregatedList
-from .types.compute import DiskTypeList
-from .types.compute import DiskTypesScopedList
 from .types.compute import DisksAddResourcePoliciesRequest
 from .types.compute import DisksRemoveResourcePoliciesRequest
 from .types.compute import DisksResizeRequest
 from .types.compute import DisksScopedList
+from .types.compute import DiskType
+from .types.compute import DiskTypeAggregatedList
+from .types.compute import DiskTypeList
+from .types.compute import DiskTypesScopedList
 from .types.compute import DisplayDevice
 from .types.compute import DistributionPolicy
 from .types.compute import DistributionPolicyZoneConfiguration
@@ -327,7 +327,6 @@ from .types.compute import ForwardingRuleAggregatedList
 from .types.compute import ForwardingRuleList
 from .types.compute import ForwardingRuleReference
 from .types.compute import ForwardingRulesScopedList
-from .types.compute import GRPCHealthCheck
 from .types.compute import GetAcceleratorTypeRequest
 from .types.compute import GetAddressRequest
 from .types.compute import GetAutoscalerRequest
@@ -432,37 +431,38 @@ from .types.compute import GlobalNetworkEndpointGroupsAttachEndpointsRequest
 from .types.compute import GlobalNetworkEndpointGroupsDetachEndpointsRequest
 from .types.compute import GlobalSetLabelsRequest
 from .types.compute import GlobalSetPolicyRequest
+from .types.compute import GRPCHealthCheck
 from .types.compute import GuestAttributes
 from .types.compute import GuestAttributesEntry
 from .types.compute import GuestAttributesValue
 from .types.compute import GuestOsFeature
-from .types.compute import HTTP2HealthCheck
-from .types.compute import HTTPHealthCheck
-from .types.compute import HTTPSHealthCheck
 from .types.compute import HealthCheck
 from .types.compute import HealthCheckList
 from .types.compute import HealthCheckLogConfig
 from .types.compute import HealthCheckReference
+from .types.compute import HealthChecksAggregatedList
 from .types.compute import HealthCheckService
 from .types.compute import HealthCheckServiceReference
 from .types.compute import HealthCheckServicesList
-from .types.compute import HealthChecksAggregatedList
 from .types.compute import HealthChecksScopedList
 from .types.compute import HealthStatus
 from .types.compute import HealthStatusForNetworkEndpoint
 from .types.compute import HostRule
+from .types.compute import HTTP2HealthCheck
 from .types.compute import HttpFaultAbort
 from .types.compute import HttpFaultDelay
 from .types.compute import HttpFaultInjection
 from .types.compute import HttpHeaderAction
 from .types.compute import HttpHeaderMatch
 from .types.compute import HttpHeaderOption
+from .types.compute import HTTPHealthCheck
 from .types.compute import HttpQueryParameterMatch
 from .types.compute import HttpRedirectAction
 from .types.compute import HttpRetryPolicy
 from .types.compute import HttpRouteAction
 from .types.compute import HttpRouteRule
 from .types.compute import HttpRouteRuleMatch
+from .types.compute import HTTPSHealthCheck
 from .types.compute import Image
 from .types.compute import ImageList
 from .types.compute import InitialStateConfig
@@ -533,12 +533,6 @@ from .types.compute import InstanceGroupManagerActionsSummary
 from .types.compute import InstanceGroupManagerAggregatedList
 from .types.compute import InstanceGroupManagerAutoHealingPolicy
 from .types.compute import InstanceGroupManagerList
-from .types.compute import InstanceGroupManagerStatus
-from .types.compute import InstanceGroupManagerStatusStateful
-from .types.compute import InstanceGroupManagerStatusStatefulPerInstanceConfigs
-from .types.compute import InstanceGroupManagerStatusVersionTarget
-from .types.compute import InstanceGroupManagerUpdatePolicy
-from .types.compute import InstanceGroupManagerVersion
 from .types.compute import InstanceGroupManagersAbandonInstancesRequest
 from .types.compute import InstanceGroupManagersApplyUpdatesRequest
 from .types.compute import InstanceGroupManagersCreateInstancesRequest
@@ -552,7 +546,13 @@ from .types.compute import InstanceGroupManagersRecreateInstancesRequest
 from .types.compute import InstanceGroupManagersScopedList
 from .types.compute import InstanceGroupManagersSetInstanceTemplateRequest
 from .types.compute import InstanceGroupManagersSetTargetPoolsRequest
+from .types.compute import InstanceGroupManagerStatus
+from .types.compute import InstanceGroupManagerStatusStateful
+from .types.compute import InstanceGroupManagerStatusStatefulPerInstanceConfigs
+from .types.compute import InstanceGroupManagerStatusVersionTarget
 from .types.compute import InstanceGroupManagersUpdatePerInstanceConfigsReq
+from .types.compute import InstanceGroupManagerUpdatePolicy
+from .types.compute import InstanceGroupManagerVersion
 from .types.compute import InstanceGroupsAddInstancesRequest
 from .types.compute import InstanceGroupsListInstances
 from .types.compute import InstanceGroupsListInstancesRequest
@@ -567,9 +567,6 @@ from .types.compute import InstanceManagedByIgmErrorManagedInstanceError
 from .types.compute import InstanceMoveRequest
 from .types.compute import InstanceProperties
 from .types.compute import InstanceReference
-from .types.compute import InstanceTemplate
-from .types.compute import InstanceTemplateList
-from .types.compute import InstanceWithNamedPorts
 from .types.compute import InstancesAddResourcePoliciesRequest
 from .types.compute import InstancesRemoveResourcePoliciesRequest
 from .types.compute import InstancesScopedList
@@ -579,6 +576,9 @@ from .types.compute import InstancesSetMachineTypeRequest
 from .types.compute import InstancesSetMinCpuPlatformRequest
 from .types.compute import InstancesSetServiceAccountRequest
 from .types.compute import InstancesStartWithEncryptionKeyRequest
+from .types.compute import InstanceTemplate
+from .types.compute import InstanceTemplateList
+from .types.compute import InstanceWithNamedPorts
 from .types.compute import Int64RangeMatch
 from .types.compute import Interconnect
 from .types.compute import InterconnectAttachment
@@ -613,8 +613,8 @@ from .types.compute import ListAutoscalersRequest
 from .types.compute import ListAvailableFeaturesSslPoliciesRequest
 from .types.compute import ListBackendBucketsRequest
 from .types.compute import ListBackendServicesRequest
-from .types.compute import ListDiskTypesRequest
 from .types.compute import ListDisksRequest
+from .types.compute import ListDiskTypesRequest
 from .types.compute import ListErrorsInstanceGroupManagersRequest
 from .types.compute import ListErrorsRegionInstanceGroupManagersRequest
 from .types.compute import ListExternalVpnGatewaysRequest
@@ -629,10 +629,10 @@ from .types.compute import ListHealthChecksRequest
 from .types.compute import ListImagesRequest
 from .types.compute import ListInstanceGroupManagersRequest
 from .types.compute import ListInstanceGroupsRequest
-from .types.compute import ListInstanceTemplatesRequest
 from .types.compute import ListInstancesInstanceGroupsRequest
 from .types.compute import ListInstancesRegionInstanceGroupsRequest
 from .types.compute import ListInstancesRequest
+from .types.compute import ListInstanceTemplatesRequest
 from .types.compute import ListInterconnectAttachmentsRequest
 from .types.compute import ListInterconnectLocationsRequest
 from .types.compute import ListInterconnectsRequest
@@ -645,9 +645,9 @@ from .types.compute import ListNetworkEndpointsGlobalNetworkEndpointGroupsReques
 from .types.compute import ListNetworkEndpointsNetworkEndpointGroupsRequest
 from .types.compute import ListNetworksRequest
 from .types.compute import ListNodeGroupsRequest
+from .types.compute import ListNodesNodeGroupsRequest
 from .types.compute import ListNodeTemplatesRequest
 from .types.compute import ListNodeTypesRequest
-from .types.compute import ListNodesNodeGroupsRequest
 from .types.compute import ListPacketMirroringsRequest
 from .types.compute import ListPeeringRoutesNetworksRequest
 from .types.compute import ListPerInstanceConfigsInstanceGroupManagersRequest
@@ -657,8 +657,8 @@ from .types.compute import ListReferrersInstancesRequest
 from .types.compute import ListRegionAutoscalersRequest
 from .types.compute import ListRegionBackendServicesRequest
 from .types.compute import ListRegionCommitmentsRequest
-from .types.compute import ListRegionDiskTypesRequest
 from .types.compute import ListRegionDisksRequest
+from .types.compute import ListRegionDiskTypesRequest
 from .types.compute import ListRegionHealthCheckServicesRequest
 from .types.compute import ListRegionHealthChecksRequest
 from .types.compute import ListRegionInstanceGroupManagersRequest
@@ -666,11 +666,11 @@ from .types.compute import ListRegionInstanceGroupsRequest
 from .types.compute import ListRegionNetworkEndpointGroupsRequest
 from .types.compute import ListRegionNotificationEndpointsRequest
 from .types.compute import ListRegionOperationsRequest
+from .types.compute import ListRegionsRequest
 from .types.compute import ListRegionSslCertificatesRequest
 from .types.compute import ListRegionTargetHttpProxiesRequest
 from .types.compute import ListRegionTargetHttpsProxiesRequest
 from .types.compute import ListRegionUrlMapsRequest
-from .types.compute import ListRegionsRequest
 from .types.compute import ListReservationsRequest
 from .types.compute import ListResourcePoliciesRequest
 from .types.compute import ListRoutersRequest
@@ -825,15 +825,14 @@ from .types.compute import RecreateInstancesRegionInstanceGroupManagerRequest
 from .types.compute import Reference
 from .types.compute import Region
 from .types.compute import RegionAutoscalerList
-from .types.compute import RegionDiskTypeList
 from .types.compute import RegionDisksAddResourcePoliciesRequest
 from .types.compute import RegionDisksRemoveResourcePoliciesRequest
 from .types.compute import RegionDisksResizeRequest
+from .types.compute import RegionDiskTypeList
 from .types.compute import RegionInstanceGroupList
 from .types.compute import RegionInstanceGroupManagerDeleteInstanceConfigReq
 from .types.compute import RegionInstanceGroupManagerList
 from .types.compute import RegionInstanceGroupManagerPatchInstanceConfigReq
-from .types.compute import RegionInstanceGroupManagerUpdateInstanceConfigReq
 from .types.compute import RegionInstanceGroupManagersAbandonInstancesRequest
 from .types.compute import RegionInstanceGroupManagersApplyUpdatesRequest
 from .types.compute import RegionInstanceGroupManagersCreateInstancesRequest
@@ -844,6 +843,7 @@ from .types.compute import RegionInstanceGroupManagersListInstancesResponse
 from .types.compute import RegionInstanceGroupManagersRecreateRequest
 from .types.compute import RegionInstanceGroupManagersSetTargetPoolsRequest
 from .types.compute import RegionInstanceGroupManagersSetTemplateRequest
+from .types.compute import RegionInstanceGroupManagerUpdateInstanceConfigReq
 from .types.compute import RegionInstanceGroupsListInstances
 from .types.compute import RegionInstanceGroupsListInstancesRequest
 from .types.compute import RegionInstanceGroupsSetNamedPortsRequest
@@ -853,8 +853,8 @@ from .types.compute import RegionSetPolicyRequest
 from .types.compute import RegionTargetHttpsProxiesSetSslCertificatesRequest
 from .types.compute import RegionUrlMapsValidateRequest
 from .types.compute import RemoveHealthCheckTargetPoolRequest
-from .types.compute import RemoveInstanceTargetPoolRequest
 from .types.compute import RemoveInstancesInstanceGroupRequest
+from .types.compute import RemoveInstanceTargetPoolRequest
 from .types.compute import RemovePeeringNetworkRequest
 from .types.compute import RemoveResourcePoliciesDiskRequest
 from .types.compute import RemoveResourcePoliciesInstanceRequest
@@ -900,14 +900,13 @@ from .types.compute import RouterList
 from .types.compute import RouterNat
 from .types.compute import RouterNatLogConfig
 from .types.compute import RouterNatSubnetworkToNat
+from .types.compute import RoutersPreviewResponse
+from .types.compute import RoutersScopedList
 from .types.compute import RouterStatus
 from .types.compute import RouterStatusBgpPeerStatus
 from .types.compute import RouterStatusNatStatus
 from .types.compute import RouterStatusResponse
-from .types.compute import RoutersPreviewResponse
-from .types.compute import RoutersScopedList
 from .types.compute import Rule
-from .types.compute import SSLHealthCheck
 from .types.compute import Scheduling
 from .types.compute import SchedulingNodeAffinity
 from .types.compute import ScratchDisks
@@ -997,6 +996,7 @@ from .types.compute import SslCertificateList
 from .types.compute import SslCertificateManagedSslCertificate
 from .types.compute import SslCertificateSelfManagedSslCertificate
 from .types.compute import SslCertificatesScopedList
+from .types.compute import SSLHealthCheck
 from .types.compute import SslPoliciesList
 from .types.compute import SslPoliciesListAvailableFeaturesResponse
 from .types.compute import SslPolicy
@@ -1016,7 +1016,6 @@ from .types.compute import SubnetworksExpandIpCidrRangeRequest
 from .types.compute import SubnetworksScopedList
 from .types.compute import SubnetworksSetPrivateIpGoogleAccessRequest
 from .types.compute import SwitchToCustomModeNetworkRequest
-from .types.compute import TCPHealthCheck
 from .types.compute import Tags
 from .types.compute import TargetGrpcProxy
 from .types.compute import TargetGrpcProxyList
@@ -1057,6 +1056,7 @@ from .types.compute import TargetVpnGateway
 from .types.compute import TargetVpnGatewayAggregatedList
 from .types.compute import TargetVpnGatewayList
 from .types.compute import TargetVpnGatewaysScopedList
+from .types.compute import TCPHealthCheck
 from .types.compute import TestFailure
 from .types.compute import TestIamPermissionsDiskRequest
 from .types.compute import TestIamPermissionsExternalVpnGatewayRequest
@@ -1099,16 +1099,16 @@ from .types.compute import UpdateUrlMapRequest
 from .types.compute import UrlMap
 from .types.compute import UrlMapList
 from .types.compute import UrlMapReference
-from .types.compute import UrlMapTest
-from .types.compute import UrlMapValidationResult
 from .types.compute import UrlMapsAggregatedList
 from .types.compute import UrlMapsScopedList
 from .types.compute import UrlMapsValidateRequest
 from .types.compute import UrlMapsValidateResponse
+from .types.compute import UrlMapTest
+from .types.compute import UrlMapValidationResult
 from .types.compute import UrlRewrite
 from .types.compute import UsableSubnetwork
-from .types.compute import UsableSubnetworkSecondaryRange
 from .types.compute import UsableSubnetworksAggregatedList
+from .types.compute import UsableSubnetworkSecondaryRange
 from .types.compute import UsageExportLocation
 from .types.compute import ValidateRegionUrlMapRequest
 from .types.compute import ValidateUrlMapRequest
@@ -1118,13 +1118,13 @@ from .types.compute import VmEndpointNatMappingsList
 from .types.compute import VpnGateway
 from .types.compute import VpnGatewayAggregatedList
 from .types.compute import VpnGatewayList
+from .types.compute import VpnGatewaysGetStatusResponse
+from .types.compute import VpnGatewaysScopedList
 from .types.compute import VpnGatewayStatus
 from .types.compute import VpnGatewayStatusHighAvailabilityRequirementState
 from .types.compute import VpnGatewayStatusTunnel
 from .types.compute import VpnGatewayStatusVpnConnection
 from .types.compute import VpnGatewayVpnGatewayInterface
-from .types.compute import VpnGatewaysGetStatusResponse
-from .types.compute import VpnGatewaysScopedList
 from .types.compute import VpnTunnel
 from .types.compute import VpnTunnelAggregatedList
 from .types.compute import VpnTunnelList
@@ -1143,7 +1143,6 @@ from .types.compute import Zone
 from .types.compute import ZoneList
 from .types.compute import ZoneSetLabelsRequest
 from .types.compute import ZoneSetPolicyRequest
-
 
 __all__ = (
     "AbandonInstancesInstanceGroupManagerRequest",
@@ -1497,6 +1496,7 @@ __all__ = (
     "GlobalAddressesClient",
     "GlobalForwardingRulesClient",
     "GlobalNetworkEndpointGroupsAttachEndpointsRequest",
+    "GlobalNetworkEndpointGroupsClient",
     "GlobalNetworkEndpointGroupsDetachEndpointsRequest",
     "GlobalOperationsClient",
     "GlobalOrganizationOperationsClient",
@@ -2271,5 +2271,4 @@ __all__ = (
     "ZoneSetLabelsRequest",
     "ZoneSetPolicyRequest",
     "ZonesClient",
-    "GlobalNetworkEndpointGroupsClient",
 )

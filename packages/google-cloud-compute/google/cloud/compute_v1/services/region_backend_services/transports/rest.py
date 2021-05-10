@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple
 
-
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.auth.transport.requests import AuthorizedSession
 
-
 from google.cloud.compute_v1.types import compute
-
 
 from .base import RegionBackendServicesTransport, DEFAULT_CLIENT_INFO
 
@@ -51,7 +45,7 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
         self,
         *,
         host: str = "compute.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
@@ -61,7 +55,8 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -78,20 +73,25 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
                 if ``channel`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):	
-                The client info used to send a user-agent string along with	
-                API requests. If ``None``, then default info will be used.	
-                Generally, you only need to set this if you're developing	
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
                 your own client library.
         """
         # Run the base constructor
         # TODO(yon-mg): resolve other ctor params i.e. scopes, quota, etc.
+        # TODO: When custom host (api_endpoint) is set, `scopes` must *also* be set on the
+        # credentials object
         super().__init__(
             host=host, credentials=credentials, client_info=client_info,
         )
-        self._session = AuthorizedSession(self._credentials)
+        self._session = AuthorizedSession(
+            self._credentials, default_host=self.DEFAULT_HOST
+        )
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
+        self._prep_wrapped_messages(client_info)
 
     def delete(
         self,
@@ -103,8 +103,7 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
 
         Args:
             request (~.compute.DeleteRegionBackendServiceRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 RegionBackendServices.Delete. See the
                 method description for details.
 
@@ -155,19 +154,18 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "requestId": request.request_id,
-        }
+        query_params = {}
+        if compute.DeleteRegionBackendServiceRequest.request_id in request:
+            query_params["requestId"] = request.request_id
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.delete(url)
+        response = self._session.delete(url,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -185,8 +183,7 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
 
         Args:
             request (~.compute.GetRegionBackendServiceRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 RegionBackendServices.Get. See the
                 method description for details.
 
@@ -232,16 +229,15 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {}
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.get(url)
+        response = self._session.get(url,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -261,8 +257,7 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
 
         Args:
             request (~.compute.GetHealthRegionBackendServiceRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 RegionBackendServices.GetHealth. See the
                 method description for details.
 
@@ -293,12 +288,11 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
         query_params = {}
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
@@ -322,8 +316,7 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
 
         Args:
             request (~.compute.InsertRegionBackendServiceRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 RegionBackendServices.Insert. See the
                 method description for details.
 
@@ -378,15 +371,14 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "requestId": request.request_id,
-        }
+        query_params = {}
+        if compute.InsertRegionBackendServiceRequest.request_id in request:
+            query_params["requestId"] = request.request_id
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
@@ -408,8 +400,7 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
 
         Args:
             request (~.compute.ListRegionBackendServicesRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 RegionBackendServices.List. See the
                 method description for details.
 
@@ -431,23 +422,26 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "filter": request.filter,
-            "maxResults": request.max_results,
-            "orderBy": request.order_by,
-            "pageToken": request.page_token,
-            "returnPartialSuccess": request.return_partial_success,
-        }
+        query_params = {}
+        if compute.ListRegionBackendServicesRequest.filter in request:
+            query_params["filter"] = request.filter
+        if compute.ListRegionBackendServicesRequest.max_results in request:
+            query_params["maxResults"] = request.max_results
+        if compute.ListRegionBackendServicesRequest.order_by in request:
+            query_params["orderBy"] = request.order_by
+        if compute.ListRegionBackendServicesRequest.page_token in request:
+            query_params["pageToken"] = request.page_token
+        if compute.ListRegionBackendServicesRequest.return_partial_success in request:
+            query_params["returnPartialSuccess"] = request.return_partial_success
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.get(url)
+        response = self._session.get(url,)
 
         # Raise requests.exceptions.HTTPError if the status code is >= 400
         response.raise_for_status()
@@ -467,8 +461,7 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
 
         Args:
             request (~.compute.PatchRegionBackendServiceRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 RegionBackendServices.Patch. See the
                 method description for details.
 
@@ -526,15 +519,14 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "requestId": request.request_id,
-        }
+        query_params = {}
+        if compute.PatchRegionBackendServiceRequest.request_id in request:
+            query_params["requestId"] = request.request_id
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
@@ -556,8 +548,7 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
 
         Args:
             request (~.compute.UpdateRegionBackendServiceRequest):
-                The request object.
-                A request message for
+                The request object. A request message for
                 RegionBackendServices.Update. See the
                 method description for details.
 
@@ -615,15 +606,14 @@ class RegionBackendServicesRestTransport(RegionBackendServicesTransport):
 
         # TODO(yon-mg): handle nested fields corerctly rather than using only top level fields
         #               not required for GCE
-        query_params = {
-            "requestId": request.request_id,
-        }
+        query_params = {}
+        if compute.UpdateRegionBackendServiceRequest.request_id in request:
+            query_params["requestId"] = request.request_id
+
         # TODO(yon-mg): further discussion needed whether 'python truthiness' is appropriate here
         #               discards default values
         # TODO(yon-mg): add test for proper url encoded strings
-        query_params = [
-            "{k}={v}".format(k=k, v=v) for k, v in query_params.items() if v
-        ]
+        query_params = ["{k}={v}".format(k=k, v=v) for k, v in query_params.items()]
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request

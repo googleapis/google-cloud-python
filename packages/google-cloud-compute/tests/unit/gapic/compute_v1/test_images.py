@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,31 +13,57 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import os
 import mock
+import packaging.version
 
 import grpc
 from grpc.experimental import aio
 import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
+
 from requests import Response
 from requests.sessions import Session
 
-from google import auth
 from google.api_core import client_options
-from google.api_core import exceptions
+from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
-from google.auth import credentials
+from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.images import ImagesClient
 from google.cloud.compute_v1.services.images import pagers
 from google.cloud.compute_v1.services.images import transports
+from google.cloud.compute_v1.services.images.transports.base import _API_CORE_VERSION
+from google.cloud.compute_v1.services.images.transports.base import _GOOGLE_AUTH_VERSION
 from google.cloud.compute_v1.types import compute
 from google.oauth2 import service_account
+import google.auth
+
+
+# TODO(busunkim): Once google-api-core >= 1.26.0 is required:
+# - Delete all the api-core and auth "less than" test cases
+# - Delete these pytest markers (Make the "greater than or equal to" tests the default).
+requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
+    packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
+    reason="This test requires google-auth < 1.25.0",
+)
+requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
+    packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
+    reason="This test requires google-auth >= 1.25.0",
+)
+
+requires_api_core_lt_1_26_0 = pytest.mark.skipif(
+    packaging.version.parse(_API_CORE_VERSION) >= packaging.version.parse("1.26.0"),
+    reason="This test requires google-api-core < 1.26.0",
+)
+
+requires_api_core_gte_1_26_0 = pytest.mark.skipif(
+    packaging.version.parse(_API_CORE_VERSION) < packaging.version.parse("1.26.0"),
+    reason="This test requires google-api-core >= 1.26.0",
+)
 
 
 def client_cert_source_callback():
@@ -81,7 +106,7 @@ def test__get_default_mtls_endpoint():
 
 @pytest.mark.parametrize("client_class", [ImagesClient,])
 def test_images_client_from_service_account_info(client_class):
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -96,7 +121,7 @@ def test_images_client_from_service_account_info(client_class):
 
 @pytest.mark.parametrize("client_class", [ImagesClient,])
 def test_images_client_from_service_account_file(client_class):
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -133,7 +158,7 @@ def test_images_client_get_transport_class():
 def test_images_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(ImagesClient, "get_transport_class") as gtc:
-        transport = transport_class(credentials=credentials.AnonymousCredentials())
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -367,7 +392,7 @@ def test_images_client_client_options_credentials_file(
 
 def test_delete_rest(transport: str = "rest", request_type=compute.DeleteImageRequest):
     client = ImagesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -402,17 +427,16 @@ def test_delete_rest(transport: str = "rest", request_type=compute.DeleteImageRe
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.delete(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -446,7 +470,7 @@ def test_delete_rest_from_dict():
 
 
 def test_delete_rest_flattened():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -471,14 +495,12 @@ def test_delete_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "image_value" in http_call[1] + str(body)
 
 
 def test_delete_rest_flattened_error():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -492,7 +514,7 @@ def test_deprecate_rest(
     transport: str = "rest", request_type=compute.DeprecateImageRequest
 ):
     client = ImagesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -527,17 +549,16 @@ def test_deprecate_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.deprecate(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -571,7 +592,7 @@ def test_deprecate_rest_from_dict():
 
 
 def test_deprecate_rest_flattened():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -588,7 +609,6 @@ def test_deprecate_rest_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         deprecation_status_resource = compute.DeprecationStatus(deleted="deleted_value")
-
         client.deprecate(
             project="project_value",
             image="image_value",
@@ -600,11 +620,8 @@ def test_deprecate_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "image_value" in http_call[1] + str(body)
-
         assert compute.DeprecationStatus.to_json(
             deprecation_status_resource,
             including_default_value_fields=False,
@@ -613,7 +630,7 @@ def test_deprecate_rest_flattened():
 
 
 def test_deprecate_rest_flattened_error():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -630,7 +647,7 @@ def test_deprecate_rest_flattened_error():
 
 def test_get_rest(transport: str = "rest", request_type=compute.GetImageRequest):
     client = ImagesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -686,17 +703,16 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetImageRequest)
             status=compute.Image.Status.DELETING,
             storage_locations=["storage_locations_value"],
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Image.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.get(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Image)
     assert response.archive_size_bytes == "archive_size_bytes_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -751,7 +767,7 @@ def test_get_rest_from_dict():
 
 
 def test_get_rest_flattened():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -776,14 +792,12 @@ def test_get_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "image_value" in http_call[1] + str(body)
 
 
 def test_get_rest_flattened_error():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -797,7 +811,7 @@ def test_get_from_family_rest(
     transport: str = "rest", request_type=compute.GetFromFamilyImageRequest
 ):
     client = ImagesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -853,17 +867,16 @@ def test_get_from_family_rest(
             status=compute.Image.Status.DELETING,
             storage_locations=["storage_locations_value"],
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Image.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.get_from_family(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Image)
     assert response.archive_size_bytes == "archive_size_bytes_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -918,7 +931,7 @@ def test_get_from_family_rest_from_dict():
 
 
 def test_get_from_family_rest_flattened():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -943,14 +956,12 @@ def test_get_from_family_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "family_value" in http_call[1] + str(body)
 
 
 def test_get_from_family_rest_flattened_error():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -966,7 +977,7 @@ def test_get_iam_policy_rest(
     transport: str = "rest", request_type=compute.GetIamPolicyImageRequest
 ):
     client = ImagesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -992,17 +1003,16 @@ def test_get_iam_policy_rest(
             rules=[compute.Rule(action=compute.Rule.Action.ALLOW)],
             version=774,
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Policy.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.get_iam_policy(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Policy)
     assert response.audit_configs == [
         compute.AuditConfig(
@@ -1013,7 +1023,6 @@ def test_get_iam_policy_rest(
     ]
     assert response.bindings == [compute.Binding(binding_id="binding_id_value")]
     assert response.etag == "etag_value"
-
     assert response.iam_owned is True
     assert response.rules == [compute.Rule(action=compute.Rule.Action.ALLOW)]
     assert response.version == 774
@@ -1024,7 +1033,7 @@ def test_get_iam_policy_rest_from_dict():
 
 
 def test_get_iam_policy_rest_flattened():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1049,14 +1058,12 @@ def test_get_iam_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "resource_value" in http_call[1] + str(body)
 
 
 def test_get_iam_policy_rest_flattened_error():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1070,7 +1077,7 @@ def test_get_iam_policy_rest_flattened_error():
 
 def test_insert_rest(transport: str = "rest", request_type=compute.InsertImageRequest):
     client = ImagesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1105,17 +1112,16 @@ def test_insert_rest(transport: str = "rest", request_type=compute.InsertImageRe
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.insert(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -1149,7 +1155,7 @@ def test_insert_rest_from_dict():
 
 
 def test_insert_rest_flattened():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1166,7 +1172,6 @@ def test_insert_rest_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         image_resource = compute.Image(archive_size_bytes="archive_size_bytes_value")
-
         client.insert(
             project="project_value", image_resource=image_resource,
         )
@@ -1176,9 +1181,7 @@ def test_insert_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert compute.Image.to_json(
             image_resource,
             including_default_value_fields=False,
@@ -1187,7 +1190,7 @@ def test_insert_rest_flattened():
 
 
 def test_insert_rest_flattened_error():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1201,7 +1204,7 @@ def test_insert_rest_flattened_error():
 
 def test_list_rest(transport: str = "rest", request_type=compute.ListImagesRequest):
     client = ImagesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1219,17 +1222,16 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListImagesReque
             self_link="self_link_value",
             warning=compute.Warning(code=compute.Warning.Code.CLEANUP_FAILED),
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.ImageList.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.list(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
     assert response.items == [
@@ -1246,7 +1248,7 @@ def test_list_rest_from_dict():
 
 
 def test_list_rest_flattened():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1269,12 +1271,11 @@ def test_list_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
 
 
 def test_list_rest_flattened_error():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1285,12 +1286,11 @@ def test_list_rest_flattened_error():
 
 
 def test_list_pager():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # Set the response as a series of pages
-
         response = (
             compute.ImageList(
                 items=[compute.Image(), compute.Image(), compute.Image(),],
@@ -1300,7 +1300,6 @@ def test_list_pager():
             compute.ImageList(items=[compute.Image(),], next_page_token="ghi",),
             compute.ImageList(items=[compute.Image(), compute.Image(),],),
         )
-
         # Two responses for two calls
         response = response + response
 
@@ -1319,7 +1318,6 @@ def test_list_pager():
 
         results = list(pager)
         assert len(results) == 6
-
         assert all(isinstance(i, compute.Image) for i in results)
 
         pages = list(client.list(request={}).pages)
@@ -1329,7 +1327,7 @@ def test_list_pager():
 
 def test_patch_rest(transport: str = "rest", request_type=compute.PatchImageRequest):
     client = ImagesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1364,17 +1362,16 @@ def test_patch_rest(transport: str = "rest", request_type=compute.PatchImageRequ
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.patch(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -1408,7 +1405,7 @@ def test_patch_rest_from_dict():
 
 
 def test_patch_rest_flattened():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1425,7 +1422,6 @@ def test_patch_rest_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         image_resource = compute.Image(archive_size_bytes="archive_size_bytes_value")
-
         client.patch(
             project="project_value", image="image_value", image_resource=image_resource,
         )
@@ -1435,11 +1431,8 @@ def test_patch_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "image_value" in http_call[1] + str(body)
-
         assert compute.Image.to_json(
             image_resource,
             including_default_value_fields=False,
@@ -1448,7 +1441,7 @@ def test_patch_rest_flattened():
 
 
 def test_patch_rest_flattened_error():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1465,7 +1458,7 @@ def test_set_iam_policy_rest(
     transport: str = "rest", request_type=compute.SetIamPolicyImageRequest
 ):
     client = ImagesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1491,17 +1484,16 @@ def test_set_iam_policy_rest(
             rules=[compute.Rule(action=compute.Rule.Action.ALLOW)],
             version=774,
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Policy.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.set_iam_policy(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Policy)
     assert response.audit_configs == [
         compute.AuditConfig(
@@ -1512,7 +1504,6 @@ def test_set_iam_policy_rest(
     ]
     assert response.bindings == [compute.Binding(binding_id="binding_id_value")]
     assert response.etag == "etag_value"
-
     assert response.iam_owned is True
     assert response.rules == [compute.Rule(action=compute.Rule.Action.ALLOW)]
     assert response.version == 774
@@ -1523,7 +1514,7 @@ def test_set_iam_policy_rest_from_dict():
 
 
 def test_set_iam_policy_rest_flattened():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1542,7 +1533,6 @@ def test_set_iam_policy_rest_flattened():
         global_set_policy_request_resource = compute.GlobalSetPolicyRequest(
             bindings=[compute.Binding(binding_id="binding_id_value")]
         )
-
         client.set_iam_policy(
             project="project_value",
             resource="resource_value",
@@ -1554,11 +1544,8 @@ def test_set_iam_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "resource_value" in http_call[1] + str(body)
-
         assert compute.GlobalSetPolicyRequest.to_json(
             global_set_policy_request_resource,
             including_default_value_fields=False,
@@ -1567,7 +1554,7 @@ def test_set_iam_policy_rest_flattened():
 
 
 def test_set_iam_policy_rest_flattened_error():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1586,7 +1573,7 @@ def test_set_labels_rest(
     transport: str = "rest", request_type=compute.SetLabelsImageRequest
 ):
     client = ImagesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1621,17 +1608,16 @@ def test_set_labels_rest(
             warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
             zone="zone_value",
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.Operation.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.set_labels(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.Operation)
     assert response.client_operation_id == "client_operation_id_value"
     assert response.creation_timestamp == "creation_timestamp_value"
@@ -1665,7 +1651,7 @@ def test_set_labels_rest_from_dict():
 
 
 def test_set_labels_rest_flattened():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1684,7 +1670,6 @@ def test_set_labels_rest_flattened():
         global_set_labels_request_resource = compute.GlobalSetLabelsRequest(
             label_fingerprint="label_fingerprint_value"
         )
-
         client.set_labels(
             project="project_value",
             resource="resource_value",
@@ -1696,11 +1681,8 @@ def test_set_labels_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "resource_value" in http_call[1] + str(body)
-
         assert compute.GlobalSetLabelsRequest.to_json(
             global_set_labels_request_resource,
             including_default_value_fields=False,
@@ -1709,7 +1691,7 @@ def test_set_labels_rest_flattened():
 
 
 def test_set_labels_rest_flattened_error():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1728,7 +1710,7 @@ def test_test_iam_permissions_rest(
     transport: str = "rest", request_type=compute.TestIamPermissionsImageRequest
 ):
     client = ImagesClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1741,17 +1723,16 @@ def test_test_iam_permissions_rest(
         return_value = compute.TestPermissionsResponse(
             permissions=["permissions_value"],
         )
+
         # Wrap the value into a proper Response obj
         json_return_value = compute.TestPermissionsResponse.to_json(return_value)
         response_value = Response()
         response_value.status_code = 200
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-
         response = client.test_iam_permissions(request)
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, compute.TestPermissionsResponse)
     assert response.permissions == ["permissions_value"]
 
@@ -1761,7 +1742,7 @@ def test_test_iam_permissions_rest_from_dict():
 
 
 def test_test_iam_permissions_rest_flattened():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -1780,7 +1761,6 @@ def test_test_iam_permissions_rest_flattened():
         test_permissions_request_resource = compute.TestPermissionsRequest(
             permissions=["permissions_value"]
         )
-
         client.test_iam_permissions(
             project="project_value",
             resource="resource_value",
@@ -1792,11 +1772,8 @@ def test_test_iam_permissions_rest_flattened():
         assert len(req.mock_calls) == 1
         _, http_call, http_params = req.mock_calls[0]
         body = http_params.get("data")
-
         assert "project_value" in http_call[1] + str(body)
-
         assert "resource_value" in http_call[1] + str(body)
-
         assert compute.TestPermissionsRequest.to_json(
             test_permissions_request_resource,
             including_default_value_fields=False,
@@ -1805,7 +1782,7 @@ def test_test_iam_permissions_rest_flattened():
 
 
 def test_test_iam_permissions_rest_flattened_error():
-    client = ImagesClient(credentials=credentials.AnonymousCredentials(),)
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1823,16 +1800,16 @@ def test_test_iam_permissions_rest_flattened_error():
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ImagesRestTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = ImagesClient(
-            credentials=credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.ImagesRestTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = ImagesClient(
@@ -1842,7 +1819,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.ImagesRestTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = ImagesClient(
@@ -1853,7 +1830,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.ImagesRestTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = ImagesClient(transport=transport)
     assert client.transport is transport
@@ -1862,17 +1839,17 @@ def test_transport_instance():
 @pytest.mark.parametrize("transport_class", [transports.ImagesRestTransport,])
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, "default") as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
 
 def test_images_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
-    with pytest.raises(exceptions.DuplicateCredentialArgs):
+    with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.ImagesTransport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -1884,7 +1861,7 @@ def test_images_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.ImagesTransport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -1907,15 +1884,40 @@ def test_images_base_transport():
             getattr(transport, method)(request=object())
 
 
+@requires_google_auth_gte_1_25_0
 def test_images_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
-        auth, "load_credentials_from_file"
+        google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
         "google.cloud.compute_v1.services.images.transports.ImagesTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (credentials.AnonymousCredentials(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport = transports.ImagesTransport(
+            credentials_file="credentials.json", quota_project_id="octopus",
+        )
+        load_creds.assert_called_once_with(
+            "credentials.json",
+            scopes=None,
+            default_scopes=(
+                "https://www.googleapis.com/auth/compute",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
+            quota_project_id="octopus",
+        )
+
+
+@requires_google_auth_lt_1_25_0
+def test_images_base_transport_with_credentials_file_old_google_auth():
+    # Instantiate the base transport with a credentials file
+    with mock.patch.object(
+        google.auth, "load_credentials_from_file", autospec=True
+    ) as load_creds, mock.patch(
+        "google.cloud.compute_v1.services.images.transports.ImagesTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ImagesTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
         )
@@ -1931,19 +1933,36 @@ def test_images_base_transport_with_credentials_file():
 
 def test_images_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(auth, "default") as adc, mock.patch(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
         "google.cloud.compute_v1.services.images.transports.ImagesTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ImagesTransport()
         adc.assert_called_once()
 
 
+@requires_google_auth_gte_1_25_0
 def test_images_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        ImagesClient()
+        adc.assert_called_once_with(
+            scopes=None,
+            default_scopes=(
+                "https://www.googleapis.com/auth/compute",
+                "https://www.googleapis.com/auth/cloud-platform",
+            ),
+            quota_project_id=None,
+        )
+
+
+@requires_google_auth_lt_1_25_0
+def test_images_auth_adc_old_google_auth():
+    # If no credentials are provided, we should use ADC credentials.
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         ImagesClient()
         adc.assert_called_once_with(
             scopes=(
@@ -1955,7 +1974,7 @@ def test_images_auth_adc():
 
 
 def test_images_http_transport_client_cert_source_for_mtls():
-    cred = credentials.AnonymousCredentials()
+    cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
@@ -1967,7 +1986,7 @@ def test_images_http_transport_client_cert_source_for_mtls():
 
 def test_images_host_no_port():
     client = ImagesClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com"
         ),
@@ -1977,7 +1996,7 @@ def test_images_host_no_port():
 
 def test_images_host_with_port():
     client = ImagesClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com:8000"
         ),
@@ -1987,7 +2006,6 @@ def test_images_host_with_port():
 
 def test_common_billing_account_path():
     billing_account = "squid"
-
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2008,7 +2026,6 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-
     expected = "folders/{folder}".format(folder=folder,)
     actual = ImagesClient.common_folder_path(folder)
     assert expected == actual
@@ -2027,7 +2044,6 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-
     expected = "organizations/{organization}".format(organization=organization,)
     actual = ImagesClient.common_organization_path(organization)
     assert expected == actual
@@ -2046,7 +2062,6 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-
     expected = "projects/{project}".format(project=project,)
     actual = ImagesClient.common_project_path(project)
     assert expected == actual
@@ -2066,7 +2081,6 @@ def test_parse_common_project_path():
 def test_common_location_path():
     project = "winkle"
     location = "nautilus"
-
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -2093,7 +2107,7 @@ def test_client_withDEFAULT_CLIENT_INFO():
         transports.ImagesTransport, "_prep_wrapped_messages"
     ) as prep:
         client = ImagesClient(
-            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2102,6 +2116,6 @@ def test_client_withDEFAULT_CLIENT_INFO():
     ) as prep:
         transport_class = ImagesClient.get_transport_class()
         transport = transport_class(
-            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)

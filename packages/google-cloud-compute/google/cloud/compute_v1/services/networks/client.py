@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -34,7 +32,6 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.compute_v1.services.networks import pagers
 from google.cloud.compute_v1.types import compute
-
 from .transports.base import NetworksTransport, DEFAULT_CLIENT_INFO
 from .transports.rest import NetworksRestTransport
 
@@ -213,7 +210,7 @@ class NetworksClient(metaclass=NetworksClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, NetworksTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -358,7 +355,6 @@ class NetworksClient(metaclass=NetworksClientMeta):
                 This corresponds to the ``networks_add_peering_request_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -412,10 +408,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.AddPeeringNetworkRequest):
             request = compute.AddPeeringNetworkRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if network is not None:
@@ -461,7 +455,6 @@ class NetworksClient(metaclass=NetworksClientMeta):
                 This corresponds to the ``network`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -513,10 +506,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.DeleteNetworkRequest):
             request = compute.DeleteNetworkRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if network is not None:
@@ -559,7 +550,6 @@ class NetworksClient(metaclass=NetworksClientMeta):
                 This corresponds to the ``network`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -592,10 +582,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.GetNetworkRequest):
             request = compute.GetNetworkRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if network is not None:
@@ -638,7 +626,6 @@ class NetworksClient(metaclass=NetworksClientMeta):
                 This corresponds to the ``network_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -690,10 +677,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.InsertNetworkRequest):
             request = compute.InsertNetworkRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if network_resource is not None:
@@ -730,7 +715,6 @@ class NetworksClient(metaclass=NetworksClientMeta):
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -761,10 +745,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.ListNetworksRequest):
             request = compute.ListNetworksRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
 
@@ -812,7 +794,6 @@ class NetworksClient(metaclass=NetworksClientMeta):
                 This corresponds to the ``network`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -842,10 +823,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.ListPeeringRoutesNetworksRequest):
             request = compute.ListPeeringRoutesNetworksRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if network is not None:
@@ -901,7 +880,6 @@ class NetworksClient(metaclass=NetworksClientMeta):
                 This corresponds to the ``network_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -953,10 +931,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.PatchNetworkRequest):
             request = compute.PatchNetworkRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if network is not None:
@@ -1009,7 +985,6 @@ class NetworksClient(metaclass=NetworksClientMeta):
                 This corresponds to the ``networks_remove_peering_request_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1063,10 +1038,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.RemovePeeringNetworkRequest):
             request = compute.RemovePeeringNetworkRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if network is not None:
@@ -1114,7 +1087,6 @@ class NetworksClient(metaclass=NetworksClientMeta):
                 This corresponds to the ``network`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1166,10 +1138,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.SwitchToCustomModeNetworkRequest):
             request = compute.SwitchToCustomModeNetworkRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if network is not None:
@@ -1223,7 +1193,6 @@ class NetworksClient(metaclass=NetworksClientMeta):
                 This corresponds to the ``networks_update_peering_request_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1277,10 +1246,8 @@ class NetworksClient(metaclass=NetworksClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.UpdatePeeringNetworkRequest):
             request = compute.UpdatePeeringNetworkRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if network is not None:

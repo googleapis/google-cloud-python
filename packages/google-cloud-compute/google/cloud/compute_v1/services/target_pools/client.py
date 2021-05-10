@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -34,7 +32,6 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.compute_v1.services.target_pools import pagers
 from google.cloud.compute_v1.types import compute
-
 from .transports.base import TargetPoolsTransport, DEFAULT_CLIENT_INFO
 from .transports.rest import TargetPoolsRestTransport
 
@@ -213,7 +210,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, TargetPoolsTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -366,7 +363,6 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 This corresponds to the ``target_pools_add_health_check_request_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -425,10 +421,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.AddHealthCheckTargetPoolRequest):
             request = compute.AddHealthCheckTargetPoolRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if region is not None:
@@ -493,7 +487,6 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 This corresponds to the ``target_pools_add_instance_request_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -547,10 +540,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.AddInstanceTargetPoolRequest):
             request = compute.AddInstanceTargetPoolRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if region is not None:
@@ -593,7 +584,6 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -623,10 +613,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.AggregatedListTargetPoolsRequest):
             request = compute.AggregatedListTargetPoolsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
 
@@ -683,7 +671,6 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 This corresponds to the ``target_pool`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -735,10 +722,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.DeleteTargetPoolRequest):
             request = compute.DeleteTargetPoolRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if region is not None:
@@ -793,7 +778,6 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 This corresponds to the ``target_pool`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -828,10 +812,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.GetTargetPoolRequest):
             request = compute.GetTargetPoolRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if region is not None:
@@ -894,7 +876,6 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 This corresponds to the ``instance_reference_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -923,10 +904,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.GetHealthTargetPoolRequest):
             request = compute.GetHealthTargetPoolRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if region is not None:
@@ -982,7 +961,6 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 This corresponds to the ``target_pool_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1034,10 +1012,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.InsertTargetPoolRequest):
             request = compute.InsertTargetPoolRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if region is not None:
@@ -1085,7 +1061,6 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1117,10 +1092,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.ListTargetPoolsRequest):
             request = compute.ListTargetPoolsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if region is not None:
@@ -1183,7 +1156,6 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 This corresponds to the ``target_pools_remove_health_check_request_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1242,10 +1214,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.RemoveHealthCheckTargetPoolRequest):
             request = compute.RemoveHealthCheckTargetPoolRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if region is not None:
@@ -1310,7 +1280,6 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 This corresponds to the ``target_pools_remove_instance_request_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1369,10 +1338,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.RemoveInstanceTargetPoolRequest):
             request = compute.RemoveInstanceTargetPoolRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if region is not None:
@@ -1437,7 +1404,6 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
                 This corresponds to the ``target_reference_resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1491,10 +1457,8 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, compute.SetBackupTargetPoolRequest):
             request = compute.SetBackupTargetPoolRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if project is not None:
                 request.project = project
             if region is not None:
