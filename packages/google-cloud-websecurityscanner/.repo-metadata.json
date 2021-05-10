@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559748",
   "release_level": "alpha",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-websecurityscanner",
   "distribution_name": "google-cloud-websecurityscanner",
   "api_id": "websecurityscanner.googleapis.com",
