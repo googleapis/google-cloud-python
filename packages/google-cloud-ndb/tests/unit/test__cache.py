@@ -138,6 +138,36 @@ def test_global_get_clear_cache_soon(_batch, _global_cache):
 
 
 @pytest.mark.usefixtures("in_context")
+@mock.patch("google.cloud.ndb._cache._global_cache")
+@mock.patch("google.cloud.ndb._cache._batch")
+def test_global_get_clear_cache_soon_with_error(_batch, _global_cache):
+    """Regression test for #633
+
+    https://github.com/googleapis/python-ndb/issues/633
+    """
+
+    class TransientError(Exception):
+        pass
+
+    batch = _batch.get_batch.return_value
+    future = _future_result("hi mom!")
+    batch.add.return_value = future
+    _global_cache.return_value = mock.Mock(
+        transient_errors=(TransientError),
+        clear_cache_soon=True,
+        strict_read=False,
+        clear=mock.Mock(side_effect=TransientError("oops!"), spec=()),
+        spec=("transient_errors", "clear_cache_soon", "clear", "strict_read"),
+    )
+
+    with warnings.catch_warnings(record=True) as logged:
+        assert _cache.global_get(b"foo").result() is None
+        assert len(logged) == 2
+
+    _global_cache.return_value.clear.assert_called_once_with()
+
+
+@pytest.mark.usefixtures("in_context")
 @mock.patch("google.cloud.ndb.tasklets.sleep")
 @mock.patch("google.cloud.ndb._cache._global_cache")
 @mock.patch("google.cloud.ndb._cache._batch")

@@ -165,21 +165,22 @@ def _handle_transient_errors(read=False):
         @tasklets.tasklet
         def wrapper(*args, **kwargs):
             cache = _global_cache()
+
+            is_read = read
+            if not is_read:
+                is_read = kwargs.get("read", False)
+
+            strict = cache.strict_read if is_read else cache.strict_write
+            if strict:
+                function = retry(wrapped, cache.transient_errors)
+            else:
+                function = wrapped
+
             try:
                 if cache.clear_cache_soon:
                     warnings.warn("Clearing global cache...", RuntimeWarning)
                     cache.clear()
                     cache.clear_cache_soon = False
-
-                is_read = read
-                if not is_read:
-                    is_read = kwargs.get("read", False)
-
-                strict = cache.strict_read if is_read else cache.strict_write
-                if strict:
-                    function = retry(wrapped, cache.transient_errors)
-                else:
-                    function = wrapped
 
                 result = yield function(*args, **kwargs)
                 raise tasklets.Return(result)
