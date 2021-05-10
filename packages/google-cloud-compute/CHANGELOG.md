@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-compute/compare/v0.2.1...v0.3.0) (2021-05-10)
+
+
+### Features
+
+* Regenerate newest version of python-compute with field presence support ([#49](https://www.github.com/googleapis/python-compute/issues/49)) ([6181460](https://www.github.com/googleapis/python-compute/commit/61814609cdd8f9d26ba2b4f121e91dab4c565849))
+
 ### [0.2.1](https://www.github.com/googleapis/python-compute/compare/v0.2.0...v0.2.1) (2021-02-26)
 
 
