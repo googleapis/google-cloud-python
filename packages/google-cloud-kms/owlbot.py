@@ -21,56 +21,42 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-client_library_version = "0.1.0"
-
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-version = "v1"
 
-# ----------------------------------------------------------------------------
-# Generate kms GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="kms",
-    version=version,
-    bazel_target="//google/cloud/kms/v1:kms-v1-py",
-    include_protos=True,
-)
+default_version = "v1"
 
-s.move(library, excludes=["README.rst", "setup.py", "nox*.py", "docs/index.rst"])
+for library in s.get_staging_dirs(default_version):
+    # Escape single '_' which RST treats as target names
+    s.replace(library / "google/**/resources.py", '''"(.*?)_((SIGN)|(DECRYPT))_"''', '''"\g<1>_\g<2>\_"''')
 
-# Escape single '_' which RST treats as target names
-s.replace("google/**/resources.py", '''"(.*?)_((SIGN)|(DECRYPT))_"''', '''"\g<1>_\g<2>\_"''')
+    # Docstrings of *_iam_policy() methods are formatted poorly and must be fixed
+    # in order to avoid docstring format warnings in docs.
+    s.replace(library / "google/**/*client.py",
+        r"(\s+)Args:",
+        "\n\g<1>Args:"
+    )
+    s.replace(library / "google/**/*client.py",
+        r"(\s+)\*\*JSON Example\*\*\s+::",
+        "\n\g<1>**JSON Example**::\n",
+    )
+    s.replace(library / "google/**/*client.py",
+        r"(\s+)\*\*YAML Example\*\*\s+::",
+        "\n\g<1>**YAML Example**::\n",
+    )
+    s.replace(library / "google/**/*client.py",
+        r"(\s+)For a description of IAM and its features, see",
+        "\n\g<0>",
+    )
 
-# Docstrings of *_iam_policy() methods are formatted poorly and must be fixed
-# in order to avoid docstring format warnings in docs.
-s.replace(
-    "google/**/*client.py",
-    r"(\s+)Args:",
-    "\n\g<1>Args:"
-)
-s.replace(
-    "google/**/*client.py",
-    r"(\s+)\*\*JSON Example\*\*\s+::",
-    "\n\g<1>**JSON Example**::\n",
-)
-s.replace(
-    "google/**/*client.py",
-    r"(\s+)\*\*YAML Example\*\*\s+::",
-    "\n\g<1>**YAML Example**::\n",
-)
-s.replace(
-    "google/**/*client.py",
-    r"(\s+)For a description of IAM and its features, see",
-    "\n\g<0>",
-)
+    # Rename `format_` to `format` to avoid breaking change
+    s.replace(library / "google/**/types/*.py",
+        "format_",
+        "format"
+    )
 
-# Rename `format_` to `format` to avoid breaking change
-s.replace(
-    "google/**/types/*.py",
-    "format_",
-    "format"
-)
+    s.move(library, excludes=["README.rst", "setup.py", "nox*.py", "docs/index.rst"])
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
