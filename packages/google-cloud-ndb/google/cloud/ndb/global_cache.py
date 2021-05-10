@@ -27,6 +27,10 @@ import uuid
 import pymemcache
 import redis as redis_module
 
+# Python 2.7 doesn't have ConnectionError. In Python 3, ConnectionError is subclass of
+# OSError, which Python 2.7 does have.
+ConnectionError = getattr(__builtins__, "ConnectionError", OSError)
+
 
 class GlobalCache(object):
     """Abstract base class for a global entity cache.
@@ -275,6 +279,8 @@ class RedisCache(GlobalCache):
     """
 
     transient_errors = (
+        IOError,
+        ConnectionError,
         redis.exceptions.ConnectionError,
         redis.exceptions.TimeoutError,
     )
@@ -452,6 +458,7 @@ class MemcacheCache(GlobalCache):
 
     transient_errors = (
         IOError,
+        ConnectionError,
         pymemcache.exceptions.MemcacheServerError,
         pymemcache.exceptions.MemcacheUnexpectedCloseError,
     )
