@@ -6,6 +6,7 @@
   "issue_tracker": "",
   "release_level": "alpha",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-data-qna",
   "distribution_name": "google-cloud-data-qna",
   "api_id": "dataqna.googleapis.com"
