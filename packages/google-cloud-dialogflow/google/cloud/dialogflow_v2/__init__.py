@@ -209,6 +209,7 @@ __all__ = (
     "BatchUpdateIntentsResponse",
     "CompleteConversationRequest",
     "Context",
+    "ContextsClient",
     "Conversation",
     "ConversationEvent",
     "ConversationPhoneNumber",
@@ -268,7 +269,6 @@ __all__ = (
     "IntentView",
     "IntentsClient",
     "KnowledgeBase",
-    "KnowledgeBasesClient",
     "KnowledgeOperationMetadata",
     "ListAnswerRecordsRequest",
     "ListAnswerRecordsResponse",
@@ -349,5 +349,5 @@ __all__ = (
     "VoiceSelectionParams",
     "WebhookRequest",
     "WebhookResponse",
-    "ContextsClient",
+    "KnowledgeBasesClient",
 )

@@ -235,6 +235,7 @@ __all__ = (
     "CompileSuggestionResponse",
     "CompleteConversationRequest",
     "Context",
+    "ContextsClient",
     "Conversation",
     "ConversationEvent",
     "ConversationPhoneNumber",
@@ -302,7 +303,6 @@ __all__ = (
     "IntentsClient",
     "KnowledgeAnswers",
     "KnowledgeBase",
-    "KnowledgeBasesClient",
     "KnowledgeOperationMetadata",
     "ListAnswerRecordsRequest",
     "ListAnswerRecordsResponse",
@@ -393,5 +393,5 @@ __all__ = (
     "VoiceSelectionParams",
     "WebhookRequest",
     "WebhookResponse",
-    "ContextsClient",
+    "KnowledgeBasesClient",
 )

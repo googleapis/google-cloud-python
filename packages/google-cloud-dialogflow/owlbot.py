@@ -18,20 +18,14 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-versions = ["v2beta1", "v2"]
+default_version = "v2"
 
-for version in versions:
-    library = gapic.py_library(
-        "dialogflow",
-        version,
-        bazel_target=f"//google/cloud/dialogflow/{version}:dialogflow-{version}-py",
-        include_protos=True,
-    )
-
+for library in s.get_staging_dirs(default_version):
     s.move(library, excludes=["docs/index.rst", "setup.py", "README.rst"])
+
+s.remove_staging_dirs()
 
 # # ----------------------------------------------------------------------------
 # # Add templated files
