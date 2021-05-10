@@ -6,6 +6,7 @@
 "issue_tracker": "",
 "release_level": "ga",
 "language": "python",
+"library_type": "GAPIC_AUTO",
 "repo": "googleapis/python-bigquery-connection",
 "distribution_name": "google-cloud-bigquery-connection",
 "api_id": "bigqueryconnection.googleapis.com",
