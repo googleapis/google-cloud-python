@@ -7,3 +7,4 @@ Blobstore
     :inherited-members:
     :undoc-members:
     :show-inheritance:
+    :exclude-members: BlobKey
