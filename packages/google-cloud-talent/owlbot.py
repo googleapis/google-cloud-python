@@ -18,29 +18,18 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v4beta1", "v4"]
 
-excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst"]
-# ----------------------------------------------------------------------------
-# Generate speech GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-   library = gapic.py_library(
-      service="talent",
-      version=version,
-      bazel_target=f"//google/cloud/talent/{version}:talent-{version}-py",
-      include_protos=True
-   )
-   s.move(library, excludes=excludes)
+default_version = "v4"
 
-# fix docstring
-s.replace(
-   "google/cloud/**/*.py",
-   "\[a-zA-Z\]\[a-zA-Z0-9_\]",
-   "[a-zA-Z][a-zA-Z0-9\_]"
-)
+for library in s.get_staging_dirs(default_version):
+    # fix docstring
+    s.replace(library / "google/cloud/**/*.py", "\[a-zA-Z\]\[a-zA-Z0-9_\]", "[a-zA-Z][a-zA-Z0-9\_]")
+
+    excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst"]
+    s.move(library, excludes=excludes)
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files

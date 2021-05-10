@@ -228,6 +228,7 @@ __all__ = (
     "Profile",
     "ProfileEvent",
     "ProfileQuery",
+    "ProfileServiceClient",
     "Publication",
     "Rating",
     "RequestMetadata",
@@ -243,7 +244,6 @@ __all__ = (
     "SpellingCorrection",
     "SummarizedProfile",
     "Tenant",
-    "TenantServiceClient",
     "TimeFilter",
     "TimestampRange",
     "UpdateApplicationRequest",
@@ -253,5 +253,5 @@ __all__ = (
     "UpdateTenantRequest",
     "Visibility",
     "WorkExperienceFilter",
-    "ProfileServiceClient",
+    "TenantServiceClient",
 )
