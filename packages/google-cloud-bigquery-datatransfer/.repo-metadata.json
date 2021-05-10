@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559654",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-bigquery-datatransfer",
   "distribution_name": "google-cloud-bigquery-datatransfer",
   "api_id": "bigquerydatatransfer.googleapis.com",
