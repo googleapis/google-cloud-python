@@ -22,21 +22,11 @@ from synthtool.languages import python
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v1beta2", "v1p1beta1", "v1p2beta1", "v1p3beta1", "v1"]
 
-# ----------------------------------------------------------------------------
-# Generate videointelligence GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="videointelligence",
-        version=version,
-        bazel_target=f"//google/cloud/videointelligence/{version}:videointelligence-{version}-py",
-        include_protos=True,
-    )
+default_version = "v1"
 
+for library in s.get_staging_dirs(default_version):
     s.move(
         library,
         excludes=[
@@ -45,12 +35,8 @@ for version in versions:
             "docs/index.rst",
         ],
     )
-    s.replace(
-        f"google/cloud/videointelligence_{version}/gapic/"
-        f"*video_intelligence_service_client.py",
-        "google-cloud-video-intelligence",
-        "google-cloud-videointelligence",
-    )
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
