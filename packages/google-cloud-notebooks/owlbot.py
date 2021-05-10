@@ -19,20 +19,14 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate notebooks GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="notebooks",
-    version="v1beta1",
-    bazel_target="//google/cloud/notebooks/v1beta1:notebooks-v1beta1-py",
+default_version = "v1beta1"
 
-)
+for library in s.get_staging_dirs(default_version):
+    s.move(library, excludes=["scripts/fixup*.py", "setup.py", "README.rst", "docs/index.rst"])
 
-s.move(library, excludes=["scripts/fixup*.py", "setup.py", "README.rst", "docs/index.rst"])
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
