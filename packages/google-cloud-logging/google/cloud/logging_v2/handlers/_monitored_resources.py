@@ -73,7 +73,7 @@ def _create_functions_resource():
         labels={
             "project_id": project,
             "function_name": function_name,
-            "region": region if region else "",
+            "region": region.split("/")[-1] if region else "",
         },
     )
     return resource
@@ -131,7 +131,7 @@ def _create_cloud_run_resource():
             "project_id": project,
             "service_name": os.environ.get(_CLOUD_RUN_SERVICE_ID, ""),
             "revision_name": os.environ.get(_CLOUD_RUN_REVISION_ID, ""),
-            "location": region if region else "",
+            "location": region.split("/")[-1] if region else "",
             "configuration_name": os.environ.get(_CLOUD_RUN_CONFIGURATION_ID, ""),
         },
     )
