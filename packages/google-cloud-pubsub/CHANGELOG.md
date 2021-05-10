@@ -5,6 +5,37 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## 2.4.2
+
+05-06-2021 23:50 PDT
+
+
+### Implementation Changes
+
+- Fix memory leak when publishing messages. ([#406](https://github.com/googleapis/python-pubsub/pull/406))
+- Do not crash if distribution cannot be found when extracting semantic version. ([#393](https://github.com/googleapis/python-pubsub/pull/393))
+- Emit a warning if `return_immediately` is set with synchronous pull. ([#355](https://github.com/googleapis/python-pubsub/pull/355))
+- Regenerate GAPIC layer with latest changes, use explicit default timeouts. ([#345](https://github.com/googleapis/python-pubsub/pull/345))
+
+
+### Documentation
+
+- Add additional info on `use_legacy_flow_control` parameter. ([#301](https://github.com/googleapis/python-pubsub/pull/301))
+- Remove EXPERIMENTAL tag for ordering keys in `publisher/client.py`. ([#324](https://github.com/googleapis/python-pubsub/pull/324))
+- Fix `create_topic()` call in README. ([#360](https://github.com/googleapis/python-pubsub/pull/360))
+- Generate PyPI token in secrets manager, fix spacing in docs (via synth). ([#384](https://github.com/googleapis/python-pubsub/pull/384))
+- Add `SECURITY.md`. ([#401](https://github.com/googleapis/python-pubsub/pull/401))
+
+
+### Internal / Testing Changes
+
+- Require 100% unit test coverage (via synth). ([#359](https://github.com/googleapis/python-pubsub/pull/359))
+- Bump test coverage to 100%. ([#364](https://github.com/googleapis/python-pubsub/pull/364))
+- Fix streaming pull close unit test flakiness. ([#361](https://github.com/googleapis/python-pubsub/pull/361))
+- Pass explicit credentials in all unit tests creating clients. ([#369](https://github.com/googleapis/python-pubsub/pull/369))
+- Fix flaky test for blocking pull shutdown. ([#378](https://github.com/googleapis/python-pubsub/pull/378))
+- Add missing licence header. ([#377](https://github.com/googleapis/python-pubsub/pull/377))
+
 ## [2.4.1](https://www.github.com/googleapis/python-pubsub/compare/v2.4.0...v2.4.1) (2021-03-30)
 
 ### Bug Fixes
