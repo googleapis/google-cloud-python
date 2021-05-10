@@ -30,6 +30,10 @@ class TestInstance:
         name = "spanner-django-test-{}".format(str(int(time.time())))
 
         self._instance = client.instance(name, config)
+        if self._instance.exists():
+            # If test instance already exists first delete it and then create.
+            self._instance.delete()
+            created_op.result(120)  # block until completion
         created_op = self._instance.create()
         created_op.result(120)  # block until completion
         return name
@@ -44,7 +48,8 @@ worker_count = int(os.getenv("DJANGO_WORKER_COUNT", 1))
 if worker_index >= worker_count:
     print(
         "worker_index ({wi}) > worker_count ({wc})".format(
-            wi=worker_index, wc=worker_count,
+            wi=worker_index,
+            wc=worker_count,
         )
     )
     exit()

@@ -25,21 +25,6 @@ export GOOGLE_APPLICATION_CREDENTIALS=${KOKORO_GFILE_DIR}/service-account.json
 export PROJECT_ID=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
 export GOOGLE_CLOUD_PROJECT=$(cat "${KOKORO_GFILE_DIR}/project-id.json")
 
-# Remove old nox
-python3.6 -m pip uninstall --yes --quiet nox-automation
-
-# Install nox
-python3.6 -m pip install --upgrade --quiet nox
-python3.6 -m nox --version
-
-# If NOX_SESSION is set, it only runs the specified session,
-# otherwise run all the sessions.
-if [[ -n "${NOX_SESSION:-}" ]]; then
-    python3.6 -m nox -s "${NOX_SESSION:-}"
-else
-    python3.6 -m nox
-fi
-
 export RUNNING_SPANNER_BACKEND_TESTS=1
 
 pip3 install .
