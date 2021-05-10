@@ -22,21 +22,11 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# add the highest stable version to the end
-versions = ["v1beta2", "v1beta3", "v1"]
-# ----------------------------------------------------------------------------
-# Generate document AI GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="documentai",
-        version=version,
-        bazel_target=f"//google/cloud/documentai/{version}:documentai-{version}-py",
-    )
+default_version = "v1"
 
+for library in s.get_staging_dirs(default_version):
     excludes = [
         "README.rst",
         "nox.py",
@@ -45,6 +35,8 @@ for version in versions:
         "scripts/fixup_documentai_v*",  # this library was always generated with the microgenerator
     ]
     s.move(library, excludes=excludes)
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
