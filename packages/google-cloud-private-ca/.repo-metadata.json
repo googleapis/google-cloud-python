@@ -6,6 +6,7 @@
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-security-private-ca",
     "distribution_name": "google-cloud-private-ca",
     "api_id": "privateca.googleapis.com"
