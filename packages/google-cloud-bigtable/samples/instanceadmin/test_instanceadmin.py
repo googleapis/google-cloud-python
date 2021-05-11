@@ -14,6 +14,7 @@
 
 import os
 import random
+import time
 import warnings
 
 from google.cloud import bigtable
@@ -24,22 +25,32 @@ import instanceadmin
 
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
-ID_FORMAT = "instanceadmin-test-{:06}"
-ID_RANGE = 1000000
+INSTANCE_ID_FORMAT = "instanceadmin-{:03}-{}"
+CLUSTER_ID_FORMAT = "instanceadmin-{:03}"
+ID_RANGE = 1000
 
-INSTANCE = ID_FORMAT.format(random.randrange(ID_RANGE))
-CLUSTER1 = ID_FORMAT.format(random.randrange(ID_RANGE))
-CLUSTER2 = ID_FORMAT.format(random.randrange(ID_RANGE))
+INSTANCE = INSTANCE_ID_FORMAT.format(random.randrange(ID_RANGE), int(time.time()))
+CLUSTER1 = CLUSTER_ID_FORMAT.format(random.randrange(ID_RANGE))
+CLUSTER2 = CLUSTER_ID_FORMAT.format(random.randrange(ID_RANGE))
 
 
 @pytest.fixture(scope="module", autouse=True)
 def preclean():
-    """In case any test instances weren't cleared out in a previous run."""
+    """In case any test instances weren't cleared out in a previous run.
+
+    Deletes any test instances that were created over an hour ago. Newer instances may
+    be being used by a concurrent test run.
+    """
     client = bigtable.Client(project=PROJECT, admin=True)
     for instance in client.list_instances()[0]:
-        if instance.instance_id.startswith("instanceadmin-test-"):
-            warnings.warn(f"Deleting leftover test instance: {instance.instance_id}")
-            instance.delete()
+        if instance.instance_id.startswith("instanceadmin-"):
+            timestamp = instance.instance_id.split("-")[-1]
+            timestamp = int(timestamp)
+            if time.time() - timestamp > 3600:
+                warnings.warn(
+                    f"Deleting leftover test instance: {instance.instance_id}"
+                )
+                instance.delete()
 
 
 @pytest.fixture
@@ -55,7 +66,7 @@ def dispose_of():
     for instance_id in instances:
         instance = client.instance(instance_id)
         if instance.exists():
-            instanceadmin.delete_instance(PROJECT, INSTANCE)
+            instance.delete()
 
 
 def test_run_instance_operations(capsys, dispose_of):
