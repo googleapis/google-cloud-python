@@ -685,3 +685,15 @@ LIMIT 1
             conn = conn_proxy.connection
 
         return "AUTOCOMMIT" if conn.autocommit else "SERIALIZABLE"
+
+    def do_rollback(self, dbapi_connection):
+        """To prevent transaction rollback error, rollback is ignored if
+        DBAPI rollback is already executed."""
+        if (
+            not isinstance(dbapi_connection, spanner_dbapi.Connection)
+            and dbapi_connection.connection._transaction
+            and dbapi_connection.connection._transaction.rolled_back
+        ):
+            pass
+        else:
+            dbapi_connection.rollback()
