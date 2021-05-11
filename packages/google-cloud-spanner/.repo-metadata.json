@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/issues?q=componentid:190851%2B%20status:open",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_COMBO",
   "repo": "googleapis/python-spanner",
   "distribution_name": "google-cloud-spanner",
   "api_id": "spanner.googleapis.com",
