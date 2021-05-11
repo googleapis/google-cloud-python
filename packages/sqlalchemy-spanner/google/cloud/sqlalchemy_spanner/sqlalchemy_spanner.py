@@ -137,6 +137,32 @@ class SpannerSQLCompiler(SQLCompiler):
             _type_map_inv[type(type_[0])]
         )
 
+    def render_literal_value(self, value, type_):
+        """Render the value of a bind parameter as a quoted literal.
+
+        This is used for statement sections that do not accept bind parameters
+        on the target driver/database.
+
+        This should be implemented by subclasses using the quoting services
+        of the DBAPI.
+
+        Cloud spanner supports prefixed backslash to escape non-alphanumeric characters
+        in string. Override the method to add  additional escape before using it to
+        generate a SQL statement.
+        """
+        raw = ["\\", "'", '"', "\n", "\t", "\r"]
+        if type(value) == str and any(single in value for single in raw):
+            value = 'r"""{}"""'.format(value)
+            return value
+        else:
+            processor = type_._cached_literal_processor(self.dialect)
+            if processor:
+                return processor(value)
+            else:
+                raise NotImplementedError(
+                    "Don't know how to literal-quote value %r" % value
+                )
+
 
 class SpannerDDLCompiler(DDLCompiler):
     """Spanner DDL statements compiler."""
@@ -183,7 +209,7 @@ class SpannerDDLCompiler(DDLCompiler):
         return None
 
     def visit_unique_constraint(self, constraint):
-        """Unique contraints in Spanner are defined with indexes:
+        """Unique constraints in Spanner are defined with indexes:
         https://cloud.google.com/spanner/docs/secondary-indexes#unique-indexes
 
         The method throws an exception to notify user that in

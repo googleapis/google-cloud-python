@@ -86,6 +86,8 @@ from sqlalchemy.testing.suite.test_select import (
 from sqlalchemy.testing.suite.test_select import OrderByLabelTest as _OrderByLabelTest
 from sqlalchemy.testing.suite.test_types import BooleanTest as _BooleanTest
 from sqlalchemy.testing.suite.test_types import IntegerTest as _IntegerTest
+from sqlalchemy.testing.suite.test_types import StringTest as _StringTest
+
 from sqlalchemy.testing.suite.test_types import _LiteralRoundTripFixture
 
 from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
@@ -535,7 +537,6 @@ class IntegerTest(_IntegerTest):
                     )
                 )
                 conn.execute(ins)
-                conn.execute("SELECT 1")
 
             if self.supports_whereclause:
                 stmt = t.select().where(t.c.x == literal(value))
@@ -843,3 +844,9 @@ class BytesTest(_LiteralRoundTripFixture, fixtures.TestBase):
 @pytest.mark.skip("Spanner doesn't support quotes in table names.")
 class QuotedNameArgumentTest(_QuotedNameArgumentTest):
     pass
+
+
+class StringTest(_StringTest):
+    @pytest.mark.skip("Spanner doesn't support non-ascii characters")
+    def test_literal_non_ascii(self):
+        pass
