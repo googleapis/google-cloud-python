@@ -1,4 +1,4 @@
-{% extends '_base.py.j2' %}
+{% extends "_base.py.j2" %}
 
 {% block content %}
 
@@ -51,7 +51,8 @@ class {{ service.async_client_name }}:
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -66,7 +67,7 @@ class {{ service.async_client_name }}:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -83,7 +84,7 @@ class {{ service.async_client_name }}:
 
     @property
     def transport(self) -> {{ service.name }}Transport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             {{ service.name }}Transport: The transport used by the client instance.
@@ -95,11 +96,11 @@ class {{ service.async_client_name }}:
 
     def __init__(self, *,
             credentials: ga_credentials.Credentials = None,
-            transport: Union[str, {{ service.name }}Transport] = 'grpc_asyncio',
+            transport: Union[str, {{ service.name }}Transport] = "grpc_asyncio",
             client_options: ClientOptions = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
             ) -> None:
-        """Instantiate the {{ (service.client_name|snake_case).replace('_', ' ') }}.
+        """Instantiates the {{ (service.client_name|snake_case).replace("_", " ") }}.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -165,7 +166,7 @@ class {{ service.async_client_name }}:
         Args:
             {% if not method.client_streaming %}
             request (:class:`{{ method.input.ident.sphinx }}`):
-                The request object.{{ ' ' }}
+                The request object.{{ " " }}
                 {{- method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
             {% for key, field in method.flattened_fields.items() %}
             {{ field.name }} (:class:`{{ field.ident.sphinx }}`):
@@ -176,7 +177,7 @@ class {{ service.async_client_name }}:
             {% endfor %}
             {% else %}
             requests (AsyncIterator[`{{ method.input.ident.sphinx }}`]):
-                The request object AsyncIterator.{{ ' ' }}
+                The request object AsyncIterator.{{ " " }}
                 {{- method.input.meta.doc|wrap(width=72, offset=36, indent=16) }}
             {% endif %}
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -200,10 +201,10 @@ class {{ service.async_client_name }}:
         {% if method.flattened_fields %}
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([{{ method.flattened_fields.values()|join(', ', attribute='name') }}])
+        has_flattened_params = any([{{ method.flattened_fields.values()|join(", ", attribute="name") }}])
         if request is not None and has_flattened_params:
-            raise ValueError('If the `request` argument is set, then none of '
-                             'the individual field arguments should be set.')
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         {% endif %}
         {% if method.input.ident.package != method.ident.package %} {# request lives in a different package, so there is no proto wrapper #}
@@ -251,7 +252,7 @@ class {{ service.async_client_name }}:
                 {% if method.retry.max_backoff %}maximum={{ method.retry.max_backoff }},{% endif %}
                 {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
                 predicate=retries.if_exception_type(
-                    {% for ex in method.retry.retryable_exceptions|sort(attribute='__name__') %}
+                    {% for ex in method.retry.retryable_exceptions|sort(attribute="__name__") %}
                     exceptions.{{ ex.__name__ }},
                     {% endfor %}
                 ),
@@ -269,7 +270,7 @@ class {{ service.async_client_name }}:
             gapic_v1.routing_header.to_grpc_metadata((
                 {% for field_header in method.field_headers %}
                 {% if not method.client_streaming %}
-                ('{{ field_header }}', request.{{ field_header }}),
+                ("{{ field_header }}", request.{{ field_header }}),
                 {% endif %}
                 {% endfor %}
             )),
@@ -313,7 +314,7 @@ class {{ service.async_client_name }}:
         # Done; return the response.
         return response
         {% endif %}
-        {{ '\n' }}
+        {{ "\n" }}
     {% endfor %}
 
 
@@ -326,8 +327,10 @@ class {{ service.async_client_name }}:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
-        r"""Sets the IAM access control policy on the specified
-        function. Replaces any existing policy.
+        r"""Sets the IAM access control policy on the specified function.
+
+        Replaces any existing policy.
+
         Args:
             request (:class:`~.policy_pb2.SetIamPolicyRequest`):
                 The request object. Request message for `SetIamPolicy`
@@ -433,8 +436,10 @@ class {{ service.async_client_name }}:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
+
         Returns an empty policy if the function exists and does
         not have a policy set.
+
         Args:
             request (:class:`~.iam_policy_pb2.GetIamPolicyRequest`):
                 The request object. Request message for `GetIamPolicy`
@@ -540,8 +545,11 @@ class {{ service.async_client_name }}:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified permissions against the IAM access control
-        policy for a function. If the function does not exist, this will
+            policy for a function.
+
+        If the function does not exist, this will
         return an empty set of permissions, not a NOT_FOUND error.
+
         Args:
             request (:class:`~.iam_policy_pb2.TestIamPermissionsRequest`):
                 The request object. Request message for
@@ -586,7 +594,7 @@ class {{ service.async_client_name }}:
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution(
-            '{{ api.naming.warehouse_package_name }}',
+            "{{ api.naming.warehouse_package_name }}",
         ).version,
     )
 except pkg_resources.DistributionNotFound:
@@ -594,6 +602,6 @@ except pkg_resources.DistributionNotFound:
 
 
 __all__ = (
-    '{{ service.async_client_name }}',
+    "{{ service.async_client_name }}",
 )
 {% endblock %}
