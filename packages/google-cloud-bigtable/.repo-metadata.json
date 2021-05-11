@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559777",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_COMBO",
   "repo": "googleapis/python-bigtable",
   "distribution_name": "google-cloud-bigtable",
   "api_id": "bigtable.googleapis.com",
