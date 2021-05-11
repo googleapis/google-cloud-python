@@ -39,6 +39,26 @@ def simplelog(log_name=None, log_text="simple_log", severity="DEFAULT", **kwargs
     logger.log_text(log_text, severity=severity)
 
 
+def pylogging_json(log_text=None, severity="WARNING", **kwargs):
+    # allowed severity: debug, info, warning, error, critical
+
+    # build json message
+    message = {}
+    for k in kwargs.keys():
+        message[k] = kwargs[k]
+
+    severity = severity.upper()
+    if severity == "DEBUG":
+        logging.debug(message)
+    elif severity == "INFO":
+        logging.info(message)
+    elif severity == "WARNING":
+        logging.warning(message)
+    elif severity == "ERROR":
+        logging.error(message)
+    else:
+        logging.critical(message)
+
 def pylogging(log_text="pylogging", severity="WARNING", **kwargs):
     # allowed severity: debug, info, warning, error, critical
 
