@@ -19,27 +19,15 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-excludes = ["README.rst", "setup.py", "nox*.py", "docs/index.rst"]
 
-# ----------------------------------------------------------------------------
-# Generate secret manager GAPIC layer
-# ----------------------------------------------------------------------------
+default_version = "v1"
 
-versions = [
-    # v1beta1 has a special config path so it must be passed explicitly
-    ("v1beta1", "//google/cloud/secrets/v1beta1:secretmanager-v1beta1-py"),
-    ("v1", "//google/cloud/secretmanager/v1:secretmanager-v1-py"),
-]
+for library in s.get_staging_dirs(default_version):
+    excludes = ["README.rst", "setup.py", "nox*.py", "docs/index.rst"]
+    s.move(library, excludes=excludes)
 
-for version, bazel_target in versions:
-    library = gapic.py_library(
-        service="secretmanager",
-        version=version,
-        bazel_target=bazel_target,
-    )
-    s.copy(library, excludes=excludes)
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
