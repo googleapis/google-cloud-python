@@ -5,6 +5,7 @@
     "issue_tracker": "https://github.com/googleapis/python-api-common-protos/issues",
     "release_level": "ga",
     "language": "python",
+    "library_type": "CORE",
     "repo": "googleapis/python-api-common-protos",
     "distribution_name": "googleapis-common-protos"
   }
