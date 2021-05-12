@@ -88,7 +88,7 @@ from sqlalchemy.testing.suite.test_select import OrderByLabelTest as _OrderByLab
 from sqlalchemy.testing.suite.test_types import BooleanTest as _BooleanTest
 from sqlalchemy.testing.suite.test_types import IntegerTest as _IntegerTest
 from sqlalchemy.testing.suite.test_types import StringTest as _StringTest
-
+from sqlalchemy.testing.suite.test_types import TextTest as _TextTest
 from sqlalchemy.testing.suite.test_types import _LiteralRoundTripFixture
 
 from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
@@ -873,3 +873,57 @@ class StringTest(_StringTest):
     @pytest.mark.skip("Spanner doesn't support non-ascii characters")
     def test_literal_non_ascii(self):
         pass
+
+
+class TextTest(_TextTest):
+    def test_text_empty_strings(self, connection):
+        """
+        SPANNER OVERRIDE:
+
+        Cloud Spanner doesn't support the tables with an empty primary key
+        when column has defined NOT NULL - following insertions will fail with
+        `400 id must not be NULL in table date_table`.
+        Overriding the tests and adding a manual primary key value to avoid the same
+        failures.
+        """
+        text_table = self.tables.text_table
+
+        connection.execute(text_table.insert(), {"id": 1, "text_data": ""})
+        row = connection.execute(select([text_table.c.text_data])).first()
+        eq_(row, ("",))
+
+    def test_text_null_strings(self, connection):
+        """
+        SPANNER OVERRIDE:
+
+        Cloud Spanner doesn't support the tables with an empty primary key
+        when column has defined NOT NULL - following insertions will fail with
+        `400 id must not be NULL in table date_table`.
+        Overriding the tests and adding a manual primary key value to avoid the same
+        failures.
+        """
+        text_table = self.tables.text_table
+
+        connection.execute(text_table.insert(), {"id": 1, "text_data": None})
+        row = connection.execute(select([text_table.c.text_data])).first()
+        eq_(row, (None,))
+
+    @pytest.mark.skip("Spanner doesn't support non-ascii characters")
+    def test_literal_non_ascii(self):
+        pass
+
+    def test_text_roundtrip(self):
+        """
+        SPANNER OVERRIDE:
+
+        Cloud Spanner doesn't support the tables with an empty primary key
+        when column has defined NOT NULL - following insertions will fail with
+        `400 id must not be NULL in table date_table`.
+        Overriding the tests and adding a manual primary key value to avoid the same
+        failures.
+        """
+        text_table = self.tables.text_table
+
+        config.db.execute(text_table.insert(), {"id": 1, "text_data": "some text"})
+        row = config.db.execute(select([text_table.c.text_data])).first()
+        eq_(row, ("some text",))
