@@ -4,7 +4,8 @@
     "client_documentation": "https://googleapis.dev/python/google-resumable-media/latest/index.html",
     "release_level": "alpha",
     "language": "python",
+    "library_type": "CORE",
     "repo": "googleapis/google-resumable-media-python",
     "distribution_name": "google-resumable-media"
   }
-  
+
