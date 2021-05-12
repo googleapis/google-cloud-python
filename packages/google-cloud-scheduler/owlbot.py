@@ -21,31 +21,21 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ['v1beta1', 'v1']
 
-# ----------------------------------------------------------------------------
-# Generate scheduler GAPIC layer
-# ----------------------------------------------------------------------------
+default_version = "v1"
 
-for version in versions:
-  library = gapic.py_library(
-      service="scheduler",
-      version=version,
-      bazel_target=f"//google/cloud/scheduler/{version}:scheduler-{version}-py",
-      include_protos=True,
+for library in s.get_staging_dirs(default_version):
+  s.replace(library / f"google/cloud/scheduler_{library.name}/gapic/cloud_scheduler_client.py",
+      "google-cloud-cloudscheduler",
+      "google-cloud-scheduler",
   )
 
   excludes = ["README.rst", "nox.py", "setup.py", "docs/conf.py",
               "docs/index.rst"]
   s.move(library, excludes=excludes)
 
-  s.replace(
-      f"google/cloud/scheduler_{version}/gapic/cloud_scheduler_client.py",
-      "google-cloud-cloudscheduler",
-      "google-cloud-scheduler",
-  )
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
