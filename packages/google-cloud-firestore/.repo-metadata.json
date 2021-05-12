@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/5337669",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_COMBO",
   "repo": "googleapis/python-firestore",
   "distribution_name": "google-cloud-firestore",
   "api_id": "firestore.googleapis.com",
