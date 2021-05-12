@@ -21,22 +21,15 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate dlp GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="dlp",
-    version="v2",
-    bazel_target="//google/privacy/dlp/v2:privacy-dlp-v2-py",
-    include_protos=True,
-    proto_output_path=f"google/cloud/dlp_v2/proto",
-)
+default_version = "v2"
 
-excludes = ["README.rst", "nox.py", "setup.py", "docs/index.rst"]
-s.move(library, excludes=excludes)
+for library in s.get_staging_dirs(default_version):
+    excludes = ["README.rst", "nox.py", "setup.py", "docs/index.rst"]
+    s.move(library, excludes=excludes)
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
