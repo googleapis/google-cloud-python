@@ -6,6 +6,7 @@
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559729",
     "release_level": "beta",
     "language": "python",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-workflows",
     "distribution_name": "google-cloud-workflows",
     "api_id": "workflows.googleapis.com"
