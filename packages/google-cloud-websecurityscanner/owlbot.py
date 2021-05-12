@@ -16,27 +16,17 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
+default_version = "v1"
 
-# ----------------------------------------------------------------------------
-# Generate websecurityscanner GAPIC layer
-# ----------------------------------------------------------------------------
-versions = ["v1alpha", "v1beta", "v1"]
-
-for version in versions:
-    library = gapic.py_library(
-        service="websecurityscanner",
-        version=version,
-        bazel_target=f"//google/cloud/websecurityscanner/{version}:websecurityscanner-{version}-py",
-        include_protos=True,
-    )
-    s.move(library / f"google/cloud/websecurityscanner_{version}")
+for library in s.get_staging_dirs(default_version):
+    s.move(library / f"google/cloud/websecurityscanner_{library.name}")
     s.move(library / "tests")
     s.move(library / "scripts")
-    s.move(library / "docs", excludes=[library / "docs/index.rst"])
+    s.move(library / "docs", excludes=["index.rst"])
 
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
