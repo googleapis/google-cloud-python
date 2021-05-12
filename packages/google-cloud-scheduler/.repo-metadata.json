@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/5411429",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-scheduler",
   "distribution_name": "google-cloud-scheduler",
   "api_id": "cloudscheduler.googleapis.com",
