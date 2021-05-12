@@ -84,16 +84,16 @@ class Address(BaseAddress):
         if self.module:
             module_name = self.module
 
+            # If collisions are registered and conflict with our module,
+            # use the module alias instead.
+            if self.module_alias:
+                module_name = self.module_alias
+
             # This module is from a different proto package
             # Most commonly happens for a common proto
             # https://pypi.org/project/googleapis-common-protos/
             if not self.proto_package.startswith(self.api_naming.proto_package):
                 module_name = f'{self.module}_pb2'
-
-            # If collisions are registered and conflict with our module,
-            # use the module alias instead.
-            if self.module_alias:
-                module_name = self.module_alias
 
             # Return the dot-separated Python identifier.
             return '.'.join((module_name,) + self.parent + (self.name,))

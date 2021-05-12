@@ -49,6 +49,17 @@ def test_address_str_different_proto_package():
     assert str(addr) == 'options_pb2.GetPolicyOptions'
 
 
+def test_address_str_different_proto_package_with_collision():
+    addr = metadata.Address(
+        package=('google', 'rpc'),
+        module='status',
+        name='Status',
+        api_naming=naming.NewNaming(proto_package='foo.bar.baz.v1')
+    ).with_context(collisions=frozenset({'status'}))
+    # the module alias should be ignored for _pb2 types
+    assert str(addr) == 'status_pb2.Status'
+
+
 def test_address_proto():
     addr = metadata.Address(package=('foo', 'bar'), module='baz', name='Bacon')
     assert addr.proto == 'foo.bar.Bacon'
