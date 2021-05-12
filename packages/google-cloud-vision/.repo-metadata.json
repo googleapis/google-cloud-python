@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/issues?q=status:open%20componentid:187174",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_COMBO",
   "repo": "googleapis/python-vision",
   "distribution_name": "google-cloud-vision",
   "api_id": "vision.googleapis.com",
