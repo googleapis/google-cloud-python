@@ -6,6 +6,7 @@
     "issue_tracker": "https://issuetracker.google.com/savedsearches/559785",
     "release_level": "ga",
     "language": "python",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-monitoring-dashboards",
     "distribution_name": "google-cloud-monitoring-dashboards",
     "api_id": "monitoring.googleapis.com",
