@@ -85,21 +85,23 @@ from sqlalchemy.testing.suite.test_select import (
     IsOrIsNotDistinctFromTest as _IsOrIsNotDistinctFromTest,
 )
 from sqlalchemy.testing.suite.test_select import OrderByLabelTest as _OrderByLabelTest
-from sqlalchemy.testing.suite.test_types import BooleanTest as _BooleanTest
-from sqlalchemy.testing.suite.test_types import IntegerTest as _IntegerTest
-from sqlalchemy.testing.suite.test_types import StringTest as _StringTest
-from sqlalchemy.testing.suite.test_types import TextTest as _TextTest
-from sqlalchemy.testing.suite.test_types import _LiteralRoundTripFixture
-
 from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
+    BooleanTest as _BooleanTest,
     DateTest as _DateTest,
     DateTimeHistoricTest,
     DateTimeCoercedToDateTimeTest as _DateTimeCoercedToDateTimeTest,
     DateTimeMicrosecondsTest as _DateTimeMicrosecondsTest,
     DateTimeTest as _DateTimeTest,
+    IntegerTest as _IntegerTest,
+    _LiteralRoundTripFixture,
+    StringTest as _StringTest,
+    TextTest as _TextTest,
     TimeTest as _TimeTest,
     TimeMicrosecondsTest as _TimeMicrosecondsTest,
     TimestampMicrosecondsTest,
+    UnicodeVarcharTest as _UnicodeVarcharTest,
+    UnicodeTextTest as _UnicodeTextTest,
+    _UnicodeFixture as _UnicodeFixtureTest,
 )
 
 config.test_schema = ""
@@ -552,6 +554,97 @@ class IntegerTest(_IntegerTest):
                 if filter_ is not None:
                     value = filter_(value)
                 assert value in output
+
+
+class UnicodeFixtureTest(_UnicodeFixtureTest):
+    def test_round_trip(self):
+        """
+        SPANNER OVERRIDE:
+
+        Cloud Spanner doesn't support the tables with an empty primary key
+        when column has defined NOT NULL - following insertions will fail with
+        `400 id must not be NULL in table date_table`.
+        Overriding the tests and adding a manual primary key value to avoid the same
+        failures and deleting the table at the end.
+        """
+        unicode_table = self.tables.unicode_table
+
+        config.db.execute(unicode_table.insert(), {"id": 1, "unicode_data": self.data})
+
+        row = config.db.execute(select([unicode_table.c.unicode_data])).first()
+
+        eq_(row, (self.data,))
+        assert isinstance(row[0], util.text_type)
+
+    def test_round_trip_executemany(self):
+        """
+        SPANNER OVERRIDE:
+
+        Cloud Spanner doesn't support the tables with an empty primary key
+        when column has defined NOT NULL - following insertions will fail with
+        `400 id must not be NULL in table date_table`.
+        Overriding the tests and adding a manual primary key value to avoid the same
+        failures and deleting the table at the end.
+        """
+        unicode_table = self.tables.unicode_table
+
+        config.db.execute(
+            unicode_table.insert(),
+            [{"id": i, "unicode_data": self.data} for i in range(3)],
+        )
+
+        rows = config.db.execute(select([unicode_table.c.unicode_data])).fetchall()
+        eq_(rows, [(self.data,) for i in range(3)])
+        for row in rows:
+            assert isinstance(row[0], util.text_type)
+
+    def _test_null_strings(self, connection):
+        unicode_table = self.tables.unicode_table
+
+        connection.execute(unicode_table.insert(), {"id": 1, "unicode_data": None})
+        row = connection.execute(select([unicode_table.c.unicode_data])).first()
+        eq_(row, (None,))
+
+    def _test_empty_strings(self, connection):
+        unicode_table = self.tables.unicode_table
+
+        connection.execute(
+            unicode_table.insert(), {"id": 1, "unicode_data": util.u("")}
+        )
+        row = connection.execute(select([unicode_table.c.unicode_data])).first()
+        eq_(row, (util.u(""),))
+
+    @pytest.mark.skip("Spanner doesn't support non-ascii characters")
+    def test_literal(self):
+        pass
+
+    @pytest.mark.skip("Spanner doesn't support non-ascii characters")
+    def test_literal_non_ascii(self):
+        pass
+
+
+class UnicodeVarcharTest(UnicodeFixtureTest, _UnicodeVarcharTest):
+    """
+    SPANNER OVERRIDE:
+
+    UnicodeVarcharTest class inherits the _UnicodeFixtureTest class's tests,
+    so to avoid those failures and maintain DRY concept just inherit the class to run
+    tests successfully.
+    """
+
+    pass
+
+
+class UnicodeTextTest(UnicodeFixtureTest, _UnicodeTextTest):
+    """
+    SPANNER OVERRIDE:
+
+    UnicodeTextTest class inherits the _UnicodeFixtureTest class's tests,
+    so to avoid those failures and maintain DRY concept just inherit the class to run
+    tests successfully.
+    """
+
+    pass
 
 
 class ComponentReflectionTest(_ComponentReflectionTest):
