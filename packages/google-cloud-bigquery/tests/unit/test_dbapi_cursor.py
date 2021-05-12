@@ -612,7 +612,7 @@ class TestCursor(unittest.TestCase):
             (("test",), ("anothertest",)),
         )
         self.assertIsNone(cursor.description)
-        self.assertEqual(cursor.rowcount, 12)
+        self.assertEqual(cursor.rowcount, 24)  # 24 because 2 * 12 because cumulatve.
 
     def test_executemany_empty(self):
         from google.cloud.bigquery.dbapi import connect

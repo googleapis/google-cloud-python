@@ -218,6 +218,7 @@ class Cursor(object):
                 Sequence of many sets of parameter values.
         """
         if seq_of_parameters:
+            rowcount = 0
             # There's no reason to format the line more than once, as
             # the operation only barely depends on the parameters.  So
             # we just use the first set of parameters. If there are
@@ -230,6 +231,9 @@ class Cursor(object):
                 self._execute(
                     formatted_operation, parameters, None, None, parameter_types
                 )
+                rowcount += self.rowcount
+
+            self.rowcount = rowcount
 
     def _try_fetch(self, size=None):
         """Try to start fetching data, if not yet started.
