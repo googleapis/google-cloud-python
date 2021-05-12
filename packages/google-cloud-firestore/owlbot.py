@@ -19,69 +19,92 @@ from synthtool import gcp
 AUTOSYNTH_MULTIPLE_PRS = True
 AUTOSYNTH_MULTIPLE_COMMITS = True
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v1"]
-admin_versions = ["v1"]
+
+def update_fixup_scripts(library):
+    # Add message for missing 'libcst' dependency
+    s.replace(
+        library / "scripts/fixup*.py",
+        """\
+    import libcst as cst
+    """,
+        """\
+
+    try:
+        import libcst as cst
+    except ImportError:
+        raise ImportError('Run `python -m pip install "libcst >= 0.2.5"` to install libcst.')
 
 
-# ----------------------------------------------------------------------------
-# Generate firestore GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="firestore",
-        version=version,
-        bazel_target=f"//google/firestore/{version}:firestore-{version}-py",
+    """,
     )
 
-    s.move(
-        library / f"google/cloud/firestore_{version}",
-        f"google/cloud/firestore_{version}",
-        excludes=[library / f"google/cloud/firestore_{version}/__init__.py"],
-    )
+# This library ships clients for 3 different APIs,
+# firestore, firestore_admin and firestore_bundle
+default_version = "v1"
+admin_default_version = "v1"
+bundle_default_version = "v1"
 
-    s.move(
-        library / f"tests/",
-        f"tests",
-    )
-    s.move(library / "scripts")
+for library in s.get_staging_dirs(default_version):
+    if library.parent.absolute() == 'firestore':
+        s.move(
+            library / f"google/cloud/firestore_{library.name}",
+            f"google/cloud/firestore_{library.name}",
+            excludes=[f"google/cloud/firestore_{library.name}/__init__.py"],
+        )
 
+        s.move(library / f"tests/", f"tests")
+        update_fixup_scripts(library)
+        s.move(library / "scripts")
 
-# ----------------------------------------------------------------------------
-# Generate firestore admin GAPIC layer
-# ----------------------------------------------------------------------------
-for version in admin_versions:
-    library = gapic.py_library(
-        service="firestore_admin",
-        version=version,
-        bazel_target=f"//google/firestore/admin/{version}:firestore-admin-{version}-py",
-    )
-    s.move(
-        library / f"google/cloud/firestore_admin_{version}",
-        f"google/cloud/firestore_admin_{version}",
-        excludes=[library / f"google/cloud/admin_{version}/__init__.py"],
-    )
-    s.move(library / f"tests", f"tests")
-    s.move(library / "scripts")
+s.remove_staging_dirs()
 
+for library in s.get_staging_dirs(admin_default_version):
+    if library.parent.absolute() == 'admin':
+        s.move(
+            library / f"google/cloud/firestore_admin_{library.name}",
+            f"google/cloud/firestore_admin_{library.name}",
+            excludes=[f"google/cloud/firestore_admin_{library.name}/__init__.py"],
+        )
+        s.move(library / f"tests", f"tests")
+        update_fixup_scripts(library)
+        s.move(library / "scripts")
 
-# ----------------------------------------------------------------------------
-# Generate firestore bundle GAPIC layer
-# ----------------------------------------------------------------------------
-for version in ["v1"]:
-    library = gapic.py_library(
-        service="firestore-bundle",
-        version=version,
-        proto_path='google/firestore/bundle',
-        bazel_target=f"//google/firestore/bundle:firestore-bundle-py",
-    )
-    s.move(
-        library / f"google/cloud/bundle",
-        f"google/cloud/firestore_bundle",
-    )
-    s.move(library / f"tests", f"tests")
+s.remove_staging_dirs()
 
+for library in s.get_staging_dirs(bundle_default_version):
+    if library.parent.absolute() == 'bundle':
+        s.replace(
+            library / "google/cloud/firestore_bundle/types/bundle.py",
+            "from google.firestore.v1 import document_pb2 as gfv_document  # type: ignore\n",
+            "from google.cloud.firestore_v1.types import document as gfv_document\n",
+        )
+
+        s.replace(
+            library / "google/cloud/firestore_bundle/types/bundle.py",
+            "from google.firestore.v1 import query_pb2 as query  # type: ignore\n",
+            "from google.cloud.firestore_v1.types import query\n",
+        )
+
+        s.replace(
+            library / "google/cloud/firestore_bundle/__init__.py",
+            "from .types.bundle import NamedQuery\n",
+            "from .types.bundle import NamedQuery\n\nfrom .bundle import FirestoreBundle\n",
+        )
+
+        s.replace(
+            library / "google/cloud/firestore_bundle/__init__.py",
+            "\'BundledQuery\',",
+            "\"BundledQuery\",\n    \"FirestoreBundle\",",
+        )
+
+        s.move(
+            library / f"google/cloud/bundle",
+            f"google/cloud/firestore_bundle",
+        )
+        s.move(library / f"tests", f"tests")
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
@@ -185,36 +208,6 @@ def lint_setup_py(session):
 ''',
 )
 
-
-# Add message for missing 'libcst' dependency
-s.replace(
-    "scripts/fixup*.py",
-    """\
-import libcst as cst
-""",
-    """\
-
-try:
-    import libcst as cst
-except ImportError:
-    raise ImportError('Run `python -m pip install "libcst >= 0.2.5"` to install libcst.')
-
-
-""",
-)
-
-s.replace(
-    "google/cloud/firestore_bundle/types/bundle.py",
-    "from google.firestore.v1 import document_pb2 as gfv_document  # type: ignore\n",
-    "from google.cloud.firestore_v1.types import document as gfv_document\n",
-)
-
-s.replace(
-    "google/cloud/firestore_bundle/types/bundle.py",
-    "from google.firestore.v1 import query_pb2 as query  # type: ignore\n",
-    "from google.cloud.firestore_v1.types import query\n",
-)
-
 s.replace(
     ".coveragerc",
     """\
@@ -227,18 +220,6 @@ omit =
     except pkg_resources.DistributionNotFound:
 omit =
 """,
-)
-
-s.replace(
-    "google/cloud/firestore_bundle/__init__.py",
-    "from .types.bundle import NamedQuery\n",
-    "from .types.bundle import NamedQuery\n\nfrom .bundle import FirestoreBundle\n",
-)
-
-s.replace(
-    "google/cloud/firestore_bundle/__init__.py",
-    "\'BundledQuery\',",
-    "\"BundledQuery\",\n    \"FirestoreBundle\",",
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
