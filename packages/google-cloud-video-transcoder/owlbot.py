@@ -19,20 +19,11 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate transcoder GAPIC layer
-# ----------------------------------------------------------------------------
-versions = ["v1beta1"]
-for version in versions:
-    library = gapic.py_library(
-        service="transcoder",
-        version=version,
-        bazel_target=f"//google/cloud/video/transcoder/{version}:video-transcoder-{version}-py",
-    )
+default_version = "v1beta1"
 
+for library in s.get_staging_dirs(default_version):
     s.move(
         library,
         excludes=[
@@ -40,9 +31,11 @@ for version in versions:
             "README.rst",
             "docs/index.rst",
             "noxfile.py",
-            f"scripts/fixup_transcoder_{version}_keywords.py",
+            f"scripts/fixup_transcoder_{library.name}_keywords.py",
         ],
     )
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
