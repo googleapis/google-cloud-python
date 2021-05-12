@@ -19,20 +19,20 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate Service Directory GAPIC layer
-# ----------------------------------------------------------------------------
-versions = ["v1beta1", "v1"]
+default_version = "v1"
 
-for version in versions:
-    library = gapic.py_library(
-        service="servicedirectory",
-        version=version,
-        bazel_target=f"//google/cloud/servicedirectory/{version}:servicedirectory-{version}-py",
+for library in s.get_staging_dirs(default_version):
+    # rename library to google-cloud-service-directory
+    s.replace(
+        [library / "google/**/*.py", library / "tests/**/*.py"],
+        "google-cloud-servicedirectory",
+        "google-cloud-service-directory",
     )
+
+    # surround path with * with ``
+    s.replace(library / "google/**/*.py", """["'](projects/\*/.*)["']\.""", "``\g<1>``")
 
     s.move(
         library,
@@ -40,19 +40,11 @@ for version in versions:
             "setup.py",
             "README.rst",
             "docs/index.rst",
-            f"scripts/fixup_servicedirectory_{version}_keywords.py",
+            f"scripts/fixup_servicedirectory_{library.name}_keywords.py",
         ],
     )
 
-# rename library to google-cloud-service-directory
-s.replace(
-    ["google/**/*.py", "tests/**/*.py"],
-    "google-cloud-servicedirectory",
-    "google-cloud-service-directory",
-)
-
-# surround path with * with ``
-s.replace("google/**/*.py", """["'](projects/\*/.*)["']\.""", "``\g<1>``")
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
