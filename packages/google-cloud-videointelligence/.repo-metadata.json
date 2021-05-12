@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/5084810",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-videointelligence",
   "distribution_name": "google-cloud-videointelligence",
   "api_id": "videointelligence.googleapis.com",
