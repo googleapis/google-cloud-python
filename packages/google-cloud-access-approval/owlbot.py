@@ -19,26 +19,20 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate access approval GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="accessapproval",
-    version="v1",
-    bazel_target="//google/cloud/accessapproval/v1:accessapproval-v1-py",
-)
+default_version = "v1"
 
-s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
+for library in s.get_staging_dirs(default_version):
+    # Rename package to `google-cloud-access-approval` instead of `google-cloud-accessapproval`
+    s.replace(
+        [library / "google/**/*.py", library / "tests/**/*.py"],
+        "google-cloud-accessapproval",
+        "google-cloud-access-approval",
+    )
+    s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
 
-# Rename package to `google-cloud-access-approval` instead of `google-cloud-accessapproval`
-s.replace(
-    ["google/**/*.py", "tests/**/*.py"],
-    "google-cloud-accessapproval",
-    "google-cloud-access-approval",
-)
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
