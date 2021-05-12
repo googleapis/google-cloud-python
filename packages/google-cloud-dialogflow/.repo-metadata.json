@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/5300385",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-dialogflow",
   "distribution_name": "google-cloud-dialogflow",
   "api_id": "dialogflow.googleapis.com",
