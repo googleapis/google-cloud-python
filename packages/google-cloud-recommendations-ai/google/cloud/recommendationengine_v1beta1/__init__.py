@@ -101,6 +101,7 @@ __all__ = (
     "PredictResponse",
     "PredictionApiKeyRegistration",
     "PredictionApiKeyRegistryClient",
+    "PredictionServiceClient",
     "ProductCatalogItem",
     "ProductDetail",
     "ProductEventDetail",
@@ -112,8 +113,7 @@ __all__ = (
     "UserEvent",
     "UserEventImportSummary",
     "UserEventInlineSource",
-    "UserEventServiceClient",
     "UserInfo",
     "WriteUserEventRequest",
-    "PredictionServiceClient",
+    "UserEventServiceClient",
 )
