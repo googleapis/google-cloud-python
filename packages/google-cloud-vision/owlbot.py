@@ -18,39 +18,21 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v1", "v1p1beta1", "v1p2beta1", "v1p3beta1", "v1p4beta1"]
 
+default_version = "v1"
 
-# ----------------------------------------------------------------------------
-# Generate vision GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="vision",
-        version=version,
-        bazel_target=f"//google/cloud/vision/{version}:vision-{version}-py",
-        include_protos=True
-    )
-
-    s.move(library / f"google/cloud/vision_{version}/proto")
-    s.move(library / f"google/cloud/vision_{version}/services")
-    s.move(library / f"google/cloud/vision_{version}/types")
-    s.move(library / f"google/cloud/vision_{version}/__init__.py")
-    s.move(library / f"google/cloud/vision_{version}/py.typed")
-    s.move(library / f"tests/unit/gapic/vision_{version}")
-
-    if version == "v1":
-        s.move(library / "google/cloud/vision")
-
-    # don't publish docs for these versions
-    if version not in ["v1p1beta1"]:
-        s.move(library / f"docs/vision_{version}")
+for library in s.get_staging_dirs(default_version):
+    if library.name == "v1":
+        s.replace(
+            library / "google/cloud/vision/__init__.py",
+            "from google.cloud.vision_v1.services.image_annotator.client import ImageAnnotatorClient",
+            "from google.cloud.vision_v1 import ImageAnnotatorClient"
+        )
 
     # Add vision helpers to each version
     s.replace(
-        f"google/cloud/vision_{version}/__init__.py",
+        library / f"google/cloud/vision_{library.name}/__init__.py",
         "from .services.image_annotator import ImageAnnotatorClient",
         "from google.cloud.vision_helpers.decorators import "
         "add_single_feature_methods\n"
@@ -59,7 +41,7 @@ for version in versions:
     )
 
     s.replace(
-        f"google/cloud/vision_{version}/__init__.py",
+        library / f"google/cloud/vision_{library.name}/__init__.py",
         "__all__ = \(",
         "@add_single_feature_methods\n"
         "class ImageAnnotatorClient(VisionHelpers, IacImageAnnotatorClient):\n"
@@ -70,31 +52,34 @@ for version in versions:
 
     # Temporary workaround due to bug https://github.com/googleapis/proto-plus-python/issues/135
     s.replace(
-        f"google/cloud/vision_{version}/services/image_annotator/client.py",
+        library / f"google/cloud/vision_{library.name}/services/image_annotator/client.py",
         "request = image_annotator.BatchAnnotateImagesRequest\(request\)",
         "request = image_annotator.BatchAnnotateImagesRequest(request)\n"
         "            if requests is not None:\n"
         "                for i in range(len(requests)):\n"
         "                    requests[i] = image_annotator.AnnotateImageRequest(requests[i])"
     )
+
     s.replace(
-        f"google/cloud/vision_{version}/services/image_annotator/client.py",
+        library / f"google/cloud/vision_{library.name}/services/image_annotator/client.py",
         "request = image_annotator.BatchAnnotateFilesRequest\(request\)",
         "request = image_annotator.BatchAnnotateFilesRequest(request)\n"
         "            if requests is not None:\n"
         "                for i in range(len(requests)):\n"
         "                    requests[i] = image_annotator.AnnotateFileRequest(requests[i])"
     )
+
     s.replace(
-        f"google/cloud/vision_{version}/services/image_annotator/client.py",
+        library / f"google/cloud/vision_{library.name}/services/image_annotator/client.py",
         "request = image_annotator.AsyncBatchAnnotateImagesRequest\(request\)",
         "request = image_annotator.AsyncBatchAnnotateImagesRequest(request)\n"
         "            if requests is not None:\n"
         "                for i in range(len(requests)):\n"
         "                    requests[i] = image_annotator.AnnotateImageRequest(requests[i])"
     )
+
     s.replace(
-        f"google/cloud/vision_{version}/services/image_annotator/client.py",
+        library / f"google/cloud/vision_{library.name}/services/image_annotator/client.py",
         "request = image_annotator.AsyncBatchAnnotateFilesRequest\(request\)",
         "request = image_annotator.AsyncBatchAnnotateFilesRequest(request)\n"
         "            if requests is not None:\n"
@@ -102,14 +87,21 @@ for version in versions:
         "                    requests[i] = image_annotator.AsyncAnnotateFileRequest(requests[i])"
     )
 
-s.replace(
-    "google/cloud/vision/__init__.py",
-    "from google.cloud.vision_v1.services.image_annotator.client import ImageAnnotatorClient",
-    "from google.cloud.vision_v1 import ImageAnnotatorClient"
-)
+    s.move(library / f"google/cloud/vision_{library.name}/proto")
+    s.move(library / f"google/cloud/vision_{library.name}/services")
+    s.move(library / f"google/cloud/vision_{library.name}/types")
+    s.move(library / f"google/cloud/vision_{library.name}/__init__.py")
+    s.move(library / f"google/cloud/vision_{library.name}/py.typed")
+    s.move(library / f"tests/unit/gapic/vision_{library.name}")
 
-# Move docs configuration
-s.move(library / f"docs/conf.py")
+    # don't publish docs for these versions
+    if library.name != "v1p1beta1":
+        s.move(library / f"docs/vision_{library.name}")
+
+    # Move docs configuration
+    s.move(library / f"docs/conf.py")
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
