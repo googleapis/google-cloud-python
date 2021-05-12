@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-logging/compare/v2.3.1...v2.4.0) (2021-05-12)
+
+
+### Features
+
+* allow custom labels with standard library logging ([#264](https://www.github.com/googleapis/python-logging/issues/264)) ([fe4de39](https://www.github.com/googleapis/python-logging/commit/fe4de39a87581a9e9f2cee62462ae2f26176194f))
+* Improve source location overrides ([#258](https://www.github.com/googleapis/python-logging/issues/258)) ([6b10b74](https://www.github.com/googleapis/python-logging/commit/6b10b74e2bf65ea406b10585a4c24078348483d2))
+* record source locations ([#254](https://www.github.com/googleapis/python-logging/issues/254)) ([a5c2f8e](https://www.github.com/googleapis/python-logging/commit/a5c2f8e948bb116cbce313f063643aec02d06a84))
+* support span inference ([#267](https://www.github.com/googleapis/python-logging/issues/267)) ([fcd26eb](https://www.github.com/googleapis/python-logging/commit/fcd26eb0ff4f97c097ca33b2d212d8f83e56686e))
+* use standard output logs on serverless environments ([#228](https://www.github.com/googleapis/python-logging/issues/228)) ([a78f577](https://www.github.com/googleapis/python-logging/commit/a78f577bda17d758551237be84182035ed7b9cce))
+
+
+### Bug Fixes
+
+* changed region format on serverless ([#291](https://www.github.com/googleapis/python-logging/issues/291)) ([8872d6f](https://www.github.com/googleapis/python-logging/commit/8872d6f6b2bb979adffad0b054fa40306b68cfc0))
+* changed region format on serverless ([#291](https://www.github.com/googleapis/python-logging/issues/291)) ([360d3d2](https://www.github.com/googleapis/python-logging/commit/360d3d23db7709b7c3946c092ef373f888f47c3d))
+* **deps:** fix minimum required version of google-api-core ([#244](https://www.github.com/googleapis/python-logging/issues/244)) ([874fdfa](https://www.github.com/googleapis/python-logging/commit/874fdfa809063c2bfb33e59aded553e098601876))
+* **deps:** fix minimum required version of google-api-core ([#244](https://www.github.com/googleapis/python-logging/issues/244)) ([37d33fc](https://www.github.com/googleapis/python-logging/commit/37d33fcd8402b973377486a572c04ba6d4029b58))
+* improve API compatibility for next release ([#292](https://www.github.com/googleapis/python-logging/issues/292)) ([1f9517d](https://www.github.com/googleapis/python-logging/commit/1f9517da7302e19198e598d452df58238d4e6306))
+* remove noisy logs ([#290](https://www.github.com/googleapis/python-logging/issues/290)) ([bdf8273](https://www.github.com/googleapis/python-logging/commit/bdf827358de5935f736ecd73ab10b2d861daf690))
+
 ### [2.3.1](https://www.github.com/googleapis/python-logging/compare/v2.3.0...v2.3.1) (2021-03-24)
 
 
