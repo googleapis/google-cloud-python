@@ -20,30 +20,22 @@ from synthtool import tmp
 from synthtool.languages import python
 from synthtool.sources import git
 
-
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-versions = ["v2"]  # this package also has v1 protos, see below for note
+default_version = "v2"
 
-# ----------------------------------------------------------------------------
-# Generate orgpolicy GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="orgpolicy",
-        version=version,
-        bazel_target=f"//google/cloud/orgpolicy/{version}:orgpolicy-{version}-py",
+for library in s.get_staging_dirs(default_version):
+    # Rename to google-cloud-org-policy
+    # TODO: use bazel option to rename package
+    s.replace(
+        library / "google/cloud/**/*",
+        "google-cloud-orgpolicy",
+        "google-cloud-org-policy"
     )
+
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
-# Rename to google-cloud-org-policy
-# TODO: use bazel option to rename package
-s.replace(
-    "google/cloud/**/*",
-    "google-cloud-orgpolicy",
-    "google-cloud-org-policy"
-)
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 #  Add templated files
