@@ -19,31 +19,24 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate OS Config GAPIC layer
-# ----------------------------------------------------------------------------
-versions = ["v1"]
+default_version = "v1"
 
-for version in versions:
-    library = gapic.py_library(
-        service="osconfig",
-        version=version,
-        bazel_target=f"//google/cloud/osconfig/{version}:osconfig-{version}-py"
-    )
+for library in s.get_staging_dirs(default_version):
+    # rename to google-cloud-os-config
+    s.replace([library / "google/**/*.py", library / "tests/**/*.py"], 
+               "google-cloud-osconfig", 
+               "google-cloud-os-config")
+
+    # Add newline after last item in list
+    s.replace(library / "google/cloud/**/*client.py",
+    "(-  Must be unique within the project\.)",
+    "\g<1>\n")
 
     s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
 
-# rename to google-cloud-os-config
-s.replace(["google/**/*.py", "tests/**/*.py"], "google-cloud-osconfig", "google-cloud-os-config")
-
-# Add newline after last item in list
-s.replace("google/cloud/**/*client.py",
-"(-  Must be unique within the project\.)",
-"\g<1>\n")
-
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
