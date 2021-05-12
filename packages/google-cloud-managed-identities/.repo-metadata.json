@@ -6,6 +6,7 @@
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-managed-identities",
     "distribution_name": "google-cloud-managed-identities",
     "api_id": "managedidentities.googleapis.com"
