@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559654",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_COMBO",
   "repo": "googleapis/python-bigquery-storage",
   "distribution_name": "google-cloud-bigquery-storage",
   "api_id": "bigquerystorage.googleapis.com",
