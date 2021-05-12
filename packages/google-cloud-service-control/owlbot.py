@@ -20,30 +20,21 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-versions = [
-    "v1"
-] # add latest stable version at the end of the list
+default_version = "v1"
 
-# ----------------------------------------------------------------------------
-# Generate servicecontrol GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="servicecontrol",
-        version=version,
-        bazel_target=f"//google/api/servicecontrol/{version}:google-cloud-servicecontrol-{version}-py",
-    )
+for library in s.get_staging_dirs(default_version):
+    if library.name == "v1":
+        s.replace(
+            library / "google/cloud/servicecontrol_v1/types/distribution.py",
+            "variance   - a histogram",
+            "    variance\n      - a histogram"
+        )
 
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
-    s.replace(
-        "google/cloud/servicecontrol_v1/types/distribution.py",
-        "variance   - a histogram",
-        "    variance\n      - a histogram"
-    )
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
