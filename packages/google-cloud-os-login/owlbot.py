@@ -16,31 +16,21 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-excludes = ["README.rst", "setup.py", "nox*.py", "docs/index.rst"]
 
-# ----------------------------------------------------------------------------
-# Generate oslogin GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="oslogin",
-    version="v1",
-    bazel_target="//google/cloud/oslogin/v1:oslogin-v1-py",
-    include_protos=True,
-)
+default_version = "v1"
 
-s.move(library / "google/cloud/oslogin_v1")
+for library in s.get_staging_dirs(default_version):
+    s.move(library / f"google/cloud/oslogin_{library.name}")
+    s.move(library / "google/cloud/oslogin", excludes=[ "common/**/*"])
+    s.move(library / "google/cloud/oslogin/common", f"google/cloud/oslogin_{library.name}/common", excludes=["services"])
+    s.move(library / f"tests/unit/gapic/oslogin_{library.name}")
+    s.move(library / f"scripts/fixup_oslogin_{library.name}_keywords.py")
+    s.move(library / "docs", excludes=["index.rst", "common"])
+    s.move(library / f"docs/common", f"docs/oslogin_{library.name}/common", excludes=["services.rst"])
 
-s.move(library / "google/cloud/oslogin", excludes=[library / "google/cloud/oslogin/common/**/*"])
-s.move(library / "google/cloud/oslogin/common", "google/cloud/oslogin_v1/common", excludes=[library / "google/cloud/oslogin/common/services"])
+s.remove_staging_dirs()
 
-s.move(library / "tests/unit/gapic/oslogin_v1")
-
-s.move(library / "scripts/fixup_oslogin_v1_keywords.py")
-
-s.move(library / "docs", excludes=[library / "docs/index.rst", library / "docs/common"])
-s.move(library / "docs/common", "docs/oslogin_v1/common", excludes=[library / "docs/common/services.rst"])
 s.replace(
     "docs/oslogin_v1/common/types.rst",
     "google.cloud.oslogin.common.types",
