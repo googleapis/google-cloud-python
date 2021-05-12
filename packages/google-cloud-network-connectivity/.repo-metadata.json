@@ -6,6 +6,7 @@
     "issue_tracker": "",
     "release_level": "alpha",
     "language": "python",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-network-connectivity",
     "distribution_name": "google-cloud-network-connectivity",
     "api_id": "networkconnectivity.googleapis.com"
