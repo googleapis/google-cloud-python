@@ -22,7 +22,10 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+from decimal import Decimal
+import random
 import operator
+import uuid
 
 from google import auth
 import google.api_core.exceptions
@@ -30,6 +33,9 @@ from google.cloud.bigquery import dbapi
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import TableReference
 from google.api_core.exceptions import NotFound
+
+import sqlalchemy.sql.sqltypes
+import sqlalchemy.sql.type_api
 from sqlalchemy.exc import NoSuchTableError
 from sqlalchemy import types, util
 from sqlalchemy.sql.compiler import (
@@ -38,10 +44,11 @@ from sqlalchemy.sql.compiler import (
     DDLCompiler,
     IdentifierPreparer,
 )
+from sqlalchemy.sql.sqltypes import Integer, String, NullType, Numeric
 from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.sql.schema import Column
-from sqlalchemy.sql import elements
+from sqlalchemy.sql import elements, selectable
 import re
 
 from .parse_url import parse_url
@@ -50,23 +57,11 @@ from pybigquery import _helpers
 FIELD_ILLEGAL_CHARACTERS = re.compile(r"[^\w]+")
 
 
-class UniversalSet(object):
-    """
-    Set containing everything
-    https://github.com/dropbox/PyHive/blob/master/pyhive/common.py
-    """
-
-    def __contains__(self, item):
-        return True
-
-
 class BigQueryIdentifierPreparer(IdentifierPreparer):
     """
     Set containing everything
     https://github.com/dropbox/PyHive/blob/master/pyhive/sqlalchemy_presto.py
     """
-
-    reserved_words = UniversalSet()
 
     def __init__(self, dialect):
         super(BigQueryIdentifierPreparer, self).__init__(
@@ -88,21 +83,7 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
         """
 
         force = getattr(ident, "quote", None)
-
-        if force is None:
-            if ident in self._strings:
-                return self._strings[ident]
-            else:
-                if self._requires_quotes(ident):
-                    self._strings[ident] = (
-                        self.quote_column(ident)
-                        if column
-                        else self.quote_identifier(ident)
-                    )
-                else:
-                    self._strings[ident] = ident
-                return self._strings[ident]
-        elif force:
+        if force is None or force:
             return self.quote_column(ident) if column else self.quote_identifier(ident)
         else:
             return ident
@@ -123,8 +104,11 @@ class BigQueryIdentifierPreparer(IdentifierPreparer):
 
 _type_map = {
     "STRING": types.String,
+    "BOOL": types.Boolean,
     "BOOLEAN": types.Boolean,
+    "INT64": types.Integer,
     "INTEGER": types.Integer,
+    "FLOAT64": types.Float,
     "FLOAT": types.Float,
     "TIMESTAMP": types.TIMESTAMP,
     "DATETIME": types.DATETIME,
@@ -133,11 +117,15 @@ _type_map = {
     "TIME": types.TIME,
     "RECORD": types.JSON,
     "NUMERIC": types.DECIMAL,
+    "BIGNUMERIC": types.DECIMAL,
 }
 
 STRING = _type_map["STRING"]
+BOOL = _type_map["BOOL"]
 BOOLEAN = _type_map["BOOLEAN"]
+INT64 = _type_map["INT64"]
 INTEGER = _type_map["INTEGER"]
+FLOAT64 = _type_map["FLOAT64"]
 FLOAT = _type_map["FLOAT"]
 TIMESTAMP = _type_map["TIMESTAMP"]
 DATETIME = _type_map["DATETIME"]
@@ -146,6 +134,7 @@ BYTES = _type_map["BYTES"]
 TIME = _type_map["TIME"]
 RECORD = _type_map["RECORD"]
 NUMERIC = _type_map["NUMERIC"]
+BIGNUMERIC = _type_map["NUMERIC"]
 
 
 class BigQueryExecutionContext(DefaultExecutionContext):
@@ -156,8 +145,49 @@ class BigQueryExecutionContext(DefaultExecutionContext):
             c.arraysize = self.dialect.arraysize
         return c
 
+    def get_insert_default(self, column):  # pragma: NO COVER
+        # Only used by compliance tests
+        if isinstance(column.type, Integer):
+            return random.randint(-9223372036854775808, 9223372036854775808)  # 1<<63
+        elif isinstance(column.type, String):
+            return str(uuid.uuid4())
+
+    def pre_exec(
+        self,
+        in_sub=re.compile(
+            r" IN UNNEST\(\[ "
+            r"(%\([^)]+_\d+\)s(?:, %\([^)]+_\d+\)s)*)?"  # Placeholders. See below.
+            r":([A-Z0-9]+)"  # Type
+            r" \]\)"
+        ).sub,
+    ):
+        # If we have an in parameter, it sometimes gets expaned to 0 or more
+        # parameters and we need to move the type marker to each
+        # parameter.
+        # (The way SQLAlchemy handles this is a bit awkward for our
+        # purposes.)
+
+        # In the placeholder part of the regex above, the `_\d+
+        # suffixes refect that when an array parameter is expanded,
+        # numeric suffixes are added.  For example, a placeholder like
+        # `%(foo)s` gets expaneded to `%(foo_0)s, `%(foo_1)s, ...`.
+
+        def repl(m):
+            placeholders, type_ = m.groups()
+            if placeholders:
+                placeholders = placeholders.replace(")", f":{type_})")
+            else:
+                placeholders = ""
+            return f" IN UNNEST([ {placeholders} ])"
+
+        self.statement = in_sub(repl, self.statement)
+
 
 class BigQueryCompiler(SQLCompiler):
+
+    compound_keywords = SQLCompiler.compound_keywords.copy()
+    compound_keywords[selectable.CompoundSelect.UNION] = "UNION ALL"
+
     def __init__(self, dialect, statement, column_keys=None, inline=False, **kwargs):
         if isinstance(statement, Column):
             kwargs["compile_kwargs"] = util.immutabledict({"include_table": False})
@@ -165,10 +195,23 @@ class BigQueryCompiler(SQLCompiler):
             dialect, statement, column_keys, inline, **kwargs
         )
 
+    def visit_insert(self, insert_stmt, asfrom=False, **kw):
+        # The (internal) documentation for `inline` is confusing, but
+        # having `inline` be true prevents us from generating default
+        # primary-key values when we're doing executemany, which seem broken.
+
+        # We can probably do this in the constructor, but I want to
+        # make sure this only affects insert, because I'm paranoid. :)
+
+        self.inline = False
+
+        return super(BigQueryCompiler, self).visit_insert(
+            insert_stmt, asfrom=False, **kw
+        )
+
     def visit_column(
         self, column, add_to_result_map=None, include_table=True, **kwargs
     ):
-
         name = orig_name = column.name
         if name is None:
             name = self._fallback_column_name(column)
@@ -188,16 +231,10 @@ class BigQueryCompiler(SQLCompiler):
         if table is None or not include_table or not table.named_with_column:
             return name
         else:
-            effective_schema = self.preparer.schema_for_object(table)
-
-            if effective_schema:
-                schema_prefix = self.preparer.quote_schema(effective_schema) + "."
-            else:
-                schema_prefix = ""
             tablename = table.name
             if isinstance(tablename, elements._truncated_label):
                 tablename = self._truncated_identifier("alias", tablename)
-            return schema_prefix + self.preparer.quote(tablename) + "." + name
+            return self.preparer.quote(tablename) + "." + name
 
     def visit_label(self, *args, within_group_by=False, **kwargs):
         # Use labels in GROUP BY clause.
@@ -213,19 +250,144 @@ class BigQueryCompiler(SQLCompiler):
             select, **kw, within_group_by=True
         )
 
+    ############################################################################
+    # Handle parameters in in
+
+    # Due to details in the way sqlalchemy arranges the compilation we
+    # expect the bind parameter as an array and unnest it.
+
+    # As it happens, bigquery can handle arrays directly, but there's
+    # no way to tell sqlalchemy that, so it works harder than
+    # necessary and makes us do the same.
+
+    _in_expanding_bind = re.compile(r" IN \((\[EXPANDING_\w+\](:[A-Z0-9]+)?)\)$")
+
+    def _unnestify_in_expanding_bind(self, in_text):
+        return self._in_expanding_bind.sub(r" IN UNNEST([ \1 ])", in_text)
+
+    def visit_in_op_binary(self, binary, operator_, **kw):
+        return self._unnestify_in_expanding_bind(
+            self._generate_generic_binary(binary, " IN ", **kw)
+        )
+
+    def visit_empty_set_expr(self, element_types):
+        return ""
+
+    def visit_notin_op_binary(self, binary, operator, **kw):
+        return self._unnestify_in_expanding_bind(
+            self._generate_generic_binary(binary, " NOT IN ", **kw)
+        )
+
+    ############################################################################
+
+    ############################################################################
+    # Correct for differences in the way that SQLAlchemy escape % and _ (/)
+    # and BigQuery does (\\).
+
+    @staticmethod
+    def _maybe_reescape(binary):
+        binary = binary._clone()
+        escape = binary.modifiers.pop("escape", None)
+        if escape and escape != "\\":
+            binary.right.value = escape.join(
+                v.replace(escape, "\\")
+                for v in binary.right.value.split(escape + escape)
+            )
+        return binary
+
+    def visit_contains_op_binary(self, binary, operator, **kw):
+        return super(BigQueryCompiler, self).visit_contains_op_binary(
+            self._maybe_reescape(binary), operator, **kw
+        )
+
+    def visit_notcontains_op_binary(self, binary, operator, **kw):
+        return super(BigQueryCompiler, self).visit_notcontains_op_binary(
+            self._maybe_reescape(binary), operator, **kw
+        )
+
+    def visit_startswith_op_binary(self, binary, operator, **kw):
+        return super(BigQueryCompiler, self).visit_startswith_op_binary(
+            self._maybe_reescape(binary), operator, **kw
+        )
+
+    def visit_notstartswith_op_binary(self, binary, operator, **kw):
+        return super(BigQueryCompiler, self).visit_notstartswith_op_binary(
+            self._maybe_reescape(binary), operator, **kw
+        )
+
+    def visit_endswith_op_binary(self, binary, operator, **kw):
+        return super(BigQueryCompiler, self).visit_endswith_op_binary(
+            self._maybe_reescape(binary), operator, **kw
+        )
+
+    def visit_notendswith_op_binary(self, binary, operator, **kw):
+        return super(BigQueryCompiler, self).visit_notendswith_op_binary(
+            self._maybe_reescape(binary), operator, **kw
+        )
+
+    ############################################################################
+
+    def visit_bindparam(
+        self,
+        bindparam,
+        within_columns_clause=False,
+        literal_binds=False,
+        skip_bind_expression=False,
+        **kwargs,
+    ):
+        param = super(BigQueryCompiler, self).visit_bindparam(
+            bindparam,
+            within_columns_clause,
+            literal_binds,
+            skip_bind_expression,
+            **kwargs,
+        )
+
+        type_ = bindparam.type
+        if isinstance(type_, NullType):
+            return param
+
+        if (
+            isinstance(type_, Numeric)
+            and (type_.precision is None or type_.scale is None)
+            and isinstance(bindparam.value, Decimal)
+        ):
+            t = bindparam.value.as_tuple()
+
+            if type_.precision is None:
+                type_.precision = len(t.digits)
+
+            if type_.scale is None and t.exponent < 0:
+                type_.scale = -t.exponent
+
+        bq_type = self.dialect.type_compiler.process(type_)
+        if bq_type[-1] == ">" and bq_type.startswith("ARRAY<"):
+            # Values get arrayified at a lower level.
+            bq_type = bq_type[6:-1]
+
+        assert param != "%s"
+        return param.replace(")", f":{bq_type})")
+
 
 class BigQueryTypeCompiler(GenericTypeCompiler):
-    def visit_integer(self, type_, **kw):
+    def visit_INTEGER(self, type_, **kw):
         return "INT64"
 
-    def visit_float(self, type_, **kw):
+    visit_BIGINT = visit_SMALLINT = visit_INTEGER
+
+    def visit_BOOLEAN(self, type_, **kw):
+        return "BOOL"
+
+    def visit_FLOAT(self, type_, **kw):
         return "FLOAT64"
 
-    def visit_text(self, type_, **kw):
+    visit_REAL = visit_FLOAT
+
+    def visit_STRING(self, type_, **kw):
         return "STRING"
 
-    def visit_string(self, type_, **kw):
-        return "STRING"
+    visit_CHAR = visit_NCHAR = visit_STRING
+    visit_VARCHAR = visit_NVARCHAR = visit_TEXT = visit_STRING
 
     def visit_ARRAY(self, type_, **kw):
         return "ARRAY<{}>".format(self.process(type_.item_type, **kw))
@@ -233,11 +395,17 @@ class BigQueryTypeCompiler(GenericTypeCompiler):
     def visit_BINARY(self, type_, **kw):
         return "BYTES"
 
-    def visit_NUMERIC(self, type_, **kw):
-        return "NUMERIC"
+    visit_VARBINARY = visit_BINARY
 
-    def visit_DECIMAL(self, type_, **kw):
-        return "NUMERIC"
+    def visit_NUMERIC(self, type_, **kw):
+        if (type_.precision is not None and type_.precision > 38) or (
+            type_.scale is not None and type_.scale > 9
+        ):
+            return "BIGNUMERIC"
+        else:
+            return "NUMERIC"
+
+    visit_DECIMAL = visit_NUMERIC
 
 
 class BigQueryDDLCompiler(DDLCompiler):
@@ -250,30 +418,109 @@ class BigQueryDDLCompiler(DDLCompiler):
     def visit_primary_key_constraint(self, constraint):
         return None
 
+    # BigQuery has no support for unique constraints.
+    def visit_unique_constraint(self, constraint):
+        return None
+
     def get_column_specification(self, column, **kwargs):
         colspec = super(BigQueryDDLCompiler, self).get_column_specification(
             column, **kwargs
         )
-        if column.doc is not None:
+        if column.comment is not None:
             colspec = "{} OPTIONS(description={})".format(
-                colspec, self.preparer.quote(column.doc)
+                colspec, process_string_literal(column.comment)
             )
         return colspec
 
     def post_create_table(self, table):
         bq_opts = table.dialect_options["bigquery"]
         opts = []
-        if "description" in bq_opts:
-            opts.append(
-                "description={}".format(self.preparer.quote(bq_opts["description"]))
+
+        if ("description" in bq_opts) or table.comment:
+            description = process_string_literal(
+                bq_opts.get("description", table.comment)
             )
+            opts.append(f"description={description}")
+
         if "friendly_name" in bq_opts:
             opts.append(
-                "friendly_name={}".format(self.preparer.quote(bq_opts["friendly_name"]))
+                "friendly_name={}".format(
+                    process_string_literal(bq_opts["friendly_name"])
+                )
             )
+
         if opts:
             return "\nOPTIONS({})".format(", ".join(opts))
+
         return ""
+
+    def visit_set_table_comment(self, create):
+        table_name = self.preparer.format_table(create.element)
+        description = self.sql_compiler.render_literal_value(
+            create.element.comment, sqlalchemy.sql.sqltypes.String()
+        )
+        return f"ALTER TABLE {table_name} SET OPTIONS(description={description})"
+
+    def visit_drop_table_comment(self, drop):
+        table_name = self.preparer.format_table(drop.element)
+        return f"ALTER TABLE {table_name} SET OPTIONS(description=null)"
+
+
+def process_string_literal(value):
+    return repr(value.replace("%", "%%"))
+
+
+class BQString(String):
+    def literal_processor(self, dialect):
+        return process_string_literal
+
+
+class BQBinary(sqlalchemy.sql.sqltypes._Binary):
+    @staticmethod
+    def __process_bytes_literal(value):
+        return repr(value.replace(b"%", b"%%"))
+
+    def literal_processor(self, dialect):
+        return self.__process_bytes_literal
+
+
+class BQClassTaggedStr(sqlalchemy.sql.type_api.TypeEngine):
+    """Type that can get literals via str
+    """
+
+    @staticmethod
+    def process_literal_as_class_tagged_str(value):
+        return f"{value.__class__.__name__.upper()} {repr(str(value))}"
+
+    def literal_processor(self, dialect):
+        return self.process_literal_as_class_tagged_str
+
+
+class BQTimestamp(sqlalchemy.sql.type_api.TypeEngine):
+    """Type that can get literals via str
+    """
+
+    @staticmethod
+    def process_timestamp_literal(value):
+        return f"TIMESTAMP {process_string_literal(str(value))}"
+
+    def literal_processor(self, dialect):
+        return self.process_timestamp_literal
+
+
+class BQArray(sqlalchemy.sql.sqltypes.ARRAY):
+    def literal_processor(self, dialect):
+
+        item_processor = self.item_type._cached_literal_processor(dialect)
+        if not item_processor:
+            raise NotImplementedError(
+                f"Don't know how to literal-quote values of type {self.item_type}"
+            )
+
+        def process_array_literal(value):
+            return "[" + ", ".join(item_processor(v) for v in value) + "]"
+
+        return process_array_literal
 
 
 class BigQueryDialect(DefaultDialect):
@@ -285,6 +532,8 @@ class BigQueryDialect(DefaultDialect):
     ddl_compiler = BigQueryDDLCompiler
     execution_ctx_cls = BigQueryExecutionContext
     supports_alter = False
+    supports_comments = True
+    inline_comments = True
     supports_pk_autoincrement = False
     supports_default_values = False
     supports_empty_insert = False
@@ -297,6 +546,17 @@ class BigQueryDialect(DefaultDialect):
     supports_native_boolean = True
     supports_simple_order_by_label = True
     postfetch_lastrowid = False
+    preexecute_autoincrement_sequences = False
+
+    colspecs = {
+        String: BQString,
+        sqlalchemy.sql.sqltypes._Binary: BQBinary,
+        sqlalchemy.sql.sqltypes.Date: BQClassTaggedStr,
+        sqlalchemy.sql.sqltypes.DateTime: BQClassTaggedStr,
+        sqlalchemy.sql.sqltypes.Time: BQClassTaggedStr,
+        sqlalchemy.sql.sqltypes.TIMESTAMP: BQTimestamp,
+        sqlalchemy.sql.sqltypes.ARRAY: BQArray,
+    }
 
     def __init__(
         self,
@@ -305,7 +565,7 @@ class BigQueryDialect(DefaultDialect):
         location=None,
         credentials_info=None,
         *args,
-        **kwargs
+        **kwargs,
     ):
         super(BigQueryDialect, self).__init__(*args, **kwargs)
         self.arraysize = arraysize
@@ -427,9 +687,7 @@ class BigQueryDialect(DefaultDialect):
         dataset_id_from_schema = None
         if provided_schema_name is not None:
             provided_schema_name_split = provided_schema_name.split(".")
-            if len(provided_schema_name_split) == 0:
-                pass
-            elif len(provided_schema_name_split) == 1:
+            if len(provided_schema_name_split) == 1:
                 if dataset_id_from_table:
                     project_id_from_schema = provided_schema_name_split[0]
                 else:
@@ -579,10 +837,7 @@ class BigQueryDialect(DefaultDialect):
             connection = connection.connect()
 
         datasets = connection.connection._client.list_datasets()
-        if self.dataset_id is not None:
-            return [d.dataset_id for d in datasets if d.dataset_id == self.dataset_id]
-        else:
-            return [d.dataset_id for d in datasets]
+        return [d.dataset_id for d in datasets]
 
     def get_table_names(self, connection, schema=None, **kw):
         if isinstance(connection, Engine):
@@ -604,6 +859,11 @@ class BigQueryDialect(DefaultDialect):
         # requests gives back Unicode strings
         return True
 
-    def _check_unicode_description(self, connection):
-        # requests gives back Unicode strings
-        return True
+    def get_view_definition(self, connection, view_name, schema=None, **kw):
+        if isinstance(connection, Engine):
+            connection = connection.connect()
+        client = connection.connection._client
+        if self.dataset_id:
+            view_name = f"{self.dataset_id}.{view_name}"
+        view = client.get_table(view_name)
+        return view.view_query

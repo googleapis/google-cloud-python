@@ -83,38 +83,51 @@ def test_basic(url_with_everything):
 
 
 @pytest.mark.parametrize(
-    "param, value",
+    "param, value, default",
     [
-        ("clustering_fields", ["a", "b", "c"]),
-        ("create_disposition", "CREATE_IF_NEEDED"),
+        ("clustering_fields", ["a", "b", "c"], None),
+        ("create_disposition", "CREATE_IF_NEEDED", None),
         (
             "destination",
             TableReference(
                 DatasetReference("different-project", "different-dataset"), "table"
             ),
+            None,
         ),
         (
             "destination_encryption_configuration",
             lambda enc: enc.kms_key_name
             == EncryptionConfiguration("some-configuration").kms_key_name,
+            None,
         ),
-        ("dry_run", True),
-        ("labels", {"a": "b", "c": "d"}),
-        ("maximum_bytes_billed", 1000),
-        ("priority", "INTERACTIVE"),
-        ("schema_update_options", ["ALLOW_FIELD_ADDITION", "ALLOW_FIELD_RELAXATION"]),
-        ("use_query_cache", True),
-        ("write_disposition", "WRITE_APPEND"),
+        ("dry_run", True, None),
+        ("labels", {"a": "b", "c": "d"}, {}),
+        ("maximum_bytes_billed", 1000, None),
+        ("priority", "INTERACTIVE", None),
+        (
+            "schema_update_options",
+            ["ALLOW_FIELD_ADDITION", "ALLOW_FIELD_RELAXATION"],
+            None,
+        ),
+        ("use_query_cache", True, None),
+        ("write_disposition", "WRITE_APPEND", None),
     ],
 )
-def test_all_values(url_with_everything, param, value):
-    job_config = parse_url(url_with_everything)[5]
+def test_all_values(url_with_everything, param, value, default):
+    url_with_this_one = make_url("bigquery://some-project/some-dataset")
+    url_with_this_one.query[param] = url_with_everything.query[param]
 
-    config_value = getattr(job_config, param)
-    if callable(value):
-        assert value(config_value)
-    else:
-        assert config_value == value
+    for url in url_with_everything, url_with_this_one:
+        job_config = parse_url(url)[5]
+        config_value = getattr(job_config, param)
+        if callable(value):
+            assert value(config_value)
+        else:
+            assert config_value == value
+
+    url_with_nothing = make_url("bigquery://some-project/some-dataset")
+    job_config = parse_url(url_with_nothing)[5]
+    assert getattr(job_config, param) == default
 
 
 @pytest.mark.parametrize(
@@ -209,3 +222,16 @@ def test_not_implemented(not_implemented_arg):
     )
     with pytest.raises(NotImplementedError):
         parse_url(url)
+
+
+def test_parse_boolean():
+    from pybigquery.parse_url import parse_boolean
+
+    assert parse_boolean("true")
+    assert parse_boolean("True")
+    assert parse_boolean("TRUE")
+    assert not parse_boolean("false")
+    assert not parse_boolean("False")
+    assert not parse_boolean("FALSE")
+    with pytest.raises(ValueError):
+        parse_boolean("Thursday")
