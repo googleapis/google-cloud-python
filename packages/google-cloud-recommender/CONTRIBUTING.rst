@@ -160,21 +160,7 @@ Running System Tests
   auth settings and change some configuration in your project to
   run all the tests.
 
-- System tests will be run against an actual project and
-  so you'll need to provide some environment variables to facilitate
-  authentication to your project:
-
-  - ``GOOGLE_APPLICATION_CREDENTIALS``: The path to a JSON key file;
-    Such a file can be downloaded directly from the developer's console by clicking
-    "Generate new JSON key". See private key
-    `docs <https://cloud.google.com/storage/docs/authentication#generating-a-private-key>`__
-    for more details.
-
-- Once you have downloaded your json keys, set the environment variable 
-  ``GOOGLE_APPLICATION_CREDENTIALS`` to the absolute path of the json file::
-
-   $ export GOOGLE_APPLICATION_CREDENTIALS="/Users/<your_username>/path/to/app_credentials.json"
-
+- System tests will be run against an actual project. You should use local credentials from gcloud when possible. See `Best practices for application authentication <https://cloud.google.com/docs/authentication/best-practices-applications#local_development_and_testing_with_the>`__. Some tests require a service account. For those tests see `Authenticating as a service account <https://cloud.google.com/docs/authentication/production>`__.
 
 *************
 Test Coverage
