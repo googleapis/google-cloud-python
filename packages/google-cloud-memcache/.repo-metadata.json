@@ -6,6 +6,7 @@
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-memcache",
     "distribution_name": "google-cloud-memcache",
     "api_id": "memcache.googleapis.com"
