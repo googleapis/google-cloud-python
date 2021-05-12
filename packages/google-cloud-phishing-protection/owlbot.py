@@ -22,24 +22,15 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate phishingprotection GAPIC layer
-# ----------------------------------------------------------------------------
-versions = ["v1beta1"]
-for version in versions:
-    library = gapic.py_library(
-        service="phishingprotection",
-        version=version,
-        bazel_target=f"//google/cloud/phishingprotection/{version}:phishingprotection-{version}-py",
-        include_protos=True,
-    )
+default_version = "v1beta1"
 
+for library in s.get_staging_dirs(default_version):
     excludes = ["README.rst", "nox.py", "setup.py", "docs/index.rst"]
-
     s.move(library, excludes=excludes)
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
