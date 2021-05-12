@@ -6,6 +6,7 @@
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-service-control",
     "distribution_name": "google-cloud-service-control",
     "api_id": "servicecontrol.googleapis.com"
