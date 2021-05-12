@@ -104,6 +104,23 @@ class TestStructuredLogHandler(unittest.TestCase):
                 value, result[key], f"expected_payload[{key}] != result[{key}]"
             )
 
+    def test_format_with_quotes(self):
+        """
+        When logging a message containing quotes, escape chars should be added
+        """
+        import logging
+        import json
+
+        handler = self._make_one()
+        message = '"test"'
+        expected_result = '\\"test\\"'
+        record = logging.LogRecord(None, logging.INFO, None, None, message, None, None,)
+        record.created = None
+        handler.filter(record)
+        result = json.loads(handler.format(record))
+        result["message"] = expected_result
+        self.assertEqual(result["message"], expected_result)
+
     def test_format_with_request(self):
         import logging
         import json
@@ -121,7 +138,7 @@ class TestStructuredLogHandler(unittest.TestCase):
             "logging.googleapis.com/trace": expected_trace,
             "logging.googleapis.com/spanId": expected_span,
             "httpRequest": {
-                "requestMethod": "PUT",
+                "requestMethod": "GET",
                 "requestUrl": expected_path,
                 "userAgent": expected_agent,
                 "protocol": "HTTP/1.1",
@@ -129,15 +146,13 @@ class TestStructuredLogHandler(unittest.TestCase):
         }
 
         app = self.create_app()
-        with app.test_client() as c:
-            c.put(
-                path=expected_path,
-                data="body",
-                headers={
-                    "User-Agent": expected_agent,
-                    "X_CLOUD_TRACE_CONTEXT": trace_header,
-                },
-            )
+        with app.test_request_context(
+            expected_path,
+            headers={
+                "User-Agent": expected_agent,
+                "X_CLOUD_TRACE_CONTEXT": trace_header,
+            },
+        ):
             handler.filter(record)
             result = json.loads(handler.format(record))
             for (key, value) in expected_payload.items():

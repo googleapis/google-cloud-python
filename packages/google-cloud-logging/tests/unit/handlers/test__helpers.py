@@ -75,23 +75,18 @@ class Test_get_request_data_from_flask(unittest.TestCase):
         expected_agent = "Mozilla/5.0"
         expected_referrer = "self"
         expected_ip = "10.1.2.3"
-        body_content = "test"
         headers = {
             "User-Agent": expected_agent,
             "Referer": expected_referrer,
         }
 
         app = self.create_app()
-        with app.test_client() as c:
-            c.put(
-                path=expected_path,
-                data=body_content,
-                environ_base={"REMOTE_ADDR": expected_ip},
-                headers=headers,
-            )
+        with app.test_request_context(
+            expected_path, headers=headers, environ_base={"REMOTE_ADDR": expected_ip}
+        ):
             http_request, *_ = self._call_fut()
 
-        self.assertEqual(http_request["requestMethod"], "PUT")
+        self.assertEqual(http_request["requestMethod"], "GET")
         self.assertEqual(http_request["requestUrl"], expected_path)
         self.assertEqual(http_request["userAgent"], expected_agent)
         self.assertEqual(http_request["protocol"], "HTTP/1.1")
@@ -99,10 +94,9 @@ class Test_get_request_data_from_flask(unittest.TestCase):
     def test_http_request_sparse(self):
         expected_path = "http://testserver/123"
         app = self.create_app()
-        with app.test_client() as c:
-            c.put(path=expected_path)
+        with app.test_request_context(expected_path):
             http_request, *_ = self._call_fut()
-        self.assertEqual(http_request["requestMethod"], "PUT")
+        self.assertEqual(http_request["requestMethod"], "GET")
         self.assertEqual(http_request["requestUrl"], expected_path)
         self.assertEqual(http_request["protocol"], "HTTP/1.1")
 
