@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/issues/new?component=187134&template=0",
   "release_level": "alpha",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-compute",
   "distribution_name": "google-cloud-compute",
   "api_id": "compute.googleapis.com"
