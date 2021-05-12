@@ -6,6 +6,7 @@
   "issue_tracker": "",
   "release_level": "alpha",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-webrisk",
   "distribution_name": "google-cloud-webrisk",
   "api_id": "webrisk.googleapis.com",
