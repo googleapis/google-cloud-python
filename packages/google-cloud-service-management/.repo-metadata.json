@@ -6,6 +6,7 @@
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-service-management",
     "distribution_name": "google-cloud-service-management",
     "api_id": "servicemanagement.googleapis.com"
