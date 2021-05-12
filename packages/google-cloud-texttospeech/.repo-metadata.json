@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/5235428",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-texttospeech",
   "distribution_name": "google-cloud-texttospeech",
   "api_id": "texttospeech.googleapis.com",
