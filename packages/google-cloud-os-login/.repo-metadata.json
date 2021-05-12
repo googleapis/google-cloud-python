@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559755",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-oslogin",
   "distribution_name": "google-cloud-os-login",
   "api_id": "oslogin.googleapis.com",
