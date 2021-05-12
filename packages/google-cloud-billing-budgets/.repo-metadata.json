@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559770",
   "release_level": "beta",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-billingbudgets",
   "distribution_name": "google-cloud-billing-budgets",
   "api_id": "billingbudgets.googleapis.com",
