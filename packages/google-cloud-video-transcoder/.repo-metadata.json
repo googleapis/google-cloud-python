@@ -6,6 +6,7 @@
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-video-transcoder",
     "distribution_name": "google-cloud-video-transcoder",
     "api_id": "transcoder.googleapis.com"
