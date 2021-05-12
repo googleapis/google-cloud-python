@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/pybigquery/#history
 
+## [0.7.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.6.1...v0.7.0) (2021-05-12)
+
+
+### Features
+
+* Comment/description support, bug fixes and better test coverage ([#138](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/138)) ([fb7c188](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/fb7c188fd1d61f2bb2b99742f62042576bff02a9))
+  * Runs SQLAlchemy dialect-compliance tests (as system tests).
+  * 100% unit-test coverage.
+  * Support for table and column comments/descriptions (requiring SQLAlchemy 1.2 or higher).
+  * When executing parameterized queries, the new BigQuery DB API parameter syntax is used to pass type information.  This is helpful when the DB API can't determine type information from values, or can't determine it correctly.
+
+### Bug Fixes
+
+* Select expressions no-longer force use of labels ([#129](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/129)) ([669b301](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/669b301359f9f37c5c7286a245080b8af2567186))
+
+* Additional fixes, including:
+  - Handling of `in` queries.
+  - String literals with special characters.
+  - Use BIGNUMERIC when necessary.
+  - Missing types: BIGINT, SMALLINT, Boolean, REAL, CHAR, NCHAR, VARCHAR, NVARCHAR, TEXT, VARBINARY, DECIMAL
+  - Literal bytes, dates, times, datetimes, timestamps, and arrays.
+  - Get view definitions.
+
+
 ### [0.6.1](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.6.0...v0.6.1) (2021-04-12)
 
 
