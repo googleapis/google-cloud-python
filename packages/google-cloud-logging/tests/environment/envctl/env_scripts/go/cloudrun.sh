@@ -20,7 +20,6 @@ set -u # undefined variables cause exit
 # Note: there is a max character count constraint
 SERVICE_NAME="log-go-run-$(echo $ENVCTL_ID | head -c 8)x"
 SA_NAME=$SERVICE_NAME-invoker
-LIBRARY_NAME="google-cloud-go"
 
 add_service_accounts() {
   set +e
@@ -48,11 +47,11 @@ build_go_container() {
   _deployable_dir=$REPO_ROOT/deployable/$LANGUAGE
 
   # copy over local copy of library
-  pushd $SUPERREPO_ROOT
-    tar -cvf $_deployable_dir/lib.tar --exclude internal/logging --exclude .nox --exclude docs --exclude __pycache__ .
+  pushd $SUPERREPO_ROOT/logging
+    tar -cvf $_deployable_dir/lib.tar --exclude internal/env-tests-logging --exclude .nox --exclude docs --exclude __pycache__ .
   popd
-  mkdir -p $_deployable_dir/$LIBRARY_NAME
-  tar -xvf $_deployable_dir/lib.tar --directory $_deployable_dir/$LIBRARY_NAME
+  mkdir -p $_deployable_dir/logging
+  tar -xvf $_deployable_dir/lib.tar --directory $_deployable_dir/logging
   # build container
   docker build -t $GCR_PATH $_deployable_dir
   docker push $GCR_PATH

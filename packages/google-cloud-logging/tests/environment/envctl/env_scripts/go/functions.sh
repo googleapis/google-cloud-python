@@ -18,7 +18,6 @@ set -o pipefail # any step in pipe caused failure
 set -u # undefined variables cause exit
 
 SERVICE_NAME="log-go-func-$(echo $ENVCTL_ID | head -c 8)x"
-LIBRARY_NAME="google-cloud-go"
 
 destroy() {
   set +e
@@ -53,11 +52,11 @@ deploy() {
   
   # Copy over local copy of library to use as dependency
   _deployable_dir=$REPO_ROOT/deployable/$LANGUAGE
-  pushd $SUPERREPO_ROOT
+  pushd $SUPERREPO_ROOT/logging
     tar -cvf $_deployable_dir/lib.tar --exclude internal/env-tests-logging --exclude .nox --exclude docs --exclude __pycache__ .
   popd
-  mkdir -p $_deployable_dir/google-cloud-go
-  tar -xvf $_deployable_dir/lib.tar --directory $_deployable_dir/google-cloud-go
+  mkdir -p $_deployable_dir/logging
+  tar -xvf $_deployable_dir/lib.tar --directory $_deployable_dir/logging
   
   # Create vendor folder based on local dependency
   pushd $REPO_ROOT/deployable/go

@@ -25,5 +25,9 @@ class TestCloudFunctions(Common, unittest.TestCase):
     environment = "functions"
     language = "go"
 
-    monitored_resource_name = "project"
-    monitored_resource_name = ["project_id"]
+    monitored_resource_name = "cloud_function"
+    monitored_resource_labels = [
+        "region",
+        "function_name",
+        "project_id",
+    ]

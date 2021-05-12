@@ -24,3 +24,6 @@ class TestComputeEngine(Common, unittest.TestCase):
 
     environment = "compute"
     language = "go"
+
+    monitored_resource_name = "gce_instance"
+    monitored_resource_labels = ["project_id", "instance_id", "zone"]
