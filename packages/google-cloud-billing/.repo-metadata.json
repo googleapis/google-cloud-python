@@ -6,6 +6,7 @@
     "issue_tracker": "",
     "release_level": "ga",
     "language": "python",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-billing",
     "distribution_name": "google-cloud-billing",
     "api_id": "cloudbilling.googleapis.com"
