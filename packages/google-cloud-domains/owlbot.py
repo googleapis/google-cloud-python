@@ -20,21 +20,14 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate domains GAPIC layer
-# ----------------------------------------------------------------------------
-versions = ["v1beta1"]
-for version in versions:
-    library = gapic.py_library(
-        service="domains",
-        version=version,
-        bazel_target=f"//google/cloud/domains/{version}:domains-{version}-py",
-    )
+default_version = "v1beta1"
 
+for library in s.get_staging_dirs(default_version):
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
