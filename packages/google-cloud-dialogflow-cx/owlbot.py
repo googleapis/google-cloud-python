@@ -19,22 +19,11 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate dialogflow CX GAPIC layer
-# ----------------------------------------------------------------------------
-versions = ["v3beta1", "v3"]
+default_version = "v3"
 
-for version in versions:
-    library = gapic.py_library(
-        service="dialogflow",
-        version=version,
-        bazel_target=f"//google/cloud/dialogflow/cx/{version}:dialogflow-cx-{version}-py",
-
-    )
-
+for library in s.get_staging_dirs(default_version):
     s.move(
         library,
         excludes=[
@@ -42,9 +31,11 @@ for version in versions:
             "docs/index.rst",
             "README.rst",
             "noxfile.py",
-            f"scripts/fixup_dialogflowcx_{version}_keywords.py",
+            f"scripts/fixup_dialogflowcx_{library.name}_keywords.py",
         ],
     )
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
