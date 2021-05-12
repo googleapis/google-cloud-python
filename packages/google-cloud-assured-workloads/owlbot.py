@@ -19,20 +19,14 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate assured workloads v1beta1 GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="assuredworkloads",
-    version="v1beta1",
-    bazel_target="//google/cloud/assuredworkloads/v1beta1:assuredworkloads-v1beta1-py",
+default_version = "v1beta1"
 
-)
+for library in s.get_staging_dirs(default_version):
+    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst", "scripts/fixup_assuredworkloads_v1beta1_keywords.py"])
 
-s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst", "scripts/fixup_assuredworkloads_v1beta1_keywords.py"])
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
