@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559780",
   "release_level": "beta",
   "language": "python",
+  "library_type": "GAPIC_COMBO",
   "repo": "googleapis/python-error-reporting",
   "distribution_name": "google-cloud-error-reporting",
   "api_id": "clouderrorreporting.googleapis.com",
