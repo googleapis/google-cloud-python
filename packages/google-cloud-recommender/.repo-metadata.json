@@ -6,6 +6,7 @@
   "issue_tracker": "",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-recommender",
   "distribution_name": "google-cloud-recommender",
   "api_id": "recommender.googleapis.com",
