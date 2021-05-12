@@ -18,19 +18,14 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-version = 'v1beta1'
+default_version = "v1beta1"
 
-library = gapic.py_library(
-    service='datalabeling',
-    version=version,
-    bazel_target=f"//google/cloud/datalabeling/{version}:datalabeling-{version}-py",
-    include_protos=True,
-)
+for library in s.get_staging_dirs(default_version):
+    s.move(library, excludes=["docs/index.rst", "nox.py", "README.rst", "setup.py"])
 
-s.move(library, excludes=["docs/index.rst", "nox.py", "README.rst", "setup.py"])
+s.remove_staging_dirs()
 
 # TODO(busunkim): Use latest sphinx after microgenerator transition
 s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
