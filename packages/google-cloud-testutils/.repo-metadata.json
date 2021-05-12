@@ -6,6 +6,7 @@
     "issue_tracker": "https://github.com/googleapis/python-test-utils/issues",
     "release_level": "beta",
     "language": "python",
+    "library_type": "OTHER",
     "repo": "googleapis/python-test-utils",
     "distribution_name": "google-cloud-testutils"
 }  
