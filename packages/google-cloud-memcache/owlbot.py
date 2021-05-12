@@ -19,28 +19,19 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-versions = ["v1beta2",
-            "v1",
-            ] # add new versions at the end of the list
+default_version = "v1"
 
-# ----------------------------------------------------------------------------
-# Generate memcache GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="memcache",
-        version=version,
-        bazel_target=f"//google/cloud/memcache/{version}:memcache-{version}-py")
-
+for library in s.get_staging_dirs(default_version):
     excludes = [
         "setup.py",
         "docs/index.rst",
         "README.rst"
     ]
     s.move(library, excludes=excludes)
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
