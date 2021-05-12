@@ -19,7 +19,6 @@ import inspect
 import google.cloud.logging
 
 from ..common.common import Common
-from ..common.python import CommonPython
 
 
 class TestCloudFunctions(Common, unittest.TestCase):
@@ -28,4 +27,8 @@ class TestCloudFunctions(Common, unittest.TestCase):
     language = "nodejs"
 
     monitored_resource_name = "cloud_function"
-    monitored_resource_labels = ["region", "function_name"]
+    monitored_resource_labels = [
+        "region",
+        "function_name",
+        "project_id",
+    ]

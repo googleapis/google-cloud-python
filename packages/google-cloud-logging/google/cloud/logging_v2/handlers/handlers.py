@@ -14,18 +14,98 @@
 
 """Python :mod:`logging` handlers for Cloud Logging."""
 
+import json
 import logging
-
 
 from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
 from google.cloud.logging_v2.handlers.transports import BackgroundThreadTransport
 from google.cloud.logging_v2.handlers._monitored_resources import detect_resource
+from google.cloud.logging_v2.handlers._helpers import get_request_data
 
 DEFAULT_LOGGER_NAME = "python"
 
-EXCLUDED_LOGGER_DEFAULTS = ("google.cloud", "google.auth", "google_auth_httplib2")
+"""Exclude internal logs from propagating through handlers"""
+EXCLUDED_LOGGER_DEFAULTS = (
+    "google.cloud",
+    "google.auth",
+    "google_auth_httplib2",
+    "google.api_core.bidi",
+    "werkzeug",
+)
 
 _CLEAR_HANDLER_RESOURCE_TYPES = ("gae_app", "cloud_function")
+
+
+class CloudLoggingFilter(logging.Filter):
+    """Python standard ``logging`` Filter class to add Cloud Logging
+    information to each LogRecord.
+
+    When attached to a LogHandler, each incoming log will be modified
+    to include new Cloud Logging relevant data. This data can be manually
+    overwritten using the `extras` argument when writing logs.
+    """
+
+    # The subset of http_request fields have been tested to work consistently across GCP environments
+    # https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest
+    _supported_http_fields = ("requestMethod", "requestUrl", "userAgent", "protocol")
+
+    def __init__(self, project=None, default_labels=None):
+        self.project = project
+        self.default_labels = default_labels if default_labels else {}
+
+    @staticmethod
+    def _infer_source_location(record):
+        """Helper function to infer source location data from a LogRecord.
+        Will default to record.source_location if already set
+        """
+        if hasattr(record, "source_location"):
+            return record.source_location
+        else:
+            name_map = [
+                ("line", "lineno"),
+                ("file", "pathname"),
+                ("function", "funcName"),
+            ]
+            output = {}
+            for (gcp_name, std_lib_name) in name_map:
+                value = getattr(record, std_lib_name, None)
+                if value is not None:
+                    output[gcp_name] = value
+            return output if output else None
+
+    def filter(self, record):
+        """
+        Add new Cloud Logging data to each LogRecord as it comes in
+        """
+        user_labels = getattr(record, "labels", {})
+        # infer request data from the environment
+        inferred_http, inferred_trace, inferred_span = get_request_data()
+        if inferred_http is not None:
+            # filter inferred_http to include only well-supported fields
+            inferred_http = {
+                k: v
+                for (k, v) in inferred_http.items()
+                if k in self._supported_http_fields and v is not None
+            }
+        if inferred_trace is not None and self.project is not None:
+            # add full path for detected trace
+            inferred_trace = f"projects/{self.project}/traces/{inferred_trace}"
+        # set new record values
+        record._resource = getattr(record, "resource", None)
+        record._trace = getattr(record, "trace", inferred_trace) or None
+        record._span_id = getattr(record, "span_id", inferred_span) or None
+        record._http_request = getattr(record, "http_request", inferred_http)
+        record._source_location = CloudLoggingFilter._infer_source_location(record)
+        record._labels = {**self.default_labels, **user_labels} or None
+        # create string representations for structured logging
+        record._trace_str = record._trace or ""
+        record._span_id_str = record._span_id or ""
+        record._http_request_str = json.dumps(record._http_request or {})
+        record._source_location_str = json.dumps(record._source_location or {})
+        record._labels_str = json.dumps(record._labels or {})
+        # break quotes for parsing through structured logging
+        record._msg_str = str(record.msg).replace('"', '\\"') if record.msg else ""
+        return True
 
 
 class CloudLoggingHandler(logging.StreamHandler):
@@ -83,8 +163,7 @@ class CloudLoggingHandler(logging.StreamHandler):
                 option is :class:`.SyncTransport`.
             resource (~logging_v2.resource.Resource):
                 Resource for this Handler. Defaults to ``global``.
-            labels (Optional[dict]): Monitored resource of the entry, defaults
-                to the global resource type.
+            labels (Optional[dict]): Additional labels to attach to logs.
             stream (Optional[IO]): Stream to be used by the handler.
         """
         super(CloudLoggingHandler, self).__init__(stream)
@@ -94,6 +173,9 @@ class CloudLoggingHandler(logging.StreamHandler):
         self.project_id = client.project
         self.resource = resource
         self.labels = labels
+        # add extra keys to log record
+        log_filter = CloudLoggingFilter(project=self.project_id, default_labels=labels)
+        self.addFilter(log_filter)
 
     def emit(self, record):
         """Actually log the specified logging record.
@@ -106,25 +188,16 @@ class CloudLoggingHandler(logging.StreamHandler):
             record (logging.LogRecord): The record to be logged.
         """
         message = super(CloudLoggingHandler, self).format(record)
-        trace_id = getattr(record, "trace", None)
-        span_id = getattr(record, "span_id", None)
-        http_request = getattr(record, "http_request", None)
-        resource = getattr(record, "resource", self.resource)
-        user_labels = getattr(record, "labels", {})
-        # merge labels
-        total_labels = self.labels if self.labels is not None else {}
-        total_labels.update(user_labels)
-        if len(total_labels) == 0:
-            total_labels = None
         # send off request
         self.transport.send(
             record,
             message,
-            resource=resource,
-            labels=(total_labels if total_labels else None),
-            trace=trace_id,
-            span_id=span_id,
-            http_request=http_request,
+            resource=(record._resource or self.resource),
+            labels=record._labels,
+            trace=record._trace,
+            span_id=record._span_id,
+            http_request=record._http_request,
+            source_location=record._source_location,
         )
 
 
@@ -169,6 +242,6 @@ def setup_logging(
     logger.setLevel(log_level)
     logger.addHandler(handler)
     for logger_name in all_excluded_loggers:
+        # prevent excluded loggers from propagating logs to handler
         logger = logging.getLogger(logger_name)
         logger.propagate = False
-        logger.addHandler(logging.StreamHandler())

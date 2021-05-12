@@ -1,4 +1,4 @@
-# Copyright 2016 Google LLC
+# Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,13 +14,26 @@
 
 import logging
 import unittest
+import inspect
+import uuid
 
 import google.cloud.logging
+from google.cloud.logging_v2.resource import Resource
 
 from ..common.common import Common
 
 
-class TestAppEngineFlexContainer(Common, unittest.TestCase):
+class TestCloudRun(Common, unittest.TestCase):
 
-    environment = "appengine_flex_container"
-    language = "go"
+    environment = "cloudrun"
+    language = "nodejs"
+
+    # What it should be
+    monitored_resource_name = "cloud_run_revision"
+    monitored_resource_labels = [
+        "project_id",
+        "service_name",
+        "revision_name",
+        "location",
+        "configuration_name",
+    ]

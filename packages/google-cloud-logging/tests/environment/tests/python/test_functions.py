@@ -29,3 +29,24 @@ class TestCloudFunctions(Common, CommonPython, unittest.TestCase):
 
     monitored_resource_name = "cloud_function"
     monitored_resource_labels = ["region", "function_name"]
+
+    def test_default_http_request_pylogging(self):
+        """
+        Cloud Functions should automatically attach http request information
+        """
+        log_text = f"{inspect.currentframe().f_code.co_name}"
+
+        log_list = self.trigger_and_retrieve(log_text, "pylogging")
+        found_request = log_list[-1].http_request
+        found_trace = log_list[-1].trace
+
+        self.assertIsNotNone(found_request)
+        self.assertIsNotNone(found_request["requestMethod"])
+        self.assertIsNotNone(found_request["requestUrl"])
+        self.assertIsNotNone(found_request["userAgent"])
+        self.assertIsNotNone(found_request["protocol"])
+        self.assertEqual(found_request["requestMethod"], "POST")
+        self.assertEqual(found_request["protocol"], "HTTP/1.1")
+
+        self.assertIsNotNone(found_trace)
+        self.assertIn("projects/", found_trace)

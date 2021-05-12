@@ -90,7 +90,7 @@ class AppEngineHandler(logging.StreamHandler):
         """
         gae_labels = {}
 
-        _, trace_id = get_request_data()
+        _, trace_id, _ = get_request_data()
         if trace_id is not None:
             gae_labels[_TRACE_ID_LABEL] = trace_id
 
@@ -107,7 +107,7 @@ class AppEngineHandler(logging.StreamHandler):
             record (logging.LogRecord): The record to be logged.
         """
         message = super(AppEngineHandler, self).format(record)
-        inferred_http, inferred_trace = get_request_data()
+        inferred_http, inferred_trace, _ = get_request_data()
         if inferred_trace is not None:
             inferred_trace = f"projects/{self.project_id}/traces/{inferred_trace}"
         # allow user overrides

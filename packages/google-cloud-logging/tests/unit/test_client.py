@@ -799,7 +799,13 @@ class TestClient(unittest.TestCase):
         handler.transport.worker.stop()
 
         expected_kwargs = {
-            "excluded_loggers": ("google.cloud", "google.auth", "google_auth_httplib2"),
+            "excluded_loggers": (
+                "google.cloud",
+                "google.auth",
+                "google_auth_httplib2",
+                "google.api_core.bidi",
+                "werkzeug",
+            ),
             "log_level": 20,
         }
         self.assertEqual(kwargs, expected_kwargs)
@@ -836,7 +842,13 @@ class TestClient(unittest.TestCase):
         handler.transport.worker.stop()
 
         expected_kwargs = {
-            "excluded_loggers": ("google.cloud", "google.auth", "google_auth_httplib2"),
+            "excluded_loggers": (
+                "google.cloud",
+                "google.auth",
+                "google_auth_httplib2",
+                "google.api_core.bidi",
+                "werkzeug",
+            ),
             "log_level": 20,
         }
         self.assertEqual(kwargs, expected_kwargs)
