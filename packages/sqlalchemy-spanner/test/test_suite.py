@@ -724,8 +724,8 @@ class ComponentReflectionTest(_ComponentReflectionTest):
             table_names = [t for t in tables if t not in _ignore_tables]
 
             if order_by == "foreign_key":
-                answer = ["users", "user_tmp", "email_addresses", "dingalings"]
-                eq_(table_names, answer)
+                answer = {"dingalings", "email_addresses", "user_tmp", "users"}
+                eq_(set(table_names), answer)
             else:
                 answer = ["dingalings", "email_addresses", "user_tmp", "users"]
                 eq_(sorted(table_names), answer)
