@@ -25,6 +25,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy import MetaData
 from sqlalchemy.schema import DDL
 from sqlalchemy.testing import config
+from sqlalchemy.testing import engines
 from sqlalchemy.testing import db
 from sqlalchemy.testing import eq_
 from sqlalchemy.testing import fixtures
@@ -811,13 +812,35 @@ class InsertBehaviorTest(_InsertBehaviorTest):
     def test_insert_from_select_autoinc(self):
         pass
 
-    @pytest.mark.skip("Spanner doesn't support auto increment")
-    def test_insert_from_select_autoinc_no_rows(self):
-        pass
-
     @pytest.mark.skip("Spanner doesn't support default column values")
     def test_insert_from_select_with_defaults(self):
         pass
+
+    def test_autoclose_on_insert(self):
+        """
+        SPANNER OVERRIDE:
+
+        Cloud Spanner doesn't support tables with an auto increment primary key,
+        following insertions will fail with `400 id must not be NULL in table
+        autoinc_pk`.
+
+        Overriding the tests and adding a manual primary key value to avoid the same
+        failures.
+        """
+        if config.requirements.returning.enabled:
+            engine = engines.testing_engine(options={"implicit_returning": False})
+        else:
+            engine = config.db
+
+        with engine.begin() as conn:
+            r = conn.execute(
+                self.tables.autoinc_pk.insert(), dict(id=1, data="some data")
+            )
+
+        assert r._soft_closed
+        assert not r.closed
+        assert r.is_insert
+        assert not r.returns_rows
 
 
 @pytest.mark.skip("Spanner doesn't support IS DISTINCT FROM clause")
