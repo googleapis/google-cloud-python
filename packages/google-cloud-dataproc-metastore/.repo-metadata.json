@@ -6,6 +6,7 @@
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-dataproc-metastore",
     "distribution_name": "google-cloud-dataproc-metastore",
     "api_id": "metastore.googleapis.com"
