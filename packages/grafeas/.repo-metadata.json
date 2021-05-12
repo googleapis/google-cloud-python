@@ -6,6 +6,7 @@
   "issue_tracker": "",
   "release_level": "alpha",
   "language": "python",
+  "library_type": "GAPIC_COMBO",
   "repo": "googleapis/python-grafeas",
   "distribution_name": "grafeas",
   "api_id": "",
