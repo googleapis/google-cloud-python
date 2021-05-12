@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559748",
   "release_level": "alpha",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-securitycenter",
   "distribution_name": "google-cloud-securitycenter",
   "api_id": "securitycenter.googleapis.com",
