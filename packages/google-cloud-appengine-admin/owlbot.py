@@ -20,30 +20,19 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-versions = [
-    "v1",
+default_version = "v1"
 
-] # add new versions at the end of the list
-
-# ----------------------------------------------------------------------------
-# Generate appengine GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="appengine",
-        version=version,
-        bazel_target=f"//google/appengine/{version}:google-cloud-appengine-{version}-py",
-    )
-
+for library in s.get_staging_dirs(default_version):
     excludes=["setup.py", "README.rst", "docs/index.rst"]
 
     # See https://github.com/googleapis/gapic-generator-python/issues/825
     excludes.extend(["docs/appengine_admin_v1/services.rst"])
 
     s.move(library, excludes=excludes)
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
