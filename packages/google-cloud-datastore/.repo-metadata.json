@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559768",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_COMBO",
   "repo": "googleapis/python-datastore",
   "distribution_name": "google-cloud-datastore",
   "api_id": "datastore.googleapis.com"
