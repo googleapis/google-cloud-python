@@ -20,30 +20,21 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG)
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate billing budgets GAPIC layer
-# ----------------------------------------------------------------------------
-versions = ["v1beta1", "v1"]
-for version in versions:
-    library = gapic.py_library(
-        service="billing_budgets",
-        version=f"{version}",
-        bazel_target=f"//google/cloud/billing/budgets/{version}:billing-budgets-{version}-py",
-        include_protos=True,
-        proto_output_path=f"google/cloud/billing/budgets_{version}/proto"
-    )
+default_version = "v1"
 
+for library in s.get_staging_dirs(default_version):
     excludes = [
         "nox.py",
         "setup.py",
         "README.rst",
-        library / "docs/index.rst",
+        "docs/index.rst",
     ]
 
     s.move(library, excludes=excludes)
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
