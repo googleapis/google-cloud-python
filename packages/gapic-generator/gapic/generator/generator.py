@@ -89,7 +89,7 @@ class Generator:
         sample_templates, client_templates = utils.partition(
             lambda fname: os.path.basename(
                 fname) == samplegen.DEFAULT_TEMPLATE_NAME,
-            self._env.loader.list_templates(),
+            self._env.loader.list_templates(),  # type: ignore
         )
 
         # Iterate over each template and add the appropriate output files
@@ -113,7 +113,7 @@ class Generator:
             sample_output = self._generate_samples_and_manifest(
                 api_schema, self._env.get_template(sample_templates[0]),
                 opts=opts,
-                )
+            )
             output_files.update(sample_output)
 
         # Return the CodeGeneratorResponse output.
@@ -286,10 +286,10 @@ class Generator:
             for service in api_schema.services.values():
                 if (
                         (skip_subpackages
-                        and service.meta.address.subpackage != api_schema.subpackage_view)
+                         and service.meta.address.subpackage != api_schema.subpackage_view)
                         or
                         ('transport' in template_name
-                        and not self._is_desired_transport(template_name, opts))
+                         and not self._is_desired_transport(template_name, opts))
                         or
                         # TODO(yon-mg) - remove when rest async implementation resolved
                         # temporarily stop async client gen while rest async is unkown
