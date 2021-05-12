@@ -105,9 +105,9 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
         representing all the relationships in the table.
 
         TODO: DO NOT USE THIS METHOD UNTIL
-            https://github.com/orijtech/django-spanner/issues/313
+            https://github.com/googleapis/python-spanner-django/issues/313
          is resolved so that foreign keys can be supported, as documented in:
-            https://github.com/orijtech/django-spanner/issues/311
+            https://github.com/googleapis/python-spanner-django/issues/311
 
         :type cursor: :class:`~google.cloud.spanner_dbapi.cursor.Cursor`
         :param cursor: A reference to a Spanner Database cursor.
@@ -227,7 +227,7 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
             already_added = constraint in constraints
             if constraint_type == "FOREIGN KEY":
                 # We don't yet support anything related to FOREIGN KEY.
-                # See https://github.com/orijtech/django-spanner/issues/313.
+                # See https://github.com/googleapis/python-spanner-django/issues/313.
                 if already_added:
                     del constraints[constraint]
                 continue

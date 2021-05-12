@@ -57,7 +57,7 @@ def datetimewithnanoseconds_eq(self, other):
             return False
 
     # Otherwise try to convert them to an equvialent form.
-    # See https://github.com/orijtech/spanner-orm/issues/272
+    # See https://github.com/googleapis/python-spanner-django/issues/272
     if isinstance(other, datetime.datetime):
         return self.ctime() == other.ctime()
 

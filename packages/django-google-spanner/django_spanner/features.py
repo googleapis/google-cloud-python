@@ -168,17 +168,17 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "syndication_tests.tests.SyndicationFeedTest.test_rss091_feed",
         "syndication_tests.tests.SyndicationFeedTest.test_template_feed",
         # datetimes retrieved from the database with the wrong hour when
-        # USE_TZ = True: https://github.com/orijtech/spanner-orm/issues/193
+        # USE_TZ = True: https://github.com/googleapis/python-spanner-django/issues/193
         "datetimes.tests.DateTimesTests.test_21432",
         "db_functions.datetime.test_extract_trunc.DateFunctionWithTimeZoneTests.test_trunc_func_with_timezone",
         "db_functions.datetime.test_extract_trunc.DateFunctionWithTimeZoneTests.test_trunc_timezone_applied_before_truncation",  # noqa
         # extract() with timezone not working as expected:
-        # https://github.com/orijtech/spanner-orm/issues/191
+        # https://github.com/googleapis/python-spanner-django/issues/191
         "timezones.tests.NewDatabaseTests.test_query_datetimes",
-        # using NULL with + crashes: https://github.com/orijtech/spanner-orm/issues/201
+        # using NULL with + crashes: https://github.com/googleapis/python-spanner-django/issues/201
         "annotations.tests.NonAggregateAnnotationTestCase.test_combined_annotation_commutative",
         # Spanner loses DecimalField precision due to conversion to float:
-        # https://github.com/orijtech/spanner-orm/pull/133#pullrequestreview-328482925
+        # https://github.com/googleapis/python-spanner-django/pull/133#pullrequestreview-328482925
         "aggregation.tests.AggregateTestCase.test_decimal_max_digits_has_no_effect",
         "aggregation.tests.AggregateTestCase.test_related_aggregate",
         "db_functions.comparison.test_cast.CastTests.test_cast_to_decimal_field",
@@ -191,16 +191,16 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "aggregation.test_filter_argument.FilteredAggregateTests.test_filtered_numerical_aggregates",
         "aggregation_regress.tests.AggregationTests.test_stddev",
         # SELECT list expression references <column> which is neither grouped
-        # nor aggregated: https://github.com/orijtech/spanner-orm/issues/245
+        # nor aggregated: https://github.com/googleapis/python-spanner-django/issues/245
         "aggregation_regress.tests.AggregationTests.test_annotated_conditional_aggregate",
         "aggregation_regress.tests.AggregationTests.test_annotation_with_value",
         "expressions.tests.BasicExpressionsTests.test_filtering_on_annotate_that_uses_q",
         # "No matching signature for operator" crash when comparing TIMESTAMP
-        # and DATE: https://github.com/orijtech/django-spanner/issues/255
+        # and DATE: https://github.com/googleapis/python-spanner-django/issues/255
         "expressions.tests.BasicExpressionsTests.test_outerref_mixed_case_table_name",
         "expressions.tests.FTimeDeltaTests.test_mixed_comparisons1",
         # duration arithmetic fails with dates: No matching signature for
-        # function TIMESTAMP_ADD: https://github.com/orijtech/django-spanner/issues/253
+        # function TIMESTAMP_ADD: https://github.com/googleapis/python-spanner-django/issues/253
         "expressions.tests.FTimeDeltaTests.test_date_comparison",
         "expressions.tests.FTimeDeltaTests.test_date_minus_duration",
         "expressions.tests.FTimeDeltaTests.test_delta_add",
@@ -212,12 +212,12 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "select_for_update.tests.SelectForUpdateTests.test_unsupported_select_for_update_with_limit",
         # integer division produces a float result, which can't be assigned to
         # an integer column:
-        # https://github.com/orijtech/django-spanner/issues/331
+        # https://github.com/googleapis/python-spanner-django/issues/331
         "expressions.tests.ExpressionOperatorTests.test_lefthand_division",
         "expressions.tests.ExpressionOperatorTests.test_right_hand_division",
         # power operator produces a float result, which can't be assigned to
         # an integer column:
-        # https://github.com/orijtech/django-spanner/issues/331
+        # https://github.com/googleapis/python-spanner-django/issues/331
         "expressions.tests.ExpressionOperatorTests.test_lefthand_power",
         "expressions.tests.ExpressionOperatorTests.test_righthand_power",
         # Cloud Spanner's docs: "The rows that are returned by LIMIT and OFFSET
@@ -238,10 +238,10 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "db_functions.math.test_mod.ModTests.test_decimal",
         "db_functions.math.test_mod.ModTests.test_float",
         # casting DateField to DateTimeField adds an unexpected hour:
-        # https://github.com/orijtech/spanner-orm/issues/260
+        # https://github.com/googleapis/python-spanner-django/issues/260
         "db_functions.comparison.test_cast.CastTests.test_cast_from_db_date_to_datetime",
         # Tests that fail during tear down on databases that don't support
-        # transactions: https://github.com/orijtech/spanner-orm/issues/271
+        # transactions: https://github.com/googleapis/python-spanner-django/issues/271
         "admin_views.test_multidb.MultiDatabaseTests.test_add_view",
         "admin_views.test_multidb.MultiDatabaseTests.test_change_view",
         "admin_views.test_multidb.MultiDatabaseTests.test_delete_view",
@@ -249,7 +249,7 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "auth_tests.test_remote_user_deprecation.RemoteUserCustomTest.test_configure_user_deprecation_warning",
         "contenttypes_tests.test_models.ContentTypesMultidbTests.test_multidb",
         # Tests that by-pass using django_spanner and generate
-        # invalid DDL: https://github.com/orijtech/django-spanner/issues/298
+        # invalid DDL: https://github.com/googleapis/python-spanner-django/issues/298
         "cache.tests.CreateCacheTableForDBCacheTests",
         "cache.tests.DBCacheTests",
         "cache.tests.DBCacheWithTimeZoneTests",
@@ -280,15 +280,15 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # backend needs it (which it currently doesn't).
         "introspection.tests.IntrospectionTests.test_get_key_columns",
         # DatabaseIntrospection.get_relations() isn't implemented:
-        # https://github.com/orijtech/django-spanner/issues/311
+        # https://github.com/googleapis/python-spanner-django/issues/311
         "introspection.tests.IntrospectionTests.test_get_relations",
         # pyformat parameters not supported on INSERT:
-        # https://github.com/orijtech/django-spanner/issues/343
+        # https://github.com/googleapis/python-spanner-django/issues/343
         "backends.tests.BackendTestCase.test_cursor_execute_with_pyformat",
         "backends.tests.BackendTestCase.test_cursor_executemany_with_pyformat",
         "backends.tests.BackendTestCase.test_cursor_executemany_with_pyformat_iterator",
         # duplicate table raises GoogleAPICallError rather than DatabaseError:
-        # https://github.com/orijtech/django-spanner/issues/344
+        # https://github.com/googleapis/python-spanner-django/issues/344
         "backends.tests.BackendTestCase.test_duplicate_table_error",
         "migrations.test_commands.MigrateTests.test_migrate_fake_initial",
         "migrations.test_commands.MigrateTests.test_migrate_initial_false",
@@ -340,10 +340,10 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         # support transactions.
         "migrations.test_executor.ExecutorTests.test_atomic_operation_in_non_atomic_migration",
         # changing a not null constraint isn't allowed if it affects an index:
-        # https://github.com/orijtech/django-spanner/issues/378
+        # https://github.com/googleapis/python-spanner-django/issues/378
         "migrations.test_operations.OperationTests.test_alter_field_with_index",
         # parsing INSERT with one inlined value and one placeholder fails:
-        # https://github.com/orijtech/django-spanner/issues/393
+        # https://github.com/googleapis/python-spanner-django/issues/393
         "migrations.test_operations.OperationTests.test_run_sql_params",
         # This test doesn't flush the database properly:
         # https://code.djangoproject.com/ticket/31398
