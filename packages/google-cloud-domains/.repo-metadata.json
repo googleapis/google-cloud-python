@@ -6,6 +6,7 @@
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-domains",
     "distribution_name": "google-cloud-domains",
     "api_id": "domains.googleapis.com"
