@@ -1665,7 +1665,7 @@ def test_{{ service.name|snake_case }}_transport_create_channel_old_api_core(tra
 
         {% with host = (service.host|default('localhost', true)) %}
         create_channel.assert_called_with(
-            "{{ host }}",
+            "{{ host }}{% if ":" not in service.host %}:443{% endif %}",
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",
@@ -1703,7 +1703,7 @@ def test_{{ service.name|snake_case }}_transport_create_channel_user_scopes(tran
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
 
         create_channel.assert_called_with(
-            "{{ host }}",
+            "{{ host }}{% if ":" not in service.host %}:443{% endif %}",
             credentials=creds,
             credentials_file=None,
             quota_project_id="octopus",

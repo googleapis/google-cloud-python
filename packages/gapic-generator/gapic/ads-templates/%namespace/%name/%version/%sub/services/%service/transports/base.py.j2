@@ -91,7 +91,7 @@ class {{ service.name }}Transport(metaclass=abc.ABCMeta):
                     {% if method.retry.backoff_multiplier %}multiplier={{ method.retry.backoff_multiplier }},{% endif %}
                     predicate=retries.if_exception_type(
                         {% for ex in method.retry.retryable_exceptions|sort(attribute='__name__') %}
-                        exceptions.{{ ex.__name__ }},
+                        core_exceptions.{{ ex.__name__ }},
                         {% endfor %}
                     ),
                     deadline={{ method.timeout }},
