@@ -5,6 +5,7 @@
     "issue_tracker": "https://github.com/googleapis/python-access-context-manager/issues",
     "release_level": "beta",
     "language": "python",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-access-context-manager",
     "distribution_name": "google-cloud-access-context-manager"
 }
