@@ -20,20 +20,14 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate functions GAPIC layer
-# ----------------------------------------------------------------------------
+default_version = "v1alpha"
 
-library = gapic.py_library(
-    service="functions",
-    version="v1",
-    bazel_target="//google/cloud/dataqna/v1alpha:dataqna-v1alpha-py",
-)
+for library in s.get_staging_dirs(default_version):
+    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
-s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
