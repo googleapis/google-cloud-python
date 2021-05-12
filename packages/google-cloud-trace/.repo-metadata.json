@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559776",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-trace",
   "distribution_name": "google-cloud-trace",
   "api_id": "cloudtrace.googleapis.com",
