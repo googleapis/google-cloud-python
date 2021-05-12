@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559664",
   "release_level": "beta",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-talent",
   "distribution_name": "google-cloud-talent",
   "api_id": "jobs.googleapis.com",
