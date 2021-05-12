@@ -6,6 +6,7 @@
     "issue_tracker": "https://issuetracker.google.com/savedsearches/5300385",
     "release_level": "beta",
     "language": "python",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-dialogflow-cx",
     "distribution_name": "google-cloud-dialogflow-cx",
     "api_id": "dialogflow.googleapis.com"
