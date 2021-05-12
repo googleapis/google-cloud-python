@@ -6,6 +6,7 @@
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",
+    "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-channel",
     "distribution_name": "google-cloud-channel",
     "api_id": "cloudchannel.googleapis.com"
