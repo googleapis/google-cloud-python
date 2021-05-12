@@ -5,6 +5,7 @@
   "issue_tracker": "https://github.com/googleapis/google-auth-library-python-oauthlib/issues",
   "release_level": "alpha",
   "language": "python",
+  "library_type": "AUTH",
   "repo": "googleapis/google-auth-library-python-oauthlib",
   "distribution_name": "google-auth-oauthlib"
 }
