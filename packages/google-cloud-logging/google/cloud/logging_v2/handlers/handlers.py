@@ -45,6 +45,10 @@ class CloudLoggingFilter(logging.Filter):
     overwritten using the `extras` argument when writing logs.
     """
 
+    # The subset of http_request fields have been tested to work consistently across GCP environments
+    # https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#httprequest
+    _supported_http_fields = ("requestMethod", "requestUrl", "userAgent", "protocol")
+
     def __init__(self, project=None, default_labels=None):
         self.project = project
         self.default_labels = default_labels if default_labels else {}
@@ -74,8 +78,17 @@ class CloudLoggingFilter(logging.Filter):
         Add new Cloud Logging data to each LogRecord as it comes in
         """
         user_labels = getattr(record, "labels", {})
+        # infer request data from the environment
         inferred_http, inferred_trace, inferred_span = get_request_data()
+        if inferred_http is not None:
+            # filter inferred_http to include only well-supported fields
+            inferred_http = {
+                k: v
+                for (k, v) in inferred_http.items()
+                if k in self._supported_http_fields and v is not None
+            }
         if inferred_trace is not None and self.project is not None:
+            # add full path for detected trace
             inferred_trace = f"projects/{self.project}/traces/{inferred_trace}"
         # set new record values
         record._resource = getattr(record, "resource", None)
@@ -84,13 +97,14 @@ class CloudLoggingFilter(logging.Filter):
         record._http_request = getattr(record, "http_request", inferred_http)
         record._source_location = CloudLoggingFilter._infer_source_location(record)
         record._labels = {**self.default_labels, **user_labels} or None
-        # create guaranteed string representations for structured logging
-        record._msg_str = record.msg or ""
+        # create string representations for structured logging
         record._trace_str = record._trace or ""
         record._span_id_str = record._span_id or ""
         record._http_request_str = json.dumps(record._http_request or {})
         record._source_location_str = json.dumps(record._source_location or {})
         record._labels_str = json.dumps(record._labels or {})
+        # break quotes for parsing through structured logging
+        record._msg_str = str(record.msg).replace('"', '\\"') if record.msg else ""
         return True
 
 

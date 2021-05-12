@@ -134,22 +134,20 @@ class TestCloudLoggingFilter(unittest.TestCase):
         expected_span = "456"
         combined_trace = f"{expected_trace}/{expected_span}"
         expected_request = {
-            "requestMethod": "PUT",
+            "requestMethod": "GET",
             "requestUrl": expected_path,
             "userAgent": expected_agent,
             "protocol": "HTTP/1.1",
         }
 
         app = self.create_app()
-        with app.test_client() as c:
-            c.put(
-                path=expected_path,
-                data="body",
-                headers={
-                    "User-Agent": expected_agent,
-                    "X_CLOUD_TRACE_CONTEXT": combined_trace,
-                },
-            )
+        with app.test_request_context(
+            expected_path,
+            headers={
+                "User-Agent": expected_agent,
+                "X_CLOUD_TRACE_CONTEXT": combined_trace,
+            },
+        ):
             success = filter_obj.filter(record)
             self.assertTrue(success)
 
