@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/5226584",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-cloudbuild",
   "distribution_name": "google-cloud-build",
   "api_id": "cloudbuild.googleapis.com",
