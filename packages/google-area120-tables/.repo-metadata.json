@@ -6,6 +6,7 @@
   "issue_tracker": "",
   "release_level": "alpha",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-area120-tables",
   "distribution_name": "google-area120-tables",
   "api_id": "area120tables.googleapis.com"
