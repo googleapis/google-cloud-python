@@ -20,58 +20,52 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v1p1beta1", "v1p2beta1", "v1p4beta1", "v1p5beta1", "v1"]
 
-excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst"]
+default_version = "v1"
 
-# ----------------------------------------------------------------------------
-# Generate asset GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="asset",
-        version=version,
-        bazel_target=f"//google/cloud/asset/{version}:asset-{version}-py",
+for library in s.get_staging_dirs(default_version):
+    # Fix import of 'osconfig' type
+    s.replace(
+        library / f"google/cloud/asset_{library.name}/types/assets.py",
+        f"from google\.cloud\.osconfig\.{library.name} import inventory_pb2 as inventory",
+        f"from google.cloud.osconfig_{library.name} import Inventory"
     )
 
+    s.replace(
+        library / f"google/cloud/asset_{library.name}/types/assets.py",
+        "message=inventory\.Inventory,",
+        "message=Inventory,"
+    )
+
+    # Remove broken `parse_asset_path` method
+    # The resource pattern is '*' which breaks the regex match
+    s.replace(
+        library / "google/cloud/**/client.py",
+        """@staticmethod
+    def parse_asset_path.*?@staticmethod""",
+        """@staticmethod""",
+        flags=re.MULTILINE | re.DOTALL
+    )
+
+    s.replace(
+        library / "google/cloud/**/async_client.py",
+        """parse_asset_path = staticmethod\(AssetServiceClient\.parse_asset_path\)""",
+        ""
+    )
+
+    s.replace(
+        library / "tests/unit/**/test_asset_service.py",
+        """def test_parse_asset_path.*?def""",
+        """def""",
+        flags=re.MULTILINE | re.DOTALL,
+    )
+
+    excludes = ["setup.py", "nox*.py", "README.rst", "docs/conf.py", "docs/index.rst"]
     s.move(library, excludes=excludes)
 
-# Fix import of 'osconfig' type
-s.replace(
-    "google/cloud/asset_v1/types/assets.py",
-    "from google\.cloud\.osconfig\.v1 import inventory_pb2 as inventory",
-    "from google.cloud.osconfig_v1 import Inventory"
-)
+s.remove_staging_dirs()
 
-s.replace(
-    "google/cloud/asset_v1/types/assets.py",
-    "message=inventory\.Inventory,",
-    "message=Inventory,"
-)
-
-# Remove broken `parse_asset_path` method
-# The resource pattern is '*' which breaks the regex match
-s.replace(
-    "google/cloud/**/client.py",
-    """@staticmethod
-    def parse_asset_path.*?@staticmethod""",
-    """@staticmethod""",
-    flags=re.MULTILINE | re.DOTALL
-)
-
-s.replace(
-    "google/cloud/**/async_client.py",
-    """parse_asset_path = staticmethod\(AssetServiceClient\.parse_asset_path\)""",
-    ""
-)
-s.replace(
-    "tests/unit/**/test_asset_service.py",
-    """def test_parse_asset_path.*?def""",
-    """def""",
-    flags=re.MULTILINE | re.DOTALL,
-)
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
