@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559782",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_MANUAL",
   "repo": "googleapis/python-storage",
   "distribution_name": "google-cloud-storage",
   "api_id": "storage.googleapis.com",
