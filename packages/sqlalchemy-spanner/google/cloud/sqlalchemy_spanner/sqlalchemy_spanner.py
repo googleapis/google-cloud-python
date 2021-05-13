@@ -288,9 +288,6 @@ class SpannerTypeCompiler(GenericTypeCompiler):
     def visit_DECIMAL(self, type_, **kw):
         return "NUMERIC"
 
-    def visit_NUMERIC(self, type_, **kw):
-        return "NUMERIC"
-
     def visit_VARCHAR(self, type_, **kw):
         return "STRING({})".format(type_.length or "MAX")
 
@@ -302,6 +299,9 @@ class SpannerTypeCompiler(GenericTypeCompiler):
 
     def visit_DATETIME(self, type_, **kw):
         return "TIMESTAMP"
+
+    def visit_NUMERIC(self, type_, **kw):
+        return "NUMERIC"
 
     def visit_BIGINT(self, type_, **kw):
         return "INT64"
@@ -329,6 +329,7 @@ class SpannerDialect(DefaultDialect):
     supports_sequences = True
     supports_native_enum = True
     supports_native_boolean = True
+    supports_native_decimal = True
 
     ddl_compiler = SpannerDDLCompiler
     preparer = SpannerIdentifierPreparer

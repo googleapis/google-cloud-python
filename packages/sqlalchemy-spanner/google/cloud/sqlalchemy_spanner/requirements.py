@@ -68,3 +68,9 @@ class Requirements(SuiteRequirements):
             dict: isolation levels description.
         """
         return {"default": "SERIALIZABLE", "supported": ["SERIALIZABLE", "AUTOCOMMIT"]}
+
+    @property
+    def precision_numerics_enotation_large(self):
+        """target backend supports Decimal() objects using E notation
+        to represent very large values."""
+        return exclusions.open()
