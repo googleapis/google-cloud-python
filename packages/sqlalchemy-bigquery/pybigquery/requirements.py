@@ -134,7 +134,7 @@ class Requirements(sqlalchemy.testing.requirements.SuiteRequirements):
         """Target database must support external schemas, and have one
         named 'test_schema'."""
 
-        return supported()
+        return unsupported()
 
     @property
     def implicit_default_schema(self):
@@ -217,4 +217,16 @@ class Requirements(sqlalchemy.testing.requirements.SuiteRequirements):
         so this is off by default.
 
         """
+        return supported()
+
+
+class WithSchemas(Requirements):
+    """
+    Option to run without schema tests
+
+    because the `test_schema` name can't be overridden.
+    """
+
+    @property
+    def schemas(self):
         return supported()
