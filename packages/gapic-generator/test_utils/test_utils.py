@@ -162,6 +162,7 @@ def make_method(
         module: str = 'baz',
         http_rule: http_pb2.HttpRule = None,
         signatures: typing.Sequence[str] = (),
+        is_deprecated: bool = False,
         **kwargs
 ) -> wrappers.Method:
     # Use default input and output messages if they are not provided.
@@ -188,6 +189,9 @@ def make_method(
 
     if isinstance(package, str):
         package = tuple(package.split('.'))
+
+    if is_deprecated:
+        method_pb.options.deprecated = True
 
     # Instantiate the wrapper class.
     return wrappers.Method(

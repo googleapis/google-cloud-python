@@ -359,6 +359,9 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
                 {{ method.client_output.meta.doc|rst(width=72, indent=16, source_format="rst") }}
         {% endif %}
         """
+        {% if method.is_deprecated %}
+        warnings.warn("{{ method.name|snake_case }} is deprecated", warnings.DeprecationWarning)
+        {% endif %}
         {% if not method.client_streaming %}
         # Create or coerce a protobuf request object.
         {% if method.flattened_fields %}
@@ -476,9 +479,9 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy_pb2.Policy:
         r"""Sets the IAM access control policy on the specified function.
-        
+
         Replaces any existing policy.
-        
+
         Args:
             request (:class:`~.iam_policy_pb2.SetIamPolicyRequest`):
                 The request object. Request message for `SetIamPolicy`

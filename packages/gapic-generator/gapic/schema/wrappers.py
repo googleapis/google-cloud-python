@@ -734,8 +734,14 @@ class Method:
         # Return the usual output.
         return self.output
 
+    @property
+    def is_deprecated(self) -> bool:
+        """Returns true if the method is deprecated, false otherwise."""
+        return descriptor_pb2.MethodOptions.HasField(self.options, 'deprecated')
+
     # TODO(yon-mg): remove or rewrite: don't think it performs as intended
     #               e.g. doesn't work with basic case of gRPC transcoding
+
     @property
     def field_headers(self) -> Sequence[str]:
         """Return the field headers defined for this method."""
