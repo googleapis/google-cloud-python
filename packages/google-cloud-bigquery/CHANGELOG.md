@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+### [2.16.1](https://www.github.com/googleapis/python-bigquery/compare/v2.16.0...v2.16.1) (2021-05-12)
+
+
+### Bug Fixes
+
+* executemany rowcount only reflected the last execution ([#660](https://www.github.com/googleapis/python-bigquery/issues/660)) ([aeadc8c](https://www.github.com/googleapis/python-bigquery/commit/aeadc8c2d614bb9f0883ec901fca48930f3aaf19))
+
 ## [2.16.0](https://www.github.com/googleapis/python-bigquery/compare/v2.15.0...v2.16.0) (2021-05-05)
 
 
