@@ -4,28 +4,25 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# See https://pre-commit.com for more information
-# See https://pre-commit.com/hooks.html for more hooks
-repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0
-    hooks:
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
-    -   id: check-yaml
--   repo: https://github.com/psf/black
-    rev: 19.10b0
-    hooks:
-    - id: black
--   repo: https://gitlab.com/pycqa/flake8
-    rev: 3.9.1
-    hooks:
-    - id: flake8
+
+docker:
+  image: gcr.io/repo-automation-bots/owlbot-python:latest
+
+deep-remove-regex:
+  - /owl-bot-staging
+
+deep-copy-regex:
+  - source: /google/cloud/workflows/executions/(v.*)/.*-py/(.*)
+    dest: /owl-bot-staging/executions/$1/$2
+  - source: /google/cloud/workflows/(v.*)/.*-py/(.*)
+    dest: /owl-bot-staging/$1/$2
+
+begin-after-commit-hash: acb4b773a6df45f9303067ffcb21387a7b6ad40d
+
