@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.46.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.46.2...v0.46.3) (2021-05-12)
+
+
+### Bug Fixes
+
+* consistently use _pb2 identifier ([#883](https://www.github.com/googleapis/gapic-generator-python/issues/883)) ([d789c84](https://www.github.com/googleapis/gapic-generator-python/commit/d789c84d0d686bdb2d88179041b4c04cc32a3e66))
+
 ### [0.46.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.46.1...v0.46.2) (2021-05-12)
 
 
