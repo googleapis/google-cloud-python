@@ -20,50 +20,41 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v1beta1", "v1"]
 
+default_version = "v1"
 
-# ----------------------------------------------------------------------------
-# Generate automl GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="automl",
-        version=version,
-        bazel_target=f"//google/cloud/automl/{version}:automl-{version}-py",
-        include_protos=True
-    )
+for library in s.get_staging_dirs(default_version):
+    # Add TablesClient and GcsClient to v1beta1
+    if library.name == "v1beta1":
+        s.replace(
+            library / f"google/cloud/automl_v1beta1/__init__.py",
+            "from .services.auto_ml import AutoMlClient\n"
+            "from .services.prediction_service import PredictionServiceClient\n",
+            "from .services.auto_ml import AutoMlClient\n"
+            "from .services.prediction_service import PredictionServiceClient\n"
+            "from .services.tables.gcs_client import GcsClient\n"
+            "from .services.tables.tables_client import TablesClient\n"
+        )
 
+        s.replace(
+            library / f"google/cloud/automl_v1beta1/__init__.py",
+            f"""__all__ = \(""",
+            """__all__ = ("GcsClient", "TablesClient","""
+        )
+
+        s.replace(
+            library / "docs/automl_v1beta1/services.rst",
+            """auto_ml
+    prediction_service""",
+            """auto_ml
+    prediction_service
+    tables"""
+        )
 
     s.move(library, excludes=["README.rst", "docs/index.rst", "setup.py", "*.tar.gz"])
 
-# Add TablesClient and GcsClient to v1beta1
-s.replace(
-f"google/cloud/automl_v1beta1/__init__.py",
-"""from \.services\.auto_ml import AutoMlClient
-from \.services\.prediction_service import PredictionServiceClient""",
-"""from .services.auto_ml import AutoMlClient
-from .services.prediction_service import PredictionServiceClient
-from .services.tables.gcs_client import GcsClient
-from .services.tables.tables_client import TablesClient"""
-)
-
-s.replace(
-    f"google/cloud/automl_v1beta1/__init__.py",
-    f"""__all__ = \(""",
-    """__all__ = ("GcsClient", "TablesClient","""
-)
-
-s.replace(
-    "docs/automl_v1beta1/services.rst",
-    """auto_ml
-    prediction_service""",
-    """auto_ml
-    prediction_service
-    tables"""
-)
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
