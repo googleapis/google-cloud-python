@@ -18,34 +18,26 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate bigtable and bigtable_admin GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="bigtable",
-    version="v2",
-    bazel_target="//google/bigtable/v2:bigtable-v2-py",
-    include_protos=True,
-)
+# This library ships clients for two different APIs,
+# BigTable and BigTable Admin
+bigtable_default_version = "v2"
+bigtable_admin_default_version = "v2"
 
-s.move(library / "google/cloud/bigtable_v2")
-s.move(library / "tests")
-s.move(library / "scripts")
+for library in s.get_staging_dirs(bigtable_default_version):
+    s.move(library / "google/cloud/bigtable_v*")
+    s.move(library / "tests")
+    s.move(library / "scripts")
 
-# Generate admin client
-library = gapic.py_library(
-    service="bigtable_admin",
-    version="v2",
-    bazel_target="//google/bigtable/admin/v2:bigtable-admin-v2-py",
-    include_protos=True,
-)
+s.remove_staging_dirs()
 
-s.move(library / "google/cloud/bigtable_admin_v2")
-s.move(library / "tests")
-s.move(library / "scripts")
+for library in s.get_staging_dirs(bigtable_admin_default_version):
+    s.move(library / "google/cloud/bigtable_admin_v*")
+    s.move(library / "tests")
+    s.move(library / "scripts")
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
@@ -55,6 +47,7 @@ templated_files = common.py_library(
     microgenerator=True,
     cov_level=99
 )
+
 s.move(templated_files, excludes=[".coveragerc", "noxfile.py"])
 
 # ----------------------------------------------------------------------------
