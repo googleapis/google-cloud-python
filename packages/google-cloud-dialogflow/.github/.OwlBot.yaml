@@ -22,5 +22,5 @@ deep-copy-regex:
   - source: /google/cloud/dialogflow/(v.*)/.*-py/(.*)
     dest: /owl-bot-staging/$1/$2
 
-begin-after-commit-hash: 89df06c8330f5a14049dccc2836bd28497df2247
+begin-after-commit-hash: 0a3c7d272d697796db75857bac73905c68e498c3
 
