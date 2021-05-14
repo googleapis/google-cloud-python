@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,40 +39,39 @@ def partition(
 class talentCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'batch_create_jobs': ('parent', 'jobs', ),
-    'batch_delete_jobs': ('parent', 'filter', ),
-    'batch_update_jobs': ('parent', 'jobs', 'update_mask', ),
-    'complete_query': ('parent', 'query', 'page_size', 'language_codes', 'company', 'scope', 'type_', ),
-    'create_application': ('parent', 'application', ),
-    'create_client_event': ('parent', 'client_event', ),
-    'create_company': ('parent', 'company', ),
-    'create_job': ('parent', 'job', ),
-    'create_profile': ('parent', 'profile', ),
-    'create_tenant': ('parent', 'tenant', ),
-    'delete_application': ('name', ),
-    'delete_company': ('name', ),
-    'delete_job': ('name', ),
-    'delete_profile': ('name', ),
-    'delete_tenant': ('name', ),
-    'get_application': ('name', ),
-    'get_company': ('name', ),
-    'get_job': ('name', ),
-    'get_profile': ('name', ),
-    'get_tenant': ('name', ),
-    'list_applications': ('parent', 'page_token', 'page_size', ),
-    'list_companies': ('parent', 'page_token', 'page_size', 'require_open_jobs', ),
-    'list_jobs': ('parent', 'filter', 'page_token', 'page_size', 'job_view', ),
-    'list_profiles': ('parent', 'filter', 'page_token', 'page_size', 'read_mask', ),
-    'list_tenants': ('parent', 'page_token', 'page_size', ),
-    'search_jobs': ('parent', 'request_metadata', 'search_mode', 'job_query', 'enable_broadening', 'require_precise_result_size', 'histogram_queries', 'job_view', 'offset', 'page_size', 'page_token', 'order_by', 'diversification_level', 'custom_ranking_info', 'disable_keyword_match', ),
-    'search_jobs_for_alert': ('parent', 'request_metadata', 'search_mode', 'job_query', 'enable_broadening', 'require_precise_result_size', 'histogram_queries', 'job_view', 'offset', 'page_size', 'page_token', 'order_by', 'diversification_level', 'custom_ranking_info', 'disable_keyword_match', ),
-    'search_profiles': ('parent', 'request_metadata', 'profile_query', 'page_size', 'page_token', 'offset', 'disable_spell_check', 'order_by', 'case_sensitive_sort', 'histogram_queries', 'result_set_id', 'strict_keywords_search', ),
-    'update_application': ('application', 'update_mask', ),
-    'update_company': ('company', 'update_mask', ),
-    'update_job': ('job', 'update_mask', ),
-    'update_profile': ('profile', 'update_mask', ),
-    'update_tenant': ('tenant', 'update_mask', ),
-
+          'batch_create_jobs': ('parent', 'jobs', ),
+          'batch_delete_jobs': ('parent', 'filter', ),
+          'batch_update_jobs': ('parent', 'jobs', 'update_mask', ),
+          'complete_query': ('parent', 'query', 'page_size', 'language_codes', 'company', 'scope', 'type_', ),
+          'create_application': ('parent', 'application', ),
+          'create_client_event': ('parent', 'client_event', ),
+          'create_company': ('parent', 'company', ),
+          'create_job': ('parent', 'job', ),
+          'create_profile': ('parent', 'profile', ),
+          'create_tenant': ('parent', 'tenant', ),
+          'delete_application': ('name', ),
+          'delete_company': ('name', ),
+          'delete_job': ('name', ),
+          'delete_profile': ('name', ),
+          'delete_tenant': ('name', ),
+          'get_application': ('name', ),
+          'get_company': ('name', ),
+          'get_job': ('name', ),
+          'get_profile': ('name', ),
+          'get_tenant': ('name', ),
+          'list_applications': ('parent', 'page_token', 'page_size', ),
+          'list_companies': ('parent', 'page_token', 'page_size', 'require_open_jobs', ),
+          'list_jobs': ('parent', 'filter', 'page_token', 'page_size', 'job_view', ),
+          'list_profiles': ('parent', 'filter', 'page_token', 'page_size', 'read_mask', ),
+          'list_tenants': ('parent', 'page_token', 'page_size', ),
+          'search_jobs': ('parent', 'request_metadata', 'search_mode', 'job_query', 'enable_broadening', 'require_precise_result_size', 'histogram_queries', 'job_view', 'offset', 'page_size', 'page_token', 'order_by', 'diversification_level', 'custom_ranking_info', 'disable_keyword_match', ),
+          'search_jobs_for_alert': ('parent', 'request_metadata', 'search_mode', 'job_query', 'enable_broadening', 'require_precise_result_size', 'histogram_queries', 'job_view', 'offset', 'page_size', 'page_token', 'order_by', 'diversification_level', 'custom_ranking_info', 'disable_keyword_match', ),
+          'search_profiles': ('parent', 'request_metadata', 'profile_query', 'page_size', 'page_token', 'offset', 'disable_spell_check', 'order_by', 'case_sensitive_sort', 'histogram_queries', 'result_set_id', 'strict_keywords_search', ),
+          'update_application': ('application', 'update_mask', ),
+          'update_company': ('company', 'update_mask', ),
+          'update_job': ('job', 'update_mask', ),
+          'update_profile': ('profile', 'update_mask', ),
+          'update_tenant': ('tenant', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -105,7 +102,7 @@ class talentCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

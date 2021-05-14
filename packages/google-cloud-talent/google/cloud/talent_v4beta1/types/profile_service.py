@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.talent_v4beta1.types import common
 from google.cloud.talent_v4beta1.types import filters
 from google.cloud.talent_v4beta1.types import histogram
 from google.cloud.talent_v4beta1.types import profile as gct_profile
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -43,7 +40,6 @@ __protobuf__ = proto.module(
 
 class ListProfilesRequest(proto.Message):
     r"""List profiles request.
-
     Attributes:
         parent (str):
             Required. The resource name of the tenant under which the
@@ -90,20 +86,15 @@ class ListProfilesRequest(proto.Message):
             -  name
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=5)
-
-    page_token = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    read_mask = proto.Field(proto.MESSAGE, number=4, message=field_mask.FieldMask,)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=5,)
+    page_token = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    read_mask = proto.Field(proto.MESSAGE, number=4, message=field_mask_pb2.FieldMask,)
 
 
 class ListProfilesResponse(proto.Message):
     r"""The List profiles response object.
-
     Attributes:
         profiles (Sequence[google.cloud.talent_v4beta1.types.Profile]):
             Profiles for the specific tenant.
@@ -119,13 +110,11 @@ class ListProfilesResponse(proto.Message):
     profiles = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gct_profile.Profile,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class CreateProfileRequest(proto.Message):
     r"""Create profile request.
-
     Attributes:
         parent (str):
             Required. The name of the tenant this profile belongs to.
@@ -136,14 +125,12 @@ class CreateProfileRequest(proto.Message):
             Required. The profile to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     profile = proto.Field(proto.MESSAGE, number=2, message=gct_profile.Profile,)
 
 
 class GetProfileRequest(proto.Message):
     r"""Get profile request.
-
     Attributes:
         name (str):
             Required. Resource name of the profile to get.
@@ -153,12 +140,11 @@ class GetProfileRequest(proto.Message):
             For example, "projects/foo/tenants/bar/profiles/baz".
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class UpdateProfileRequest(proto.Message):
     r"""Update profile request
-
     Attributes:
         profile (google.cloud.talent_v4beta1.types.Profile):
             Required. Profile to be updated.
@@ -169,13 +155,13 @@ class UpdateProfileRequest(proto.Message):
     """
 
     profile = proto.Field(proto.MESSAGE, number=1, message=gct_profile.Profile,)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteProfileRequest(proto.Message):
     r"""Delete profile request.
-
     Attributes:
         name (str):
             Required. Resource name of the profile to be deleted.
@@ -185,12 +171,11 @@ class DeleteProfileRequest(proto.Message):
             For example, "projects/foo/tenants/bar/profiles/baz".
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class SearchProfilesRequest(proto.Message):
     r"""The request body of the ``SearchProfiles`` call.
-
     Attributes:
         parent (str):
             Required. The resource name of the tenant to search within.
@@ -426,38 +411,26 @@ class SearchProfilesRequest(proto.Message):
             longer boolean strings.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     request_metadata = proto.Field(
         proto.MESSAGE, number=2, message=common.RequestMetadata,
     )
-
     profile_query = proto.Field(proto.MESSAGE, number=3, message=filters.ProfileQuery,)
-
-    page_size = proto.Field(proto.INT32, number=4)
-
-    page_token = proto.Field(proto.STRING, number=5)
-
-    offset = proto.Field(proto.INT32, number=6)
-
-    disable_spell_check = proto.Field(proto.BOOL, number=7)
-
-    order_by = proto.Field(proto.STRING, number=8)
-
-    case_sensitive_sort = proto.Field(proto.BOOL, number=9)
-
+    page_size = proto.Field(proto.INT32, number=4,)
+    page_token = proto.Field(proto.STRING, number=5,)
+    offset = proto.Field(proto.INT32, number=6,)
+    disable_spell_check = proto.Field(proto.BOOL, number=7,)
+    order_by = proto.Field(proto.STRING, number=8,)
+    case_sensitive_sort = proto.Field(proto.BOOL, number=9,)
     histogram_queries = proto.RepeatedField(
         proto.MESSAGE, number=10, message=histogram.HistogramQuery,
     )
-
-    result_set_id = proto.Field(proto.STRING, number=12)
-
-    strict_keywords_search = proto.Field(proto.BOOL, number=13)
+    result_set_id = proto.Field(proto.STRING, number=12,)
+    strict_keywords_search = proto.Field(proto.BOOL, number=13,)
 
 
 class SearchProfilesResponse(proto.Message):
     r"""Response of SearchProfiles method.
-
     Attributes:
         estimated_total_size (int):
             An estimation of the number of profiles that
@@ -487,25 +460,19 @@ class SearchProfilesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    estimated_total_size = proto.Field(proto.INT64, number=1)
-
+    estimated_total_size = proto.Field(proto.INT64, number=1,)
     spell_correction = proto.Field(
         proto.MESSAGE, number=2, message=common.SpellingCorrection,
     )
-
     metadata = proto.Field(proto.MESSAGE, number=3, message=common.ResponseMetadata,)
-
-    next_page_token = proto.Field(proto.STRING, number=4)
-
+    next_page_token = proto.Field(proto.STRING, number=4,)
     histogram_query_results = proto.RepeatedField(
         proto.MESSAGE, number=5, message=histogram.HistogramQueryResult,
     )
-
     summarized_profiles = proto.RepeatedField(
         proto.MESSAGE, number=6, message="SummarizedProfile",
     )
-
-    result_set_id = proto.Field(proto.STRING, number=7)
+    result_set_id = proto.Field(proto.STRING, number=7,)
 
 
 class SummarizedProfile(proto.Message):
@@ -539,7 +506,6 @@ class SummarizedProfile(proto.Message):
     profiles = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gct_profile.Profile,
     )
-
     summary = proto.Field(proto.MESSAGE, number=2, message=gct_profile.Profile,)
 
 

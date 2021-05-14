@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.talent_v4beta1.types import application as gct_application
 from google.cloud.talent_v4beta1.types import common
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -38,7 +35,6 @@ __protobuf__ = proto.module(
 
 class CreateApplicationRequest(proto.Message):
     r"""The Request of the CreateApplication method.
-
     Attributes:
         parent (str):
             Required. Resource name of the profile under which the
@@ -51,8 +47,7 @@ class CreateApplicationRequest(proto.Message):
             Required. The application to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     application = proto.Field(
         proto.MESSAGE, number=2, message=gct_application.Application,
     )
@@ -60,7 +55,6 @@ class CreateApplicationRequest(proto.Message):
 
 class GetApplicationRequest(proto.Message):
     r"""Request for getting a application by name.
-
     Attributes:
         name (str):
             Required. The resource name of the application to be
@@ -72,12 +66,11 @@ class GetApplicationRequest(proto.Message):
             "projects/foo/tenants/bar/profiles/baz/applications/qux".
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class UpdateApplicationRequest(proto.Message):
     r"""Request for updating a specified application.
-
     Attributes:
         application (google.cloud.talent_v4beta1.types.Application):
             Required. The application resource to replace
@@ -100,13 +93,13 @@ class UpdateApplicationRequest(proto.Message):
     application = proto.Field(
         proto.MESSAGE, number=1, message=gct_application.Application,
     )
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteApplicationRequest(proto.Message):
     r"""Request to delete a application.
-
     Attributes:
         name (str):
             Required. The resource name of the application to be
@@ -118,12 +111,11 @@ class DeleteApplicationRequest(proto.Message):
             "projects/foo/tenants/bar/profiles/baz/applications/qux".
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListApplicationsRequest(proto.Message):
     r"""List applications for which the client has ACL visibility.
-
     Attributes:
         parent (str):
             Required. Resource name of the profile under which the
@@ -141,16 +133,13 @@ class ListApplicationsRequest(proto.Message):
             positive number is provided.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_token = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_token = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
 
 
 class ListApplicationsResponse(proto.Message):
     r"""The List applications response object.
-
     Attributes:
         applications (Sequence[google.cloud.talent_v4beta1.types.Application]):
             Applications for the current client.
@@ -168,9 +157,7 @@ class ListApplicationsResponse(proto.Message):
     applications = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gct_application.Application,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
-
+    next_page_token = proto.Field(proto.STRING, number=2,)
     metadata = proto.Field(proto.MESSAGE, number=3, message=common.ResponseMetadata,)
 
 

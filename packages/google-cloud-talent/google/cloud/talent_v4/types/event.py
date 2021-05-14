@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -56,15 +53,11 @@ class ClientEvent(proto.Message):
             job was bookmarked.
     """
 
-    request_id = proto.Field(proto.STRING, number=1)
-
-    event_id = proto.Field(proto.STRING, number=2)
-
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
-
+    request_id = proto.Field(proto.STRING, number=1,)
+    event_id = proto.Field(proto.STRING, number=2,)
+    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
     job_event = proto.Field(proto.MESSAGE, number=5, oneof="event", message="JobEvent",)
-
-    event_notes = proto.Field(proto.STRING, number=9)
+    event_notes = proto.Field(proto.STRING, number=9,)
 
 
 class JobEvent(proto.Message):
@@ -111,8 +104,7 @@ class JobEvent(proto.Message):
         INTERVIEW_GRANTED = 15
 
     type_ = proto.Field(proto.ENUM, number=1, enum=JobEventType,)
-
-    jobs = proto.RepeatedField(proto.STRING, number=2)
+    jobs = proto.RepeatedField(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

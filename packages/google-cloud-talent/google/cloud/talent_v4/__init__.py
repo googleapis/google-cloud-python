@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,28 +15,34 @@
 #
 
 from .services.company_service import CompanyServiceClient
+from .services.company_service import CompanyServiceAsyncClient
 from .services.completion import CompletionClient
+from .services.completion import CompletionAsyncClient
 from .services.event_service import EventServiceClient
+from .services.event_service import EventServiceAsyncClient
 from .services.job_service import JobServiceClient
+from .services.job_service import JobServiceAsyncClient
 from .services.tenant_service import TenantServiceClient
+from .services.tenant_service import TenantServiceAsyncClient
+
 from .types.common import BatchOperationMetadata
-from .types.common import CommuteMethod
-from .types.common import CompanySize
 from .types.common import CompensationInfo
 from .types.common import CustomAttribute
-from .types.common import DegreeType
 from .types.common import DeviceInfo
+from .types.common import Location
+from .types.common import RequestMetadata
+from .types.common import ResponseMetadata
+from .types.common import SpellingCorrection
+from .types.common import TimestampRange
+from .types.common import CommuteMethod
+from .types.common import CompanySize
+from .types.common import DegreeType
 from .types.common import EmploymentType
 from .types.common import HtmlSanitization
 from .types.common import JobBenefit
 from .types.common import JobCategory
 from .types.common import JobLevel
-from .types.common import Location
 from .types.common import PostingRegion
-from .types.common import RequestMetadata
-from .types.common import ResponseMetadata
-from .types.common import SpellingCorrection
-from .types.common import TimestampRange
 from .types.common import Visibility
 from .types.company import Company
 from .types.company_service import CreateCompanyRequest
@@ -68,12 +73,12 @@ from .types.job_service import CreateJobRequest
 from .types.job_service import DeleteJobRequest
 from .types.job_service import GetJobRequest
 from .types.job_service import JobResult
-from .types.job_service import JobView
 from .types.job_service import ListJobsRequest
 from .types.job_service import ListJobsResponse
 from .types.job_service import SearchJobsRequest
 from .types.job_service import SearchJobsResponse
 from .types.job_service import UpdateJobRequest
+from .types.job_service import JobView
 from .types.tenant import Tenant
 from .types.tenant_service import CreateTenantRequest
 from .types.tenant_service import DeleteTenantRequest
@@ -82,8 +87,12 @@ from .types.tenant_service import ListTenantsRequest
 from .types.tenant_service import ListTenantsResponse
 from .types.tenant_service import UpdateTenantRequest
 
-
 __all__ = (
+    "CompanyServiceAsyncClient",
+    "CompletionAsyncClient",
+    "EventServiceAsyncClient",
+    "JobServiceAsyncClient",
+    "TenantServiceAsyncClient",
     "BatchCreateJobsRequest",
     "BatchCreateJobsResponse",
     "BatchDeleteJobsRequest",
@@ -144,10 +153,10 @@ __all__ = (
     "SearchJobsResponse",
     "SpellingCorrection",
     "Tenant",
+    "TenantServiceClient",
     "TimestampRange",
     "UpdateCompanyRequest",
     "UpdateJobRequest",
     "UpdateTenantRequest",
     "Visibility",
-    "TenantServiceClient",
 )

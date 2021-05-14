@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.talent_v4beta1.types import common
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
-from google.type import date_pb2 as date  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -134,39 +131,28 @@ class Application(proto.Message):
         OFFER_ACCEPTED = 6
         STARTED = 7
 
-    name = proto.Field(proto.STRING, number=1)
-
-    external_id = proto.Field(proto.STRING, number=31)
-
-    profile = proto.Field(proto.STRING, number=2)
-
-    job = proto.Field(proto.STRING, number=4)
-
-    company = proto.Field(proto.STRING, number=5)
-
-    application_date = proto.Field(proto.MESSAGE, number=7, message=date.Date,)
-
+    name = proto.Field(proto.STRING, number=1,)
+    external_id = proto.Field(proto.STRING, number=31,)
+    profile = proto.Field(proto.STRING, number=2,)
+    job = proto.Field(proto.STRING, number=4,)
+    company = proto.Field(proto.STRING, number=5,)
+    application_date = proto.Field(proto.MESSAGE, number=7, message=date_pb2.Date,)
     stage = proto.Field(proto.ENUM, number=11, enum=ApplicationStage,)
-
     state = proto.Field(proto.ENUM, number=13, enum=ApplicationState,)
-
     interviews = proto.RepeatedField(
         proto.MESSAGE, number=16, message=common.Interview,
     )
-
-    referral = proto.Field(proto.MESSAGE, number=18, message=wrappers.BoolValue,)
-
-    create_time = proto.Field(proto.MESSAGE, number=19, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=20, message=timestamp.Timestamp,)
-
-    outcome_notes = proto.Field(proto.STRING, number=21)
-
+    referral = proto.Field(proto.MESSAGE, number=18, message=wrappers_pb2.BoolValue,)
+    create_time = proto.Field(
+        proto.MESSAGE, number=19, message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE, number=20, message=timestamp_pb2.Timestamp,
+    )
+    outcome_notes = proto.Field(proto.STRING, number=21,)
     outcome = proto.Field(proto.ENUM, number=22, enum=common.Outcome,)
-
-    is_match = proto.Field(proto.MESSAGE, number=28, message=wrappers.BoolValue,)
-
-    job_title_snippet = proto.Field(proto.STRING, number=29)
+    is_match = proto.Field(proto.MESSAGE, number=28, message=wrappers_pb2.BoolValue,)
+    job_title_snippet = proto.Field(proto.STRING, number=29,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

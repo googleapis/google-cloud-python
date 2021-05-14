@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +15,20 @@
 #
 
 from .services.application_service import ApplicationServiceClient
+from .services.application_service import ApplicationServiceAsyncClient
 from .services.company_service import CompanyServiceClient
+from .services.company_service import CompanyServiceAsyncClient
 from .services.completion import CompletionClient
+from .services.completion import CompletionAsyncClient
 from .services.event_service import EventServiceClient
+from .services.event_service import EventServiceAsyncClient
 from .services.job_service import JobServiceClient
+from .services.job_service import JobServiceAsyncClient
 from .services.profile_service import ProfileServiceClient
+from .services.profile_service import ProfileServiceAsyncClient
 from .services.tenant_service import TenantServiceClient
+from .services.tenant_service import TenantServiceAsyncClient
+
 from .types.application import Application
 from .types.application_service import CreateApplicationRequest
 from .types.application_service import DeleteApplicationRequest
@@ -29,32 +36,32 @@ from .types.application_service import GetApplicationRequest
 from .types.application_service import ListApplicationsRequest
 from .types.application_service import ListApplicationsResponse
 from .types.application_service import UpdateApplicationRequest
-from .types.common import AvailabilitySignalType
 from .types.common import BatchOperationMetadata
 from .types.common import Certification
-from .types.common import CommuteMethod
-from .types.common import CompanySize
 from .types.common import CompensationInfo
-from .types.common import ContactInfoUsage
 from .types.common import CustomAttribute
-from .types.common import DegreeType
 from .types.common import DeviceInfo
-from .types.common import EmploymentType
-from .types.common import HtmlSanitization
 from .types.common import Interview
-from .types.common import JobBenefit
-from .types.common import JobCategory
-from .types.common import JobLevel
 from .types.common import Location
-from .types.common import Outcome
-from .types.common import PostingRegion
 from .types.common import Rating
 from .types.common import RequestMetadata
 from .types.common import ResponseMetadata
 from .types.common import Skill
-from .types.common import SkillProficiencyLevel
 from .types.common import SpellingCorrection
 from .types.common import TimestampRange
+from .types.common import AvailabilitySignalType
+from .types.common import CommuteMethod
+from .types.common import CompanySize
+from .types.common import ContactInfoUsage
+from .types.common import DegreeType
+from .types.common import EmploymentType
+from .types.common import HtmlSanitization
+from .types.common import JobBenefit
+from .types.common import JobCategory
+from .types.common import JobLevel
+from .types.common import Outcome
+from .types.common import PostingRegion
+from .types.common import SkillProficiencyLevel
 from .types.common import Visibility
 from .types.company import Company
 from .types.company_service import CreateCompanyRequest
@@ -96,12 +103,12 @@ from .types.job_service import CreateJobRequest
 from .types.job_service import DeleteJobRequest
 from .types.job_service import GetJobRequest
 from .types.job_service import JobOperationResult
-from .types.job_service import JobView
 from .types.job_service import ListJobsRequest
 from .types.job_service import ListJobsResponse
 from .types.job_service import SearchJobsRequest
 from .types.job_service import SearchJobsResponse
 from .types.job_service import UpdateJobRequest
+from .types.job_service import JobView
 from .types.profile import Activity
 from .types.profile import AdditionalContactInfo
 from .types.profile import Address
@@ -111,8 +118,8 @@ from .types.profile import EducationRecord
 from .types.profile import Email
 from .types.profile import EmploymentRecord
 from .types.profile import Patent
-from .types.profile import PersonName
 from .types.profile import PersonalUri
+from .types.profile import PersonName
 from .types.profile import Phone
 from .types.profile import Profile
 from .types.profile import Publication
@@ -134,8 +141,14 @@ from .types.tenant_service import ListTenantsRequest
 from .types.tenant_service import ListTenantsResponse
 from .types.tenant_service import UpdateTenantRequest
 
-
 __all__ = (
+    "ApplicationServiceAsyncClient",
+    "CompanyServiceAsyncClient",
+    "CompletionAsyncClient",
+    "EventServiceAsyncClient",
+    "JobServiceAsyncClient",
+    "ProfileServiceAsyncClient",
+    "TenantServiceAsyncClient",
     "Activity",
     "AdditionalContactInfo",
     "Address",
@@ -244,6 +257,7 @@ __all__ = (
     "SpellingCorrection",
     "SummarizedProfile",
     "Tenant",
+    "TenantServiceClient",
     "TimeFilter",
     "TimestampRange",
     "UpdateApplicationRequest",
@@ -253,5 +267,4 @@ __all__ = (
     "UpdateTenantRequest",
     "Visibility",
     "WorkExperienceFilter",
-    "TenantServiceClient",
 )

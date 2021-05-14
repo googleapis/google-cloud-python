@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.talent_v4beta1.types import common
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
-from google.type import date_pb2 as date  # type: ignore
-from google.type import postal_address_pb2 as postal_address  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
+from google.type import postal_address_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -303,84 +300,54 @@ class Profile(proto.Message):
             in the same order.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    external_id = proto.Field(proto.STRING, number=2)
-
-    source = proto.Field(proto.STRING, number=3)
-
-    uri = proto.Field(proto.STRING, number=4)
-
-    group_id = proto.Field(proto.STRING, number=5)
-
-    is_hirable = proto.Field(proto.MESSAGE, number=6, message=wrappers.BoolValue,)
-
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=8, message=timestamp.Timestamp,)
-
+    name = proto.Field(proto.STRING, number=1,)
+    external_id = proto.Field(proto.STRING, number=2,)
+    source = proto.Field(proto.STRING, number=3,)
+    uri = proto.Field(proto.STRING, number=4,)
+    group_id = proto.Field(proto.STRING, number=5,)
+    is_hirable = proto.Field(proto.MESSAGE, number=6, message=wrappers_pb2.BoolValue,)
+    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
     candidate_update_time = proto.Field(
-        proto.MESSAGE, number=67, message=timestamp.Timestamp,
+        proto.MESSAGE, number=67, message=timestamp_pb2.Timestamp,
     )
-
     resume_update_time = proto.Field(
-        proto.MESSAGE, number=68, message=timestamp.Timestamp,
+        proto.MESSAGE, number=68, message=timestamp_pb2.Timestamp,
     )
-
     resume = proto.Field(proto.MESSAGE, number=53, message="Resume",)
-
     person_names = proto.RepeatedField(proto.MESSAGE, number=11, message="PersonName",)
-
     addresses = proto.RepeatedField(proto.MESSAGE, number=12, message="Address",)
-
     email_addresses = proto.RepeatedField(proto.MESSAGE, number=13, message="Email",)
-
     phone_numbers = proto.RepeatedField(proto.MESSAGE, number=14, message="Phone",)
-
     personal_uris = proto.RepeatedField(
         proto.MESSAGE, number=15, message="PersonalUri",
     )
-
     additional_contact_info = proto.RepeatedField(
         proto.MESSAGE, number=16, message="AdditionalContactInfo",
     )
-
     employment_records = proto.RepeatedField(
         proto.MESSAGE, number=17, message="EmploymentRecord",
     )
-
     education_records = proto.RepeatedField(
         proto.MESSAGE, number=18, message="EducationRecord",
     )
-
     skills = proto.RepeatedField(proto.MESSAGE, number=19, message=common.Skill,)
-
     activities = proto.RepeatedField(proto.MESSAGE, number=20, message="Activity",)
-
     publications = proto.RepeatedField(proto.MESSAGE, number=21, message="Publication",)
-
     patents = proto.RepeatedField(proto.MESSAGE, number=22, message="Patent",)
-
     certifications = proto.RepeatedField(
         proto.MESSAGE, number=23, message=common.Certification,
     )
-
-    applications = proto.RepeatedField(proto.STRING, number=47)
-
-    assignments = proto.RepeatedField(proto.STRING, number=48)
-
+    applications = proto.RepeatedField(proto.STRING, number=47,)
+    assignments = proto.RepeatedField(proto.STRING, number=48,)
     custom_attributes = proto.MapField(
         proto.STRING, proto.MESSAGE, number=26, message=common.CustomAttribute,
     )
-
-    processed = proto.Field(proto.BOOL, number=27)
-
-    keyword_snippet = proto.Field(proto.STRING, number=28)
-
+    processed = proto.Field(proto.BOOL, number=27,)
+    keyword_snippet = proto.Field(proto.STRING, number=28,)
     availability_signals = proto.RepeatedField(
         proto.MESSAGE, number=70, message="AvailabilitySignal",
     )
-
     derived_addresses = proto.RepeatedField(
         proto.MESSAGE, number=64, message=common.Location,
     )
@@ -388,7 +355,6 @@ class Profile(proto.Message):
 
 class AvailabilitySignal(proto.Message):
     r"""Candidate availability signal.
-
     Attributes:
         type_ (google.cloud.talent_v4beta1.types.AvailabilitySignalType):
             Type of signal.
@@ -412,17 +378,16 @@ class AvailabilitySignal(proto.Message):
     """
 
     type_ = proto.Field(proto.ENUM, number=1, enum=common.AvailabilitySignalType,)
-
     last_update_time = proto.Field(
-        proto.MESSAGE, number=2, message=timestamp.Timestamp,
+        proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
     )
-
-    filter_satisfied = proto.Field(proto.MESSAGE, number=3, message=wrappers.BoolValue,)
+    filter_satisfied = proto.Field(
+        proto.MESSAGE, number=3, message=wrappers_pb2.BoolValue,
+    )
 
 
 class Resume(proto.Message):
     r"""Resource that represents a resume.
-
     Attributes:
         structured_resume (str):
             Users can create a profile with only this field field, if
@@ -450,14 +415,12 @@ class Resume(proto.Message):
         HRXML = 1
         OTHER_RESUME_TYPE = 2
 
-    structured_resume = proto.Field(proto.STRING, number=1)
-
+    structured_resume = proto.Field(proto.STRING, number=1,)
     resume_type = proto.Field(proto.ENUM, number=2, enum=ResumeType,)
 
 
 class PersonName(proto.Message):
     r"""Resource that represents the name of a person.
-
     Attributes:
         formatted_name (str):
             A string represents a person's full name. For
@@ -476,7 +439,6 @@ class PersonName(proto.Message):
 
     class PersonStructuredName(proto.Message):
         r"""Resource that represents a person's structured name.
-
         Attributes:
             given_name (str):
                 Given/first name.
@@ -513,30 +475,22 @@ class PersonName(proto.Message):
                 Number of characters allowed is 20.
         """
 
-        given_name = proto.Field(proto.STRING, number=1)
+        given_name = proto.Field(proto.STRING, number=1,)
+        preferred_name = proto.Field(proto.STRING, number=6,)
+        middle_initial = proto.Field(proto.STRING, number=2,)
+        family_name = proto.Field(proto.STRING, number=3,)
+        suffixes = proto.RepeatedField(proto.STRING, number=4,)
+        prefixes = proto.RepeatedField(proto.STRING, number=5,)
 
-        preferred_name = proto.Field(proto.STRING, number=6)
-
-        middle_initial = proto.Field(proto.STRING, number=2)
-
-        family_name = proto.Field(proto.STRING, number=3)
-
-        suffixes = proto.RepeatedField(proto.STRING, number=4)
-
-        prefixes = proto.RepeatedField(proto.STRING, number=5)
-
-    formatted_name = proto.Field(proto.STRING, number=1, oneof="person_name")
-
+    formatted_name = proto.Field(proto.STRING, number=1, oneof="person_name",)
     structured_name = proto.Field(
         proto.MESSAGE, number=2, oneof="person_name", message=PersonStructuredName,
     )
-
-    preferred_name = proto.Field(proto.STRING, number=3)
+    preferred_name = proto.Field(proto.STRING, number=3,)
 
 
 class Address(proto.Message):
     r"""Resource that represents a address.
-
     Attributes:
         usage (google.cloud.talent_v4beta1.types.ContactInfoUsage):
             The usage of the address. For example,
@@ -556,19 +510,18 @@ class Address(proto.Message):
     """
 
     usage = proto.Field(proto.ENUM, number=1, enum=common.ContactInfoUsage,)
-
-    unstructured_address = proto.Field(proto.STRING, number=2, oneof="address")
-
+    unstructured_address = proto.Field(proto.STRING, number=2, oneof="address",)
     structured_address = proto.Field(
-        proto.MESSAGE, number=3, oneof="address", message=postal_address.PostalAddress,
+        proto.MESSAGE,
+        number=3,
+        oneof="address",
+        message=postal_address_pb2.PostalAddress,
     )
-
-    current = proto.Field(proto.MESSAGE, number=4, message=wrappers.BoolValue,)
+    current = proto.Field(proto.MESSAGE, number=4, message=wrappers_pb2.BoolValue,)
 
 
 class Email(proto.Message):
     r"""Resource that represents a person's email address.
-
     Attributes:
         usage (google.cloud.talent_v4beta1.types.ContactInfoUsage):
             The usage of the email address. For example,
@@ -579,13 +532,11 @@ class Email(proto.Message):
     """
 
     usage = proto.Field(proto.ENUM, number=1, enum=common.ContactInfoUsage,)
-
-    email_address = proto.Field(proto.STRING, number=2)
+    email_address = proto.Field(proto.STRING, number=2,)
 
 
 class Phone(proto.Message):
     r"""Resource that represents a person's telephone number.
-
     Attributes:
         usage (google.cloud.talent_v4beta1.types.ContactInfoUsage):
             The usage of the phone. For example, SCHOOL,
@@ -622,24 +573,20 @@ class Phone(proto.Message):
         MOBILE_OR_LANDLINE = 9
 
     usage = proto.Field(proto.ENUM, number=1, enum=common.ContactInfoUsage,)
-
     type_ = proto.Field(proto.ENUM, number=2, enum=PhoneType,)
-
-    number = proto.Field(proto.STRING, number=3)
-
-    when_available = proto.Field(proto.STRING, number=4)
+    number = proto.Field(proto.STRING, number=3,)
+    when_available = proto.Field(proto.STRING, number=4,)
 
 
 class PersonalUri(proto.Message):
     r"""Resource that represents a valid URI for a personal use.
-
     Attributes:
         uri (str):
             The personal URI.
             Number of characters allowed is 4,000.
     """
 
-    uri = proto.Field(proto.STRING, number=1)
+    uri = proto.Field(proto.STRING, number=1,)
 
 
 class AdditionalContactInfo(proto.Message):
@@ -661,15 +608,12 @@ class AdditionalContactInfo(proto.Message):
     """
 
     usage = proto.Field(proto.ENUM, number=1, enum=common.ContactInfoUsage,)
-
-    name = proto.Field(proto.STRING, number=2)
-
-    contact_id = proto.Field(proto.STRING, number=3)
+    name = proto.Field(proto.STRING, number=2,)
+    contact_id = proto.Field(proto.STRING, number=3,)
 
 
 class EmploymentRecord(proto.Message):
     r"""Resource that represents an employment record of a candidate.
-
     Attributes:
         start_date (google.type.date_pb2.Date):
             Start date of the employment.
@@ -721,36 +665,27 @@ class EmploymentRecord(proto.Message):
             isn't related to the search query.
     """
 
-    start_date = proto.Field(proto.MESSAGE, number=1, message=date.Date,)
-
-    end_date = proto.Field(proto.MESSAGE, number=2, message=date.Date,)
-
-    employer_name = proto.Field(proto.STRING, number=3)
-
-    division_name = proto.Field(proto.STRING, number=4)
-
+    start_date = proto.Field(proto.MESSAGE, number=1, message=date_pb2.Date,)
+    end_date = proto.Field(proto.MESSAGE, number=2, message=date_pb2.Date,)
+    employer_name = proto.Field(proto.STRING, number=3,)
+    division_name = proto.Field(proto.STRING, number=4,)
     address = proto.Field(proto.MESSAGE, number=5, message="Address",)
-
-    job_title = proto.Field(proto.STRING, number=6)
-
-    job_description = proto.Field(proto.STRING, number=7)
-
-    is_supervisor = proto.Field(proto.MESSAGE, number=8, message=wrappers.BoolValue,)
-
-    is_self_employed = proto.Field(proto.MESSAGE, number=9, message=wrappers.BoolValue,)
-
-    is_current = proto.Field(proto.MESSAGE, number=10, message=wrappers.BoolValue,)
-
-    job_title_snippet = proto.Field(proto.STRING, number=11)
-
-    job_description_snippet = proto.Field(proto.STRING, number=12)
-
-    employer_name_snippet = proto.Field(proto.STRING, number=13)
+    job_title = proto.Field(proto.STRING, number=6,)
+    job_description = proto.Field(proto.STRING, number=7,)
+    is_supervisor = proto.Field(
+        proto.MESSAGE, number=8, message=wrappers_pb2.BoolValue,
+    )
+    is_self_employed = proto.Field(
+        proto.MESSAGE, number=9, message=wrappers_pb2.BoolValue,
+    )
+    is_current = proto.Field(proto.MESSAGE, number=10, message=wrappers_pb2.BoolValue,)
+    job_title_snippet = proto.Field(proto.STRING, number=11,)
+    job_description_snippet = proto.Field(proto.STRING, number=12,)
+    employer_name_snippet = proto.Field(proto.STRING, number=13,)
 
 
 class EducationRecord(proto.Message):
     r"""Resource that represents an education record of a candidate.
-
     Attributes:
         start_date (google.type.date_pb2.Date):
             The start date of the education.
@@ -794,29 +729,21 @@ class EducationRecord(proto.Message):
             to the search query.
     """
 
-    start_date = proto.Field(proto.MESSAGE, number=1, message=date.Date,)
-
-    end_date = proto.Field(proto.MESSAGE, number=2, message=date.Date,)
-
-    expected_graduation_date = proto.Field(proto.MESSAGE, number=3, message=date.Date,)
-
-    school_name = proto.Field(proto.STRING, number=4)
-
+    start_date = proto.Field(proto.MESSAGE, number=1, message=date_pb2.Date,)
+    end_date = proto.Field(proto.MESSAGE, number=2, message=date_pb2.Date,)
+    expected_graduation_date = proto.Field(
+        proto.MESSAGE, number=3, message=date_pb2.Date,
+    )
+    school_name = proto.Field(proto.STRING, number=4,)
     address = proto.Field(proto.MESSAGE, number=5, message="Address",)
-
-    degree_description = proto.Field(proto.STRING, number=6, oneof="degree")
-
+    degree_description = proto.Field(proto.STRING, number=6, oneof="degree",)
     structured_degree = proto.Field(
         proto.MESSAGE, number=7, oneof="degree", message="Degree",
     )
-
-    description = proto.Field(proto.STRING, number=8)
-
-    is_current = proto.Field(proto.MESSAGE, number=9, message=wrappers.BoolValue,)
-
-    school_name_snippet = proto.Field(proto.STRING, number=10)
-
-    degree_snippet = proto.Field(proto.STRING, number=11)
+    description = proto.Field(proto.STRING, number=8,)
+    is_current = proto.Field(proto.MESSAGE, number=9, message=wrappers_pb2.BoolValue,)
+    school_name_snippet = proto.Field(proto.STRING, number=10,)
+    degree_snippet = proto.Field(proto.STRING, number=11,)
 
 
 class Degree(proto.Message):
@@ -838,10 +765,8 @@ class Degree(proto.Message):
     """
 
     degree_type = proto.Field(proto.ENUM, number=1, enum=common.DegreeType,)
-
-    degree_name = proto.Field(proto.STRING, number=2)
-
-    fields_of_study = proto.RepeatedField(proto.STRING, number=3)
+    degree_name = proto.Field(proto.STRING, number=2,)
+    fields_of_study = proto.RepeatedField(proto.STRING, number=3,)
 
 
 class Activity(proto.Message):
@@ -895,25 +820,16 @@ class Activity(proto.Message):
             are not related to the search query.
     """
 
-    display_name = proto.Field(proto.STRING, number=1)
-
-    description = proto.Field(proto.STRING, number=2)
-
-    uri = proto.Field(proto.STRING, number=3)
-
-    create_date = proto.Field(proto.MESSAGE, number=4, message=date.Date,)
-
-    update_date = proto.Field(proto.MESSAGE, number=5, message=date.Date,)
-
-    team_members = proto.RepeatedField(proto.STRING, number=6)
-
+    display_name = proto.Field(proto.STRING, number=1,)
+    description = proto.Field(proto.STRING, number=2,)
+    uri = proto.Field(proto.STRING, number=3,)
+    create_date = proto.Field(proto.MESSAGE, number=4, message=date_pb2.Date,)
+    update_date = proto.Field(proto.MESSAGE, number=5, message=date_pb2.Date,)
+    team_members = proto.RepeatedField(proto.STRING, number=6,)
     skills_used = proto.RepeatedField(proto.MESSAGE, number=7, message=common.Skill,)
-
-    activity_name_snippet = proto.Field(proto.STRING, number=8)
-
-    activity_description_snippet = proto.Field(proto.STRING, number=9)
-
-    skills_used_snippet = proto.RepeatedField(proto.STRING, number=10)
+    activity_name_snippet = proto.Field(proto.STRING, number=8,)
+    activity_description_snippet = proto.Field(proto.STRING, number=9,)
+    skills_used_snippet = proto.RepeatedField(proto.STRING, number=10,)
 
 
 class Publication(proto.Message):
@@ -949,28 +865,19 @@ class Publication(proto.Message):
             Number of characters allowed is 100.
     """
 
-    authors = proto.RepeatedField(proto.STRING, number=1)
-
-    title = proto.Field(proto.STRING, number=2)
-
-    description = proto.Field(proto.STRING, number=3)
-
-    journal = proto.Field(proto.STRING, number=4)
-
-    volume = proto.Field(proto.STRING, number=5)
-
-    publisher = proto.Field(proto.STRING, number=6)
-
-    publication_date = proto.Field(proto.MESSAGE, number=7, message=date.Date,)
-
-    publication_type = proto.Field(proto.STRING, number=8)
-
-    isbn = proto.Field(proto.STRING, number=9)
+    authors = proto.RepeatedField(proto.STRING, number=1,)
+    title = proto.Field(proto.STRING, number=2,)
+    description = proto.Field(proto.STRING, number=3,)
+    journal = proto.Field(proto.STRING, number=4,)
+    volume = proto.Field(proto.STRING, number=5,)
+    publisher = proto.Field(proto.STRING, number=6,)
+    publication_date = proto.Field(proto.MESSAGE, number=7, message=date_pb2.Date,)
+    publication_type = proto.Field(proto.STRING, number=8,)
+    isbn = proto.Field(proto.STRING, number=9,)
 
 
 class Patent(proto.Message):
     r"""Resource that represents the patent acquired by a candidate.
-
     Attributes:
         display_name (str):
             Name of the patent.
@@ -999,22 +906,14 @@ class Patent(proto.Message):
             The skills used in this patent.
     """
 
-    display_name = proto.Field(proto.STRING, number=1)
-
-    inventors = proto.RepeatedField(proto.STRING, number=2)
-
-    patent_status = proto.Field(proto.STRING, number=3)
-
-    patent_status_date = proto.Field(proto.MESSAGE, number=4, message=date.Date,)
-
-    patent_filing_date = proto.Field(proto.MESSAGE, number=5, message=date.Date,)
-
-    patent_office = proto.Field(proto.STRING, number=6)
-
-    patent_number = proto.Field(proto.STRING, number=7)
-
-    patent_description = proto.Field(proto.STRING, number=8)
-
+    display_name = proto.Field(proto.STRING, number=1,)
+    inventors = proto.RepeatedField(proto.STRING, number=2,)
+    patent_status = proto.Field(proto.STRING, number=3,)
+    patent_status_date = proto.Field(proto.MESSAGE, number=4, message=date_pb2.Date,)
+    patent_filing_date = proto.Field(proto.MESSAGE, number=5, message=date_pb2.Date,)
+    patent_office = proto.Field(proto.STRING, number=6,)
+    patent_number = proto.Field(proto.STRING, number=7,)
+    patent_description = proto.Field(proto.STRING, number=8,)
     skills_used = proto.RepeatedField(proto.MESSAGE, number=9, message=common.Skill,)
 
 

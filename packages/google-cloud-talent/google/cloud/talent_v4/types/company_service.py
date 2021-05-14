@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.talent_v4.types import common
 from google.cloud.talent_v4.types import company as gct_company
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -38,7 +35,6 @@ __protobuf__ = proto.module(
 
 class CreateCompanyRequest(proto.Message):
     r"""The Request of the CreateCompany method.
-
     Attributes:
         parent (str):
             Required. Resource name of the tenant under which the
@@ -50,14 +46,12 @@ class CreateCompanyRequest(proto.Message):
             Required. The company to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     company = proto.Field(proto.MESSAGE, number=2, message=gct_company.Company,)
 
 
 class GetCompanyRequest(proto.Message):
     r"""Request for getting a company by name.
-
     Attributes:
         name (str):
             Required. The resource name of the company to be retrieved.
@@ -68,12 +62,11 @@ class GetCompanyRequest(proto.Message):
             "projects/api-test-project/tenants/foo/companies/bar".
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class UpdateCompanyRequest(proto.Message):
     r"""Request for updating a specified company.
-
     Attributes:
         company (google.cloud.talent_v4.types.Company):
             Required. The company resource to replace the
@@ -93,13 +86,13 @@ class UpdateCompanyRequest(proto.Message):
     """
 
     company = proto.Field(proto.MESSAGE, number=1, message=gct_company.Company,)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteCompanyRequest(proto.Message):
     r"""Request to delete a company.
-
     Attributes:
         name (str):
             Required. The resource name of the company to be deleted.
@@ -109,12 +102,11 @@ class DeleteCompanyRequest(proto.Message):
             for example, "projects/foo/tenants/bar/companies/baz".
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListCompaniesRequest(proto.Message):
     r"""List companies for which the client has ACL visibility.
-
     Attributes:
         parent (str):
             Required. Resource name of the tenant under which the
@@ -140,18 +132,14 @@ class ListCompaniesRequest(proto.Message):
             jobs are returned.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_token = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    require_open_jobs = proto.Field(proto.BOOL, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_token = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    require_open_jobs = proto.Field(proto.BOOL, number=4,)
 
 
 class ListCompaniesResponse(proto.Message):
     r"""The List companies response object.
-
     Attributes:
         companies (Sequence[google.cloud.talent_v4.types.Company]):
             Companies for the current client.
@@ -169,9 +157,7 @@ class ListCompaniesResponse(proto.Message):
     companies = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gct_company.Company,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
-
+    next_page_token = proto.Field(proto.STRING, number=2,)
     metadata = proto.Field(proto.MESSAGE, number=3, message=common.ResponseMetadata,)
 
 
