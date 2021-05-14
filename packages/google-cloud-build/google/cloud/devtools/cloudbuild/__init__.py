@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +14,13 @@
 # limitations under the License.
 #
 
-from google.cloud.devtools.cloudbuild_v1.services.cloud_build.async_client import (
-    CloudBuildAsyncClient,
-)
 from google.cloud.devtools.cloudbuild_v1.services.cloud_build.client import (
     CloudBuildClient,
 )
+from google.cloud.devtools.cloudbuild_v1.services.cloud_build.async_client import (
+    CloudBuildAsyncClient,
+)
+
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import ArtifactResult
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Artifacts
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Build
@@ -46,17 +46,18 @@ from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import GetWorkerPoolRe
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import GitHubEventsConfig
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Hash
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import InlineSecret
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import ListBuildsRequest
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import ListBuildsResponse
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
     ListBuildTriggersRequest,
 )
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
     ListBuildTriggersResponse,
 )
-from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import ListBuildsRequest
-from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import ListBuildsResponse
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import ListWorkerPoolsRequest
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import ListWorkerPoolsResponse
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Network
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import PubsubConfig
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import PullRequestFilter
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import PushFilter
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
@@ -75,6 +76,7 @@ from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Secrets
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Source
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import SourceProvenance
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import StorageSource
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import StorageSourceManifest
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import TimeSpan
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
     UpdateBuildTriggerRequest,
@@ -85,6 +87,8 @@ from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import WorkerConfig
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import WorkerPool
 
 __all__ = (
+    "CloudBuildClient",
+    "CloudBuildAsyncClient",
     "ArtifactResult",
     "Artifacts",
     "Build",
@@ -94,8 +98,6 @@ __all__ = (
     "BuildTrigger",
     "BuiltImage",
     "CancelBuildRequest",
-    "CloudBuildAsyncClient",
-    "CloudBuildClient",
     "CreateBuildRequest",
     "CreateBuildTriggerRequest",
     "CreateWorkerPoolRequest",
@@ -108,13 +110,14 @@ __all__ = (
     "GitHubEventsConfig",
     "Hash",
     "InlineSecret",
-    "ListBuildTriggersRequest",
-    "ListBuildTriggersResponse",
     "ListBuildsRequest",
     "ListBuildsResponse",
+    "ListBuildTriggersRequest",
+    "ListBuildTriggersResponse",
     "ListWorkerPoolsRequest",
     "ListWorkerPoolsResponse",
     "Network",
+    "PubsubConfig",
     "PullRequestFilter",
     "PushFilter",
     "ReceiveTriggerWebhookRequest",
@@ -129,6 +132,7 @@ __all__ = (
     "Source",
     "SourceProvenance",
     "StorageSource",
+    "StorageSourceManifest",
     "TimeSpan",
     "UpdateBuildTriggerRequest",
     "UpdateWorkerPoolRequest",

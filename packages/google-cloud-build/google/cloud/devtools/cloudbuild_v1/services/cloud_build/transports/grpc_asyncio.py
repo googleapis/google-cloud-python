@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,24 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
 from google.api_core import operations_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+import packaging.version
 
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.devtools.cloudbuild_v1.types import cloudbuild
-from google.longrunning import operations_pb2 as operations  # type: ignore
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from .base import CloudBuildTransport, DEFAULT_CLIENT_INFO
 from .grpc import CloudBuildGrpcTransport
 
@@ -63,7 +60,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
     def create_channel(
         cls,
         host: str = "cloudbuild.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -90,13 +87,15 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         Returns:
             aio.Channel: A gRPC AsyncIO channel object.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers_async.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -104,7 +103,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         self,
         *,
         host: str = "cloudbuild.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         channel: aio.Channel = None,
@@ -118,7 +117,8 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -177,7 +177,6 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -255,7 +254,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
     @property
     def create_build(
         self,
-    ) -> Callable[[cloudbuild.CreateBuildRequest], Awaitable[operations.Operation]]:
+    ) -> Callable[[cloudbuild.CreateBuildRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create build method over gRPC.
 
         Starts a build with the specified configuration.
@@ -278,7 +277,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
             self._stubs["create_build"] = self.grpc_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/CreateBuild",
                 request_serializer=cloudbuild.CreateBuildRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_build"]
 
@@ -371,7 +370,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
     @property
     def retry_build(
         self,
-    ) -> Callable[[cloudbuild.RetryBuildRequest], Awaitable[operations.Operation]]:
+    ) -> Callable[[cloudbuild.RetryBuildRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the retry build method over gRPC.
 
         Creates a new build based on the specified build.
@@ -419,7 +418,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
             self._stubs["retry_build"] = self.grpc_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/RetryBuild",
                 request_serializer=cloudbuild.RetryBuildRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["retry_build"]
 
@@ -517,7 +516,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
     @property
     def delete_build_trigger(
         self,
-    ) -> Callable[[cloudbuild.DeleteBuildTriggerRequest], Awaitable[empty.Empty]]:
+    ) -> Callable[[cloudbuild.DeleteBuildTriggerRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete build trigger method over gRPC.
 
         Deletes a ``BuildTrigger`` by its project ID and trigger ID.
@@ -538,7 +537,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
             self._stubs["delete_build_trigger"] = self.grpc_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/DeleteBuildTrigger",
                 request_serializer=cloudbuild.DeleteBuildTriggerRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_build_trigger"]
 
@@ -575,7 +574,9 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
     @property
     def run_build_trigger(
         self,
-    ) -> Callable[[cloudbuild.RunBuildTriggerRequest], Awaitable[operations.Operation]]:
+    ) -> Callable[
+        [cloudbuild.RunBuildTriggerRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the run build trigger method over gRPC.
 
         Runs a ``BuildTrigger`` at a particular source revision.
@@ -594,7 +595,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
             self._stubs["run_build_trigger"] = self.grpc_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/RunBuildTrigger",
                 request_serializer=cloudbuild.RunBuildTriggerRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["run_build_trigger"]
 
@@ -690,7 +691,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
     @property
     def delete_worker_pool(
         self,
-    ) -> Callable[[cloudbuild.DeleteWorkerPoolRequest], Awaitable[empty.Empty]]:
+    ) -> Callable[[cloudbuild.DeleteWorkerPoolRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete worker pool method over gRPC.
 
         Deletes a ``WorkerPool`` by its project ID and WorkerPool name.
@@ -711,7 +712,7 @@ class CloudBuildGrpcAsyncIOTransport(CloudBuildTransport):
             self._stubs["delete_worker_pool"] = self.grpc_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/DeleteWorkerPool",
                 request_serializer=cloudbuild.DeleteWorkerPoolRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_worker_pool"]
 

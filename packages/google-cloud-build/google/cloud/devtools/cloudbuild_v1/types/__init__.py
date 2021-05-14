@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from .cloudbuild import (
     ArtifactResult,
     Artifacts,
@@ -44,6 +42,7 @@ from .cloudbuild import (
     ListWorkerPoolsRequest,
     ListWorkerPoolsResponse,
     Network,
+    PubsubConfig,
     PullRequestFilter,
     PushFilter,
     ReceiveTriggerWebhookRequest,
@@ -58,6 +57,7 @@ from .cloudbuild import (
     Source,
     SourceProvenance,
     StorageSource,
+    StorageSourceManifest,
     TimeSpan,
     UpdateBuildTriggerRequest,
     UpdateWorkerPoolRequest,
@@ -95,6 +95,7 @@ __all__ = (
     "ListWorkerPoolsRequest",
     "ListWorkerPoolsResponse",
     "Network",
+    "PubsubConfig",
     "PullRequestFilter",
     "PushFilter",
     "ReceiveTriggerWebhookRequest",
@@ -109,6 +110,7 @@ __all__ = (
     "Source",
     "SourceProvenance",
     "StorageSource",
+    "StorageSourceManifest",
     "TimeSpan",
     "UpdateBuildTriggerRequest",
     "UpdateWorkerPoolRequest",

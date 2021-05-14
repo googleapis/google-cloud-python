@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,24 +39,23 @@ def partition(
 class cloudbuildCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'cancel_build': ('project_id', 'id', 'name', ),
-    'create_build': ('project_id', 'build', 'parent', ),
-    'create_build_trigger': ('project_id', 'trigger', ),
-    'create_worker_pool': ('parent', 'worker_pool', ),
-    'delete_build_trigger': ('project_id', 'trigger_id', ),
-    'delete_worker_pool': ('name', ),
-    'get_build': ('project_id', 'id', 'name', ),
-    'get_build_trigger': ('project_id', 'trigger_id', ),
-    'get_worker_pool': ('name', ),
-    'list_builds': ('project_id', 'parent', 'page_size', 'page_token', 'filter', ),
-    'list_build_triggers': ('project_id', 'page_size', 'page_token', ),
-    'list_worker_pools': ('parent', ),
-    'receive_trigger_webhook': ('body', 'project_id', 'trigger', 'secret', ),
-    'retry_build': ('project_id', 'id', 'name', ),
-    'run_build_trigger': ('project_id', 'trigger_id', 'source', ),
-    'update_build_trigger': ('project_id', 'trigger_id', 'trigger', ),
-    'update_worker_pool': ('name', 'worker_pool', ),
-
+          'cancel_build': ('project_id', 'id', 'name', ),
+          'create_build': ('project_id', 'build', 'parent', ),
+          'create_build_trigger': ('project_id', 'trigger', ),
+          'create_worker_pool': ('parent', 'worker_pool', ),
+          'delete_build_trigger': ('project_id', 'trigger_id', ),
+          'delete_worker_pool': ('name', ),
+          'get_build': ('project_id', 'id', 'name', ),
+          'get_build_trigger': ('project_id', 'trigger_id', ),
+          'get_worker_pool': ('name', ),
+          'list_builds': ('project_id', 'parent', 'page_size', 'page_token', 'filter', ),
+          'list_build_triggers': ('project_id', 'page_size', 'page_token', ),
+          'list_worker_pools': ('parent', ),
+          'receive_trigger_webhook': ('body', 'project_id', 'trigger', 'secret', ),
+          'retry_build': ('project_id', 'id', 'name', ),
+          'run_build_trigger': ('project_id', 'trigger_id', 'source', ),
+          'update_build_trigger': ('project_id', 'trigger_id', 'trigger', ),
+          'update_worker_pool': ('name', 'worker_pool', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -89,7 +86,7 @@ class cloudbuildCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that
