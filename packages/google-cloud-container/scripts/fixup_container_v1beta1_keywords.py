@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,40 +39,39 @@ def partition(
 class containerCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'cancel_operation': ('project_id', 'zone', 'operation_id', 'name', ),
-    'complete_ip_rotation': ('project_id', 'zone', 'cluster_id', 'name', ),
-    'create_cluster': ('project_id', 'zone', 'cluster', 'parent', ),
-    'create_node_pool': ('project_id', 'zone', 'cluster_id', 'node_pool', 'parent', ),
-    'delete_cluster': ('project_id', 'zone', 'cluster_id', 'name', ),
-    'delete_node_pool': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'name', ),
-    'get_cluster': ('project_id', 'zone', 'cluster_id', 'name', ),
-    'get_json_web_keys': ('parent', ),
-    'get_node_pool': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'name', ),
-    'get_operation': ('project_id', 'zone', 'operation_id', 'name', ),
-    'get_server_config': ('project_id', 'zone', 'name', ),
-    'list_clusters': ('project_id', 'zone', 'parent', ),
-    'list_locations': ('parent', ),
-    'list_node_pools': ('project_id', 'zone', 'cluster_id', 'parent', ),
-    'list_operations': ('project_id', 'zone', 'parent', ),
-    'list_usable_subnetworks': ('parent', 'filter', 'page_size', 'page_token', ),
-    'rollback_node_pool_upgrade': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'name', ),
-    'set_addons_config': ('project_id', 'zone', 'cluster_id', 'addons_config', 'name', ),
-    'set_labels': ('project_id', 'zone', 'cluster_id', 'resource_labels', 'label_fingerprint', 'name', ),
-    'set_legacy_abac': ('project_id', 'zone', 'cluster_id', 'enabled', 'name', ),
-    'set_locations': ('project_id', 'zone', 'cluster_id', 'locations', 'name', ),
-    'set_logging_service': ('project_id', 'zone', 'cluster_id', 'logging_service', 'name', ),
-    'set_maintenance_policy': ('project_id', 'zone', 'cluster_id', 'maintenance_policy', 'name', ),
-    'set_master_auth': ('project_id', 'zone', 'cluster_id', 'action', 'update', 'name', ),
-    'set_monitoring_service': ('project_id', 'zone', 'cluster_id', 'monitoring_service', 'name', ),
-    'set_network_policy': ('project_id', 'zone', 'cluster_id', 'network_policy', 'name', ),
-    'set_node_pool_autoscaling': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'autoscaling', 'name', ),
-    'set_node_pool_management': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'management', 'name', ),
-    'set_node_pool_size': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'node_count', 'name', ),
-    'start_ip_rotation': ('project_id', 'zone', 'cluster_id', 'name', 'rotate_credentials', ),
-    'update_cluster': ('project_id', 'zone', 'cluster_id', 'update', 'name', ),
-    'update_master': ('project_id', 'zone', 'cluster_id', 'master_version', 'name', ),
-    'update_node_pool': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'node_version', 'image_type', 'locations', 'workload_metadata_config', 'name', 'upgrade_settings', 'linux_node_config', 'kubelet_config', ),
-
+          'cancel_operation': ('project_id', 'zone', 'operation_id', 'name', ),
+          'complete_ip_rotation': ('project_id', 'zone', 'cluster_id', 'name', ),
+          'create_cluster': ('project_id', 'zone', 'cluster', 'parent', ),
+          'create_node_pool': ('project_id', 'zone', 'cluster_id', 'node_pool', 'parent', ),
+          'delete_cluster': ('project_id', 'zone', 'cluster_id', 'name', ),
+          'delete_node_pool': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'name', ),
+          'get_cluster': ('project_id', 'zone', 'cluster_id', 'name', ),
+          'get_json_web_keys': ('parent', ),
+          'get_node_pool': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'name', ),
+          'get_operation': ('project_id', 'zone', 'operation_id', 'name', ),
+          'get_server_config': ('project_id', 'zone', 'name', ),
+          'list_clusters': ('project_id', 'zone', 'parent', ),
+          'list_locations': ('parent', ),
+          'list_node_pools': ('project_id', 'zone', 'cluster_id', 'parent', ),
+          'list_operations': ('project_id', 'zone', 'parent', ),
+          'list_usable_subnetworks': ('parent', 'filter', 'page_size', 'page_token', ),
+          'rollback_node_pool_upgrade': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'name', ),
+          'set_addons_config': ('project_id', 'zone', 'cluster_id', 'addons_config', 'name', ),
+          'set_labels': ('project_id', 'zone', 'cluster_id', 'resource_labels', 'label_fingerprint', 'name', ),
+          'set_legacy_abac': ('project_id', 'zone', 'cluster_id', 'enabled', 'name', ),
+          'set_locations': ('project_id', 'zone', 'cluster_id', 'locations', 'name', ),
+          'set_logging_service': ('project_id', 'zone', 'cluster_id', 'logging_service', 'name', ),
+          'set_maintenance_policy': ('project_id', 'zone', 'cluster_id', 'maintenance_policy', 'name', ),
+          'set_master_auth': ('project_id', 'zone', 'cluster_id', 'action', 'update', 'name', ),
+          'set_monitoring_service': ('project_id', 'zone', 'cluster_id', 'monitoring_service', 'name', ),
+          'set_network_policy': ('project_id', 'zone', 'cluster_id', 'network_policy', 'name', ),
+          'set_node_pool_autoscaling': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'autoscaling', 'name', ),
+          'set_node_pool_management': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'management', 'name', ),
+          'set_node_pool_size': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'node_count', 'name', ),
+          'start_ip_rotation': ('project_id', 'zone', 'cluster_id', 'name', 'rotate_credentials', ),
+          'update_cluster': ('project_id', 'zone', 'cluster_id', 'update', 'name', ),
+          'update_master': ('project_id', 'zone', 'cluster_id', 'master_version', 'name', ),
+          'update_node_pool': ('project_id', 'zone', 'cluster_id', 'node_pool_id', 'node_version', 'image_type', 'locations', 'workload_metadata_config', 'name', 'upgrade_settings', 'linux_node_config', 'kubelet_config', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -105,7 +102,7 @@ class containerCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that
