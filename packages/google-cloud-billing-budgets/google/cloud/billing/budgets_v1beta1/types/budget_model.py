@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,34 +13,47 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import struct_pb2 as struct  # type: ignore
-from google.type import money_pb2 as money  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
+from google.type import money_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
     package="google.cloud.billing.budgets.v1beta1",
     manifest={
+        "CalendarPeriod",
         "Budget",
         "BudgetAmount",
         "LastPeriodAmount",
         "ThresholdRule",
         "AllUpdatesRule",
         "Filter",
+        "CustomPeriod",
     },
 )
+
+
+class CalendarPeriod(proto.Enum):
+    r"""A ``CalendarPeriod`` represents the abstract concept of a time
+    period that has a canonical start. Grammatically, "the start of the
+    current ``CalendarPeriod``". All calendar times begin at 12 AM US
+    and Canadian Pacific Time (UTC-8).
+    """
+    CALENDAR_PERIOD_UNSPECIFIED = 0
+    MONTH = 1
+    QUARTER = 2
+    YEAR = 3
 
 
 class Budget(proto.Message):
     r"""A budget is a plan that describes what you expect to spend on
     Cloud projects, plus the rules to execute as spend is tracked
     against that plan, (for example, send an alert when 90% of the
-    target spend is met). Currently all plans are monthly budgets so
-    the usage period(s) tracked are implied (calendar months of
-    usage back-to-back).
+    target spend is met). The budget time period is configurable,
+    with options such as month (default), quarter, year, or custom
+    time period.
 
     Attributes:
         name (str):
@@ -54,7 +66,9 @@ class Budget(proto.Message):
         budget_filter (google.cloud.billing.budgets_v1beta1.types.Filter):
             Optional. Filters that define which resources
             are used to compute the actual spend against the
-            budget.
+            budget amount, such as projects, services, and
+            the budget's time period, as well as other
+            filters.
         amount (google.cloud.billing.budgets_v1beta1.types.BudgetAmount):
             Required. Budgeted amount.
         threshold_rules (Sequence[google.cloud.billing.budgets_v1beta1.types.ThresholdRule]):
@@ -72,54 +86,54 @@ class Budget(proto.Message):
             other changes.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
     budget_filter = proto.Field(proto.MESSAGE, number=3, message="Filter",)
-
     amount = proto.Field(proto.MESSAGE, number=4, message="BudgetAmount",)
-
     threshold_rules = proto.RepeatedField(
         proto.MESSAGE, number=5, message="ThresholdRule",
     )
-
     all_updates_rule = proto.Field(proto.MESSAGE, number=6, message="AllUpdatesRule",)
-
-    etag = proto.Field(proto.STRING, number=7)
+    etag = proto.Field(proto.STRING, number=7,)
 
 
 class BudgetAmount(proto.Message):
     r"""The budgeted amount for each usage period.
-
     Attributes:
         specified_amount (google.type.money_pb2.Money):
             A specified amount to use as the budget. ``currency_code``
             is optional. If specified when creating a budget, it must
             match the currency of the billing account. If specified when
-            updating a budget, it must match the existing budget
-            currency_code. The ``currency_code`` is provided on output.
+            updating a budget, it must match the currency_code of the
+            existing budget. The ``currency_code`` is provided on
+            output.
         last_period_amount (google.cloud.billing.budgets_v1beta1.types.LastPeriodAmount):
-            Use the last period's actual spend as the
-            budget for the present period.
+            Use the last period's actual spend as the budget for the
+            present period. LastPeriodAmount can only be set when the
+            budget's time period is a
+            [Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period].
+            It cannot be set in combination with
+            [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].
     """
 
     specified_amount = proto.Field(
-        proto.MESSAGE, number=1, oneof="budget_amount", message=money.Money,
+        proto.MESSAGE, number=1, oneof="budget_amount", message=money_pb2.Money,
     )
-
     last_period_amount = proto.Field(
         proto.MESSAGE, number=2, oneof="budget_amount", message="LastPeriodAmount",
     )
 
 
 class LastPeriodAmount(proto.Message):
-    r"""Describes a budget amount targeted to last period's spend.
-    At this time, the amount is automatically 100% of last period's
-    spend; that is, there are no other options yet.
-    Future configuration will be described here (for example,
-    configuring a percentage of last period's spend).
-    """
+    r"""Describes a budget amount targeted to the last
+    [Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period]
+    spend. At this time, the amount is automatically 100% of the last
+    calendar period's spend; that is, there are no other options yet.
+    Future configuration options will be described here (for example,
+    configuring a percentage of last period's spend). LastPeriodAmount
+    cannot be set for a budget configured with a
+    [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].
+        """
 
 
 class ThresholdRule(proto.Message):
@@ -150,8 +164,7 @@ class ThresholdRule(proto.Message):
         CURRENT_SPEND = 1
         FORECASTED_SPEND = 2
 
-    threshold_percent = proto.Field(proto.DOUBLE, number=1)
-
+    threshold_percent = proto.Field(proto.DOUBLE, number=1,)
     spend_basis = proto.Field(proto.ENUM, number=2, enum=Basis,)
 
 
@@ -166,12 +179,12 @@ class AllUpdatesRule(proto.Message):
             ``projects/{project_id}/topics/{topic_id}``. Updates are
             sent at regular intervals to the topic. The topic needs to
             be created before the budget is created; see
-            https://cloud.google.com/billing/docs/how-to/budgets#manage-notifications
+            https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications
             for more details. Caller is expected to have
             ``pubsub.topics.setIamPolicy`` permission on the topic when
             it's set for a budget, otherwise, the API call will fail
             with PERMISSION_DENIED. See
-            https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications
+            https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#permissions_required_for_this_task
             for more details on Pub/Sub roles and permissions.
         schema_version (str):
             Optional. Required when
@@ -199,13 +212,10 @@ class AllUpdatesRule(proto.Message):
             Account User IAM roles for the target account.
     """
 
-    pubsub_topic = proto.Field(proto.STRING, number=1)
-
-    schema_version = proto.Field(proto.STRING, number=2)
-
-    monitoring_notification_channels = proto.RepeatedField(proto.STRING, number=3)
-
-    disable_default_iam_recipients = proto.Field(proto.BOOL, number=4)
+    pubsub_topic = proto.Field(proto.STRING, number=1,)
+    schema_version = proto.Field(proto.STRING, number=2,)
+    monitoring_notification_channels = proto.RepeatedField(proto.STRING, number=3,)
+    disable_default_iam_recipients = proto.Field(proto.BOOL, number=4,)
 
 
 class Filter(proto.Message):
@@ -225,13 +235,14 @@ class Filter(proto.Message):
             [Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment]
             is INCLUDE_SPECIFIED_CREDITS, this is a list of credit types
             to be subtracted from gross cost to determine the spend for
-            threshold calculations.
+            threshold calculations. See `a list of acceptable credit
+            type
+            values <https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type>`__.
 
             If
             [Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment]
             is **not** INCLUDE_SPECIFIED_CREDITS, this field must be
-            empty. See `a list of acceptable credit type
-            values <https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type>`__.
+            empty.
         credit_types_treatment (google.cloud.billing.budgets_v1beta1.types.Filter.CreditTypesTreatment):
             Optional. If not set, default behavior is
             ``INCLUDE_ALL_CREDITS``.
@@ -258,32 +269,68 @@ class Filter(proto.Message):
             values per entry are not allowed. If omitted,
             the report will include all labeled and
             unlabeled usage.
+        calendar_period (google.cloud.billing.budgets_v1beta1.types.CalendarPeriod):
+            Optional. Specifies to track usage for
+            recurring calendar period. For example, assume
+            that CalendarPeriod.QUARTER is set. The budget
+            will track usage from April 1 to June 30, when
+            the current calendar month is April, May, June.
+            After that, it will track usage from July 1 to
+            September 30 when the current calendar month is
+            July, August, September, so on.
+        custom_period (google.cloud.billing.budgets_v1beta1.types.CustomPeriod):
+            Optional. Specifies to track usage from any
+            start date (required) to any end date
+            (optional). This time period is static, it does
+            not recur.
     """
 
     class CreditTypesTreatment(proto.Enum):
-        r"""Specifies how credits should be treated when determining
-        spend for threshold calculations.
+        r"""Specifies how credits are applied when determining the spend for
+        threshold calculations. Budgets track the total cost minus any
+        applicable selected credits. `See the documentation for a list of
+        credit
+        types <https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type>`__.
         """
         CREDIT_TYPES_TREATMENT_UNSPECIFIED = 0
         INCLUDE_ALL_CREDITS = 1
         EXCLUDE_ALL_CREDITS = 2
         INCLUDE_SPECIFIED_CREDITS = 3
 
-    projects = proto.RepeatedField(proto.STRING, number=1)
-
-    credit_types = proto.RepeatedField(proto.STRING, number=7)
-
+    projects = proto.RepeatedField(proto.STRING, number=1,)
+    credit_types = proto.RepeatedField(proto.STRING, number=7,)
     credit_types_treatment = proto.Field(
         proto.ENUM, number=4, enum=CreditTypesTreatment,
     )
-
-    services = proto.RepeatedField(proto.STRING, number=3)
-
-    subaccounts = proto.RepeatedField(proto.STRING, number=5)
-
+    services = proto.RepeatedField(proto.STRING, number=3,)
+    subaccounts = proto.RepeatedField(proto.STRING, number=5,)
     labels = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=6, message=struct.ListValue,
+        proto.STRING, proto.MESSAGE, number=6, message=struct_pb2.ListValue,
     )
+    calendar_period = proto.Field(
+        proto.ENUM, number=8, oneof="usage_period", enum="CalendarPeriod",
+    )
+    custom_period = proto.Field(
+        proto.MESSAGE, number=9, oneof="usage_period", message="CustomPeriod",
+    )
+
+
+class CustomPeriod(proto.Message):
+    r"""All date times begin at 12 AM US and Canadian Pacific Time
+    (UTC-8).
+
+    Attributes:
+        start_date (google.type.date_pb2.Date):
+            Required. The start date must be after
+            January 1, 2017.
+        end_date (google.type.date_pb2.Date):
+            Optional. The end date of the time period. Budgets with
+            elapsed end date won't be processed. If unset, specifies to
+            track all usage incurred since the start_date.
+    """
+
+    start_date = proto.Field(proto.MESSAGE, number=1, message=date_pb2.Date,)
+    end_date = proto.Field(proto.MESSAGE, number=2, message=date_pb2.Date,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

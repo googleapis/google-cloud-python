@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +15,16 @@
 #
 
 from .services.budget_service import BudgetServiceClient
+from .services.budget_service import BudgetServiceAsyncClient
+
 from .types.budget_model import AllUpdatesRule
 from .types.budget_model import Budget
 from .types.budget_model import BudgetAmount
+from .types.budget_model import CustomPeriod
 from .types.budget_model import Filter
 from .types.budget_model import LastPeriodAmount
 from .types.budget_model import ThresholdRule
+from .types.budget_model import CalendarPeriod
 from .types.budget_service import CreateBudgetRequest
 from .types.budget_service import DeleteBudgetRequest
 from .types.budget_service import GetBudgetRequest
@@ -29,12 +32,15 @@ from .types.budget_service import ListBudgetsRequest
 from .types.budget_service import ListBudgetsResponse
 from .types.budget_service import UpdateBudgetRequest
 
-
 __all__ = (
+    "BudgetServiceAsyncClient",
     "AllUpdatesRule",
     "Budget",
     "BudgetAmount",
+    "BudgetServiceClient",
+    "CalendarPeriod",
     "CreateBudgetRequest",
+    "CustomPeriod",
     "DeleteBudgetRequest",
     "Filter",
     "GetBudgetRequest",
@@ -43,5 +49,4 @@ __all__ = (
     "ListBudgetsResponse",
     "ThresholdRule",
     "UpdateBudgetRequest",
-    "BudgetServiceClient",
 )
