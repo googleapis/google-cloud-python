@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -28,7 +25,6 @@ __protobuf__ = proto.module(
 
 class Domain(proto.Message):
     r"""Represents a managed Microsoft Active Directory domain.
-
     Attributes:
         name (str):
             Required. The unique name of the domain using the form:
@@ -90,28 +86,21 @@ class Domain(proto.Message):
         PERFORMING_MAINTENANCE = 6
         UNAVAILABLE = 7
 
-    name = proto.Field(proto.STRING, number=1)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=2)
-
-    authorized_networks = proto.RepeatedField(proto.STRING, number=3)
-
-    reserved_ip_range = proto.Field(proto.STRING, number=4)
-
-    locations = proto.RepeatedField(proto.STRING, number=5)
-
-    admin = proto.Field(proto.STRING, number=6)
-
-    fqdn = proto.Field(proto.STRING, number=10)
-
-    create_time = proto.Field(proto.MESSAGE, number=11, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=12, message=timestamp.Timestamp,)
-
+    name = proto.Field(proto.STRING, number=1,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    authorized_networks = proto.RepeatedField(proto.STRING, number=3,)
+    reserved_ip_range = proto.Field(proto.STRING, number=4,)
+    locations = proto.RepeatedField(proto.STRING, number=5,)
+    admin = proto.Field(proto.STRING, number=6,)
+    fqdn = proto.Field(proto.STRING, number=10,)
+    create_time = proto.Field(
+        proto.MESSAGE, number=11, message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE, number=12, message=timestamp_pb2.Timestamp,
+    )
     state = proto.Field(proto.ENUM, number=13, enum=State,)
-
-    status_message = proto.Field(proto.STRING, number=14)
-
+    status_message = proto.Field(proto.STRING, number=14,)
     trusts = proto.RepeatedField(proto.MESSAGE, number=15, message="Trust",)
 
 
@@ -185,28 +174,18 @@ class Trust(proto.Message):
         OUTBOUND = 2
         BIDIRECTIONAL = 3
 
-    target_domain_name = proto.Field(proto.STRING, number=1)
-
+    target_domain_name = proto.Field(proto.STRING, number=1,)
     trust_type = proto.Field(proto.ENUM, number=2, enum=TrustType,)
-
     trust_direction = proto.Field(proto.ENUM, number=3, enum=TrustDirection,)
-
-    selective_authentication = proto.Field(proto.BOOL, number=4)
-
-    target_dns_ip_addresses = proto.RepeatedField(proto.STRING, number=5)
-
-    trust_handshake_secret = proto.Field(proto.STRING, number=6)
-
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=8, message=timestamp.Timestamp,)
-
+    selective_authentication = proto.Field(proto.BOOL, number=4,)
+    target_dns_ip_addresses = proto.RepeatedField(proto.STRING, number=5,)
+    trust_handshake_secret = proto.Field(proto.STRING, number=6,)
+    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
     state = proto.Field(proto.ENUM, number=9, enum=State,)
-
-    state_description = proto.Field(proto.STRING, number=11)
-
+    state_description = proto.Field(proto.STRING, number=11,)
     last_trust_heartbeat_time = proto.Field(
-        proto.MESSAGE, number=12, message=timestamp.Timestamp,
+        proto.MESSAGE, number=12, message=timestamp_pb2.Timestamp,
     )
 
 
