@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.channel_v1.types import common
 from google.cloud.channel_v1.types import products
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.type import money_pb2 as money  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import money_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -123,26 +120,18 @@ class Offer(proto.Message):
             purchase.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     marketing_info = proto.Field(
         proto.MESSAGE, number=2, message=products.MarketingInfo,
     )
-
     sku = proto.Field(proto.MESSAGE, number=3, message=products.Sku,)
-
     plan = proto.Field(proto.MESSAGE, number=4, message="Plan",)
-
     constraints = proto.Field(proto.MESSAGE, number=5, message="Constraints",)
-
     price_by_resources = proto.RepeatedField(
         proto.MESSAGE, number=6, message="PriceByResource",
     )
-
-    start_time = proto.Field(proto.MESSAGE, number=7, message=timestamp.Timestamp,)
-
-    end_time = proto.Field(proto.MESSAGE, number=8, message=timestamp.Timestamp,)
-
+    start_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
     parameter_definitions = proto.RepeatedField(
         proto.MESSAGE, number=9, message="ParameterDefinition",
     )
@@ -186,22 +175,16 @@ class ParameterDefinition(proto.Message):
         STRING = 2
         DOUBLE = 3
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     parameter_type = proto.Field(proto.ENUM, number=2, enum=ParameterType,)
-
     min_value = proto.Field(proto.MESSAGE, number=3, message=common.Value,)
-
     max_value = proto.Field(proto.MESSAGE, number=4, message=common.Value,)
-
     allowed_values = proto.RepeatedField(proto.MESSAGE, number=5, message=common.Value,)
-
-    optional = proto.Field(proto.BOOL, number=6)
+    optional = proto.Field(proto.BOOL, number=6,)
 
 
 class Constraints(proto.Message):
     r"""Represents the constraints for buying the Offer.
-
     Attributes:
         customer_constraints (google.cloud.channel_v1.types.CustomerConstraints):
             Represents constraints required to purchase
@@ -227,12 +210,10 @@ class CustomerConstraints(proto.Message):
             Promotional offers.
     """
 
-    allowed_regions = proto.RepeatedField(proto.STRING, number=1)
-
+    allowed_regions = proto.RepeatedField(proto.STRING, number=1,)
     allowed_customer_types = proto.RepeatedField(
         proto.ENUM, number=2, enum=common.CloudIdentityInfo.CustomerType,
     )
-
     promotional_order_types = proto.RepeatedField(
         proto.ENUM, number=3, enum="PromotionalOrderType",
     )
@@ -266,19 +247,14 @@ class Plan(proto.Message):
     """
 
     payment_plan = proto.Field(proto.ENUM, number=1, enum="PaymentPlan",)
-
     payment_type = proto.Field(proto.ENUM, number=2, enum="PaymentType",)
-
     payment_cycle = proto.Field(proto.MESSAGE, number=3, message="Period",)
-
     trial_period = proto.Field(proto.MESSAGE, number=4, message="Period",)
-
-    billing_account = proto.Field(proto.STRING, number=5)
+    billing_account = proto.Field(proto.STRING, number=5,)
 
 
 class PriceByResource(proto.Message):
     r"""Represents price by resource type.
-
     Attributes:
         resource_type (google.cloud.channel_v1.types.ResourceType):
             Resource Type. Example: SEAT
@@ -290,15 +266,12 @@ class PriceByResource(proto.Message):
     """
 
     resource_type = proto.Field(proto.ENUM, number=1, enum="ResourceType",)
-
     price = proto.Field(proto.MESSAGE, number=2, message="Price",)
-
     price_phases = proto.RepeatedField(proto.MESSAGE, number=3, message="PricePhase",)
 
 
 class Price(proto.Message):
     r"""Represents the price of the Offer.
-
     Attributes:
         base_price (google.type.money_pb2.Money):
             Base price.
@@ -313,13 +286,10 @@ class Price(proto.Message):
             Google Voice rate card.
     """
 
-    base_price = proto.Field(proto.MESSAGE, number=1, message=money.Money,)
-
-    discount = proto.Field(proto.DOUBLE, number=2)
-
-    effective_price = proto.Field(proto.MESSAGE, number=3, message=money.Money,)
-
-    external_price_uri = proto.Field(proto.STRING, number=4)
+    base_price = proto.Field(proto.MESSAGE, number=1, message=money_pb2.Money,)
+    discount = proto.Field(proto.DOUBLE, number=2,)
+    effective_price = proto.Field(proto.MESSAGE, number=3, message=money_pb2.Money,)
+    external_price_uri = proto.Field(proto.STRING, number=4,)
 
 
 class PricePhase(proto.Message):
@@ -342,13 +312,9 @@ class PricePhase(proto.Message):
     """
 
     period_type = proto.Field(proto.ENUM, number=1, enum="PeriodType",)
-
-    first_period = proto.Field(proto.INT32, number=2)
-
-    last_period = proto.Field(proto.INT32, number=3)
-
+    first_period = proto.Field(proto.INT32, number=2,)
+    last_period = proto.Field(proto.INT32, number=3,)
     price = proto.Field(proto.MESSAGE, number=4, message="Price",)
-
     price_tiers = proto.RepeatedField(proto.MESSAGE, number=5, message="PriceTier",)
 
 
@@ -373,16 +339,13 @@ class PriceTier(proto.Message):
             Price of the tier.
     """
 
-    first_resource = proto.Field(proto.INT32, number=1)
-
-    last_resource = proto.Field(proto.INT32, number=2)
-
+    first_resource = proto.Field(proto.INT32, number=1,)
+    last_resource = proto.Field(proto.INT32, number=2,)
     price = proto.Field(proto.MESSAGE, number=3, message="Price",)
 
 
 class Period(proto.Message):
     r"""Represents period in days/months/years.
-
     Attributes:
         duration (int):
             Total duration of Period Type defined.
@@ -390,8 +353,7 @@ class Period(proto.Message):
             Period Type.
     """
 
-    duration = proto.Field(proto.INT32, number=1)
-
+    duration = proto.Field(proto.INT32, number=1,)
     period_type = proto.Field(proto.ENUM, number=2, enum="PeriodType",)
 
 

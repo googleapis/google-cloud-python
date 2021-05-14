@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,40 +39,39 @@ def partition(
 class channelCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'activate_entitlement': ('name', 'request_id', ),
-    'cancel_entitlement': ('name', 'request_id', ),
-    'change_offer': ('name', 'offer', 'parameters', 'purchase_order_id', 'request_id', ),
-    'change_parameters': ('name', 'parameters', 'request_id', 'purchase_order_id', ),
-    'change_renewal_settings': ('name', 'renewal_settings', 'request_id', ),
-    'check_cloud_identity_accounts_exist': ('parent', 'domain', ),
-    'create_channel_partner_link': ('parent', 'channel_partner_link', ),
-    'create_customer': ('parent', 'customer', ),
-    'create_entitlement': ('parent', 'entitlement', 'request_id', ),
-    'delete_customer': ('name', ),
-    'get_channel_partner_link': ('name', 'view', ),
-    'get_customer': ('name', ),
-    'get_entitlement': ('name', ),
-    'list_channel_partner_links': ('parent', 'page_size', 'page_token', 'view', ),
-    'list_customers': ('parent', 'page_size', 'page_token', ),
-    'list_entitlements': ('parent', 'page_size', 'page_token', ),
-    'list_offers': ('parent', 'page_size', 'page_token', 'filter', 'language_code', ),
-    'list_products': ('account', 'page_size', 'page_token', 'language_code', ),
-    'list_purchasable_offers': ('customer', 'create_entitlement_purchase', 'change_offer_purchase', 'page_size', 'page_token', 'language_code', ),
-    'list_purchasable_skus': ('customer', 'create_entitlement_purchase', 'change_offer_purchase', 'page_size', 'page_token', 'language_code', ),
-    'list_skus': ('parent', 'account', 'page_size', 'page_token', 'language_code', ),
-    'list_subscribers': ('account', 'page_size', 'page_token', ),
-    'list_transferable_offers': ('parent', 'sku', 'cloud_identity_id', 'customer_name', 'page_size', 'page_token', 'language_code', ),
-    'list_transferable_skus': ('parent', 'cloud_identity_id', 'customer_name', 'page_size', 'page_token', 'auth_token', 'language_code', ),
-    'provision_cloud_identity': ('customer', 'cloud_identity_info', 'user', 'validate_only', ),
-    'register_subscriber': ('account', 'service_account', ),
-    'start_paid_service': ('name', 'request_id', ),
-    'suspend_entitlement': ('name', 'request_id', ),
-    'transfer_entitlements': ('parent', 'entitlements', 'auth_token', 'request_id', ),
-    'transfer_entitlements_to_google': ('parent', 'entitlements', 'request_id', ),
-    'unregister_subscriber': ('account', 'service_account', ),
-    'update_channel_partner_link': ('name', 'channel_partner_link', 'update_mask', ),
-    'update_customer': ('customer', 'update_mask', ),
-
+          'activate_entitlement': ('name', 'request_id', ),
+          'cancel_entitlement': ('name', 'request_id', ),
+          'change_offer': ('name', 'offer', 'parameters', 'purchase_order_id', 'request_id', ),
+          'change_parameters': ('name', 'parameters', 'request_id', 'purchase_order_id', ),
+          'change_renewal_settings': ('name', 'renewal_settings', 'request_id', ),
+          'check_cloud_identity_accounts_exist': ('parent', 'domain', ),
+          'create_channel_partner_link': ('parent', 'channel_partner_link', ),
+          'create_customer': ('parent', 'customer', ),
+          'create_entitlement': ('parent', 'entitlement', 'request_id', ),
+          'delete_customer': ('name', ),
+          'get_channel_partner_link': ('name', 'view', ),
+          'get_customer': ('name', ),
+          'get_entitlement': ('name', ),
+          'list_channel_partner_links': ('parent', 'page_size', 'page_token', 'view', ),
+          'list_customers': ('parent', 'page_size', 'page_token', ),
+          'list_entitlements': ('parent', 'page_size', 'page_token', ),
+          'list_offers': ('parent', 'page_size', 'page_token', 'filter', 'language_code', ),
+          'list_products': ('account', 'page_size', 'page_token', 'language_code', ),
+          'list_purchasable_offers': ('customer', 'create_entitlement_purchase', 'change_offer_purchase', 'page_size', 'page_token', 'language_code', ),
+          'list_purchasable_skus': ('customer', 'create_entitlement_purchase', 'change_offer_purchase', 'page_size', 'page_token', 'language_code', ),
+          'list_skus': ('parent', 'account', 'page_size', 'page_token', 'language_code', ),
+          'list_subscribers': ('account', 'page_size', 'page_token', ),
+          'list_transferable_offers': ('parent', 'sku', 'cloud_identity_id', 'customer_name', 'page_size', 'page_token', 'language_code', ),
+          'list_transferable_skus': ('parent', 'cloud_identity_id', 'customer_name', 'page_size', 'page_token', 'auth_token', 'language_code', ),
+          'provision_cloud_identity': ('customer', 'cloud_identity_info', 'user', 'validate_only', ),
+          'register_subscriber': ('account', 'service_account', ),
+          'start_paid_service': ('name', 'request_id', ),
+          'suspend_entitlement': ('name', 'request_id', ),
+          'transfer_entitlements': ('parent', 'entitlements', 'auth_token', 'request_id', ),
+          'transfer_entitlements_to_google': ('parent', 'entitlements', 'request_id', ),
+          'unregister_subscriber': ('account', 'service_account', ),
+          'update_channel_partner_link': ('name', 'channel_partner_link', 'update_mask', ),
+          'update_customer': ('customer', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -105,7 +102,7 @@ class channelCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

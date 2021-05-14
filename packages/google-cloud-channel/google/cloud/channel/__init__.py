@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +14,13 @@
 # limitations under the License.
 #
 
-from google.cloud.channel_v1.services.cloud_channel_service.async_client import (
-    CloudChannelServiceAsyncClient,
-)
 from google.cloud.channel_v1.services.cloud_channel_service.client import (
     CloudChannelServiceClient,
 )
+from google.cloud.channel_v1.services.cloud_channel_service.async_client import (
+    CloudChannelServiceAsyncClient,
+)
+
 from google.cloud.channel_v1.types.channel_partner_links import ChannelPartnerLink
 from google.cloud.channel_v1.types.channel_partner_links import ChannelPartnerLinkState
 from google.cloud.channel_v1.types.channel_partner_links import ChannelPartnerLinkView
@@ -36,30 +36,30 @@ from google.cloud.channel_v1.types.entitlements import Entitlement
 from google.cloud.channel_v1.types.entitlements import Parameter
 from google.cloud.channel_v1.types.entitlements import ProvisionedService
 from google.cloud.channel_v1.types.entitlements import RenewalSettings
-from google.cloud.channel_v1.types.entitlements import TransferEligibility
 from google.cloud.channel_v1.types.entitlements import TransferableSku
+from google.cloud.channel_v1.types.entitlements import TransferEligibility
 from google.cloud.channel_v1.types.entitlements import TrialSettings
 from google.cloud.channel_v1.types.offers import Constraints
 from google.cloud.channel_v1.types.offers import CustomerConstraints
 from google.cloud.channel_v1.types.offers import Offer
 from google.cloud.channel_v1.types.offers import ParameterDefinition
-from google.cloud.channel_v1.types.offers import PaymentPlan
-from google.cloud.channel_v1.types.offers import PaymentType
 from google.cloud.channel_v1.types.offers import Period
-from google.cloud.channel_v1.types.offers import PeriodType
 from google.cloud.channel_v1.types.offers import Plan
 from google.cloud.channel_v1.types.offers import Price
 from google.cloud.channel_v1.types.offers import PriceByResource
 from google.cloud.channel_v1.types.offers import PricePhase
 from google.cloud.channel_v1.types.offers import PriceTier
+from google.cloud.channel_v1.types.offers import PaymentPlan
+from google.cloud.channel_v1.types.offers import PaymentType
+from google.cloud.channel_v1.types.offers import PeriodType
 from google.cloud.channel_v1.types.offers import PromotionalOrderType
 from google.cloud.channel_v1.types.offers import ResourceType
 from google.cloud.channel_v1.types.operations import OperationMetadata
 from google.cloud.channel_v1.types.products import MarketingInfo
 from google.cloud.channel_v1.types.products import Media
-from google.cloud.channel_v1.types.products import MediaType
 from google.cloud.channel_v1.types.products import Product
 from google.cloud.channel_v1.types.products import Sku
+from google.cloud.channel_v1.types.products import MediaType
 from google.cloud.channel_v1.types.service import ActivateEntitlementRequest
 from google.cloud.channel_v1.types.service import CancelEntitlementRequest
 from google.cloud.channel_v1.types.service import ChangeOfferRequest
@@ -106,10 +106,10 @@ from google.cloud.channel_v1.types.service import RegisterSubscriberRequest
 from google.cloud.channel_v1.types.service import RegisterSubscriberResponse
 from google.cloud.channel_v1.types.service import StartPaidServiceRequest
 from google.cloud.channel_v1.types.service import SuspendEntitlementRequest
+from google.cloud.channel_v1.types.service import TransferableOffer
 from google.cloud.channel_v1.types.service import TransferEntitlementsRequest
 from google.cloud.channel_v1.types.service import TransferEntitlementsResponse
 from google.cloud.channel_v1.types.service import TransferEntitlementsToGoogleRequest
-from google.cloud.channel_v1.types.service import TransferableOffer
 from google.cloud.channel_v1.types.service import UnregisterSubscriberRequest
 from google.cloud.channel_v1.types.service import UnregisterSubscriberResponse
 from google.cloud.channel_v1.types.service import UpdateChannelPartnerLinkRequest
@@ -119,35 +119,59 @@ from google.cloud.channel_v1.types.subscriber_event import EntitlementEvent
 from google.cloud.channel_v1.types.subscriber_event import SubscriberEvent
 
 __all__ = (
-    "ActivateEntitlementRequest",
+    "CloudChannelServiceClient",
+    "CloudChannelServiceAsyncClient",
+    "ChannelPartnerLink",
+    "ChannelPartnerLinkState",
+    "ChannelPartnerLinkView",
     "AdminUser",
+    "CloudIdentityInfo",
+    "EduData",
+    "Value",
+    "ContactInfo",
+    "Customer",
     "AssociationInfo",
+    "CommitmentSettings",
+    "Entitlement",
+    "Parameter",
+    "ProvisionedService",
+    "RenewalSettings",
+    "TransferableSku",
+    "TransferEligibility",
+    "TrialSettings",
+    "Constraints",
+    "CustomerConstraints",
+    "Offer",
+    "ParameterDefinition",
+    "Period",
+    "Plan",
+    "Price",
+    "PriceByResource",
+    "PricePhase",
+    "PriceTier",
+    "PaymentPlan",
+    "PaymentType",
+    "PeriodType",
+    "PromotionalOrderType",
+    "ResourceType",
+    "OperationMetadata",
+    "MarketingInfo",
+    "Media",
+    "Product",
+    "Sku",
+    "MediaType",
+    "ActivateEntitlementRequest",
     "CancelEntitlementRequest",
     "ChangeOfferRequest",
     "ChangeParametersRequest",
     "ChangeRenewalSettingsRequest",
-    "ChannelPartnerLink",
-    "ChannelPartnerLinkState",
-    "ChannelPartnerLinkView",
     "CheckCloudIdentityAccountsExistRequest",
     "CheckCloudIdentityAccountsExistResponse",
-    "CloudChannelServiceAsyncClient",
-    "CloudChannelServiceClient",
     "CloudIdentityCustomerAccount",
-    "CloudIdentityInfo",
-    "CommitmentSettings",
-    "Constraints",
-    "ContactInfo",
     "CreateChannelPartnerLinkRequest",
     "CreateCustomerRequest",
     "CreateEntitlementRequest",
-    "Customer",
-    "CustomerConstraints",
-    "CustomerEvent",
     "DeleteCustomerRequest",
-    "EduData",
-    "Entitlement",
-    "EntitlementEvent",
     "GetChannelPartnerLinkRequest",
     "GetCustomerRequest",
     "GetEntitlementRequest",
@@ -173,46 +197,22 @@ __all__ = (
     "ListTransferableOffersResponse",
     "ListTransferableSkusRequest",
     "ListTransferableSkusResponse",
-    "MarketingInfo",
-    "Media",
-    "MediaType",
-    "Offer",
-    "OperationMetadata",
-    "Parameter",
-    "ParameterDefinition",
-    "PaymentPlan",
-    "PaymentType",
-    "Period",
-    "PeriodType",
-    "Plan",
-    "Price",
-    "PriceByResource",
-    "PricePhase",
-    "PriceTier",
-    "Product",
-    "PromotionalOrderType",
     "ProvisionCloudIdentityRequest",
-    "ProvisionedService",
     "PurchasableOffer",
     "PurchasableSku",
     "RegisterSubscriberRequest",
     "RegisterSubscriberResponse",
-    "RenewalSettings",
-    "ResourceType",
-    "Sku",
     "StartPaidServiceRequest",
-    "SubscriberEvent",
     "SuspendEntitlementRequest",
-    "TransferEligibility",
+    "TransferableOffer",
     "TransferEntitlementsRequest",
     "TransferEntitlementsResponse",
     "TransferEntitlementsToGoogleRequest",
-    "TransferableOffer",
-    "TransferableSku",
-    "TrialSettings",
     "UnregisterSubscriberRequest",
     "UnregisterSubscriberResponse",
     "UpdateChannelPartnerLinkRequest",
     "UpdateCustomerRequest",
-    "Value",
+    "CustomerEvent",
+    "EntitlementEvent",
+    "SubscriberEvent",
 )

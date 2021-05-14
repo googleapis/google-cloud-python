@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.channel_v1.types import common
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -85,20 +82,13 @@ class ChannelPartnerLink(proto.Message):
             channel partner (IR).
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    reseller_cloud_identity_id = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    reseller_cloud_identity_id = proto.Field(proto.STRING, number=2,)
     link_state = proto.Field(proto.ENUM, number=3, enum="ChannelPartnerLinkState",)
-
-    invite_link_uri = proto.Field(proto.STRING, number=4)
-
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp.Timestamp,)
-
-    public_id = proto.Field(proto.STRING, number=7)
-
+    invite_link_uri = proto.Field(proto.STRING, number=4,)
+    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    public_id = proto.Field(proto.STRING, number=7,)
     channel_partner_cloud_identity_info = proto.Field(
         proto.MESSAGE, number=8, message=common.CloudIdentityInfo,
     )

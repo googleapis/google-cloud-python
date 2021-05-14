@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -22,10 +20,10 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.api_core import operation  # type: ignore
@@ -39,45 +37,38 @@ from google.cloud.channel_v1.types import offers
 from google.cloud.channel_v1.types import operations
 from google.cloud.channel_v1.types import products
 from google.cloud.channel_v1.types import service
-from google.protobuf import empty_pb2 as empty  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.type import postal_address_pb2 as postal_address  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import postal_address_pb2  # type: ignore
 from .transports.base import CloudChannelServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import CloudChannelServiceGrpcAsyncIOTransport
 from .client import CloudChannelServiceClient
 
 
 class CloudChannelServiceAsyncClient:
-    """CloudChannelService enables Google cloud resellers and distributors
-    to manage their customers, channel partners, entitlements and
-    reports.
+    """CloudChannelService lets Google cloud resellers and distributors
+    manage their customers, channel partners, entitlements, and reports.
 
     Using this service:
 
-    1. Resellers or distributors can manage a customer entity.
+    1. Resellers and distributors can manage a customer entity.
     2. Distributors can register an authorized reseller in their channel
-       and then enable delegated admin access for the reseller.
-    3. Resellers or distributors can manage entitlements for their
-       customers.
+       and provide them with delegated admin access.
+    3. Resellers and distributors can manage customer entitlements.
 
-    The service primarily exposes the following resources:
+    CloudChannelService exposes the following resources:
 
-    -  [Customer][google.cloud.channel.v1.Customer]s: A Customer
-       represents an entity managed by a reseller or distributor. A
-       customer typically represents an enterprise. In an n-tier resale
-       channel hierarchy, customers are generally represented as leaf
-       nodes. Customers primarily have an Entitlement sub-resource
-       discussed below.
+    -  [Customer][google.cloud.channel.v1.Customer]s: An entity—usually
+       an enterprise—managed by a reseller or distributor.
 
-    -  [Entitlement][google.cloud.channel.v1.Entitlement]s: An
-       Entitlement represents an entity which provides a customer means
-       to start using a service. Entitlements are created or updated as
-       a result of a successful fulfillment.
+    -  [Entitlement][google.cloud.channel.v1.Entitlement]s: An entity
+       that provides a customer with the means to use a service.
+       Entitlements are created or updated as a result of a successful
+       fulfillment.
 
     -  [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]s:
-       A ChannelPartnerLink is an entity that identifies links between
-       distributors and their indirect resellers in a channel.
+       An entity that identifies links between distributors and their
+       indirect resellers in a channel.
     """
 
     _client: CloudChannelServiceClient
@@ -97,31 +88,26 @@ class CloudChannelServiceAsyncClient:
     parse_product_path = staticmethod(CloudChannelServiceClient.parse_product_path)
     sku_path = staticmethod(CloudChannelServiceClient.sku_path)
     parse_sku_path = staticmethod(CloudChannelServiceClient.parse_sku_path)
-
     common_billing_account_path = staticmethod(
         CloudChannelServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         CloudChannelServiceClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(CloudChannelServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(
         CloudChannelServiceClient.parse_common_folder_path
     )
-
     common_organization_path = staticmethod(
         CloudChannelServiceClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
         CloudChannelServiceClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(CloudChannelServiceClient.common_project_path)
     parse_common_project_path = staticmethod(
         CloudChannelServiceClient.parse_common_project_path
     )
-
     common_location_path = staticmethod(CloudChannelServiceClient.common_location_path)
     parse_common_location_path = staticmethod(
         CloudChannelServiceClient.parse_common_location_path
@@ -129,7 +115,8 @@ class CloudChannelServiceAsyncClient:
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -144,7 +131,7 @@ class CloudChannelServiceAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -161,7 +148,7 @@ class CloudChannelServiceAsyncClient:
 
     @property
     def transport(self) -> CloudChannelServiceTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             CloudChannelServiceTransport: The transport used by the client instance.
@@ -176,12 +163,12 @@ class CloudChannelServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, CloudChannelServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the cloud channel service client.
+        """Instantiates the cloud channel service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -213,7 +200,6 @@ class CloudChannelServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = CloudChannelServiceClient(
             credentials=credentials,
             transport=transport,
@@ -229,24 +215,23 @@ class CloudChannelServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListCustomersAsyncPager:
-        r"""List downstream [Customer][google.cloud.channel.v1.Customer]s.
+        r"""List [Customer][google.cloud.channel.v1.Customer]s.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the reseller account making the request
-           and the reseller account being queried for are different.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  PERMISSION_DENIED: The reseller account making the request is
+           different from the reseller account in the API request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
 
-        Return Value: List of
-        [Customer][google.cloud.channel.v1.Customer]s pertaining to the
-        reseller or empty list if there are none.
+        Return value: List of
+        [Customer][google.cloud.channel.v1.Customer]s, or an empty list
+        if there are no customers.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.ListCustomersRequest`):
                 The request object. Request message for
                 [CloudChannelService.ListCustomers][google.cloud.channel.v1.CloudChannelService.ListCustomers]
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -263,7 +248,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.ListCustomersRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -304,17 +288,17 @@ class CloudChannelServiceAsyncClient:
         r"""Returns a requested [Customer][google.cloud.channel.v1.Customer]
         resource.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the reseller account making the request
-           and the reseller account being queried for are different.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
-        -  NOT_FOUND: If the customer resource doesn't exist. Usually
-           the result of an invalid name parameter.
+        -  PERMISSION_DENIED: The reseller account making the request is
+           different from the reseller account in the API request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+        -  NOT_FOUND: The customer resource doesn't exist. Usually the
+           result of an invalid name parameter.
 
-        Return Value: [Customer][google.cloud.channel.v1.Customer]
-        resource if found, error otherwise.
+        Return value: The [Customer][google.cloud.channel.v1.Customer]
+        resource.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.GetCustomerRequest`):
@@ -322,13 +306,12 @@ class CloudChannelServiceAsyncClient:
                 [CloudChannelService.GetCustomer][google.cloud.channel.v1.CloudChannelService.GetCustomer].
             name (:class:`str`):
                 Required. The resource name of the customer to retrieve.
-                The name takes the format:
+                Name uses the format:
                 accounts/{account_id}/customers/{customer_id}
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -355,7 +338,6 @@ class CloudChannelServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -387,24 +369,24 @@ class CloudChannelServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.CheckCloudIdentityAccountsExistResponse:
-        r"""Confirms the existence of Cloud Identity accounts, based on the
-        domain and whether the Cloud Identity accounts are owned by the
+        r"""Confirms the existence of Cloud Identity accounts based on the
+        domain and if the Cloud Identity accounts are owned by the
         reseller.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the reseller account making the request
-           and the reseller account being queried for are different.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  PERMISSION_DENIED: The reseller account making the request is
+           different from the reseller account in the API request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
         -  INVALID_VALUE: Invalid domain value in the request.
 
-        Return Value: List of
+        Return value: A list of
         [CloudIdentityCustomerAccount][google.cloud.channel.v1.CloudIdentityCustomerAccount]
-        resources for the domain. List may be empty.
+        resources for the domain (may be empty)
 
-        Note: in the v1alpha1 version of the API, a NOT_FOUND error is
-        returned if no
+        Note: in the v1alpha1 version of the API, a NOT_FOUND error
+        returns if no
         [CloudIdentityCustomerAccount][google.cloud.channel.v1.CloudIdentityCustomerAccount]
         resources match the domain.
 
@@ -412,7 +394,6 @@ class CloudChannelServiceAsyncClient:
             request (:class:`google.cloud.channel_v1.types.CheckCloudIdentityAccountsExistRequest`):
                 The request object. Request message for
                 [CloudChannelService.CheckCloudIdentityAccountsExist][google.cloud.channel.v1.CloudChannelService.CheckCloudIdentityAccountsExist].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -426,7 +407,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.CheckCloudIdentityAccountsExistRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -460,25 +440,22 @@ class CloudChannelServiceAsyncClient:
         r"""Creates a new [Customer][google.cloud.channel.v1.Customer]
         resource under the reseller or distributor account.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the reseller account making the request
-           and the reseller account being queried for are different.
-        -  INVALID_ARGUMENT: It can happen in following scenarios -
+        -  PERMISSION_DENIED: The reseller account making the request is
+           different from the reseller account in the API request.
+        -  INVALID_ARGUMENT:
 
-           -  Missing or invalid required parameters in the request.
-           -  Domain field value doesn't match the domain specified in
-              primary email.
+           -  Required request parameters are missing or invalid.
+           -  Domain field value doesn't match the primary email domain.
 
-        Return Value: If successful, the newly created
-        [Customer][google.cloud.channel.v1.Customer] resource, otherwise
-        returns an error.
+        Return value: The newly created
+        [Customer][google.cloud.channel.v1.Customer] resource.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.CreateCustomerRequest`):
                 The request object. Request message for
                 [CloudChannelService.CreateCustomer][google.cloud.channel.v1.CloudChannelService.CreateCustomer]
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -492,7 +469,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.CreateCustomerRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -524,26 +500,24 @@ class CloudChannelServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> customers.Customer:
         r"""Updates an existing [Customer][google.cloud.channel.v1.Customer]
-        resource belonging to the reseller or distributor.
+        resource for the reseller or distributor.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the reseller account making the request
-           and the reseller account being queried for are different.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  PERMISSION_DENIED: The reseller account making the request is
+           different from the reseller account in the API request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
         -  NOT_FOUND: No [Customer][google.cloud.channel.v1.Customer]
-           resource found for the name specified in the request.
+           resource found for the name in the request.
 
-        Return Value: If successful, the updated
-        [Customer][google.cloud.channel.v1.Customer] resource, otherwise
-        returns an error.
+        Return value: The updated
+        [Customer][google.cloud.channel.v1.Customer] resource.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.UpdateCustomerRequest`):
                 The request object. Request message for
                 [CloudChannelService.UpdateCustomer][google.cloud.channel.v1.CloudChannelService.UpdateCustomer].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -557,7 +531,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.UpdateCustomerRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -594,16 +567,15 @@ class CloudChannelServiceAsyncClient:
         r"""Deletes the given [Customer][google.cloud.channel.v1.Customer]
         permanently and irreversibly.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the account making the request does not
+        -  PERMISSION_DENIED: The account making the request does not
            own this customer.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
-        -  FAILED_PRECONDITION: If the customer has existing
-           entitlements.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+        -  FAILED_PRECONDITION: The customer has existing entitlements.
         -  NOT_FOUND: No [Customer][google.cloud.channel.v1.Customer]
-           resource found for the name specified in the request.
+           resource found for the name in the request.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.DeleteCustomerRequest`):
@@ -616,7 +588,6 @@ class CloudChannelServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -637,7 +608,6 @@ class CloudChannelServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -669,36 +639,33 @@ class CloudChannelServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Creates a Cloud Identity for the given customer using the
-        customer's information or the information provided here, if
-        present.
+        customer's information, or the information provided here.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the customer doesn't belong to the
+        -  PERMISSION_DENIED: The customer doesn't belong to the
            reseller.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
-        -  NOT_FOUND: If the customer is not found for the reseller.
-        -  ALREADY_EXISTS: If the customer's primary email already
-           exists. In this case, retry after changing the customer's
-           primary contact email.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+        -  NOT_FOUND: The customer was not found.
+        -  ALREADY_EXISTS: The customer's primary email already exists.
+           Retry after changing the customer's primary contact email.
         -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support in this case.
+           the backend. Contact Cloud Channel support.
         -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel support in this case.
+           the backend. Contact Cloud Channel support.
 
-        Return Value: Long Running Operation ID.
+        Return value: The ID of a long-running operation.
 
         To get the results of the operation, call the GetOperation
         method of CloudChannelOperationsService. The Operation metadata
-        will contain an instance of
+        contains an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
         Args:
             request (:class:`google.cloud.channel_v1.types.ProvisionCloudIdentityRequest`):
                 The request object. Request message for
                 [CloudChannelService.ProvisionCloudIdentity][google.cloud.channel.v1.CloudChannelService.ProvisionCloudIdentity]
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -715,7 +682,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.ProvisionCloudIdentityRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -754,25 +720,23 @@ class CloudChannelServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListEntitlementsAsyncPager:
-        r"""List [Entitlement][google.cloud.channel.v1.Entitlement]s
+        r"""Lists [Entitlement][google.cloud.channel.v1.Entitlement]s
         belonging to a customer.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the customer doesn't belong to the
+        -  PERMISSION_DENIED: The customer doesn't belong to the
            reseller.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
 
-        Return Value: List of
-        [Entitlement][google.cloud.channel.v1.Entitlement]s belonging to
-        the customer, or empty list if there are none.
+        Return value: A list of the customer's
+        [Entitlement][google.cloud.channel.v1.Entitlement]s.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.ListEntitlementsRequest`):
                 The request object. Request message for
                 [CloudChannelService.ListEntitlements][google.cloud.channel.v1.CloudChannelService.ListEntitlements]
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -789,7 +753,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.ListEntitlementsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -827,35 +790,33 @@ class CloudChannelServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTransferableSkusAsyncPager:
         r"""List [TransferableSku][google.cloud.channel.v1.TransferableSku]s
-        of a customer based on Cloud Identity ID or Customer Name in the
-        request.
+        of a customer based on the Cloud Identity ID or Customer Name in
+        the request.
 
-        This method is used when a reseller lists the entitlements
-        information of a customer that is not owned. The reseller should
-        provide the customer's Cloud Identity ID or Customer Name.
+        Use this method to list the entitlements information of an
+        unowned customer. You should provide the customer's Cloud
+        Identity ID or Customer Name.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: Appears because of one of the following -
+        -  PERMISSION_DENIED:
 
-           -  The customer doesn't belong to the reseller and no auth
-              token.
+           -  The customer doesn't belong to the reseller and has no
+              auth token.
            -  The supplied auth token is invalid.
-           -  The reseller account making the request and the queries
-              reseller account are different.
+           -  The reseller account making the request is different from
+              the reseller account in the query.
 
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
 
-        Return Value: List of
-        [TransferableSku][google.cloud.channel.v1.TransferableSku] for
-        the given customer.
+        Return value: A list of the customer's
+        [TransferableSku][google.cloud.channel.v1.TransferableSku].
 
         Args:
             request (:class:`google.cloud.channel_v1.types.ListTransferableSkusRequest`):
                 The request object. Request message for
                 [CloudChannelService.ListTransferableSkus][google.cloud.channel.v1.CloudChannelService.ListTransferableSkus]
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -872,7 +833,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.ListTransferableSkusRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -914,23 +874,24 @@ class CloudChannelServiceAsyncClient:
         of a customer based on Cloud Identity ID or Customer Name in the
         request.
 
-        This method is used when a reseller gets the entitlement
-        information of a customer that is not owned. The reseller should
-        provide the customer's Cloud Identity ID or Customer Name.
+        Use this method when a reseller gets the entitlement information
+        of an unowned customer. The reseller should provide the
+        customer's Cloud Identity ID or Customer Name.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: Appears because of one of the following:
+        -  PERMISSION_DENIED:
 
-           -  If the customer doesn't belong to the reseller and no auth
-              token or invalid auth token is supplied.
-           -  If the reseller account making the request and the
-              reseller account being queried for are different.
+           -  The customer doesn't belong to the reseller and has no
+              auth token.
+           -  The supplied auth token is invalid.
+           -  The reseller account making the request is different from
+              the reseller account in the query.
 
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
 
-        Return Value: List of
+        Return value: List of
         [TransferableOffer][google.cloud.channel.v1.TransferableOffer]
         for the given customer and SKU.
 
@@ -938,7 +899,6 @@ class CloudChannelServiceAsyncClient:
             request (:class:`google.cloud.channel_v1.types.ListTransferableOffersRequest`):
                 The request object. Request message for
                 [CloudChannelService.ListTransferableOffers][google.cloud.channel.v1.CloudChannelService.ListTransferableOffers]
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -955,7 +915,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.ListTransferableOffersRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -995,23 +954,21 @@ class CloudChannelServiceAsyncClient:
         r"""Returns a requested
         [Entitlement][google.cloud.channel.v1.Entitlement] resource.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the customer doesn't belong to the
+        -  PERMISSION_DENIED: The customer doesn't belong to the
            reseller.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
-        -  NOT_FOUND: If the entitlement is not found for the customer.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+        -  NOT_FOUND: The customer entitlement was not found.
 
-        Return Value: If found, the requested
-        [Entitlement][google.cloud.channel.v1.Entitlement] resource,
-        otherwise returns an error.
+        Return value: The requested
+        [Entitlement][google.cloud.channel.v1.Entitlement] resource.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.GetEntitlementRequest`):
                 The request object. Request message for
                 [CloudChannelService.GetEntitlement][google.cloud.channel.v1.CloudChannelService.GetEntitlement].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1025,7 +982,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.GetEntitlementRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1058,51 +1014,44 @@ class CloudChannelServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates an entitlement for a customer.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the customer doesn't belong to the
+        -  PERMISSION_DENIED: The customer doesn't belong to the
            reseller.
-        -  INVALID_ARGUMENT: It can happen in below scenarios -
+        -  INVALID_ARGUMENT:
 
-           -  Missing or invalid required parameters in the request.
-           -  Cannot purchase an entitlement if there is already an
-              entitlement for customer, for a SKU from the same product
-              family.
-           -  INVALID_VALUE: Offer passed in isn't valid. Make sure
-              OfferId is valid. If it is valid, then contact Google
-              Channel support for further troubleshooting.
+           -  Required request parameters are missing or invalid.
+           -  There is already a customer entitlement for a SKU from the
+              same product family.
 
-        -  NOT_FOUND: If the customer or offer resource is not found for
-           the reseller.
-        -  ALREADY_EXISTS: This failure can happen in the following
-           cases:
+        -  INVALID_VALUE: Make sure the OfferId is valid. If it is,
+           contact Google Channel support for further troubleshooting.
+        -  NOT_FOUND: The customer or offer resource was not found.
+        -  ALREADY_EXISTS:
 
-           -  If the SKU has been already purchased for the customer.
-           -  If the customer's primary email already exists. In this
-              case retry after changing the customer's primary contact
-              email.
+           -  The SKU was already purchased for the customer.
+           -  The customer's primary email already exists. Retry after
+              changing the customer's primary contact email.
 
-        -  CONDITION_NOT_MET or FAILED_PRECONDITION: This failure can
-           happen in the following cases:
+        -  CONDITION_NOT_MET or FAILED_PRECONDITION:
 
-           -  Purchasing a SKU that requires domain verification and the
-              domain has not been verified.
-           -  Purchasing an Add-On SKU like Vault or Drive without
-              purchasing the pre-requisite SKU, such as Google Workspace
-              Business Starter.
-           -  Applicable only for developer accounts: reseller and
-              resold domain. Must meet the following domain naming
-              requirements:
+           -  The domain required for purchasing a SKU has not been
+              verified.
+           -  A pre-requisite SKU required to purchase an Add-On SKU is
+              missing. For example, Google Workspace Business Starter is
+              required to purchase Vault or Drive.
+           -  (Developer accounts only) Reseller and resold domain must
+              meet the following naming requirements:
 
               -  Domain names must start with goog-test.
-              -  Resold domain names must include the reseller domain.
+              -  Domain names must include the reseller domain.
 
         -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel Support in this case.
+           the backend. Contact Cloud Channel support.
         -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Contact Cloud Channel Support in this case.
+           the backend. Contact Cloud Channel support.
 
-        Return Value: Long Running Operation ID.
+        Return value: The ID of a long-running operation.
 
         To get the results of the operation, call the GetOperation
         method of CloudChannelOperationsService. The Operation metadata
@@ -1113,7 +1062,6 @@ class CloudChannelServiceAsyncClient:
             request (:class:`google.cloud.channel_v1.types.CreateEntitlementRequest`):
                 The request object. Request message for
                 [CloudChannelService.CreateEntitlement][google.cloud.channel.v1.CloudChannelService.CreateEntitlement]
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1131,7 +1079,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.CreateEntitlementRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1170,28 +1117,26 @@ class CloudChannelServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Change parameters of the entitlement
+        r"""Change parameters of the entitlement.
 
-        An entitlement parameters update is a long-running operation and
-        results in updates to the entitlement as a result of
-        fulfillment.
+        An entitlement update is a long-running operation and it updates
+        the entitlement as a result of fulfillment.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the customer doesn't belong to the
+        -  PERMISSION_DENIED: The customer doesn't belong to the
            reseller.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request. For example, if the number of seats being
-           changed to is greater than the allowed number of max seats
-           for the resource. Or decreasing seats for a commitment based
-           plan.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid. For example, the number of seats being changed is
+           greater than the allowed number of max seats, or decreasing
+           seats for a commitment based plan.
         -  NOT_FOUND: Entitlement resource not found.
         -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
         -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
 
-        Return Value: Long Running Operation ID.
+        Return value: The ID of a long-running operation.
 
         To get the results of the operation, call the GetOperation
         method of CloudChannelOperationsService. The Operation metadata
@@ -1202,7 +1147,6 @@ class CloudChannelServiceAsyncClient:
             request (:class:`google.cloud.channel_v1.types.ChangeParametersRequest`):
                 The request object. Request message for
                 [CloudChannelService.ChangeParametersRequest][].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1220,7 +1164,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.ChangeParametersRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1262,25 +1205,25 @@ class CloudChannelServiceAsyncClient:
         r"""Updates the renewal settings for an existing customer
         entitlement.
 
-        An entitlement update is a long-running operation and results in
-        updates to the entitlement as a result of fulfillment.
+        An entitlement update is a long-running operation and it updates
+        the entitlement as a result of fulfillment.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the customer doesn't belong to the
+        -  PERMISSION_DENIED: The customer doesn't belong to the
            reseller.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
         -  NOT_FOUND: Entitlement resource not found.
         -  NOT_COMMITMENT_PLAN: Renewal Settings are only applicable for
-           a commitment plan. Can't enable or disable renewal for
+           a commitment plan. Can't enable or disable renewals for
            non-commitment plans.
-        -  INTERNAL: Any non user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
-        -  UNKNOWN: Any non user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+        -  INTERNAL: Any non-user error related to a technical issue in
+           the backend. Contact Cloud Channel support.
+        -  UNKNOWN: Any non-user error related to a technical issue in
+           the backend. Contact Cloud Channel support.
 
-        Return Value: Long Running Operation ID.
+        Return value: The ID of a long-running operation.
 
         To get the results of the operation, call the GetOperation
         method of CloudChannelOperationsService. The Operation metadata
@@ -1291,7 +1234,6 @@ class CloudChannelServiceAsyncClient:
             request (:class:`google.cloud.channel_v1.types.ChangeRenewalSettingsRequest`):
                 The request object. Request message for
                 [CloudChannelService.ChangeRenewalSettings][google.cloud.channel.v1.CloudChannelService.ChangeRenewalSettings].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1309,7 +1251,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.ChangeRenewalSettingsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1350,22 +1291,22 @@ class CloudChannelServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the Offer for an existing customer entitlement.
 
-        An entitlement update is a long-running operation and results in
-        updates to the entitlement as a result of fulfillment.
+        An entitlement update is a long-running operation and it updates
+        the entitlement as a result of fulfillment.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the customer doesn't belong to the
+        -  PERMISSION_DENIED: The customer doesn't belong to the
            reseller.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
         -  NOT_FOUND: Offer or Entitlement resource not found.
         -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
         -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
 
-        Return Value: Long Running Operation ID.
+        Return value: The ID of a long-running operation.
 
         To get the results of the operation, call the GetOperation
         method of CloudChannelOperationsService. The Operation metadata
@@ -1376,7 +1317,6 @@ class CloudChannelServiceAsyncClient:
             request (:class:`google.cloud.channel_v1.types.ChangeOfferRequest`):
                 The request object. Request message for
                 [CloudChannelService.ChangeOffer][google.cloud.channel.v1.CloudChannelService.ChangeOffer].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1394,7 +1334,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.ChangeOfferRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1436,24 +1375,24 @@ class CloudChannelServiceAsyncClient:
         r"""Starts paid service for a trial entitlement.
 
         Starts paid service for a trial entitlement immediately. This
-        method is only applicable if a plan has already been set up for
-        a trial entitlement but has some trial days remaining.
+        method is only applicable if a plan is set up for a trial
+        entitlement but has some trial days remaining.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the customer doesn't belong to the
+        -  PERMISSION_DENIED: The customer doesn't belong to the
            reseller.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
         -  NOT_FOUND: Entitlement resource not found.
         -  FAILED_PRECONDITION/NOT_IN_TRIAL: This method only works for
            entitlement on trial plans.
         -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
         -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
 
-        Return Value: Long Running Operation ID.
+        Return value: The ID of a long-running operation.
 
         To get the results of the operation, call the GetOperation
         method of CloudChannelOperationsService. The Operation metadata
@@ -1464,7 +1403,6 @@ class CloudChannelServiceAsyncClient:
             request (:class:`google.cloud.channel_v1.types.StartPaidServiceRequest`):
                 The request object. Request message for
                 [CloudChannelService.StartPaidService][google.cloud.channel.v1.CloudChannelService.StartPaidService].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1482,7 +1420,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.StartPaidServiceRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1521,23 +1458,24 @@ class CloudChannelServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Suspends a previously fulfilled entitlement. An entitlement
-        suspension is a long-running operation.
+        r"""Suspends a previously fulfilled entitlement.
 
-        Possible Error Codes:
+        An entitlement suspension is a long-running operation.
 
-        -  PERMISSION_DENIED: If the customer doesn't belong to the
+        Possible error codes:
+
+        -  PERMISSION_DENIED: The customer doesn't belong to the
            reseller.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
         -  NOT_FOUND: Entitlement resource not found.
         -  NOT_ACTIVE: Entitlement is not active.
         -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
         -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
 
-        Return Value: Long Running Operation ID.
+        Return value: The ID of a long-running operation.
 
         To get the results of the operation, call the GetOperation
         method of CloudChannelOperationsService. The Operation metadata
@@ -1548,7 +1486,6 @@ class CloudChannelServiceAsyncClient:
             request (:class:`google.cloud.channel_v1.types.SuspendEntitlementRequest`):
                 The request object. Request message for
                 [CloudChannelService.SuspendEntitlement][google.cloud.channel.v1.CloudChannelService.SuspendEntitlement].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1566,7 +1503,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.SuspendEntitlementRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1605,29 +1541,28 @@ class CloudChannelServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Cancels a previously fulfilled entitlement. An entitlement
-        cancellation is a long-running operation.
+        r"""Cancels a previously fulfilled entitlement.
 
-        Possible Error Codes:
+        An entitlement cancellation is a long-running operation.
 
-        -  PERMISSION_DENIED: If the customer doesn't belong to the
-           reseller or if the reseller account making the request and
-           reseller account being queried for are different.
-        -  FAILED_PRECONDITION: If there are any Google Cloud projects
-           linked to the Google Cloud entitlement's Cloud Billing
-           subaccount.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        Possible error codes:
+
+        -  PERMISSION_DENIED: The reseller account making the request is
+           different from the reseller account in the API request.
+        -  FAILED_PRECONDITION: There are Google Cloud projects linked
+           to the Google Cloud entitlement's Cloud Billing subaccount.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
         -  NOT_FOUND: Entitlement resource not found.
         -  DELETION_TYPE_NOT_ALLOWED: Cancel is only allowed for Google
-           Workspace add-ons or entitlements for Google Cloud's
+           Workspace add-ons, or entitlements for Google Cloud's
            development platform.
         -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
         -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
 
-        Return Value: Long Running Operation ID.
+        Return value: The ID of a long-running operation.
 
         To get the results of the operation, call the GetOperation
         method of CloudChannelOperationsService. The response will
@@ -1639,7 +1574,6 @@ class CloudChannelServiceAsyncClient:
             request (:class:`google.cloud.channel_v1.types.CancelEntitlementRequest`):
                 The request object. Request message for
                 [CloudChannelService.CancelEntitlement][google.cloud.channel.v1.CloudChannelService.CancelEntitlement].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1666,7 +1600,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.CancelEntitlementRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1690,7 +1623,7 @@ class CloudChannelServiceAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=operations.OperationMetadata,
         )
 
@@ -1705,32 +1638,31 @@ class CloudChannelServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Activates a previously suspended entitlement. The entitlement
-        must be in a suspended state for it to be activated.
-        Entitlements suspended for pending ToS acceptance can't be
-        activated using this method. An entitlement activation is a
-        long-running operation and can result in updates to the state of
-        the customer entitlement.
+        r"""Activates a previously suspended entitlement. Entitlements
+        suspended for pending ToS acceptance can't be activated using
+        this method.
 
-        Possible Error Codes:
+        An entitlement activation is a long-running operation and it
+        updates the state of the customer entitlement.
 
-        -  PERMISSION_DENIED: If the customer doesn't belong to the
-           reseller or if the reseller account making the request and
-           reseller account being queried for are different.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        Possible error codes:
+
+        -  PERMISSION_DENIED: The reseller account making the request is
+           different from the reseller account in the API request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
         -  NOT_FOUND: Entitlement resource not found.
-        -  SUSPENSION_NOT_RESELLER_INITIATED: Can't activate an
-           entitlement that is pending TOS acceptance. Only reseller
-           initiated suspensions can be activated.
-        -  NOT_SUSPENDED: Can't activate entitlements that are already
-           in ACTIVE state. Can only activate suspended entitlements.
+        -  SUSPENSION_NOT_RESELLER_INITIATED: Can only activate
+           reseller-initiated suspensions and entitlements that have
+           accepted the TOS.
+        -  NOT_SUSPENDED: Can only activate suspended entitlements not
+           in an ACTIVE state.
         -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
         -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
 
-        Return Value: Long Running Operation ID.
+        Return value: The ID of a long-running operation.
 
         To get the results of the operation, call the GetOperation
         method of CloudChannelOperationsService. The Operation metadata
@@ -1741,7 +1673,6 @@ class CloudChannelServiceAsyncClient:
             request (:class:`google.cloud.channel_v1.types.ActivateEntitlementRequest`):
                 The request object. Request message for
                 [CloudChannelService.ActivateEntitlement][google.cloud.channel.v1.CloudChannelService.ActivateEntitlement].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1759,7 +1690,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.ActivateEntitlementRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1800,40 +1730,35 @@ class CloudChannelServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Transfers customer entitlements to new reseller.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the customer doesn't belong to the
+        -  PERMISSION_DENIED: The customer doesn't belong to the
            reseller.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
-        -  NOT_FOUND: If the customer or offer resource is not found for
-           the reseller.
-        -  ALREADY_EXISTS: If the SKU has been already transferred for
-           the customer.
-        -  CONDITION_NOT_MET or FAILED_PRECONDITION: This failure can
-           happen in the following cases:
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+        -  NOT_FOUND: The customer or offer resource was not found.
+        -  ALREADY_EXISTS: The SKU was already transferred for the
+           customer.
+        -  CONDITION_NOT_MET or FAILED_PRECONDITION:
 
-           -  Transferring a SKU that requires domain verification and
-              the domain has not been verified.
-           -  Transferring an Add-On SKU like Vault or Drive without
-              transferring the pre-requisite SKU, such as G Suite Basic.
-           -  Applicable only for developer accounts: reseller and
-              resold domain must follow the domain naming convention as
-              follows:
+           -  The SKU requires domain verification to transfer, but the
+              domain is not verified.
+           -  An Add-On SKU (example, Vault or Drive) is missing the
+              pre-requisite SKU (example, G Suite Basic).
+           -  (Developer accounts only) Reseller and resold domain must
+              meet the following naming requirements:
 
               -  Domain names must start with goog-test.
-              -  Resold domain names must include the reseller domain.
+              -  Domain names must include the reseller domain.
 
-           -  All transferring entitlements must be specified.
+           -  Specify all transferring entitlements.
 
         -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Please contact Cloud Channel Support in this
-           case.
+           the backend. Contact Cloud Channel support.
         -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Please contact Cloud Channel Support in this
-           case.
+           the backend. Contact Cloud Channel support.
 
-        Return Value: Long Running Operation ID.
+        Return value: The ID of a long-running operation.
 
         To get the results of the operation, call the GetOperation
         method of CloudChannelOperationsService. The Operation metadata
@@ -1844,7 +1769,6 @@ class CloudChannelServiceAsyncClient:
             request (:class:`google.cloud.channel_v1.types.TransferEntitlementsRequest`):
                 The request object. Request message for
                 [CloudChannelService.TransferEntitlements][google.cloud.channel.v1.CloudChannelService.TransferEntitlements].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1856,12 +1780,11 @@ class CloudChannelServiceAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.channel_v1.types.TransferEntitlementsResponse` Response message for [CloudChannelService.TransferEntitlements][google.cloud.channel.v1.CloudChannelService.TransferEntitlements].
-                   This will be put into the response field of
+                   This is put in the response field of
                    google.longrunning.Operation.
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.TransferEntitlementsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1900,40 +1823,36 @@ class CloudChannelServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Transfers customer entitlements from current reseller to Google.
+        r"""Transfers customer entitlements from their current reseller to
+        Google.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the customer doesn't belong to the
+        -  PERMISSION_DENIED: The customer doesn't belong to the
            reseller.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
-        -  NOT_FOUND: If the customer or offer resource is not found for
-           the reseller.
-        -  ALREADY_EXISTS: If the SKU has been already transferred for
-           the customer.
-        -  CONDITION_NOT_MET or FAILED_PRECONDITION: This failure can
-           happen in the following cases:
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+        -  NOT_FOUND: The customer or offer resource was not found.
+        -  ALREADY_EXISTS: The SKU was already transferred for the
+           customer.
+        -  CONDITION_NOT_MET or FAILED_PRECONDITION:
 
-           -  Transferring a SKU that requires domain verification and
-              the domain has not been verified.
-           -  Transferring an Add-On SKU like Vault or Drive without
-              purchasing the pre-requisite SKU, such as G Suite Basic.
-           -  Applicable only for developer accounts: reseller and
-              resold domain must follow the domain naming convention as
-              follows:
+           -  The SKU requires domain verification to transfer, but the
+              domain is not verified.
+           -  An Add-On SKU (example, Vault or Drive) is missing the
+              pre-requisite SKU (example, G Suite Basic).
+           -  (Developer accounts only) Reseller and resold domain must
+              meet the following naming requirements:
 
               -  Domain names must start with goog-test.
-              -  Resold domain names must include the reseller domain.
+              -  Domain names must include the reseller domain.
 
         -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. Please contact Cloud Channel Support in this
-           case.
+           the backend. Contact Cloud Channel support.
         -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. Please contact Cloud Channel Support in this
-           case.
+           the backend. Contact Cloud Channel support.
 
-        Return Value: Long Running Operation ID.
+        Return value: The ID of a long-running operation.
 
         To get the results of the operation, call the GetOperation
         method of CloudChannelOperationsService. The response will
@@ -1945,7 +1864,6 @@ class CloudChannelServiceAsyncClient:
             request (:class:`google.cloud.channel_v1.types.TransferEntitlementsToGoogleRequest`):
                 The request object. Request message for
                 [CloudChannelService.TransferEntitlementsToGoogle][google.cloud.channel.v1.CloudChannelService.TransferEntitlementsToGoogle].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1972,7 +1890,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.TransferEntitlementsToGoogleRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1996,7 +1913,7 @@ class CloudChannelServiceAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=operations.OperationMetadata,
         )
 
@@ -2013,26 +1930,24 @@ class CloudChannelServiceAsyncClient:
     ) -> pagers.ListChannelPartnerLinksAsyncPager:
         r"""List
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]s
-        belonging to a distributor. To call this method, you must be a
-        distributor.
+        belonging to a distributor. You must be a distributor to call
+        this method.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the reseller account making the request
-           and the reseller account being queried for are different.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  PERMISSION_DENIED: The reseller account making the request is
+           different from the reseller account in the API request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
 
-        Return Value: If successful, returns the list of
+        Return value: The list of the distributor account's
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
-        resources for the distributor account, otherwise returns an
-        error.
+        resources.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.ListChannelPartnerLinksRequest`):
                 The request object. Request message for
                 [CloudChannelService.ListChannelPartnerLinks][google.cloud.channel.v1.CloudChannelService.ListChannelPartnerLinks]
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2049,7 +1964,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.ListChannelPartnerLinksRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -2088,26 +2002,25 @@ class CloudChannelServiceAsyncClient:
     ) -> channel_partner_links.ChannelPartnerLink:
         r"""Returns a requested
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
-        resource. To call this method, you must be a distributor.
+        resource. You must be a distributor to call this method.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the reseller account making the request
-           and the reseller account being queried for are different.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
-        -  NOT_FOUND: ChannelPartnerLink resource not found. Results due
-           invalid channel partner link name.
+        -  PERMISSION_DENIED: The reseller account making the request is
+           different from the reseller account in the API request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+        -  NOT_FOUND: ChannelPartnerLink resource not found because of
+           an invalid channel partner link name.
 
-        Return Value:
+        Return value: The
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
-        resource if found, otherwise returns an error.
+        resource.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.GetChannelPartnerLinkRequest`):
                 The request object. Request message for
                 [CloudChannelService.GetChannelPartnerLink][google.cloud.channel.v1.CloudChannelService.GetChannelPartnerLink].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2122,7 +2035,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.GetChannelPartnerLinkRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -2154,36 +2066,35 @@ class CloudChannelServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> channel_partner_links.ChannelPartnerLink:
         r"""Initiates a channel partner link between a distributor and a
-        reseller or between resellers in an n-tier reseller channel. To
-        accept the invite, the invited partner should follow the
-        invite_link_uri provided in the response. If the link creation
-        is accepted, a valid link is set up between the two involved
-        parties. To call this method, you must be a distributor.
+        reseller, or between resellers in an n-tier reseller channel.
+        Invited partners need to follow the invite_link_uri provided in
+        the response to accept. After accepting the invitation, a link
+        is set up between the two parties. You must be a distributor to
+        call this method.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the reseller account making the request
-           and the reseller account being queried for are different.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
-        -  ALREADY_EXISTS: If the ChannelPartnerLink sent in the request
+        -  PERMISSION_DENIED: The reseller account making the request is
+           different from the reseller account in the API request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+        -  ALREADY_EXISTS: The ChannelPartnerLink sent in the request
            already exists.
-        -  NOT_FOUND: If no Cloud Identity customer exists for domain
-           provided.
+        -  NOT_FOUND: No Cloud Identity customer exists for provided
+           domain.
         -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
         -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
 
-        Return Value: Newly created
+        Return value: The new
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
-        resource if successful, otherwise error is returned.
+        resource.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.CreateChannelPartnerLinkRequest`):
                 The request object. Request message for
                 [CloudChannelService.CreateChannelPartnerLink][google.cloud.channel.v1.CloudChannelService.CreateChannelPartnerLink]
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2198,7 +2109,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.CreateChannelPartnerLinkRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -2229,36 +2139,36 @@ class CloudChannelServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> channel_partner_links.ChannelPartnerLink:
-        r"""Updates a channel partner link. A distributor calls this method
-        to change a link's status. For example, suspend a partner link.
-        To call this method, you must be a distributor.
+        r"""Updates a channel partner link. Distributors call this method to
+        change a link's status. For example, to suspend a partner link.
+        You must be a distributor to call this method.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the reseller account making the request
-           and the reseller account being queried for are different.
-        -  INVALID_ARGUMENT: It can happen in following scenarios -
+        -  PERMISSION_DENIED: The reseller account making the request is
+           different from the reseller account in the API request.
+        -  INVALID_ARGUMENT:
 
-           -  Missing or invalid required parameters in the request.
-           -  Updating link state from invited to active or suspended.
-           -  Sending reseller_cloud_identity_id, invite_url or name in
-              update mask.
+           -  Required request parameters are missing or invalid.
+           -  Link state cannot change from invited to active or
+              suspended.
+           -  Cannot send reseller_cloud_identity_id, invite_url, or
+              name in update mask.
 
         -  NOT_FOUND: ChannelPartnerLink resource not found.
         -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
         -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
 
-        Return Value: If successful, the updated
+        Return value: The updated
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
-        resource, otherwise returns an error.
+        resource.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.UpdateChannelPartnerLinkRequest`):
                 The request object. Request message for
                 [CloudChannelService.UpdateChannelPartnerLink][google.cloud.channel.v1.CloudChannelService.UpdateChannelPartnerLink]
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2273,7 +2183,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.UpdateChannelPartnerLinkRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -2306,15 +2215,14 @@ class CloudChannelServiceAsyncClient:
     ) -> pagers.ListProductsAsyncPager:
         r"""Lists the Products the reseller is authorized to sell.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.ListProductsRequest`):
                 The request object. Request message for ListProducts.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2330,7 +2238,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.ListProductsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -2363,15 +2270,14 @@ class CloudChannelServiceAsyncClient:
     ) -> pagers.ListSkusAsyncPager:
         r"""Lists the SKUs for a product the reseller is authorized to sell.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.ListSkusRequest`):
                 The request object. Request message for ListSkus.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2387,7 +2293,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.ListSkusRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -2426,15 +2331,14 @@ class CloudChannelServiceAsyncClient:
     ) -> pagers.ListOffersAsyncPager:
         r"""Lists the Offers the reseller can sell.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.ListOffersRequest`):
                 The request object. Request message for ListOffers.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2450,7 +2354,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.ListOffersRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -2487,23 +2390,22 @@ class CloudChannelServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPurchasableSkusAsyncPager:
-        r"""Lists the Purchasable SKUs for following cases:
+        r"""Lists the following:
 
-        -  SKUs that can be newly purchased for a customer
-        -  SKUs that can be upgraded/downgraded to, for an entitlement.
+        -  SKUs that you can purchase for a customer
+        -  SKUs that you can upgrade or downgrade for an entitlement.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the customer doesn't belong to the
-           reseller
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  PERMISSION_DENIED: The customer doesn't belong to the
+           reseller.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.ListPurchasableSkusRequest`):
                 The request object. Request message for
                 ListPurchasableSkus.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2520,7 +2422,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.ListPurchasableSkusRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -2557,23 +2458,22 @@ class CloudChannelServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListPurchasableOffersAsyncPager:
-        r"""Lists the Purchasable Offers for the following cases:
+        r"""Lists the following:
 
-        -  Offers that can be newly purchased for a customer
-        -  Offers that can be changed to, for an entitlement.
+        -  Offers that you can purchase for a customer.
+        -  Offers that you can change for an entitlement.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the customer doesn't belong to the
+        -  PERMISSION_DENIED: The customer doesn't belong to the
            reseller
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.ListPurchasableOffersRequest`):
                 The request object. Request message for
                 ListPurchasableOffers.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2590,7 +2490,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.ListPurchasableOffersRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -2628,30 +2527,29 @@ class CloudChannelServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> service.RegisterSubscriberResponse:
         r"""Registers a service account with subscriber privileges on the
-        Cloud Pub/Sub topic created for this Channel Services account.
-        Once you create a subscriber, you will get the events as per
+        Cloud Pub/Sub topic for this Channel Services account. After you
+        create a subscriber, you get the events through
         [SubscriberEvent][google.cloud.channel.v1.SubscriberEvent]
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the reseller account making the request
-           and the reseller account being provided are different, or if
-           the impersonated user is not a super admin.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
+        -  PERMISSION_DENIED: The reseller account making the request
+           and the provided reseller account are different, or the
+           impersonated user is not a super admin.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
         -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
         -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
 
-        Return Value: Topic name with service email address registered
-        if successful, otherwise error is returned.
+        Return value: The topic name with the registered service email
+        address.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.RegisterSubscriberRequest`):
                 The request object. Request Message for
                 RegisterSubscriber.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2665,7 +2563,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.RegisterSubscriberRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -2698,33 +2595,31 @@ class CloudChannelServiceAsyncClient:
     ) -> service.UnregisterSubscriberResponse:
         r"""Unregisters a service account with subscriber privileges on the
         Cloud Pub/Sub topic created for this Channel Services account.
-        If there are no more service account left with sunbscriber
-        privileges, the topic will be deleted. You can check this by
-        calling ListSubscribers api.
+        If there are no service accounts left with subscriber
+        privileges, this deletes the topic. You can call ListSubscribers
+        to check for these accounts.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the reseller account making the request
-           and the reseller account being provided are different, or if
-           the impersonated user is not a super admin.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
-        -  NOT_FOUND: If the topic resource doesn't exist.
+        -  PERMISSION_DENIED: The reseller account making the request
+           and the provided reseller account are different, or the
+           impersonated user is not a super admin.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+        -  NOT_FOUND: The topic resource doesn't exist.
         -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
         -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
 
-        Return Value: Topic name from which service email address has
-        been unregistered if successful, otherwise error is returned. If
-        the service email was already not associated with the topic, the
-        success response will be returned.
+        Return value: The topic name that unregistered the service email
+        address. Returns a success response if the service email address
+        wasn't registered with the topic.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.UnregisterSubscriberRequest`):
                 The request object. Request Message for
                 UnregisterSubscriber.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2738,7 +2633,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.UnregisterSubscriberRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -2772,26 +2666,24 @@ class CloudChannelServiceAsyncClient:
         r"""Lists service accounts with subscriber privileges on the Cloud
         Pub/Sub topic created for this Channel Services account.
 
-        Possible Error Codes:
+        Possible error codes:
 
-        -  PERMISSION_DENIED: If the reseller account making the request
-           and the reseller account being provided are different, or if
-           the account is not a super admin.
-        -  INVALID_ARGUMENT: Missing or invalid required parameters in
-           the request.
-        -  NOT_FOUND: If the topic resource doesn't exist.
+        -  PERMISSION_DENIED: The reseller account making the request
+           and the provided reseller account are different, or the
+           impersonated user is not a super admin.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+        -  NOT_FOUND: The topic resource doesn't exist.
         -  INTERNAL: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
         -  UNKNOWN: Any non-user error related to a technical issue in
-           the backend. In this case, contact Cloud Channel support.
+           the backend. Contact Cloud Channel support.
 
-        Return Value: List of service email addresses if successful,
-        otherwise error is returned.
+        Return value: A list of service email addresses.
 
         Args:
             request (:class:`google.cloud.channel_v1.types.ListSubscribersRequest`):
                 The request object. Request Message for ListSubscribers.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2807,7 +2699,6 @@ class CloudChannelServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = service.ListSubscribersRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,

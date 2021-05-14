@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.channel_v1.types import common
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.type import postal_address_pb2 as postal_address  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import postal_address_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -30,7 +27,6 @@ __protobuf__ = proto.module(
 
 class Customer(proto.Message):
     r"""Entity representing a customer of a reseller or distributor.
-
     Attributes:
         name (str):
             Output only. Resource name of the customer. Format:
@@ -83,38 +79,26 @@ class Customer(proto.Message):
             exists for this customer.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    org_display_name = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    org_display_name = proto.Field(proto.STRING, number=2,)
     org_postal_address = proto.Field(
-        proto.MESSAGE, number=3, message=postal_address.PostalAddress,
+        proto.MESSAGE, number=3, message=postal_address_pb2.PostalAddress,
     )
-
     primary_contact_info = proto.Field(proto.MESSAGE, number=4, message="ContactInfo",)
-
-    alternate_email = proto.Field(proto.STRING, number=5)
-
-    domain = proto.Field(proto.STRING, number=6)
-
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=8, message=timestamp.Timestamp,)
-
-    cloud_identity_id = proto.Field(proto.STRING, number=9)
-
-    language_code = proto.Field(proto.STRING, number=10)
-
+    alternate_email = proto.Field(proto.STRING, number=5,)
+    domain = proto.Field(proto.STRING, number=6,)
+    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
+    cloud_identity_id = proto.Field(proto.STRING, number=9,)
+    language_code = proto.Field(proto.STRING, number=10,)
     cloud_identity_info = proto.Field(
         proto.MESSAGE, number=12, message=common.CloudIdentityInfo,
     )
-
-    channel_partner_id = proto.Field(proto.STRING, number=13)
+    channel_partner_id = proto.Field(proto.STRING, number=13,)
 
 
 class ContactInfo(proto.Message):
     r"""Contact information for a customer account.
-
     Attributes:
         first_name (str):
             First name of the contact in the customer
@@ -140,17 +124,12 @@ class ContactInfo(proto.Message):
             account.
     """
 
-    first_name = proto.Field(proto.STRING, number=1)
-
-    last_name = proto.Field(proto.STRING, number=2)
-
-    display_name = proto.Field(proto.STRING, number=4)
-
-    email = proto.Field(proto.STRING, number=5)
-
-    title = proto.Field(proto.STRING, number=6)
-
-    phone = proto.Field(proto.STRING, number=7)
+    first_name = proto.Field(proto.STRING, number=1,)
+    last_name = proto.Field(proto.STRING, number=2,)
+    display_name = proto.Field(proto.STRING, number=4,)
+    email = proto.Field(proto.STRING, number=5,)
+    title = proto.Field(proto.STRING, number=6,)
+    phone = proto.Field(proto.STRING, number=7,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
