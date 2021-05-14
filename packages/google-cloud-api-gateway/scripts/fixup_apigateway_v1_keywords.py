@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,22 +39,21 @@ def partition(
 class apigatewayCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'create_api': ('parent', 'api_id', 'api', ),
-    'create_api_config': ('parent', 'api_config_id', 'api_config', ),
-    'create_gateway': ('parent', 'gateway_id', 'gateway', ),
-    'delete_api': ('name', ),
-    'delete_api_config': ('name', ),
-    'delete_gateway': ('name', ),
-    'get_api': ('name', ),
-    'get_api_config': ('name', 'view', ),
-    'get_gateway': ('name', ),
-    'list_api_configs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-    'list_apis': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-    'list_gateways': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-    'update_api': ('api', 'update_mask', ),
-    'update_api_config': ('api_config', 'update_mask', ),
-    'update_gateway': ('gateway', 'update_mask', ),
-
+          'create_api': ('parent', 'api_id', 'api', ),
+          'create_api_config': ('parent', 'api_config_id', 'api_config', ),
+          'create_gateway': ('parent', 'gateway_id', 'gateway', ),
+          'delete_api': ('name', ),
+          'delete_api_config': ('name', ),
+          'delete_gateway': ('name', ),
+          'get_api': ('name', ),
+          'get_api_config': ('name', 'view', ),
+          'get_gateway': ('name', ),
+          'list_api_configs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+          'list_apis': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+          'list_gateways': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+          'update_api': ('api', 'update_mask', ),
+          'update_api_config': ('api_config', 'update_mask', ),
+          'update_gateway': ('gateway', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -87,7 +84,7 @@ class apigatewayCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

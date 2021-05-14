@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -36,10 +34,9 @@ from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.apigateway_v1.services.api_gateway_service import pagers
 from google.cloud.apigateway_v1.types import apigateway
-from google.protobuf import empty_pb2 as empty  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import ApiGatewayServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import ApiGatewayServiceGrpcTransport
 from .transports.grpc_asyncio import ApiGatewayServiceGrpcAsyncIOTransport
@@ -62,7 +59,7 @@ class ApiGatewayServiceClientMeta(type):
     def get_transport_class(
         cls, label: str = None,
     ) -> Type[ApiGatewayServiceTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -87,7 +84,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -121,7 +119,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -138,7 +137,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -157,23 +156,24 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     @property
     def transport(self) -> ApiGatewayServiceTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            ApiGatewayServiceTransport: The transport used by the client instance.
+            ApiGatewayServiceTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
     @staticmethod
     def api_path(project: str, api: str,) -> str:
-        """Return a fully-qualified api string."""
+        """Returns a fully-qualified api string."""
         return "projects/{project}/locations/global/apis/{api}".format(
             project=project, api=api,
         )
 
     @staticmethod
     def parse_api_path(path: str) -> Dict[str, str]:
-        """Parse a api path into its component segments."""
+        """Parses a api path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/global/apis/(?P<api>.+?)$", path
         )
@@ -181,14 +181,14 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     @staticmethod
     def api_config_path(project: str, api: str, api_config: str,) -> str:
-        """Return a fully-qualified api_config string."""
+        """Returns a fully-qualified api_config string."""
         return "projects/{project}/locations/global/apis/{api}/configs/{api_config}".format(
             project=project, api=api, api_config=api_config,
         )
 
     @staticmethod
     def parse_api_config_path(path: str) -> Dict[str, str]:
-        """Parse a api_config path into its component segments."""
+        """Parses a api_config path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/global/apis/(?P<api>.+?)/configs/(?P<api_config>.+?)$",
             path,
@@ -197,14 +197,14 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     @staticmethod
     def gateway_path(project: str, location: str, gateway: str,) -> str:
-        """Return a fully-qualified gateway string."""
+        """Returns a fully-qualified gateway string."""
         return "projects/{project}/locations/{location}/gateways/{gateway}".format(
             project=project, location=location, gateway=gateway,
         )
 
     @staticmethod
     def parse_gateway_path(path: str) -> Dict[str, str]:
-        """Parse a gateway path into its component segments."""
+        """Parses a gateway path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/gateways/(?P<gateway>.+?)$",
             path,
@@ -213,38 +213,38 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     @staticmethod
     def managed_service_path(service: str,) -> str:
-        """Return a fully-qualified managed_service string."""
+        """Returns a fully-qualified managed_service string."""
         return "services/{service}".format(service=service,)
 
     @staticmethod
     def parse_managed_service_path(path: str) -> Dict[str, str]:
-        """Parse a managed_service path into its component segments."""
+        """Parses a managed_service path into its component segments."""
         m = re.match(r"^services/(?P<service>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
     def service_path(service: str, config: str,) -> str:
-        """Return a fully-qualified service string."""
+        """Returns a fully-qualified service string."""
         return "services/{service}/configs/{config}".format(
             service=service, config=config,
         )
 
     @staticmethod
     def parse_service_path(path: str) -> Dict[str, str]:
-        """Parse a service path into its component segments."""
+        """Parses a service path into its component segments."""
         m = re.match(r"^services/(?P<service>.+?)/configs/(?P<config>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
     def service_account_path(project: str, service_account: str,) -> str:
-        """Return a fully-qualified service_account string."""
+        """Returns a fully-qualified service_account string."""
         return "projects/{project}/serviceAccounts/{service_account}".format(
             project=project, service_account=service_account,
         )
 
     @staticmethod
     def parse_service_account_path(path: str) -> Dict[str, str]:
-        """Parse a service_account path into its component segments."""
+        """Parses a service_account path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/serviceAccounts/(?P<service_account>.+?)$",
             path,
@@ -253,7 +253,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -266,7 +266,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -277,7 +277,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -288,7 +288,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -299,7 +299,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -313,12 +313,12 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ApiGatewayServiceTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the api gateway service client.
+        """Instantiates the api gateway service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -373,9 +373,10 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -387,12 +388,14 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -407,8 +410,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -445,7 +448,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -477,10 +479,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, apigateway.ListGatewaysRequest):
             request = apigateway.ListGatewaysRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -528,7 +528,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -561,10 +560,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, apigateway.GetGatewayRequest):
             request = apigateway.GetGatewayRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -622,7 +619,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 This corresponds to the ``gateway_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -655,10 +651,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, apigateway.CreateGatewayRequest):
             request = apigateway.CreateGatewayRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if gateway is not None:
@@ -695,7 +689,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         request: apigateway.UpdateGatewayRequest = None,
         *,
         gateway: apigateway.Gateway = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -722,7 +716,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -755,10 +748,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, apigateway.UpdateGatewayRequest):
             request = apigateway.UpdateGatewayRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if gateway is not None:
                 request.gateway = gateway
             if update_mask is not None:
@@ -812,7 +803,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -854,10 +844,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, apigateway.DeleteGatewayRequest):
             request = apigateway.DeleteGatewayRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -878,7 +866,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=apigateway.OperationMetadata,
         )
 
@@ -907,7 +895,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -939,10 +926,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, apigateway.ListApisRequest):
             request = apigateway.ListApisRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -990,7 +975,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1019,10 +1003,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, apigateway.GetApiRequest):
             request = apigateway.GetApiRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1079,7 +1061,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 This corresponds to the ``api_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1111,10 +1092,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, apigateway.CreateApiRequest):
             request = apigateway.CreateApiRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if api is not None:
@@ -1151,7 +1130,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         request: apigateway.UpdateApiRequest = None,
         *,
         api: apigateway.Api = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1178,7 +1157,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1210,10 +1188,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, apigateway.UpdateApiRequest):
             request = apigateway.UpdateApiRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if api is not None:
                 request.api = api
             if update_mask is not None:
@@ -1265,7 +1241,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1307,10 +1282,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, apigateway.DeleteApiRequest):
             request = apigateway.DeleteApiRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1331,7 +1304,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=apigateway.OperationMetadata,
         )
 
@@ -1360,7 +1333,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1392,10 +1364,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, apigateway.ListApiConfigsRequest):
             request = apigateway.ListApiConfigsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1443,7 +1413,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1473,10 +1442,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, apigateway.GetApiConfigRequest):
             request = apigateway.GetApiConfigRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1534,7 +1501,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 This corresponds to the ``api_config_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1565,10 +1531,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, apigateway.CreateApiConfigRequest):
             request = apigateway.CreateApiConfigRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if api_config is not None:
@@ -1605,7 +1569,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         request: apigateway.UpdateApiConfigRequest = None,
         *,
         api_config: apigateway.ApiConfig = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1632,7 +1596,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1663,10 +1626,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, apigateway.UpdateApiConfigRequest):
             request = apigateway.UpdateApiConfigRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if api_config is not None:
                 request.api_config = api_config
             if update_mask is not None:
@@ -1720,7 +1681,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1762,10 +1722,8 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, apigateway.DeleteApiConfigRequest):
             request = apigateway.DeleteApiConfigRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1786,7 +1744,7 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=apigateway.OperationMetadata,
         )
 

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import os
 import mock
+import packaging.version
 
 import grpc
 from grpc.experimental import aio
@@ -24,16 +23,16 @@ import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 
-from google import auth
+
 from google.api_core import client_options
-from google.api_core import exceptions
+from google.api_core import exceptions as core_exceptions
 from google.api_core import future
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
-from google.auth import credentials
+from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.apigateway_v1.services.api_gateway_service import (
     ApiGatewayServiceAsyncClient,
@@ -43,11 +42,41 @@ from google.cloud.apigateway_v1.services.api_gateway_service import (
 )
 from google.cloud.apigateway_v1.services.api_gateway_service import pagers
 from google.cloud.apigateway_v1.services.api_gateway_service import transports
+from google.cloud.apigateway_v1.services.api_gateway_service.transports.base import (
+    _API_CORE_VERSION,
+)
+from google.cloud.apigateway_v1.services.api_gateway_service.transports.base import (
+    _GOOGLE_AUTH_VERSION,
+)
 from google.cloud.apigateway_v1.types import apigateway
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+import google.auth
+
+
+# TODO(busunkim): Once google-api-core >= 1.26.0 is required:
+# - Delete all the api-core and auth "less than" test cases
+# - Delete these pytest markers (Make the "greater than or equal to" tests the default).
+requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
+    packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
+    reason="This test requires google-auth < 1.25.0",
+)
+requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
+    packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
+    reason="This test requires google-auth >= 1.25.0",
+)
+
+requires_api_core_lt_1_26_0 = pytest.mark.skipif(
+    packaging.version.parse(_API_CORE_VERSION) >= packaging.version.parse("1.26.0"),
+    reason="This test requires google-api-core < 1.26.0",
+)
+
+requires_api_core_gte_1_26_0 = pytest.mark.skipif(
+    packaging.version.parse(_API_CORE_VERSION) < packaging.version.parse("1.26.0"),
+    reason="This test requires google-api-core >= 1.26.0",
+)
 
 
 def client_cert_source_callback():
@@ -99,7 +128,7 @@ def test__get_default_mtls_endpoint():
     "client_class", [ApiGatewayServiceClient, ApiGatewayServiceAsyncClient,]
 )
 def test_api_gateway_service_client_from_service_account_info(client_class):
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -116,7 +145,7 @@ def test_api_gateway_service_client_from_service_account_info(client_class):
     "client_class", [ApiGatewayServiceClient, ApiGatewayServiceAsyncClient,]
 )
 def test_api_gateway_service_client_from_service_account_file(client_class):
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -169,7 +198,7 @@ def test_api_gateway_service_client_client_options(
 ):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(ApiGatewayServiceClient, "get_transport_class") as gtc:
-        transport = transport_class(credentials=credentials.AnonymousCredentials())
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -467,7 +496,7 @@ def test_list_gateways(
     transport: str = "grpc", request_type=apigateway.ListGatewaysRequest
 ):
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -481,21 +510,16 @@ def test_list_gateways(
             next_page_token="next_page_token_value",
             unreachable_locations=["unreachable_locations_value"],
         )
-
         response = client.list_gateways(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.ListGatewaysRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.ListGatewaysPager)
-
     assert response.next_page_token == "next_page_token_value"
-
     assert response.unreachable_locations == ["unreachable_locations_value"]
 
 
@@ -507,7 +531,7 @@ def test_list_gateways_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -515,7 +539,6 @@ def test_list_gateways_empty_call():
         client.list_gateways()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.ListGatewaysRequest()
 
 
@@ -524,7 +547,7 @@ async def test_list_gateways_async(
     transport: str = "grpc_asyncio", request_type=apigateway.ListGatewaysRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -540,20 +563,16 @@ async def test_list_gateways_async(
                 unreachable_locations=["unreachable_locations_value"],
             )
         )
-
         response = await client.list_gateways(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.ListGatewaysRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListGatewaysAsyncPager)
-
     assert response.next_page_token == "next_page_token_value"
-
     assert response.unreachable_locations == ["unreachable_locations_value"]
 
 
@@ -563,17 +582,17 @@ async def test_list_gateways_async_from_dict():
 
 
 def test_list_gateways_field_headers():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.ListGatewaysRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_gateways), "__call__") as call:
         call.return_value = apigateway.ListGatewaysResponse()
-
         client.list_gateways(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -589,12 +608,13 @@ def test_list_gateways_field_headers():
 @pytest.mark.asyncio
 async def test_list_gateways_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.ListGatewaysRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -602,7 +622,6 @@ async def test_list_gateways_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             apigateway.ListGatewaysResponse()
         )
-
         await client.list_gateways(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -616,13 +635,12 @@ async def test_list_gateways_field_headers_async():
 
 
 def test_list_gateways_flattened():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_gateways), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = apigateway.ListGatewaysResponse()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_gateways(parent="parent_value",)
@@ -631,12 +649,11 @@ def test_list_gateways_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
 
 
 def test_list_gateways_flattened_error():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -649,7 +666,7 @@ def test_list_gateways_flattened_error():
 @pytest.mark.asyncio
 async def test_list_gateways_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -668,14 +685,13 @@ async def test_list_gateways_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
 
 
 @pytest.mark.asyncio
 async def test_list_gateways_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -687,7 +703,7 @@ async def test_list_gateways_flattened_error_async():
 
 
 def test_list_gateways_pager():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials,)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_gateways), "__call__") as call:
@@ -725,7 +741,7 @@ def test_list_gateways_pager():
 
 
 def test_list_gateways_pages():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials,)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_gateways), "__call__") as call:
@@ -755,7 +771,9 @@ def test_list_gateways_pages():
 
 @pytest.mark.asyncio
 async def test_list_gateways_async_pager():
-    client = ApiGatewayServiceAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = ApiGatewayServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -792,7 +810,9 @@ async def test_list_gateways_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_gateways_async_pages():
-    client = ApiGatewayServiceAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = ApiGatewayServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -828,7 +848,7 @@ def test_get_gateway(
     transport: str = "grpc", request_type=apigateway.GetGatewayRequest
 ):
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -845,27 +865,19 @@ def test_get_gateway(
             state=apigateway.Gateway.State.CREATING,
             default_hostname="default_hostname_value",
         )
-
         response = client.get_gateway(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.GetGatewayRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, apigateway.Gateway)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
-
     assert response.api_config == "api_config_value"
-
     assert response.state == apigateway.Gateway.State.CREATING
-
     assert response.default_hostname == "default_hostname_value"
 
 
@@ -877,7 +889,7 @@ def test_get_gateway_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -885,7 +897,6 @@ def test_get_gateway_empty_call():
         client.get_gateway()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.GetGatewayRequest()
 
 
@@ -894,7 +905,7 @@ async def test_get_gateway_async(
     transport: str = "grpc_asyncio", request_type=apigateway.GetGatewayRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -913,26 +924,19 @@ async def test_get_gateway_async(
                 default_hostname="default_hostname_value",
             )
         )
-
         response = await client.get_gateway(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.GetGatewayRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apigateway.Gateway)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
-
     assert response.api_config == "api_config_value"
-
     assert response.state == apigateway.Gateway.State.CREATING
-
     assert response.default_hostname == "default_hostname_value"
 
 
@@ -942,17 +946,17 @@ async def test_get_gateway_async_from_dict():
 
 
 def test_get_gateway_field_headers():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.GetGatewayRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_gateway), "__call__") as call:
         call.return_value = apigateway.Gateway()
-
         client.get_gateway(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -968,18 +972,18 @@ def test_get_gateway_field_headers():
 @pytest.mark.asyncio
 async def test_get_gateway_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.GetGatewayRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_gateway), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(apigateway.Gateway())
-
         await client.get_gateway(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -993,13 +997,12 @@ async def test_get_gateway_field_headers_async():
 
 
 def test_get_gateway_flattened():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_gateway), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = apigateway.Gateway()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_gateway(name="name_value",)
@@ -1008,12 +1011,11 @@ def test_get_gateway_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_get_gateway_flattened_error():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1026,7 +1028,7 @@ def test_get_gateway_flattened_error():
 @pytest.mark.asyncio
 async def test_get_gateway_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1043,14 +1045,13 @@ async def test_get_gateway_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_get_gateway_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1065,7 +1066,7 @@ def test_create_gateway(
     transport: str = "grpc", request_type=apigateway.CreateGatewayRequest
 ):
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1076,13 +1077,11 @@ def test_create_gateway(
     with mock.patch.object(type(client.transport.create_gateway), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-
         response = client.create_gateway(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.CreateGatewayRequest()
 
     # Establish that the response is the type that we expect.
@@ -1097,7 +1096,7 @@ def test_create_gateway_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1105,7 +1104,6 @@ def test_create_gateway_empty_call():
         client.create_gateway()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.CreateGatewayRequest()
 
 
@@ -1114,7 +1112,7 @@ async def test_create_gateway_async(
     transport: str = "grpc_asyncio", request_type=apigateway.CreateGatewayRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1127,13 +1125,11 @@ async def test_create_gateway_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-
         response = await client.create_gateway(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.CreateGatewayRequest()
 
     # Establish that the response is the type that we expect.
@@ -1146,17 +1142,17 @@ async def test_create_gateway_async_from_dict():
 
 
 def test_create_gateway_field_headers():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.CreateGatewayRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_gateway), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         client.create_gateway(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1172,12 +1168,13 @@ def test_create_gateway_field_headers():
 @pytest.mark.asyncio
 async def test_create_gateway_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.CreateGatewayRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1185,7 +1182,6 @@ async def test_create_gateway_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
-
         await client.create_gateway(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1199,13 +1195,12 @@ async def test_create_gateway_field_headers_async():
 
 
 def test_create_gateway_flattened():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_gateway), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_gateway(
@@ -1218,16 +1213,13 @@ def test_create_gateway_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
-
         assert args[0].gateway == apigateway.Gateway(name="name_value")
-
         assert args[0].gateway_id == "gateway_id_value"
 
 
 def test_create_gateway_flattened_error():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1243,7 +1235,7 @@ def test_create_gateway_flattened_error():
 @pytest.mark.asyncio
 async def test_create_gateway_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1266,18 +1258,15 @@ async def test_create_gateway_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
-
         assert args[0].gateway == apigateway.Gateway(name="name_value")
-
         assert args[0].gateway_id == "gateway_id_value"
 
 
 @pytest.mark.asyncio
 async def test_create_gateway_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1295,7 +1284,7 @@ def test_update_gateway(
     transport: str = "grpc", request_type=apigateway.UpdateGatewayRequest
 ):
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1306,13 +1295,11 @@ def test_update_gateway(
     with mock.patch.object(type(client.transport.update_gateway), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-
         response = client.update_gateway(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.UpdateGatewayRequest()
 
     # Establish that the response is the type that we expect.
@@ -1327,7 +1314,7 @@ def test_update_gateway_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1335,7 +1322,6 @@ def test_update_gateway_empty_call():
         client.update_gateway()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.UpdateGatewayRequest()
 
 
@@ -1344,7 +1330,7 @@ async def test_update_gateway_async(
     transport: str = "grpc_asyncio", request_type=apigateway.UpdateGatewayRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1357,13 +1343,11 @@ async def test_update_gateway_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-
         response = await client.update_gateway(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.UpdateGatewayRequest()
 
     # Establish that the response is the type that we expect.
@@ -1376,17 +1360,17 @@ async def test_update_gateway_async_from_dict():
 
 
 def test_update_gateway_field_headers():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.UpdateGatewayRequest()
+
     request.gateway.name = "gateway.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_gateway), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         client.update_gateway(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1404,12 +1388,13 @@ def test_update_gateway_field_headers():
 @pytest.mark.asyncio
 async def test_update_gateway_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.UpdateGatewayRequest()
+
     request.gateway.name = "gateway.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1417,7 +1402,6 @@ async def test_update_gateway_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
-
         await client.update_gateway(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1433,32 +1417,29 @@ async def test_update_gateway_field_headers_async():
 
 
 def test_update_gateway_flattened():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_gateway), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_gateway(
             gateway=apigateway.Gateway(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].gateway == apigateway.Gateway(name="name_value")
-
-        assert args[0].update_mask == field_mask.FieldMask(paths=["paths_value"])
+        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
 
 
 def test_update_gateway_flattened_error():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1466,14 +1447,14 @@ def test_update_gateway_flattened_error():
         client.update_gateway(
             apigateway.UpdateGatewayRequest(),
             gateway=apigateway.Gateway(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 @pytest.mark.asyncio
 async def test_update_gateway_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1488,23 +1469,21 @@ async def test_update_gateway_flattened_async():
         # using the keyword arguments to the method.
         response = await client.update_gateway(
             gateway=apigateway.Gateway(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].gateway == apigateway.Gateway(name="name_value")
-
-        assert args[0].update_mask == field_mask.FieldMask(paths=["paths_value"])
+        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
 
 
 @pytest.mark.asyncio
 async def test_update_gateway_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1513,7 +1492,7 @@ async def test_update_gateway_flattened_error_async():
         await client.update_gateway(
             apigateway.UpdateGatewayRequest(),
             gateway=apigateway.Gateway(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -1521,7 +1500,7 @@ def test_delete_gateway(
     transport: str = "grpc", request_type=apigateway.DeleteGatewayRequest
 ):
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1532,13 +1511,11 @@ def test_delete_gateway(
     with mock.patch.object(type(client.transport.delete_gateway), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-
         response = client.delete_gateway(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.DeleteGatewayRequest()
 
     # Establish that the response is the type that we expect.
@@ -1553,7 +1530,7 @@ def test_delete_gateway_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1561,7 +1538,6 @@ def test_delete_gateway_empty_call():
         client.delete_gateway()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.DeleteGatewayRequest()
 
 
@@ -1570,7 +1546,7 @@ async def test_delete_gateway_async(
     transport: str = "grpc_asyncio", request_type=apigateway.DeleteGatewayRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1583,13 +1559,11 @@ async def test_delete_gateway_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-
         response = await client.delete_gateway(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.DeleteGatewayRequest()
 
     # Establish that the response is the type that we expect.
@@ -1602,17 +1576,17 @@ async def test_delete_gateway_async_from_dict():
 
 
 def test_delete_gateway_field_headers():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.DeleteGatewayRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_gateway), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         client.delete_gateway(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1628,12 +1602,13 @@ def test_delete_gateway_field_headers():
 @pytest.mark.asyncio
 async def test_delete_gateway_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.DeleteGatewayRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1641,7 +1616,6 @@ async def test_delete_gateway_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
-
         await client.delete_gateway(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1655,13 +1629,12 @@ async def test_delete_gateway_field_headers_async():
 
 
 def test_delete_gateway_flattened():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_gateway), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.delete_gateway(name="name_value",)
@@ -1670,12 +1643,11 @@ def test_delete_gateway_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_delete_gateway_flattened_error():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1688,7 +1660,7 @@ def test_delete_gateway_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_gateway_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1707,14 +1679,13 @@ async def test_delete_gateway_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_delete_gateway_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1727,7 +1698,7 @@ async def test_delete_gateway_flattened_error_async():
 
 def test_list_apis(transport: str = "grpc", request_type=apigateway.ListApisRequest):
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1741,21 +1712,16 @@ def test_list_apis(transport: str = "grpc", request_type=apigateway.ListApisRequ
             next_page_token="next_page_token_value",
             unreachable_locations=["unreachable_locations_value"],
         )
-
         response = client.list_apis(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.ListApisRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.ListApisPager)
-
     assert response.next_page_token == "next_page_token_value"
-
     assert response.unreachable_locations == ["unreachable_locations_value"]
 
 
@@ -1767,7 +1733,7 @@ def test_list_apis_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1775,7 +1741,6 @@ def test_list_apis_empty_call():
         client.list_apis()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.ListApisRequest()
 
 
@@ -1784,7 +1749,7 @@ async def test_list_apis_async(
     transport: str = "grpc_asyncio", request_type=apigateway.ListApisRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1800,20 +1765,16 @@ async def test_list_apis_async(
                 unreachable_locations=["unreachable_locations_value"],
             )
         )
-
         response = await client.list_apis(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.ListApisRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApisAsyncPager)
-
     assert response.next_page_token == "next_page_token_value"
-
     assert response.unreachable_locations == ["unreachable_locations_value"]
 
 
@@ -1823,17 +1784,17 @@ async def test_list_apis_async_from_dict():
 
 
 def test_list_apis_field_headers():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.ListApisRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
         call.return_value = apigateway.ListApisResponse()
-
         client.list_apis(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1849,12 +1810,13 @@ def test_list_apis_field_headers():
 @pytest.mark.asyncio
 async def test_list_apis_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.ListApisRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1862,7 +1824,6 @@ async def test_list_apis_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             apigateway.ListApisResponse()
         )
-
         await client.list_apis(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1876,13 +1837,12 @@ async def test_list_apis_field_headers_async():
 
 
 def test_list_apis_flattened():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = apigateway.ListApisResponse()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_apis(parent="parent_value",)
@@ -1891,12 +1851,11 @@ def test_list_apis_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
 
 
 def test_list_apis_flattened_error():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1909,7 +1868,7 @@ def test_list_apis_flattened_error():
 @pytest.mark.asyncio
 async def test_list_apis_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1928,14 +1887,13 @@ async def test_list_apis_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
 
 
 @pytest.mark.asyncio
 async def test_list_apis_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1947,7 +1905,7 @@ async def test_list_apis_flattened_error_async():
 
 
 def test_list_apis_pager():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials,)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
@@ -1979,7 +1937,7 @@ def test_list_apis_pager():
 
 
 def test_list_apis_pages():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials,)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
@@ -2003,7 +1961,9 @@ def test_list_apis_pages():
 
 @pytest.mark.asyncio
 async def test_list_apis_async_pager():
-    client = ApiGatewayServiceAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = ApiGatewayServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2034,7 +1994,9 @@ async def test_list_apis_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_apis_async_pages():
-    client = ApiGatewayServiceAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = ApiGatewayServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2062,7 +2024,7 @@ async def test_list_apis_async_pages():
 
 def test_get_api(transport: str = "grpc", request_type=apigateway.GetApiRequest):
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2078,25 +2040,18 @@ def test_get_api(transport: str = "grpc", request_type=apigateway.GetApiRequest)
             managed_service="managed_service_value",
             state=apigateway.Api.State.CREATING,
         )
-
         response = client.get_api(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.GetApiRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, apigateway.Api)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
-
     assert response.managed_service == "managed_service_value"
-
     assert response.state == apigateway.Api.State.CREATING
 
 
@@ -2108,7 +2063,7 @@ def test_get_api_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2116,7 +2071,6 @@ def test_get_api_empty_call():
         client.get_api()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.GetApiRequest()
 
 
@@ -2125,7 +2079,7 @@ async def test_get_api_async(
     transport: str = "grpc_asyncio", request_type=apigateway.GetApiRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2143,24 +2097,18 @@ async def test_get_api_async(
                 state=apigateway.Api.State.CREATING,
             )
         )
-
         response = await client.get_api(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.GetApiRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apigateway.Api)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
-
     assert response.managed_service == "managed_service_value"
-
     assert response.state == apigateway.Api.State.CREATING
 
 
@@ -2170,17 +2118,17 @@ async def test_get_api_async_from_dict():
 
 
 def test_get_api_field_headers():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.GetApiRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api), "__call__") as call:
         call.return_value = apigateway.Api()
-
         client.get_api(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2196,18 +2144,18 @@ def test_get_api_field_headers():
 @pytest.mark.asyncio
 async def test_get_api_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.GetApiRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(apigateway.Api())
-
         await client.get_api(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2221,13 +2169,12 @@ async def test_get_api_field_headers_async():
 
 
 def test_get_api_flattened():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = apigateway.Api()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_api(name="name_value",)
@@ -2236,12 +2183,11 @@ def test_get_api_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_get_api_flattened_error():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2254,7 +2200,7 @@ def test_get_api_flattened_error():
 @pytest.mark.asyncio
 async def test_get_api_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2271,14 +2217,13 @@ async def test_get_api_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_get_api_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2291,7 +2236,7 @@ async def test_get_api_flattened_error_async():
 
 def test_create_api(transport: str = "grpc", request_type=apigateway.CreateApiRequest):
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2302,13 +2247,11 @@ def test_create_api(transport: str = "grpc", request_type=apigateway.CreateApiRe
     with mock.patch.object(type(client.transport.create_api), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-
         response = client.create_api(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.CreateApiRequest()
 
     # Establish that the response is the type that we expect.
@@ -2323,7 +2266,7 @@ def test_create_api_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2331,7 +2274,6 @@ def test_create_api_empty_call():
         client.create_api()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.CreateApiRequest()
 
 
@@ -2340,7 +2282,7 @@ async def test_create_api_async(
     transport: str = "grpc_asyncio", request_type=apigateway.CreateApiRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2353,13 +2295,11 @@ async def test_create_api_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-
         response = await client.create_api(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.CreateApiRequest()
 
     # Establish that the response is the type that we expect.
@@ -2372,17 +2312,17 @@ async def test_create_api_async_from_dict():
 
 
 def test_create_api_field_headers():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.CreateApiRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_api), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         client.create_api(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2398,12 +2338,13 @@ def test_create_api_field_headers():
 @pytest.mark.asyncio
 async def test_create_api_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.CreateApiRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2411,7 +2352,6 @@ async def test_create_api_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
-
         await client.create_api(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2425,13 +2365,12 @@ async def test_create_api_field_headers_async():
 
 
 def test_create_api_flattened():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_api), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_api(
@@ -2444,16 +2383,13 @@ def test_create_api_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
-
         assert args[0].api == apigateway.Api(name="name_value")
-
         assert args[0].api_id == "api_id_value"
 
 
 def test_create_api_flattened_error():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2469,7 +2405,7 @@ def test_create_api_flattened_error():
 @pytest.mark.asyncio
 async def test_create_api_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2492,18 +2428,15 @@ async def test_create_api_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
-
         assert args[0].api == apigateway.Api(name="name_value")
-
         assert args[0].api_id == "api_id_value"
 
 
 @pytest.mark.asyncio
 async def test_create_api_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2519,7 +2452,7 @@ async def test_create_api_flattened_error_async():
 
 def test_update_api(transport: str = "grpc", request_type=apigateway.UpdateApiRequest):
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2530,13 +2463,11 @@ def test_update_api(transport: str = "grpc", request_type=apigateway.UpdateApiRe
     with mock.patch.object(type(client.transport.update_api), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-
         response = client.update_api(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.UpdateApiRequest()
 
     # Establish that the response is the type that we expect.
@@ -2551,7 +2482,7 @@ def test_update_api_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2559,7 +2490,6 @@ def test_update_api_empty_call():
         client.update_api()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.UpdateApiRequest()
 
 
@@ -2568,7 +2498,7 @@ async def test_update_api_async(
     transport: str = "grpc_asyncio", request_type=apigateway.UpdateApiRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2581,13 +2511,11 @@ async def test_update_api_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-
         response = await client.update_api(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.UpdateApiRequest()
 
     # Establish that the response is the type that we expect.
@@ -2600,17 +2528,17 @@ async def test_update_api_async_from_dict():
 
 
 def test_update_api_field_headers():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.UpdateApiRequest()
+
     request.api.name = "api.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_api), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         client.update_api(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2626,12 +2554,13 @@ def test_update_api_field_headers():
 @pytest.mark.asyncio
 async def test_update_api_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.UpdateApiRequest()
+
     request.api.name = "api.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2639,7 +2568,6 @@ async def test_update_api_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
-
         await client.update_api(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2653,32 +2581,29 @@ async def test_update_api_field_headers_async():
 
 
 def test_update_api_flattened():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_api), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_api(
             api=apigateway.Api(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].api == apigateway.Api(name="name_value")
-
-        assert args[0].update_mask == field_mask.FieldMask(paths=["paths_value"])
+        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
 
 
 def test_update_api_flattened_error():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2686,14 +2611,14 @@ def test_update_api_flattened_error():
         client.update_api(
             apigateway.UpdateApiRequest(),
             api=apigateway.Api(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 @pytest.mark.asyncio
 async def test_update_api_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2708,23 +2633,21 @@ async def test_update_api_flattened_async():
         # using the keyword arguments to the method.
         response = await client.update_api(
             api=apigateway.Api(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].api == apigateway.Api(name="name_value")
-
-        assert args[0].update_mask == field_mask.FieldMask(paths=["paths_value"])
+        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
 
 
 @pytest.mark.asyncio
 async def test_update_api_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2733,13 +2656,13 @@ async def test_update_api_flattened_error_async():
         await client.update_api(
             apigateway.UpdateApiRequest(),
             api=apigateway.Api(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 def test_delete_api(transport: str = "grpc", request_type=apigateway.DeleteApiRequest):
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2750,13 +2673,11 @@ def test_delete_api(transport: str = "grpc", request_type=apigateway.DeleteApiRe
     with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-
         response = client.delete_api(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.DeleteApiRequest()
 
     # Establish that the response is the type that we expect.
@@ -2771,7 +2692,7 @@ def test_delete_api_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2779,7 +2700,6 @@ def test_delete_api_empty_call():
         client.delete_api()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.DeleteApiRequest()
 
 
@@ -2788,7 +2708,7 @@ async def test_delete_api_async(
     transport: str = "grpc_asyncio", request_type=apigateway.DeleteApiRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2801,13 +2721,11 @@ async def test_delete_api_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-
         response = await client.delete_api(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.DeleteApiRequest()
 
     # Establish that the response is the type that we expect.
@@ -2820,17 +2738,17 @@ async def test_delete_api_async_from_dict():
 
 
 def test_delete_api_field_headers():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.DeleteApiRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         client.delete_api(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2846,12 +2764,13 @@ def test_delete_api_field_headers():
 @pytest.mark.asyncio
 async def test_delete_api_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.DeleteApiRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2859,7 +2778,6 @@ async def test_delete_api_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
-
         await client.delete_api(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2873,13 +2791,12 @@ async def test_delete_api_field_headers_async():
 
 
 def test_delete_api_flattened():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.delete_api(name="name_value",)
@@ -2888,12 +2805,11 @@ def test_delete_api_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_delete_api_flattened_error():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2906,7 +2822,7 @@ def test_delete_api_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_api_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2925,14 +2841,13 @@ async def test_delete_api_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_delete_api_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2947,7 +2862,7 @@ def test_list_api_configs(
     transport: str = "grpc", request_type=apigateway.ListApiConfigsRequest
 ):
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2961,21 +2876,16 @@ def test_list_api_configs(
             next_page_token="next_page_token_value",
             unreachable_locations=["unreachable_locations_value"],
         )
-
         response = client.list_api_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.ListApiConfigsRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.ListApiConfigsPager)
-
     assert response.next_page_token == "next_page_token_value"
-
     assert response.unreachable_locations == ["unreachable_locations_value"]
 
 
@@ -2987,7 +2897,7 @@ def test_list_api_configs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2995,7 +2905,6 @@ def test_list_api_configs_empty_call():
         client.list_api_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.ListApiConfigsRequest()
 
 
@@ -3004,7 +2913,7 @@ async def test_list_api_configs_async(
     transport: str = "grpc_asyncio", request_type=apigateway.ListApiConfigsRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3020,20 +2929,16 @@ async def test_list_api_configs_async(
                 unreachable_locations=["unreachable_locations_value"],
             )
         )
-
         response = await client.list_api_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.ListApiConfigsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListApiConfigsAsyncPager)
-
     assert response.next_page_token == "next_page_token_value"
-
     assert response.unreachable_locations == ["unreachable_locations_value"]
 
 
@@ -3043,17 +2948,17 @@ async def test_list_api_configs_async_from_dict():
 
 
 def test_list_api_configs_field_headers():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.ListApiConfigsRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_api_configs), "__call__") as call:
         call.return_value = apigateway.ListApiConfigsResponse()
-
         client.list_api_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3069,12 +2974,13 @@ def test_list_api_configs_field_headers():
 @pytest.mark.asyncio
 async def test_list_api_configs_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.ListApiConfigsRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3082,7 +2988,6 @@ async def test_list_api_configs_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             apigateway.ListApiConfigsResponse()
         )
-
         await client.list_api_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3096,13 +3001,12 @@ async def test_list_api_configs_field_headers_async():
 
 
 def test_list_api_configs_flattened():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_api_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = apigateway.ListApiConfigsResponse()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_api_configs(parent="parent_value",)
@@ -3111,12 +3015,11 @@ def test_list_api_configs_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
 
 
 def test_list_api_configs_flattened_error():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3129,7 +3032,7 @@ def test_list_api_configs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_api_configs_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3148,14 +3051,13 @@ async def test_list_api_configs_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
 
 
 @pytest.mark.asyncio
 async def test_list_api_configs_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3167,7 +3069,7 @@ async def test_list_api_configs_flattened_error_async():
 
 
 def test_list_api_configs_pager():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials,)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_api_configs), "__call__") as call:
@@ -3205,7 +3107,7 @@ def test_list_api_configs_pager():
 
 
 def test_list_api_configs_pages():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials,)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_api_configs), "__call__") as call:
@@ -3235,7 +3137,9 @@ def test_list_api_configs_pages():
 
 @pytest.mark.asyncio
 async def test_list_api_configs_async_pager():
-    client = ApiGatewayServiceAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = ApiGatewayServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3272,7 +3176,9 @@ async def test_list_api_configs_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_api_configs_async_pages():
-    client = ApiGatewayServiceAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = ApiGatewayServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3308,7 +3214,7 @@ def test_get_api_config(
     transport: str = "grpc", request_type=apigateway.GetApiConfigRequest
 ):
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3325,27 +3231,19 @@ def test_get_api_config(
             service_config_id="service_config_id_value",
             state=apigateway.ApiConfig.State.CREATING,
         )
-
         response = client.get_api_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.GetApiConfigRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, apigateway.ApiConfig)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
-
     assert response.gateway_service_account == "gateway_service_account_value"
-
     assert response.service_config_id == "service_config_id_value"
-
     assert response.state == apigateway.ApiConfig.State.CREATING
 
 
@@ -3357,7 +3255,7 @@ def test_get_api_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3365,7 +3263,6 @@ def test_get_api_config_empty_call():
         client.get_api_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.GetApiConfigRequest()
 
 
@@ -3374,7 +3271,7 @@ async def test_get_api_config_async(
     transport: str = "grpc_asyncio", request_type=apigateway.GetApiConfigRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3393,26 +3290,19 @@ async def test_get_api_config_async(
                 state=apigateway.ApiConfig.State.CREATING,
             )
         )
-
         response = await client.get_api_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.GetApiConfigRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, apigateway.ApiConfig)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
-
     assert response.gateway_service_account == "gateway_service_account_value"
-
     assert response.service_config_id == "service_config_id_value"
-
     assert response.state == apigateway.ApiConfig.State.CREATING
 
 
@@ -3422,17 +3312,17 @@ async def test_get_api_config_async_from_dict():
 
 
 def test_get_api_config_field_headers():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.GetApiConfigRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api_config), "__call__") as call:
         call.return_value = apigateway.ApiConfig()
-
         client.get_api_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3448,12 +3338,13 @@ def test_get_api_config_field_headers():
 @pytest.mark.asyncio
 async def test_get_api_config_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.GetApiConfigRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3461,7 +3352,6 @@ async def test_get_api_config_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             apigateway.ApiConfig()
         )
-
         await client.get_api_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3475,13 +3365,12 @@ async def test_get_api_config_field_headers_async():
 
 
 def test_get_api_config_flattened():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = apigateway.ApiConfig()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_api_config(name="name_value",)
@@ -3490,12 +3379,11 @@ def test_get_api_config_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_get_api_config_flattened_error():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3508,7 +3396,7 @@ def test_get_api_config_flattened_error():
 @pytest.mark.asyncio
 async def test_get_api_config_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3527,14 +3415,13 @@ async def test_get_api_config_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_get_api_config_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3549,7 +3436,7 @@ def test_create_api_config(
     transport: str = "grpc", request_type=apigateway.CreateApiConfigRequest
 ):
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3562,13 +3449,11 @@ def test_create_api_config(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-
         response = client.create_api_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.CreateApiConfigRequest()
 
     # Establish that the response is the type that we expect.
@@ -3583,7 +3468,7 @@ def test_create_api_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3593,7 +3478,6 @@ def test_create_api_config_empty_call():
         client.create_api_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.CreateApiConfigRequest()
 
 
@@ -3602,7 +3486,7 @@ async def test_create_api_config_async(
     transport: str = "grpc_asyncio", request_type=apigateway.CreateApiConfigRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3617,13 +3501,11 @@ async def test_create_api_config_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-
         response = await client.create_api_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.CreateApiConfigRequest()
 
     # Establish that the response is the type that we expect.
@@ -3636,11 +3518,12 @@ async def test_create_api_config_async_from_dict():
 
 
 def test_create_api_config_field_headers():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.CreateApiConfigRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3648,7 +3531,6 @@ def test_create_api_config_field_headers():
         type(client.transport.create_api_config), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         client.create_api_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3664,12 +3546,13 @@ def test_create_api_config_field_headers():
 @pytest.mark.asyncio
 async def test_create_api_config_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.CreateApiConfigRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3679,7 +3562,6 @@ async def test_create_api_config_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
-
         await client.create_api_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3693,7 +3575,7 @@ async def test_create_api_config_field_headers_async():
 
 
 def test_create_api_config_flattened():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3701,7 +3583,6 @@ def test_create_api_config_flattened():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_api_config(
@@ -3714,16 +3595,13 @@ def test_create_api_config_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
-
         assert args[0].api_config == apigateway.ApiConfig(name="name_value")
-
         assert args[0].api_config_id == "api_config_id_value"
 
 
 def test_create_api_config_flattened_error():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3739,7 +3617,7 @@ def test_create_api_config_flattened_error():
 @pytest.mark.asyncio
 async def test_create_api_config_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3764,18 +3642,15 @@ async def test_create_api_config_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
-
         assert args[0].api_config == apigateway.ApiConfig(name="name_value")
-
         assert args[0].api_config_id == "api_config_id_value"
 
 
 @pytest.mark.asyncio
 async def test_create_api_config_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3793,7 +3668,7 @@ def test_update_api_config(
     transport: str = "grpc", request_type=apigateway.UpdateApiConfigRequest
 ):
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3806,13 +3681,11 @@ def test_update_api_config(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-
         response = client.update_api_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.UpdateApiConfigRequest()
 
     # Establish that the response is the type that we expect.
@@ -3827,7 +3700,7 @@ def test_update_api_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3837,7 +3710,6 @@ def test_update_api_config_empty_call():
         client.update_api_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.UpdateApiConfigRequest()
 
 
@@ -3846,7 +3718,7 @@ async def test_update_api_config_async(
     transport: str = "grpc_asyncio", request_type=apigateway.UpdateApiConfigRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3861,13 +3733,11 @@ async def test_update_api_config_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-
         response = await client.update_api_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.UpdateApiConfigRequest()
 
     # Establish that the response is the type that we expect.
@@ -3880,11 +3750,12 @@ async def test_update_api_config_async_from_dict():
 
 
 def test_update_api_config_field_headers():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.UpdateApiConfigRequest()
+
     request.api_config.name = "api_config.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3892,7 +3763,6 @@ def test_update_api_config_field_headers():
         type(client.transport.update_api_config), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         client.update_api_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3910,12 +3780,13 @@ def test_update_api_config_field_headers():
 @pytest.mark.asyncio
 async def test_update_api_config_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.UpdateApiConfigRequest()
+
     request.api_config.name = "api_config.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3925,7 +3796,6 @@ async def test_update_api_config_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
-
         await client.update_api_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3941,7 +3811,7 @@ async def test_update_api_config_field_headers_async():
 
 
 def test_update_api_config_flattened():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3949,26 +3819,23 @@ def test_update_api_config_flattened():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_api_config(
             api_config=apigateway.ApiConfig(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].api_config == apigateway.ApiConfig(name="name_value")
-
-        assert args[0].update_mask == field_mask.FieldMask(paths=["paths_value"])
+        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
 
 
 def test_update_api_config_flattened_error():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3976,14 +3843,14 @@ def test_update_api_config_flattened_error():
         client.update_api_config(
             apigateway.UpdateApiConfigRequest(),
             api_config=apigateway.ApiConfig(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 @pytest.mark.asyncio
 async def test_update_api_config_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4000,23 +3867,21 @@ async def test_update_api_config_flattened_async():
         # using the keyword arguments to the method.
         response = await client.update_api_config(
             api_config=apigateway.ApiConfig(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].api_config == apigateway.ApiConfig(name="name_value")
-
-        assert args[0].update_mask == field_mask.FieldMask(paths=["paths_value"])
+        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
 
 
 @pytest.mark.asyncio
 async def test_update_api_config_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4025,7 +3890,7 @@ async def test_update_api_config_flattened_error_async():
         await client.update_api_config(
             apigateway.UpdateApiConfigRequest(),
             api_config=apigateway.ApiConfig(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -4033,7 +3898,7 @@ def test_delete_api_config(
     transport: str = "grpc", request_type=apigateway.DeleteApiConfigRequest
 ):
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4046,13 +3911,11 @@ def test_delete_api_config(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-
         response = client.delete_api_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.DeleteApiConfigRequest()
 
     # Establish that the response is the type that we expect.
@@ -4067,7 +3930,7 @@ def test_delete_api_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4077,7 +3940,6 @@ def test_delete_api_config_empty_call():
         client.delete_api_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.DeleteApiConfigRequest()
 
 
@@ -4086,7 +3948,7 @@ async def test_delete_api_config_async(
     transport: str = "grpc_asyncio", request_type=apigateway.DeleteApiConfigRequest
 ):
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4101,13 +3963,11 @@ async def test_delete_api_config_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-
         response = await client.delete_api_config(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == apigateway.DeleteApiConfigRequest()
 
     # Establish that the response is the type that we expect.
@@ -4120,11 +3980,12 @@ async def test_delete_api_config_async_from_dict():
 
 
 def test_delete_api_config_field_headers():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.DeleteApiConfigRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4132,7 +3993,6 @@ def test_delete_api_config_field_headers():
         type(client.transport.delete_api_config), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         client.delete_api_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4148,12 +4008,13 @@ def test_delete_api_config_field_headers():
 @pytest.mark.asyncio
 async def test_delete_api_config_field_headers_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = apigateway.DeleteApiConfigRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4163,7 +4024,6 @@ async def test_delete_api_config_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
-
         await client.delete_api_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4177,7 +4037,7 @@ async def test_delete_api_config_field_headers_async():
 
 
 def test_delete_api_config_flattened():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4185,7 +4045,6 @@ def test_delete_api_config_flattened():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.delete_api_config(name="name_value",)
@@ -4194,12 +4053,11 @@ def test_delete_api_config_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_delete_api_config_flattened_error():
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4212,7 +4070,7 @@ def test_delete_api_config_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_api_config_flattened_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4233,14 +4091,13 @@ async def test_delete_api_config_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_delete_api_config_flattened_error_async():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4254,16 +4111,16 @@ async def test_delete_api_config_flattened_error_async():
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ApiGatewayServiceGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = ApiGatewayServiceClient(
-            credentials=credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.ApiGatewayServiceGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = ApiGatewayServiceClient(
@@ -4273,7 +4130,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.ApiGatewayServiceGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = ApiGatewayServiceClient(
@@ -4284,7 +4141,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.ApiGatewayServiceGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = ApiGatewayServiceClient(transport=transport)
     assert client.transport is transport
@@ -4293,13 +4150,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.ApiGatewayServiceGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.ApiGatewayServiceGrpcAsyncIOTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -4314,23 +4171,23 @@ def test_transport_get_channel():
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, "default") as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = ApiGatewayServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = ApiGatewayServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
     assert isinstance(client.transport, transports.ApiGatewayServiceGrpcTransport,)
 
 
 def test_api_gateway_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
-    with pytest.raises(exceptions.DuplicateCredentialArgs):
+    with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.ApiGatewayServiceTransport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -4342,7 +4199,7 @@ def test_api_gateway_service_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.ApiGatewayServiceTransport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -4374,15 +4231,37 @@ def test_api_gateway_service_base_transport():
         transport.operations_client
 
 
+@requires_google_auth_gte_1_25_0
 def test_api_gateway_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
-        auth, "load_credentials_from_file"
+        google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
         "google.cloud.apigateway_v1.services.api_gateway_service.transports.ApiGatewayServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (credentials.AnonymousCredentials(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport = transports.ApiGatewayServiceTransport(
+            credentials_file="credentials.json", quota_project_id="octopus",
+        )
+        load_creds.assert_called_once_with(
+            "credentials.json",
+            scopes=None,
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            quota_project_id="octopus",
+        )
+
+
+@requires_google_auth_lt_1_25_0
+def test_api_gateway_service_base_transport_with_credentials_file_old_google_auth():
+    # Instantiate the base transport with a credentials file
+    with mock.patch.object(
+        google.auth, "load_credentials_from_file", autospec=True
+    ) as load_creds, mock.patch(
+        "google.cloud.apigateway_v1.services.api_gateway_service.transports.ApiGatewayServiceTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ApiGatewayServiceTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
         )
@@ -4395,19 +4274,33 @@ def test_api_gateway_service_base_transport_with_credentials_file():
 
 def test_api_gateway_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(auth, "default") as adc, mock.patch(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
         "google.cloud.apigateway_v1.services.api_gateway_service.transports.ApiGatewayServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ApiGatewayServiceTransport()
         adc.assert_called_once()
 
 
+@requires_google_auth_gte_1_25_0
 def test_api_gateway_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        ApiGatewayServiceClient()
+        adc.assert_called_once_with(
+            scopes=None,
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            quota_project_id=None,
+        )
+
+
+@requires_google_auth_lt_1_25_0
+def test_api_gateway_service_auth_adc_old_google_auth():
+    # If no credentials are provided, we should use ADC credentials.
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         ApiGatewayServiceClient()
         adc.assert_called_once_with(
             scopes=("https://www.googleapis.com/auth/cloud-platform",),
@@ -4415,17 +4308,153 @@ def test_api_gateway_service_auth_adc():
         )
 
 
-def test_api_gateway_service_transport_auth_adc():
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.ApiGatewayServiceGrpcTransport,
+        transports.ApiGatewayServiceGrpcAsyncIOTransport,
+    ],
+)
+@requires_google_auth_gte_1_25_0
+def test_api_gateway_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
-        transports.ApiGatewayServiceGrpcTransport(
-            host="squid.clam.whelk", quota_project_id="octopus"
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+        adc.assert_called_once_with(
+            scopes=["1", "2"],
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            quota_project_id="octopus",
         )
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.ApiGatewayServiceGrpcTransport,
+        transports.ApiGatewayServiceGrpcAsyncIOTransport,
+    ],
+)
+@requires_google_auth_lt_1_25_0
+def test_api_gateway_service_transport_auth_adc_old_google_auth(transport_class):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class(quota_project_id="octopus")
         adc.assert_called_once_with(
             scopes=("https://www.googleapis.com/auth/cloud-platform",),
             quota_project_id="octopus",
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.ApiGatewayServiceGrpcTransport, grpc_helpers),
+        (transports.ApiGatewayServiceGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+@requires_api_core_gte_1_26_0
+def test_api_gateway_service_transport_create_channel(transport_class, grpc_helpers):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+
+        create_channel.assert_called_with(
+            "apigateway.googleapis.com:443",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            scopes=["1", "2"],
+            default_host="apigateway.googleapis.com",
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.ApiGatewayServiceGrpcTransport, grpc_helpers),
+        (transports.ApiGatewayServiceGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+@requires_api_core_lt_1_26_0
+def test_api_gateway_service_transport_create_channel_old_api_core(
+    transport_class, grpc_helpers
+):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+        transport_class(quota_project_id="octopus")
+
+        create_channel.assert_called_with(
+            "apigateway.googleapis.com:443",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.ApiGatewayServiceGrpcTransport, grpc_helpers),
+        (transports.ApiGatewayServiceGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+@requires_api_core_lt_1_26_0
+def test_api_gateway_service_transport_create_channel_user_scopes(
+    transport_class, grpc_helpers
+):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+
+        create_channel.assert_called_with(
+            "apigateway.googleapis.com:443",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            scopes=["1", "2"],
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
         )
 
 
@@ -4439,7 +4468,7 @@ def test_api_gateway_service_transport_auth_adc():
 def test_api_gateway_service_grpc_transport_client_cert_source_for_mtls(
     transport_class,
 ):
-    cred = credentials.AnonymousCredentials()
+    cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -4478,7 +4507,7 @@ def test_api_gateway_service_grpc_transport_client_cert_source_for_mtls(
 
 def test_api_gateway_service_host_no_port():
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="apigateway.googleapis.com"
         ),
@@ -4488,7 +4517,7 @@ def test_api_gateway_service_host_no_port():
 
 def test_api_gateway_service_host_with_port():
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="apigateway.googleapis.com:8000"
         ),
@@ -4544,9 +4573,9 @@ def test_api_gateway_service_transport_channel_mtls_with_client_cert_source(
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = credentials.AnonymousCredentials()
+            cred = ga_credentials.AnonymousCredentials()
             with pytest.warns(DeprecationWarning):
-                with mock.patch.object(auth, "default") as adc:
+                with mock.patch.object(google.auth, "default") as adc:
                     adc.return_value = (cred, None)
                     transport = transport_class(
                         host="squid.clam.whelk",
@@ -4622,7 +4651,7 @@ def test_api_gateway_service_transport_channel_mtls_with_adc(transport_class):
 
 def test_api_gateway_service_grpc_lro_client():
     client = ApiGatewayServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
     transport = client.transport
 
@@ -4635,7 +4664,7 @@ def test_api_gateway_service_grpc_lro_client():
 
 def test_api_gateway_service_grpc_lro_async_client():
     client = ApiGatewayServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
     )
     transport = client.transport
 
@@ -4649,7 +4678,6 @@ def test_api_gateway_service_grpc_lro_async_client():
 def test_api_path():
     project = "squid"
     api = "clam"
-
     expected = "projects/{project}/locations/global/apis/{api}".format(
         project=project, api=api,
     )
@@ -4673,7 +4701,6 @@ def test_api_config_path():
     project = "oyster"
     api = "nudibranch"
     api_config = "cuttlefish"
-
     expected = "projects/{project}/locations/global/apis/{api}/configs/{api_config}".format(
         project=project, api=api, api_config=api_config,
     )
@@ -4698,7 +4725,6 @@ def test_gateway_path():
     project = "scallop"
     location = "abalone"
     gateway = "squid"
-
     expected = "projects/{project}/locations/{location}/gateways/{gateway}".format(
         project=project, location=location, gateway=gateway,
     )
@@ -4721,7 +4747,6 @@ def test_parse_gateway_path():
 
 def test_managed_service_path():
     service = "oyster"
-
     expected = "services/{service}".format(service=service,)
     actual = ApiGatewayServiceClient.managed_service_path(service)
     assert expected == actual
@@ -4741,7 +4766,6 @@ def test_parse_managed_service_path():
 def test_service_path():
     service = "cuttlefish"
     config = "mussel"
-
     expected = "services/{service}/configs/{config}".format(
         service=service, config=config,
     )
@@ -4764,7 +4788,6 @@ def test_parse_service_path():
 def test_service_account_path():
     project = "scallop"
     service_account = "abalone"
-
     expected = "projects/{project}/serviceAccounts/{service_account}".format(
         project=project, service_account=service_account,
     )
@@ -4786,7 +4809,6 @@ def test_parse_service_account_path():
 
 def test_common_billing_account_path():
     billing_account = "whelk"
-
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -4807,7 +4829,6 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "oyster"
-
     expected = "folders/{folder}".format(folder=folder,)
     actual = ApiGatewayServiceClient.common_folder_path(folder)
     assert expected == actual
@@ -4826,7 +4847,6 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "cuttlefish"
-
     expected = "organizations/{organization}".format(organization=organization,)
     actual = ApiGatewayServiceClient.common_organization_path(organization)
     assert expected == actual
@@ -4845,7 +4865,6 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "winkle"
-
     expected = "projects/{project}".format(project=project,)
     actual = ApiGatewayServiceClient.common_project_path(project)
     assert expected == actual
@@ -4865,7 +4884,6 @@ def test_parse_common_project_path():
 def test_common_location_path():
     project = "scallop"
     location = "abalone"
-
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -4892,7 +4910,7 @@ def test_client_withDEFAULT_CLIENT_INFO():
         transports.ApiGatewayServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = ApiGatewayServiceClient(
-            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4901,6 +4919,6 @@ def test_client_withDEFAULT_CLIENT_INFO():
     ) as prep:
         transport_class = ApiGatewayServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)

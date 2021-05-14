@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.cloud.apigateway_v1.types import apigateway
-from google.longrunning import operations_pb2 as operations  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
 from .base import ApiGatewayServiceTransport, DEFAULT_CLIENT_INFO
 
 
@@ -53,7 +50,7 @@ class ApiGatewayServiceGrpcTransport(ApiGatewayServiceTransport):
         self,
         *,
         host: str = "apigateway.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -67,7 +64,8 @@ class ApiGatewayServiceGrpcTransport(ApiGatewayServiceTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -178,7 +176,7 @@ class ApiGatewayServiceGrpcTransport(ApiGatewayServiceTransport):
     def create_channel(
         cls,
         host: str = "apigateway.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -209,13 +207,15 @@ class ApiGatewayServiceGrpcTransport(ApiGatewayServiceTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -294,7 +294,7 @@ class ApiGatewayServiceGrpcTransport(ApiGatewayServiceTransport):
     @property
     def create_gateway(
         self,
-    ) -> Callable[[apigateway.CreateGatewayRequest], operations.Operation]:
+    ) -> Callable[[apigateway.CreateGatewayRequest], operations_pb2.Operation]:
         r"""Return a callable for the create gateway method over gRPC.
 
         Creates a new Gateway in a given project and
@@ -314,14 +314,14 @@ class ApiGatewayServiceGrpcTransport(ApiGatewayServiceTransport):
             self._stubs["create_gateway"] = self.grpc_channel.unary_unary(
                 "/google.cloud.apigateway.v1.ApiGatewayService/CreateGateway",
                 request_serializer=apigateway.CreateGatewayRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_gateway"]
 
     @property
     def update_gateway(
         self,
-    ) -> Callable[[apigateway.UpdateGatewayRequest], operations.Operation]:
+    ) -> Callable[[apigateway.UpdateGatewayRequest], operations_pb2.Operation]:
         r"""Return a callable for the update gateway method over gRPC.
 
         Updates the parameters of a single Gateway.
@@ -340,14 +340,14 @@ class ApiGatewayServiceGrpcTransport(ApiGatewayServiceTransport):
             self._stubs["update_gateway"] = self.grpc_channel.unary_unary(
                 "/google.cloud.apigateway.v1.ApiGatewayService/UpdateGateway",
                 request_serializer=apigateway.UpdateGatewayRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_gateway"]
 
     @property
     def delete_gateway(
         self,
-    ) -> Callable[[apigateway.DeleteGatewayRequest], operations.Operation]:
+    ) -> Callable[[apigateway.DeleteGatewayRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete gateway method over gRPC.
 
         Deletes a single Gateway.
@@ -366,7 +366,7 @@ class ApiGatewayServiceGrpcTransport(ApiGatewayServiceTransport):
             self._stubs["delete_gateway"] = self.grpc_channel.unary_unary(
                 "/google.cloud.apigateway.v1.ApiGatewayService/DeleteGateway",
                 request_serializer=apigateway.DeleteGatewayRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_gateway"]
 
@@ -423,7 +423,7 @@ class ApiGatewayServiceGrpcTransport(ApiGatewayServiceTransport):
     @property
     def create_api(
         self,
-    ) -> Callable[[apigateway.CreateApiRequest], operations.Operation]:
+    ) -> Callable[[apigateway.CreateApiRequest], operations_pb2.Operation]:
         r"""Return a callable for the create api method over gRPC.
 
         Creates a new Api in a given project and location.
@@ -442,14 +442,14 @@ class ApiGatewayServiceGrpcTransport(ApiGatewayServiceTransport):
             self._stubs["create_api"] = self.grpc_channel.unary_unary(
                 "/google.cloud.apigateway.v1.ApiGatewayService/CreateApi",
                 request_serializer=apigateway.CreateApiRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_api"]
 
     @property
     def update_api(
         self,
-    ) -> Callable[[apigateway.UpdateApiRequest], operations.Operation]:
+    ) -> Callable[[apigateway.UpdateApiRequest], operations_pb2.Operation]:
         r"""Return a callable for the update api method over gRPC.
 
         Updates the parameters of a single Api.
@@ -468,14 +468,14 @@ class ApiGatewayServiceGrpcTransport(ApiGatewayServiceTransport):
             self._stubs["update_api"] = self.grpc_channel.unary_unary(
                 "/google.cloud.apigateway.v1.ApiGatewayService/UpdateApi",
                 request_serializer=apigateway.UpdateApiRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_api"]
 
     @property
     def delete_api(
         self,
-    ) -> Callable[[apigateway.DeleteApiRequest], operations.Operation]:
+    ) -> Callable[[apigateway.DeleteApiRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete api method over gRPC.
 
         Deletes a single Api.
@@ -494,7 +494,7 @@ class ApiGatewayServiceGrpcTransport(ApiGatewayServiceTransport):
             self._stubs["delete_api"] = self.grpc_channel.unary_unary(
                 "/google.cloud.apigateway.v1.ApiGatewayService/DeleteApi",
                 request_serializer=apigateway.DeleteApiRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_api"]
 
@@ -555,7 +555,7 @@ class ApiGatewayServiceGrpcTransport(ApiGatewayServiceTransport):
     @property
     def create_api_config(
         self,
-    ) -> Callable[[apigateway.CreateApiConfigRequest], operations.Operation]:
+    ) -> Callable[[apigateway.CreateApiConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the create api config method over gRPC.
 
         Creates a new ApiConfig in a given project and
@@ -575,14 +575,14 @@ class ApiGatewayServiceGrpcTransport(ApiGatewayServiceTransport):
             self._stubs["create_api_config"] = self.grpc_channel.unary_unary(
                 "/google.cloud.apigateway.v1.ApiGatewayService/CreateApiConfig",
                 request_serializer=apigateway.CreateApiConfigRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_api_config"]
 
     @property
     def update_api_config(
         self,
-    ) -> Callable[[apigateway.UpdateApiConfigRequest], operations.Operation]:
+    ) -> Callable[[apigateway.UpdateApiConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the update api config method over gRPC.
 
         Updates the parameters of a single ApiConfig.
@@ -601,14 +601,14 @@ class ApiGatewayServiceGrpcTransport(ApiGatewayServiceTransport):
             self._stubs["update_api_config"] = self.grpc_channel.unary_unary(
                 "/google.cloud.apigateway.v1.ApiGatewayService/UpdateApiConfig",
                 request_serializer=apigateway.UpdateApiConfigRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_api_config"]
 
     @property
     def delete_api_config(
         self,
-    ) -> Callable[[apigateway.DeleteApiConfigRequest], operations.Operation]:
+    ) -> Callable[[apigateway.DeleteApiConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete api config method over gRPC.
 
         Deletes a single ApiConfig.
@@ -627,7 +627,7 @@ class ApiGatewayServiceGrpcTransport(ApiGatewayServiceTransport):
             self._stubs["delete_api_config"] = self.grpc_channel.unary_unary(
                 "/google.cloud.apigateway.v1.ApiGatewayService/DeleteApiConfig",
                 request_serializer=apigateway.DeleteApiConfigRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_api_config"]
 
