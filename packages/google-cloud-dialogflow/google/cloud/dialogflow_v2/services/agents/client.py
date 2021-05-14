@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -38,9 +36,8 @@ from google.cloud.dialogflow_v2.services.agents import pagers
 from google.cloud.dialogflow_v2.types import agent
 from google.cloud.dialogflow_v2.types import agent as gcd_agent
 from google.cloud.dialogflow_v2.types import validation_result
-from google.protobuf import empty_pb2 as empty  # type: ignore
-from google.protobuf import struct_pb2 as struct  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from .transports.base import AgentsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AgentsGrpcTransport
 from .transports.grpc_asyncio import AgentsGrpcAsyncIOTransport
@@ -59,7 +56,7 @@ class AgentsClientMeta(type):
     _transport_registry["grpc_asyncio"] = AgentsGrpcAsyncIOTransport
 
     def get_transport_class(cls, label: str = None,) -> Type[AgentsTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -82,7 +79,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -116,7 +114,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -133,7 +132,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -152,27 +151,28 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     @property
     def transport(self) -> AgentsTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            AgentsTransport: The transport used by the client instance.
+            AgentsTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
     @staticmethod
     def agent_path(project: str,) -> str:
-        """Return a fully-qualified agent string."""
+        """Returns a fully-qualified agent string."""
         return "projects/{project}/agent".format(project=project,)
 
     @staticmethod
     def parse_agent_path(path: str) -> Dict[str, str]:
-        """Parse a agent path into its component segments."""
+        """Parses a agent path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/agent$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -185,7 +185,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -196,7 +196,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -207,7 +207,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -218,7 +218,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -232,12 +232,12 @@ class AgentsClient(metaclass=AgentsClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AgentsTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the agents client.
+        """Instantiates the agents client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -292,9 +292,10 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -306,12 +307,14 @@ class AgentsClient(metaclass=AgentsClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -326,8 +329,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -364,7 +367,6 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -402,10 +404,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, agent.GetAgentRequest):
             request = agent.GetAgentRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -445,7 +445,6 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 This corresponds to the ``agent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -483,10 +482,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, gcd_agent.SetAgentRequest):
             request = gcd_agent.SetAgentRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if agent is not None:
                 request.agent = agent
 
@@ -530,7 +527,6 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -553,10 +549,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, agent.DeleteAgentRequest):
             request = agent.DeleteAgentRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -603,7 +597,6 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -635,10 +628,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, agent.SearchAgentsRequest):
             request = agent.SearchAgentsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -689,7 +680,6 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -731,10 +721,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, agent.TrainAgentRequest):
             request = agent.TrainAgentRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -755,8 +743,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
-            metadata_type=struct.Struct,
+            empty_pb2.Empty,
+            metadata_type=struct_pb2.Struct,
         )
 
         # Done; return the response.
@@ -787,7 +775,6 @@ class AgentsClient(metaclass=AgentsClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -820,10 +807,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, agent.ExportAgentRequest):
             request = agent.ExportAgentRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -845,7 +830,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
             response,
             self._transport.operations_client,
             agent.ExportAgentResponse,
-            metadata_type=struct.Struct,
+            metadata_type=struct_pb2.Struct,
         )
 
         # Done; return the response.
@@ -881,7 +866,6 @@ class AgentsClient(metaclass=AgentsClientMeta):
             request (google.cloud.dialogflow_v2.types.ImportAgentRequest):
                 The request object. The request message for
                 [Agents.ImportAgent][google.cloud.dialogflow.v2.Agents.ImportAgent].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -908,7 +892,6 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-
         # Minor optimization to avoid making a copy if the user passes
         # in a agent.ImportAgentRequest.
         # There's no risk of modifying the input as we've already verified
@@ -933,8 +916,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
-            metadata_type=struct.Struct,
+            empty_pb2.Empty,
+            metadata_type=struct_pb2.Struct,
         )
 
         # Done; return the response.
@@ -968,7 +951,6 @@ class AgentsClient(metaclass=AgentsClientMeta):
             request (google.cloud.dialogflow_v2.types.RestoreAgentRequest):
                 The request object. The request message for
                 [Agents.RestoreAgent][google.cloud.dialogflow.v2.Agents.RestoreAgent].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -995,7 +977,6 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-
         # Minor optimization to avoid making a copy if the user passes
         # in a agent.RestoreAgentRequest.
         # There's no risk of modifying the input as we've already verified
@@ -1020,8 +1001,8 @@ class AgentsClient(metaclass=AgentsClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
-            metadata_type=struct.Struct,
+            empty_pb2.Empty,
+            metadata_type=struct_pb2.Struct,
         )
 
         # Done; return the response.
@@ -1043,7 +1024,6 @@ class AgentsClient(metaclass=AgentsClientMeta):
             request (google.cloud.dialogflow_v2.types.GetValidationResultRequest):
                 The request object. The request message for
                 [Agents.GetValidationResult][google.cloud.dialogflow.v2.Agents.GetValidationResult].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1057,7 +1037,6 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-
         # Minor optimization to avoid making a copy if the user passes
         # in a agent.GetValidationResultRequest.
         # There's no risk of modifying the input as we've already verified

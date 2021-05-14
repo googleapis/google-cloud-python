@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.dialogflow_v2beta1.types import entity_type
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -79,10 +76,8 @@ class SessionEntityType(proto.Message):
         ENTITY_OVERRIDE_MODE_OVERRIDE = 1
         ENTITY_OVERRIDE_MODE_SUPPLEMENT = 2
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     entity_override_mode = proto.Field(proto.ENUM, number=2, enum=EntityOverrideMode,)
-
     entities = proto.RepeatedField(
         proto.MESSAGE, number=3, message=entity_type.EntityType.Entity,
     )
@@ -115,11 +110,9 @@ class ListSessionEntityTypesRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListSessionEntityTypesResponse(proto.Message):
@@ -144,8 +137,7 @@ class ListSessionEntityTypesResponse(proto.Message):
     session_entity_types = proto.RepeatedField(
         proto.MESSAGE, number=1, message="SessionEntityType",
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetSessionEntityTypeRequest(proto.Message):
@@ -168,7 +160,7 @@ class GetSessionEntityTypeRequest(proto.Message):
             specified, we assume default '-' user.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateSessionEntityTypeRequest(proto.Message):
@@ -193,8 +185,7 @@ class CreateSessionEntityTypeRequest(proto.Message):
             Required. The session entity type to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     session_entity_type = proto.Field(
         proto.MESSAGE, number=2, message="SessionEntityType",
     )
@@ -215,8 +206,9 @@ class UpdateSessionEntityTypeRequest(proto.Message):
     session_entity_type = proto.Field(
         proto.MESSAGE, number=1, message="SessionEntityType",
     )
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteSessionEntityTypeRequest(proto.Message):
@@ -239,7 +231,7 @@ class DeleteSessionEntityTypeRequest(proto.Message):
             specified, we assume default '-' user.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

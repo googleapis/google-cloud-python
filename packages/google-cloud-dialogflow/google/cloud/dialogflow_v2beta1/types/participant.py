@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.dialogflow_v2beta1.types import audio_config
 from google.cloud.dialogflow_v2beta1.types import session
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import struct_pb2 as struct  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.rpc import status_pb2 as status  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -123,16 +120,13 @@ class Participant(proto.Message):
         AUTOMATED_AGENT = 2
         END_USER = 3
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     role = proto.Field(proto.ENUM, number=2, enum=Role,)
-
-    obfuscated_external_user_id = proto.Field(proto.STRING, number=7)
+    obfuscated_external_user_id = proto.Field(proto.STRING, number=7,)
 
 
 class Message(proto.Message):
     r"""Represents a message posted into a conversation.
-
     Attributes:
         name (str):
             Optional. The unique identifier of the message. Format:
@@ -160,24 +154,16 @@ class Message(proto.Message):
             for the message.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    content = proto.Field(proto.STRING, number=2)
-
-    language_code = proto.Field(proto.STRING, number=3)
-
-    participant = proto.Field(proto.STRING, number=4)
-
+    name = proto.Field(proto.STRING, number=1,)
+    content = proto.Field(proto.STRING, number=2,)
+    language_code = proto.Field(proto.STRING, number=3,)
+    participant = proto.Field(proto.STRING, number=4,)
     participant_role = proto.Field(proto.ENUM, number=5, enum="Participant.Role",)
-
-    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp.Timestamp,)
-
-    send_time = proto.Field(proto.MESSAGE, number=9, message=timestamp.Timestamp,)
-
+    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    send_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
     message_annotation = proto.Field(
         proto.MESSAGE, number=7, message="MessageAnnotation",
     )
-
     sentiment_analysis = proto.Field(
         proto.MESSAGE, number=8, message=session.SentimentAnalysisResult,
     )
@@ -196,8 +182,7 @@ class CreateParticipantRequest(proto.Message):
             Required. The participant to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     participant = proto.Field(proto.MESSAGE, number=2, message="Participant",)
 
 
@@ -211,7 +196,7 @@ class GetParticipantRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>/participants/<Participant ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListParticipantsRequest(proto.Message):
@@ -232,11 +217,9 @@ class ListParticipantsRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListParticipantsResponse(proto.Message):
@@ -257,8 +240,7 @@ class ListParticipantsResponse(proto.Message):
         return self
 
     participants = proto.RepeatedField(proto.MESSAGE, number=1, message="Participant",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class UpdateParticipantRequest(proto.Message):
@@ -274,8 +256,9 @@ class UpdateParticipantRequest(proto.Message):
     """
 
     participant = proto.Field(proto.MESSAGE, number=1, message="Participant",)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class OutputAudio(proto.Message):
@@ -293,13 +276,11 @@ class OutputAudio(proto.Message):
     config = proto.Field(
         proto.MESSAGE, number=1, message=audio_config.OutputAudioConfig,
     )
-
-    audio = proto.Field(proto.BYTES, number=2)
+    audio = proto.Field(proto.BYTES, number=2,)
 
 
 class AutomatedAgentReply(proto.Message):
     r"""Represents a response from an automated agent.
-
     Attributes:
         detect_intent_response (google.cloud.dialogflow_v2beta1.types.DetectIntentResponse):
             Response of the Dialogflow
@@ -324,16 +305,14 @@ class AutomatedAgentReply(proto.Message):
     detect_intent_response = proto.Field(
         proto.MESSAGE, number=1, oneof="response", message=session.DetectIntentResponse,
     )
-
     response_messages = proto.RepeatedField(
         proto.MESSAGE, number=3, message="ResponseMessage",
     )
-
-    intent = proto.Field(proto.STRING, number=4, oneof="match")
-
-    event = proto.Field(proto.STRING, number=5, oneof="match")
-
-    cx_session_parameters = proto.Field(proto.MESSAGE, number=6, message=struct.Struct,)
+    intent = proto.Field(proto.STRING, number=4, oneof="match",)
+    event = proto.Field(proto.STRING, number=5, oneof="match",)
+    cx_session_parameters = proto.Field(
+        proto.MESSAGE, number=6, message=struct_pb2.Struct,
+    )
 
 
 class SuggestionFeature(proto.Message):
@@ -404,29 +383,23 @@ class AnalyzeContentRequest(proto.Message):
             only idempotent if a ``request_id`` is provided.
     """
 
-    participant = proto.Field(proto.STRING, number=1)
-
+    participant = proto.Field(proto.STRING, number=1,)
     text_input = proto.Field(
         proto.MESSAGE, number=6, oneof="input", message=session.TextInput,
     )
-
     event_input = proto.Field(
         proto.MESSAGE, number=8, oneof="input", message=session.EventInput,
     )
-
     reply_audio_config = proto.Field(
         proto.MESSAGE, number=5, message=audio_config.OutputAudioConfig,
     )
-
     query_params = proto.Field(
         proto.MESSAGE, number=9, message=session.QueryParameters,
     )
-
     message_send_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp.Timestamp,
+        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
     )
-
-    request_id = proto.Field(proto.STRING, number=11)
+    request_id = proto.Field(proto.STRING, number=11,)
 
 
 class DtmfParameters(proto.Message):
@@ -439,7 +412,7 @@ class DtmfParameters(proto.Message):
             in the next request.
     """
 
-    accepts_dtmf_input = proto.Field(proto.BOOL, number=1)
+    accepts_dtmf_input = proto.Field(proto.BOOL, number=1,)
 
 
 class AnalyzeContentResponse(proto.Message):
@@ -489,24 +462,18 @@ class AnalyzeContentResponse(proto.Message):
             Indicates the parameters of DTMF.
     """
 
-    reply_text = proto.Field(proto.STRING, number=1)
-
+    reply_text = proto.Field(proto.STRING, number=1,)
     reply_audio = proto.Field(proto.MESSAGE, number=2, message="OutputAudio",)
-
     automated_agent_reply = proto.Field(
         proto.MESSAGE, number=3, message="AutomatedAgentReply",
     )
-
     message = proto.Field(proto.MESSAGE, number=5, message="Message",)
-
     human_agent_suggestion_results = proto.RepeatedField(
         proto.MESSAGE, number=6, message="SuggestionResult",
     )
-
     end_user_suggestion_results = proto.RepeatedField(
         proto.MESSAGE, number=7, message="SuggestionResult",
     )
-
     dtmf_parameters = proto.Field(proto.MESSAGE, number=9, message="DtmfParameters",)
 
 
@@ -540,16 +507,13 @@ class AnnotatedMessagePart(proto.Message):
                 </pre>
     """
 
-    text = proto.Field(proto.STRING, number=1)
-
-    entity_type = proto.Field(proto.STRING, number=2)
-
-    formatted_value = proto.Field(proto.MESSAGE, number=3, message=struct.Value,)
+    text = proto.Field(proto.STRING, number=1,)
+    entity_type = proto.Field(proto.STRING, number=2,)
+    formatted_value = proto.Field(proto.MESSAGE, number=3, message=struct_pb2.Value,)
 
 
 class MessageAnnotation(proto.Message):
     r"""Represents the result of annotation for the message.
-
     Attributes:
         parts (Sequence[google.cloud.dialogflow_v2beta1.types.AnnotatedMessagePart]):
             Optional. The collection of annotated message parts ordered
@@ -564,13 +528,11 @@ class MessageAnnotation(proto.Message):
     parts = proto.RepeatedField(
         proto.MESSAGE, number=1, message="AnnotatedMessagePart",
     )
-
-    contain_entities = proto.Field(proto.BOOL, number=2)
+    contain_entities = proto.Field(proto.BOOL, number=2,)
 
 
 class ArticleAnswer(proto.Message):
     r"""Represents article answer.
-
     Attributes:
         title (str):
             The article title.
@@ -587,20 +549,15 @@ class ArticleAnswer(proto.Message):
             ID>/answerRecords/<Answer Record ID>".
     """
 
-    title = proto.Field(proto.STRING, number=1)
-
-    uri = proto.Field(proto.STRING, number=2)
-
-    snippets = proto.RepeatedField(proto.STRING, number=3)
-
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=5)
-
-    answer_record = proto.Field(proto.STRING, number=6)
+    title = proto.Field(proto.STRING, number=1,)
+    uri = proto.Field(proto.STRING, number=2,)
+    snippets = proto.RepeatedField(proto.STRING, number=3,)
+    metadata = proto.MapField(proto.STRING, proto.STRING, number=5,)
+    answer_record = proto.Field(proto.STRING, number=6,)
 
 
 class FaqAnswer(proto.Message):
     r"""Represents answer from "frequently asked questions".
-
     Attributes:
         answer (str):
             The piece of text from the ``source`` knowledge base
@@ -625,22 +582,16 @@ class FaqAnswer(proto.Message):
             ID>/answerRecords/<Answer Record ID>".
     """
 
-    answer = proto.Field(proto.STRING, number=1)
-
-    confidence = proto.Field(proto.FLOAT, number=2)
-
-    question = proto.Field(proto.STRING, number=3)
-
-    source = proto.Field(proto.STRING, number=4)
-
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=5)
-
-    answer_record = proto.Field(proto.STRING, number=6)
+    answer = proto.Field(proto.STRING, number=1,)
+    confidence = proto.Field(proto.FLOAT, number=2,)
+    question = proto.Field(proto.STRING, number=3,)
+    source = proto.Field(proto.STRING, number=4,)
+    metadata = proto.MapField(proto.STRING, proto.STRING, number=5,)
+    answer_record = proto.Field(proto.STRING, number=6,)
 
 
 class SmartReplyAnswer(proto.Message):
     r"""Represents a smart reply answer.
-
     Attributes:
         reply (str):
             The content of the reply.
@@ -656,11 +607,9 @@ class SmartReplyAnswer(proto.Message):
             ID>/answerRecords/<Answer Record ID>".
     """
 
-    reply = proto.Field(proto.STRING, number=1)
-
-    confidence = proto.Field(proto.FLOAT, number=2)
-
-    answer_record = proto.Field(proto.STRING, number=3)
+    reply = proto.Field(proto.STRING, number=1,)
+    confidence = proto.Field(proto.FLOAT, number=2,)
+    answer_record = proto.Field(proto.STRING, number=3,)
 
 
 class SuggestionResult(proto.Message):
@@ -685,23 +634,20 @@ class SuggestionResult(proto.Message):
     """
 
     error = proto.Field(
-        proto.MESSAGE, number=1, oneof="suggestion_response", message=status.Status,
+        proto.MESSAGE, number=1, oneof="suggestion_response", message=status_pb2.Status,
     )
-
     suggest_articles_response = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="suggestion_response",
         message="SuggestArticlesResponse",
     )
-
     suggest_faq_answers_response = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="suggestion_response",
         message="SuggestFaqAnswersResponse",
     )
-
     suggest_smart_replies_response = proto.Field(
         proto.MESSAGE,
         number=4,
@@ -733,11 +679,9 @@ class SuggestArticlesRequest(proto.Message):
             20 and at most 50.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    latest_message = proto.Field(proto.STRING, number=2)
-
-    context_size = proto.Field(proto.INT32, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    latest_message = proto.Field(proto.STRING, number=2,)
+    context_size = proto.Field(proto.INT32, number=3,)
 
 
 class SuggestArticlesResponse(proto.Message):
@@ -766,10 +710,8 @@ class SuggestArticlesResponse(proto.Message):
     article_answers = proto.RepeatedField(
         proto.MESSAGE, number=1, message="ArticleAnswer",
     )
-
-    latest_message = proto.Field(proto.STRING, number=2)
-
-    context_size = proto.Field(proto.INT32, number=3)
+    latest_message = proto.Field(proto.STRING, number=2,)
+    context_size = proto.Field(proto.INT32, number=3,)
 
 
 class SuggestFaqAnswersRequest(proto.Message):
@@ -794,11 +736,9 @@ class SuggestFaqAnswersRequest(proto.Message):
             suggestion. By default 20 and at most 50.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    latest_message = proto.Field(proto.STRING, number=2)
-
-    context_size = proto.Field(proto.INT32, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    latest_message = proto.Field(proto.STRING, number=2,)
+    context_size = proto.Field(proto.INT32, number=3,)
 
 
 class SuggestFaqAnswersResponse(proto.Message):
@@ -825,10 +765,8 @@ class SuggestFaqAnswersResponse(proto.Message):
     """
 
     faq_answers = proto.RepeatedField(proto.MESSAGE, number=1, message="FaqAnswer",)
-
-    latest_message = proto.Field(proto.STRING, number=2)
-
-    context_size = proto.Field(proto.INT32, number=3)
+    latest_message = proto.Field(proto.STRING, number=2,)
+    context_size = proto.Field(proto.INT32, number=3,)
 
 
 class SuggestSmartRepliesRequest(proto.Message):
@@ -859,15 +797,12 @@ class SuggestSmartRepliesRequest(proto.Message):
             suggestion. By default 20 and at most 50.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     current_text_input = proto.Field(
         proto.MESSAGE, number=4, message=session.TextInput,
     )
-
-    latest_message = proto.Field(proto.STRING, number=2)
-
-    context_size = proto.Field(proto.INT32, number=3)
+    latest_message = proto.Field(proto.STRING, number=2,)
+    context_size = proto.Field(proto.INT32, number=3,)
 
 
 class SuggestSmartRepliesResponse(proto.Message):
@@ -899,15 +834,12 @@ class SuggestSmartRepliesResponse(proto.Message):
     smart_reply_answers = proto.RepeatedField(
         proto.MESSAGE, number=1, message="SmartReplyAnswer",
     )
-
-    latest_message = proto.Field(proto.STRING, number=2)
-
-    context_size = proto.Field(proto.INT32, number=3)
+    latest_message = proto.Field(proto.STRING, number=2,)
+    context_size = proto.Field(proto.INT32, number=3,)
 
 
 class Suggestion(proto.Message):
     r"""Represents a suggestion for a human agent.
-
     Attributes:
         name (str):
             Output only. The name of this suggestion. Format:
@@ -931,7 +863,6 @@ class Suggestion(proto.Message):
 
     class Article(proto.Message):
         r"""Represents suggested article.
-
         Attributes:
             title (str):
                 Output only. The article title.
@@ -950,15 +881,11 @@ class Suggestion(proto.Message):
                 ID>/answerRecords/<Answer Record ID>".
         """
 
-        title = proto.Field(proto.STRING, number=1)
-
-        uri = proto.Field(proto.STRING, number=2)
-
-        snippets = proto.RepeatedField(proto.STRING, number=3)
-
-        metadata = proto.MapField(proto.STRING, proto.STRING, number=5)
-
-        answer_record = proto.Field(proto.STRING, number=6)
+        title = proto.Field(proto.STRING, number=1,)
+        uri = proto.Field(proto.STRING, number=2,)
+        snippets = proto.RepeatedField(proto.STRING, number=3,)
+        metadata = proto.MapField(proto.STRING, proto.STRING, number=5,)
+        answer_record = proto.Field(proto.STRING, number=6,)
 
     class FaqAnswer(proto.Message):
         r"""Represents suggested answer from "frequently asked
@@ -990,27 +917,18 @@ class Suggestion(proto.Message):
                 ID>/answerRecords/<Answer Record ID>".
         """
 
-        answer = proto.Field(proto.STRING, number=1)
+        answer = proto.Field(proto.STRING, number=1,)
+        confidence = proto.Field(proto.FLOAT, number=2,)
+        question = proto.Field(proto.STRING, number=3,)
+        source = proto.Field(proto.STRING, number=4,)
+        metadata = proto.MapField(proto.STRING, proto.STRING, number=5,)
+        answer_record = proto.Field(proto.STRING, number=6,)
 
-        confidence = proto.Field(proto.FLOAT, number=2)
-
-        question = proto.Field(proto.STRING, number=3)
-
-        source = proto.Field(proto.STRING, number=4)
-
-        metadata = proto.MapField(proto.STRING, proto.STRING, number=5)
-
-        answer_record = proto.Field(proto.STRING, number=6)
-
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     articles = proto.RepeatedField(proto.MESSAGE, number=2, message=Article,)
-
     faq_answers = proto.RepeatedField(proto.MESSAGE, number=4, message=FaqAnswer,)
-
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
-
-    latest_message = proto.Field(proto.STRING, number=7)
+    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    latest_message = proto.Field(proto.STRING, number=7,)
 
 
 class ListSuggestionsRequest(proto.Message):
@@ -1035,19 +953,16 @@ class ListSuggestionsRequest(proto.Message):
             are supported. ``create_time`` only support milliseconds
             accuracy. E.g.,
             ``create_time_epoch_microseconds > 1551790877964485`` or
-            ``create_time > 2017-01-15T01:30:15.01Z``
+            ``create_time > "2017-01-15T01:30:15.01Z"``
 
             For more information about filtering, see `API
             Filtering <https://aip.dev/160>`__.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
-
-    filter = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+    filter = proto.Field(proto.STRING, number=4,)
 
 
 class ListSuggestionsResponse(proto.Message):
@@ -1071,8 +986,7 @@ class ListSuggestionsResponse(proto.Message):
         return self
 
     suggestions = proto.RepeatedField(proto.MESSAGE, number=1, message="Suggestion",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class CompileSuggestionRequest(proto.Message):
@@ -1097,11 +1011,9 @@ class CompileSuggestionRequest(proto.Message):
             suggestion. If zero or less than zero, 20 is used.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    latest_message = proto.Field(proto.STRING, number=2)
-
-    context_size = proto.Field(proto.INT32, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    latest_message = proto.Field(proto.STRING, number=2,)
+    context_size = proto.Field(proto.INT32, number=3,)
 
 
 class CompileSuggestionResponse(proto.Message):
@@ -1127,15 +1039,12 @@ class CompileSuggestionResponse(proto.Message):
     """
 
     suggestion = proto.Field(proto.MESSAGE, number=1, message="Suggestion",)
-
-    latest_message = proto.Field(proto.STRING, number=2)
-
-    context_size = proto.Field(proto.INT32, number=3)
+    latest_message = proto.Field(proto.STRING, number=2,)
+    context_size = proto.Field(proto.INT32, number=3,)
 
 
 class ResponseMessage(proto.Message):
     r"""Response messages from an automated agent.
-
     Attributes:
         text (google.cloud.dialogflow_v2beta1.types.ResponseMessage.Text):
             Returns a text response.
@@ -1151,13 +1060,12 @@ class ResponseMessage(proto.Message):
 
     class Text(proto.Message):
         r"""The text response message.
-
         Attributes:
             text (Sequence[str]):
                 A collection of text responses.
         """
 
-        text = proto.RepeatedField(proto.STRING, number=1)
+        text = proto.RepeatedField(proto.STRING, number=1,)
 
     class LiveAgentHandoff(proto.Message):
         r"""Indicates that the conversation should be handed off to a human
@@ -1180,23 +1088,20 @@ class ResponseMessage(proto.Message):
                 Dialogflow doesn't impose any structure on this.
         """
 
-        metadata = proto.Field(proto.MESSAGE, number=1, message=struct.Struct,)
+        metadata = proto.Field(proto.MESSAGE, number=1, message=struct_pb2.Struct,)
 
     class EndInteraction(proto.Message):
         r"""Indicates that interaction with the Dialogflow agent has
         ended.
-        """
+            """
 
     text = proto.Field(proto.MESSAGE, number=1, oneof="message", message=Text,)
-
     payload = proto.Field(
-        proto.MESSAGE, number=2, oneof="message", message=struct.Struct,
+        proto.MESSAGE, number=2, oneof="message", message=struct_pb2.Struct,
     )
-
     live_agent_handoff = proto.Field(
         proto.MESSAGE, number=3, oneof="message", message=LiveAgentHandoff,
     )
-
     end_interaction = proto.Field(
         proto.MESSAGE, number=4, oneof="message", message=EndInteraction,
     )

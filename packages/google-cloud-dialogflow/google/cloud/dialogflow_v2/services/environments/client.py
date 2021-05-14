@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -34,7 +32,8 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.dialogflow_v2.services.environments import pagers
 from google.cloud.dialogflow_v2.types import environment
-
+from google.cloud.dialogflow_v2.types import fulfillment
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import EnvironmentsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import EnvironmentsGrpcTransport
 from .transports.grpc_asyncio import EnvironmentsGrpcAsyncIOTransport
@@ -53,7 +52,7 @@ class EnvironmentsClientMeta(type):
     _transport_registry["grpc_asyncio"] = EnvironmentsGrpcAsyncIOTransport
 
     def get_transport_class(cls, label: str = None,) -> Type[EnvironmentsTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -78,7 +77,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -112,7 +112,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -129,7 +130,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -148,31 +149,43 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     @property
     def transport(self) -> EnvironmentsTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            EnvironmentsTransport: The transport used by the client instance.
+            EnvironmentsTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
     @staticmethod
     def environment_path(project: str, environment: str,) -> str:
-        """Return a fully-qualified environment string."""
+        """Returns a fully-qualified environment string."""
         return "projects/{project}/agent/environments/{environment}".format(
             project=project, environment=environment,
         )
 
     @staticmethod
     def parse_environment_path(path: str) -> Dict[str, str]:
-        """Parse a environment path into its component segments."""
+        """Parses a environment path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/agent/environments/(?P<environment>.+?)$", path
         )
         return m.groupdict() if m else {}
 
     @staticmethod
+    def fulfillment_path(project: str,) -> str:
+        """Returns a fully-qualified fulfillment string."""
+        return "projects/{project}/agent/fulfillment".format(project=project,)
+
+    @staticmethod
+    def parse_fulfillment_path(path: str) -> Dict[str, str]:
+        """Parses a fulfillment path into its component segments."""
+        m = re.match(r"^projects/(?P<project>.+?)/agent/fulfillment$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -185,7 +198,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -196,7 +209,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -207,7 +220,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -218,7 +231,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -232,12 +245,12 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, EnvironmentsTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the environments client.
+        """Instantiates the environments client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -292,9 +305,10 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -306,12 +320,14 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -326,8 +342,8 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -346,6 +362,7 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         self,
         request: environment.ListEnvironmentsRequest = None,
         *,
+        parent: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -357,7 +374,16 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
             request (google.cloud.dialogflow_v2.types.ListEnvironmentsRequest):
                 The request object. The request message for
                 [Environments.ListEnvironments][google.cloud.dialogflow.v2.Environments.ListEnvironments].
+            parent (str):
+                Required. The agent to list all environments from.
+                Format:
 
+                -  ``projects/<Project ID>/agent``
+                -  ``projects/<Project ID>/locations/<Location ID>/agent``
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -374,6 +400,14 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         """
         # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
 
         # Minor optimization to avoid making a copy if the user passes
         # in a environment.ListEnvironmentsRequest.
@@ -381,6 +415,10 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, environment.ListEnvironmentsRequest):
             request = environment.ListEnvironmentsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -398,6 +436,329 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListEnvironmentsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_environment(
+        self,
+        request: environment.GetEnvironmentRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> environment.Environment:
+        r"""Retrieves the specified agent environment.
+
+        Args:
+            request (google.cloud.dialogflow_v2.types.GetEnvironmentRequest):
+                The request object. The request message for
+                [Environments.GetEnvironment][google.cloud.dialogflow.v2.Environments.GetEnvironment].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2.types.Environment:
+                You can create multiple versions of your agent and publish them to separate
+                   environments.
+
+                   When you edit an agent, you are editing the draft
+                   agent. At any point, you can save the draft agent as
+                   an agent version, which is an immutable snapshot of
+                   your agent.
+
+                   When you save the draft agent, it is published to the
+                   default environment. When you create agent versions,
+                   you can publish them to custom environments. You can
+                   create a variety of custom environments for:
+
+                   -  testing
+                   -  development
+                   -  production
+                   -  etc.
+
+                   For more information, see the [versions and
+                   environments
+                   guide](\ https://cloud.google.com/dialogflow/docs/agents-versions).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environment.GetEnvironmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environment.GetEnvironmentRequest):
+            request = environment.GetEnvironmentRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_environment]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def create_environment(
+        self,
+        request: environment.CreateEnvironmentRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> environment.Environment:
+        r"""Creates an agent environment.
+
+        Args:
+            request (google.cloud.dialogflow_v2.types.CreateEnvironmentRequest):
+                The request object. The request message for
+                [Environments.CreateEnvironment][google.cloud.dialogflow.v2.Environments.CreateEnvironment].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2.types.Environment:
+                You can create multiple versions of your agent and publish them to separate
+                   environments.
+
+                   When you edit an agent, you are editing the draft
+                   agent. At any point, you can save the draft agent as
+                   an agent version, which is an immutable snapshot of
+                   your agent.
+
+                   When you save the draft agent, it is published to the
+                   default environment. When you create agent versions,
+                   you can publish them to custom environments. You can
+                   create a variety of custom environments for:
+
+                   -  testing
+                   -  development
+                   -  production
+                   -  etc.
+
+                   For more information, see the [versions and
+                   environments
+                   guide](\ https://cloud.google.com/dialogflow/docs/agents-versions).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environment.CreateEnvironmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environment.CreateEnvironmentRequest):
+            request = environment.CreateEnvironmentRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_environment]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def update_environment(
+        self,
+        request: environment.UpdateEnvironmentRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> environment.Environment:
+        r"""Updates the specified agent environment.
+
+        This method allows you to deploy new agent versions into the
+        environment. When an environment is pointed to a new agent
+        version by setting ``environment.agent_version``, the
+        environment is temporarily set to the ``LOADING`` state. During
+        that time, the environment keeps on serving the previous version
+        of the agent. After the new agent version is done loading, the
+        environment is set back to the ``RUNNING`` state. You can use
+        "-" as Environment ID in environment name to update version in
+        "draft" environment. WARNING: this will negate all recent
+        changes to draft and can't be undone. You may want to save the
+        draft to a version before calling this function.
+
+        Args:
+            request (google.cloud.dialogflow_v2.types.UpdateEnvironmentRequest):
+                The request object. The request message for
+                [Environments.UpdateEnvironment][google.cloud.dialogflow.v2.Environments.UpdateEnvironment].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2.types.Environment:
+                You can create multiple versions of your agent and publish them to separate
+                   environments.
+
+                   When you edit an agent, you are editing the draft
+                   agent. At any point, you can save the draft agent as
+                   an agent version, which is an immutable snapshot of
+                   your agent.
+
+                   When you save the draft agent, it is published to the
+                   default environment. When you create agent versions,
+                   you can publish them to custom environments. You can
+                   create a variety of custom environments for:
+
+                   -  testing
+                   -  development
+                   -  production
+                   -  etc.
+
+                   For more information, see the [versions and
+                   environments
+                   guide](\ https://cloud.google.com/dialogflow/docs/agents-versions).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environment.UpdateEnvironmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environment.UpdateEnvironmentRequest):
+            request = environment.UpdateEnvironmentRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_environment]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("environment.name", request.environment.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def delete_environment(
+        self,
+        request: environment.DeleteEnvironmentRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes the specified agent environment.
+
+        Args:
+            request (google.cloud.dialogflow_v2.types.DeleteEnvironmentRequest):
+                The request object. The request message for
+                [Environments.DeleteEnvironment][google.cloud.dialogflow.v2.Environments.DeleteEnvironment].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environment.DeleteEnvironmentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environment.DeleteEnvironmentRequest):
+            request = environment.DeleteEnvironmentRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_environment]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request, retry=retry, timeout=timeout, metadata=metadata,
+        )
+
+    def get_environment_history(
+        self,
+        request: environment.GetEnvironmentHistoryRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.GetEnvironmentHistoryPager:
+        r"""Gets the history of the specified environment.
+
+        Args:
+            request (google.cloud.dialogflow_v2.types.GetEnvironmentHistoryRequest):
+                The request object. The request message for
+                [Environments.GetEnvironmentHistory][google.cloud.dialogflow.v2.Environments.GetEnvironmentHistory].
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflow_v2.services.environments.pagers.GetEnvironmentHistoryPager:
+                The response message for
+                [Environments.GetEnvironmentHistory][google.cloud.dialogflow.v2.Environments.GetEnvironmentHistory].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environment.GetEnvironmentHistoryRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environment.GetEnvironmentHistoryRequest):
+            request = environment.GetEnvironmentHistoryRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_environment_history]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.GetEnvironmentHistoryPager(
             method=rpc, request=request, response=response, metadata=metadata,
         )
 

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from .agent import (
     Agent,
     DeleteAgentRequest,
@@ -116,9 +114,21 @@ from .entity_type import (
     UpdateEntityTypeRequest,
 )
 from .environment import (
+    CreateEnvironmentRequest,
+    DeleteEnvironmentRequest,
     Environment,
+    EnvironmentHistory,
+    GetEnvironmentHistoryRequest,
+    GetEnvironmentRequest,
     ListEnvironmentsRequest,
     ListEnvironmentsResponse,
+    TextToSpeechSettings,
+    UpdateEnvironmentRequest,
+)
+from .fulfillment import (
+    Fulfillment,
+    GetFulfillmentRequest,
+    UpdateFulfillmentRequest,
 )
 from .human_agent_assistant_event import HumanAgentAssistantEvent
 from .intent import (
@@ -194,6 +204,15 @@ from .session_entity_type import (
 from .validation_result import (
     ValidationError,
     ValidationResult,
+)
+from .version import (
+    CreateVersionRequest,
+    DeleteVersionRequest,
+    GetVersionRequest,
+    ListVersionsRequest,
+    ListVersionsResponse,
+    UpdateVersionRequest,
+    Version,
 )
 from .webhook import (
     OriginalDetectIntentRequest,
@@ -286,9 +305,19 @@ __all__ = (
     "ListEntityTypesRequest",
     "ListEntityTypesResponse",
     "UpdateEntityTypeRequest",
+    "CreateEnvironmentRequest",
+    "DeleteEnvironmentRequest",
     "Environment",
+    "EnvironmentHistory",
+    "GetEnvironmentHistoryRequest",
+    "GetEnvironmentRequest",
     "ListEnvironmentsRequest",
     "ListEnvironmentsResponse",
+    "TextToSpeechSettings",
+    "UpdateEnvironmentRequest",
+    "Fulfillment",
+    "GetFulfillmentRequest",
+    "UpdateFulfillmentRequest",
     "HumanAgentAssistantEvent",
     "BatchDeleteIntentsRequest",
     "BatchUpdateIntentsRequest",
@@ -352,6 +381,13 @@ __all__ = (
     "UpdateSessionEntityTypeRequest",
     "ValidationError",
     "ValidationResult",
+    "CreateVersionRequest",
+    "DeleteVersionRequest",
+    "GetVersionRequest",
+    "ListVersionsRequest",
+    "ListVersionsResponse",
+    "UpdateVersionRequest",
+    "Version",
     "OriginalDetectIntentRequest",
     "WebhookRequest",
     "WebhookResponse",

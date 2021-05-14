@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -31,17 +29,16 @@ from typing import (
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.dialogflow_v2.types import audio_config
 from google.cloud.dialogflow_v2.types import session
 from google.cloud.dialogflow_v2.types import session as gcd_session
-from google.rpc import status_pb2 as status  # type: ignore
-
+from google.rpc import status_pb2  # type: ignore
 from .transports.base import SessionsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import SessionsGrpcAsyncIOTransport
 from .client import SessionsClient
@@ -69,31 +66,27 @@ class SessionsAsyncClient:
     parse_session_entity_type_path = staticmethod(
         SessionsClient.parse_session_entity_type_path
     )
-
     common_billing_account_path = staticmethod(
         SessionsClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         SessionsClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(SessionsClient.common_folder_path)
     parse_common_folder_path = staticmethod(SessionsClient.parse_common_folder_path)
-
     common_organization_path = staticmethod(SessionsClient.common_organization_path)
     parse_common_organization_path = staticmethod(
         SessionsClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(SessionsClient.common_project_path)
     parse_common_project_path = staticmethod(SessionsClient.parse_common_project_path)
-
     common_location_path = staticmethod(SessionsClient.common_location_path)
     parse_common_location_path = staticmethod(SessionsClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -108,7 +101,7 @@ class SessionsAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -125,7 +118,7 @@ class SessionsAsyncClient:
 
     @property
     def transport(self) -> SessionsTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             SessionsTransport: The transport used by the client instance.
@@ -139,12 +132,12 @@ class SessionsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, SessionsTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the sessions client.
+        """Instantiates the sessions client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -176,7 +169,6 @@ class SessionsAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = SessionsClient(
             credentials=credentials,
             transport=transport,
@@ -247,7 +239,6 @@ class SessionsAsyncClient:
                 This corresponds to the ``query_input`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -274,7 +265,6 @@ class SessionsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if session is not None:
             request.session = session
         if query_input is not None:
@@ -288,7 +278,9 @@ class SessionsAsyncClient:
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
                 deadline=220.0,
             ),
             default_timeout=220.0,

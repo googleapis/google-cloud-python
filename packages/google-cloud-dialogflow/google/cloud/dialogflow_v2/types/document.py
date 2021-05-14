@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.rpc import status_pb2 as gr_status  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -118,7 +115,6 @@ class Document(proto.Message):
 
     class ReloadStatus(proto.Message):
         r"""The status of a reload attempt.
-
         Attributes:
             time (google.protobuf.timestamp_pb2.Timestamp):
                 The time of a reload attempt.
@@ -130,27 +126,18 @@ class Document(proto.Message):
                 load.
         """
 
-        time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
+        time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+        status = proto.Field(proto.MESSAGE, number=2, message=status_pb2.Status,)
 
-        status = proto.Field(proto.MESSAGE, number=2, message=gr_status.Status,)
-
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
-    mime_type = proto.Field(proto.STRING, number=3)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
+    mime_type = proto.Field(proto.STRING, number=3,)
     knowledge_types = proto.RepeatedField(proto.ENUM, number=4, enum=KnowledgeType,)
-
-    content_uri = proto.Field(proto.STRING, number=5, oneof="source")
-
-    raw_content = proto.Field(proto.BYTES, number=9, oneof="source")
-
-    enable_auto_reload = proto.Field(proto.BOOL, number=11)
-
+    content_uri = proto.Field(proto.STRING, number=5, oneof="source",)
+    raw_content = proto.Field(proto.BYTES, number=9, oneof="source",)
+    enable_auto_reload = proto.Field(proto.BOOL, number=11,)
     latest_reload_status = proto.Field(proto.MESSAGE, number=12, message=ReloadStatus,)
-
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=7)
+    metadata = proto.MapField(proto.STRING, proto.STRING, number=7,)
 
 
 class GetDocumentRequest(proto.Message):
@@ -163,7 +150,7 @@ class GetDocumentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListDocumentsRequest(proto.Message):
@@ -183,11 +170,9 @@ class ListDocumentsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListDocumentsResponse(proto.Message):
@@ -208,8 +193,7 @@ class ListDocumentsResponse(proto.Message):
         return self
 
     documents = proto.RepeatedField(proto.MESSAGE, number=1, message="Document",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class CreateDocumentRequest(proto.Message):
@@ -225,8 +209,7 @@ class CreateDocumentRequest(proto.Message):
             Required. The document to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     document = proto.Field(proto.MESSAGE, number=2, message="Document",)
 
 
@@ -240,7 +223,7 @@ class DeleteDocumentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class UpdateDocumentRequest(proto.Message):
@@ -257,8 +240,9 @@ class UpdateDocumentRequest(proto.Message):
     """
 
     document = proto.Field(proto.MESSAGE, number=1, message="Document",)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class ReloadDocumentRequest(proto.Message):
@@ -277,9 +261,8 @@ class ReloadDocumentRequest(proto.Message):
             must have the form ``gs://<bucket-name>/<object-name>``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    content_uri = proto.Field(proto.STRING, number=3, oneof="source")
+    name = proto.Field(proto.STRING, number=1,)
+    content_uri = proto.Field(proto.STRING, number=3, oneof="source",)
 
 
 class KnowledgeOperationMetadata(proto.Message):

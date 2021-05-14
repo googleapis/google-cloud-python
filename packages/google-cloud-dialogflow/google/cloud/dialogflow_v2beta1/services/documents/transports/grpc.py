@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.types import document
 from google.cloud.dialogflow_v2beta1.types import document as gcd_document
-from google.longrunning import operations_pb2 as operations  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
 from .base import DocumentsTransport, DEFAULT_CLIENT_INFO
 
 
@@ -54,7 +51,7 @@ class DocumentsGrpcTransport(DocumentsTransport):
         self,
         *,
         host: str = "dialogflow.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -68,7 +65,8 @@ class DocumentsGrpcTransport(DocumentsTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -179,7 +177,7 @@ class DocumentsGrpcTransport(DocumentsTransport):
     def create_channel(
         cls,
         host: str = "dialogflow.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -210,13 +208,15 @@ class DocumentsGrpcTransport(DocumentsTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -301,7 +301,7 @@ class DocumentsGrpcTransport(DocumentsTransport):
     @property
     def create_document(
         self,
-    ) -> Callable[[gcd_document.CreateDocumentRequest], operations.Operation]:
+    ) -> Callable[[gcd_document.CreateDocumentRequest], operations_pb2.Operation]:
         r"""Return a callable for the create document method over gRPC.
 
         Creates a new document.
@@ -323,18 +323,20 @@ class DocumentsGrpcTransport(DocumentsTransport):
             self._stubs["create_document"] = self.grpc_channel.unary_unary(
                 "/google.cloud.dialogflow.v2beta1.Documents/CreateDocument",
                 request_serializer=gcd_document.CreateDocumentRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_document"]
 
     @property
     def import_documents(
         self,
-    ) -> Callable[[document.ImportDocumentsRequest], operations.Operation]:
+    ) -> Callable[[document.ImportDocumentsRequest], operations_pb2.Operation]:
         r"""Return a callable for the import documents method over gRPC.
 
         Create documents by importing data from external
-        sources.
+        sources. Dialogflow supports up to 350 documents in each
+        request. If you try to import more, Dialogflow will
+        return an error.
 
         Returns:
             Callable[[~.ImportDocumentsRequest],
@@ -350,14 +352,14 @@ class DocumentsGrpcTransport(DocumentsTransport):
             self._stubs["import_documents"] = self.grpc_channel.unary_unary(
                 "/google.cloud.dialogflow.v2beta1.Documents/ImportDocuments",
                 request_serializer=document.ImportDocumentsRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["import_documents"]
 
     @property
     def delete_document(
         self,
-    ) -> Callable[[document.DeleteDocumentRequest], operations.Operation]:
+    ) -> Callable[[document.DeleteDocumentRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete document method over gRPC.
 
         Deletes the specified document.
@@ -379,14 +381,14 @@ class DocumentsGrpcTransport(DocumentsTransport):
             self._stubs["delete_document"] = self.grpc_channel.unary_unary(
                 "/google.cloud.dialogflow.v2beta1.Documents/DeleteDocument",
                 request_serializer=document.DeleteDocumentRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_document"]
 
     @property
     def update_document(
         self,
-    ) -> Callable[[gcd_document.UpdateDocumentRequest], operations.Operation]:
+    ) -> Callable[[gcd_document.UpdateDocumentRequest], operations_pb2.Operation]:
         r"""Return a callable for the update document method over gRPC.
 
         Updates the specified document.
@@ -408,14 +410,14 @@ class DocumentsGrpcTransport(DocumentsTransport):
             self._stubs["update_document"] = self.grpc_channel.unary_unary(
                 "/google.cloud.dialogflow.v2beta1.Documents/UpdateDocument",
                 request_serializer=gcd_document.UpdateDocumentRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_document"]
 
     @property
     def reload_document(
         self,
-    ) -> Callable[[document.ReloadDocumentRequest], operations.Operation]:
+    ) -> Callable[[document.ReloadDocumentRequest], operations_pb2.Operation]:
         r"""Return a callable for the reload document method over gRPC.
 
         Reloads the specified document from its specified source,
@@ -445,7 +447,7 @@ class DocumentsGrpcTransport(DocumentsTransport):
             self._stubs["reload_document"] = self.grpc_channel.unary_unary(
                 "/google.cloud.dialogflow.v2beta1.Documents/ReloadDocument",
                 request_serializer=document.ReloadDocumentRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["reload_document"]
 

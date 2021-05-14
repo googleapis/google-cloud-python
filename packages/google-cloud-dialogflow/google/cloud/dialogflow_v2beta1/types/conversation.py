@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.dialogflow_v2beta1.types import participant
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -105,21 +102,15 @@ class Conversation(proto.Message):
         VIRTUAL_AGENT_STAGE = 1
         HUMAN_ASSIST_STAGE = 2
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     lifecycle_state = proto.Field(proto.ENUM, number=2, enum=LifecycleState,)
-
-    conversation_profile = proto.Field(proto.STRING, number=3)
-
+    conversation_profile = proto.Field(proto.STRING, number=3,)
     phone_number = proto.Field(
         proto.MESSAGE, number=4, message="ConversationPhoneNumber",
     )
-
     conversation_stage = proto.Field(proto.ENUM, number=7, enum=ConversationStage,)
-
-    start_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
-
-    end_time = proto.Field(proto.MESSAGE, number=6, message=timestamp.Timestamp,)
+    start_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
 
 
 class ConversationPhoneNumber(proto.Message):
@@ -132,7 +123,7 @@ class ConversationPhoneNumber(proto.Message):
             this conversation.
     """
 
-    phone_number = proto.Field(proto.STRING, number=3)
+    phone_number = proto.Field(proto.STRING, number=3,)
 
 
 class CreateConversationRequest(proto.Message):
@@ -162,11 +153,9 @@ class CreateConversationRequest(proto.Message):
                a project to better ensure uniqueness.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     conversation = proto.Field(proto.MESSAGE, number=2, message="Conversation",)
-
-    conversation_id = proto.Field(proto.STRING, number=3)
+    conversation_id = proto.Field(proto.STRING, number=3,)
 
 
 class ListConversationsRequest(proto.Message):
@@ -208,13 +197,10 @@ class ListConversationsRequest(proto.Message):
             Filtering <https://aip.dev/160>`__.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
-
-    filter = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+    filter = proto.Field(proto.STRING, number=4,)
 
 
 class ListConversationsResponse(proto.Message):
@@ -238,8 +224,7 @@ class ListConversationsResponse(proto.Message):
     conversations = proto.RepeatedField(
         proto.MESSAGE, number=1, message="Conversation",
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetConversationRequest(proto.Message):
@@ -252,7 +237,7 @@ class GetConversationRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CompleteConversationRequest(proto.Message):
@@ -266,7 +251,7 @@ class CompleteConversationRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversations/<Conversation ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateMessageRequest(proto.Message):
@@ -284,8 +269,7 @@ class CreateMessageRequest(proto.Message):
             is required.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     message = proto.Field(proto.MESSAGE, number=2, message=participant.Message,)
 
 
@@ -305,8 +289,7 @@ class BatchCreateMessagesRequest(proto.Message):
             [Message.create_time][google.cloud.dialogflow.v2beta1.Message.create_time].
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     requests = proto.RepeatedField(
         proto.MESSAGE, number=2, message="CreateMessageRequest",
     )
@@ -341,7 +324,7 @@ class ListMessagesRequest(proto.Message):
             supported. ``create_time`` only support milliseconds
             accuracy. E.g.,
             ``create_time_epoch_microseconds > 1551790877964485`` or
-            ``create_time > 2017-01-15T01:30:15.01Z``.
+            ``create_time > "2017-01-15T01:30:15.01Z"``.
 
             For more information about filtering, see `API
             Filtering <https://aip.dev/160>`__.
@@ -354,13 +337,10 @@ class ListMessagesRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=4)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=4,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListMessagesResponse(proto.Message):
@@ -386,8 +366,7 @@ class ListMessagesResponse(proto.Message):
     messages = proto.RepeatedField(
         proto.MESSAGE, number=1, message=participant.Message,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

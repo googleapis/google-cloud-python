@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.dialogflow_v2beta1.types import context
 from google.cloud.dialogflow_v2beta1.types import intent
 from google.cloud.dialogflow_v2beta1.types import session as gcd_session
 from google.cloud.dialogflow_v2beta1.types import session_entity_type
-from google.protobuf import struct_pb2 as struct  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -33,7 +30,6 @@ __protobuf__ = proto.module(
 
 class WebhookRequest(proto.Message):
     r"""The request message for a webhook call.
-
     Attributes:
         session (str):
             The unique identifier of detectIntent request session. Can
@@ -59,18 +55,14 @@ class WebhookRequest(proto.Message):
             passed to ``[Streaming]DetectIntent`` call.
     """
 
-    session = proto.Field(proto.STRING, number=4)
-
-    response_id = proto.Field(proto.STRING, number=1)
-
+    session = proto.Field(proto.STRING, number=4,)
+    response_id = proto.Field(proto.STRING, number=1,)
     query_result = proto.Field(
         proto.MESSAGE, number=2, message=gcd_session.QueryResult,
     )
-
     alternative_query_results = proto.RepeatedField(
         proto.MESSAGE, number=5, message=gcd_session.QueryResult,
     )
-
     original_detect_intent_request = proto.Field(
         proto.MESSAGE, number=3, message="OriginalDetectIntentRequest",
     )
@@ -157,28 +149,20 @@ class WebhookResponse(proto.Message):
             management methods.
     """
 
-    fulfillment_text = proto.Field(proto.STRING, number=1)
-
+    fulfillment_text = proto.Field(proto.STRING, number=1,)
     fulfillment_messages = proto.RepeatedField(
         proto.MESSAGE, number=2, message=intent.Intent.Message,
     )
-
-    source = proto.Field(proto.STRING, number=3)
-
-    payload = proto.Field(proto.MESSAGE, number=4, message=struct.Struct,)
-
+    source = proto.Field(proto.STRING, number=3,)
+    payload = proto.Field(proto.MESSAGE, number=4, message=struct_pb2.Struct,)
     output_contexts = proto.RepeatedField(
         proto.MESSAGE, number=5, message=context.Context,
     )
-
     followup_event_input = proto.Field(
         proto.MESSAGE, number=6, message=gcd_session.EventInput,
     )
-
-    live_agent_handoff = proto.Field(proto.BOOL, number=7)
-
-    end_interaction = proto.Field(proto.BOOL, number=8)
-
+    live_agent_handoff = proto.Field(proto.BOOL, number=7,)
+    end_interaction = proto.Field(proto.BOOL, number=8,)
     session_entity_types = proto.RepeatedField(
         proto.MESSAGE, number=10, message=session_entity_type.SessionEntityType,
     )
@@ -218,11 +202,9 @@ class OriginalDetectIntentRequest(proto.Message):
             Essentials Edition agents.
     """
 
-    source = proto.Field(proto.STRING, number=1)
-
-    version = proto.Field(proto.STRING, number=2)
-
-    payload = proto.Field(proto.MESSAGE, number=3, message=struct.Struct,)
+    source = proto.Field(proto.STRING, number=1,)
+    version = proto.Field(proto.STRING, number=2,)
+    payload = proto.Field(proto.MESSAGE, number=3, message=struct_pb2.Struct,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

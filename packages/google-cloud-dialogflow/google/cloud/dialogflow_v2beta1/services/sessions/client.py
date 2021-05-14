@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -33,10 +31,10 @@ from typing import (
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -45,8 +43,7 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.dialogflow_v2beta1.types import audio_config
 from google.cloud.dialogflow_v2beta1.types import session
 from google.cloud.dialogflow_v2beta1.types import session as gcd_session
-from google.rpc import status_pb2 as status  # type: ignore
-
+from google.rpc import status_pb2  # type: ignore
 from .transports.base import SessionsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import SessionsGrpcTransport
 from .transports.grpc_asyncio import SessionsGrpcAsyncIOTransport
@@ -65,7 +62,7 @@ class SessionsClientMeta(type):
     _transport_registry["grpc_asyncio"] = SessionsGrpcAsyncIOTransport
 
     def get_transport_class(cls, label: str = None,) -> Type[SessionsTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -92,7 +89,8 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -126,7 +124,8 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -143,7 +142,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -162,23 +161,24 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     @property
     def transport(self) -> SessionsTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            SessionsTransport: The transport used by the client instance.
+            SessionsTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
     @staticmethod
     def context_path(project: str, session: str, context: str,) -> str:
-        """Return a fully-qualified context string."""
+        """Returns a fully-qualified context string."""
         return "projects/{project}/agent/sessions/{session}/contexts/{context}".format(
             project=project, session=session, context=context,
         )
 
     @staticmethod
     def parse_context_path(path: str) -> Dict[str, str]:
-        """Parse a context path into its component segments."""
+        """Parses a context path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/agent/sessions/(?P<session>.+?)/contexts/(?P<context>.+?)$",
             path,
@@ -187,14 +187,14 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     @staticmethod
     def document_path(project: str, knowledge_base: str, document: str,) -> str:
-        """Return a fully-qualified document string."""
+        """Returns a fully-qualified document string."""
         return "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}".format(
             project=project, knowledge_base=knowledge_base, document=document,
         )
 
     @staticmethod
     def parse_document_path(path: str) -> Dict[str, str]:
-        """Parse a document path into its component segments."""
+        """Parses a document path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/knowledgeBases/(?P<knowledge_base>.+?)/documents/(?P<document>.+?)$",
             path,
@@ -203,27 +203,27 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     @staticmethod
     def intent_path(project: str, intent: str,) -> str:
-        """Return a fully-qualified intent string."""
+        """Returns a fully-qualified intent string."""
         return "projects/{project}/agent/intents/{intent}".format(
             project=project, intent=intent,
         )
 
     @staticmethod
     def parse_intent_path(path: str) -> Dict[str, str]:
-        """Parse a intent path into its component segments."""
+        """Parses a intent path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/agent/intents/(?P<intent>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
     def session_path(project: str, session: str,) -> str:
-        """Return a fully-qualified session string."""
+        """Returns a fully-qualified session string."""
         return "projects/{project}/agent/sessions/{session}".format(
             project=project, session=session,
         )
 
     @staticmethod
     def parse_session_path(path: str) -> Dict[str, str]:
-        """Parse a session path into its component segments."""
+        """Parses a session path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/agent/sessions/(?P<session>.+?)$", path
         )
@@ -231,14 +231,14 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     @staticmethod
     def session_entity_type_path(project: str, session: str, entity_type: str,) -> str:
-        """Return a fully-qualified session_entity_type string."""
+        """Returns a fully-qualified session_entity_type string."""
         return "projects/{project}/agent/sessions/{session}/entityTypes/{entity_type}".format(
             project=project, session=session, entity_type=entity_type,
         )
 
     @staticmethod
     def parse_session_entity_type_path(path: str) -> Dict[str, str]:
-        """Parse a session_entity_type path into its component segments."""
+        """Parses a session_entity_type path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/agent/sessions/(?P<session>.+?)/entityTypes/(?P<entity_type>.+?)$",
             path,
@@ -247,7 +247,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -260,7 +260,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -271,7 +271,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -282,7 +282,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -293,7 +293,7 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -307,12 +307,12 @@ class SessionsClient(metaclass=SessionsClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, SessionsTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the sessions client.
+        """Instantiates the sessions client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -367,9 +367,10 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -381,12 +382,14 @@ class SessionsClient(metaclass=SessionsClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -401,8 +404,8 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -484,7 +487,6 @@ class SessionsClient(metaclass=SessionsClientMeta):
                 This corresponds to the ``query_input`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -513,10 +515,8 @@ class SessionsClient(metaclass=SessionsClientMeta):
         # there are no flattened fields.
         if not isinstance(request, gcd_session.DetectIntentRequest):
             request = gcd_session.DetectIntentRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if session is not None:
                 request.session = session
             if query_input is not None:

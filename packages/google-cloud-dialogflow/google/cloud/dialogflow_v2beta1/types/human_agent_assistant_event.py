@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.dialogflow_v2beta1.types import participant as gcd_participant
 
@@ -51,10 +48,8 @@ class HumanAgentAssistantEvent(proto.Message):
             sets to true.
     """
 
-    conversation = proto.Field(proto.STRING, number=1)
-
-    participant = proto.Field(proto.STRING, number=3)
-
+    conversation = proto.Field(proto.STRING, number=1,)
+    participant = proto.Field(proto.STRING, number=3,)
     suggestion_results = proto.RepeatedField(
         proto.MESSAGE, number=5, message=gcd_participant.SuggestionResult,
     )

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -22,10 +20,10 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.api_core import operation  # type: ignore
@@ -34,10 +32,9 @@ from google.cloud.dialogflow_v2beta1.services.intents import pagers
 from google.cloud.dialogflow_v2beta1.types import context
 from google.cloud.dialogflow_v2beta1.types import intent
 from google.cloud.dialogflow_v2beta1.types import intent as gcd_intent
-from google.protobuf import empty_pb2 as empty  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import struct_pb2 as struct  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from .transports.base import IntentsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import IntentsGrpcAsyncIOTransport
 from .client import IntentsClient
@@ -57,31 +54,27 @@ class IntentsAsyncClient:
     parse_context_path = staticmethod(IntentsClient.parse_context_path)
     intent_path = staticmethod(IntentsClient.intent_path)
     parse_intent_path = staticmethod(IntentsClient.parse_intent_path)
-
     common_billing_account_path = staticmethod(
         IntentsClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         IntentsClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(IntentsClient.common_folder_path)
     parse_common_folder_path = staticmethod(IntentsClient.parse_common_folder_path)
-
     common_organization_path = staticmethod(IntentsClient.common_organization_path)
     parse_common_organization_path = staticmethod(
         IntentsClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(IntentsClient.common_project_path)
     parse_common_project_path = staticmethod(IntentsClient.parse_common_project_path)
-
     common_location_path = staticmethod(IntentsClient.common_location_path)
     parse_common_location_path = staticmethod(IntentsClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -96,7 +89,7 @@ class IntentsAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -113,7 +106,7 @@ class IntentsAsyncClient:
 
     @property
     def transport(self) -> IntentsTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             IntentsTransport: The transport used by the client instance.
@@ -127,12 +120,12 @@ class IntentsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, IntentsTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the intents client.
+        """Instantiates the intents client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -164,7 +157,6 @@ class IntentsAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = IntentsClient(
             credentials=credentials,
             transport=transport,
@@ -206,7 +198,6 @@ class IntentsAsyncClient:
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -236,7 +227,6 @@ class IntentsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if language_code is not None:
@@ -303,7 +293,6 @@ class IntentsAsyncClient:
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -339,7 +328,6 @@ class IntentsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
         if language_code is not None:
@@ -407,7 +395,6 @@ class IntentsAsyncClient:
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -443,7 +430,6 @@ class IntentsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if intent is not None:
@@ -476,7 +462,7 @@ class IntentsAsyncClient:
         request: gcd_intent.UpdateIntentRequest = None,
         *,
         intent: gcd_intent.Intent = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         language_code: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -510,7 +496,6 @@ class IntentsAsyncClient:
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -546,7 +531,6 @@ class IntentsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if intent is not None:
             request.intent = intent
         if update_mask is not None:
@@ -605,7 +589,6 @@ class IntentsAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -626,7 +609,6 @@ class IntentsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -697,7 +679,6 @@ class IntentsAsyncClient:
                 This corresponds to the ``intent_batch_inline`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -728,7 +709,6 @@ class IntentsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if intent_batch_uri is not None:
@@ -758,7 +738,7 @@ class IntentsAsyncClient:
             response,
             self._client._transport.operations_client,
             intent.BatchUpdateIntentsResponse,
-            metadata_type=struct.Struct,
+            metadata_type=struct_pb2.Struct,
         )
 
         # Done; return the response.
@@ -800,7 +780,6 @@ class IntentsAsyncClient:
                 This corresponds to the ``intents`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -840,10 +819,8 @@ class IntentsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
-
         if intents:
             request.intents.extend(intents)
 
@@ -868,8 +845,8 @@ class IntentsAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            empty.Empty,
-            metadata_type=struct.Struct,
+            empty_pb2.Empty,
+            metadata_type=struct_pb2.Struct,
         )
 
         # Done; return the response.

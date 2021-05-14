@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,18 +15,36 @@
 #
 
 from .services.agents import AgentsClient
+from .services.agents import AgentsAsyncClient
 from .services.answer_records import AnswerRecordsClient
+from .services.answer_records import AnswerRecordsAsyncClient
 from .services.contexts import ContextsClient
+from .services.contexts import ContextsAsyncClient
 from .services.conversation_profiles import ConversationProfilesClient
+from .services.conversation_profiles import ConversationProfilesAsyncClient
 from .services.conversations import ConversationsClient
+from .services.conversations import ConversationsAsyncClient
 from .services.documents import DocumentsClient
+from .services.documents import DocumentsAsyncClient
 from .services.entity_types import EntityTypesClient
+from .services.entity_types import EntityTypesAsyncClient
 from .services.environments import EnvironmentsClient
+from .services.environments import EnvironmentsAsyncClient
+from .services.fulfillments import FulfillmentsClient
+from .services.fulfillments import FulfillmentsAsyncClient
 from .services.intents import IntentsClient
+from .services.intents import IntentsAsyncClient
 from .services.knowledge_bases import KnowledgeBasesClient
+from .services.knowledge_bases import KnowledgeBasesAsyncClient
 from .services.participants import ParticipantsClient
+from .services.participants import ParticipantsAsyncClient
 from .services.session_entity_types import SessionEntityTypesClient
+from .services.session_entity_types import SessionEntityTypesAsyncClient
 from .services.sessions import SessionsClient
+from .services.sessions import SessionsAsyncClient
+from .services.versions import VersionsClient
+from .services.versions import VersionsAsyncClient
+
 from .types.agent import Agent
 from .types.agent import DeleteAgentRequest
 from .types.agent import ExportAgentRequest
@@ -47,17 +64,17 @@ from .types.answer_record import AnswerRecord
 from .types.answer_record import ListAnswerRecordsRequest
 from .types.answer_record import ListAnswerRecordsResponse
 from .types.answer_record import UpdateAnswerRecordRequest
-from .types.audio_config import AudioEncoding
 from .types.audio_config import InputAudioConfig
 from .types.audio_config import OutputAudioConfig
-from .types.audio_config import OutputAudioEncoding
 from .types.audio_config import SpeechContext
-from .types.audio_config import SpeechModelVariant
 from .types.audio_config import SpeechToTextConfig
 from .types.audio_config import SpeechWordInfo
-from .types.audio_config import SsmlVoiceGender
 from .types.audio_config import SynthesizeSpeechConfig
 from .types.audio_config import VoiceSelectionParams
+from .types.audio_config import AudioEncoding
+from .types.audio_config import OutputAudioEncoding
+from .types.audio_config import SpeechModelVariant
+from .types.audio_config import SsmlVoiceGender
 from .types.context import Context
 from .types.context import CreateContextRequest
 from .types.context import DeleteAllContextsRequest
@@ -112,9 +129,19 @@ from .types.entity_type import GetEntityTypeRequest
 from .types.entity_type import ListEntityTypesRequest
 from .types.entity_type import ListEntityTypesResponse
 from .types.entity_type import UpdateEntityTypeRequest
+from .types.environment import CreateEnvironmentRequest
+from .types.environment import DeleteEnvironmentRequest
 from .types.environment import Environment
+from .types.environment import EnvironmentHistory
+from .types.environment import GetEnvironmentHistoryRequest
+from .types.environment import GetEnvironmentRequest
 from .types.environment import ListEnvironmentsRequest
 from .types.environment import ListEnvironmentsResponse
+from .types.environment import TextToSpeechSettings
+from .types.environment import UpdateEnvironmentRequest
+from .types.fulfillment import Fulfillment
+from .types.fulfillment import GetFulfillmentRequest
+from .types.fulfillment import UpdateFulfillmentRequest
 from .types.human_agent_assistant_event import HumanAgentAssistantEvent
 from .types.intent import BatchDeleteIntentsRequest
 from .types.intent import BatchUpdateIntentsRequest
@@ -124,10 +151,10 @@ from .types.intent import DeleteIntentRequest
 from .types.intent import GetIntentRequest
 from .types.intent import Intent
 from .types.intent import IntentBatch
-from .types.intent import IntentView
 from .types.intent import ListIntentsRequest
 from .types.intent import ListIntentsResponse
 from .types.intent import UpdateIntentRequest
+from .types.intent import IntentView
 from .types.knowledge_base import CreateKnowledgeBaseRequest
 from .types.knowledge_base import DeleteKnowledgeBaseRequest
 from .types.knowledge_base import GetKnowledgeBaseRequest
@@ -178,12 +205,33 @@ from .types.session_entity_type import SessionEntityType
 from .types.session_entity_type import UpdateSessionEntityTypeRequest
 from .types.validation_result import ValidationError
 from .types.validation_result import ValidationResult
+from .types.version import CreateVersionRequest
+from .types.version import DeleteVersionRequest
+from .types.version import GetVersionRequest
+from .types.version import ListVersionsRequest
+from .types.version import ListVersionsResponse
+from .types.version import UpdateVersionRequest
+from .types.version import Version
 from .types.webhook import OriginalDetectIntentRequest
 from .types.webhook import WebhookRequest
 from .types.webhook import WebhookResponse
 
-
 __all__ = (
+    "AgentsAsyncClient",
+    "AnswerRecordsAsyncClient",
+    "ContextsAsyncClient",
+    "ConversationProfilesAsyncClient",
+    "ConversationsAsyncClient",
+    "DocumentsAsyncClient",
+    "EntityTypesAsyncClient",
+    "EnvironmentsAsyncClient",
+    "FulfillmentsAsyncClient",
+    "IntentsAsyncClient",
+    "KnowledgeBasesAsyncClient",
+    "ParticipantsAsyncClient",
+    "SessionEntityTypesAsyncClient",
+    "SessionsAsyncClient",
+    "VersionsAsyncClient",
     "Agent",
     "AgentAssistantFeedback",
     "AgentAssistantRecord",
@@ -221,19 +269,23 @@ __all__ = (
     "CreateConversationRequest",
     "CreateDocumentRequest",
     "CreateEntityTypeRequest",
+    "CreateEnvironmentRequest",
     "CreateIntentRequest",
     "CreateKnowledgeBaseRequest",
     "CreateParticipantRequest",
     "CreateSessionEntityTypeRequest",
+    "CreateVersionRequest",
     "DeleteAgentRequest",
     "DeleteAllContextsRequest",
     "DeleteContextRequest",
     "DeleteConversationProfileRequest",
     "DeleteDocumentRequest",
     "DeleteEntityTypeRequest",
+    "DeleteEnvironmentRequest",
     "DeleteIntentRequest",
     "DeleteKnowledgeBaseRequest",
     "DeleteSessionEntityTypeRequest",
+    "DeleteVersionRequest",
     "DetectIntentRequest",
     "DetectIntentResponse",
     "Document",
@@ -243,22 +295,29 @@ __all__ = (
     "EntityTypeBatch",
     "EntityTypesClient",
     "Environment",
+    "EnvironmentHistory",
     "EnvironmentsClient",
     "EventInput",
     "ExportAgentRequest",
     "ExportAgentResponse",
     "FaqAnswer",
+    "Fulfillment",
+    "FulfillmentsClient",
     "GetAgentRequest",
     "GetContextRequest",
     "GetConversationProfileRequest",
     "GetConversationRequest",
     "GetDocumentRequest",
     "GetEntityTypeRequest",
+    "GetEnvironmentHistoryRequest",
+    "GetEnvironmentRequest",
+    "GetFulfillmentRequest",
     "GetIntentRequest",
     "GetKnowledgeBaseRequest",
     "GetParticipantRequest",
     "GetSessionEntityTypeRequest",
     "GetValidationResultRequest",
+    "GetVersionRequest",
     "HumanAgentAssistantConfig",
     "HumanAgentAssistantEvent",
     "HumanAgentHandoffConfig",
@@ -269,6 +328,7 @@ __all__ = (
     "IntentView",
     "IntentsClient",
     "KnowledgeBase",
+    "KnowledgeBasesClient",
     "KnowledgeOperationMetadata",
     "ListAnswerRecordsRequest",
     "ListAnswerRecordsResponse",
@@ -294,6 +354,8 @@ __all__ = (
     "ListParticipantsResponse",
     "ListSessionEntityTypesRequest",
     "ListSessionEntityTypesResponse",
+    "ListVersionsRequest",
+    "ListVersionsResponse",
     "LoggingConfig",
     "Message",
     "MessageAnnotation",
@@ -334,20 +396,25 @@ __all__ = (
     "SuggestionResult",
     "SynthesizeSpeechConfig",
     "TextInput",
+    "TextToSpeechSettings",
     "TrainAgentRequest",
     "UpdateAnswerRecordRequest",
     "UpdateContextRequest",
     "UpdateConversationProfileRequest",
     "UpdateDocumentRequest",
     "UpdateEntityTypeRequest",
+    "UpdateEnvironmentRequest",
+    "UpdateFulfillmentRequest",
     "UpdateIntentRequest",
     "UpdateKnowledgeBaseRequest",
     "UpdateParticipantRequest",
     "UpdateSessionEntityTypeRequest",
+    "UpdateVersionRequest",
     "ValidationError",
     "ValidationResult",
+    "Version",
+    "VersionsClient",
     "VoiceSelectionParams",
     "WebhookRequest",
     "WebhookResponse",
-    "KnowledgeBasesClient",
 )

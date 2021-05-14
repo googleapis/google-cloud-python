@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+import packaging.version
 
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.types import participant
 from google.cloud.dialogflow_v2beta1.types import participant as gcd_participant
-
 from .base import ParticipantsTransport, DEFAULT_CLIENT_INFO
 from .grpc import ParticipantsGrpcTransport
 
@@ -55,7 +52,7 @@ class ParticipantsGrpcAsyncIOTransport(ParticipantsTransport):
     def create_channel(
         cls,
         host: str = "dialogflow.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -82,13 +79,15 @@ class ParticipantsGrpcAsyncIOTransport(ParticipantsTransport):
         Returns:
             aio.Channel: A gRPC AsyncIO channel object.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers_async.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -96,7 +95,7 @@ class ParticipantsGrpcAsyncIOTransport(ParticipantsTransport):
         self,
         *,
         host: str = "dialogflow.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         channel: aio.Channel = None,
@@ -110,7 +109,8 @@ class ParticipantsGrpcAsyncIOTransport(ParticipantsTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -168,7 +168,6 @@ class ParticipantsGrpcAsyncIOTransport(ParticipantsTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -356,8 +355,8 @@ class ParticipantsGrpcAsyncIOTransport(ParticipantsTransport):
         example) message from a participant into the conversation.
 
         Note: Always use agent versions for production traffic sent to
-        virtual agents. See [Versions and
-        environments(https://cloud.google.com/dialogflow/es/docs/agents-versions).
+        virtual agents. See `Versions and
+        environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
 
         Returns:
             Callable[[~.AnalyzeContentRequest],
@@ -494,7 +493,7 @@ class ParticipantsGrpcAsyncIOTransport(ParticipantsTransport):
         fetch auto generated suggestions in real-time, while the
         conversation with an end user is in progress. The functionality
         is implemented in terms of the `list
-        pagination <https://cloud.google.com/apis/design/design_patterns#list_pagination>`__
+        pagination </apis/design/design_patterns#list_pagination>`__
         design pattern. The client app should use the
         ``next_page_token`` field to fetch the next batch of
         suggestions. ``suggestions`` are sorted by ``create_time`` in

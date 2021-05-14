@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -22,17 +20,16 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.services.answer_records import pagers
 from google.cloud.dialogflow_v2beta1.types import answer_record
 from google.cloud.dialogflow_v2beta1.types import answer_record as gcd_answer_record
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-
+from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import AnswerRecordsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import AnswerRecordsGrpcAsyncIOTransport
 from .client import AnswerRecordsClient
@@ -52,31 +49,26 @@ class AnswerRecordsAsyncClient:
     parse_answer_record_path = staticmethod(
         AnswerRecordsClient.parse_answer_record_path
     )
-
     common_billing_account_path = staticmethod(
         AnswerRecordsClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         AnswerRecordsClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(AnswerRecordsClient.common_folder_path)
     parse_common_folder_path = staticmethod(
         AnswerRecordsClient.parse_common_folder_path
     )
-
     common_organization_path = staticmethod(
         AnswerRecordsClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
         AnswerRecordsClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(AnswerRecordsClient.common_project_path)
     parse_common_project_path = staticmethod(
         AnswerRecordsClient.parse_common_project_path
     )
-
     common_location_path = staticmethod(AnswerRecordsClient.common_location_path)
     parse_common_location_path = staticmethod(
         AnswerRecordsClient.parse_common_location_path
@@ -84,7 +76,8 @@ class AnswerRecordsAsyncClient:
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -99,7 +92,7 @@ class AnswerRecordsAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -116,7 +109,7 @@ class AnswerRecordsAsyncClient:
 
     @property
     def transport(self) -> AnswerRecordsTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             AnswerRecordsTransport: The transport used by the client instance.
@@ -130,12 +123,12 @@ class AnswerRecordsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, AnswerRecordsTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the answer records client.
+        """Instantiates the answer records client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -167,7 +160,6 @@ class AnswerRecordsAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = AnswerRecordsClient(
             credentials=credentials,
             transport=transport,
@@ -190,7 +182,6 @@ class AnswerRecordsAsyncClient:
             request (:class:`google.cloud.dialogflow_v2beta1.types.GetAnswerRecordRequest`):
                 The request object. Request message for
                 [AnswerRecords.GetAnswerRecord][google.cloud.dialogflow.v2beta1.AnswerRecords.GetAnswerRecord].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -227,16 +218,14 @@ class AnswerRecordsAsyncClient:
                       the answers,
                       [AnswerRecord.name][google.cloud.dialogflow.v2beta1.AnswerRecord.name]
                       are returned to the customers.
-
                    2. The customer uses the
-                   [AnswerRecord.name][google.cloud.dialogflow.v2beta1.AnswerRecord.name]
-                   to call the [UpdateAnswerRecord][] method to send
-                   feedback about a specific answer that they believe is
-                   wrong.
+                      [AnswerRecord.name][google.cloud.dialogflow.v2beta1.AnswerRecord.name]
+                      to call the [UpdateAnswerRecord][] method to send
+                      feedback about a specific answer that they believe
+                      is wrong.
 
         """
         # Create or coerce a protobuf request object.
-
         request = answer_record.GetAnswerRecordRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -283,7 +272,6 @@ class AnswerRecordsAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -293,7 +281,7 @@ class AnswerRecordsAsyncClient:
         Returns:
             google.cloud.dialogflow_v2beta1.services.answer_records.pagers.ListAnswerRecordsAsyncPager:
                 Response message for
-                   [AnswerRecords.ListAnswerRecords][google.cloud.dialogflow.v2beta1.AnswerRecords.ListAnswerRecords].
+                [AnswerRecords.ListAnswerRecords][google.cloud.dialogflow.v2beta1.AnswerRecords.ListAnswerRecords].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -313,7 +301,6 @@ class AnswerRecordsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -348,7 +335,7 @@ class AnswerRecordsAsyncClient:
         request: gcd_answer_record.UpdateAnswerRecordRequest = None,
         *,
         answer_record: gcd_answer_record.AnswerRecord = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -371,7 +358,6 @@ class AnswerRecordsAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -408,12 +394,11 @@ class AnswerRecordsAsyncClient:
                       the answers,
                       [AnswerRecord.name][google.cloud.dialogflow.v2beta1.AnswerRecord.name]
                       are returned to the customers.
-
                    2. The customer uses the
-                   [AnswerRecord.name][google.cloud.dialogflow.v2beta1.AnswerRecord.name]
-                   to call the [UpdateAnswerRecord][] method to send
-                   feedback about a specific answer that they believe is
-                   wrong.
+                      [AnswerRecord.name][google.cloud.dialogflow.v2beta1.AnswerRecord.name]
+                      to call the [UpdateAnswerRecord][] method to send
+                      feedback about a specific answer that they believe
+                      is wrong.
 
         """
         # Create or coerce a protobuf request object.
@@ -430,7 +415,6 @@ class AnswerRecordsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if answer_record is not None:
             request.answer_record = answer_record
         if update_mask is not None:

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+import packaging.version
 
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
@@ -31,8 +29,7 @@ from google.cloud.dialogflow_v2beta1.types import session_entity_type
 from google.cloud.dialogflow_v2beta1.types import (
     session_entity_type as gcd_session_entity_type,
 )
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
 from .base import SessionEntityTypesTransport, DEFAULT_CLIENT_INFO
 from .grpc import SessionEntityTypesGrpcTransport
 
@@ -58,7 +55,7 @@ class SessionEntityTypesGrpcAsyncIOTransport(SessionEntityTypesTransport):
     def create_channel(
         cls,
         host: str = "dialogflow.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -85,13 +82,15 @@ class SessionEntityTypesGrpcAsyncIOTransport(SessionEntityTypesTransport):
         Returns:
             aio.Channel: A gRPC AsyncIO channel object.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers_async.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -99,7 +98,7 @@ class SessionEntityTypesGrpcAsyncIOTransport(SessionEntityTypesTransport):
         self,
         *,
         host: str = "dialogflow.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         channel: aio.Channel = None,
@@ -113,7 +112,8 @@ class SessionEntityTypesGrpcAsyncIOTransport(SessionEntityTypesTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -171,7 +171,6 @@ class SessionEntityTypesGrpcAsyncIOTransport(SessionEntityTypesTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -366,7 +365,7 @@ class SessionEntityTypesGrpcAsyncIOTransport(SessionEntityTypesTransport):
     def delete_session_entity_type(
         self,
     ) -> Callable[
-        [session_entity_type.DeleteSessionEntityTypeRequest], Awaitable[empty.Empty]
+        [session_entity_type.DeleteSessionEntityTypeRequest], Awaitable[empty_pb2.Empty]
     ]:
         r"""Return a callable for the delete session entity type method over gRPC.
 
@@ -389,7 +388,7 @@ class SessionEntityTypesGrpcAsyncIOTransport(SessionEntityTypesTransport):
             self._stubs["delete_session_entity_type"] = self.grpc_channel.unary_unary(
                 "/google.cloud.dialogflow.v2beta1.SessionEntityTypes/DeleteSessionEntityType",
                 request_serializer=session_entity_type.DeleteSessionEntityTypeRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_session_entity_type"]
 

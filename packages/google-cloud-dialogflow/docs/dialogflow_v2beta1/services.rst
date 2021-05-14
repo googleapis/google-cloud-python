@@ -11,8 +11,10 @@ Services for Google Cloud Dialogflow v2beta1 API
     documents
     entity_types
     environments
+    fulfillments
     intents
     knowledge_bases
     participants
     session_entity_types
     sessions
+    versions

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -22,10 +20,10 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.api_core import operation  # type: ignore
@@ -33,9 +31,8 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.dialogflow_v2.services.entity_types import pagers
 from google.cloud.dialogflow_v2.types import entity_type
 from google.cloud.dialogflow_v2.types import entity_type as gcd_entity_type
-from google.protobuf import empty_pb2 as empty  # type: ignore
-from google.protobuf import struct_pb2 as struct  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 from .transports.base import EntityTypesTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import EntityTypesGrpcAsyncIOTransport
 from .client import EntityTypesClient
@@ -53,27 +50,22 @@ class EntityTypesAsyncClient:
 
     entity_type_path = staticmethod(EntityTypesClient.entity_type_path)
     parse_entity_type_path = staticmethod(EntityTypesClient.parse_entity_type_path)
-
     common_billing_account_path = staticmethod(
         EntityTypesClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         EntityTypesClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(EntityTypesClient.common_folder_path)
     parse_common_folder_path = staticmethod(EntityTypesClient.parse_common_folder_path)
-
     common_organization_path = staticmethod(EntityTypesClient.common_organization_path)
     parse_common_organization_path = staticmethod(
         EntityTypesClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(EntityTypesClient.common_project_path)
     parse_common_project_path = staticmethod(
         EntityTypesClient.parse_common_project_path
     )
-
     common_location_path = staticmethod(EntityTypesClient.common_location_path)
     parse_common_location_path = staticmethod(
         EntityTypesClient.parse_common_location_path
@@ -81,7 +73,8 @@ class EntityTypesAsyncClient:
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -96,7 +89,7 @@ class EntityTypesAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -113,7 +106,7 @@ class EntityTypesAsyncClient:
 
     @property
     def transport(self) -> EntityTypesTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             EntityTypesTransport: The transport used by the client instance.
@@ -127,12 +120,12 @@ class EntityTypesAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, EntityTypesTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the entity types client.
+        """Instantiates the entity types client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -164,7 +157,6 @@ class EntityTypesAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = EntityTypesClient(
             credentials=credentials,
             transport=transport,
@@ -206,7 +198,6 @@ class EntityTypesAsyncClient:
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -236,7 +227,6 @@ class EntityTypesAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if language_code is not None:
@@ -301,7 +291,6 @@ class EntityTypesAsyncClient:
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -341,7 +330,6 @@ class EntityTypesAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
         if language_code is not None:
@@ -406,7 +394,6 @@ class EntityTypesAsyncClient:
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -446,7 +433,6 @@ class EntityTypesAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if entity_type is not None:
@@ -505,7 +491,6 @@ class EntityTypesAsyncClient:
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -545,7 +530,6 @@ class EntityTypesAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if entity_type is not None:
             request.entity_type = entity_type
         if language_code is not None:
@@ -595,7 +579,6 @@ class EntityTypesAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -616,7 +599,6 @@ class EntityTypesAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -656,7 +638,6 @@ class EntityTypesAsyncClient:
             request (:class:`google.cloud.dialogflow_v2.types.BatchUpdateEntityTypesRequest`):
                 The request object. The request message for
                 [EntityTypes.BatchUpdateEntityTypes][google.cloud.dialogflow.v2.EntityTypes.BatchUpdateEntityTypes].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -674,7 +655,6 @@ class EntityTypesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = entity_type.BatchUpdateEntityTypesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -699,7 +679,7 @@ class EntityTypesAsyncClient:
             response,
             self._client._transport.operations_client,
             entity_type.BatchUpdateEntityTypesResponse,
-            metadata_type=struct.Struct,
+            metadata_type=struct_pb2.Struct,
         )
 
         # Done; return the response.
@@ -738,7 +718,6 @@ class EntityTypesAsyncClient:
                 This corresponds to the ``entity_type_names`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -778,10 +757,8 @@ class EntityTypesAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
-
         if entity_type_names:
             request.entity_type_names.extend(entity_type_names)
 
@@ -806,8 +783,8 @@ class EntityTypesAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            empty.Empty,
-            metadata_type=struct.Struct,
+            empty_pb2.Empty,
+            metadata_type=struct_pb2.Struct,
         )
 
         # Done; return the response.
@@ -856,7 +833,6 @@ class EntityTypesAsyncClient:
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -896,12 +872,10 @@ class EntityTypesAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if language_code is not None:
             request.language_code = language_code
-
         if entities:
             request.entities.extend(entities)
 
@@ -926,8 +900,8 @@ class EntityTypesAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            empty.Empty,
-            metadata_type=struct.Struct,
+            empty_pb2.Empty,
+            metadata_type=struct_pb2.Struct,
         )
 
         # Done; return the response.
@@ -980,7 +954,6 @@ class EntityTypesAsyncClient:
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1020,12 +993,10 @@ class EntityTypesAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if language_code is not None:
             request.language_code = language_code
-
         if entities:
             request.entities.extend(entities)
 
@@ -1050,8 +1021,8 @@ class EntityTypesAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            empty.Empty,
-            metadata_type=struct.Struct,
+            empty_pb2.Empty,
+            metadata_type=struct_pb2.Struct,
         )
 
         # Done; return the response.
@@ -1103,7 +1074,6 @@ class EntityTypesAsyncClient:
                 This corresponds to the ``language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1143,12 +1113,10 @@ class EntityTypesAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if language_code is not None:
             request.language_code = language_code
-
         if entity_values:
             request.entity_values.extend(entity_values)
 
@@ -1173,8 +1141,8 @@ class EntityTypesAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            empty.Empty,
-            metadata_type=struct.Struct,
+            empty_pb2.Empty,
+            metadata_type=struct_pb2.Struct,
         )
 
         # Done; return the response.

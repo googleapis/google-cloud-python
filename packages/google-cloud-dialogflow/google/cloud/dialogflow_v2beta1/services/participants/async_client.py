@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -22,18 +20,17 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.services.participants import pagers
 from google.cloud.dialogflow_v2beta1.types import participant
 from google.cloud.dialogflow_v2beta1.types import participant as gcd_participant
 from google.cloud.dialogflow_v2beta1.types import session
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-
+from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import ParticipantsTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import ParticipantsGrpcAsyncIOTransport
 from .client import ParticipantsClient
@@ -63,27 +60,22 @@ class ParticipantsAsyncClient:
     parse_session_entity_type_path = staticmethod(
         ParticipantsClient.parse_session_entity_type_path
     )
-
     common_billing_account_path = staticmethod(
         ParticipantsClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         ParticipantsClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(ParticipantsClient.common_folder_path)
     parse_common_folder_path = staticmethod(ParticipantsClient.parse_common_folder_path)
-
     common_organization_path = staticmethod(ParticipantsClient.common_organization_path)
     parse_common_organization_path = staticmethod(
         ParticipantsClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(ParticipantsClient.common_project_path)
     parse_common_project_path = staticmethod(
         ParticipantsClient.parse_common_project_path
     )
-
     common_location_path = staticmethod(ParticipantsClient.common_location_path)
     parse_common_location_path = staticmethod(
         ParticipantsClient.parse_common_location_path
@@ -91,7 +83,8 @@ class ParticipantsAsyncClient:
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -106,7 +99,7 @@ class ParticipantsAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -123,7 +116,7 @@ class ParticipantsAsyncClient:
 
     @property
     def transport(self) -> ParticipantsTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             ParticipantsTransport: The transport used by the client instance.
@@ -137,12 +130,12 @@ class ParticipantsAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, ParticipantsTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the participants client.
+        """Instantiates the participants client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -174,7 +167,6 @@ class ParticipantsAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = ParticipantsClient(
             credentials=credentials,
             transport=transport,
@@ -211,7 +203,6 @@ class ParticipantsAsyncClient:
                 This corresponds to the ``participant`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -238,7 +229,6 @@ class ParticipantsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if participant is not None:
@@ -286,7 +276,6 @@ class ParticipantsAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -313,7 +302,6 @@ class ParticipantsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -361,7 +349,6 @@ class ParticipantsAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -391,7 +378,6 @@ class ParticipantsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -426,7 +412,7 @@ class ParticipantsAsyncClient:
         request: gcd_participant.UpdateParticipantRequest = None,
         *,
         participant: gcd_participant.Participant = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -449,7 +435,6 @@ class ParticipantsAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -476,7 +461,6 @@ class ParticipantsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if participant is not None:
             request.participant = participant
         if update_mask is not None:
@@ -519,8 +503,8 @@ class ParticipantsAsyncClient:
         example) message from a participant into the conversation.
 
         Note: Always use agent versions for production traffic sent to
-        virtual agents. See [Versions and
-        environments(https://cloud.google.com/dialogflow/es/docs/agents-versions).
+        virtual agents. See `Versions and
+        environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
 
         Args:
             request (:class:`google.cloud.dialogflow_v2beta1.types.AnalyzeContentRequest`):
@@ -546,7 +530,6 @@ class ParticipantsAsyncClient:
                 This corresponds to the ``event_input`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -573,7 +556,6 @@ class ParticipantsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if participant is not None:
             request.participant = participant
         if text_input is not None:
@@ -589,7 +571,9 @@ class ParticipantsAsyncClient:
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
                 deadline=220.0,
             ),
             default_timeout=220.0,
@@ -641,7 +625,6 @@ class ParticipantsAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -668,7 +651,6 @@ class ParticipantsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -716,7 +698,6 @@ class ParticipantsAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -743,7 +724,6 @@ class ParticipantsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -791,7 +771,6 @@ class ParticipantsAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -818,7 +797,6 @@ class ParticipantsAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -861,7 +839,7 @@ class ParticipantsAsyncClient:
         fetch auto generated suggestions in real-time, while the
         conversation with an end user is in progress. The functionality
         is implemented in terms of the `list
-        pagination <https://cloud.google.com/apis/design/design_patterns#list_pagination>`__
+        pagination </apis/design/design_patterns#list_pagination>`__
         design pattern. The client app should use the
         ``next_page_token`` field to fetch the next batch of
         suggestions. ``suggestions`` are sorted by ``create_time`` in
@@ -875,7 +853,6 @@ class ParticipantsAsyncClient:
             request (:class:`google.cloud.dialogflow_v2beta1.types.ListSuggestionsRequest`):
                 The request object. The request message for
                 [Participants.ListSuggestions][google.cloud.dialogflow.v2beta1.Participants.ListSuggestions].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -892,7 +869,6 @@ class ParticipantsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = participant.ListSuggestionsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -949,7 +925,6 @@ class ParticipantsAsyncClient:
             request (:class:`google.cloud.dialogflow_v2beta1.types.CompileSuggestionRequest`):
                 The request object. The request message for
                 [Participants.CompileSuggestion][google.cloud.dialogflow.v2beta1.Participants.CompileSuggestion].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -963,7 +938,6 @@ class ParticipantsAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = participant.CompileSuggestionRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,

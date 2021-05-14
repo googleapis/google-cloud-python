@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,21 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+import packaging.version
 
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.types import environment
-
+from google.protobuf import empty_pb2  # type: ignore
 from .base import EnvironmentsTransport, DEFAULT_CLIENT_INFO
 from .grpc import EnvironmentsGrpcTransport
 
@@ -54,7 +52,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
     def create_channel(
         cls,
         host: str = "dialogflow.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -81,13 +79,15 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         Returns:
             aio.Channel: A gRPC AsyncIO channel object.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers_async.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -95,7 +95,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         self,
         *,
         host: str = "dialogflow.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         channel: aio.Channel = None,
@@ -109,7 +109,8 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -167,7 +168,6 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -255,6 +255,157 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
                 response_deserializer=environment.ListEnvironmentsResponse.deserialize,
             )
         return self._stubs["list_environments"]
+
+    @property
+    def get_environment(
+        self,
+    ) -> Callable[
+        [environment.GetEnvironmentRequest], Awaitable[environment.Environment]
+    ]:
+        r"""Return a callable for the get environment method over gRPC.
+
+        Retrieves the specified agent environment.
+
+        Returns:
+            Callable[[~.GetEnvironmentRequest],
+                    Awaitable[~.Environment]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_environment" not in self._stubs:
+            self._stubs["get_environment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Environments/GetEnvironment",
+                request_serializer=environment.GetEnvironmentRequest.serialize,
+                response_deserializer=environment.Environment.deserialize,
+            )
+        return self._stubs["get_environment"]
+
+    @property
+    def create_environment(
+        self,
+    ) -> Callable[
+        [environment.CreateEnvironmentRequest], Awaitable[environment.Environment]
+    ]:
+        r"""Return a callable for the create environment method over gRPC.
+
+        Creates an agent environment.
+
+        Returns:
+            Callable[[~.CreateEnvironmentRequest],
+                    Awaitable[~.Environment]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_environment" not in self._stubs:
+            self._stubs["create_environment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Environments/CreateEnvironment",
+                request_serializer=environment.CreateEnvironmentRequest.serialize,
+                response_deserializer=environment.Environment.deserialize,
+            )
+        return self._stubs["create_environment"]
+
+    @property
+    def update_environment(
+        self,
+    ) -> Callable[
+        [environment.UpdateEnvironmentRequest], Awaitable[environment.Environment]
+    ]:
+        r"""Return a callable for the update environment method over gRPC.
+
+        Updates the specified agent environment.
+
+        This method allows you to deploy new agent versions into the
+        environment. When an environment is pointed to a new agent
+        version by setting ``environment.agent_version``, the
+        environment is temporarily set to the ``LOADING`` state. During
+        that time, the environment keeps on serving the previous version
+        of the agent. After the new agent version is done loading, the
+        environment is set back to the ``RUNNING`` state. You can use
+        "-" as Environment ID in environment name to update version in
+        "draft" environment. WARNING: this will negate all recent
+        changes to draft and can't be undone. You may want to save the
+        draft to a version before calling this function.
+
+        Returns:
+            Callable[[~.UpdateEnvironmentRequest],
+                    Awaitable[~.Environment]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_environment" not in self._stubs:
+            self._stubs["update_environment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Environments/UpdateEnvironment",
+                request_serializer=environment.UpdateEnvironmentRequest.serialize,
+                response_deserializer=environment.Environment.deserialize,
+            )
+        return self._stubs["update_environment"]
+
+    @property
+    def delete_environment(
+        self,
+    ) -> Callable[[environment.DeleteEnvironmentRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the delete environment method over gRPC.
+
+        Deletes the specified agent environment.
+
+        Returns:
+            Callable[[~.DeleteEnvironmentRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_environment" not in self._stubs:
+            self._stubs["delete_environment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Environments/DeleteEnvironment",
+                request_serializer=environment.DeleteEnvironmentRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_environment"]
+
+    @property
+    def get_environment_history(
+        self,
+    ) -> Callable[
+        [environment.GetEnvironmentHistoryRequest],
+        Awaitable[environment.EnvironmentHistory],
+    ]:
+        r"""Return a callable for the get environment history method over gRPC.
+
+        Gets the history of the specified environment.
+
+        Returns:
+            Callable[[~.GetEnvironmentHistoryRequest],
+                    Awaitable[~.EnvironmentHistory]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_environment_history" not in self._stubs:
+            self._stubs["get_environment_history"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.v2beta1.Environments/GetEnvironmentHistory",
+                request_serializer=environment.GetEnvironmentHistoryRequest.serialize,
+                response_deserializer=environment.EnvironmentHistory.deserialize,
+            )
+        return self._stubs["get_environment_history"]
 
 
 __all__ = ("EnvironmentsGrpcAsyncIOTransport",)
