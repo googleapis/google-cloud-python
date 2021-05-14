@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -91,15 +89,11 @@ class AnnotatedString(proto.Message):
         type_ = proto.Field(
             proto.ENUM, number=1, enum="AnnotatedString.SemanticMarkupType",
         )
+        start_char_index = proto.Field(proto.INT32, number=2,)
+        length = proto.Field(proto.INT32, number=3,)
 
-        start_char_index = proto.Field(proto.INT32, number=2)
-
-        length = proto.Field(proto.INT32, number=3)
-
-    text_formatted = proto.Field(proto.STRING, number=1)
-
-    html_formatted = proto.Field(proto.STRING, number=2)
-
+    text_formatted = proto.Field(proto.STRING, number=1,)
+    html_formatted = proto.Field(proto.STRING, number=2,)
     markups = proto.RepeatedField(proto.MESSAGE, number=3, message=SemanticMarkup,)
 
 

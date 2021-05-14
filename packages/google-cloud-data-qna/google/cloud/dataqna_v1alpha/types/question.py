@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.dataqna_v1alpha.types import annotated_string
-from google.protobuf import any_pb2 as gp_any  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.rpc import status_pb2 as status  # type: ignore
+from google.protobuf import any_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -105,32 +102,22 @@ class Question(proto.Message):
             message.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    scopes = proto.RepeatedField(proto.STRING, number=2)
-
-    query = proto.Field(proto.STRING, number=3)
-
-    data_source_annotations = proto.RepeatedField(proto.STRING, number=4)
-
+    name = proto.Field(proto.STRING, number=1,)
+    scopes = proto.RepeatedField(proto.STRING, number=2,)
+    query = proto.Field(proto.STRING, number=3,)
+    data_source_annotations = proto.RepeatedField(proto.STRING, number=4,)
     interpret_error = proto.Field(proto.MESSAGE, number=5, message="InterpretError",)
-
     interpretations = proto.RepeatedField(
         proto.MESSAGE, number=6, message="Interpretation",
     )
-
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp.Timestamp,)
-
-    user_email = proto.Field(proto.STRING, number=8)
-
+    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
+    user_email = proto.Field(proto.STRING, number=8,)
     debug_flags = proto.Field(proto.MESSAGE, number=9, message="DebugFlags",)
-
-    debug_info = proto.Field(proto.MESSAGE, number=10, message=gp_any.Any,)
+    debug_info = proto.Field(proto.MESSAGE, number=10, message=any_pb2.Any,)
 
 
 class InterpretError(proto.Message):
     r"""Details on the failure to interpret the question.
-
     Attributes:
         message (str):
             Error message explaining why this question
@@ -153,7 +140,6 @@ class InterpretError(proto.Message):
 
     class InterpretErrorDetails(proto.Message):
         r"""Details on interpretation failure.
-
         Attributes:
             unsupported_details (google.cloud.dataqna_v1alpha.types.InterpretError.InterpretUnsupportedDetails):
                 Populated if parts of the query are
@@ -169,20 +155,17 @@ class InterpretError(proto.Message):
             number=1,
             message="InterpretError.InterpretUnsupportedDetails",
         )
-
         incomplete_query_details = proto.Field(
             proto.MESSAGE,
             number=2,
             message="InterpretError.InterpretIncompleteQueryDetails",
         )
-
         ambiguity_details = proto.Field(
             proto.MESSAGE, number=3, message="InterpretError.InterpretAmbiguityDetails",
         )
 
     class InterpretUnsupportedDetails(proto.Message):
         r"""Details about unsupported parts in a query.
-
         Attributes:
             operators (Sequence[str]):
                 Unsupported operators. For example: median.
@@ -190,13 +173,11 @@ class InterpretError(proto.Message):
                 Unsupported intents.
         """
 
-        operators = proto.RepeatedField(proto.STRING, number=1)
-
-        intent = proto.RepeatedField(proto.STRING, number=2)
+        operators = proto.RepeatedField(proto.STRING, number=1,)
+        intent = proto.RepeatedField(proto.STRING, number=2,)
 
     class InterpretIncompleteQueryDetails(proto.Message):
         r"""Details about an incomplete query.
-
         Attributes:
             entities (Sequence[google.cloud.dataqna_v1alpha.types.InterpretEntity]):
                 List of missing interpret entities.
@@ -208,12 +189,10 @@ class InterpretError(proto.Message):
         r"""Details about a query that was too ambiguous. Currently, the
         message has no fields and its presence signals that there was
         ambiguity.
-        """
+            """
 
-    message = proto.Field(proto.STRING, number=1)
-
+    message = proto.Field(proto.STRING, number=1,)
     code = proto.Field(proto.ENUM, number=2, enum=InterpretErrorCode,)
-
     details = proto.Field(proto.MESSAGE, number=3, message=InterpretErrorDetails,)
 
 
@@ -244,12 +223,11 @@ class ExecutionInfo(proto.Message):
         SUCCEEDED = 3
         FAILED = 4
 
-    job_creation_status = proto.Field(proto.MESSAGE, number=1, message=status.Status,)
-
+    job_creation_status = proto.Field(
+        proto.MESSAGE, number=1, message=status_pb2.Status,
+    )
     job_execution_state = proto.Field(proto.ENUM, number=2, enum=JobExecutionState,)
-
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
-
+    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
     bigquery_job = proto.Field(proto.MESSAGE, number=4, message="BigQueryJob",)
 
 
@@ -267,16 +245,13 @@ class BigQueryJob(proto.Message):
             The location where the job is running.
     """
 
-    job_id = proto.Field(proto.STRING, number=1)
-
-    project_id = proto.Field(proto.STRING, number=2)
-
-    location = proto.Field(proto.STRING, number=3)
+    job_id = proto.Field(proto.STRING, number=1,)
+    project_id = proto.Field(proto.STRING, number=2,)
+    location = proto.Field(proto.STRING, number=3,)
 
 
 class Interpretation(proto.Message):
     r"""An interpretation of a natural language query.
-
     Attributes:
         data_sources (Sequence[str]):
             List of data sources used in the current
@@ -305,20 +280,14 @@ class Interpretation(proto.Message):
             interpretation was requested.
     """
 
-    data_sources = proto.RepeatedField(proto.STRING, number=1)
-
-    confidence = proto.Field(proto.DOUBLE, number=2)
-
-    unused_phrases = proto.RepeatedField(proto.STRING, number=3)
-
+    data_sources = proto.RepeatedField(proto.STRING, number=1,)
+    confidence = proto.Field(proto.DOUBLE, number=2,)
+    unused_phrases = proto.RepeatedField(proto.STRING, number=3,)
     human_readable = proto.Field(proto.MESSAGE, number=4, message="HumanReadable",)
-
     interpretation_structure = proto.Field(
         proto.MESSAGE, number=5, message="InterpretationStructure",
     )
-
     data_query = proto.Field(proto.MESSAGE, number=6, message="DataQuery",)
-
     execution_info = proto.Field(proto.MESSAGE, number=7, message="ExecutionInfo",)
 
 
@@ -336,12 +305,11 @@ class DataQuery(proto.Message):
             backend.
     """
 
-    sql = proto.Field(proto.STRING, number=1)
+    sql = proto.Field(proto.STRING, number=1,)
 
 
 class HumanReadable(proto.Message):
     r"""Human readable interpretation.
-
     Attributes:
         generated_interpretation (google.cloud.dataqna_v1alpha.types.AnnotatedString):
             Generated query explaining the
@@ -353,7 +321,6 @@ class HumanReadable(proto.Message):
     generated_interpretation = proto.Field(
         proto.MESSAGE, number=1, message=annotated_string.AnnotatedString,
     )
-
     original_question = proto.Field(
         proto.MESSAGE, number=2, message=annotated_string.AnnotatedString,
     )
@@ -394,7 +361,6 @@ class InterpretationStructure(proto.Message):
 
     class ColumnInfo(proto.Message):
         r"""Information about a column.
-
         Attributes:
             output_alias (str):
                 The alias of the output column as used by the
@@ -405,20 +371,17 @@ class InterpretationStructure(proto.Message):
                 Human readable name of the output column.
         """
 
-        output_alias = proto.Field(proto.STRING, number=1)
-
-        display_name = proto.Field(proto.STRING, number=2)
+        output_alias = proto.Field(proto.STRING, number=1,)
+        display_name = proto.Field(proto.STRING, number=2,)
 
     visualization_types = proto.RepeatedField(
         proto.ENUM, number=1, enum=VisualizationType,
     )
-
     column_info = proto.RepeatedField(proto.MESSAGE, number=2, message=ColumnInfo,)
 
 
 class DebugFlags(proto.Message):
     r"""Configuriation of debug flags.
-
     Attributes:
         include_va_query (bool):
             Whether to include the original VAQuery.
@@ -459,29 +422,18 @@ class DebugFlags(proto.Message):
             Whether to include the domain list.
     """
 
-    include_va_query = proto.Field(proto.BOOL, number=1)
-
-    include_nested_va_query = proto.Field(proto.BOOL, number=2)
-
-    include_human_interpretation = proto.Field(proto.BOOL, number=3)
-
-    include_aqua_debug_response = proto.Field(proto.BOOL, number=4)
-
-    time_override = proto.Field(proto.INT64, number=5)
-
-    is_internal_google_user = proto.Field(proto.BOOL, number=6)
-
-    ignore_cache = proto.Field(proto.BOOL, number=7)
-
-    include_search_entities_rpc = proto.Field(proto.BOOL, number=8)
-
-    include_list_column_annotations_rpc = proto.Field(proto.BOOL, number=9)
-
-    include_virtual_analyst_entities = proto.Field(proto.BOOL, number=10)
-
-    include_table_list = proto.Field(proto.BOOL, number=11)
-
-    include_domain_list = proto.Field(proto.BOOL, number=12)
+    include_va_query = proto.Field(proto.BOOL, number=1,)
+    include_nested_va_query = proto.Field(proto.BOOL, number=2,)
+    include_human_interpretation = proto.Field(proto.BOOL, number=3,)
+    include_aqua_debug_response = proto.Field(proto.BOOL, number=4,)
+    time_override = proto.Field(proto.INT64, number=5,)
+    is_internal_google_user = proto.Field(proto.BOOL, number=6,)
+    ignore_cache = proto.Field(proto.BOOL, number=7,)
+    include_search_entities_rpc = proto.Field(proto.BOOL, number=8,)
+    include_list_column_annotations_rpc = proto.Field(proto.BOOL, number=9,)
+    include_virtual_analyst_entities = proto.Field(proto.BOOL, number=10,)
+    include_table_list = proto.Field(proto.BOOL, number=11,)
+    include_domain_list = proto.Field(proto.BOOL, number=12,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
