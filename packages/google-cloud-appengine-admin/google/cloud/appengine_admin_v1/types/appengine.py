@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.appengine_admin_v1.types import application as ga_application
 from google.cloud.appengine_admin_v1.types import certificate as ga_certificate
@@ -26,7 +23,7 @@ from google.cloud.appengine_admin_v1.types import firewall
 from google.cloud.appengine_admin_v1.types import instance
 from google.cloud.appengine_admin_v1.types import service as ga_service
 from google.cloud.appengine_admin_v1.types import version as ga_version
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -106,19 +103,17 @@ class DomainOverrideStrategy(proto.Enum):
 
 class GetApplicationRequest(proto.Message):
     r"""Request message for ``Applications.GetApplication``.
-
     Attributes:
         name (str):
             Name of the Application resource to get. Example:
             ``apps/myapp``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateApplicationRequest(proto.Message):
     r"""Request message for ``Applications.CreateApplication``.
-
     Attributes:
         application (google.cloud.appengine_admin_v1.types.Application):
             Application configuration.
@@ -131,7 +126,6 @@ class CreateApplicationRequest(proto.Message):
 
 class UpdateApplicationRequest(proto.Message):
     r"""Request message for ``Applications.UpdateApplication``.
-
     Attributes:
         name (str):
             Name of the Application resource to update. Example:
@@ -144,29 +138,27 @@ class UpdateApplicationRequest(proto.Message):
             be updated.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     application = proto.Field(
         proto.MESSAGE, number=2, message=ga_application.Application,
     )
-
-    update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+    )
 
 
 class RepairApplicationRequest(proto.Message):
     r"""Request message for 'Applications.RepairApplication'.
-
     Attributes:
         name (str):
             Name of the application to repair. Example: ``apps/myapp``
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListServicesRequest(proto.Message):
     r"""Request message for ``Services.ListServices``.
-
     Attributes:
         parent (str):
             Name of the parent Application resource. Example:
@@ -178,16 +170,13 @@ class ListServicesRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListServicesResponse(proto.Message):
     r"""Response message for ``Services.ListServices``.
-
     Attributes:
         services (Sequence[google.cloud.appengine_admin_v1.types.Service]):
             The services belonging to the requested
@@ -202,25 +191,22 @@ class ListServicesResponse(proto.Message):
         return self
 
     services = proto.RepeatedField(proto.MESSAGE, number=1, message=ga_service.Service,)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetServiceRequest(proto.Message):
     r"""Request message for ``Services.GetService``.
-
     Attributes:
         name (str):
             Name of the resource requested. Example:
             ``apps/myapp/services/default``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class UpdateServiceRequest(proto.Message):
     r"""Request message for ``Services.UpdateService``.
-
     Attributes:
         name (str):
             Name of the resource to update. Example:
@@ -249,30 +235,27 @@ class UpdateServiceRequest(proto.Message):
             Traffic <https://cloud.google.com/appengine/docs/admin-api/migrating-splitting-traffic>`__.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     service = proto.Field(proto.MESSAGE, number=2, message=ga_service.Service,)
-
-    update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
-
-    migrate_traffic = proto.Field(proto.BOOL, number=4)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+    )
+    migrate_traffic = proto.Field(proto.BOOL, number=4,)
 
 
 class DeleteServiceRequest(proto.Message):
     r"""Request message for ``Services.DeleteService``.
-
     Attributes:
         name (str):
             Name of the resource requested. Example:
             ``apps/myapp/services/default``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListVersionsRequest(proto.Message):
     r"""Request message for ``Versions.ListVersions``.
-
     Attributes:
         parent (str):
             Name of the parent Service resource. Example:
@@ -287,18 +270,14 @@ class ListVersionsRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     view = proto.Field(proto.ENUM, number=2, enum="VersionView",)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class ListVersionsResponse(proto.Message):
     r"""Response message for ``Versions.ListVersions``.
-
     Attributes:
         versions (Sequence[google.cloud.appengine_admin_v1.types.Version]):
             The versions belonging to the requested
@@ -313,13 +292,11 @@ class ListVersionsResponse(proto.Message):
         return self
 
     versions = proto.RepeatedField(proto.MESSAGE, number=1, message=ga_version.Version,)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetVersionRequest(proto.Message):
     r"""Request message for ``Versions.GetVersion``.
-
     Attributes:
         name (str):
             Name of the resource requested. Example:
@@ -328,14 +305,12 @@ class GetVersionRequest(proto.Message):
             Controls the set of fields returned in the ``Get`` response.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     view = proto.Field(proto.ENUM, number=2, enum="VersionView",)
 
 
 class CreateVersionRequest(proto.Message):
     r"""Request message for ``Versions.CreateVersion``.
-
     Attributes:
         parent (str):
             Name of the parent resource to create this version under.
@@ -344,14 +319,12 @@ class CreateVersionRequest(proto.Message):
             Application deployment configuration.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     version = proto.Field(proto.MESSAGE, number=2, message=ga_version.Version,)
 
 
 class UpdateVersionRequest(proto.Message):
     r"""Request message for ``Versions.UpdateVersion``.
-
     Attributes:
         name (str):
             Name of the resource to update. Example:
@@ -365,28 +338,26 @@ class UpdateVersionRequest(proto.Message):
             be updated.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     version = proto.Field(proto.MESSAGE, number=2, message=ga_version.Version,)
-
-    update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteVersionRequest(proto.Message):
     r"""Request message for ``Versions.DeleteVersion``.
-
     Attributes:
         name (str):
             Name of the resource requested. Example:
             ``apps/myapp/services/default/versions/v1``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListInstancesRequest(proto.Message):
     r"""Request message for ``Instances.ListInstances``.
-
     Attributes:
         parent (str):
             Name of the parent Version resource. Example:
@@ -398,16 +369,13 @@ class ListInstancesRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListInstancesResponse(proto.Message):
     r"""Response message for ``Instances.ListInstances``.
-
     Attributes:
         instances (Sequence[google.cloud.appengine_admin_v1.types.Instance]):
             The instances belonging to the requested
@@ -422,37 +390,33 @@ class ListInstancesResponse(proto.Message):
         return self
 
     instances = proto.RepeatedField(proto.MESSAGE, number=1, message=instance.Instance,)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetInstanceRequest(proto.Message):
     r"""Request message for ``Instances.GetInstance``.
-
     Attributes:
         name (str):
             Name of the resource requested. Example:
             ``apps/myapp/services/default/versions/v1/instances/instance-1``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class DeleteInstanceRequest(proto.Message):
     r"""Request message for ``Instances.DeleteInstance``.
-
     Attributes:
         name (str):
             Name of the resource requested. Example:
             ``apps/myapp/services/default/versions/v1/instances/instance-1``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class DebugInstanceRequest(proto.Message):
     r"""Request message for ``Instances.DebugInstance``.
-
     Attributes:
         name (str):
             Name of the resource requested. Example:
@@ -467,14 +431,12 @@ class DebugInstanceRequest(proto.Message):
             Keys <https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys>`__.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    ssh_key = proto.Field(proto.STRING, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    ssh_key = proto.Field(proto.STRING, number=2,)
 
 
 class ListIngressRulesRequest(proto.Message):
     r"""Request message for ``Firewall.ListIngressRules``.
-
     Attributes:
         parent (str):
             Name of the Firewall collection to retrieve. Example:
@@ -491,18 +453,14 @@ class ListIngressRulesRequest(proto.Message):
             on requests from this IP.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
-
-    matching_address = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+    matching_address = proto.Field(proto.STRING, number=4,)
 
 
 class ListIngressRulesResponse(proto.Message):
     r"""Response message for ``Firewall.ListIngressRules``.
-
     Attributes:
         ingress_rules (Sequence[google.cloud.appengine_admin_v1.types.FirewallRule]):
             The ingress FirewallRules for this
@@ -519,13 +477,11 @@ class ListIngressRulesResponse(proto.Message):
     ingress_rules = proto.RepeatedField(
         proto.MESSAGE, number=1, message=firewall.FirewallRule,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class BatchUpdateIngressRulesRequest(proto.Message):
     r"""Request message for ``Firewall.BatchUpdateIngressRules``.
-
     Attributes:
         name (str):
             Name of the Firewall collection to set. Example:
@@ -535,8 +491,7 @@ class BatchUpdateIngressRulesRequest(proto.Message):
             existing set.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     ingress_rules = proto.RepeatedField(
         proto.MESSAGE, number=2, message=firewall.FirewallRule,
     )
@@ -544,7 +499,6 @@ class BatchUpdateIngressRulesRequest(proto.Message):
 
 class BatchUpdateIngressRulesResponse(proto.Message):
     r"""Response message for ``Firewall.UpdateAllIngressRules``.
-
     Attributes:
         ingress_rules (Sequence[google.cloud.appengine_admin_v1.types.FirewallRule]):
             The full list of ingress FirewallRules for
@@ -558,7 +512,6 @@ class BatchUpdateIngressRulesResponse(proto.Message):
 
 class CreateIngressRuleRequest(proto.Message):
     r"""Request message for ``Firewall.CreateIngressRule``.
-
     Attributes:
         parent (str):
             Name of the parent Firewall collection in which to create a
@@ -578,26 +531,23 @@ class CreateIngressRuleRequest(proto.Message):
             or deny-all rule.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     rule = proto.Field(proto.MESSAGE, number=2, message=firewall.FirewallRule,)
 
 
 class GetIngressRuleRequest(proto.Message):
     r"""Request message for ``Firewall.GetIngressRule``.
-
     Attributes:
         name (str):
             Name of the Firewall resource to retrieve. Example:
             ``apps/myapp/firewall/ingressRules/100``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class UpdateIngressRuleRequest(proto.Message):
     r"""Request message for ``Firewall.UpdateIngressRule``.
-
     Attributes:
         name (str):
             Name of the Firewall resource to update. Example:
@@ -610,28 +560,26 @@ class UpdateIngressRuleRequest(proto.Message):
             be updated.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     rule = proto.Field(proto.MESSAGE, number=2, message=firewall.FirewallRule,)
-
-    update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteIngressRuleRequest(proto.Message):
     r"""Request message for ``Firewall.DeleteIngressRule``.
-
     Attributes:
         name (str):
             Name of the Firewall resource to delete. Example:
             ``apps/myapp/firewall/ingressRules/100``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListAuthorizedDomainsRequest(proto.Message):
     r"""Request message for ``AuthorizedDomains.ListAuthorizedDomains``.
-
     Attributes:
         parent (str):
             Name of the parent Application resource. Example:
@@ -643,16 +591,13 @@ class ListAuthorizedDomainsRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListAuthorizedDomainsResponse(proto.Message):
     r"""Response message for ``AuthorizedDomains.ListAuthorizedDomains``.
-
     Attributes:
         domains (Sequence[google.cloud.appengine_admin_v1.types.AuthorizedDomain]):
             The authorized domains belonging to the user.
@@ -668,8 +613,7 @@ class ListAuthorizedDomainsResponse(proto.Message):
     domains = proto.RepeatedField(
         proto.MESSAGE, number=1, message=domain.AuthorizedDomain,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class ListAuthorizedCertificatesRequest(proto.Message):
@@ -690,13 +634,10 @@ class ListAuthorizedCertificatesRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     view = proto.Field(proto.ENUM, number=4, enum="AuthorizedCertificateView",)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListAuthorizedCertificatesResponse(proto.Message):
@@ -719,8 +660,7 @@ class ListAuthorizedCertificatesResponse(proto.Message):
     certificates = proto.RepeatedField(
         proto.MESSAGE, number=1, message=ga_certificate.AuthorizedCertificate,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetAuthorizedCertificateRequest(proto.Message):
@@ -735,8 +675,7 @@ class GetAuthorizedCertificateRequest(proto.Message):
             Controls the set of fields returned in the ``GET`` response.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     view = proto.Field(proto.ENUM, number=2, enum="AuthorizedCertificateView",)
 
 
@@ -752,8 +691,7 @@ class CreateAuthorizedCertificateRequest(proto.Message):
             SSL certificate data.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     certificate = proto.Field(
         proto.MESSAGE, number=2, message=ga_certificate.AuthorizedCertificate,
     )
@@ -776,13 +714,13 @@ class UpdateAuthorizedCertificateRequest(proto.Message):
             and ``display_name`` fields.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     certificate = proto.Field(
         proto.MESSAGE, number=2, message=ga_certificate.AuthorizedCertificate,
     )
-
-    update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteAuthorizedCertificateRequest(proto.Message):
@@ -795,12 +733,11 @@ class DeleteAuthorizedCertificateRequest(proto.Message):
             ``apps/myapp/authorizedCertificates/12345``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListDomainMappingsRequest(proto.Message):
     r"""Request message for ``DomainMappings.ListDomainMappings``.
-
     Attributes:
         parent (str):
             Name of the parent Application resource. Example:
@@ -812,16 +749,13 @@ class ListDomainMappingsRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListDomainMappingsResponse(proto.Message):
     r"""Response message for ``DomainMappings.ListDomainMappings``.
-
     Attributes:
         domain_mappings (Sequence[google.cloud.appengine_admin_v1.types.DomainMapping]):
             The domain mappings for the application.
@@ -837,25 +771,22 @@ class ListDomainMappingsResponse(proto.Message):
     domain_mappings = proto.RepeatedField(
         proto.MESSAGE, number=1, message=ga_domain_mapping.DomainMapping,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetDomainMappingRequest(proto.Message):
     r"""Request message for ``DomainMappings.GetDomainMapping``.
-
     Attributes:
         name (str):
             Name of the resource requested. Example:
             ``apps/myapp/domainMappings/example.com``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateDomainMappingRequest(proto.Message):
     r"""Request message for ``DomainMappings.CreateDomainMapping``.
-
     Attributes:
         parent (str):
             Name of the parent Application resource. Example:
@@ -868,12 +799,10 @@ class CreateDomainMappingRequest(proto.Message):
             default, overrides are rejected.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     domain_mapping = proto.Field(
         proto.MESSAGE, number=2, message=ga_domain_mapping.DomainMapping,
     )
-
     override_strategy = proto.Field(
         proto.ENUM, number=4, enum="DomainOverrideStrategy",
     )
@@ -881,7 +810,6 @@ class CreateDomainMappingRequest(proto.Message):
 
 class UpdateDomainMappingRequest(proto.Message):
     r"""Request message for ``DomainMappings.UpdateDomainMapping``.
-
     Attributes:
         name (str):
             Name of the resource to update. Example:
@@ -895,25 +823,24 @@ class UpdateDomainMappingRequest(proto.Message):
             be updated.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     domain_mapping = proto.Field(
         proto.MESSAGE, number=2, message=ga_domain_mapping.DomainMapping,
     )
-
-    update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteDomainMappingRequest(proto.Message):
     r"""Request message for ``DomainMappings.DeleteDomainMapping``.
-
     Attributes:
         name (str):
             Name of the resource to delete. Example:
             ``apps/myapp/domainMappings/example.com``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

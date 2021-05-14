@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,60 +14,60 @@
 # limitations under the License.
 #
 
-from google.cloud.appengine_admin_v1.services.applications.async_client import (
-    ApplicationsAsyncClient,
-)
 from google.cloud.appengine_admin_v1.services.applications.client import (
     ApplicationsClient,
 )
-from google.cloud.appengine_admin_v1.services.authorized_certificates.async_client import (
-    AuthorizedCertificatesAsyncClient,
+from google.cloud.appengine_admin_v1.services.applications.async_client import (
+    ApplicationsAsyncClient,
 )
 from google.cloud.appengine_admin_v1.services.authorized_certificates.client import (
     AuthorizedCertificatesClient,
 )
-from google.cloud.appengine_admin_v1.services.authorized_domains.async_client import (
-    AuthorizedDomainsAsyncClient,
+from google.cloud.appengine_admin_v1.services.authorized_certificates.async_client import (
+    AuthorizedCertificatesAsyncClient,
 )
 from google.cloud.appengine_admin_v1.services.authorized_domains.client import (
     AuthorizedDomainsClient,
 )
-from google.cloud.appengine_admin_v1.services.domain_mappings.async_client import (
-    DomainMappingsAsyncClient,
+from google.cloud.appengine_admin_v1.services.authorized_domains.async_client import (
+    AuthorizedDomainsAsyncClient,
 )
 from google.cloud.appengine_admin_v1.services.domain_mappings.client import (
     DomainMappingsClient,
 )
+from google.cloud.appengine_admin_v1.services.domain_mappings.async_client import (
+    DomainMappingsAsyncClient,
+)
+from google.cloud.appengine_admin_v1.services.firewall.client import FirewallClient
 from google.cloud.appengine_admin_v1.services.firewall.async_client import (
     FirewallAsyncClient,
 )
-from google.cloud.appengine_admin_v1.services.firewall.client import FirewallClient
+from google.cloud.appengine_admin_v1.services.instances.client import InstancesClient
 from google.cloud.appengine_admin_v1.services.instances.async_client import (
     InstancesAsyncClient,
 )
-from google.cloud.appengine_admin_v1.services.instances.client import InstancesClient
+from google.cloud.appengine_admin_v1.services.services.client import ServicesClient
 from google.cloud.appengine_admin_v1.services.services.async_client import (
     ServicesAsyncClient,
 )
-from google.cloud.appengine_admin_v1.services.services.client import ServicesClient
+from google.cloud.appengine_admin_v1.services.versions.client import VersionsClient
 from google.cloud.appengine_admin_v1.services.versions.async_client import (
     VersionsAsyncClient,
 )
-from google.cloud.appengine_admin_v1.services.versions.client import VersionsClient
+
 from google.cloud.appengine_admin_v1.types.app_yaml import ApiConfigHandler
 from google.cloud.appengine_admin_v1.types.app_yaml import ApiEndpointHandler
-from google.cloud.appengine_admin_v1.types.app_yaml import AuthFailAction
 from google.cloud.appengine_admin_v1.types.app_yaml import ErrorHandler
 from google.cloud.appengine_admin_v1.types.app_yaml import HealthCheck
 from google.cloud.appengine_admin_v1.types.app_yaml import Library
 from google.cloud.appengine_admin_v1.types.app_yaml import LivenessCheck
-from google.cloud.appengine_admin_v1.types.app_yaml import LoginRequirement
 from google.cloud.appengine_admin_v1.types.app_yaml import ReadinessCheck
 from google.cloud.appengine_admin_v1.types.app_yaml import ScriptHandler
-from google.cloud.appengine_admin_v1.types.app_yaml import SecurityLevel
 from google.cloud.appengine_admin_v1.types.app_yaml import StaticFilesHandler
 from google.cloud.appengine_admin_v1.types.app_yaml import UrlMap
-from google.cloud.appengine_admin_v1.types.appengine import AuthorizedCertificateView
+from google.cloud.appengine_admin_v1.types.app_yaml import AuthFailAction
+from google.cloud.appengine_admin_v1.types.app_yaml import LoginRequirement
+from google.cloud.appengine_admin_v1.types.app_yaml import SecurityLevel
 from google.cloud.appengine_admin_v1.types.appengine import (
     BatchUpdateIngressRulesRequest,
 )
@@ -91,7 +90,6 @@ from google.cloud.appengine_admin_v1.types.appengine import DeleteIngressRuleReq
 from google.cloud.appengine_admin_v1.types.appengine import DeleteInstanceRequest
 from google.cloud.appengine_admin_v1.types.appengine import DeleteServiceRequest
 from google.cloud.appengine_admin_v1.types.appengine import DeleteVersionRequest
-from google.cloud.appengine_admin_v1.types.appengine import DomainOverrideStrategy
 from google.cloud.appengine_admin_v1.types.appengine import GetApplicationRequest
 from google.cloud.appengine_admin_v1.types.appengine import (
     GetAuthorizedCertificateRequest,
@@ -130,6 +128,8 @@ from google.cloud.appengine_admin_v1.types.appengine import UpdateDomainMappingR
 from google.cloud.appengine_admin_v1.types.appengine import UpdateIngressRuleRequest
 from google.cloud.appengine_admin_v1.types.appengine import UpdateServiceRequest
 from google.cloud.appengine_admin_v1.types.appengine import UpdateVersionRequest
+from google.cloud.appengine_admin_v1.types.appengine import AuthorizedCertificateView
+from google.cloud.appengine_admin_v1.types.appengine import DomainOverrideStrategy
 from google.cloud.appengine_admin_v1.types.appengine import VersionView
 from google.cloud.appengine_admin_v1.types.application import Application
 from google.cloud.appengine_admin_v1.types.application import UrlDispatchRule
@@ -163,47 +163,54 @@ from google.cloud.appengine_admin_v1.types.version import CpuUtilization
 from google.cloud.appengine_admin_v1.types.version import DiskUtilization
 from google.cloud.appengine_admin_v1.types.version import EndpointsApiService
 from google.cloud.appengine_admin_v1.types.version import Entrypoint
-from google.cloud.appengine_admin_v1.types.version import InboundServiceType
 from google.cloud.appengine_admin_v1.types.version import ManualScaling
 from google.cloud.appengine_admin_v1.types.version import Network
 from google.cloud.appengine_admin_v1.types.version import NetworkUtilization
 from google.cloud.appengine_admin_v1.types.version import RequestUtilization
 from google.cloud.appengine_admin_v1.types.version import Resources
-from google.cloud.appengine_admin_v1.types.version import ServingStatus
 from google.cloud.appengine_admin_v1.types.version import StandardSchedulerSettings
 from google.cloud.appengine_admin_v1.types.version import Version
 from google.cloud.appengine_admin_v1.types.version import Volume
 from google.cloud.appengine_admin_v1.types.version import VpcAccessConnector
+from google.cloud.appengine_admin_v1.types.version import InboundServiceType
+from google.cloud.appengine_admin_v1.types.version import ServingStatus
 
 __all__ = (
+    "ApplicationsClient",
+    "ApplicationsAsyncClient",
+    "AuthorizedCertificatesClient",
+    "AuthorizedCertificatesAsyncClient",
+    "AuthorizedDomainsClient",
+    "AuthorizedDomainsAsyncClient",
+    "DomainMappingsClient",
+    "DomainMappingsAsyncClient",
+    "FirewallClient",
+    "FirewallAsyncClient",
+    "InstancesClient",
+    "InstancesAsyncClient",
+    "ServicesClient",
+    "ServicesAsyncClient",
+    "VersionsClient",
+    "VersionsAsyncClient",
     "ApiConfigHandler",
     "ApiEndpointHandler",
-    "Application",
-    "ApplicationsAsyncClient",
-    "ApplicationsClient",
-    "AuditData",
+    "ErrorHandler",
+    "HealthCheck",
+    "Library",
+    "LivenessCheck",
+    "ReadinessCheck",
+    "ScriptHandler",
+    "StaticFilesHandler",
+    "UrlMap",
     "AuthFailAction",
-    "AuthorizedCertificate",
-    "AuthorizedCertificateView",
-    "AuthorizedCertificatesAsyncClient",
-    "AuthorizedCertificatesClient",
-    "AuthorizedDomain",
-    "AuthorizedDomainsAsyncClient",
-    "AuthorizedDomainsClient",
-    "AutomaticScaling",
-    "BasicScaling",
+    "LoginRequirement",
+    "SecurityLevel",
     "BatchUpdateIngressRulesRequest",
     "BatchUpdateIngressRulesResponse",
-    "CertificateRawData",
-    "CloudBuildOptions",
-    "ContainerInfo",
-    "CpuUtilization",
     "CreateApplicationRequest",
     "CreateAuthorizedCertificateRequest",
     "CreateDomainMappingRequest",
     "CreateIngressRuleRequest",
-    "CreateVersionMetadataV1",
-    "CreateVersionMethod",
     "CreateVersionRequest",
     "DebugInstanceRequest",
     "DeleteAuthorizedCertificateRequest",
@@ -212,19 +219,6 @@ __all__ = (
     "DeleteInstanceRequest",
     "DeleteServiceRequest",
     "DeleteVersionRequest",
-    "Deployment",
-    "DiskUtilization",
-    "DomainMapping",
-    "DomainMappingsAsyncClient",
-    "DomainMappingsClient",
-    "DomainOverrideStrategy",
-    "EndpointsApiService",
-    "Entrypoint",
-    "ErrorHandler",
-    "FileInfo",
-    "FirewallAsyncClient",
-    "FirewallClient",
-    "FirewallRule",
     "GetApplicationRequest",
     "GetAuthorizedCertificateRequest",
     "GetDomainMappingRequest",
@@ -232,12 +226,6 @@ __all__ = (
     "GetInstanceRequest",
     "GetServiceRequest",
     "GetVersionRequest",
-    "HealthCheck",
-    "InboundServiceType",
-    "Instance",
-    "InstancesAsyncClient",
-    "InstancesClient",
-    "Library",
     "ListAuthorizedCertificatesRequest",
     "ListAuthorizedCertificatesResponse",
     "ListAuthorizedDomainsRequest",
@@ -252,45 +240,57 @@ __all__ = (
     "ListServicesResponse",
     "ListVersionsRequest",
     "ListVersionsResponse",
-    "LivenessCheck",
-    "LocationMetadata",
-    "LoginRequirement",
-    "ManagedCertificate",
-    "ManagementStatus",
-    "ManualScaling",
-    "Network",
-    "NetworkSettings",
-    "NetworkUtilization",
-    "OperationMetadataV1",
-    "ReadinessCheck",
     "RepairApplicationRequest",
-    "RequestUtilization",
-    "ResourceRecord",
-    "Resources",
-    "ScriptHandler",
-    "SecurityLevel",
-    "Service",
-    "ServicesAsyncClient",
-    "ServicesClient",
-    "ServingStatus",
-    "SslSettings",
-    "StandardSchedulerSettings",
-    "StaticFilesHandler",
-    "TrafficSplit",
     "UpdateApplicationRequest",
     "UpdateAuthorizedCertificateRequest",
     "UpdateDomainMappingRequest",
     "UpdateIngressRuleRequest",
-    "UpdateServiceMethod",
     "UpdateServiceRequest",
     "UpdateVersionRequest",
-    "UrlDispatchRule",
-    "UrlMap",
-    "Version",
+    "AuthorizedCertificateView",
+    "DomainOverrideStrategy",
     "VersionView",
-    "VersionsAsyncClient",
-    "VersionsClient",
+    "Application",
+    "UrlDispatchRule",
+    "AuditData",
+    "CreateVersionMethod",
+    "UpdateServiceMethod",
+    "AuthorizedCertificate",
+    "CertificateRawData",
+    "ManagedCertificate",
+    "ManagementStatus",
+    "CloudBuildOptions",
+    "ContainerInfo",
+    "Deployment",
+    "FileInfo",
+    "ZipInfo",
+    "AuthorizedDomain",
+    "DomainMapping",
+    "ResourceRecord",
+    "SslSettings",
+    "FirewallRule",
+    "Instance",
+    "LocationMetadata",
+    "NetworkSettings",
+    "CreateVersionMetadataV1",
+    "OperationMetadataV1",
+    "Service",
+    "TrafficSplit",
+    "AutomaticScaling",
+    "BasicScaling",
+    "CpuUtilization",
+    "DiskUtilization",
+    "EndpointsApiService",
+    "Entrypoint",
+    "ManualScaling",
+    "Network",
+    "NetworkUtilization",
+    "RequestUtilization",
+    "Resources",
+    "StandardSchedulerSettings",
+    "Version",
     "Volume",
     "VpcAccessConnector",
-    "ZipInfo",
+    "InboundServiceType",
+    "ServingStatus",
 )

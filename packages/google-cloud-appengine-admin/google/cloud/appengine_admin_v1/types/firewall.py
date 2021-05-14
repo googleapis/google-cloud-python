@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -62,13 +60,10 @@ class FirewallRule(proto.Message):
         ALLOW = 1
         DENY = 2
 
-    priority = proto.Field(proto.INT32, number=1)
-
+    priority = proto.Field(proto.INT32, number=1,)
     action = proto.Field(proto.ENUM, number=2, enum=Action,)
-
-    source_range = proto.Field(proto.STRING, number=3)
-
-    description = proto.Field(proto.STRING, number=4)
+    source_range = proto.Field(proto.STRING, number=3,)
+    description = proto.Field(proto.STRING, number=4,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

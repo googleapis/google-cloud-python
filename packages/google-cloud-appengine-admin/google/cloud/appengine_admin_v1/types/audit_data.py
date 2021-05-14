@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.appengine_admin_v1.types import appengine
 
@@ -29,7 +26,6 @@ __protobuf__ = proto.module(
 
 class AuditData(proto.Message):
     r"""App Engine admin service audit log.
-
     Attributes:
         update_service (google.cloud.appengine_admin_v1.types.UpdateServiceMethod):
             Detailed information about UpdateService
@@ -42,7 +38,6 @@ class AuditData(proto.Message):
     update_service = proto.Field(
         proto.MESSAGE, number=1, oneof="method", message="UpdateServiceMethod",
     )
-
     create_version = proto.Field(
         proto.MESSAGE, number=2, oneof="method", message="CreateVersionMethod",
     )
@@ -50,7 +45,6 @@ class AuditData(proto.Message):
 
 class UpdateServiceMethod(proto.Message):
     r"""Detailed information about UpdateService call.
-
     Attributes:
         request (google.cloud.appengine_admin_v1.types.UpdateServiceRequest):
             Update service request.
@@ -63,7 +57,6 @@ class UpdateServiceMethod(proto.Message):
 
 class CreateVersionMethod(proto.Message):
     r"""Detailed information about CreateVersion call.
-
     Attributes:
         request (google.cloud.appengine_admin_v1.types.CreateVersionRequest):
             Create version request.

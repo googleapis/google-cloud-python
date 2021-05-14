@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,41 +39,40 @@ def partition(
 class appengine_adminCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'batch_update_ingress_rules': ('name', 'ingress_rules', ),
-    'create_application': ('application', ),
-    'create_authorized_certificate': ('parent', 'certificate', ),
-    'create_domain_mapping': ('parent', 'domain_mapping', 'override_strategy', ),
-    'create_ingress_rule': ('parent', 'rule', ),
-    'create_version': ('parent', 'version', ),
-    'debug_instance': ('name', 'ssh_key', ),
-    'delete_authorized_certificate': ('name', ),
-    'delete_domain_mapping': ('name', ),
-    'delete_ingress_rule': ('name', ),
-    'delete_instance': ('name', ),
-    'delete_service': ('name', ),
-    'delete_version': ('name', ),
-    'get_application': ('name', ),
-    'get_authorized_certificate': ('name', 'view', ),
-    'get_domain_mapping': ('name', ),
-    'get_ingress_rule': ('name', ),
-    'get_instance': ('name', ),
-    'get_service': ('name', ),
-    'get_version': ('name', 'view', ),
-    'list_authorized_certificates': ('parent', 'view', 'page_size', 'page_token', ),
-    'list_authorized_domains': ('parent', 'page_size', 'page_token', ),
-    'list_domain_mappings': ('parent', 'page_size', 'page_token', ),
-    'list_ingress_rules': ('parent', 'page_size', 'page_token', 'matching_address', ),
-    'list_instances': ('parent', 'page_size', 'page_token', ),
-    'list_services': ('parent', 'page_size', 'page_token', ),
-    'list_versions': ('parent', 'view', 'page_size', 'page_token', ),
-    'repair_application': ('name', ),
-    'update_application': ('name', 'application', 'update_mask', ),
-    'update_authorized_certificate': ('name', 'certificate', 'update_mask', ),
-    'update_domain_mapping': ('name', 'domain_mapping', 'update_mask', ),
-    'update_ingress_rule': ('name', 'rule', 'update_mask', ),
-    'update_service': ('name', 'service', 'update_mask', 'migrate_traffic', ),
-    'update_version': ('name', 'version', 'update_mask', ),
-
+          'batch_update_ingress_rules': ('name', 'ingress_rules', ),
+          'create_application': ('application', ),
+          'create_authorized_certificate': ('parent', 'certificate', ),
+          'create_domain_mapping': ('parent', 'domain_mapping', 'override_strategy', ),
+          'create_ingress_rule': ('parent', 'rule', ),
+          'create_version': ('parent', 'version', ),
+          'debug_instance': ('name', 'ssh_key', ),
+          'delete_authorized_certificate': ('name', ),
+          'delete_domain_mapping': ('name', ),
+          'delete_ingress_rule': ('name', ),
+          'delete_instance': ('name', ),
+          'delete_service': ('name', ),
+          'delete_version': ('name', ),
+          'get_application': ('name', ),
+          'get_authorized_certificate': ('name', 'view', ),
+          'get_domain_mapping': ('name', ),
+          'get_ingress_rule': ('name', ),
+          'get_instance': ('name', ),
+          'get_service': ('name', ),
+          'get_version': ('name', 'view', ),
+          'list_authorized_certificates': ('parent', 'view', 'page_size', 'page_token', ),
+          'list_authorized_domains': ('parent', 'page_size', 'page_token', ),
+          'list_domain_mappings': ('parent', 'page_size', 'page_token', ),
+          'list_ingress_rules': ('parent', 'page_size', 'page_token', 'matching_address', ),
+          'list_instances': ('parent', 'page_size', 'page_token', ),
+          'list_services': ('parent', 'page_size', 'page_token', ),
+          'list_versions': ('parent', 'view', 'page_size', 'page_token', ),
+          'repair_application': ('name', ),
+          'update_application': ('name', 'application', 'update_mask', ),
+          'update_authorized_certificate': ('name', 'certificate', 'update_mask', ),
+          'update_domain_mapping': ('name', 'domain_mapping', 'update_mask', ),
+          'update_ingress_rule': ('name', 'rule', 'update_mask', ),
+          'update_service': ('name', 'service', 'update_mask', 'migrate_traffic', ),
+          'update_version': ('name', 'version', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -106,7 +103,7 @@ class appengine_adminCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

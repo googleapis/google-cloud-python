@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.appengine_admin_v1.types import (
     network_settings as ga_network_settings,
@@ -58,12 +55,9 @@ class Service(proto.Message):
             to all versions.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    id = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    id = proto.Field(proto.STRING, number=2,)
     split = proto.Field(proto.MESSAGE, number=3, message="TrafficSplit",)
-
     network_settings = proto.Field(
         proto.MESSAGE, number=6, message=ga_network_settings.NetworkSettings,
     )
@@ -100,8 +94,7 @@ class TrafficSplit(proto.Message):
         RANDOM = 3
 
     shard_by = proto.Field(proto.ENUM, number=1, enum=ShardBy,)
-
-    allocations = proto.MapField(proto.STRING, proto.DOUBLE, number=2)
+    allocations = proto.MapField(proto.STRING, proto.DOUBLE, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

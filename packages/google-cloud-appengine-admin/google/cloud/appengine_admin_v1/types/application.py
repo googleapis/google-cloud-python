@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import duration_pb2 as duration  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -113,7 +110,6 @@ class Application(proto.Message):
 
     class IdentityAwareProxy(proto.Message):
         r"""Identity-Aware Proxy
-
         Attributes:
             enabled (bool):
                 Whether the serving infrastructure will authenticate and
@@ -138,13 +134,10 @@ class Application(proto.Message):
                 @OutputOnly
         """
 
-        enabled = proto.Field(proto.BOOL, number=1)
-
-        oauth2_client_id = proto.Field(proto.STRING, number=2)
-
-        oauth2_client_secret = proto.Field(proto.STRING, number=3)
-
-        oauth2_client_secret_sha256 = proto.Field(proto.STRING, number=4)
+        enabled = proto.Field(proto.BOOL, number=1,)
+        oauth2_client_id = proto.Field(proto.STRING, number=2,)
+        oauth2_client_secret = proto.Field(proto.STRING, number=3,)
+        oauth2_client_secret_sha256 = proto.Field(proto.STRING, number=4,)
 
     class FeatureSettings(proto.Message):
         r"""The feature specific settings to be used in the application.
@@ -164,40 +157,26 @@ class Application(proto.Message):
                 base image for VMs, rather than a base Debian image.
         """
 
-        split_health_checks = proto.Field(proto.BOOL, number=1)
+        split_health_checks = proto.Field(proto.BOOL, number=1,)
+        use_container_optimized_os = proto.Field(proto.BOOL, number=2,)
 
-        use_container_optimized_os = proto.Field(proto.BOOL, number=2)
-
-    name = proto.Field(proto.STRING, number=1)
-
-    id = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    id = proto.Field(proto.STRING, number=2,)
     dispatch_rules = proto.RepeatedField(
         proto.MESSAGE, number=3, message="UrlDispatchRule",
     )
-
-    auth_domain = proto.Field(proto.STRING, number=6)
-
-    location_id = proto.Field(proto.STRING, number=7)
-
-    code_bucket = proto.Field(proto.STRING, number=8)
-
+    auth_domain = proto.Field(proto.STRING, number=6,)
+    location_id = proto.Field(proto.STRING, number=7,)
+    code_bucket = proto.Field(proto.STRING, number=8,)
     default_cookie_expiration = proto.Field(
-        proto.MESSAGE, number=9, message=duration.Duration,
+        proto.MESSAGE, number=9, message=duration_pb2.Duration,
     )
-
     serving_status = proto.Field(proto.ENUM, number=10, enum=ServingStatus,)
-
-    default_hostname = proto.Field(proto.STRING, number=11)
-
-    default_bucket = proto.Field(proto.STRING, number=12)
-
+    default_hostname = proto.Field(proto.STRING, number=11,)
+    default_bucket = proto.Field(proto.STRING, number=12,)
     iap = proto.Field(proto.MESSAGE, number=14, message=IdentityAwareProxy,)
-
-    gcr_domain = proto.Field(proto.STRING, number=16)
-
+    gcr_domain = proto.Field(proto.STRING, number=16,)
     database_type = proto.Field(proto.ENUM, number=17, enum=DatabaseType,)
-
     feature_settings = proto.Field(proto.MESSAGE, number=18, message=FeatureSettings,)
 
 
@@ -223,11 +202,9 @@ class UrlDispatchRule(proto.Message):
             Example: ``default``.
     """
 
-    domain = proto.Field(proto.STRING, number=1)
-
-    path = proto.Field(proto.STRING, number=2)
-
-    service = proto.Field(proto.STRING, number=3)
+    domain = proto.Field(proto.STRING, number=1,)
+    path = proto.Field(proto.STRING, number=2,)
+    service = proto.Field(proto.STRING, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
