@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
 from google.api_core import operations_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+import packaging.version
 
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
@@ -39,9 +37,8 @@ from google.cloud.datalabeling_v1beta1.types import evaluation
 from google.cloud.datalabeling_v1beta1.types import evaluation_job
 from google.cloud.datalabeling_v1beta1.types import evaluation_job as gcd_evaluation_job
 from google.cloud.datalabeling_v1beta1.types import instruction
-from google.longrunning import operations_pb2 as operations  # type: ignore
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from .base import DataLabelingServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import DataLabelingServiceGrpcTransport
 
@@ -66,7 +63,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     def create_channel(
         cls,
         host: str = "datalabeling.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -93,13 +90,15 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         Returns:
             aio.Channel: A gRPC AsyncIO channel object.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers_async.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -107,7 +106,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         self,
         *,
         host: str = "datalabeling.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         channel: aio.Channel = None,
@@ -121,7 +120,8 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -180,7 +180,6 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -345,7 +344,9 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     @property
     def delete_dataset(
         self,
-    ) -> Callable[[data_labeling_service.DeleteDatasetRequest], Awaitable[empty.Empty]]:
+    ) -> Callable[
+        [data_labeling_service.DeleteDatasetRequest], Awaitable[empty_pb2.Empty]
+    ]:
         r"""Return a callable for the delete dataset method over gRPC.
 
         Deletes a dataset by resource name.
@@ -364,7 +365,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
             self._stubs["delete_dataset"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteDataset",
                 request_serializer=data_labeling_service.DeleteDatasetRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_dataset"]
 
@@ -372,7 +373,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     def import_data(
         self,
     ) -> Callable[
-        [data_labeling_service.ImportDataRequest], Awaitable[operations.Operation]
+        [data_labeling_service.ImportDataRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the import data method over gRPC.
 
@@ -397,7 +398,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
             self._stubs["import_data"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ImportData",
                 request_serializer=data_labeling_service.ImportDataRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["import_data"]
 
@@ -405,7 +406,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     def export_data(
         self,
     ) -> Callable[
-        [data_labeling_service.ExportDataRequest], Awaitable[operations.Operation]
+        [data_labeling_service.ExportDataRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the export data method over gRPC.
 
@@ -425,7 +426,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
             self._stubs["export_data"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ExportData",
                 request_serializer=data_labeling_service.ExportDataRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["export_data"]
 
@@ -552,7 +553,8 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     def delete_annotated_dataset(
         self,
     ) -> Callable[
-        [data_labeling_service.DeleteAnnotatedDatasetRequest], Awaitable[empty.Empty]
+        [data_labeling_service.DeleteAnnotatedDatasetRequest],
+        Awaitable[empty_pb2.Empty],
     ]:
         r"""Return a callable for the delete annotated dataset method over gRPC.
 
@@ -572,7 +574,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
             self._stubs["delete_annotated_dataset"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteAnnotatedDataset",
                 request_serializer=data_labeling_service.DeleteAnnotatedDatasetRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_annotated_dataset"]
 
@@ -580,7 +582,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     def label_image(
         self,
     ) -> Callable[
-        [data_labeling_service.LabelImageRequest], Awaitable[operations.Operation]
+        [data_labeling_service.LabelImageRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the label image method over gRPC.
 
@@ -601,7 +603,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
             self._stubs["label_image"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/LabelImage",
                 request_serializer=data_labeling_service.LabelImageRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["label_image"]
 
@@ -609,7 +611,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     def label_video(
         self,
     ) -> Callable[
-        [data_labeling_service.LabelVideoRequest], Awaitable[operations.Operation]
+        [data_labeling_service.LabelVideoRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the label video method over gRPC.
 
@@ -630,7 +632,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
             self._stubs["label_video"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/LabelVideo",
                 request_serializer=data_labeling_service.LabelVideoRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["label_video"]
 
@@ -638,7 +640,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     def label_text(
         self,
     ) -> Callable[
-        [data_labeling_service.LabelTextRequest], Awaitable[operations.Operation]
+        [data_labeling_service.LabelTextRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the label text method over gRPC.
 
@@ -659,7 +661,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
             self._stubs["label_text"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/LabelText",
                 request_serializer=data_labeling_service.LabelTextRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["label_text"]
 
@@ -815,7 +817,8 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     def delete_annotation_spec_set(
         self,
     ) -> Callable[
-        [data_labeling_service.DeleteAnnotationSpecSetRequest], Awaitable[empty.Empty]
+        [data_labeling_service.DeleteAnnotationSpecSetRequest],
+        Awaitable[empty_pb2.Empty],
     ]:
         r"""Return a callable for the delete annotation spec set method over gRPC.
 
@@ -835,7 +838,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
             self._stubs["delete_annotation_spec_set"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteAnnotationSpecSet",
                 request_serializer=data_labeling_service.DeleteAnnotationSpecSetRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_annotation_spec_set"]
 
@@ -844,7 +847,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
         self,
     ) -> Callable[
         [data_labeling_service.CreateInstructionRequest],
-        Awaitable[operations.Operation],
+        Awaitable[operations_pb2.Operation],
     ]:
         r"""Return a callable for the create instruction method over gRPC.
 
@@ -865,7 +868,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
             self._stubs["create_instruction"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/CreateInstruction",
                 request_serializer=data_labeling_service.CreateInstructionRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_instruction"]
 
@@ -932,7 +935,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     def delete_instruction(
         self,
     ) -> Callable[
-        [data_labeling_service.DeleteInstructionRequest], Awaitable[empty.Empty]
+        [data_labeling_service.DeleteInstructionRequest], Awaitable[empty_pb2.Empty]
     ]:
         r"""Return a callable for the delete instruction method over gRPC.
 
@@ -952,7 +955,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
             self._stubs["delete_instruction"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteInstruction",
                 request_serializer=data_labeling_service.DeleteInstructionRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_instruction"]
 
@@ -1146,7 +1149,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     def pause_evaluation_job(
         self,
     ) -> Callable[
-        [data_labeling_service.PauseEvaluationJobRequest], Awaitable[empty.Empty]
+        [data_labeling_service.PauseEvaluationJobRequest], Awaitable[empty_pb2.Empty]
     ]:
         r"""Return a callable for the pause evaluation job method over gRPC.
 
@@ -1167,7 +1170,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
             self._stubs["pause_evaluation_job"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/PauseEvaluationJob",
                 request_serializer=data_labeling_service.PauseEvaluationJobRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["pause_evaluation_job"]
 
@@ -1175,7 +1178,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     def resume_evaluation_job(
         self,
     ) -> Callable[
-        [data_labeling_service.ResumeEvaluationJobRequest], Awaitable[empty.Empty]
+        [data_labeling_service.ResumeEvaluationJobRequest], Awaitable[empty_pb2.Empty]
     ]:
         r"""Return a callable for the resume evaluation job method over gRPC.
 
@@ -1197,7 +1200,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
             self._stubs["resume_evaluation_job"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/ResumeEvaluationJob",
                 request_serializer=data_labeling_service.ResumeEvaluationJobRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["resume_evaluation_job"]
 
@@ -1205,7 +1208,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
     def delete_evaluation_job(
         self,
     ) -> Callable[
-        [data_labeling_service.DeleteEvaluationJobRequest], Awaitable[empty.Empty]
+        [data_labeling_service.DeleteEvaluationJobRequest], Awaitable[empty_pb2.Empty]
     ]:
         r"""Return a callable for the delete evaluation job method over gRPC.
 
@@ -1225,7 +1228,7 @@ class DataLabelingServiceGrpcAsyncIOTransport(DataLabelingServiceTransport):
             self._stubs["delete_evaluation_job"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteEvaluationJob",
                 request_serializer=data_labeling_service.DeleteEvaluationJobRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_evaluation_job"]
 

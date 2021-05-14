@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +15,10 @@
 #
 
 from .services.data_labeling_service import DataLabelingServiceClient
+from .services.data_labeling_service import DataLabelingServiceAsyncClient
+
 from .types.annotation import Annotation
 from .types.annotation import AnnotationMetadata
-from .types.annotation import AnnotationSentiment
-from .types.annotation import AnnotationSource
-from .types.annotation import AnnotationType
 from .types.annotation import AnnotationValue
 from .types.annotation import BoundingPoly
 from .types.annotation import ImageBoundingPolyAnnotation
@@ -41,6 +39,9 @@ from .types.annotation import Vertex
 from .types.annotation import VideoClassificationAnnotation
 from .types.annotation import VideoEventAnnotation
 from .types.annotation import VideoObjectTrackingAnnotation
+from .types.annotation import AnnotationSentiment
+from .types.annotation import AnnotationSource
+from .types.annotation import AnnotationType
 from .types.annotation_spec_set import AnnotationSpec
 from .types.annotation_spec_set import AnnotationSpecSet
 from .types.data_labeling_service import CreateAnnotationSpecSetRequest
@@ -95,7 +96,6 @@ from .types.dataset import AnnotatedDatasetMetadata
 from .types.dataset import BigQuerySource
 from .types.dataset import ClassificationMetadata
 from .types.dataset import DataItem
-from .types.dataset import DataType
 from .types.dataset import Dataset
 from .types.dataset import Example
 from .types.dataset import GcsDestination
@@ -105,6 +105,7 @@ from .types.dataset import InputConfig
 from .types.dataset import LabelStats
 from .types.dataset import OutputConfig
 from .types.dataset import TextMetadata
+from .types.dataset import DataType
 from .types.evaluation import BoundingBoxEvaluationOptions
 from .types.evaluation import ClassificationMetrics
 from .types.evaluation import ConfusionMatrix
@@ -126,10 +127,10 @@ from .types.human_annotation_config import ObjectTrackingConfig
 from .types.human_annotation_config import PolylineConfig
 from .types.human_annotation_config import SegmentationConfig
 from .types.human_annotation_config import SentimentConfig
-from .types.human_annotation_config import StringAggregationType
 from .types.human_annotation_config import TextClassificationConfig
 from .types.human_annotation_config import TextEntityExtractionConfig
 from .types.human_annotation_config import VideoClassificationConfig
+from .types.human_annotation_config import StringAggregationType
 from .types.instruction import CsvInstruction
 from .types.instruction import Instruction
 from .types.instruction import PdfInstruction
@@ -152,8 +153,8 @@ from .types.operations import LabelVideoEventOperationMetadata
 from .types.operations import LabelVideoObjectDetectionOperationMetadata
 from .types.operations import LabelVideoObjectTrackingOperationMetadata
 
-
 __all__ = (
+    "DataLabelingServiceAsyncClient",
     "AnnotatedDataset",
     "AnnotatedDatasetMetadata",
     "Annotation",
@@ -179,6 +180,7 @@ __all__ = (
     "CreateInstructionRequest",
     "CsvInstruction",
     "DataItem",
+    "DataLabelingServiceClient",
     "DataType",
     "Dataset",
     "DeleteAnnotatedDatasetRequest",
@@ -289,5 +291,4 @@ __all__ = (
     "VideoObjectTrackingAnnotation",
     "VideoPayload",
     "VideoThumbnail",
-    "DataLabelingServiceClient",
 )

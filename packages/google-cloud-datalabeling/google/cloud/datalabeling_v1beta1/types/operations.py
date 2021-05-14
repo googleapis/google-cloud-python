@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.datalabeling_v1beta1.types import dataset as gcd_dataset
 from google.cloud.datalabeling_v1beta1.types import human_annotation_config
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.rpc import status_pb2 as status  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -51,7 +48,6 @@ __protobuf__ = proto.module(
 
 class ImportDataOperationResponse(proto.Message):
     r"""Response used for ImportData longrunning operation.
-
     Attributes:
         dataset (str):
             Ouptut only. The name of imported dataset.
@@ -63,16 +59,13 @@ class ImportDataOperationResponse(proto.Message):
             successfully.
     """
 
-    dataset = proto.Field(proto.STRING, number=1)
-
-    total_count = proto.Field(proto.INT32, number=2)
-
-    import_count = proto.Field(proto.INT32, number=3)
+    dataset = proto.Field(proto.STRING, number=1,)
+    total_count = proto.Field(proto.INT32, number=2,)
+    import_count = proto.Field(proto.INT32, number=3,)
 
 
 class ExportDataOperationResponse(proto.Message):
     r"""Response used for ExportDataset longrunning operation.
-
     Attributes:
         dataset (str):
             Ouptut only. The name of dataset. "projects/*/datasets/*".
@@ -89,14 +82,10 @@ class ExportDataOperationResponse(proto.Message):
             Output only. output_config in the ExportData request.
     """
 
-    dataset = proto.Field(proto.STRING, number=1)
-
-    total_count = proto.Field(proto.INT32, number=2)
-
-    export_count = proto.Field(proto.INT32, number=3)
-
+    dataset = proto.Field(proto.STRING, number=1,)
+    total_count = proto.Field(proto.INT32, number=2,)
+    export_count = proto.Field(proto.INT32, number=3,)
     label_stats = proto.Field(proto.MESSAGE, number=4, message=gcd_dataset.LabelStats,)
-
     output_config = proto.Field(
         proto.MESSAGE, number=5, message=gcd_dataset.OutputConfig,
     )
@@ -104,7 +93,6 @@ class ExportDataOperationResponse(proto.Message):
 
 class ImportDataOperationMetadata(proto.Message):
     r"""Metadata of an ImportData operation.
-
     Attributes:
         dataset (str):
             Output only. The name of imported dataset.
@@ -119,18 +107,15 @@ class ImportDataOperationMetadata(proto.Message):
             request was created.
     """
 
-    dataset = proto.Field(proto.STRING, number=1)
-
+    dataset = proto.Field(proto.STRING, number=1,)
     partial_failures = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=status.Status,
+        proto.MESSAGE, number=2, message=status_pb2.Status,
     )
-
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
 
 
 class ExportDataOperationMetadata(proto.Message):
     r"""Metadata of an ExportData operation.
-
     Attributes:
         dataset (str):
             Output only. The name of dataset to be exported.
@@ -145,13 +130,11 @@ class ExportDataOperationMetadata(proto.Message):
             request was created.
     """
 
-    dataset = proto.Field(proto.STRING, number=1)
-
+    dataset = proto.Field(proto.STRING, number=1,)
     partial_failures = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=status.Status,
+        proto.MESSAGE, number=2, message=status_pb2.Status,
     )
-
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
 
 
 class LabelOperationMetadata(proto.Message):
@@ -211,96 +194,83 @@ class LabelOperationMetadata(proto.Message):
         oneof="details",
         message="LabelImageClassificationOperationMetadata",
     )
-
     image_bounding_box_details = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="details",
         message="LabelImageBoundingBoxOperationMetadata",
     )
-
     image_bounding_poly_details = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="details",
         message="LabelImageBoundingPolyOperationMetadata",
     )
-
     image_oriented_bounding_box_details = proto.Field(
         proto.MESSAGE,
         number=14,
         oneof="details",
         message="LabelImageOrientedBoundingBoxOperationMetadata",
     )
-
     image_polyline_details = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="details",
         message="LabelImagePolylineOperationMetadata",
     )
-
     image_segmentation_details = proto.Field(
         proto.MESSAGE,
         number=15,
         oneof="details",
         message="LabelImageSegmentationOperationMetadata",
     )
-
     video_classification_details = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="details",
         message="LabelVideoClassificationOperationMetadata",
     )
-
     video_object_detection_details = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="details",
         message="LabelVideoObjectDetectionOperationMetadata",
     )
-
     video_object_tracking_details = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="details",
         message="LabelVideoObjectTrackingOperationMetadata",
     )
-
     video_event_details = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="details",
         message="LabelVideoEventOperationMetadata",
     )
-
     text_classification_details = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="details",
         message="LabelTextClassificationOperationMetadata",
     )
-
     text_entity_extraction_details = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="details",
         message="LabelTextEntityExtractionOperationMetadata",
     )
-
-    progress_percent = proto.Field(proto.INT32, number=1)
-
+    progress_percent = proto.Field(proto.INT32, number=1,)
     partial_failures = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=status.Status,
+        proto.MESSAGE, number=2, message=status_pb2.Status,
     )
-
-    create_time = proto.Field(proto.MESSAGE, number=16, message=timestamp.Timestamp,)
+    create_time = proto.Field(
+        proto.MESSAGE, number=16, message=timestamp_pb2.Timestamp,
+    )
 
 
 class LabelImageClassificationOperationMetadata(proto.Message):
     r"""Metadata of a LabelImageClassification operation.
-
     Attributes:
         basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
@@ -314,7 +284,6 @@ class LabelImageClassificationOperationMetadata(proto.Message):
 
 class LabelImageBoundingBoxOperationMetadata(proto.Message):
     r"""Details of a LabelImageBoundingBox operation metadata.
-
     Attributes:
         basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
@@ -342,7 +311,6 @@ class LabelImageOrientedBoundingBoxOperationMetadata(proto.Message):
 
 class LabelImageBoundingPolyOperationMetadata(proto.Message):
     r"""Details of LabelImageBoundingPoly operation metadata.
-
     Attributes:
         basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
@@ -356,7 +324,6 @@ class LabelImageBoundingPolyOperationMetadata(proto.Message):
 
 class LabelImagePolylineOperationMetadata(proto.Message):
     r"""Details of LabelImagePolyline operation metadata.
-
     Attributes:
         basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
@@ -370,7 +337,6 @@ class LabelImagePolylineOperationMetadata(proto.Message):
 
 class LabelImageSegmentationOperationMetadata(proto.Message):
     r"""Details of a LabelImageSegmentation operation metadata.
-
     Attributes:
         basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config.
@@ -383,7 +349,6 @@ class LabelImageSegmentationOperationMetadata(proto.Message):
 
 class LabelVideoClassificationOperationMetadata(proto.Message):
     r"""Details of a LabelVideoClassification operation metadata.
-
     Attributes:
         basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
@@ -397,7 +362,6 @@ class LabelVideoClassificationOperationMetadata(proto.Message):
 
 class LabelVideoObjectDetectionOperationMetadata(proto.Message):
     r"""Details of a LabelVideoObjectDetection operation metadata.
-
     Attributes:
         basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
@@ -411,7 +375,6 @@ class LabelVideoObjectDetectionOperationMetadata(proto.Message):
 
 class LabelVideoObjectTrackingOperationMetadata(proto.Message):
     r"""Details of a LabelVideoObjectTracking operation metadata.
-
     Attributes:
         basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
@@ -425,7 +388,6 @@ class LabelVideoObjectTrackingOperationMetadata(proto.Message):
 
 class LabelVideoEventOperationMetadata(proto.Message):
     r"""Details of a LabelVideoEvent operation metadata.
-
     Attributes:
         basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
@@ -439,7 +401,6 @@ class LabelVideoEventOperationMetadata(proto.Message):
 
 class LabelTextClassificationOperationMetadata(proto.Message):
     r"""Details of a LabelTextClassification operation metadata.
-
     Attributes:
         basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
@@ -453,7 +414,6 @@ class LabelTextClassificationOperationMetadata(proto.Message):
 
 class LabelTextEntityExtractionOperationMetadata(proto.Message):
     r"""Details of a LabelTextEntityExtraction operation metadata.
-
     Attributes:
         basic_config (google.cloud.datalabeling_v1beta1.types.HumanAnnotationConfig):
             Basic human annotation config used in
@@ -467,7 +427,6 @@ class LabelTextEntityExtractionOperationMetadata(proto.Message):
 
 class CreateInstructionMetadata(proto.Message):
     r"""Metadata of a CreateInstruction operation.
-
     Attributes:
         instruction (str):
             The name of the created Instruction.
@@ -482,13 +441,11 @@ class CreateInstructionMetadata(proto.Message):
             created.
     """
 
-    instruction = proto.Field(proto.STRING, number=1)
-
+    instruction = proto.Field(proto.STRING, number=1,)
     partial_failures = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=status.Status,
+        proto.MESSAGE, number=2, message=status_pb2.Status,
     )
-
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

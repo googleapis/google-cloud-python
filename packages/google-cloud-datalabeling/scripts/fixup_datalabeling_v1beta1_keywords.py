@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,41 +39,40 @@ def partition(
 class datalabelingCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'create_annotation_spec_set': ('parent', 'annotation_spec_set', ),
-    'create_dataset': ('parent', 'dataset', ),
-    'create_evaluation_job': ('parent', 'job', ),
-    'create_instruction': ('parent', 'instruction', ),
-    'delete_annotated_dataset': ('name', ),
-    'delete_annotation_spec_set': ('name', ),
-    'delete_dataset': ('name', ),
-    'delete_evaluation_job': ('name', ),
-    'delete_instruction': ('name', ),
-    'export_data': ('name', 'annotated_dataset', 'output_config', 'filter', 'user_email_address', ),
-    'get_annotated_dataset': ('name', ),
-    'get_annotation_spec_set': ('name', ),
-    'get_data_item': ('name', ),
-    'get_dataset': ('name', ),
-    'get_evaluation': ('name', ),
-    'get_evaluation_job': ('name', ),
-    'get_example': ('name', 'filter', ),
-    'get_instruction': ('name', ),
-    'import_data': ('name', 'input_config', 'user_email_address', ),
-    'label_image': ('parent', 'basic_config', 'feature', 'image_classification_config', 'bounding_poly_config', 'polyline_config', 'segmentation_config', ),
-    'label_text': ('parent', 'basic_config', 'feature', 'text_classification_config', 'text_entity_extraction_config', ),
-    'label_video': ('parent', 'basic_config', 'feature', 'video_classification_config', 'object_detection_config', 'object_tracking_config', 'event_config', ),
-    'list_annotated_datasets': ('parent', 'filter', 'page_size', 'page_token', ),
-    'list_annotation_spec_sets': ('parent', 'filter', 'page_size', 'page_token', ),
-    'list_data_items': ('parent', 'filter', 'page_size', 'page_token', ),
-    'list_datasets': ('parent', 'filter', 'page_size', 'page_token', ),
-    'list_evaluation_jobs': ('parent', 'filter', 'page_size', 'page_token', ),
-    'list_examples': ('parent', 'filter', 'page_size', 'page_token', ),
-    'list_instructions': ('parent', 'filter', 'page_size', 'page_token', ),
-    'pause_evaluation_job': ('name', ),
-    'resume_evaluation_job': ('name', ),
-    'search_evaluations': ('parent', 'filter', 'page_size', 'page_token', ),
-    'search_example_comparisons': ('parent', 'page_size', 'page_token', ),
-    'update_evaluation_job': ('evaluation_job', 'update_mask', ),
-
+          'create_annotation_spec_set': ('parent', 'annotation_spec_set', ),
+          'create_dataset': ('parent', 'dataset', ),
+          'create_evaluation_job': ('parent', 'job', ),
+          'create_instruction': ('parent', 'instruction', ),
+          'delete_annotated_dataset': ('name', ),
+          'delete_annotation_spec_set': ('name', ),
+          'delete_dataset': ('name', ),
+          'delete_evaluation_job': ('name', ),
+          'delete_instruction': ('name', ),
+          'export_data': ('name', 'annotated_dataset', 'output_config', 'filter', 'user_email_address', ),
+          'get_annotated_dataset': ('name', ),
+          'get_annotation_spec_set': ('name', ),
+          'get_data_item': ('name', ),
+          'get_dataset': ('name', ),
+          'get_evaluation': ('name', ),
+          'get_evaluation_job': ('name', ),
+          'get_example': ('name', 'filter', ),
+          'get_instruction': ('name', ),
+          'import_data': ('name', 'input_config', 'user_email_address', ),
+          'label_image': ('parent', 'basic_config', 'feature', 'image_classification_config', 'bounding_poly_config', 'polyline_config', 'segmentation_config', ),
+          'label_text': ('parent', 'basic_config', 'feature', 'text_classification_config', 'text_entity_extraction_config', ),
+          'label_video': ('parent', 'basic_config', 'feature', 'video_classification_config', 'object_detection_config', 'object_tracking_config', 'event_config', ),
+          'list_annotated_datasets': ('parent', 'filter', 'page_size', 'page_token', ),
+          'list_annotation_spec_sets': ('parent', 'filter', 'page_size', 'page_token', ),
+          'list_data_items': ('parent', 'filter', 'page_size', 'page_token', ),
+          'list_datasets': ('parent', 'filter', 'page_size', 'page_token', ),
+          'list_evaluation_jobs': ('parent', 'filter', 'page_size', 'page_token', ),
+          'list_examples': ('parent', 'filter', 'page_size', 'page_token', ),
+          'list_instructions': ('parent', 'filter', 'page_size', 'page_token', ),
+          'pause_evaluation_job': ('name', ),
+          'resume_evaluation_job': ('name', ),
+          'search_evaluations': ('parent', 'filter', 'page_size', 'page_token', ),
+          'search_example_comparisons': ('parent', 'page_size', 'page_token', ),
+          'update_evaluation_job': ('evaluation_job', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -106,7 +103,7 @@ class datalabelingCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

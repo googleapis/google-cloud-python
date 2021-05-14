@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.datalabeling_v1beta1.types import annotation
 from google.cloud.datalabeling_v1beta1.types import annotation_spec_set
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -75,23 +72,17 @@ class Evaluation(proto.Message):
             is for certain AnnotationTypes.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     config = proto.Field(proto.MESSAGE, number=2, message="EvaluationConfig",)
-
     evaluation_job_run_time = proto.Field(
-        proto.MESSAGE, number=3, message=timestamp.Timestamp,
+        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
     )
-
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
-
+    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
     evaluation_metrics = proto.Field(
         proto.MESSAGE, number=5, message="EvaluationMetrics",
     )
-
     annotation_type = proto.Field(proto.ENUM, number=6, enum=annotation.AnnotationType,)
-
-    evaluated_item_count = proto.Field(proto.INT64, number=7)
+    evaluated_item_count = proto.Field(proto.INT64, number=7,)
 
 
 class EvaluationConfig(proto.Message):
@@ -116,7 +107,6 @@ class EvaluationConfig(proto.Message):
 
 class BoundingBoxEvaluationOptions(proto.Message):
     r"""Options regarding evaluation between bounding boxes.
-
     Attributes:
         iou_threshold (float):
             Minimum [intersection-over-union
@@ -126,12 +116,11 @@ class BoundingBoxEvaluationOptions(proto.Message):
             must be a number between 0 and 1.
     """
 
-    iou_threshold = proto.Field(proto.FLOAT, number=1)
+    iou_threshold = proto.Field(proto.FLOAT, number=1,)
 
 
 class EvaluationMetrics(proto.Message):
     r"""
-
     Attributes:
         classification_metrics (google.cloud.datalabeling_v1beta1.types.ClassificationMetrics):
 
@@ -142,7 +131,6 @@ class EvaluationMetrics(proto.Message):
     classification_metrics = proto.Field(
         proto.MESSAGE, number=1, oneof="metrics", message="ClassificationMetrics",
     )
-
     object_detection_metrics = proto.Field(
         proto.MESSAGE, number=2, oneof="metrics", message="ObjectDetectionMetrics",
     )
@@ -150,7 +138,6 @@ class EvaluationMetrics(proto.Message):
 
 class ClassificationMetrics(proto.Message):
     r"""Metrics calculated for a classification model.
-
     Attributes:
         pr_curve (google.cloud.datalabeling_v1beta1.types.PrCurve):
             Precision-recall curve based on ground truth
@@ -162,7 +149,6 @@ class ClassificationMetrics(proto.Message):
     """
 
     pr_curve = proto.Field(proto.MESSAGE, number=1, message="PrCurve",)
-
     confusion_matrix = proto.Field(proto.MESSAGE, number=2, message="ConfusionMatrix",)
 
 
@@ -180,7 +166,6 @@ class ObjectDetectionMetrics(proto.Message):
 
 class PrCurve(proto.Message):
     r"""
-
     Attributes:
         annotation_spec (google.cloud.datalabeling_v1beta1.types.AnnotationSpec):
             The annotation spec of the label for which
@@ -201,7 +186,6 @@ class PrCurve(proto.Message):
 
     class ConfidenceMetricsEntry(proto.Message):
         r"""
-
         Attributes:
             confidence_threshold (float):
                 Threshold used for this entry.
@@ -246,37 +230,25 @@ class PrCurve(proto.Message):
                 [precision_at5][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision_at5].
         """
 
-        confidence_threshold = proto.Field(proto.FLOAT, number=1)
-
-        recall = proto.Field(proto.FLOAT, number=2)
-
-        precision = proto.Field(proto.FLOAT, number=3)
-
-        f1_score = proto.Field(proto.FLOAT, number=4)
-
-        recall_at1 = proto.Field(proto.FLOAT, number=5)
-
-        precision_at1 = proto.Field(proto.FLOAT, number=6)
-
-        f1_score_at1 = proto.Field(proto.FLOAT, number=7)
-
-        recall_at5 = proto.Field(proto.FLOAT, number=8)
-
-        precision_at5 = proto.Field(proto.FLOAT, number=9)
-
-        f1_score_at5 = proto.Field(proto.FLOAT, number=10)
+        confidence_threshold = proto.Field(proto.FLOAT, number=1,)
+        recall = proto.Field(proto.FLOAT, number=2,)
+        precision = proto.Field(proto.FLOAT, number=3,)
+        f1_score = proto.Field(proto.FLOAT, number=4,)
+        recall_at1 = proto.Field(proto.FLOAT, number=5,)
+        precision_at1 = proto.Field(proto.FLOAT, number=6,)
+        f1_score_at1 = proto.Field(proto.FLOAT, number=7,)
+        recall_at5 = proto.Field(proto.FLOAT, number=8,)
+        precision_at5 = proto.Field(proto.FLOAT, number=9,)
+        f1_score_at5 = proto.Field(proto.FLOAT, number=10,)
 
     annotation_spec = proto.Field(
         proto.MESSAGE, number=1, message=annotation_spec_set.AnnotationSpec,
     )
-
-    area_under_curve = proto.Field(proto.FLOAT, number=2)
-
+    area_under_curve = proto.Field(proto.FLOAT, number=2,)
     confidence_metrics_entries = proto.RepeatedField(
         proto.MESSAGE, number=3, message=ConfidenceMetricsEntry,
     )
-
-    mean_average_precision = proto.Field(proto.FLOAT, number=4)
+    mean_average_precision = proto.Field(proto.FLOAT, number=4,)
 
 
 class ConfusionMatrix(proto.Message):
@@ -291,7 +263,6 @@ class ConfusionMatrix(proto.Message):
 
     class ConfusionMatrixEntry(proto.Message):
         r"""
-
         Attributes:
             annotation_spec (google.cloud.datalabeling_v1beta1.types.AnnotationSpec):
                 The annotation spec of a predicted label.
@@ -304,8 +275,7 @@ class ConfusionMatrix(proto.Message):
         annotation_spec = proto.Field(
             proto.MESSAGE, number=1, message=annotation_spec_set.AnnotationSpec,
         )
-
-        item_count = proto.Field(proto.INT32, number=2)
+        item_count = proto.Field(proto.INT32, number=2,)
 
     class Row(proto.Message):
         r"""A row in the confusion matrix. Each entry in this row has the
@@ -323,7 +293,6 @@ class ConfusionMatrix(proto.Message):
         annotation_spec = proto.Field(
             proto.MESSAGE, number=1, message=annotation_spec_set.AnnotationSpec,
         )
-
         entries = proto.RepeatedField(
             proto.MESSAGE, number=2, message="ConfusionMatrix.ConfusionMatrixEntry",
         )

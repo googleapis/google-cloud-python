@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.datalabeling_v1beta1.types import (
     annotation_spec_set as gcd_annotation_spec_set,
@@ -26,7 +23,7 @@ from google.cloud.datalabeling_v1beta1.types import evaluation
 from google.cloud.datalabeling_v1beta1.types import evaluation_job as gcd_evaluation_job
 from google.cloud.datalabeling_v1beta1.types import human_annotation_config
 from google.cloud.datalabeling_v1beta1.types import instruction as gcd_instruction
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -81,7 +78,6 @@ __protobuf__ = proto.module(
 
 class CreateDatasetRequest(proto.Message):
     r"""Request message for CreateDataset.
-
     Attributes:
         parent (str):
             Required. Dataset resource parent, format:
@@ -90,26 +86,23 @@ class CreateDatasetRequest(proto.Message):
             Required. The dataset to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     dataset = proto.Field(proto.MESSAGE, number=2, message=gcd_dataset.Dataset,)
 
 
 class GetDatasetRequest(proto.Message):
     r"""Request message for GetDataSet.
-
     Attributes:
         name (str):
             Required. Dataset resource name, format:
             projects/{project_id}/datasets/{dataset_id}
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListDatasetsRequest(proto.Message):
     r"""Request message for ListDataset.
-
     Attributes:
         parent (str):
             Required. Dataset resource parent, format:
@@ -129,18 +122,14 @@ class ListDatasetsRequest(proto.Message):
             Returns the first page if empty.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class ListDatasetsResponse(proto.Message):
     r"""Results of listing datasets within a project.
-
     Attributes:
         datasets (Sequence[google.cloud.datalabeling_v1beta1.types.Dataset]):
             The list of datasets to return.
@@ -155,25 +144,22 @@ class ListDatasetsResponse(proto.Message):
     datasets = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gcd_dataset.Dataset,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class DeleteDatasetRequest(proto.Message):
     r"""Request message for DeleteDataset.
-
     Attributes:
         name (str):
             Required. Dataset resource name, format:
             projects/{project_id}/datasets/{dataset_id}
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ImportDataRequest(proto.Message):
     r"""Request message for ImportData API.
-
     Attributes:
         name (str):
             Required. Dataset resource name, format:
@@ -187,18 +173,15 @@ class ImportDataRequest(proto.Message):
             notification will be sent.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     input_config = proto.Field(
         proto.MESSAGE, number=2, message=gcd_dataset.InputConfig,
     )
-
-    user_email_address = proto.Field(proto.STRING, number=3)
+    user_email_address = proto.Field(proto.STRING, number=3,)
 
 
 class ExportDataRequest(proto.Message):
     r"""Request message for ExportData API.
-
     Attributes:
         name (str):
             Required. Dataset resource name, format:
@@ -220,34 +203,28 @@ class ExportDataRequest(proto.Message):
             notification will be sent.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    annotated_dataset = proto.Field(proto.STRING, number=2)
-
-    filter = proto.Field(proto.STRING, number=3)
-
+    name = proto.Field(proto.STRING, number=1,)
+    annotated_dataset = proto.Field(proto.STRING, number=2,)
+    filter = proto.Field(proto.STRING, number=3,)
     output_config = proto.Field(
         proto.MESSAGE, number=4, message=gcd_dataset.OutputConfig,
     )
-
-    user_email_address = proto.Field(proto.STRING, number=5)
+    user_email_address = proto.Field(proto.STRING, number=5,)
 
 
 class GetDataItemRequest(proto.Message):
     r"""Request message for GetDataItem.
-
     Attributes:
         name (str):
             Required. The name of the data item to get, format:
             projects/{project_id}/datasets/{dataset_id}/dataItems/{data_item_id}
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListDataItemsRequest(proto.Message):
     r"""Request message for ListDataItems.
-
     Attributes:
         parent (str):
             Required. Name of the dataset to list data items, format:
@@ -267,18 +244,14 @@ class ListDataItemsRequest(proto.Message):
             Return first page if empty.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class ListDataItemsResponse(proto.Message):
     r"""Results of listing data items in a dataset.
-
     Attributes:
         data_items (Sequence[google.cloud.datalabeling_v1beta1.types.DataItem]):
             The list of data items to return.
@@ -293,13 +266,11 @@ class ListDataItemsResponse(proto.Message):
     data_items = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gcd_dataset.DataItem,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetAnnotatedDatasetRequest(proto.Message):
     r"""Request message for GetAnnotatedDataset.
-
     Attributes:
         name (str):
             Required. Name of the annotated dataset to get, format:
@@ -307,12 +278,11 @@ class GetAnnotatedDatasetRequest(proto.Message):
             {annotated_dataset_id}
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListAnnotatedDatasetsRequest(proto.Message):
     r"""Request message for ListAnnotatedDatasets.
-
     Attributes:
         parent (str):
             Required. Name of the dataset to list annotated datasets,
@@ -332,18 +302,14 @@ class ListAnnotatedDatasetsRequest(proto.Message):
             call. Return first page if empty.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class ListAnnotatedDatasetsResponse(proto.Message):
     r"""Results of listing annotated datasets for a dataset.
-
     Attributes:
         annotated_datasets (Sequence[google.cloud.datalabeling_v1beta1.types.AnnotatedDataset]):
             The list of annotated datasets to return.
@@ -358,13 +324,11 @@ class ListAnnotatedDatasetsResponse(proto.Message):
     annotated_datasets = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gcd_dataset.AnnotatedDataset,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class DeleteAnnotatedDatasetRequest(proto.Message):
     r"""Request message for DeleteAnnotatedDataset.
-
     Attributes:
         name (str):
             Required. Name of the annotated dataset to delete, format:
@@ -372,12 +336,11 @@ class DeleteAnnotatedDatasetRequest(proto.Message):
             {annotated_dataset_id}
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class LabelImageRequest(proto.Message):
     r"""Request message for starting an image labeling task.
-
     Attributes:
         image_classification_config (google.cloud.datalabeling_v1beta1.types.ImageClassificationConfig):
             Configuration for image classification task. One of
@@ -420,40 +383,33 @@ class LabelImageRequest(proto.Message):
         oneof="request_config",
         message=human_annotation_config.ImageClassificationConfig,
     )
-
     bounding_poly_config = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="request_config",
         message=human_annotation_config.BoundingPolyConfig,
     )
-
     polyline_config = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="request_config",
         message=human_annotation_config.PolylineConfig,
     )
-
     segmentation_config = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="request_config",
         message=human_annotation_config.SegmentationConfig,
     )
-
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     basic_config = proto.Field(
         proto.MESSAGE, number=2, message=human_annotation_config.HumanAnnotationConfig,
     )
-
     feature = proto.Field(proto.ENUM, number=3, enum=Feature,)
 
 
 class LabelVideoRequest(proto.Message):
     r"""Request message for LabelVideo.
-
     Attributes:
         video_classification_config (google.cloud.datalabeling_v1beta1.types.VideoClassificationConfig):
             Configuration for video classification task. One of
@@ -494,40 +450,33 @@ class LabelVideoRequest(proto.Message):
         oneof="request_config",
         message=human_annotation_config.VideoClassificationConfig,
     )
-
     object_detection_config = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="request_config",
         message=human_annotation_config.ObjectDetectionConfig,
     )
-
     object_tracking_config = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="request_config",
         message=human_annotation_config.ObjectTrackingConfig,
     )
-
     event_config = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="request_config",
         message=human_annotation_config.EventConfig,
     )
-
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     basic_config = proto.Field(
         proto.MESSAGE, number=2, message=human_annotation_config.HumanAnnotationConfig,
     )
-
     feature = proto.Field(proto.ENUM, number=3, enum=Feature,)
 
 
 class LabelTextRequest(proto.Message):
     r"""Request message for LabelText.
-
     Attributes:
         text_classification_config (google.cloud.datalabeling_v1beta1.types.TextClassificationConfig):
             Configuration for text classification task. One of
@@ -558,26 +507,21 @@ class LabelTextRequest(proto.Message):
         oneof="request_config",
         message=human_annotation_config.TextClassificationConfig,
     )
-
     text_entity_extraction_config = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="request_config",
         message=human_annotation_config.TextEntityExtractionConfig,
     )
-
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     basic_config = proto.Field(
         proto.MESSAGE, number=2, message=human_annotation_config.HumanAnnotationConfig,
     )
-
     feature = proto.Field(proto.ENUM, number=6, enum=Feature,)
 
 
 class GetExampleRequest(proto.Message):
     r"""Request message for GetExample
-
     Attributes:
         name (str):
             Required. Name of example, format:
@@ -589,14 +533,12 @@ class GetExampleRequest(proto.Message):
             "annotation_spec.display_name = {display_name}".
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=2,)
 
 
 class ListExamplesRequest(proto.Message):
     r"""Request message for ListExamples.
-
     Attributes:
         parent (str):
             Required. Example resource parent.
@@ -617,18 +559,14 @@ class ListExamplesRequest(proto.Message):
             Return first page if empty.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class ListExamplesResponse(proto.Message):
     r"""Results of listing Examples in and annotated dataset.
-
     Attributes:
         examples (Sequence[google.cloud.datalabeling_v1beta1.types.Example]):
             The list of examples to return.
@@ -643,13 +581,11 @@ class ListExamplesResponse(proto.Message):
     examples = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gcd_dataset.Example,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class CreateAnnotationSpecSetRequest(proto.Message):
     r"""Request message for CreateAnnotationSpecSet.
-
     Attributes:
         parent (str):
             Required. AnnotationSpecSet resource parent, format:
@@ -660,8 +596,7 @@ class CreateAnnotationSpecSetRequest(proto.Message):
             for annotation specs with same display_name.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     annotation_spec_set = proto.Field(
         proto.MESSAGE, number=2, message=gcd_annotation_spec_set.AnnotationSpecSet,
     )
@@ -669,19 +604,17 @@ class CreateAnnotationSpecSetRequest(proto.Message):
 
 class GetAnnotationSpecSetRequest(proto.Message):
     r"""Request message for GetAnnotationSpecSet.
-
     Attributes:
         name (str):
             Required. AnnotationSpecSet resource name, format:
             projects/{project_id}/annotationSpecSets/{annotation_spec_set_id}
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListAnnotationSpecSetsRequest(proto.Message):
     r"""Request message for ListAnnotationSpecSets.
-
     Attributes:
         parent (str):
             Required. Parent of AnnotationSpecSet resource, format:
@@ -701,18 +634,14 @@ class ListAnnotationSpecSetsRequest(proto.Message):
             call. Return first page if empty.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class ListAnnotationSpecSetsResponse(proto.Message):
     r"""Results of listing annotation spec set under a project.
-
     Attributes:
         annotation_spec_sets (Sequence[google.cloud.datalabeling_v1beta1.types.AnnotationSpecSet]):
             The list of annotation spec sets.
@@ -727,25 +656,22 @@ class ListAnnotationSpecSetsResponse(proto.Message):
     annotation_spec_sets = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gcd_annotation_spec_set.AnnotationSpecSet,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class DeleteAnnotationSpecSetRequest(proto.Message):
     r"""Request message for DeleteAnnotationSpecSet.
-
     Attributes:
         name (str):
             Required. AnnotationSpec resource name, format:
             ``projects/{project_id}/annotationSpecSets/{annotation_spec_set_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateInstructionRequest(proto.Message):
     r"""Request message for CreateInstruction.
-
     Attributes:
         parent (str):
             Required. Instruction resource parent, format:
@@ -755,8 +681,7 @@ class CreateInstructionRequest(proto.Message):
             labeling task.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     instruction = proto.Field(
         proto.MESSAGE, number=2, message=gcd_instruction.Instruction,
     )
@@ -764,31 +689,28 @@ class CreateInstructionRequest(proto.Message):
 
 class GetInstructionRequest(proto.Message):
     r"""Request message for GetInstruction.
-
     Attributes:
         name (str):
             Required. Instruction resource name, format:
             projects/{project_id}/instructions/{instruction_id}
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class DeleteInstructionRequest(proto.Message):
     r"""Request message for DeleteInstruction.
-
     Attributes:
         name (str):
             Required. Instruction resource name, format:
             projects/{project_id}/instructions/{instruction_id}
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListInstructionsRequest(proto.Message):
     r"""Request message for ListInstructions.
-
     Attributes:
         parent (str):
             Required. Instruction resource parent, format:
@@ -808,18 +730,14 @@ class ListInstructionsRequest(proto.Message):
             Return first page if empty.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class ListInstructionsResponse(proto.Message):
     r"""Results of listing instructions under a project.
-
     Attributes:
         instructions (Sequence[google.cloud.datalabeling_v1beta1.types.Instruction]):
             The list of Instructions to return.
@@ -834,13 +752,11 @@ class ListInstructionsResponse(proto.Message):
     instructions = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gcd_instruction.Instruction,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetEvaluationRequest(proto.Message):
     r"""Request message for GetEvaluation.
-
     Attributes:
         name (str):
             Required. Name of the evaluation. Format:
@@ -848,12 +764,11 @@ class GetEvaluationRequest(proto.Message):
             "projects/{project_id}/datasets/{dataset_id}/evaluations/{evaluation_id}'
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class SearchEvaluationsRequest(proto.Message):
     r"""Request message for SearchEvaluation.
-
     Attributes:
         parent (str):
             Required. Evaluation search parent (project ID). Format:
@@ -904,18 +819,14 @@ class SearchEvaluationsRequest(proto.Message):
             first page of the search.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class SearchEvaluationsResponse(proto.Message):
     r"""Results of searching evaluations.
-
     Attributes:
         evaluations (Sequence[google.cloud.datalabeling_v1beta1.types.Evaluation]):
             The list of evaluations matching the search.
@@ -930,13 +841,11 @@ class SearchEvaluationsResponse(proto.Message):
     evaluations = proto.RepeatedField(
         proto.MESSAGE, number=1, message=evaluation.Evaluation,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class SearchExampleComparisonsRequest(proto.Message):
     r"""Request message of SearchExampleComparisons.
-
     Attributes:
         parent (str):
             Required. Name of the
@@ -958,16 +867,13 @@ class SearchExampleComparisonsRequest(proto.Message):
             first page of the search.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class SearchExampleComparisonsResponse(proto.Message):
     r"""Results of searching example comparisons.
-
     Attributes:
         example_comparisons (Sequence[google.cloud.datalabeling_v1beta1.types.SearchExampleComparisonsResponse.ExampleComparison]):
             A list of example comparisons matching the
@@ -990,7 +896,6 @@ class SearchExampleComparisonsResponse(proto.Message):
         ground_truth_example = proto.Field(
             proto.MESSAGE, number=1, message=gcd_dataset.Example,
         )
-
         model_created_examples = proto.RepeatedField(
             proto.MESSAGE, number=2, message=gcd_dataset.Example,
         )
@@ -1002,13 +907,11 @@ class SearchExampleComparisonsResponse(proto.Message):
     example_comparisons = proto.RepeatedField(
         proto.MESSAGE, number=1, message=ExampleComparison,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class CreateEvaluationJobRequest(proto.Message):
     r"""Request message for CreateEvaluationJob.
-
     Attributes:
         parent (str):
             Required. Evaluation job resource parent. Format:
@@ -1017,8 +920,7 @@ class CreateEvaluationJobRequest(proto.Message):
             Required. The evaluation job to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     job = proto.Field(
         proto.MESSAGE, number=2, message=gcd_evaluation_job.EvaluationJob,
     )
@@ -1026,7 +928,6 @@ class CreateEvaluationJobRequest(proto.Message):
 
 class UpdateEvaluationJobRequest(proto.Message):
     r"""Request message for UpdateEvaluationJob.
-
     Attributes:
         evaluation_job (google.cloud.datalabeling_v1beta1.types.EvaluationJob):
             Required. Evaluation job that is going to be
@@ -1046,13 +947,13 @@ class UpdateEvaluationJobRequest(proto.Message):
     evaluation_job = proto.Field(
         proto.MESSAGE, number=1, message=gcd_evaluation_job.EvaluationJob,
     )
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class GetEvaluationJobRequest(proto.Message):
     r"""Request message for GetEvaluationJob.
-
     Attributes:
         name (str):
             Required. Name of the evaluation job. Format:
@@ -1060,12 +961,11 @@ class GetEvaluationJobRequest(proto.Message):
             "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class PauseEvaluationJobRequest(proto.Message):
     r"""Request message for PauseEvaluationJob.
-
     Attributes:
         name (str):
             Required. Name of the evaluation job that is going to be
@@ -1074,12 +974,11 @@ class PauseEvaluationJobRequest(proto.Message):
             "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ResumeEvaluationJobRequest(proto.Message):
     r"""Request message ResumeEvaluationJob.
-
     Attributes:
         name (str):
             Required. Name of the evaluation job that is going to be
@@ -1088,12 +987,11 @@ class ResumeEvaluationJobRequest(proto.Message):
             "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class DeleteEvaluationJobRequest(proto.Message):
     r"""Request message DeleteEvaluationJob.
-
     Attributes:
         name (str):
             Required. Name of the evaluation job that is going to be
@@ -1102,12 +1000,11 @@ class DeleteEvaluationJobRequest(proto.Message):
             "projects/{project_id}/evaluationJobs/{evaluation_job_id}".
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListEvaluationJobsRequest(proto.Message):
     r"""Request message for ListEvaluationJobs.
-
     Attributes:
         parent (str):
             Required. Evaluation job resource parent. Format:
@@ -1135,18 +1032,14 @@ class ListEvaluationJobsRequest(proto.Message):
             the first page if this is empty.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class ListEvaluationJobsResponse(proto.Message):
     r"""Results for listing evaluation jobs.
-
     Attributes:
         evaluation_jobs (Sequence[google.cloud.datalabeling_v1beta1.types.EvaluationJob]):
             The list of evaluation jobs to return.
@@ -1161,8 +1054,7 @@ class ListEvaluationJobsResponse(proto.Message):
     evaluation_jobs = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gcd_evaluation_job.EvaluationJob,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
