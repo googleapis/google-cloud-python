@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.monitoring_dashboard_v1.types import metrics
-from google.protobuf import duration_pb2 as duration  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -29,7 +26,6 @@ __protobuf__ = proto.module(
 
 class XyChart(proto.Message):
     r"""A chart that displays data on a 2D (X and Y axes) plane.
-
     Attributes:
         data_sets (Sequence[google.cloud.monitoring_dashboard_v1.types.XyChart.DataSet]):
             Required. The data displayed in this chart.
@@ -54,7 +50,6 @@ class XyChart(proto.Message):
 
     class DataSet(proto.Message):
         r"""Groups a time series query definition with charting options.
-
         Attributes:
             time_series_query (google.cloud.monitoring_dashboard_v1.types.TimeSeriesQuery):
                 Required. Fields for querying time series
@@ -69,7 +64,7 @@ class XyChart(proto.Message):
             min_alignment_period (google.protobuf.duration_pb2.Duration):
                 Optional. The lower bound on data point frequency for this
                 data set, implemented by specifying the minimum alignment
-                period to use in a time series query For example, if the
+                period to use in a time series query. For example, if the
                 data is published once every 10 minutes, the
                 ``min_alignment_period`` should be at least 10 minutes. It
                 would not make sense to fetch and align data at one minute
@@ -87,18 +82,14 @@ class XyChart(proto.Message):
         time_series_query = proto.Field(
             proto.MESSAGE, number=1, message=metrics.TimeSeriesQuery,
         )
-
         plot_type = proto.Field(proto.ENUM, number=2, enum="XyChart.DataSet.PlotType",)
-
-        legend_template = proto.Field(proto.STRING, number=3)
-
+        legend_template = proto.Field(proto.STRING, number=3,)
         min_alignment_period = proto.Field(
-            proto.MESSAGE, number=4, message=duration.Duration,
+            proto.MESSAGE, number=4, message=duration_pb2.Duration,
         )
 
     class Axis(proto.Message):
         r"""A chart axis.
-
         Attributes:
             label (str):
                 The label of the axis.
@@ -113,30 +104,23 @@ class XyChart(proto.Message):
             LINEAR = 1
             LOG10 = 2
 
-        label = proto.Field(proto.STRING, number=1)
-
+        label = proto.Field(proto.STRING, number=1,)
         scale = proto.Field(proto.ENUM, number=2, enum="XyChart.Axis.Scale",)
 
     data_sets = proto.RepeatedField(proto.MESSAGE, number=1, message=DataSet,)
-
     timeshift_duration = proto.Field(
-        proto.MESSAGE, number=4, message=duration.Duration,
+        proto.MESSAGE, number=4, message=duration_pb2.Duration,
     )
-
     thresholds = proto.RepeatedField(
         proto.MESSAGE, number=5, message=metrics.Threshold,
     )
-
     x_axis = proto.Field(proto.MESSAGE, number=6, message=Axis,)
-
     y_axis = proto.Field(proto.MESSAGE, number=7, message=Axis,)
-
     chart_options = proto.Field(proto.MESSAGE, number=8, message="ChartOptions",)
 
 
 class ChartOptions(proto.Message):
     r"""Options to control visual rendering of a chart.
-
     Attributes:
         mode (google.cloud.monitoring_dashboard_v1.types.ChartOptions.Mode):
             The chart mode.

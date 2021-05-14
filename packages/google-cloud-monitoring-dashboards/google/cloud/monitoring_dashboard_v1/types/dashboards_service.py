@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.monitoring_dashboard_v1.types import dashboard as gmd_dashboard
 
@@ -36,7 +33,6 @@ __protobuf__ = proto.module(
 
 class CreateDashboardRequest(proto.Message):
     r"""The ``CreateDashboard`` request.
-
     Attributes:
         parent (str):
             Required. The project on which to execute the request. The
@@ -53,14 +49,12 @@ class CreateDashboardRequest(proto.Message):
             specification.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     dashboard = proto.Field(proto.MESSAGE, number=2, message=gmd_dashboard.Dashboard,)
 
 
 class ListDashboardsRequest(proto.Message):
     r"""The ``ListDashboards`` request.
-
     Attributes:
         parent (str):
             Required. The scope of the dashboards to list. The format
@@ -80,16 +74,13 @@ class ListDashboardsRequest(proto.Message):
             additional results from the previous method call.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListDashboardsResponse(proto.Message):
     r"""The ``ListDashboards`` request.
-
     Attributes:
         dashboards (Sequence[google.cloud.monitoring_dashboard_v1.types.Dashboard]):
             The list of requested dashboards.
@@ -107,13 +98,11 @@ class ListDashboardsResponse(proto.Message):
     dashboards = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gmd_dashboard.Dashboard,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetDashboardRequest(proto.Message):
     r"""The ``GetDashboard`` request.
-
     Attributes:
         name (str):
             Required. The resource name of the Dashboard. The format is
@@ -124,12 +113,11 @@ class GetDashboardRequest(proto.Message):
                (for custom dashboards).
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class DeleteDashboardRequest(proto.Message):
     r"""The ``DeleteDashboard`` request.
-
     Attributes:
         name (str):
             Required. The resource name of the Dashboard. The format is:
@@ -139,12 +127,11 @@ class DeleteDashboardRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class UpdateDashboardRequest(proto.Message):
     r"""The ``UpdateDashboard`` request.
-
     Attributes:
         dashboard (google.cloud.monitoring_dashboard_v1.types.Dashboard):
             Required. The dashboard that will replace the

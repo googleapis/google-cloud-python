@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.monitoring_dashboard_v1.types import widget as gmd_widget
 
@@ -42,8 +39,7 @@ class GridLayout(proto.Message):
             into the columns row-first.
     """
 
-    columns = proto.Field(proto.INT64, number=1)
-
+    columns = proto.Field(proto.INT64, number=1,)
     widgets = proto.RepeatedField(proto.MESSAGE, number=2, message=gmd_widget.Widget,)
 
 
@@ -87,18 +83,13 @@ class MosaicLayout(proto.Message):
                 an ``XyChart``.
         """
 
-        x_pos = proto.Field(proto.INT32, number=1)
-
-        y_pos = proto.Field(proto.INT32, number=2)
-
-        width = proto.Field(proto.INT32, number=3)
-
-        height = proto.Field(proto.INT32, number=4)
-
+        x_pos = proto.Field(proto.INT32, number=1,)
+        y_pos = proto.Field(proto.INT32, number=2,)
+        width = proto.Field(proto.INT32, number=3,)
+        height = proto.Field(proto.INT32, number=4,)
         widget = proto.Field(proto.MESSAGE, number=5, message=gmd_widget.Widget,)
 
-    columns = proto.Field(proto.INT32, number=1)
-
+    columns = proto.Field(proto.INT32, number=1,)
     tiles = proto.RepeatedField(proto.MESSAGE, number=3, message=Tile,)
 
 
@@ -113,7 +104,6 @@ class RowLayout(proto.Message):
 
     class Row(proto.Message):
         r"""Defines the layout properties and content for a row.
-
         Attributes:
             weight (int):
                 The relative weight of this row. The row
@@ -127,8 +117,7 @@ class RowLayout(proto.Message):
                 this row.
         """
 
-        weight = proto.Field(proto.INT64, number=1)
-
+        weight = proto.Field(proto.INT64, number=1,)
         widgets = proto.RepeatedField(
             proto.MESSAGE, number=2, message=gmd_widget.Widget,
         )
@@ -148,7 +137,6 @@ class ColumnLayout(proto.Message):
 
     class Column(proto.Message):
         r"""Defines the layout properties and content for a column.
-
         Attributes:
             weight (int):
                 The relative weight of this column. The
@@ -162,8 +150,7 @@ class ColumnLayout(proto.Message):
                 this column.
         """
 
-        weight = proto.Field(proto.INT64, number=1)
-
+        weight = proto.Field(proto.INT64, number=1,)
         widgets = proto.RepeatedField(
             proto.MESSAGE, number=2, message=gmd_widget.Widget,
         )

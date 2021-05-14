@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,8 @@
 #
 
 from .services.dashboards_service import DashboardsServiceClient
+from .services.dashboards_service import DashboardsServiceAsyncClient
+
 from .types.common import Aggregation
 from .types.common import PickTimeSeriesFilter
 from .types.common import StatisticalTimeSeriesFilter
@@ -30,24 +31,25 @@ from .types.layouts import ColumnLayout
 from .types.layouts import GridLayout
 from .types.layouts import MosaicLayout
 from .types.layouts import RowLayout
-from .types.metrics import SparkChartType
 from .types.metrics import Threshold
 from .types.metrics import TimeSeriesFilter
 from .types.metrics import TimeSeriesFilterRatio
 from .types.metrics import TimeSeriesQuery
+from .types.metrics import SparkChartType
 from .types.scorecard import Scorecard
 from .types.text import Text
 from .types.widget import Widget
 from .types.xychart import ChartOptions
 from .types.xychart import XyChart
 
-
 __all__ = (
+    "DashboardsServiceAsyncClient",
     "Aggregation",
     "ChartOptions",
     "ColumnLayout",
     "CreateDashboardRequest",
     "Dashboard",
+    "DashboardsServiceClient",
     "DeleteDashboardRequest",
     "GetDashboardRequest",
     "GridLayout",
@@ -67,5 +69,4 @@ __all__ = (
     "UpdateDashboardRequest",
     "Widget",
     "XyChart",
-    "DashboardsServiceClient",
 )

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +14,13 @@
 # limitations under the License.
 #
 
-from google.cloud.monitoring_dashboard_v1.services.dashboards_service.async_client import (
-    DashboardsServiceAsyncClient,
-)
 from google.cloud.monitoring_dashboard_v1.services.dashboards_service.client import (
     DashboardsServiceClient,
 )
+from google.cloud.monitoring_dashboard_v1.services.dashboards_service.async_client import (
+    DashboardsServiceAsyncClient,
+)
+
 from google.cloud.monitoring_dashboard_v1.types.common import Aggregation
 from google.cloud.monitoring_dashboard_v1.types.common import PickTimeSeriesFilter
 from google.cloud.monitoring_dashboard_v1.types.common import (
@@ -49,11 +49,11 @@ from google.cloud.monitoring_dashboard_v1.types.layouts import ColumnLayout
 from google.cloud.monitoring_dashboard_v1.types.layouts import GridLayout
 from google.cloud.monitoring_dashboard_v1.types.layouts import MosaicLayout
 from google.cloud.monitoring_dashboard_v1.types.layouts import RowLayout
-from google.cloud.monitoring_dashboard_v1.types.metrics import SparkChartType
 from google.cloud.monitoring_dashboard_v1.types.metrics import Threshold
 from google.cloud.monitoring_dashboard_v1.types.metrics import TimeSeriesFilter
 from google.cloud.monitoring_dashboard_v1.types.metrics import TimeSeriesFilterRatio
 from google.cloud.monitoring_dashboard_v1.types.metrics import TimeSeriesQuery
+from google.cloud.monitoring_dashboard_v1.types.metrics import SparkChartType
 from google.cloud.monitoring_dashboard_v1.types.scorecard import Scorecard
 from google.cloud.monitoring_dashboard_v1.types.text import Text
 from google.cloud.monitoring_dashboard_v1.types.widget import Widget
@@ -61,30 +61,30 @@ from google.cloud.monitoring_dashboard_v1.types.xychart import ChartOptions
 from google.cloud.monitoring_dashboard_v1.types.xychart import XyChart
 
 __all__ = (
-    "Aggregation",
-    "ChartOptions",
-    "ColumnLayout",
-    "CreateDashboardRequest",
-    "Dashboard",
-    "DashboardsServiceAsyncClient",
     "DashboardsServiceClient",
+    "DashboardsServiceAsyncClient",
+    "Aggregation",
+    "PickTimeSeriesFilter",
+    "StatisticalTimeSeriesFilter",
+    "Dashboard",
+    "CreateDashboardRequest",
     "DeleteDashboardRequest",
     "GetDashboardRequest",
-    "GridLayout",
     "ListDashboardsRequest",
     "ListDashboardsResponse",
+    "UpdateDashboardRequest",
+    "ColumnLayout",
+    "GridLayout",
     "MosaicLayout",
-    "PickTimeSeriesFilter",
     "RowLayout",
-    "Scorecard",
-    "SparkChartType",
-    "StatisticalTimeSeriesFilter",
-    "Text",
     "Threshold",
     "TimeSeriesFilter",
     "TimeSeriesFilterRatio",
     "TimeSeriesQuery",
-    "UpdateDashboardRequest",
+    "SparkChartType",
+    "Scorecard",
+    "Text",
     "Widget",
+    "ChartOptions",
     "XyChart",
 )

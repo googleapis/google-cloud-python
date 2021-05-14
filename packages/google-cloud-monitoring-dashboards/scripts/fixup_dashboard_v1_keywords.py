@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,12 +39,11 @@ def partition(
 class dashboardCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'create_dashboard': ('parent', 'dashboard', ),
-    'delete_dashboard': ('name', ),
-    'get_dashboard': ('name', ),
-    'list_dashboards': ('parent', 'page_size', 'page_token', ),
-    'update_dashboard': ('dashboard', ),
-
+          'create_dashboard': ('parent', 'dashboard', ),
+          'delete_dashboard': ('name', ),
+          'get_dashboard': ('name', ),
+          'list_dashboards': ('parent', 'page_size', 'page_token', ),
+          'update_dashboard': ('dashboard', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -77,7 +74,7 @@ class dashboardCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

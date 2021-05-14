@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.monitoring_dashboard_v1.types import scorecard as gmd_scorecard
 from google.cloud.monitoring_dashboard_v1.types import text as gmd_text
 from google.cloud.monitoring_dashboard_v1.types import xychart
-from google.protobuf import empty_pb2 as empty  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -47,19 +44,17 @@ class Widget(proto.Message):
             A blank space.
     """
 
-    title = proto.Field(proto.STRING, number=1)
-
+    title = proto.Field(proto.STRING, number=1,)
     xy_chart = proto.Field(
         proto.MESSAGE, number=2, oneof="content", message=xychart.XyChart,
     )
-
     scorecard = proto.Field(
         proto.MESSAGE, number=3, oneof="content", message=gmd_scorecard.Scorecard,
     )
-
     text = proto.Field(proto.MESSAGE, number=4, oneof="content", message=gmd_text.Text,)
-
-    blank = proto.Field(proto.MESSAGE, number=5, oneof="content", message=empty.Empty,)
+    blank = proto.Field(
+        proto.MESSAGE, number=5, oneof="content", message=empty_pb2.Empty,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
