@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,13 +39,12 @@ def partition(
 class bigtableCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'check_and_mutate_row': ('table_name', 'row_key', 'app_profile_id', 'predicate_filter', 'true_mutations', 'false_mutations', ),
-    'mutate_row': ('table_name', 'row_key', 'mutations', 'app_profile_id', ),
-    'mutate_rows': ('table_name', 'entries', 'app_profile_id', ),
-    'read_modify_write_row': ('table_name', 'row_key', 'rules', 'app_profile_id', ),
-    'read_rows': ('table_name', 'app_profile_id', 'rows', 'filter', 'rows_limit', ),
-    'sample_row_keys': ('table_name', 'app_profile_id', ),
-
+          'check_and_mutate_row': ('table_name', 'row_key', 'app_profile_id', 'predicate_filter', 'true_mutations', 'false_mutations', ),
+          'mutate_row': ('table_name', 'row_key', 'mutations', 'app_profile_id', ),
+          'mutate_rows': ('table_name', 'entries', 'app_profile_id', ),
+          'read_modify_write_row': ('table_name', 'row_key', 'rules', 'app_profile_id', ),
+          'read_rows': ('table_name', 'app_profile_id', 'rows', 'filter', 'rows_limit', ),
+          'sample_row_keys': ('table_name', 'app_profile_id', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -78,7 +75,7 @@ class bigtableCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that
