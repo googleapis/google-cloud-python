@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.osconfig_v1.types import patch_jobs
-from google.protobuf import duration_pb2 as gp_duration  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.type import datetime_pb2 as datetime  # type: ignore
-from google.type import dayofweek_pb2 as dayofweek  # type: ignore
-from google.type import timeofday_pb2 as timeofday  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import datetime_pb2  # type: ignore
+from google.type import dayofweek_pb2  # type: ignore
+from google.type import timeofday_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -93,34 +90,24 @@ class PatchDeployment(proto.Message):
             Optional. Rollout strategy of the patch job.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    description = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    description = proto.Field(proto.STRING, number=2,)
     instance_filter = proto.Field(
         proto.MESSAGE, number=3, message=patch_jobs.PatchInstanceFilter,
     )
-
     patch_config = proto.Field(proto.MESSAGE, number=4, message=patch_jobs.PatchConfig,)
-
-    duration = proto.Field(proto.MESSAGE, number=5, message=gp_duration.Duration,)
-
+    duration = proto.Field(proto.MESSAGE, number=5, message=duration_pb2.Duration,)
     one_time_schedule = proto.Field(
         proto.MESSAGE, number=6, oneof="schedule", message="OneTimeSchedule",
     )
-
     recurring_schedule = proto.Field(
         proto.MESSAGE, number=7, oneof="schedule", message="RecurringSchedule",
     )
-
-    create_time = proto.Field(proto.MESSAGE, number=8, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=9, message=timestamp.Timestamp,)
-
+    create_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
     last_execute_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp.Timestamp,
+        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
     )
-
     rollout = proto.Field(proto.MESSAGE, number=11, message=patch_jobs.PatchRollout,)
 
 
@@ -134,12 +121,13 @@ class OneTimeSchedule(proto.Message):
             time.
     """
 
-    execute_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
+    execute_time = proto.Field(
+        proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+    )
 
 
 class RecurringSchedule(proto.Message):
     r"""Sets the time for recurring patch deployments.
-
     Attributes:
         time_zone (google.type.datetime_pb2.TimeZone):
             Required. Defines the time zone that ``time_of_day`` is
@@ -176,42 +164,33 @@ class RecurringSchedule(proto.Message):
         WEEKLY = 1
         MONTHLY = 2
 
-    time_zone = proto.Field(proto.MESSAGE, number=1, message=datetime.TimeZone,)
-
-    start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
-    end_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
-
-    time_of_day = proto.Field(proto.MESSAGE, number=4, message=timeofday.TimeOfDay,)
-
+    time_zone = proto.Field(proto.MESSAGE, number=1, message=datetime_pb2.TimeZone,)
+    start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    time_of_day = proto.Field(proto.MESSAGE, number=4, message=timeofday_pb2.TimeOfDay,)
     frequency = proto.Field(proto.ENUM, number=5, enum=Frequency,)
-
     weekly = proto.Field(
         proto.MESSAGE, number=6, oneof="schedule_config", message="WeeklySchedule",
     )
-
     monthly = proto.Field(
         proto.MESSAGE, number=7, oneof="schedule_config", message="MonthlySchedule",
     )
-
     last_execute_time = proto.Field(
-        proto.MESSAGE, number=9, message=timestamp.Timestamp,
+        proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,
     )
-
     next_execute_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp.Timestamp,
+        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
     )
 
 
 class WeeklySchedule(proto.Message):
     r"""Represents a weekly schedule.
-
     Attributes:
         day_of_week (google.type.dayofweek_pb2.DayOfWeek):
             Required. Day of the week.
     """
 
-    day_of_week = proto.Field(proto.ENUM, number=1, enum=dayofweek.DayOfWeek,)
+    day_of_week = proto.Field(proto.ENUM, number=1, enum=dayofweek_pb2.DayOfWeek,)
 
 
 class MonthlySchedule(proto.Message):
@@ -234,8 +213,7 @@ class MonthlySchedule(proto.Message):
     week_day_of_month = proto.Field(
         proto.MESSAGE, number=1, oneof="day_of_month", message="WeekDayOfMonth",
     )
-
-    month_day = proto.Field(proto.INT32, number=2, oneof="day_of_month")
+    month_day = proto.Field(proto.INT32, number=2, oneof="day_of_month",)
 
 
 class WeekDayOfMonth(proto.Message):
@@ -251,14 +229,12 @@ class WeekDayOfMonth(proto.Message):
             Required. A day of the week.
     """
 
-    week_ordinal = proto.Field(proto.INT32, number=1)
-
-    day_of_week = proto.Field(proto.ENUM, number=2, enum=dayofweek.DayOfWeek,)
+    week_ordinal = proto.Field(proto.INT32, number=1,)
+    day_of_week = proto.Field(proto.ENUM, number=2, enum=dayofweek_pb2.DayOfWeek,)
 
 
 class CreatePatchDeploymentRequest(proto.Message):
     r"""A request message for creating a patch deployment.
-
     Attributes:
         parent (str):
             Required. The project to apply this patch deployment to in
@@ -277,28 +253,24 @@ class CreatePatchDeploymentRequest(proto.Message):
             Required. The patch deployment to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    patch_deployment_id = proto.Field(proto.STRING, number=2)
-
+    parent = proto.Field(proto.STRING, number=1,)
+    patch_deployment_id = proto.Field(proto.STRING, number=2,)
     patch_deployment = proto.Field(proto.MESSAGE, number=3, message="PatchDeployment",)
 
 
 class GetPatchDeploymentRequest(proto.Message):
     r"""A request message for retrieving a patch deployment.
-
     Attributes:
         name (str):
             Required. The resource name of the patch deployment in the
             form ``projects/*/patchDeployments/*``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListPatchDeploymentsRequest(proto.Message):
     r"""A request message for listing patch deployments.
-
     Attributes:
         parent (str):
             Required. The resource name of the parent in the form
@@ -313,16 +285,13 @@ class ListPatchDeploymentsRequest(proto.Message):
             from.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListPatchDeploymentsResponse(proto.Message):
     r"""A response message for listing patch deployments.
-
     Attributes:
         patch_deployments (Sequence[google.cloud.osconfig_v1.types.PatchDeployment]):
             The list of patch deployments.
@@ -338,20 +307,18 @@ class ListPatchDeploymentsResponse(proto.Message):
     patch_deployments = proto.RepeatedField(
         proto.MESSAGE, number=1, message="PatchDeployment",
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class DeletePatchDeploymentRequest(proto.Message):
     r"""A request message for deleting a patch deployment.
-
     Attributes:
         name (str):
             Required. The resource name of the patch deployment in the
             form ``projects/*/patchDeployments/*``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

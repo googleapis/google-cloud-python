@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +14,13 @@
 # limitations under the License.
 #
 
-from google.cloud.osconfig_v1.services.os_config_service.async_client import (
-    OsConfigServiceAsyncClient,
-)
 from google.cloud.osconfig_v1.services.os_config_service.client import (
     OsConfigServiceClient,
 )
+from google.cloud.osconfig_v1.services.os_config_service.async_client import (
+    OsConfigServiceAsyncClient,
+)
+
 from google.cloud.osconfig_v1.types.inventory import Inventory
 from google.cloud.osconfig_v1.types.osconfig_common import FixedOrPercent
 from google.cloud.osconfig_v1.types.patch_deployments import (
@@ -65,39 +65,39 @@ from google.cloud.osconfig_v1.types.patch_jobs import YumSettings
 from google.cloud.osconfig_v1.types.patch_jobs import ZypperSettings
 
 __all__ = (
-    "AptSettings",
-    "CancelPatchJobRequest",
+    "OsConfigServiceClient",
+    "OsConfigServiceAsyncClient",
+    "Inventory",
+    "FixedOrPercent",
     "CreatePatchDeploymentRequest",
     "DeletePatchDeploymentRequest",
+    "GetPatchDeploymentRequest",
+    "ListPatchDeploymentsRequest",
+    "ListPatchDeploymentsResponse",
+    "MonthlySchedule",
+    "OneTimeSchedule",
+    "PatchDeployment",
+    "RecurringSchedule",
+    "WeekDayOfMonth",
+    "WeeklySchedule",
+    "AptSettings",
+    "CancelPatchJobRequest",
     "ExecStep",
     "ExecStepConfig",
     "ExecutePatchJobRequest",
-    "FixedOrPercent",
     "GcsObject",
-    "GetPatchDeploymentRequest",
     "GetPatchJobRequest",
     "GooSettings",
     "Instance",
-    "Inventory",
-    "ListPatchDeploymentsRequest",
-    "ListPatchDeploymentsResponse",
     "ListPatchJobInstanceDetailsRequest",
     "ListPatchJobInstanceDetailsResponse",
     "ListPatchJobsRequest",
     "ListPatchJobsResponse",
-    "MonthlySchedule",
-    "OneTimeSchedule",
-    "OsConfigServiceAsyncClient",
-    "OsConfigServiceClient",
     "PatchConfig",
-    "PatchDeployment",
     "PatchInstanceFilter",
     "PatchJob",
     "PatchJobInstanceDetails",
     "PatchRollout",
-    "RecurringSchedule",
-    "WeekDayOfMonth",
-    "WeeklySchedule",
     "WindowsUpdateSettings",
     "YumSettings",
     "ZypperSettings",

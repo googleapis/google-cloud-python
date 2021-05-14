@@ -1,0 +1,113 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.osconfig_v1",
+  "protoPackage": "google.cloud.osconfig.v1",
+  "schema": "1.0",
+  "services": {
+    "OsConfigService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "OsConfigServiceClient",
+          "rpcs": {
+            "CancelPatchJob": {
+              "methods": [
+                "cancel_patch_job"
+              ]
+            },
+            "CreatePatchDeployment": {
+              "methods": [
+                "create_patch_deployment"
+              ]
+            },
+            "DeletePatchDeployment": {
+              "methods": [
+                "delete_patch_deployment"
+              ]
+            },
+            "ExecutePatchJob": {
+              "methods": [
+                "execute_patch_job"
+              ]
+            },
+            "GetPatchDeployment": {
+              "methods": [
+                "get_patch_deployment"
+              ]
+            },
+            "GetPatchJob": {
+              "methods": [
+                "get_patch_job"
+              ]
+            },
+            "ListPatchDeployments": {
+              "methods": [
+                "list_patch_deployments"
+              ]
+            },
+            "ListPatchJobInstanceDetails": {
+              "methods": [
+                "list_patch_job_instance_details"
+              ]
+            },
+            "ListPatchJobs": {
+              "methods": [
+                "list_patch_jobs"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "OsConfigServiceAsyncClient",
+          "rpcs": {
+            "CancelPatchJob": {
+              "methods": [
+                "cancel_patch_job"
+              ]
+            },
+            "CreatePatchDeployment": {
+              "methods": [
+                "create_patch_deployment"
+              ]
+            },
+            "DeletePatchDeployment": {
+              "methods": [
+                "delete_patch_deployment"
+              ]
+            },
+            "ExecutePatchJob": {
+              "methods": [
+                "execute_patch_job"
+              ]
+            },
+            "GetPatchDeployment": {
+              "methods": [
+                "get_patch_deployment"
+              ]
+            },
+            "GetPatchJob": {
+              "methods": [
+                "get_patch_job"
+              ]
+            },
+            "ListPatchDeployments": {
+              "methods": [
+                "list_patch_deployments"
+              ]
+            },
+            "ListPatchJobInstanceDetails": {
+              "methods": [
+                "list_patch_job_instance_details"
+              ]
+            },
+            "ListPatchJobs": {
+              "methods": [
+                "list_patch_jobs"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
