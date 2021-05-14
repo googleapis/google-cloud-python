@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -95,30 +92,22 @@ class Secret(proto.Message):
             excluded if there is no rotation policy.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     replication = proto.Field(proto.MESSAGE, number=2, message="Replication",)
-
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4)
-
+    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
     topics = proto.RepeatedField(proto.MESSAGE, number=5, message="Topic",)
-
     expire_time = proto.Field(
-        proto.MESSAGE, number=6, oneof="expiration", message=timestamp.Timestamp,
+        proto.MESSAGE, number=6, oneof="expiration", message=timestamp_pb2.Timestamp,
     )
-
     ttl = proto.Field(
-        proto.MESSAGE, number=7, oneof="expiration", message=duration.Duration,
+        proto.MESSAGE, number=7, oneof="expiration", message=duration_pb2.Duration,
     )
-
     rotation = proto.Field(proto.MESSAGE, number=9, message="Rotation",)
 
 
 class SecretVersion(proto.Message):
     r"""A secret version resource in the Secret Manager API.
-
     Attributes:
         name (str):
             Output only. The resource name of the
@@ -158,14 +147,12 @@ class SecretVersion(proto.Message):
         DISABLED = 2
         DESTROYED = 3
 
-    name = proto.Field(proto.STRING, number=1)
-
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
-    destroy_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
-
+    name = proto.Field(proto.STRING, number=1,)
+    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    destroy_time = proto.Field(
+        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+    )
     state = proto.Field(proto.ENUM, number=4, enum=State,)
-
     replication_status = proto.Field(
         proto.MESSAGE, number=5, message="ReplicationStatus",
     )
@@ -245,8 +232,7 @@ class Replication(proto.Message):
                     [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
             """
 
-            location = proto.Field(proto.STRING, number=1)
-
+            location = proto.Field(proto.STRING, number=1,)
             customer_managed_encryption = proto.Field(
                 proto.MESSAGE, number=2, message="CustomerManagedEncryption",
             )
@@ -258,7 +244,6 @@ class Replication(proto.Message):
     automatic = proto.Field(
         proto.MESSAGE, number=1, oneof="replication", message=Automatic,
     )
-
     user_managed = proto.Field(
         proto.MESSAGE, number=2, oneof="replication", message=UserManaged,
     )
@@ -288,7 +273,7 @@ class CustomerManagedEncryption(proto.Message):
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
     """
 
-    kms_key_name = proto.Field(proto.STRING, number=1)
+    kms_key_name = proto.Field(proto.STRING, number=1,)
 
 
 class ReplicationStatus(proto.Message):
@@ -363,8 +348,7 @@ class ReplicationStatus(proto.Message):
                     Only populated if customer-managed encryption is used.
             """
 
-            location = proto.Field(proto.STRING, number=1)
-
+            location = proto.Field(proto.STRING, number=1,)
             customer_managed_encryption = proto.Field(
                 proto.MESSAGE, number=2, message="CustomerManagedEncryptionStatus",
             )
@@ -378,7 +362,6 @@ class ReplicationStatus(proto.Message):
     automatic = proto.Field(
         proto.MESSAGE, number=1, oneof="replication_status", message=AutomaticStatus,
     )
-
     user_managed = proto.Field(
         proto.MESSAGE, number=2, oneof="replication_status", message=UserManagedStatus,
     )
@@ -386,7 +369,6 @@ class ReplicationStatus(proto.Message):
 
 class CustomerManagedEncryptionStatus(proto.Message):
     r"""Describes the status of customer-managed encryption.
-
     Attributes:
         kms_key_version_name (str):
             Required. The resource name of the Cloud KMS
@@ -395,7 +377,7 @@ class CustomerManagedEncryptionStatus(proto.Message):
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*/versions/*``.
     """
 
-    kms_key_version_name = proto.Field(proto.STRING, number=1)
+    kms_key_version_name = proto.Field(proto.STRING, number=1,)
 
 
 class Topic(proto.Message):
@@ -411,7 +393,7 @@ class Topic(proto.Message):
             permissions on the topic.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class Rotation(proto.Message):
@@ -448,10 +430,11 @@ class Rotation(proto.Message):
     """
 
     next_rotation_time = proto.Field(
-        proto.MESSAGE, number=1, message=timestamp.Timestamp,
+        proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
     )
-
-    rotation_period = proto.Field(proto.MESSAGE, number=2, message=duration.Duration,)
+    rotation_period = proto.Field(
+        proto.MESSAGE, number=2, message=duration_pb2.Duration,
+    )
 
 
 class SecretPayload(proto.Message):
@@ -465,7 +448,7 @@ class SecretPayload(proto.Message):
             64KiB.
     """
 
-    data = proto.Field(proto.BYTES, number=1)
+    data = proto.Field(proto.BYTES, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

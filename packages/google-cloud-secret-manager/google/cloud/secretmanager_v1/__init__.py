@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,8 @@
 #
 
 from .services.secret_manager_service import SecretManagerServiceClient
+from .services.secret_manager_service import SecretManagerServiceAsyncClient
+
 from .types.resources import CustomerManagedEncryption
 from .types.resources import CustomerManagedEncryptionStatus
 from .types.resources import Replication
@@ -35,14 +36,14 @@ from .types.service import DisableSecretVersionRequest
 from .types.service import EnableSecretVersionRequest
 from .types.service import GetSecretRequest
 from .types.service import GetSecretVersionRequest
-from .types.service import ListSecretVersionsRequest
-from .types.service import ListSecretVersionsResponse
 from .types.service import ListSecretsRequest
 from .types.service import ListSecretsResponse
+from .types.service import ListSecretVersionsRequest
+from .types.service import ListSecretVersionsResponse
 from .types.service import UpdateSecretRequest
 
-
 __all__ = (
+    "SecretManagerServiceAsyncClient",
     "AccessSecretVersionRequest",
     "AccessSecretVersionResponse",
     "AddSecretVersionRequest",
@@ -63,9 +64,9 @@ __all__ = (
     "ReplicationStatus",
     "Rotation",
     "Secret",
+    "SecretManagerServiceClient",
     "SecretPayload",
     "SecretVersion",
     "Topic",
     "UpdateSecretRequest",
-    "SecretManagerServiceClient",
 )

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -35,12 +33,11 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.secretmanager_v1.services.secret_manager_service import pagers
 from google.cloud.secretmanager_v1.types import resources
 from google.cloud.secretmanager_v1.types import service
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import SecretManagerServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import SecretManagerServiceGrpcTransport
 from .transports.grpc_asyncio import SecretManagerServiceGrpcAsyncIOTransport
@@ -63,7 +60,7 @@ class SecretManagerServiceClientMeta(type):
     def get_transport_class(
         cls, label: str = None,
     ) -> Type[SecretManagerServiceTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -93,7 +90,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -127,7 +125,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -144,7 +143,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -163,36 +162,37 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     @property
     def transport(self) -> SecretManagerServiceTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            SecretManagerServiceTransport: The transport used by the client instance.
+            SecretManagerServiceTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
     @staticmethod
     def secret_path(project: str, secret: str,) -> str:
-        """Return a fully-qualified secret string."""
+        """Returns a fully-qualified secret string."""
         return "projects/{project}/secrets/{secret}".format(
             project=project, secret=secret,
         )
 
     @staticmethod
     def parse_secret_path(path: str) -> Dict[str, str]:
-        """Parse a secret path into its component segments."""
+        """Parses a secret path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/secrets/(?P<secret>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
     def secret_version_path(project: str, secret: str, secret_version: str,) -> str:
-        """Return a fully-qualified secret_version string."""
+        """Returns a fully-qualified secret_version string."""
         return "projects/{project}/secrets/{secret}/versions/{secret_version}".format(
             project=project, secret=secret, secret_version=secret_version,
         )
 
     @staticmethod
     def parse_secret_version_path(path: str) -> Dict[str, str]:
-        """Parse a secret_version path into its component segments."""
+        """Parses a secret_version path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/secrets/(?P<secret>.+?)/versions/(?P<secret_version>.+?)$",
             path,
@@ -201,18 +201,18 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     @staticmethod
     def topic_path(project: str, topic: str,) -> str:
-        """Return a fully-qualified topic string."""
+        """Returns a fully-qualified topic string."""
         return "projects/{project}/topics/{topic}".format(project=project, topic=topic,)
 
     @staticmethod
     def parse_topic_path(path: str) -> Dict[str, str]:
-        """Parse a topic path into its component segments."""
+        """Parses a topic path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/topics/(?P<topic>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -225,7 +225,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -236,7 +236,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -247,7 +247,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -258,7 +258,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -272,12 +272,12 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, SecretManagerServiceTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the secret manager service client.
+        """Instantiates the secret manager service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -332,9 +332,10 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -346,12 +347,14 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -366,8 +369,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -406,7 +409,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -438,10 +440,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.ListSecretsRequest):
             request = service.ListSecretsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -513,7 +513,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``secret`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -547,10 +546,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.CreateSecretRequest):
             request = service.CreateSecretRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if secret_id is not None:
@@ -610,7 +607,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``payload`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -639,10 +635,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.AddSecretVersionRequest):
             request = service.AddSecretVersionRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if payload is not None:
@@ -688,7 +682,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -722,10 +715,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.GetSecretRequest):
             request = service.GetSecretRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -750,7 +741,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         request: service.UpdateSecretRequest = None,
         *,
         secret: resources.Secret = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -776,7 +767,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -810,10 +800,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.UpdateSecretRequest):
             request = service.UpdateSecretRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if secret is not None:
                 request.secret = secret
             if update_mask is not None:
@@ -860,7 +848,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -883,10 +870,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.DeleteSecretRequest):
             request = service.DeleteSecretRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -932,7 +917,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -964,10 +948,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.ListSecretVersionsRequest):
             request = service.ListSecretVersionsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1024,7 +1006,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1053,10 +1034,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.GetSecretVersionRequest):
             request = service.GetSecretVersionRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1105,7 +1084,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1134,10 +1112,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.AccessSecretVersionRequest):
             request = service.AccessSecretVersionRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1188,7 +1164,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1217,10 +1192,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.DisableSecretVersionRequest):
             request = service.DisableSecretVersionRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1271,7 +1244,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1300,10 +1272,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.EnableSecretVersionRequest):
             request = service.EnableSecretVersionRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1355,7 +1325,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1384,10 +1353,8 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.DestroySecretVersionRequest):
             request = service.DestroySecretVersionRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1409,12 +1376,12 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def set_iam_policy(
         self,
-        request: iam_policy.SetIamPolicyRequest = None,
+        request: iam_policy_pb2.SetIamPolicyRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Sets the access control policy on the specified secret. Replaces
         any existing policy.
 
@@ -1427,7 +1394,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
             request (google.iam.v1.iam_policy_pb2.SetIamPolicyRequest):
                 The request object. Request message for `SetIamPolicy`
                 method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1494,14 +1460,13 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.SetIamPolicyRequest(**request)
+            request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.SetIamPolicyRequest()
+            request = iam_policy_pb2.SetIamPolicyRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1521,12 +1486,12 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def get_iam_policy(
         self,
-        request: iam_policy.GetIamPolicyRequest = None,
+        request: iam_policy_pb2.GetIamPolicyRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Gets the access control policy for a secret.
         Returns empty policy if the secret exists and does not
         have a policy set.
@@ -1535,7 +1500,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
             request (google.iam.v1.iam_policy_pb2.GetIamPolicyRequest):
                 The request object. Request message for `GetIamPolicy`
                 method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1602,14 +1566,13 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.GetIamPolicyRequest(**request)
+            request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.GetIamPolicyRequest()
+            request = iam_policy_pb2.GetIamPolicyRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1629,12 +1592,12 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
 
     def test_iam_permissions(
         self,
-        request: iam_policy.TestIamPermissionsRequest = None,
+        request: iam_policy_pb2.TestIamPermissionsRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> iam_policy.TestIamPermissionsResponse:
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that a caller has for the specified secret.
         If the secret does not exist, this call returns an empty set of
         permissions, not a NOT_FOUND error.
@@ -1648,7 +1611,6 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
             request (google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest):
                 The request object. Request message for
                 `TestIamPermissions` method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1660,14 +1622,13 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
-
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.TestIamPermissionsRequest(**request)
+            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.TestIamPermissionsRequest()
+            request = iam_policy_pb2.TestIamPermissionsRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

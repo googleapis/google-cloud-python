@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.secretmanager_v1.types import resources
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -64,11 +61,9 @@ class ListSecretsRequest(proto.Message):
             [ListSecretsResponse.next_page_token][google.cloud.secretmanager.v1.ListSecretsResponse.next_page_token].
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListSecretsResponse(proto.Message):
@@ -94,10 +89,8 @@ class ListSecretsResponse(proto.Message):
         return self
 
     secrets = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Secret,)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
-
-    total_size = proto.Field(proto.INT32, number=3)
+    next_page_token = proto.Field(proto.STRING, number=2,)
+    total_size = proto.Field(proto.INT32, number=3,)
 
 
 class CreateSecretRequest(proto.Message):
@@ -121,10 +114,8 @@ class CreateSecretRequest(proto.Message):
             with initial field values.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    secret_id = proto.Field(proto.STRING, number=2)
-
+    parent = proto.Field(proto.STRING, number=1,)
+    secret_id = proto.Field(proto.STRING, number=2,)
     secret = proto.Field(proto.MESSAGE, number=3, message=resources.Secret,)
 
 
@@ -144,8 +135,7 @@ class AddSecretVersionRequest(proto.Message):
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     payload = proto.Field(proto.MESSAGE, number=2, message=resources.SecretPayload,)
 
 
@@ -160,7 +150,7 @@ class GetSecretRequest(proto.Message):
             format ``projects/*/secrets/*``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListSecretVersionsRequest(proto.Message):
@@ -185,11 +175,9 @@ class ListSecretVersionsRequest(proto.Message):
             ListSecretVersionsResponse.next_page_token][].
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListSecretVersionsResponse(proto.Message):
@@ -218,10 +206,8 @@ class ListSecretVersionsResponse(proto.Message):
     versions = proto.RepeatedField(
         proto.MESSAGE, number=1, message=resources.SecretVersion,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
-
-    total_size = proto.Field(proto.INT32, number=3)
+    next_page_token = proto.Field(proto.STRING, number=2,)
+    total_size = proto.Field(proto.INT32, number=3,)
 
 
 class GetSecretVersionRequest(proto.Message):
@@ -238,7 +224,7 @@ class GetSecretVersionRequest(proto.Message):
             [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class UpdateSecretRequest(proto.Message):
@@ -254,8 +240,9 @@ class UpdateSecretRequest(proto.Message):
     """
 
     secret = proto.Field(proto.MESSAGE, number=1, message=resources.Secret,)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class AccessSecretVersionRequest(proto.Message):
@@ -269,7 +256,7 @@ class AccessSecretVersionRequest(proto.Message):
             in the format ``projects/*/secrets/*/versions/*``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class AccessSecretVersionResponse(proto.Message):
@@ -285,8 +272,7 @@ class AccessSecretVersionResponse(proto.Message):
             Secret payload
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     payload = proto.Field(proto.MESSAGE, number=2, message=resources.SecretPayload,)
 
 
@@ -301,7 +287,7 @@ class DeleteSecretRequest(proto.Message):
             the format ``projects/*/secrets/*``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class DisableSecretVersionRequest(proto.Message):
@@ -316,7 +302,7 @@ class DisableSecretVersionRequest(proto.Message):
             ``projects/*/secrets/*/versions/*``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class EnableSecretVersionRequest(proto.Message):
@@ -330,7 +316,7 @@ class EnableSecretVersionRequest(proto.Message):
             to enable in the format ``projects/*/secrets/*/versions/*``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class DestroySecretVersionRequest(proto.Message):
@@ -345,7 +331,7 @@ class DestroySecretVersionRequest(proto.Message):
             ``projects/*/secrets/*/versions/*``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
