@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.47.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.46.3...v0.47.0) (2021-05-13)
+
+
+### Features
+
+* support protobuf method deprecation option [gapic-generator-python] ([#875](https://www.github.com/googleapis/gapic-generator-python/issues/875)) ([5a5a839](https://www.github.com/googleapis/gapic-generator-python/commit/5a5a839b99d78ec5a5c52452e57c289b55ad1db5))
+
 ### [0.46.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.46.2...v0.46.3) (2021-05-12)
 
 
