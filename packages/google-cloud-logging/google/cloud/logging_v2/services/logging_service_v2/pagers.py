@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from typing import (
     Any,
     AsyncIterable,
@@ -26,7 +24,7 @@ from typing import (
     Optional,
 )
 
-from google.api import monitored_resource_pb2 as monitored_resource  # type: ignore
+from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.logging_v2.types import log_entry
 from google.cloud.logging_v2.types import logging
 
@@ -119,7 +117,7 @@ class ListLogEntriesAsyncPager:
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
-        """Instantiate the pager.
+        """Instantiates the pager.
 
         Args:
             method (Callable): The method that was originally called, and
@@ -213,7 +211,7 @@ class ListMonitoredResourceDescriptorsPager:
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[monitored_resource.MonitoredResourceDescriptor]:
+    def __iter__(self) -> Iterable[monitored_resource_pb2.MonitoredResourceDescriptor]:
         for page in self.pages:
             yield from page.resource_descriptors
 
@@ -249,7 +247,7 @@ class ListMonitoredResourceDescriptorsAsyncPager:
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
-        """Instantiate the pager.
+        """Instantiates the pager.
 
         Args:
             method (Callable): The method that was originally called, and
@@ -281,7 +279,7 @@ class ListMonitoredResourceDescriptorsAsyncPager:
 
     def __aiter__(
         self,
-    ) -> AsyncIterable[monitored_resource.MonitoredResourceDescriptor]:
+    ) -> AsyncIterable[monitored_resource_pb2.MonitoredResourceDescriptor]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.resource_descriptors:
@@ -381,7 +379,7 @@ class ListLogsAsyncPager:
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
-        """Instantiate the pager.
+        """Instantiates the pager.
 
         Args:
             method (Callable): The method that was originally called, and

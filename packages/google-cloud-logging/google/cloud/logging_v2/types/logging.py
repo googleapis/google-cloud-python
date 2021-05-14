@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.api import monitored_resource_pb2 as monitored_resource  # type: ignore
+from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.logging_v2.types import log_entry
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.rpc import status_pb2 as status  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -45,7 +42,6 @@ __protobuf__ = proto.module(
 
 class DeleteLogRequest(proto.Message):
     r"""The parameters to DeleteLog.
-
     Attributes:
         log_name (str):
             Required. The resource name of the log to delete:
@@ -64,12 +60,11 @@ class DeleteLogRequest(proto.Message):
             [LogEntry][google.logging.v2.LogEntry].
     """
 
-    log_name = proto.Field(proto.STRING, number=1)
+    log_name = proto.Field(proto.STRING, number=1,)
 
 
 class WriteLogEntriesRequest(proto.Message):
     r"""The parameters to WriteLogEntries.
-
     Attributes:
         log_name (str):
             Optional. A default log resource name that is assigned to
@@ -158,28 +153,22 @@ class WriteLogEntriesRequest(proto.Message):
             properly before sending valuable data.
     """
 
-    log_name = proto.Field(proto.STRING, number=1)
-
+    log_name = proto.Field(proto.STRING, number=1,)
     resource = proto.Field(
-        proto.MESSAGE, number=2, message=monitored_resource.MonitoredResource,
+        proto.MESSAGE, number=2, message=monitored_resource_pb2.MonitoredResource,
     )
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=3)
-
+    labels = proto.MapField(proto.STRING, proto.STRING, number=3,)
     entries = proto.RepeatedField(proto.MESSAGE, number=4, message=log_entry.LogEntry,)
-
-    partial_success = proto.Field(proto.BOOL, number=5)
-
-    dry_run = proto.Field(proto.BOOL, number=6)
+    partial_success = proto.Field(proto.BOOL, number=5,)
+    dry_run = proto.Field(proto.BOOL, number=6,)
 
 
 class WriteLogEntriesResponse(proto.Message):
-    r"""Result returned from WriteLogEntries."""
+    r"""Result returned from WriteLogEntries.    """
 
 
 class WriteLogEntriesPartialErrors(proto.Message):
     r"""Error details for WriteLogEntries with partial success.
-
     Attributes:
         log_entry_errors (Sequence[google.cloud.logging_v2.types.WriteLogEntriesPartialErrors.LogEntryErrorsEntry]):
             When ``WriteLogEntriesRequest.partial_success`` is true,
@@ -192,13 +181,12 @@ class WriteLogEntriesPartialErrors(proto.Message):
     """
 
     log_entry_errors = proto.MapField(
-        proto.INT32, proto.MESSAGE, number=1, message=status.Status,
+        proto.INT32, proto.MESSAGE, number=1, message=status_pb2.Status,
     )
 
 
 class ListLogEntriesRequest(proto.Message):
     r"""The parameters to ``ListLogEntries``.
-
     Attributes:
         resource_names (Sequence[str]):
             Required. Names of one or more parent resources from which
@@ -252,20 +240,15 @@ class ListLogEntriesRequest(proto.Message):
             should be identical to those in the previous call.
     """
 
-    resource_names = proto.RepeatedField(proto.STRING, number=8)
-
-    filter = proto.Field(proto.STRING, number=2)
-
-    order_by = proto.Field(proto.STRING, number=3)
-
-    page_size = proto.Field(proto.INT32, number=4)
-
-    page_token = proto.Field(proto.STRING, number=5)
+    resource_names = proto.RepeatedField(proto.STRING, number=8,)
+    filter = proto.Field(proto.STRING, number=2,)
+    order_by = proto.Field(proto.STRING, number=3,)
+    page_size = proto.Field(proto.INT32, number=4,)
+    page_token = proto.Field(proto.STRING, number=5,)
 
 
 class ListLogEntriesResponse(proto.Message):
     r"""Result returned from ``ListLogEntries``.
-
     Attributes:
         entries (Sequence[google.cloud.logging_v2.types.LogEntry]):
             A list of log entries. If ``entries`` is empty,
@@ -293,13 +276,11 @@ class ListLogEntriesResponse(proto.Message):
         return self
 
     entries = proto.RepeatedField(proto.MESSAGE, number=1, message=log_entry.LogEntry,)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class ListMonitoredResourceDescriptorsRequest(proto.Message):
     r"""The parameters to ListMonitoredResourceDescriptors
-
     Attributes:
         page_size (int):
             Optional. The maximum number of results to return from this
@@ -314,14 +295,12 @@ class ListMonitoredResourceDescriptorsRequest(proto.Message):
             should be identical to those in the previous call.
     """
 
-    page_size = proto.Field(proto.INT32, number=1)
-
-    page_token = proto.Field(proto.STRING, number=2)
+    page_size = proto.Field(proto.INT32, number=1,)
+    page_token = proto.Field(proto.STRING, number=2,)
 
 
 class ListMonitoredResourceDescriptorsResponse(proto.Message):
     r"""Result returned from ListMonitoredResourceDescriptors.
-
     Attributes:
         resource_descriptors (Sequence[google.api.monitored_resource_pb2.MonitoredResourceDescriptor]):
             A list of resource descriptors.
@@ -337,15 +316,15 @@ class ListMonitoredResourceDescriptorsResponse(proto.Message):
         return self
 
     resource_descriptors = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=monitored_resource.MonitoredResourceDescriptor,
+        proto.MESSAGE,
+        number=1,
+        message=monitored_resource_pb2.MonitoredResourceDescriptor,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class ListLogsRequest(proto.Message):
     r"""The parameters to ListLogs.
-
     Attributes:
         parent (str):
             Required. The resource name that owns the logs:
@@ -379,18 +358,14 @@ class ListLogsRequest(proto.Message):
             "billingAccounts/[BILLING_ACCOUNT_ID]" "folders/[FOLDER_ID]".
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
-
-    resource_names = proto.RepeatedField(proto.STRING, number=8)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+    resource_names = proto.RepeatedField(proto.STRING, number=8,)
 
 
 class ListLogsResponse(proto.Message):
     r"""Result returned from ListLogs.
-
     Attributes:
         log_names (Sequence[str]):
             A list of log names. For example,
@@ -407,14 +382,12 @@ class ListLogsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    log_names = proto.RepeatedField(proto.STRING, number=3)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    log_names = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class TailLogEntriesRequest(proto.Message):
     r"""The parameters to ``TailLogEntries``.
-
     Attributes:
         resource_names (Sequence[str]):
             Required. Name of a parent resource from which to retrieve
@@ -451,16 +424,13 @@ class TailLogEntriesRequest(proto.Message):
             milliseconds.
     """
 
-    resource_names = proto.RepeatedField(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=2)
-
-    buffer_window = proto.Field(proto.MESSAGE, number=3, message=duration.Duration,)
+    resource_names = proto.RepeatedField(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=2,)
+    buffer_window = proto.Field(proto.MESSAGE, number=3, message=duration_pb2.Duration,)
 
 
 class TailLogEntriesResponse(proto.Message):
     r"""Result returned from ``TailLogEntries``.
-
     Attributes:
         entries (Sequence[google.cloud.logging_v2.types.LogEntry]):
             A list of log entries. Each response in the stream will
@@ -480,7 +450,6 @@ class TailLogEntriesResponse(proto.Message):
 
     class SuppressionInfo(proto.Message):
         r"""Information about entries that were omitted from the session.
-
         Attributes:
             reason (google.cloud.logging_v2.types.TailLogEntriesResponse.SuppressionInfo.Reason):
                 The reason that entries were omitted from the
@@ -499,11 +468,9 @@ class TailLogEntriesResponse(proto.Message):
         reason = proto.Field(
             proto.ENUM, number=1, enum="TailLogEntriesResponse.SuppressionInfo.Reason",
         )
-
-        suppressed_count = proto.Field(proto.INT32, number=2)
+        suppressed_count = proto.Field(proto.INT32, number=2,)
 
     entries = proto.RepeatedField(proto.MESSAGE, number=1, message=log_entry.LogEntry,)
-
     suppression_info = proto.RepeatedField(
         proto.MESSAGE, number=2, message=SuppressionInfo,
     )
