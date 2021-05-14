@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,16 +39,15 @@ def partition(
 class redisCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'create_instance': ('parent', 'instance_id', 'instance', ),
-    'delete_instance': ('name', ),
-    'export_instance': ('name', 'output_config', ),
-    'failover_instance': ('name', 'data_protection_mode', ),
-    'get_instance': ('name', ),
-    'import_instance': ('name', 'input_config', ),
-    'list_instances': ('parent', 'page_size', 'page_token', ),
-    'update_instance': ('update_mask', 'instance', ),
-    'upgrade_instance': ('name', 'redis_version', ),
-
+          'create_instance': ('parent', 'instance_id', 'instance', ),
+          'delete_instance': ('name', ),
+          'export_instance': ('name', 'output_config', ),
+          'failover_instance': ('name', 'data_protection_mode', ),
+          'get_instance': ('name', ),
+          'import_instance': ('name', 'input_config', ),
+          'list_instances': ('parent', 'page_size', 'page_token', ),
+          'update_instance': ('update_mask', 'instance', ),
+          'upgrade_instance': ('name', 'redis_version', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -81,7 +78,7 @@ class redisCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -49,7 +46,6 @@ __protobuf__ = proto.module(
 
 class Instance(proto.Message):
     r"""A Google Cloud Redis instance.
-
     Attributes:
         name (str):
             Required. Unique name of the resource in this scope
@@ -192,42 +188,26 @@ class Instance(proto.Message):
         DIRECT_PEERING = 1
         PRIVATE_SERVICE_ACCESS = 2
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=3)
-
-    location_id = proto.Field(proto.STRING, number=4)
-
-    alternative_location_id = proto.Field(proto.STRING, number=5)
-
-    redis_version = proto.Field(proto.STRING, number=7)
-
-    reserved_ip_range = proto.Field(proto.STRING, number=9)
-
-    host = proto.Field(proto.STRING, number=10)
-
-    port = proto.Field(proto.INT32, number=11)
-
-    current_location_id = proto.Field(proto.STRING, number=12)
-
-    create_time = proto.Field(proto.MESSAGE, number=13, message=timestamp.Timestamp,)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=3,)
+    location_id = proto.Field(proto.STRING, number=4,)
+    alternative_location_id = proto.Field(proto.STRING, number=5,)
+    redis_version = proto.Field(proto.STRING, number=7,)
+    reserved_ip_range = proto.Field(proto.STRING, number=9,)
+    host = proto.Field(proto.STRING, number=10,)
+    port = proto.Field(proto.INT32, number=11,)
+    current_location_id = proto.Field(proto.STRING, number=12,)
+    create_time = proto.Field(
+        proto.MESSAGE, number=13, message=timestamp_pb2.Timestamp,
+    )
     state = proto.Field(proto.ENUM, number=14, enum=State,)
-
-    status_message = proto.Field(proto.STRING, number=15)
-
-    redis_configs = proto.MapField(proto.STRING, proto.STRING, number=16)
-
+    status_message = proto.Field(proto.STRING, number=15,)
+    redis_configs = proto.MapField(proto.STRING, proto.STRING, number=16,)
     tier = proto.Field(proto.ENUM, number=17, enum=Tier,)
-
-    memory_size_gb = proto.Field(proto.INT32, number=18)
-
-    authorized_network = proto.Field(proto.STRING, number=20)
-
-    persistence_iam_identity = proto.Field(proto.STRING, number=21)
-
+    memory_size_gb = proto.Field(proto.INT32, number=18,)
+    authorized_network = proto.Field(proto.STRING, number=20,)
+    persistence_iam_identity = proto.Field(proto.STRING, number=21,)
     connect_mode = proto.Field(proto.ENUM, number=22, enum=ConnectMode,)
 
 
@@ -255,11 +235,9 @@ class ListInstancesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListInstancesResponse(proto.Message):
@@ -293,10 +271,8 @@ class ListInstancesResponse(proto.Message):
         return self
 
     instances = proto.RepeatedField(proto.MESSAGE, number=1, message="Instance",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
-
-    unreachable = proto.RepeatedField(proto.STRING, number=3)
+    next_page_token = proto.Field(proto.STRING, number=2,)
+    unreachable = proto.RepeatedField(proto.STRING, number=3,)
 
 
 class GetInstanceRequest(proto.Message):
@@ -310,7 +286,7 @@ class GetInstanceRequest(proto.Message):
             where ``location_id`` refers to a GCP region.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateInstanceRequest(proto.Message):
@@ -336,10 +312,8 @@ class CreateInstanceRequest(proto.Message):
             Required. A Redis [Instance] resource
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    instance_id = proto.Field(proto.STRING, number=2)
-
+    parent = proto.Field(proto.STRING, number=1,)
+    instance_id = proto.Field(proto.STRING, number=2,)
     instance = proto.Field(proto.MESSAGE, number=3, message="Instance",)
 
 
@@ -363,8 +337,9 @@ class UpdateInstanceRequest(proto.Message):
             update_mask are updated.
     """
 
-    update_mask = proto.Field(proto.MESSAGE, number=1, message=field_mask.FieldMask,)
-
+    update_mask = proto.Field(
+        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+    )
     instance = proto.Field(proto.MESSAGE, number=2, message="Instance",)
 
 
@@ -382,9 +357,8 @@ class UpgradeInstanceRequest(proto.Message):
             Redis software to upgrade to.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    redis_version = proto.Field(proto.STRING, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    redis_version = proto.Field(proto.STRING, number=2,)
 
 
 class DeleteInstanceRequest(proto.Message):
@@ -398,24 +372,22 @@ class DeleteInstanceRequest(proto.Message):
             where ``location_id`` refers to a GCP region.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class GcsSource(proto.Message):
     r"""The Cloud Storage location for the input content
-
     Attributes:
         uri (str):
             Required. Source data URI. (e.g.
             'gs://my_bucket/my_object').
     """
 
-    uri = proto.Field(proto.STRING, number=1)
+    uri = proto.Field(proto.STRING, number=1,)
 
 
 class InputConfig(proto.Message):
     r"""The input content
-
     Attributes:
         gcs_source (google.cloud.redis_v1.types.GcsSource):
             Google Cloud Storage location where input
@@ -440,14 +412,12 @@ class ImportInstanceRequest(proto.Message):
             Required. Specify data to be imported.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     input_config = proto.Field(proto.MESSAGE, number=3, message="InputConfig",)
 
 
 class GcsDestination(proto.Message):
     r"""The Cloud Storage location for the output content
-
     Attributes:
         uri (str):
             Required. Data destination URI (e.g.
@@ -455,12 +425,11 @@ class GcsDestination(proto.Message):
             overwritten.
     """
 
-    uri = proto.Field(proto.STRING, number=1)
+    uri = proto.Field(proto.STRING, number=1,)
 
 
 class OutputConfig(proto.Message):
     r"""The output content
-
     Attributes:
         gcs_destination (google.cloud.redis_v1.types.GcsDestination):
             Google Cloud Storage destination for output
@@ -485,8 +454,7 @@ class ExportInstanceRequest(proto.Message):
             Required. Specify data to be exported.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     output_config = proto.Field(proto.MESSAGE, number=3, message="OutputConfig",)
 
 
@@ -513,14 +481,12 @@ class FailoverInstanceRequest(proto.Message):
         LIMITED_DATA_LOSS = 1
         FORCE_DATA_LOSS = 2
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     data_protection_mode = proto.Field(proto.ENUM, number=2, enum=DataProtectionMode,)
 
 
 class OperationMetadata(proto.Message):
     r"""Represents the v1 metadata of the long-running operation.
-
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Creation timestamp.
@@ -539,19 +505,13 @@ class OperationMetadata(proto.Message):
             API version.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
-
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
-    target = proto.Field(proto.STRING, number=3)
-
-    verb = proto.Field(proto.STRING, number=4)
-
-    status_detail = proto.Field(proto.STRING, number=5)
-
-    cancel_requested = proto.Field(proto.BOOL, number=6)
-
-    api_version = proto.Field(proto.STRING, number=7)
+    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    target = proto.Field(proto.STRING, number=3,)
+    verb = proto.Field(proto.STRING, number=4,)
+    status_detail = proto.Field(proto.STRING, number=5,)
+    cancel_requested = proto.Field(proto.BOOL, number=6,)
+    api_version = proto.Field(proto.STRING, number=7,)
 
 
 class LocationMetadata(proto.Message):
@@ -577,7 +537,7 @@ class LocationMetadata(proto.Message):
 class ZoneMetadata(proto.Message):
     r"""Defines specific information for a particular zone. Currently
     empty and reserved for future use only.
-    """
+        """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
