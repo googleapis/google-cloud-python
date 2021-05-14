@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+import packaging.version
 
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.logging_v2.types import logging_config
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
 from .base import ConfigServiceV2Transport, DEFAULT_CLIENT_INFO
 from .grpc import ConfigServiceV2GrpcTransport
 
@@ -54,7 +51,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
     def create_channel(
         cls,
         host: str = "logging.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -81,13 +78,15 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         Returns:
             aio.Channel: A gRPC AsyncIO channel object.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers_async.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -95,7 +94,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         self,
         *,
         host: str = "logging.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         channel: aio.Channel = None,
@@ -109,7 +108,8 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -167,7 +167,6 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -354,7 +353,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
     @property
     def delete_bucket(
         self,
-    ) -> Callable[[logging_config.DeleteBucketRequest], Awaitable[empty.Empty]]:
+    ) -> Callable[[logging_config.DeleteBucketRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete bucket method over gRPC.
 
         Deletes a bucket. Moves the bucket to the DELETE_REQUESTED
@@ -375,14 +374,14 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             self._stubs["delete_bucket"] = self.grpc_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/DeleteBucket",
                 request_serializer=logging_config.DeleteBucketRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_bucket"]
 
     @property
     def undelete_bucket(
         self,
-    ) -> Callable[[logging_config.UndeleteBucketRequest], Awaitable[empty.Empty]]:
+    ) -> Callable[[logging_config.UndeleteBucketRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the undelete bucket method over gRPC.
 
         Undeletes a bucket. A bucket that has been deleted
@@ -402,7 +401,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             self._stubs["undelete_bucket"] = self.grpc_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/UndeleteBucket",
                 request_serializer=logging_config.UndeleteBucketRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["undelete_bucket"]
 
@@ -521,7 +520,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
     @property
     def delete_view(
         self,
-    ) -> Callable[[logging_config.DeleteViewRequest], Awaitable[empty.Empty]]:
+    ) -> Callable[[logging_config.DeleteViewRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete view method over gRPC.
 
         Deletes a view from a bucket.
@@ -540,7 +539,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             self._stubs["delete_view"] = self.grpc_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/DeleteView",
                 request_serializer=logging_config.DeleteViewRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_view"]
 
@@ -666,7 +665,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
     @property
     def delete_sink(
         self,
-    ) -> Callable[[logging_config.DeleteSinkRequest], Awaitable[empty.Empty]]:
+    ) -> Callable[[logging_config.DeleteSinkRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete sink method over gRPC.
 
         Deletes a sink. If the sink has a unique ``writer_identity``,
@@ -686,7 +685,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             self._stubs["delete_sink"] = self.grpc_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/DeleteSink",
                 request_serializer=logging_config.DeleteSinkRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_sink"]
 
@@ -810,7 +809,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
     @property
     def delete_exclusion(
         self,
-    ) -> Callable[[logging_config.DeleteExclusionRequest], Awaitable[empty.Empty]]:
+    ) -> Callable[[logging_config.DeleteExclusionRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete exclusion method over gRPC.
 
         Deletes an exclusion.
@@ -829,7 +828,7 @@ class ConfigServiceV2GrpcAsyncIOTransport(ConfigServiceV2Transport):
             self._stubs["delete_exclusion"] = self.grpc_channel.unary_unary(
                 "/google.logging.v2.ConfigServiceV2/DeleteExclusion",
                 request_serializer=logging_config.DeleteExclusionRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_exclusion"]
 

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -22,17 +20,16 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.logging_v2.services.config_service_v2 import pagers
 from google.cloud.logging_v2.types import logging_config
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import ConfigServiceV2Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import ConfigServiceV2GrpcAsyncIOTransport
 from .client import ConfigServiceV2Client
@@ -60,31 +57,26 @@ class ConfigServiceV2AsyncClient:
     parse_log_sink_path = staticmethod(ConfigServiceV2Client.parse_log_sink_path)
     log_view_path = staticmethod(ConfigServiceV2Client.log_view_path)
     parse_log_view_path = staticmethod(ConfigServiceV2Client.parse_log_view_path)
-
     common_billing_account_path = staticmethod(
         ConfigServiceV2Client.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         ConfigServiceV2Client.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(ConfigServiceV2Client.common_folder_path)
     parse_common_folder_path = staticmethod(
         ConfigServiceV2Client.parse_common_folder_path
     )
-
     common_organization_path = staticmethod(
         ConfigServiceV2Client.common_organization_path
     )
     parse_common_organization_path = staticmethod(
         ConfigServiceV2Client.parse_common_organization_path
     )
-
     common_project_path = staticmethod(ConfigServiceV2Client.common_project_path)
     parse_common_project_path = staticmethod(
         ConfigServiceV2Client.parse_common_project_path
     )
-
     common_location_path = staticmethod(ConfigServiceV2Client.common_location_path)
     parse_common_location_path = staticmethod(
         ConfigServiceV2Client.parse_common_location_path
@@ -92,7 +84,8 @@ class ConfigServiceV2AsyncClient:
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -107,7 +100,7 @@ class ConfigServiceV2AsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -124,7 +117,7 @@ class ConfigServiceV2AsyncClient:
 
     @property
     def transport(self) -> ConfigServiceV2Transport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             ConfigServiceV2Transport: The transport used by the client instance.
@@ -138,12 +131,12 @@ class ConfigServiceV2AsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, ConfigServiceV2Transport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the config service v2 client.
+        """Instantiates the config service v2 client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -175,7 +168,6 @@ class ConfigServiceV2AsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = ConfigServiceV2Client(
             credentials=credentials,
             transport=transport,
@@ -215,7 +207,6 @@ class ConfigServiceV2AsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -244,7 +235,6 @@ class ConfigServiceV2AsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -287,7 +277,6 @@ class ConfigServiceV2AsyncClient:
         Args:
             request (:class:`google.cloud.logging_v2.types.GetBucketRequest`):
                 The request object. The parameters to `GetBucket`.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -299,7 +288,6 @@ class ConfigServiceV2AsyncClient:
                 Describes a repository of logs.
         """
         # Create or coerce a protobuf request object.
-
         request = logging_config.GetBucketRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -337,7 +325,6 @@ class ConfigServiceV2AsyncClient:
         Args:
             request (:class:`google.cloud.logging_v2.types.CreateBucketRequest`):
                 The request object. The parameters to `CreateBucket`.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -349,7 +336,6 @@ class ConfigServiceV2AsyncClient:
                 Describes a repository of logs.
         """
         # Create or coerce a protobuf request object.
-
         request = logging_config.CreateBucketRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -395,7 +381,6 @@ class ConfigServiceV2AsyncClient:
         Args:
             request (:class:`google.cloud.logging_v2.types.UpdateBucketRequest`):
                 The request object. The parameters to `UpdateBucket`.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -407,7 +392,6 @@ class ConfigServiceV2AsyncClient:
                 Describes a repository of logs.
         """
         # Create or coerce a protobuf request object.
-
         request = logging_config.UpdateBucketRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -445,7 +429,6 @@ class ConfigServiceV2AsyncClient:
         Args:
             request (:class:`google.cloud.logging_v2.types.DeleteBucketRequest`):
                 The request object. The parameters to `DeleteBucket`.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -453,7 +436,6 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-
         request = logging_config.DeleteBucketRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -489,7 +471,6 @@ class ConfigServiceV2AsyncClient:
         Args:
             request (:class:`google.cloud.logging_v2.types.UndeleteBucketRequest`):
                 The request object. The parameters to `UndeleteBucket`.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -497,7 +478,6 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-
         request = logging_config.UndeleteBucketRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -543,7 +523,6 @@ class ConfigServiceV2AsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -572,7 +551,6 @@ class ConfigServiceV2AsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -615,7 +593,6 @@ class ConfigServiceV2AsyncClient:
         Args:
             request (:class:`google.cloud.logging_v2.types.GetViewRequest`):
                 The request object. The parameters to `GetView`.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -629,7 +606,6 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = logging_config.GetViewRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -666,7 +642,6 @@ class ConfigServiceV2AsyncClient:
         Args:
             request (:class:`google.cloud.logging_v2.types.CreateViewRequest`):
                 The request object. The parameters to `CreateView`.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -680,7 +655,6 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = logging_config.CreateViewRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -717,7 +691,6 @@ class ConfigServiceV2AsyncClient:
         Args:
             request (:class:`google.cloud.logging_v2.types.UpdateViewRequest`):
                 The request object. The parameters to `UpdateView`.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -731,7 +704,6 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = logging_config.UpdateViewRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -767,7 +739,6 @@ class ConfigServiceV2AsyncClient:
         Args:
             request (:class:`google.cloud.logging_v2.types.DeleteViewRequest`):
                 The request object. The parameters to `DeleteView`.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -775,7 +746,6 @@ class ConfigServiceV2AsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-
         request = logging_config.DeleteViewRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -825,7 +795,6 @@ class ConfigServiceV2AsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -854,7 +823,6 @@ class ConfigServiceV2AsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -867,9 +835,9 @@ class ConfigServiceV2AsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.InternalServerError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -924,7 +892,6 @@ class ConfigServiceV2AsyncClient:
                 This corresponds to the ``sink_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -958,7 +925,6 @@ class ConfigServiceV2AsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if sink_name is not None:
             request.sink_name = sink_name
 
@@ -971,9 +937,9 @@ class ConfigServiceV2AsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.InternalServerError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -1037,7 +1003,6 @@ class ConfigServiceV2AsyncClient:
                 This corresponds to the ``sink`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1071,7 +1036,6 @@ class ConfigServiceV2AsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if sink is not None:
@@ -1103,7 +1067,7 @@ class ConfigServiceV2AsyncClient:
         *,
         sink_name: str = None,
         sink: logging_config.LogSink = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1161,7 +1125,6 @@ class ConfigServiceV2AsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1195,7 +1158,6 @@ class ConfigServiceV2AsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if sink_name is not None:
             request.sink_name = sink_name
         if sink is not None:
@@ -1212,9 +1174,9 @@ class ConfigServiceV2AsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.InternalServerError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -1267,7 +1229,6 @@ class ConfigServiceV2AsyncClient:
                 This corresponds to the ``sink_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1288,7 +1249,6 @@ class ConfigServiceV2AsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if sink_name is not None:
             request.sink_name = sink_name
 
@@ -1301,9 +1261,9 @@ class ConfigServiceV2AsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.InternalServerError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -1352,7 +1312,6 @@ class ConfigServiceV2AsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1381,7 +1340,6 @@ class ConfigServiceV2AsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -1394,9 +1352,9 @@ class ConfigServiceV2AsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.InternalServerError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -1452,7 +1410,6 @@ class ConfigServiceV2AsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1488,7 +1445,6 @@ class ConfigServiceV2AsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -1501,9 +1457,9 @@ class ConfigServiceV2AsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.InternalServerError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -1566,7 +1522,6 @@ class ConfigServiceV2AsyncClient:
                 This corresponds to the ``exclusion`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1602,7 +1557,6 @@ class ConfigServiceV2AsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if exclusion is not None:
@@ -1634,7 +1588,7 @@ class ConfigServiceV2AsyncClient:
         *,
         name: str = None,
         exclusion: logging_config.LogExclusion = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1683,7 +1637,6 @@ class ConfigServiceV2AsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1719,7 +1672,6 @@ class ConfigServiceV2AsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
         if exclusion is not None:
@@ -1778,7 +1730,6 @@ class ConfigServiceV2AsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1799,7 +1750,6 @@ class ConfigServiceV2AsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -1812,9 +1762,9 @@ class ConfigServiceV2AsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.InternalServerError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -1858,7 +1808,6 @@ class ConfigServiceV2AsyncClient:
                 See [Enabling CMEK for Logs
                 Router](https://cloud.google.com/logging/docs/routing/managed-
                 encryption) for more information.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1882,7 +1831,6 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = logging_config.GetCmekSettingsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1936,7 +1884,6 @@ class ConfigServiceV2AsyncClient:
                 See [Enabling CMEK for Logs
                 Router](https://cloud.google.com/logging/docs/routing/managed-
                 encryption) for more information.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1960,7 +1907,6 @@ class ConfigServiceV2AsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = logging_config.UpdateCmekSettingsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,

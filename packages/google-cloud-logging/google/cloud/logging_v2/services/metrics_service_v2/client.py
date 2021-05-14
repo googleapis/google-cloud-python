@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,22 +21,20 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.api import distribution_pb2 as distribution  # type: ignore
-from google.api import metric_pb2 as ga_metric  # type: ignore
-from google.api import metric_pb2 as metric  # type: ignore
+from google.api import distribution_pb2  # type: ignore
+from google.api import metric_pb2  # type: ignore
 from google.cloud.logging_v2.services.metrics_service_v2 import pagers
 from google.cloud.logging_v2.types import logging_metrics
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import MetricsServiceV2Transport, DEFAULT_CLIENT_INFO
 from .transports.grpc import MetricsServiceV2GrpcTransport
 from .transports.grpc_asyncio import MetricsServiceV2GrpcAsyncIOTransport
@@ -59,7 +55,7 @@ class MetricsServiceV2ClientMeta(type):
     _transport_registry["grpc_asyncio"] = MetricsServiceV2GrpcAsyncIOTransport
 
     def get_transport_class(cls, label: str = None,) -> Type[MetricsServiceV2Transport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -82,7 +78,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -116,7 +113,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -133,7 +131,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -152,29 +150,30 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
     @property
     def transport(self) -> MetricsServiceV2Transport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            MetricsServiceV2Transport: The transport used by the client instance.
+            MetricsServiceV2Transport: The transport used by the client
+                instance.
         """
         return self._transport
 
     @staticmethod
     def log_metric_path(project: str, metric: str,) -> str:
-        """Return a fully-qualified log_metric string."""
+        """Returns a fully-qualified log_metric string."""
         return "projects/{project}/metrics/{metric}".format(
             project=project, metric=metric,
         )
 
     @staticmethod
     def parse_log_metric_path(path: str) -> Dict[str, str]:
-        """Parse a log_metric path into its component segments."""
+        """Parses a log_metric path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/metrics/(?P<metric>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -187,7 +186,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -198,7 +197,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -209,7 +208,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -220,7 +219,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -234,12 +233,12 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, MetricsServiceV2Transport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the metrics service v2 client.
+        """Instantiates the metrics service v2 client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -294,9 +293,10 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -308,12 +308,14 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -328,8 +330,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -369,7 +371,6 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -400,10 +401,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # there are no flattened fields.
         if not isinstance(request, logging_metrics.ListLogMetricsRequest):
             request = logging_metrics.ListLogMetricsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -453,7 +452,6 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 This corresponds to the ``metric_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -491,10 +489,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # there are no flattened fields.
         if not isinstance(request, logging_metrics.GetLogMetricRequest):
             request = logging_metrics.GetLogMetricRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if metric_name is not None:
                 request.metric_name = metric_name
 
@@ -552,7 +548,6 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 This corresponds to the ``metric`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -590,10 +585,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # there are no flattened fields.
         if not isinstance(request, logging_metrics.CreateLogMetricRequest):
             request = logging_metrics.CreateLogMetricRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if metric is not None:
@@ -650,7 +643,6 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 This corresponds to the ``metric`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -688,10 +680,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # there are no flattened fields.
         if not isinstance(request, logging_metrics.UpdateLogMetricRequest):
             request = logging_metrics.UpdateLogMetricRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if metric_name is not None:
                 request.metric_name = metric_name
             if metric is not None:
@@ -739,7 +729,6 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
                 This corresponds to the ``metric_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -762,10 +751,8 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
         # there are no flattened fields.
         if not isinstance(request, logging_metrics.DeleteLogMetricRequest):
             request = logging_metrics.DeleteLogMetricRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if metric_name is not None:
                 request.metric_name = metric_name
 
