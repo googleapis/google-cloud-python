@@ -22,5 +22,5 @@ deep-copy-regex:
   - source: /google/cloud/billing/budgets/(v.*)/.*-py/(.*)
     dest: /owl-bot-staging/$1/$2
 
-begin-after-commit-hash: 6a5da3f1274b088752f074da5bc9e30bd1beb27e
+begin-after-commit-hash: 0a3c7d272d697796db75857bac73905c68e498c3
 
