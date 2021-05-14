@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -32,13 +30,12 @@ __protobuf__ = proto.module(
 
 class PredictionApiKeyRegistration(proto.Message):
     r"""Registered Api Key.
-
     Attributes:
         api_key (str):
             The API key.
     """
 
-    api_key = proto.Field(proto.STRING, number=1)
+    api_key = proto.Field(proto.STRING, number=1,)
 
 
 class CreatePredictionApiKeyRegistrationRequest(proto.Message):
@@ -54,8 +51,7 @@ class CreatePredictionApiKeyRegistrationRequest(proto.Message):
             registration.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     prediction_api_key_registration = proto.Field(
         proto.MESSAGE, number=2, message="PredictionApiKeyRegistration",
     )
@@ -63,7 +59,6 @@ class CreatePredictionApiKeyRegistrationRequest(proto.Message):
 
 class ListPredictionApiKeyRegistrationsRequest(proto.Message):
     r"""Request message for the ``ListPredictionApiKeyRegistrations``.
-
     Attributes:
         parent (str):
             Required. The parent placement resource name such as
@@ -77,16 +72,13 @@ class ListPredictionApiKeyRegistrationsRequest(proto.Message):
             ``ListPredictionApiKeyRegistration.nextPageToken``.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListPredictionApiKeyRegistrationsResponse(proto.Message):
     r"""Response message for the ``ListPredictionApiKeyRegistrations``.
-
     Attributes:
         prediction_api_key_registrations (Sequence[google.cloud.recommendationengine_v1beta1.types.PredictionApiKeyRegistration]):
             The list of registered API keys.
@@ -103,13 +95,11 @@ class ListPredictionApiKeyRegistrationsResponse(proto.Message):
     prediction_api_key_registrations = proto.RepeatedField(
         proto.MESSAGE, number=1, message="PredictionApiKeyRegistration",
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class DeletePredictionApiKeyRegistrationRequest(proto.Message):
     r"""Request message for ``DeletePredictionApiKeyRegistration`` method.
-
     Attributes:
         name (str):
             Required. The API key to unregister including full resource
@@ -117,7 +107,7 @@ class DeletePredictionApiKeyRegistrationRequest(proto.Message):
             ``projects/*/locations/global/catalogs/default_catalog/eventStores/default_event_store/predictionApiKeyRegistrations/<YOUR_API_KEY>``
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

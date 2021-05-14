@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,30 +14,31 @@
 # limitations under the License.
 #
 
-from google.cloud.recommendationengine_v1beta1.services.catalog_service.async_client import (
-    CatalogServiceAsyncClient,
-)
 from google.cloud.recommendationengine_v1beta1.services.catalog_service.client import (
     CatalogServiceClient,
 )
-from google.cloud.recommendationengine_v1beta1.services.prediction_api_key_registry.async_client import (
-    PredictionApiKeyRegistryAsyncClient,
+from google.cloud.recommendationengine_v1beta1.services.catalog_service.async_client import (
+    CatalogServiceAsyncClient,
 )
 from google.cloud.recommendationengine_v1beta1.services.prediction_api_key_registry.client import (
     PredictionApiKeyRegistryClient,
 )
-from google.cloud.recommendationengine_v1beta1.services.prediction_service.async_client import (
-    PredictionServiceAsyncClient,
+from google.cloud.recommendationengine_v1beta1.services.prediction_api_key_registry.async_client import (
+    PredictionApiKeyRegistryAsyncClient,
 )
 from google.cloud.recommendationengine_v1beta1.services.prediction_service.client import (
     PredictionServiceClient,
 )
-from google.cloud.recommendationengine_v1beta1.services.user_event_service.async_client import (
-    UserEventServiceAsyncClient,
+from google.cloud.recommendationengine_v1beta1.services.prediction_service.async_client import (
+    PredictionServiceAsyncClient,
 )
 from google.cloud.recommendationengine_v1beta1.services.user_event_service.client import (
     UserEventServiceClient,
 )
+from google.cloud.recommendationengine_v1beta1.services.user_event_service.async_client import (
+    UserEventServiceAsyncClient,
+)
+
 from google.cloud.recommendationengine_v1beta1.types.catalog import CatalogItem
 from google.cloud.recommendationengine_v1beta1.types.catalog import Image
 from google.cloud.recommendationengine_v1beta1.types.catalog import ProductCatalogItem
@@ -138,20 +138,26 @@ from google.cloud.recommendationengine_v1beta1.types.user_event_service import (
 )
 
 __all__ = (
-    "CatalogInlineSource",
-    "CatalogItem",
-    "CatalogServiceAsyncClient",
     "CatalogServiceClient",
-    "CollectUserEventRequest",
-    "CreateCatalogItemRequest",
-    "CreatePredictionApiKeyRegistrationRequest",
-    "DeleteCatalogItemRequest",
-    "DeletePredictionApiKeyRegistrationRequest",
-    "EventDetail",
-    "FeatureMap",
-    "GcsSource",
-    "GetCatalogItemRequest",
+    "CatalogServiceAsyncClient",
+    "PredictionApiKeyRegistryClient",
+    "PredictionApiKeyRegistryAsyncClient",
+    "PredictionServiceClient",
+    "PredictionServiceAsyncClient",
+    "UserEventServiceClient",
+    "UserEventServiceAsyncClient",
+    "CatalogItem",
     "Image",
+    "ProductCatalogItem",
+    "CreateCatalogItemRequest",
+    "DeleteCatalogItemRequest",
+    "GetCatalogItemRequest",
+    "ListCatalogItemsRequest",
+    "ListCatalogItemsResponse",
+    "UpdateCatalogItemRequest",
+    "FeatureMap",
+    "CatalogInlineSource",
+    "GcsSource",
     "ImportCatalogItemsRequest",
     "ImportCatalogItemsResponse",
     "ImportErrorsConfig",
@@ -159,32 +165,26 @@ __all__ = (
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
     "InputConfig",
-    "ListCatalogItemsRequest",
-    "ListCatalogItemsResponse",
+    "UserEventImportSummary",
+    "UserEventInlineSource",
+    "CreatePredictionApiKeyRegistrationRequest",
+    "DeletePredictionApiKeyRegistrationRequest",
     "ListPredictionApiKeyRegistrationsRequest",
     "ListPredictionApiKeyRegistrationsResponse",
-    "ListUserEventsRequest",
-    "ListUserEventsResponse",
+    "PredictionApiKeyRegistration",
     "PredictRequest",
     "PredictResponse",
-    "PredictionApiKeyRegistration",
-    "PredictionApiKeyRegistryAsyncClient",
-    "PredictionApiKeyRegistryClient",
-    "PredictionServiceAsyncClient",
-    "PredictionServiceClient",
-    "ProductCatalogItem",
+    "EventDetail",
     "ProductDetail",
     "ProductEventDetail",
     "PurchaseTransaction",
+    "UserEvent",
+    "UserInfo",
+    "CollectUserEventRequest",
+    "ListUserEventsRequest",
+    "ListUserEventsResponse",
     "PurgeUserEventsMetadata",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
-    "UpdateCatalogItemRequest",
-    "UserEvent",
-    "UserEventImportSummary",
-    "UserEventInlineSource",
-    "UserEventServiceAsyncClient",
-    "UserEventServiceClient",
-    "UserInfo",
     "WriteUserEventRequest",
 )

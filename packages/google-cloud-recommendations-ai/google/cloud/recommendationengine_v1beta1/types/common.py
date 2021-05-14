@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -50,29 +48,26 @@ class FeatureMap(proto.Message):
 
     class StringList(proto.Message):
         r"""A list of string features.
-
         Attributes:
             value (Sequence[str]):
                 String feature value with a length limit of
                 128 bytes.
         """
 
-        value = proto.RepeatedField(proto.STRING, number=1)
+        value = proto.RepeatedField(proto.STRING, number=1,)
 
     class FloatList(proto.Message):
         r"""A list of float features.
-
         Attributes:
             value (Sequence[float]):
                 Float feature value.
         """
 
-        value = proto.RepeatedField(proto.FLOAT, number=1)
+        value = proto.RepeatedField(proto.FLOAT, number=1,)
 
     categorical_features = proto.MapField(
         proto.STRING, proto.MESSAGE, number=1, message=StringList,
     )
-
     numerical_features = proto.MapField(
         proto.STRING, proto.MESSAGE, number=2, message=FloatList,
     )

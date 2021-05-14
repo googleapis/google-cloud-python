@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.recommendationengine_v1beta1.types import common
 
@@ -95,7 +92,6 @@ class CatalogItem(proto.Message):
 
     class CategoryHierarchy(proto.Message):
         r"""Category represents catalog item category hierarchy.
-
         Attributes:
             categories (Sequence[str]):
                 Required. Catalog item categories. Each
@@ -105,26 +101,18 @@ class CatalogItem(proto.Message):
                 specificity (from least to most specific).
         """
 
-        categories = proto.RepeatedField(proto.STRING, number=1)
+        categories = proto.RepeatedField(proto.STRING, number=1,)
 
-    id = proto.Field(proto.STRING, number=1)
-
+    id = proto.Field(proto.STRING, number=1,)
     category_hierarchies = proto.RepeatedField(
         proto.MESSAGE, number=2, message=CategoryHierarchy,
     )
-
-    title = proto.Field(proto.STRING, number=3)
-
-    description = proto.Field(proto.STRING, number=4)
-
+    title = proto.Field(proto.STRING, number=3,)
+    description = proto.Field(proto.STRING, number=4,)
     item_attributes = proto.Field(proto.MESSAGE, number=5, message=common.FeatureMap,)
-
-    language_code = proto.Field(proto.STRING, number=6)
-
-    tags = proto.RepeatedField(proto.STRING, number=8)
-
-    item_group_id = proto.Field(proto.STRING, number=9)
-
+    language_code = proto.Field(proto.STRING, number=6,)
+    tags = proto.RepeatedField(proto.STRING, number=8,)
+    item_group_id = proto.Field(proto.STRING, number=9,)
     product_metadata = proto.Field(
         proto.MESSAGE,
         number=10,
@@ -184,7 +172,6 @@ class ProductCatalogItem(proto.Message):
 
     class ExactPrice(proto.Message):
         r"""Exact product price.
-
         Attributes:
             display_price (float):
                 Optional. Display price of the product.
@@ -194,9 +181,8 @@ class ProductCatalogItem(proto.Message):
                 'displayPrice'.
         """
 
-        display_price = proto.Field(proto.FLOAT, number=1)
-
-        original_price = proto.Field(proto.FLOAT, number=2)
+        display_price = proto.Field(proto.FLOAT, number=1,)
+        original_price = proto.Field(proto.FLOAT, number=2,)
 
     class PriceRange(proto.Message):
         r"""Product price range when there are a range of prices for
@@ -209,34 +195,25 @@ class ProductCatalogItem(proto.Message):
                 Required. The maximum product price.
         """
 
-        min_ = proto.Field(proto.FLOAT, number=1)
-
-        max_ = proto.Field(proto.FLOAT, number=2)
+        min_ = proto.Field(proto.FLOAT, number=1,)
+        max_ = proto.Field(proto.FLOAT, number=2,)
 
     exact_price = proto.Field(
         proto.MESSAGE, number=1, oneof="price", message=ExactPrice,
     )
-
     price_range = proto.Field(
         proto.MESSAGE, number=2, oneof="price", message=PriceRange,
     )
-
-    costs = proto.MapField(proto.STRING, proto.FLOAT, number=3)
-
-    currency_code = proto.Field(proto.STRING, number=4)
-
+    costs = proto.MapField(proto.STRING, proto.FLOAT, number=3,)
+    currency_code = proto.Field(proto.STRING, number=4,)
     stock_state = proto.Field(proto.ENUM, number=5, enum=StockState,)
-
-    available_quantity = proto.Field(proto.INT64, number=6)
-
-    canonical_product_uri = proto.Field(proto.STRING, number=7)
-
+    available_quantity = proto.Field(proto.INT64, number=6,)
+    canonical_product_uri = proto.Field(proto.STRING, number=7,)
     images = proto.RepeatedField(proto.MESSAGE, number=8, message="Image",)
 
 
 class Image(proto.Message):
     r"""Catalog item thumbnail/detail image.
-
     Attributes:
         uri (str):
             Required. URL of the image with a length
@@ -249,11 +226,9 @@ class Image(proto.Message):
             pixels.
     """
 
-    uri = proto.Field(proto.STRING, number=1)
-
-    height = proto.Field(proto.INT32, number=2)
-
-    width = proto.Field(proto.INT32, number=3)
+    uri = proto.Field(proto.STRING, number=1,)
+    height = proto.Field(proto.INT32, number=2,)
+    width = proto.Field(proto.INT32, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

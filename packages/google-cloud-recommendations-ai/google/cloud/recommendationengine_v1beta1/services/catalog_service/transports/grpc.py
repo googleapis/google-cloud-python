@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
@@ -30,9 +28,8 @@ import grpc  # type: ignore
 from google.cloud.recommendationengine_v1beta1.types import catalog
 from google.cloud.recommendationengine_v1beta1.types import catalog_service
 from google.cloud.recommendationengine_v1beta1.types import import_
-from google.longrunning import operations_pb2 as operations  # type: ignore
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from .base import CatalogServiceTransport, DEFAULT_CLIENT_INFO
 
 
@@ -56,7 +53,7 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         self,
         *,
         host: str = "recommendationengine.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -70,7 +67,8 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -181,7 +179,7 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
     def create_channel(
         cls,
         host: str = "recommendationengine.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -212,13 +210,15 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -353,7 +353,7 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
     @property
     def delete_catalog_item(
         self,
-    ) -> Callable[[catalog_service.DeleteCatalogItemRequest], empty.Empty]:
+    ) -> Callable[[catalog_service.DeleteCatalogItemRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete catalog item method over gRPC.
 
         Deletes a catalog item.
@@ -372,14 +372,14 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
             self._stubs["delete_catalog_item"] = self.grpc_channel.unary_unary(
                 "/google.cloud.recommendationengine.v1beta1.CatalogService/DeleteCatalogItem",
                 request_serializer=catalog_service.DeleteCatalogItemRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_catalog_item"]
 
     @property
     def import_catalog_items(
         self,
-    ) -> Callable[[import_.ImportCatalogItemsRequest], operations.Operation]:
+    ) -> Callable[[import_.ImportCatalogItemsRequest], operations_pb2.Operation]:
         r"""Return a callable for the import catalog items method over gRPC.
 
         Bulk import of multiple catalog items. Request
@@ -404,7 +404,7 @@ class CatalogServiceGrpcTransport(CatalogServiceTransport):
             self._stubs["import_catalog_items"] = self.grpc_channel.unary_unary(
                 "/google.cloud.recommendationengine.v1beta1.CatalogService/ImportCatalogItems",
                 request_serializer=import_.ImportCatalogItemsRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["import_catalog_items"]
 

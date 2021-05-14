@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.recommendationengine_v1beta1.types import user_event as gcr_user_event
-from google.protobuf import struct_pb2 as struct  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -30,7 +27,6 @@ __protobuf__ = proto.module(
 
 class PredictRequest(proto.Message):
     r"""Request message for Predict method.
-
     Attributes:
         name (str):
             Required. Full resource name of the format:
@@ -141,28 +137,20 @@ class PredictRequest(proto.Message):
             examples of labels.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     user_event = proto.Field(proto.MESSAGE, number=2, message=gcr_user_event.UserEvent,)
-
-    page_size = proto.Field(proto.INT32, number=7)
-
-    page_token = proto.Field(proto.STRING, number=8)
-
-    filter = proto.Field(proto.STRING, number=3)
-
-    dry_run = proto.Field(proto.BOOL, number=4)
-
+    page_size = proto.Field(proto.INT32, number=7,)
+    page_token = proto.Field(proto.STRING, number=8,)
+    filter = proto.Field(proto.STRING, number=3,)
+    dry_run = proto.Field(proto.BOOL, number=4,)
     params = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=6, message=struct.Value,
+        proto.STRING, proto.MESSAGE, number=6, message=struct_pb2.Value,
     )
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=9)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=9,)
 
 
 class PredictResponse(proto.Message):
     r"""Response message for predict method.
-
     Attributes:
         results (Sequence[google.cloud.recommendationengine_v1beta1.types.PredictResponse.PredictionResult]):
             A list of recommended items. The order
@@ -207,10 +195,9 @@ class PredictResponse(proto.Message):
                    ``PredictRequest.params``.
         """
 
-        id = proto.Field(proto.STRING, number=1)
-
+        id = proto.Field(proto.STRING, number=1,)
         item_metadata = proto.MapField(
-            proto.STRING, proto.MESSAGE, number=2, message=struct.Value,
+            proto.STRING, proto.MESSAGE, number=2, message=struct_pb2.Value,
         )
 
     @property
@@ -218,18 +205,13 @@ class PredictResponse(proto.Message):
         return self
 
     results = proto.RepeatedField(proto.MESSAGE, number=1, message=PredictionResult,)
-
-    recommendation_token = proto.Field(proto.STRING, number=2)
-
-    items_missing_in_catalog = proto.RepeatedField(proto.STRING, number=3)
-
-    dry_run = proto.Field(proto.BOOL, number=4)
-
+    recommendation_token = proto.Field(proto.STRING, number=2,)
+    items_missing_in_catalog = proto.RepeatedField(proto.STRING, number=3,)
+    dry_run = proto.Field(proto.BOOL, number=4,)
     metadata = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=5, message=struct.Value,
+        proto.STRING, proto.MESSAGE, number=5, message=struct_pb2.Value,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=6)
+    next_page_token = proto.Field(proto.STRING, number=6,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
