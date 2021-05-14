@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.cloud.security.privateca_v1beta1.types import resources
 from google.cloud.security.privateca_v1beta1.types import service
-from google.longrunning import operations_pb2 as operations  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
 from .base import CertificateAuthorityServiceTransport, DEFAULT_CLIENT_INFO
 
 
@@ -55,7 +52,7 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
         self,
         *,
         host: str = "privateca.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -69,7 +66,8 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -180,7 +178,7 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
     def create_channel(
         cls,
         host: str = "privateca.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -211,13 +209,15 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -384,7 +384,9 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
     @property
     def activate_certificate_authority(
         self,
-    ) -> Callable[[service.ActivateCertificateAuthorityRequest], operations.Operation]:
+    ) -> Callable[
+        [service.ActivateCertificateAuthorityRequest], operations_pb2.Operation
+    ]:
         r"""Return a callable for the activate certificate authority method over gRPC.
 
         Activate a
@@ -414,14 +416,16 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
             ] = self.grpc_channel.unary_unary(
                 "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ActivateCertificateAuthority",
                 request_serializer=service.ActivateCertificateAuthorityRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["activate_certificate_authority"]
 
     @property
     def create_certificate_authority(
         self,
-    ) -> Callable[[service.CreateCertificateAuthorityRequest], operations.Operation]:
+    ) -> Callable[
+        [service.CreateCertificateAuthorityRequest], operations_pb2.Operation
+    ]:
         r"""Return a callable for the create certificate authority method over gRPC.
 
         Create a new
@@ -442,14 +446,16 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
             self._stubs["create_certificate_authority"] = self.grpc_channel.unary_unary(
                 "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/CreateCertificateAuthority",
                 request_serializer=service.CreateCertificateAuthorityRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_certificate_authority"]
 
     @property
     def disable_certificate_authority(
         self,
-    ) -> Callable[[service.DisableCertificateAuthorityRequest], operations.Operation]:
+    ) -> Callable[
+        [service.DisableCertificateAuthorityRequest], operations_pb2.Operation
+    ]:
         r"""Return a callable for the disable certificate authority method over gRPC.
 
         Disable a
@@ -471,14 +477,16 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
             ] = self.grpc_channel.unary_unary(
                 "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/DisableCertificateAuthority",
                 request_serializer=service.DisableCertificateAuthorityRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["disable_certificate_authority"]
 
     @property
     def enable_certificate_authority(
         self,
-    ) -> Callable[[service.EnableCertificateAuthorityRequest], operations.Operation]:
+    ) -> Callable[
+        [service.EnableCertificateAuthorityRequest], operations_pb2.Operation
+    ]:
         r"""Return a callable for the enable certificate authority method over gRPC.
 
         Enable a
@@ -498,7 +506,7 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
             self._stubs["enable_certificate_authority"] = self.grpc_channel.unary_unary(
                 "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/EnableCertificateAuthority",
                 request_serializer=service.EnableCertificateAuthorityRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["enable_certificate_authority"]
 
@@ -606,7 +614,9 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
     @property
     def restore_certificate_authority(
         self,
-    ) -> Callable[[service.RestoreCertificateAuthorityRequest], operations.Operation]:
+    ) -> Callable[
+        [service.RestoreCertificateAuthorityRequest], operations_pb2.Operation
+    ]:
         r"""Return a callable for the restore certificate authority method over gRPC.
 
         Restore a
@@ -629,7 +639,7 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
             ] = self.grpc_channel.unary_unary(
                 "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/RestoreCertificateAuthority",
                 request_serializer=service.RestoreCertificateAuthorityRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["restore_certificate_authority"]
 
@@ -637,7 +647,7 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
     def schedule_delete_certificate_authority(
         self,
     ) -> Callable[
-        [service.ScheduleDeleteCertificateAuthorityRequest], operations.Operation
+        [service.ScheduleDeleteCertificateAuthorityRequest], operations_pb2.Operation
     ]:
         r"""Return a callable for the schedule delete certificate
         authority method over gRPC.
@@ -662,14 +672,16 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
             ] = self.grpc_channel.unary_unary(
                 "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/ScheduleDeleteCertificateAuthority",
                 request_serializer=service.ScheduleDeleteCertificateAuthorityRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["schedule_delete_certificate_authority"]
 
     @property
     def update_certificate_authority(
         self,
-    ) -> Callable[[service.UpdateCertificateAuthorityRequest], operations.Operation]:
+    ) -> Callable[
+        [service.UpdateCertificateAuthorityRequest], operations_pb2.Operation
+    ]:
         r"""Return a callable for the update certificate authority method over gRPC.
 
         Update a
@@ -689,7 +701,7 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
             self._stubs["update_certificate_authority"] = self.grpc_channel.unary_unary(
                 "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateCertificateAuthority",
                 request_serializer=service.UpdateCertificateAuthorityRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_certificate_authority"]
 
@@ -763,7 +775,7 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
     def update_certificate_revocation_list(
         self,
     ) -> Callable[
-        [service.UpdateCertificateRevocationListRequest], operations.Operation
+        [service.UpdateCertificateRevocationListRequest], operations_pb2.Operation
     ]:
         r"""Return a callable for the update certificate revocation
         list method over gRPC.
@@ -787,7 +799,7 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
             ] = self.grpc_channel.unary_unary(
                 "/google.cloud.security.privateca.v1beta1.CertificateAuthorityService/UpdateCertificateRevocationList",
                 request_serializer=service.UpdateCertificateRevocationListRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_certificate_revocation_list"]
 

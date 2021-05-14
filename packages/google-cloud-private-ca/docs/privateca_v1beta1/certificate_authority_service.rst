@@ -5,7 +5,6 @@ CertificateAuthorityService
     :members:
     :inherited-members:
 
-
 .. automodule:: google.cloud.security.privateca_v1beta1.services.certificate_authority_service.pagers
     :members:
     :inherited-members:

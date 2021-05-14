@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.type import expr_pb2 as expr  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import expr_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -246,9 +243,8 @@ class CertificateAuthority(proto.Message):
                 been activated.
         """
 
-        ca_certificate_access_url = proto.Field(proto.STRING, number=1)
-
-        crl_access_urls = proto.RepeatedField(proto.STRING, number=2)
+        ca_certificate_access_url = proto.Field(proto.STRING, number=1,)
+        crl_access_urls = proto.RepeatedField(proto.STRING, number=2,)
 
     class KeyVersionSpec(proto.Message):
         r"""A Cloud KMS key configuration that a
@@ -270,8 +266,7 @@ class CertificateAuthority(proto.Message):
                 ``HSM``.
         """
 
-        cloud_kms_key_version = proto.Field(proto.STRING, number=1, oneof="KeyVersion")
-
+        cloud_kms_key_version = proto.Field(proto.STRING, number=1, oneof="KeyVersion",)
         algorithm = proto.Field(
             proto.ENUM,
             number=2,
@@ -279,43 +274,35 @@ class CertificateAuthority(proto.Message):
             enum="CertificateAuthority.SignHashAlgorithm",
         )
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     type_ = proto.Field(proto.ENUM, number=2, enum=Type,)
-
     config = proto.Field(proto.MESSAGE, number=3, message="CertificateConfig",)
-
-    lifetime = proto.Field(proto.MESSAGE, number=4, message=duration.Duration,)
-
+    lifetime = proto.Field(proto.MESSAGE, number=4, message=duration_pb2.Duration,)
     key_spec = proto.Field(proto.MESSAGE, number=5, message=KeyVersionSpec,)
-
     subordinate_config = proto.Field(
         proto.MESSAGE, number=6, message="SubordinateConfig",
     )
-
     tier = proto.Field(proto.ENUM, number=7, enum="CaPool.Tier",)
-
     state = proto.Field(proto.ENUM, number=8, enum=State,)
-
-    pem_ca_certificates = proto.RepeatedField(proto.STRING, number=9)
-
+    pem_ca_certificates = proto.RepeatedField(proto.STRING, number=9,)
     ca_certificate_descriptions = proto.RepeatedField(
         proto.MESSAGE, number=10, message="CertificateDescription",
     )
-
-    gcs_bucket = proto.Field(proto.STRING, number=11)
-
+    gcs_bucket = proto.Field(proto.STRING, number=11,)
     access_urls = proto.Field(proto.MESSAGE, number=12, message=AccessUrls,)
-
-    create_time = proto.Field(proto.MESSAGE, number=13, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=14, message=timestamp.Timestamp,)
-
-    delete_time = proto.Field(proto.MESSAGE, number=15, message=timestamp.Timestamp,)
-
-    expire_time = proto.Field(proto.MESSAGE, number=16, message=timestamp.Timestamp,)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=17)
+    create_time = proto.Field(
+        proto.MESSAGE, number=13, message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE, number=14, message=timestamp_pb2.Timestamp,
+    )
+    delete_time = proto.Field(
+        proto.MESSAGE, number=15, message=timestamp_pb2.Timestamp,
+    )
+    expire_time = proto.Field(
+        proto.MESSAGE, number=16, message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(proto.STRING, proto.STRING, number=17,)
 
 
 class CaPool(proto.Message):
@@ -397,9 +384,8 @@ class CaPool(proto.Message):
                 shortly after a certificate is revoked.
         """
 
-        publish_ca_cert = proto.Field(proto.BOOL, number=1)
-
-        publish_crl = proto.Field(proto.BOOL, number=2)
+        publish_ca_cert = proto.Field(proto.BOOL, number=1,)
+        publish_crl = proto.Field(proto.BOOL, number=2,)
 
     class IssuancePolicy(proto.Message):
         r"""Defines controls over all certificate issuance within a
@@ -504,9 +490,8 @@ class CaPool(proto.Message):
                         upper bound on RSA modulus sizes.
                 """
 
-                min_modulus_size = proto.Field(proto.INT64, number=1)
-
-                max_modulus_size = proto.Field(proto.INT64, number=2)
+                min_modulus_size = proto.Field(proto.INT64, number=1,)
+                max_modulus_size = proto.Field(proto.INT64, number=2,)
 
             class EcKeyType(proto.Message):
                 r"""Describes an Elliptic Curve key that may be used in a
@@ -543,7 +528,6 @@ class CaPool(proto.Message):
                 oneof="key_type",
                 message="CaPool.IssuancePolicy.AllowedKeyType.RsaKeyType",
             )
-
             elliptic_curve = proto.Field(
                 proto.MESSAGE,
                 number=2,
@@ -570,45 +554,35 @@ class CaPool(proto.Message):
                     [CertificateConfig][google.cloud.security.privateca.v1.CertificateConfig].
             """
 
-            allow_csr_based_issuance = proto.Field(proto.BOOL, number=1)
-
-            allow_config_based_issuance = proto.Field(proto.BOOL, number=2)
+            allow_csr_based_issuance = proto.Field(proto.BOOL, number=1,)
+            allow_config_based_issuance = proto.Field(proto.BOOL, number=2,)
 
         allowed_key_types = proto.RepeatedField(
             proto.MESSAGE, number=1, message="CaPool.IssuancePolicy.AllowedKeyType",
         )
-
         maximum_lifetime = proto.Field(
-            proto.MESSAGE, number=2, message=duration.Duration,
+            proto.MESSAGE, number=2, message=duration_pb2.Duration,
         )
-
         allowed_issuance_modes = proto.Field(
             proto.MESSAGE, number=3, message="CaPool.IssuancePolicy.IssuanceModes",
         )
-
         baseline_values = proto.Field(
             proto.MESSAGE, number=4, message="X509Parameters",
         )
-
         identity_constraints = proto.Field(
             proto.MESSAGE, number=5, message="CertificateIdentityConstraints",
         )
-
         passthrough_extensions = proto.Field(
             proto.MESSAGE, number=6, message="CertificateExtensionConstraints",
         )
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     tier = proto.Field(proto.ENUM, number=2, enum=Tier,)
-
     issuance_policy = proto.Field(proto.MESSAGE, number=3, message=IssuancePolicy,)
-
     publishing_options = proto.Field(
         proto.MESSAGE, number=4, message=PublishingOptions,
     )
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=5)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=5,)
 
 
 class CertificateRevocationList(proto.Message):
@@ -684,33 +658,22 @@ class CertificateRevocationList(proto.Message):
                 was revoked.
         """
 
-        certificate = proto.Field(proto.STRING, number=1)
-
-        hex_serial_number = proto.Field(proto.STRING, number=2)
-
+        certificate = proto.Field(proto.STRING, number=1,)
+        hex_serial_number = proto.Field(proto.STRING, number=2,)
         revocation_reason = proto.Field(proto.ENUM, number=3, enum="RevocationReason",)
 
-    name = proto.Field(proto.STRING, number=1)
-
-    sequence_number = proto.Field(proto.INT64, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    sequence_number = proto.Field(proto.INT64, number=2,)
     revoked_certificates = proto.RepeatedField(
         proto.MESSAGE, number=3, message=RevokedCertificate,
     )
-
-    pem_crl = proto.Field(proto.STRING, number=4)
-
-    access_url = proto.Field(proto.STRING, number=5)
-
+    pem_crl = proto.Field(proto.STRING, number=4,)
+    access_url = proto.Field(proto.STRING, number=5,)
     state = proto.Field(proto.ENUM, number=6, enum=State,)
-
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=8, message=timestamp.Timestamp,)
-
-    revision_id = proto.Field(proto.STRING, number=9)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=10)
+    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
+    revision_id = proto.Field(proto.STRING, number=9,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=10,)
 
 
 class Certificate(proto.Message):
@@ -799,47 +762,37 @@ class Certificate(proto.Message):
         """
 
         revocation_state = proto.Field(proto.ENUM, number=1, enum="RevocationReason",)
-
         revocation_time = proto.Field(
-            proto.MESSAGE, number=2, message=timestamp.Timestamp,
+            proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
         )
 
-    name = proto.Field(proto.STRING, number=1)
-
-    pem_csr = proto.Field(proto.STRING, number=2, oneof="certificate_config")
-
+    name = proto.Field(proto.STRING, number=1,)
+    pem_csr = proto.Field(proto.STRING, number=2, oneof="certificate_config",)
     config = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="certificate_config",
         message="CertificateConfig",
     )
-
-    issuer_certificate_authority = proto.Field(proto.STRING, number=4)
-
-    lifetime = proto.Field(proto.MESSAGE, number=5, message=duration.Duration,)
-
-    certificate_template = proto.Field(proto.STRING, number=6)
-
+    issuer_certificate_authority = proto.Field(proto.STRING, number=4,)
+    lifetime = proto.Field(proto.MESSAGE, number=5, message=duration_pb2.Duration,)
+    certificate_template = proto.Field(proto.STRING, number=6,)
     subject_mode = proto.Field(proto.ENUM, number=7, enum="SubjectRequestMode",)
-
     revocation_details = proto.Field(
         proto.MESSAGE, number=8, message=RevocationDetails,
     )
-
-    pem_certificate = proto.Field(proto.STRING, number=9)
-
+    pem_certificate = proto.Field(proto.STRING, number=9,)
     certificate_description = proto.Field(
         proto.MESSAGE, number=10, message="CertificateDescription",
     )
-
-    pem_certificate_chain = proto.RepeatedField(proto.STRING, number=11)
-
-    create_time = proto.Field(proto.MESSAGE, number=12, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=13, message=timestamp.Timestamp,)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=14)
+    pem_certificate_chain = proto.RepeatedField(proto.STRING, number=11,)
+    create_time = proto.Field(
+        proto.MESSAGE, number=12, message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE, number=13, message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(proto.STRING, proto.STRING, number=14,)
 
 
 class CertificateTemplate(proto.Message):
@@ -907,25 +860,18 @@ class CertificateTemplate(proto.Message):
             Optional. Labels with user-defined metadata.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     predefined_values = proto.Field(proto.MESSAGE, number=2, message="X509Parameters",)
-
     identity_constraints = proto.Field(
         proto.MESSAGE, number=3, message="CertificateIdentityConstraints",
     )
-
     passthrough_extensions = proto.Field(
         proto.MESSAGE, number=4, message="CertificateExtensionConstraints",
     )
-
-    description = proto.Field(proto.STRING, number=5)
-
-    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=7, message=timestamp.Timestamp,)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=8)
+    description = proto.Field(proto.STRING, number=5,)
+    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=8,)
 
 
 class X509Parameters(proto.Message):
@@ -958,7 +904,6 @@ class X509Parameters(proto.Message):
 
     class CaOptions(proto.Message):
         r"""Describes values that are relevant in a CA certificate.
-
         Attributes:
             is_ca (bool):
                 Optional. Refers to the "CA" X.509 extension,
@@ -975,18 +920,13 @@ class X509Parameters(proto.Message):
                 length will be omitted from the CA certificate.
         """
 
-        is_ca = proto.Field(proto.BOOL, number=1, optional=True)
-
-        max_issuer_path_length = proto.Field(proto.INT32, number=2, optional=True)
+        is_ca = proto.Field(proto.BOOL, number=1, optional=True,)
+        max_issuer_path_length = proto.Field(proto.INT32, number=2, optional=True,)
 
     key_usage = proto.Field(proto.MESSAGE, number=1, message="KeyUsage",)
-
     ca_options = proto.Field(proto.MESSAGE, number=2, message=CaOptions,)
-
     policy_ids = proto.RepeatedField(proto.MESSAGE, number=3, message="ObjectId",)
-
-    aia_ocsp_servers = proto.RepeatedField(proto.STRING, number=4)
-
+    aia_ocsp_servers = proto.RepeatedField(proto.STRING, number=4,)
     additional_extensions = proto.RepeatedField(
         proto.MESSAGE, number=5, message="X509Extension",
     )
@@ -1024,12 +964,11 @@ class SubordinateConfig(proto.Message):
                 order according to RFC 5246.
         """
 
-        pem_certificates = proto.RepeatedField(proto.STRING, number=1)
+        pem_certificates = proto.RepeatedField(proto.STRING, number=1,)
 
     certificate_authority = proto.Field(
-        proto.STRING, number=1, oneof="subordinate_config"
+        proto.STRING, number=1, oneof="subordinate_config",
     )
-
     pem_issuer_chain = proto.Field(
         proto.MESSAGE,
         number=2,
@@ -1058,8 +997,7 @@ class PublicKey(proto.Message):
         KEY_FORMAT_UNSPECIFIED = 0
         PEM = 1
 
-    key = proto.Field(proto.BYTES, number=1)
-
+    key = proto.Field(proto.BYTES, number=1,)
     format_ = proto.Field(proto.ENUM, number=2, enum=KeyFormat,)
 
 
@@ -1103,15 +1041,12 @@ class CertificateConfig(proto.Message):
         """
 
         subject = proto.Field(proto.MESSAGE, number=1, message="Subject",)
-
         subject_alt_name = proto.Field(
             proto.MESSAGE, number=2, message="SubjectAltNames",
         )
 
     subject_config = proto.Field(proto.MESSAGE, number=1, message=SubjectConfig,)
-
     x509_config = proto.Field(proto.MESSAGE, number=2, message="X509Parameters",)
-
     public_key = proto.Field(proto.MESSAGE, number=3, message="PublicKey",)
 
 
@@ -1177,21 +1112,16 @@ class CertificateDescription(proto.Message):
         """
 
         subject = proto.Field(proto.MESSAGE, number=1, message="Subject",)
-
         subject_alt_name = proto.Field(
             proto.MESSAGE, number=2, message="SubjectAltNames",
         )
-
-        hex_serial_number = proto.Field(proto.STRING, number=3)
-
-        lifetime = proto.Field(proto.MESSAGE, number=4, message=duration.Duration,)
-
+        hex_serial_number = proto.Field(proto.STRING, number=3,)
+        lifetime = proto.Field(proto.MESSAGE, number=4, message=duration_pb2.Duration,)
         not_before_time = proto.Field(
-            proto.MESSAGE, number=5, message=timestamp.Timestamp,
+            proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
         )
-
         not_after_time = proto.Field(
-            proto.MESSAGE, number=6, message=timestamp.Timestamp,
+            proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,
         )
 
     class KeyId(proto.Message):
@@ -1205,35 +1135,27 @@ class CertificateDescription(proto.Message):
                 160 bit SHA-1 hash of the public key.
         """
 
-        key_id = proto.Field(proto.STRING, number=1)
+        key_id = proto.Field(proto.STRING, number=1,)
 
     class CertificateFingerprint(proto.Message):
         r"""A group of fingerprints for the x509 certificate.
-
         Attributes:
             sha256_hash (str):
                 The SHA 256 hash, encoded in hexadecimal, of
                 the DER x509 certificate.
         """
 
-        sha256_hash = proto.Field(proto.STRING, number=1)
+        sha256_hash = proto.Field(proto.STRING, number=1,)
 
     subject_description = proto.Field(
         proto.MESSAGE, number=1, message=SubjectDescription,
     )
-
     x509_description = proto.Field(proto.MESSAGE, number=2, message="X509Parameters",)
-
     public_key = proto.Field(proto.MESSAGE, number=3, message="PublicKey",)
-
     subject_key_id = proto.Field(proto.MESSAGE, number=4, message=KeyId,)
-
     authority_key_id = proto.Field(proto.MESSAGE, number=5, message=KeyId,)
-
-    crl_distribution_points = proto.RepeatedField(proto.STRING, number=6)
-
-    aia_issuing_certificate_urls = proto.RepeatedField(proto.STRING, number=7)
-
+    crl_distribution_points = proto.RepeatedField(proto.STRING, number=6,)
+    aia_issuing_certificate_urls = proto.RepeatedField(proto.STRING, number=7,)
     cert_fingerprint = proto.Field(
         proto.MESSAGE, number=8, message=CertificateFingerprint,
     )
@@ -1250,7 +1172,7 @@ class ObjectId(proto.Message):
             significant parts of the path come first.
     """
 
-    object_id_path = proto.RepeatedField(proto.INT32, number=1)
+    object_id_path = proto.RepeatedField(proto.INT32, number=1,)
 
 
 class X509Extension(proto.Message):
@@ -1271,10 +1193,8 @@ class X509Extension(proto.Message):
     """
 
     object_id = proto.Field(proto.MESSAGE, number=1, message="ObjectId",)
-
-    critical = proto.Field(proto.BOOL, number=2)
-
-    value = proto.Field(proto.BYTES, number=3)
+    critical = proto.Field(proto.BOOL, number=2,)
+    value = proto.Field(proto.BYTES, number=3,)
 
 
 class KeyUsage(proto.Message):
@@ -1325,23 +1245,15 @@ class KeyUsage(proto.Message):
                 The key may be used to decipher only.
         """
 
-        digital_signature = proto.Field(proto.BOOL, number=1)
-
-        content_commitment = proto.Field(proto.BOOL, number=2)
-
-        key_encipherment = proto.Field(proto.BOOL, number=3)
-
-        data_encipherment = proto.Field(proto.BOOL, number=4)
-
-        key_agreement = proto.Field(proto.BOOL, number=5)
-
-        cert_sign = proto.Field(proto.BOOL, number=6)
-
-        crl_sign = proto.Field(proto.BOOL, number=7)
-
-        encipher_only = proto.Field(proto.BOOL, number=8)
-
-        decipher_only = proto.Field(proto.BOOL, number=9)
+        digital_signature = proto.Field(proto.BOOL, number=1,)
+        content_commitment = proto.Field(proto.BOOL, number=2,)
+        key_encipherment = proto.Field(proto.BOOL, number=3,)
+        data_encipherment = proto.Field(proto.BOOL, number=4,)
+        key_agreement = proto.Field(proto.BOOL, number=5,)
+        cert_sign = proto.Field(proto.BOOL, number=6,)
+        crl_sign = proto.Field(proto.BOOL, number=7,)
+        encipher_only = proto.Field(proto.BOOL, number=8,)
+        decipher_only = proto.Field(proto.BOOL, number=9,)
 
     class ExtendedKeyUsageOptions(proto.Message):
         r"""[KeyUsage.ExtendedKeyUsageOptions][google.cloud.security.privateca.v1.KeyUsage.ExtendedKeyUsageOptions]
@@ -1376,24 +1288,17 @@ class KeyUsage(proto.Message):
                 responses".
         """
 
-        server_auth = proto.Field(proto.BOOL, number=1)
-
-        client_auth = proto.Field(proto.BOOL, number=2)
-
-        code_signing = proto.Field(proto.BOOL, number=3)
-
-        email_protection = proto.Field(proto.BOOL, number=4)
-
-        time_stamping = proto.Field(proto.BOOL, number=5)
-
-        ocsp_signing = proto.Field(proto.BOOL, number=6)
+        server_auth = proto.Field(proto.BOOL, number=1,)
+        client_auth = proto.Field(proto.BOOL, number=2,)
+        code_signing = proto.Field(proto.BOOL, number=3,)
+        email_protection = proto.Field(proto.BOOL, number=4,)
+        time_stamping = proto.Field(proto.BOOL, number=5,)
+        ocsp_signing = proto.Field(proto.BOOL, number=6,)
 
     base_key_usage = proto.Field(proto.MESSAGE, number=1, message=KeyUsageOptions,)
-
     extended_key_usage = proto.Field(
         proto.MESSAGE, number=2, message=ExtendedKeyUsageOptions,
     )
-
     unknown_extended_key_usages = proto.RepeatedField(
         proto.MESSAGE, number=3, message="ObjectId",
     )
@@ -1424,21 +1329,14 @@ class Subject(proto.Message):
             The postal code of the subject.
     """
 
-    common_name = proto.Field(proto.STRING, number=1)
-
-    country_code = proto.Field(proto.STRING, number=2)
-
-    organization = proto.Field(proto.STRING, number=3)
-
-    organizational_unit = proto.Field(proto.STRING, number=4)
-
-    locality = proto.Field(proto.STRING, number=5)
-
-    province = proto.Field(proto.STRING, number=6)
-
-    street_address = proto.Field(proto.STRING, number=7)
-
-    postal_code = proto.Field(proto.STRING, number=8)
+    common_name = proto.Field(proto.STRING, number=1,)
+    country_code = proto.Field(proto.STRING, number=2,)
+    organization = proto.Field(proto.STRING, number=3,)
+    organizational_unit = proto.Field(proto.STRING, number=4,)
+    locality = proto.Field(proto.STRING, number=5,)
+    province = proto.Field(proto.STRING, number=6,)
+    street_address = proto.Field(proto.STRING, number=7,)
+    postal_code = proto.Field(proto.STRING, number=8,)
 
 
 class SubjectAltNames(proto.Message):
@@ -1464,14 +1362,10 @@ class SubjectAltNames(proto.Message):
             values.
     """
 
-    dns_names = proto.RepeatedField(proto.STRING, number=1)
-
-    uris = proto.RepeatedField(proto.STRING, number=2)
-
-    email_addresses = proto.RepeatedField(proto.STRING, number=3)
-
-    ip_addresses = proto.RepeatedField(proto.STRING, number=4)
-
+    dns_names = proto.RepeatedField(proto.STRING, number=1,)
+    uris = proto.RepeatedField(proto.STRING, number=2,)
+    email_addresses = proto.RepeatedField(proto.STRING, number=3,)
+    ip_addresses = proto.RepeatedField(proto.STRING, number=4,)
     custom_sans = proto.RepeatedField(proto.MESSAGE, number=5, message="X509Extension",)
 
 
@@ -1491,26 +1385,30 @@ class CertificateIdentityConstraints(proto.Message):
             https://cloud.google.com/certificate-authority-
             service/docs/cel-guide
         allow_subject_passthrough (bool):
-            Optional. If this is set, the
+            Required. If this is true, the
             [Subject][google.cloud.security.privateca.v1.Subject] field
             may be copied from a certificate request into the signed
             certificate. Otherwise, the requested
             [Subject][google.cloud.security.privateca.v1.Subject] will
-            be discarded.
+            be discarded. The bool is optional to indicate an unset
+            field, which suggests a forgotten value that needs to be set
+            by the caller.
         allow_subject_alt_names_passthrough (bool):
-            Optional. If this is set, the
+            Required. If this is true, the
             [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
             extension may be copied from a certificate request into the
             signed certificate. Otherwise, the requested
             [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
-            will be discarded.
+            will be discarded. The bool is optional to indicate an unset
+            field, which suggests a forgotten value that needs to be set
+            by the caller.
     """
 
-    cel_expression = proto.Field(proto.MESSAGE, number=1, message=expr.Expr,)
-
-    allow_subject_passthrough = proto.Field(proto.BOOL, number=2)
-
-    allow_subject_alt_names_passthrough = proto.Field(proto.BOOL, number=3)
+    cel_expression = proto.Field(proto.MESSAGE, number=1, message=expr_pb2.Expr,)
+    allow_subject_passthrough = proto.Field(proto.BOOL, number=2, optional=True,)
+    allow_subject_alt_names_passthrough = proto.Field(
+        proto.BOOL, number=3, optional=True,
+    )
 
 
 class CertificateExtensionConstraints(proto.Message):
@@ -1548,7 +1446,6 @@ class CertificateExtensionConstraints(proto.Message):
     known_extensions = proto.RepeatedField(
         proto.ENUM, number=1, enum=KnownCertificateExtension,
     )
-
     additional_extensions = proto.RepeatedField(
         proto.MESSAGE, number=2, message="ObjectId",
     )

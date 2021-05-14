@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import abc
-import typing
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
+import packaging.version
 import pkg_resources
 
-from google import auth  # type: ignore
-from google.api_core import exceptions  # type: ignore
+import google.auth  # type: ignore
+import google.api_core  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.api_core import operations_v1  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 
 from google.cloud.security.privateca_v1.types import resources
 from google.cloud.security.privateca_v1.types import service
-from google.longrunning import operations_pb2 as operations  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -40,27 +39,41 @@ try:
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
+try:
+    # google.auth.__version__ was added in 1.26.0
+    _GOOGLE_AUTH_VERSION = google.auth.__version__
+except AttributeError:
+    try:  # try pkg_resources if it is available
+        _GOOGLE_AUTH_VERSION = pkg_resources.get_distribution("google-auth").version
+    except pkg_resources.DistributionNotFound:  # pragma: NO COVER
+        _GOOGLE_AUTH_VERSION = None
+
+_API_CORE_VERSION = google.api_core.__version__
+
 
 class CertificateAuthorityServiceTransport(abc.ABC):
     """Abstract transport class for CertificateAuthorityService."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
+    DEFAULT_HOST: str = "privateca.googleapis.com"
+
     def __init__(
         self,
         *,
-        host: str = "privateca.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: typing.Optional[str] = None,
-        scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
-        quota_project_id: typing.Optional[str] = None,
+        host: str = DEFAULT_HOST,
+        credentials: ga_credentials.Credentials = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -69,7 +82,7 @@ class CertificateAuthorityServiceTransport(abc.ABC):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is mutually exclusive with credentials.
-            scope (Optional[Sequence[str]]): A list of scopes.
+            scopes (Optional[Sequence[str]]): A list of scopes.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -83,28 +96,75 @@ class CertificateAuthorityServiceTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        scopes_kwargs = self._get_scopes_kwargs(self._host, scopes)
+
         # Save the scopes.
         self._scopes = scopes or self.AUTH_SCOPES
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise exceptions.DuplicateCredentialArgs(
+            raise core_exceptions.DuplicateCredentialArgs(
                 "'credentials_file' and 'credentials' are mutually exclusive"
             )
 
         if credentials_file is not None:
-            credentials, _ = auth.load_credentials_from_file(
-                credentials_file, scopes=self._scopes, quota_project_id=quota_project_id
+            credentials, _ = google.auth.load_credentials_from_file(
+                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
             )
 
         elif credentials is None:
-            credentials, _ = auth.default(
-                scopes=self._scopes, quota_project_id=quota_project_id
+            credentials, _ = google.auth.default(
+                **scopes_kwargs, quota_project_id=quota_project_id
             )
 
         # Save the credentials.
         self._credentials = credentials
+
+    # TODO(busunkim): These two class methods are in the base transport
+    # to avoid duplicating code across the transport classes. These functions
+    # should be deleted once the minimum required versions of google-api-core
+    # and google-auth are increased.
+
+    # TODO: Remove this function once google-auth >= 1.25.0 is required
+    @classmethod
+    def _get_scopes_kwargs(
+        cls, host: str, scopes: Optional[Sequence[str]]
+    ) -> Dict[str, Optional[Sequence[str]]]:
+        """Returns scopes kwargs to pass to google-auth methods depending on the google-auth version"""
+
+        scopes_kwargs = {}
+
+        if _GOOGLE_AUTH_VERSION and (
+            packaging.version.parse(_GOOGLE_AUTH_VERSION)
+            >= packaging.version.parse("1.25.0")
+        ):
+            scopes_kwargs = {"scopes": scopes, "default_scopes": cls.AUTH_SCOPES}
+        else:
+            scopes_kwargs = {"scopes": scopes or cls.AUTH_SCOPES}
+
+        return scopes_kwargs
+
+    # TODO: Remove this function once google-api-core >= 1.26.0 is required
+    @classmethod
+    def _get_self_signed_jwt_kwargs(
+        cls, host: str, scopes: Optional[Sequence[str]]
+    ) -> Dict[str, Union[Optional[Sequence[str]], str]]:
+        """Returns kwargs to pass to grpc_helpers.create_channel depending on the google-api-core version"""
+
+        self_signed_jwt_kwargs: Dict[str, Union[Optional[Sequence[str]], str]] = {}
+
+        if _API_CORE_VERSION and (
+            packaging.version.parse(_API_CORE_VERSION)
+            >= packaging.version.parse("1.26.0")
+        ):
+            self_signed_jwt_kwargs["default_scopes"] = cls.AUTH_SCOPES
+            self_signed_jwt_kwargs["scopes"] = scopes
+            self_signed_jwt_kwargs["default_host"] = cls.DEFAULT_HOST
+        else:
+            self_signed_jwt_kwargs["scopes"] = scopes or cls.AUTH_SCOPES
+
+        return self_signed_jwt_kwargs
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
@@ -242,29 +302,29 @@ class CertificateAuthorityServiceTransport(abc.ABC):
     @property
     def create_certificate(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.CreateCertificateRequest],
-        typing.Union[resources.Certificate, typing.Awaitable[resources.Certificate]],
+        Union[resources.Certificate, Awaitable[resources.Certificate]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_certificate(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.GetCertificateRequest],
-        typing.Union[resources.Certificate, typing.Awaitable[resources.Certificate]],
+        Union[resources.Certificate, Awaitable[resources.Certificate]],
     ]:
         raise NotImplementedError()
 
     @property
     def list_certificates(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.ListCertificatesRequest],
-        typing.Union[
+        Union[
             service.ListCertificatesResponse,
-            typing.Awaitable[service.ListCertificatesResponse],
+            Awaitable[service.ListCertificatesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -272,65 +332,65 @@ class CertificateAuthorityServiceTransport(abc.ABC):
     @property
     def revoke_certificate(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.RevokeCertificateRequest],
-        typing.Union[resources.Certificate, typing.Awaitable[resources.Certificate]],
+        Union[resources.Certificate, Awaitable[resources.Certificate]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_certificate(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.UpdateCertificateRequest],
-        typing.Union[resources.Certificate, typing.Awaitable[resources.Certificate]],
+        Union[resources.Certificate, Awaitable[resources.Certificate]],
     ]:
         raise NotImplementedError()
 
     @property
     def activate_certificate_authority(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.ActivateCertificateAuthorityRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_certificate_authority(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.CreateCertificateAuthorityRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
     def disable_certificate_authority(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.DisableCertificateAuthorityRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
     def enable_certificate_authority(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.EnableCertificateAuthorityRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
     def fetch_certificate_authority_csr(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.FetchCertificateAuthorityCsrRequest],
-        typing.Union[
+        Union[
             service.FetchCertificateAuthorityCsrResponse,
-            typing.Awaitable[service.FetchCertificateAuthorityCsrResponse],
+            Awaitable[service.FetchCertificateAuthorityCsrResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -338,11 +398,10 @@ class CertificateAuthorityServiceTransport(abc.ABC):
     @property
     def get_certificate_authority(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.GetCertificateAuthorityRequest],
-        typing.Union[
-            resources.CertificateAuthority,
-            typing.Awaitable[resources.CertificateAuthority],
+        Union[
+            resources.CertificateAuthority, Awaitable[resources.CertificateAuthority]
         ],
     ]:
         raise NotImplementedError()
@@ -350,11 +409,11 @@ class CertificateAuthorityServiceTransport(abc.ABC):
     @property
     def list_certificate_authorities(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.ListCertificateAuthoritiesRequest],
-        typing.Union[
+        Union[
             service.ListCertificateAuthoritiesResponse,
-            typing.Awaitable[service.ListCertificateAuthoritiesResponse],
+            Awaitable[service.ListCertificateAuthoritiesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -362,96 +421,91 @@ class CertificateAuthorityServiceTransport(abc.ABC):
     @property
     def undelete_certificate_authority(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.UndeleteCertificateAuthorityRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_certificate_authority(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.DeleteCertificateAuthorityRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_certificate_authority(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.UpdateCertificateAuthorityRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_ca_pool(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.CreateCaPoolRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_ca_pool(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.UpdateCaPoolRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_ca_pool(
         self,
-    ) -> typing.Callable[
-        [service.GetCaPoolRequest],
-        typing.Union[resources.CaPool, typing.Awaitable[resources.CaPool]],
+    ) -> Callable[
+        [service.GetCaPoolRequest], Union[resources.CaPool, Awaitable[resources.CaPool]]
     ]:
         raise NotImplementedError()
 
     @property
     def list_ca_pools(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.ListCaPoolsRequest],
-        typing.Union[
-            service.ListCaPoolsResponse, typing.Awaitable[service.ListCaPoolsResponse]
-        ],
+        Union[service.ListCaPoolsResponse, Awaitable[service.ListCaPoolsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_ca_pool(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.DeleteCaPoolRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
     def fetch_ca_certs(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.FetchCaCertsRequest],
-        typing.Union[
-            service.FetchCaCertsResponse, typing.Awaitable[service.FetchCaCertsResponse]
-        ],
+        Union[service.FetchCaCertsResponse, Awaitable[service.FetchCaCertsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_certificate_revocation_list(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.GetCertificateRevocationListRequest],
-        typing.Union[
+        Union[
             resources.CertificateRevocationList,
-            typing.Awaitable[resources.CertificateRevocationList],
+            Awaitable[resources.CertificateRevocationList],
         ],
     ]:
         raise NotImplementedError()
@@ -459,11 +513,11 @@ class CertificateAuthorityServiceTransport(abc.ABC):
     @property
     def list_certificate_revocation_lists(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.ListCertificateRevocationListsRequest],
-        typing.Union[
+        Union[
             service.ListCertificateRevocationListsResponse,
-            typing.Awaitable[service.ListCertificateRevocationListsResponse],
+            Awaitable[service.ListCertificateRevocationListsResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -471,50 +525,47 @@ class CertificateAuthorityServiceTransport(abc.ABC):
     @property
     def update_certificate_revocation_list(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.UpdateCertificateRevocationListRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_certificate_template(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.CreateCertificateTemplateRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_certificate_template(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.DeleteCertificateTemplateRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_certificate_template(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.GetCertificateTemplateRequest],
-        typing.Union[
-            resources.CertificateTemplate,
-            typing.Awaitable[resources.CertificateTemplate],
-        ],
+        Union[resources.CertificateTemplate, Awaitable[resources.CertificateTemplate]],
     ]:
         raise NotImplementedError()
 
     @property
     def list_certificate_templates(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.ListCertificateTemplatesRequest],
-        typing.Union[
+        Union[
             service.ListCertificateTemplatesResponse,
-            typing.Awaitable[service.ListCertificateTemplatesResponse],
+            Awaitable[service.ListCertificateTemplatesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -522,9 +573,9 @@ class CertificateAuthorityServiceTransport(abc.ABC):
     @property
     def update_certificate_template(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [service.UpdateCertificateTemplateRequest],
-        typing.Union[operations.Operation, typing.Awaitable[operations.Operation]],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 
