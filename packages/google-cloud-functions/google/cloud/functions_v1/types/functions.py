@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -194,59 +191,39 @@ class CloudFunction(proto.Message):
         ALLOW_INTERNAL_ONLY = 2
         ALLOW_INTERNAL_AND_GCLB = 3
 
-    name = proto.Field(proto.STRING, number=1)
-
-    description = proto.Field(proto.STRING, number=2)
-
-    source_archive_url = proto.Field(proto.STRING, number=3, oneof="source_code")
-
+    name = proto.Field(proto.STRING, number=1,)
+    description = proto.Field(proto.STRING, number=2,)
+    source_archive_url = proto.Field(proto.STRING, number=3, oneof="source_code",)
     source_repository = proto.Field(
         proto.MESSAGE, number=4, oneof="source_code", message="SourceRepository",
     )
-
-    source_upload_url = proto.Field(proto.STRING, number=16, oneof="source_code")
-
+    source_upload_url = proto.Field(proto.STRING, number=16, oneof="source_code",)
     https_trigger = proto.Field(
         proto.MESSAGE, number=5, oneof="trigger", message="HttpsTrigger",
     )
-
     event_trigger = proto.Field(
         proto.MESSAGE, number=6, oneof="trigger", message="EventTrigger",
     )
-
     status = proto.Field(proto.ENUM, number=7, enum="CloudFunctionStatus",)
-
-    entry_point = proto.Field(proto.STRING, number=8)
-
-    runtime = proto.Field(proto.STRING, number=19)
-
-    timeout = proto.Field(proto.MESSAGE, number=9, message=duration.Duration,)
-
-    available_memory_mb = proto.Field(proto.INT32, number=10)
-
-    service_account_email = proto.Field(proto.STRING, number=11)
-
-    update_time = proto.Field(proto.MESSAGE, number=12, message=timestamp.Timestamp,)
-
-    version_id = proto.Field(proto.INT64, number=14)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=15)
-
-    environment_variables = proto.MapField(proto.STRING, proto.STRING, number=17)
-
-    network = proto.Field(proto.STRING, number=18)
-
-    max_instances = proto.Field(proto.INT32, number=20)
-
-    vpc_connector = proto.Field(proto.STRING, number=22)
-
+    entry_point = proto.Field(proto.STRING, number=8,)
+    runtime = proto.Field(proto.STRING, number=19,)
+    timeout = proto.Field(proto.MESSAGE, number=9, message=duration_pb2.Duration,)
+    available_memory_mb = proto.Field(proto.INT32, number=10,)
+    service_account_email = proto.Field(proto.STRING, number=11,)
+    update_time = proto.Field(
+        proto.MESSAGE, number=12, message=timestamp_pb2.Timestamp,
+    )
+    version_id = proto.Field(proto.INT64, number=14,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=15,)
+    environment_variables = proto.MapField(proto.STRING, proto.STRING, number=17,)
+    network = proto.Field(proto.STRING, number=18,)
+    max_instances = proto.Field(proto.INT32, number=20,)
+    vpc_connector = proto.Field(proto.STRING, number=22,)
     vpc_connector_egress_settings = proto.Field(
         proto.ENUM, number=23, enum=VpcConnectorEgressSettings,
     )
-
     ingress_settings = proto.Field(proto.ENUM, number=24, enum=IngressSettings,)
-
-    build_id = proto.Field(proto.STRING, number=27)
+    build_id = proto.Field(proto.STRING, number=27,)
 
 
 class SourceRepository(proto.Message):
@@ -276,9 +253,8 @@ class SourceRepository(proto.Message):
             specific commit in the format described above.
     """
 
-    url = proto.Field(proto.STRING, number=1)
-
-    deployed_url = proto.Field(proto.STRING, number=2)
+    url = proto.Field(proto.STRING, number=1,)
+    deployed_url = proto.Field(proto.STRING, number=2,)
 
 
 class HttpsTrigger(proto.Message):
@@ -291,7 +267,7 @@ class HttpsTrigger(proto.Message):
             function.
     """
 
-    url = proto.Field(proto.STRING, number=1)
+    url = proto.Field(proto.STRING, number=1,)
 
 
 class EventTrigger(proto.Message):
@@ -347,12 +323,9 @@ class EventTrigger(proto.Message):
             Specifies policy for failed executions.
     """
 
-    event_type = proto.Field(proto.STRING, number=1)
-
-    resource = proto.Field(proto.STRING, number=2)
-
-    service = proto.Field(proto.STRING, number=3)
-
+    event_type = proto.Field(proto.STRING, number=1,)
+    resource = proto.Field(proto.STRING, number=2,)
+    service = proto.Field(proto.STRING, number=3,)
     failure_policy = proto.Field(proto.MESSAGE, number=5, message="FailurePolicy",)
 
 
@@ -373,14 +346,13 @@ class FailurePolicy(proto.Message):
         failed execution will be retried up to 7 days with an
         exponential backoff (capped at 10 seconds).
         Retried execution is charged as any other execution.
-        """
+            """
 
     retry = proto.Field(proto.MESSAGE, number=1, oneof="action", message=Retry,)
 
 
 class CreateFunctionRequest(proto.Message):
     r"""Request for the ``CreateFunction`` method.
-
     Attributes:
         location (str):
             Required. The project and location in which the function
@@ -390,14 +362,12 @@ class CreateFunctionRequest(proto.Message):
             Required. Function to be created.
     """
 
-    location = proto.Field(proto.STRING, number=1)
-
+    location = proto.Field(proto.STRING, number=1,)
     function = proto.Field(proto.MESSAGE, number=2, message="CloudFunction",)
 
 
 class UpdateFunctionRequest(proto.Message):
     r"""Request for the ``UpdateFunction`` method.
-
     Attributes:
         function (google.cloud.functions_v1.types.CloudFunction):
             Required. New version of the function.
@@ -407,25 +377,24 @@ class UpdateFunctionRequest(proto.Message):
     """
 
     function = proto.Field(proto.MESSAGE, number=1, message="CloudFunction",)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class GetFunctionRequest(proto.Message):
     r"""Request for the ``GetFunction`` method.
-
     Attributes:
         name (str):
             Required. The name of the function which
             details should be obtained.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListFunctionsRequest(proto.Message):
     r"""Request for the ``ListFunctions`` method.
-
     Attributes:
         parent (str):
             The project and location from which the function should be
@@ -445,16 +414,13 @@ class ListFunctionsRequest(proto.Message):
             the next page of data.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListFunctionsResponse(proto.Message):
     r"""Response for the ``ListFunctions`` method.
-
     Attributes:
         functions (Sequence[google.cloud.functions_v1.types.CloudFunction]):
             The functions that match the request.
@@ -474,27 +440,23 @@ class ListFunctionsResponse(proto.Message):
         return self
 
     functions = proto.RepeatedField(proto.MESSAGE, number=1, message="CloudFunction",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
-
-    unreachable = proto.RepeatedField(proto.STRING, number=3)
+    next_page_token = proto.Field(proto.STRING, number=2,)
+    unreachable = proto.RepeatedField(proto.STRING, number=3,)
 
 
 class DeleteFunctionRequest(proto.Message):
     r"""Request for the ``DeleteFunction`` method.
-
     Attributes:
         name (str):
             Required. The name of the function which
             should be deleted.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CallFunctionRequest(proto.Message):
     r"""Request for the ``CallFunction`` method.
-
     Attributes:
         name (str):
             Required. The name of the function to be
@@ -503,14 +465,12 @@ class CallFunctionRequest(proto.Message):
             Required. Input to be passed to the function.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    data = proto.Field(proto.STRING, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    data = proto.Field(proto.STRING, number=2,)
 
 
 class CallFunctionResponse(proto.Message):
     r"""Response of ``CallFunction`` method.
-
     Attributes:
         execution_id (str):
             Execution id of function invocation.
@@ -524,16 +484,13 @@ class CallFunctionResponse(proto.Message):
             error. Set if execution was not successful.
     """
 
-    execution_id = proto.Field(proto.STRING, number=1)
-
-    result = proto.Field(proto.STRING, number=2)
-
-    error = proto.Field(proto.STRING, number=3)
+    execution_id = proto.Field(proto.STRING, number=1,)
+    result = proto.Field(proto.STRING, number=2,)
+    error = proto.Field(proto.STRING, number=3,)
 
 
 class GenerateUploadUrlRequest(proto.Message):
     r"""Request of ``GenerateSourceUploadUrl`` method.
-
     Attributes:
         parent (str):
             The project and location in which the Google Cloud Storage
@@ -541,12 +498,11 @@ class GenerateUploadUrlRequest(proto.Message):
             ``projects/*/locations/*``.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
+    parent = proto.Field(proto.STRING, number=1,)
 
 
 class GenerateUploadUrlResponse(proto.Message):
     r"""Response of ``GenerateSourceUploadUrl`` method.
-
     Attributes:
         upload_url (str):
             The generated Google Cloud Storage signed URL
@@ -555,12 +511,11 @@ class GenerateUploadUrlResponse(proto.Message):
             archive which contains a function.
     """
 
-    upload_url = proto.Field(proto.STRING, number=1)
+    upload_url = proto.Field(proto.STRING, number=1,)
 
 
 class GenerateDownloadUrlRequest(proto.Message):
     r"""Request of ``GenerateDownloadUrl`` method.
-
     Attributes:
         name (str):
             The name of function for which source code
@@ -571,14 +526,12 @@ class GenerateDownloadUrlRequest(proto.Message):
             default, current version is used.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    version_id = proto.Field(proto.UINT64, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    version_id = proto.Field(proto.UINT64, number=2,)
 
 
 class GenerateDownloadUrlResponse(proto.Message):
     r"""Response of ``GenerateDownloadUrl`` method.
-
     Attributes:
         download_url (str):
             The generated Google Cloud Storage signed URL
@@ -586,7 +539,7 @@ class GenerateDownloadUrlResponse(proto.Message):
             download.
     """
 
-    download_url = proto.Field(proto.STRING, number=1)
+    download_url = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

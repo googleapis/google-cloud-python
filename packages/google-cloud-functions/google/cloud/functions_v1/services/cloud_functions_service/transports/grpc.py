@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,24 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.cloud.functions_v1.types import functions
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.longrunning import operations_pb2 as operations  # type: ignore
-
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from .base import CloudFunctionsServiceTransport, DEFAULT_CLIENT_INFO
 
 
@@ -55,7 +52,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         self,
         *,
         host: str = "cloudfunctions.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -69,7 +66,8 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -180,7 +178,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
     def create_channel(
         cls,
         host: str = "cloudfunctions.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -211,13 +209,15 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -298,7 +298,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
     @property
     def create_function(
         self,
-    ) -> Callable[[functions.CreateFunctionRequest], operations.Operation]:
+    ) -> Callable[[functions.CreateFunctionRequest], operations_pb2.Operation]:
         r"""Return a callable for the create function method over gRPC.
 
         Creates a new function. If a function with the given name
@@ -319,14 +319,14 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
             self._stubs["create_function"] = self.grpc_channel.unary_unary(
                 "/google.cloud.functions.v1.CloudFunctionsService/CreateFunction",
                 request_serializer=functions.CreateFunctionRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_function"]
 
     @property
     def update_function(
         self,
-    ) -> Callable[[functions.UpdateFunctionRequest], operations.Operation]:
+    ) -> Callable[[functions.UpdateFunctionRequest], operations_pb2.Operation]:
         r"""Return a callable for the update function method over gRPC.
 
         Updates existing function.
@@ -345,14 +345,14 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
             self._stubs["update_function"] = self.grpc_channel.unary_unary(
                 "/google.cloud.functions.v1.CloudFunctionsService/UpdateFunction",
                 request_serializer=functions.UpdateFunctionRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_function"]
 
     @property
     def delete_function(
         self,
-    ) -> Callable[[functions.DeleteFunctionRequest], operations.Operation]:
+    ) -> Callable[[functions.DeleteFunctionRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete function method over gRPC.
 
         Deletes a function with the given name from the
@@ -374,7 +374,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
             self._stubs["delete_function"] = self.grpc_channel.unary_unary(
                 "/google.cloud.functions.v1.CloudFunctionsService/DeleteFunction",
                 request_serializer=functions.DeleteFunctionRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_function"]
 
@@ -499,7 +499,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[[iam_policy.SetIamPolicyRequest], policy.Policy]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the IAM access control policy on the specified
@@ -518,15 +518,15 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         if "set_iam_policy" not in self._stubs:
             self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
                 "/google.cloud.functions.v1.CloudFunctionsService/SetIamPolicy",
-                request_serializer=iam_policy.SetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy.Policy.FromString,
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
             )
         return self._stubs["set_iam_policy"]
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[[iam_policy.GetIamPolicyRequest], policy.Policy]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the IAM access control policy for a function.
@@ -546,8 +546,8 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         if "get_iam_policy" not in self._stubs:
             self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
                 "/google.cloud.functions.v1.CloudFunctionsService/GetIamPolicy",
-                request_serializer=iam_policy.GetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy.Policy.FromString,
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
             )
         return self._stubs["get_iam_policy"]
 
@@ -555,7 +555,8 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
     def test_iam_permissions(
         self,
     ) -> Callable[
-        [iam_policy.TestIamPermissionsRequest], iam_policy.TestIamPermissionsResponse
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
@@ -576,8 +577,8 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         if "test_iam_permissions" not in self._stubs:
             self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
                 "/google.cloud.functions.v1.CloudFunctionsService/TestIamPermissions",
-                request_serializer=iam_policy.TestIamPermissionsRequest.SerializeToString,
-                response_deserializer=iam_policy.TestIamPermissionsResponse.FromString,
+                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
             )
         return self._stubs["test_iam_permissions"]
 

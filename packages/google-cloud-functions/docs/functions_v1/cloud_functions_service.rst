@@ -5,7 +5,6 @@ CloudFunctionsService
     :members:
     :inherited-members:
 
-
 .. automodule:: google.cloud.functions_v1.services.cloud_functions_service.pagers
     :members:
     :inherited-members:

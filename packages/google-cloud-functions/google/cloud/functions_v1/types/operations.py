@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import any_pb2 as gp_any  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import any_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -38,7 +35,6 @@ class OperationType(proto.Enum):
 
 class OperationMetadataV1(proto.Message):
     r"""Metadata describing an [Operation][google.longrunning.Operation]
-
     Attributes:
         target (str):
             Target of the operation - for example
@@ -60,17 +56,12 @@ class OperationMetadataV1(proto.Message):
             populated for Create and Update operations.
     """
 
-    target = proto.Field(proto.STRING, number=1)
-
+    target = proto.Field(proto.STRING, number=1,)
     type_ = proto.Field(proto.ENUM, number=2, enum="OperationType",)
-
-    request = proto.Field(proto.MESSAGE, number=3, message=gp_any.Any,)
-
-    version_id = proto.Field(proto.INT64, number=4)
-
-    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
-
-    build_id = proto.Field(proto.STRING, number=6)
+    request = proto.Field(proto.MESSAGE, number=3, message=any_pb2.Any,)
+    version_id = proto.Field(proto.INT64, number=4,)
+    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    build_id = proto.Field(proto.STRING, number=6,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

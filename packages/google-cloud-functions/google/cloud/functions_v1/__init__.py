@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,10 +15,11 @@
 #
 
 from .services.cloud_functions_service import CloudFunctionsServiceClient
+from .services.cloud_functions_service import CloudFunctionsServiceAsyncClient
+
 from .types.functions import CallFunctionRequest
 from .types.functions import CallFunctionResponse
 from .types.functions import CloudFunction
-from .types.functions import CloudFunctionStatus
 from .types.functions import CreateFunctionRequest
 from .types.functions import DeleteFunctionRequest
 from .types.functions import EventTrigger
@@ -34,15 +34,17 @@ from .types.functions import ListFunctionsRequest
 from .types.functions import ListFunctionsResponse
 from .types.functions import SourceRepository
 from .types.functions import UpdateFunctionRequest
+from .types.functions import CloudFunctionStatus
 from .types.operations import OperationMetadataV1
 from .types.operations import OperationType
 
-
 __all__ = (
+    "CloudFunctionsServiceAsyncClient",
     "CallFunctionRequest",
     "CallFunctionResponse",
     "CloudFunction",
     "CloudFunctionStatus",
+    "CloudFunctionsServiceClient",
     "CreateFunctionRequest",
     "DeleteFunctionRequest",
     "EventTrigger",
@@ -59,5 +61,4 @@ __all__ = (
     "OperationType",
     "SourceRepository",
     "UpdateFunctionRequest",
-    "CloudFunctionsServiceClient",
 )
