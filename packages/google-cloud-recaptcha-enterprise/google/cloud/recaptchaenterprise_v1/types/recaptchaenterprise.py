@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -48,7 +45,6 @@ __protobuf__ = proto.module(
 
 class CreateAssessmentRequest(proto.Message):
     r"""The create assessment request message.
-
     Attributes:
         parent (str):
             Required. The name of the project in which
@@ -58,14 +54,12 @@ class CreateAssessmentRequest(proto.Message):
             Required. The assessment details.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     assessment = proto.Field(proto.MESSAGE, number=2, message="Assessment",)
 
 
 class AnnotateAssessmentRequest(proto.Message):
     r"""The request message to annotate an Assessment.
-
     Attributes:
         name (str):
             Required. The resource name of the
@@ -84,18 +78,16 @@ class AnnotateAssessmentRequest(proto.Message):
         PASSWORD_CORRECT = 3
         PASSWORD_INCORRECT = 4
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     annotation = proto.Field(proto.ENUM, number=2, enum=Annotation,)
 
 
 class AnnotateAssessmentResponse(proto.Message):
-    r"""Empty response for AnnotateAssessment."""
+    r"""Empty response for AnnotateAssessment.    """
 
 
 class Assessment(proto.Message):
     r"""A recaptcha assessment resource.
-
     Attributes:
         name (str):
             Output only. The resource name for the
@@ -111,18 +103,14 @@ class Assessment(proto.Message):
             token.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     event = proto.Field(proto.MESSAGE, number=2, message="Event",)
-
     risk_analysis = proto.Field(proto.MESSAGE, number=3, message="RiskAnalysis",)
-
     token_properties = proto.Field(proto.MESSAGE, number=4, message="TokenProperties",)
 
 
 class Event(proto.Message):
     r"""
-
     Attributes:
         token (str):
             Optional. The user response token provided by
@@ -147,20 +135,15 @@ class Event(proto.Message):
             enterprise.
     """
 
-    token = proto.Field(proto.STRING, number=1)
-
-    site_key = proto.Field(proto.STRING, number=2)
-
-    user_agent = proto.Field(proto.STRING, number=3)
-
-    user_ip_address = proto.Field(proto.STRING, number=4)
-
-    expected_action = proto.Field(proto.STRING, number=5)
+    token = proto.Field(proto.STRING, number=1,)
+    site_key = proto.Field(proto.STRING, number=2,)
+    user_agent = proto.Field(proto.STRING, number=3,)
+    user_ip_address = proto.Field(proto.STRING, number=4,)
+    expected_action = proto.Field(proto.STRING, number=5,)
 
 
 class RiskAnalysis(proto.Message):
     r"""Risk analysis result for an event.
-
     Attributes:
         score (float):
             Legitimate event score from 0.0 to 1.0.
@@ -182,14 +165,12 @@ class RiskAnalysis(proto.Message):
         UNEXPECTED_USAGE_PATTERNS = 4
         LOW_CONFIDENCE_SCORE = 5
 
-    score = proto.Field(proto.FLOAT, number=1)
-
+    score = proto.Field(proto.FLOAT, number=1,)
     reasons = proto.RepeatedField(proto.ENUM, number=2, enum=ClassificationReason,)
 
 
 class TokenProperties(proto.Message):
     r"""
-
     Attributes:
         valid (bool):
             Whether the provided user response token is valid. When
@@ -222,20 +203,15 @@ class TokenProperties(proto.Message):
         DUPE = 4
         MISSING = 5
 
-    valid = proto.Field(proto.BOOL, number=1)
-
+    valid = proto.Field(proto.BOOL, number=1,)
     invalid_reason = proto.Field(proto.ENUM, number=2, enum=InvalidReason,)
-
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
-
-    hostname = proto.Field(proto.STRING, number=4)
-
-    action = proto.Field(proto.STRING, number=5)
+    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    hostname = proto.Field(proto.STRING, number=4,)
+    action = proto.Field(proto.STRING, number=5,)
 
 
 class CreateKeyRequest(proto.Message):
     r"""The create key request message.
-
     Attributes:
         parent (str):
             Required. The name of the project in which
@@ -246,14 +222,12 @@ class CreateKeyRequest(proto.Message):
             Enterprise key.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     key = proto.Field(proto.MESSAGE, number=2, message="Key",)
 
 
 class ListKeysRequest(proto.Message):
     r"""The list keys request message.
-
     Attributes:
         parent (str):
             Required. The name of the project that
@@ -267,16 +241,13 @@ class ListKeysRequest(proto.Message):
             previous. ListKeysRequest, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListKeysResponse(proto.Message):
     r"""Response to request to list keys in a project.
-
     Attributes:
         keys (Sequence[google.cloud.recaptchaenterprise_v1.types.Key]):
             Key details.
@@ -290,25 +261,22 @@ class ListKeysResponse(proto.Message):
         return self
 
     keys = proto.RepeatedField(proto.MESSAGE, number=1, message="Key",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetKeyRequest(proto.Message):
     r"""The get key request message.
-
     Attributes:
         name (str):
             Required. The name of the requested key, in
             the format "projects/{project}/keys/{key}".
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class UpdateKeyRequest(proto.Message):
     r"""The update key request message.
-
     Attributes:
         key (google.cloud.recaptchaenterprise_v1.types.Key):
             Required. The key to update.
@@ -319,20 +287,20 @@ class UpdateKeyRequest(proto.Message):
     """
 
     key = proto.Field(proto.MESSAGE, number=1, message="Key",)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteKeyRequest(proto.Message):
     r"""The delete key request message.
-
     Attributes:
         name (str):
             Required. The name of the key to be deleted,
             in the format "projects/{project}/keys/{key}".
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class Key(proto.Message):
@@ -365,33 +333,26 @@ class Key(proto.Message):
             of this Key.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
     web_settings = proto.Field(
         proto.MESSAGE, number=3, oneof="platform_settings", message="WebKeySettings",
     )
-
     android_settings = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="platform_settings",
         message="AndroidKeySettings",
     )
-
     ios_settings = proto.Field(
         proto.MESSAGE, number=5, oneof="platform_settings", message="IOSKeySettings",
     )
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=6)
-
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp.Timestamp,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=6,)
+    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
 
 
 class WebKeySettings(proto.Message):
     r"""Settings specific to keys that can be used by websites.
-
     Attributes:
         allow_all_domains (bool):
             If set to true, it means allowed_domains will not be
@@ -432,14 +393,10 @@ class WebKeySettings(proto.Message):
         BALANCE = 2
         SECURITY = 3
 
-    allow_all_domains = proto.Field(proto.BOOL, number=3)
-
-    allowed_domains = proto.RepeatedField(proto.STRING, number=1)
-
-    allow_amp_traffic = proto.Field(proto.BOOL, number=2)
-
+    allow_all_domains = proto.Field(proto.BOOL, number=3,)
+    allowed_domains = proto.RepeatedField(proto.STRING, number=1,)
+    allow_amp_traffic = proto.Field(proto.BOOL, number=2,)
     integration_type = proto.Field(proto.ENUM, number=4, enum=IntegrationType,)
-
     challenge_security_preference = proto.Field(
         proto.ENUM, number=5, enum=ChallengeSecurityPreference,
     )
@@ -447,19 +404,17 @@ class WebKeySettings(proto.Message):
 
 class AndroidKeySettings(proto.Message):
     r"""Settings specific to keys that can be used by Android apps.
-
     Attributes:
         allowed_package_names (Sequence[str]):
             Android package names of apps allowed to use
             the key. Example: 'com.companyname.appname'
     """
 
-    allowed_package_names = proto.RepeatedField(proto.STRING, number=1)
+    allowed_package_names = proto.RepeatedField(proto.STRING, number=1,)
 
 
 class IOSKeySettings(proto.Message):
     r"""Settings specific to keys that can be used by iOS apps.
-
     Attributes:
         allowed_bundle_ids (Sequence[str]):
             iOS bundle ids of apps allowed to use the
@@ -467,7 +422,7 @@ class IOSKeySettings(proto.Message):
             'com.companyname.productname.appname'
     """
 
-    allowed_bundle_ids = proto.RepeatedField(proto.STRING, number=1)
+    allowed_bundle_ids = proto.RepeatedField(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
