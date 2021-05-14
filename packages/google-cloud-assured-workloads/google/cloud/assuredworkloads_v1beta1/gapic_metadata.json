@@ -1,0 +1,73 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.assuredworkloads_v1beta1",
+  "protoPackage": "google.cloud.assuredworkloads.v1beta1",
+  "schema": "1.0",
+  "services": {
+    "AssuredWorkloadsService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AssuredWorkloadsServiceClient",
+          "rpcs": {
+            "CreateWorkload": {
+              "methods": [
+                "create_workload"
+              ]
+            },
+            "DeleteWorkload": {
+              "methods": [
+                "delete_workload"
+              ]
+            },
+            "GetWorkload": {
+              "methods": [
+                "get_workload"
+              ]
+            },
+            "ListWorkloads": {
+              "methods": [
+                "list_workloads"
+              ]
+            },
+            "UpdateWorkload": {
+              "methods": [
+                "update_workload"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AssuredWorkloadsServiceAsyncClient",
+          "rpcs": {
+            "CreateWorkload": {
+              "methods": [
+                "create_workload"
+              ]
+            },
+            "DeleteWorkload": {
+              "methods": [
+                "delete_workload"
+              ]
+            },
+            "GetWorkload": {
+              "methods": [
+                "get_workload"
+              ]
+            },
+            "ListWorkloads": {
+              "methods": [
+                "list_workloads"
+              ]
+            },
+            "UpdateWorkload": {
+              "methods": [
+                "update_workload"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
