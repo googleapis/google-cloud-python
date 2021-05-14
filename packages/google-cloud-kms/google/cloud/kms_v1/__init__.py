@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,8 @@
 #
 
 from .services.key_management_service import KeyManagementServiceClient
+from .services.key_management_service import KeyManagementServiceAsyncClient
+
 from .types.resources import CryptoKey
 from .types.resources import CryptoKeyVersion
 from .types.resources import CryptoKeyVersionTemplate
@@ -23,8 +24,8 @@ from .types.resources import ExternalProtectionLevelOptions
 from .types.resources import ImportJob
 from .types.resources import KeyOperationAttestation
 from .types.resources import KeyRing
-from .types.resources import ProtectionLevel
 from .types.resources import PublicKey
+from .types.resources import ProtectionLevel
 from .types.service import AsymmetricDecryptRequest
 from .types.service import AsymmetricDecryptResponse
 from .types.service import AsymmetricSignRequest
@@ -45,10 +46,10 @@ from .types.service import GetImportJobRequest
 from .types.service import GetKeyRingRequest
 from .types.service import GetPublicKeyRequest
 from .types.service import ImportCryptoKeyVersionRequest
-from .types.service import ListCryptoKeyVersionsRequest
-from .types.service import ListCryptoKeyVersionsResponse
 from .types.service import ListCryptoKeysRequest
 from .types.service import ListCryptoKeysResponse
+from .types.service import ListCryptoKeyVersionsRequest
+from .types.service import ListCryptoKeyVersionsResponse
 from .types.service import ListImportJobsRequest
 from .types.service import ListImportJobsResponse
 from .types.service import ListKeyRingsRequest
@@ -59,8 +60,8 @@ from .types.service import UpdateCryptoKeyPrimaryVersionRequest
 from .types.service import UpdateCryptoKeyRequest
 from .types.service import UpdateCryptoKeyVersionRequest
 
-
 __all__ = (
+    "KeyManagementServiceAsyncClient",
     "AsymmetricDecryptRequest",
     "AsymmetricDecryptResponse",
     "AsymmetricSignRequest",
@@ -86,6 +87,7 @@ __all__ = (
     "GetPublicKeyRequest",
     "ImportCryptoKeyVersionRequest",
     "ImportJob",
+    "KeyManagementServiceClient",
     "KeyOperationAttestation",
     "KeyRing",
     "ListCryptoKeyVersionsRequest",
@@ -103,5 +105,4 @@ __all__ = (
     "UpdateCryptoKeyPrimaryVersionRequest",
     "UpdateCryptoKeyRequest",
     "UpdateCryptoKeyVersionRequest",
-    "KeyManagementServiceClient",
 )

@@ -1,0 +1,253 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.kms_v1",
+  "protoPackage": "google.cloud.kms.v1",
+  "schema": "1.0",
+  "services": {
+    "KeyManagementService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "KeyManagementServiceClient",
+          "rpcs": {
+            "AsymmetricDecrypt": {
+              "methods": [
+                "asymmetric_decrypt"
+              ]
+            },
+            "AsymmetricSign": {
+              "methods": [
+                "asymmetric_sign"
+              ]
+            },
+            "CreateCryptoKey": {
+              "methods": [
+                "create_crypto_key"
+              ]
+            },
+            "CreateCryptoKeyVersion": {
+              "methods": [
+                "create_crypto_key_version"
+              ]
+            },
+            "CreateImportJob": {
+              "methods": [
+                "create_import_job"
+              ]
+            },
+            "CreateKeyRing": {
+              "methods": [
+                "create_key_ring"
+              ]
+            },
+            "Decrypt": {
+              "methods": [
+                "decrypt"
+              ]
+            },
+            "DestroyCryptoKeyVersion": {
+              "methods": [
+                "destroy_crypto_key_version"
+              ]
+            },
+            "Encrypt": {
+              "methods": [
+                "encrypt"
+              ]
+            },
+            "GetCryptoKey": {
+              "methods": [
+                "get_crypto_key"
+              ]
+            },
+            "GetCryptoKeyVersion": {
+              "methods": [
+                "get_crypto_key_version"
+              ]
+            },
+            "GetImportJob": {
+              "methods": [
+                "get_import_job"
+              ]
+            },
+            "GetKeyRing": {
+              "methods": [
+                "get_key_ring"
+              ]
+            },
+            "GetPublicKey": {
+              "methods": [
+                "get_public_key"
+              ]
+            },
+            "ImportCryptoKeyVersion": {
+              "methods": [
+                "import_crypto_key_version"
+              ]
+            },
+            "ListCryptoKeyVersions": {
+              "methods": [
+                "list_crypto_key_versions"
+              ]
+            },
+            "ListCryptoKeys": {
+              "methods": [
+                "list_crypto_keys"
+              ]
+            },
+            "ListImportJobs": {
+              "methods": [
+                "list_import_jobs"
+              ]
+            },
+            "ListKeyRings": {
+              "methods": [
+                "list_key_rings"
+              ]
+            },
+            "RestoreCryptoKeyVersion": {
+              "methods": [
+                "restore_crypto_key_version"
+              ]
+            },
+            "UpdateCryptoKey": {
+              "methods": [
+                "update_crypto_key"
+              ]
+            },
+            "UpdateCryptoKeyPrimaryVersion": {
+              "methods": [
+                "update_crypto_key_primary_version"
+              ]
+            },
+            "UpdateCryptoKeyVersion": {
+              "methods": [
+                "update_crypto_key_version"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "KeyManagementServiceAsyncClient",
+          "rpcs": {
+            "AsymmetricDecrypt": {
+              "methods": [
+                "asymmetric_decrypt"
+              ]
+            },
+            "AsymmetricSign": {
+              "methods": [
+                "asymmetric_sign"
+              ]
+            },
+            "CreateCryptoKey": {
+              "methods": [
+                "create_crypto_key"
+              ]
+            },
+            "CreateCryptoKeyVersion": {
+              "methods": [
+                "create_crypto_key_version"
+              ]
+            },
+            "CreateImportJob": {
+              "methods": [
+                "create_import_job"
+              ]
+            },
+            "CreateKeyRing": {
+              "methods": [
+                "create_key_ring"
+              ]
+            },
+            "Decrypt": {
+              "methods": [
+                "decrypt"
+              ]
+            },
+            "DestroyCryptoKeyVersion": {
+              "methods": [
+                "destroy_crypto_key_version"
+              ]
+            },
+            "Encrypt": {
+              "methods": [
+                "encrypt"
+              ]
+            },
+            "GetCryptoKey": {
+              "methods": [
+                "get_crypto_key"
+              ]
+            },
+            "GetCryptoKeyVersion": {
+              "methods": [
+                "get_crypto_key_version"
+              ]
+            },
+            "GetImportJob": {
+              "methods": [
+                "get_import_job"
+              ]
+            },
+            "GetKeyRing": {
+              "methods": [
+                "get_key_ring"
+              ]
+            },
+            "GetPublicKey": {
+              "methods": [
+                "get_public_key"
+              ]
+            },
+            "ImportCryptoKeyVersion": {
+              "methods": [
+                "import_crypto_key_version"
+              ]
+            },
+            "ListCryptoKeyVersions": {
+              "methods": [
+                "list_crypto_key_versions"
+              ]
+            },
+            "ListCryptoKeys": {
+              "methods": [
+                "list_crypto_keys"
+              ]
+            },
+            "ListImportJobs": {
+              "methods": [
+                "list_import_jobs"
+              ]
+            },
+            "ListKeyRings": {
+              "methods": [
+                "list_key_rings"
+              ]
+            },
+            "RestoreCryptoKeyVersion": {
+              "methods": [
+                "restore_crypto_key_version"
+              ]
+            },
+            "UpdateCryptoKey": {
+              "methods": [
+                "update_crypto_key"
+              ]
+            },
+            "UpdateCryptoKeyPrimaryVersion": {
+              "methods": [
+                "update_crypto_key_primary_version"
+              ]
+            },
+            "UpdateCryptoKeyVersion": {
+              "methods": [
+                "update_crypto_key_version"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

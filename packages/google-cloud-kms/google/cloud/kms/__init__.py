@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +14,13 @@
 # limitations under the License.
 #
 
-from google.cloud.kms_v1.services.key_management_service.async_client import (
-    KeyManagementServiceAsyncClient,
-)
 from google.cloud.kms_v1.services.key_management_service.client import (
     KeyManagementServiceClient,
 )
+from google.cloud.kms_v1.services.key_management_service.async_client import (
+    KeyManagementServiceAsyncClient,
+)
+
 from google.cloud.kms_v1.types.resources import CryptoKey
 from google.cloud.kms_v1.types.resources import CryptoKeyVersion
 from google.cloud.kms_v1.types.resources import CryptoKeyVersionTemplate
@@ -28,8 +28,8 @@ from google.cloud.kms_v1.types.resources import ExternalProtectionLevelOptions
 from google.cloud.kms_v1.types.resources import ImportJob
 from google.cloud.kms_v1.types.resources import KeyOperationAttestation
 from google.cloud.kms_v1.types.resources import KeyRing
-from google.cloud.kms_v1.types.resources import ProtectionLevel
 from google.cloud.kms_v1.types.resources import PublicKey
+from google.cloud.kms_v1.types.resources import ProtectionLevel
 from google.cloud.kms_v1.types.service import AsymmetricDecryptRequest
 from google.cloud.kms_v1.types.service import AsymmetricDecryptResponse
 from google.cloud.kms_v1.types.service import AsymmetricSignRequest
@@ -50,10 +50,10 @@ from google.cloud.kms_v1.types.service import GetImportJobRequest
 from google.cloud.kms_v1.types.service import GetKeyRingRequest
 from google.cloud.kms_v1.types.service import GetPublicKeyRequest
 from google.cloud.kms_v1.types.service import ImportCryptoKeyVersionRequest
-from google.cloud.kms_v1.types.service import ListCryptoKeyVersionsRequest
-from google.cloud.kms_v1.types.service import ListCryptoKeyVersionsResponse
 from google.cloud.kms_v1.types.service import ListCryptoKeysRequest
 from google.cloud.kms_v1.types.service import ListCryptoKeysResponse
+from google.cloud.kms_v1.types.service import ListCryptoKeyVersionsRequest
+from google.cloud.kms_v1.types.service import ListCryptoKeyVersionsResponse
 from google.cloud.kms_v1.types.service import ListImportJobsRequest
 from google.cloud.kms_v1.types.service import ListImportJobsResponse
 from google.cloud.kms_v1.types.service import ListKeyRingsRequest
@@ -65,6 +65,17 @@ from google.cloud.kms_v1.types.service import UpdateCryptoKeyRequest
 from google.cloud.kms_v1.types.service import UpdateCryptoKeyVersionRequest
 
 __all__ = (
+    "KeyManagementServiceClient",
+    "KeyManagementServiceAsyncClient",
+    "CryptoKey",
+    "CryptoKeyVersion",
+    "CryptoKeyVersionTemplate",
+    "ExternalProtectionLevelOptions",
+    "ImportJob",
+    "KeyOperationAttestation",
+    "KeyRing",
+    "PublicKey",
+    "ProtectionLevel",
     "AsymmetricDecryptRequest",
     "AsymmetricDecryptResponse",
     "AsymmetricSignRequest",
@@ -73,38 +84,27 @@ __all__ = (
     "CreateCryptoKeyVersionRequest",
     "CreateImportJobRequest",
     "CreateKeyRingRequest",
-    "CryptoKey",
-    "CryptoKeyVersion",
-    "CryptoKeyVersionTemplate",
     "DecryptRequest",
     "DecryptResponse",
     "DestroyCryptoKeyVersionRequest",
     "Digest",
     "EncryptRequest",
     "EncryptResponse",
-    "ExternalProtectionLevelOptions",
     "GetCryptoKeyRequest",
     "GetCryptoKeyVersionRequest",
     "GetImportJobRequest",
     "GetKeyRingRequest",
     "GetPublicKeyRequest",
     "ImportCryptoKeyVersionRequest",
-    "ImportJob",
-    "KeyManagementServiceAsyncClient",
-    "KeyManagementServiceClient",
-    "KeyOperationAttestation",
-    "KeyRing",
-    "ListCryptoKeyVersionsRequest",
-    "ListCryptoKeyVersionsResponse",
     "ListCryptoKeysRequest",
     "ListCryptoKeysResponse",
+    "ListCryptoKeyVersionsRequest",
+    "ListCryptoKeyVersionsResponse",
     "ListImportJobsRequest",
     "ListImportJobsResponse",
     "ListKeyRingsRequest",
     "ListKeyRingsResponse",
     "LocationMetadata",
-    "ProtectionLevel",
-    "PublicKey",
     "RestoreCryptoKeyVersionRequest",
     "UpdateCryptoKeyPrimaryVersionRequest",
     "UpdateCryptoKeyRequest",

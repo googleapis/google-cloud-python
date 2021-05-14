@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,34 +39,32 @@ def partition(
 class kmsCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'asymmetric_decrypt': ('name', 'ciphertext', 'ciphertext_crc32c', ),
-    'asymmetric_sign': ('name', 'digest', 'digest_crc32c', ),
-    'create_crypto_key': ('parent', 'crypto_key_id', 'crypto_key', 'skip_initial_version_creation', ),
-    'create_crypto_key_version': ('parent', 'crypto_key_version', ),
-    'create_import_job': ('parent', 'import_job_id', 'import_job', ),
-    'create_key_ring': ('parent', 'key_ring_id', 'key_ring', ),
-    'decrypt': ('name', 'ciphertext', 'additional_authenticated_data', 'ciphertext_crc32c', 'additional_authenticated_data_crc32c', ),
-    'destroy_crypto_key_version': ('name', ),
-    'encrypt': ('name', 'plaintext', 'additional_authenticated_data', 'plaintext_crc32c', 'additional_authenticated_data_crc32c', ),
-    'get_crypto_key': ('name', ),
-    'get_crypto_key_version': ('name', ),
-    'get_import_job': ('name', ),
-    'get_key_ring': ('name', ),
-    'get_public_key': ('name', ),
-    'import_crypto_key_version': ('parent', 'algorithm', 'import_job', 'rsa_aes_wrapped_key', ),
-    'list_crypto_keys': ('parent', 'page_size', 'page_token', 'version_view', 'filter', 'order_by', ),
-    'list_crypto_key_versions': ('parent', 'page_size', 'page_token', 'view', 'filter', 'order_by', ),
-    'list_import_jobs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-    'list_key_rings': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-    'restore_crypto_key_version': ('name', ),
-    'update_crypto_key': ('crypto_key', 'update_mask', ),
-    'update_crypto_key_primary_version': ('name', 'crypto_key_version_id', ),
-    'update_crypto_key_version': ('crypto_key_version', 'update_mask', ),
-
+          'asymmetric_decrypt': ('name', 'ciphertext', 'ciphertext_crc32c', ),
+          'asymmetric_sign': ('name', 'digest', 'digest_crc32c', ),
+          'create_crypto_key': ('parent', 'crypto_key_id', 'crypto_key', 'skip_initial_version_creation', ),
+          'create_crypto_key_version': ('parent', 'crypto_key_version', ),
+          'create_import_job': ('parent', 'import_job_id', 'import_job', ),
+          'create_key_ring': ('parent', 'key_ring_id', 'key_ring', ),
+          'decrypt': ('name', 'ciphertext', 'additional_authenticated_data', 'ciphertext_crc32c', 'additional_authenticated_data_crc32c', ),
+          'destroy_crypto_key_version': ('name', ),
+          'encrypt': ('name', 'plaintext', 'additional_authenticated_data', 'plaintext_crc32c', 'additional_authenticated_data_crc32c', ),
+          'get_crypto_key': ('name', ),
+          'get_crypto_key_version': ('name', ),
+          'get_import_job': ('name', ),
+          'get_key_ring': ('name', ),
+          'get_public_key': ('name', ),
+          'import_crypto_key_version': ('parent', 'algorithm', 'import_job', 'rsa_aes_wrapped_key', ),
+          'list_crypto_keys': ('parent', 'page_size', 'page_token', 'version_view', 'filter', 'order_by', ),
+          'list_crypto_key_versions': ('parent', 'page_size', 'page_token', 'view', 'filter', 'order_by', ),
+          'list_import_jobs': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+          'list_key_rings': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+          'restore_crypto_key_version': ('name', ),
+          'update_crypto_key': ('crypto_key', 'update_mask', ),
+          'update_crypto_key_primary_version': ('name', 'crypto_key_version_id', ),
+          'update_crypto_key_version': ('crypto_key_version', 'update_mask', ),
     'get_iam_policy': ('resource', 'options', ),
     'set_iam_policy': ('resource', 'policy', ),
     'test_iam_permissions': ('resource', 'permissions', ),
-
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -99,7 +95,7 @@ class kmsCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that
