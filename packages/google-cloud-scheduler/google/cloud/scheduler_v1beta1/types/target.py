@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -112,18 +110,13 @@ class HttpTarget(proto.Message):
             to validate the token yourself.
     """
 
-    uri = proto.Field(proto.STRING, number=1)
-
+    uri = proto.Field(proto.STRING, number=1,)
     http_method = proto.Field(proto.ENUM, number=2, enum="HttpMethod",)
-
-    headers = proto.MapField(proto.STRING, proto.STRING, number=3)
-
-    body = proto.Field(proto.BYTES, number=4)
-
+    headers = proto.MapField(proto.STRING, proto.STRING, number=3,)
+    body = proto.Field(proto.BYTES, number=4,)
     oauth_token = proto.Field(
         proto.MESSAGE, number=5, oneof="authorization_header", message="OAuthToken",
     )
-
     oidc_token = proto.Field(
         proto.MESSAGE, number=6, oneof="authorization_header", message="OidcToken",
     )
@@ -203,16 +196,12 @@ class AppEngineHttpTarget(proto.Message):
     """
 
     http_method = proto.Field(proto.ENUM, number=1, enum="HttpMethod",)
-
     app_engine_routing = proto.Field(
         proto.MESSAGE, number=2, message="AppEngineRouting",
     )
-
-    relative_uri = proto.Field(proto.STRING, number=3)
-
-    headers = proto.MapField(proto.STRING, proto.STRING, number=4)
-
-    body = proto.Field(proto.BYTES, number=5)
+    relative_uri = proto.Field(proto.STRING, number=3,)
+    headers = proto.MapField(proto.STRING, proto.STRING, number=4,)
+    body = proto.Field(proto.BYTES, number=5,)
 
 
 class PubsubTarget(proto.Message):
@@ -240,11 +229,9 @@ class PubsubTarget(proto.Message):
             data, or at least one attribute.
     """
 
-    topic_name = proto.Field(proto.STRING, number=1)
-
-    data = proto.Field(proto.BYTES, number=3)
-
-    attributes = proto.MapField(proto.STRING, proto.STRING, number=4)
+    topic_name = proto.Field(proto.STRING, number=1,)
+    data = proto.Field(proto.BYTES, number=3,)
+    attributes = proto.MapField(proto.STRING, proto.STRING, number=4,)
 
 
 class AppEngineRouting(proto.Message):
@@ -362,13 +349,10 @@ class AppEngineRouting(proto.Message):
             of the default service when the job is attempted.
     """
 
-    service = proto.Field(proto.STRING, number=1)
-
-    version = proto.Field(proto.STRING, number=2)
-
-    instance = proto.Field(proto.STRING, number=3)
-
-    host = proto.Field(proto.STRING, number=4)
+    service = proto.Field(proto.STRING, number=1,)
+    version = proto.Field(proto.STRING, number=2,)
+    instance = proto.Field(proto.STRING, number=3,)
+    host = proto.Field(proto.STRING, number=4,)
 
 
 class OAuthToken(proto.Message):
@@ -392,9 +376,8 @@ class OAuthToken(proto.Message):
             will be used.
     """
 
-    service_account_email = proto.Field(proto.STRING, number=1)
-
-    scope = proto.Field(proto.STRING, number=2)
+    service_account_email = proto.Field(proto.STRING, number=1,)
+    scope = proto.Field(proto.STRING, number=2,)
 
 
 class OidcToken(proto.Message):
@@ -418,9 +401,8 @@ class OidcToken(proto.Message):
             target will be used.
     """
 
-    service_account_email = proto.Field(proto.STRING, number=1)
-
-    audience = proto.Field(proto.STRING, number=2)
+    service_account_email = proto.Field(proto.STRING, number=1,)
+    audience = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

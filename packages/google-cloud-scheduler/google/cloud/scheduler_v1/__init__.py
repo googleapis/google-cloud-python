@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,8 @@
 #
 
 from .services.cloud_scheduler import CloudSchedulerClient
+from .services.cloud_scheduler import CloudSchedulerAsyncClient
+
 from .types.cloudscheduler import CreateJobRequest
 from .types.cloudscheduler import DeleteJobRequest
 from .types.cloudscheduler import GetJobRequest
@@ -29,16 +30,17 @@ from .types.job import Job
 from .types.job import RetryConfig
 from .types.target import AppEngineHttpTarget
 from .types.target import AppEngineRouting
-from .types.target import HttpMethod
 from .types.target import HttpTarget
 from .types.target import OAuthToken
 from .types.target import OidcToken
 from .types.target import PubsubTarget
-
+from .types.target import HttpMethod
 
 __all__ = (
+    "CloudSchedulerAsyncClient",
     "AppEngineHttpTarget",
     "AppEngineRouting",
+    "CloudSchedulerClient",
     "CreateJobRequest",
     "DeleteJobRequest",
     "GetJobRequest",
@@ -55,5 +57,4 @@ __all__ = (
     "RetryConfig",
     "RunJobRequest",
     "UpdateJobRequest",
-    "CloudSchedulerClient",
 )
