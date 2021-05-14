@@ -1,0 +1,103 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.recommender_v1beta1",
+  "protoPackage": "google.cloud.recommender.v1beta1",
+  "schema": "1.0",
+  "services": {
+    "Recommender": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "RecommenderClient",
+          "rpcs": {
+            "GetInsight": {
+              "methods": [
+                "get_insight"
+              ]
+            },
+            "GetRecommendation": {
+              "methods": [
+                "get_recommendation"
+              ]
+            },
+            "ListInsights": {
+              "methods": [
+                "list_insights"
+              ]
+            },
+            "ListRecommendations": {
+              "methods": [
+                "list_recommendations"
+              ]
+            },
+            "MarkInsightAccepted": {
+              "methods": [
+                "mark_insight_accepted"
+              ]
+            },
+            "MarkRecommendationClaimed": {
+              "methods": [
+                "mark_recommendation_claimed"
+              ]
+            },
+            "MarkRecommendationFailed": {
+              "methods": [
+                "mark_recommendation_failed"
+              ]
+            },
+            "MarkRecommendationSucceeded": {
+              "methods": [
+                "mark_recommendation_succeeded"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "RecommenderAsyncClient",
+          "rpcs": {
+            "GetInsight": {
+              "methods": [
+                "get_insight"
+              ]
+            },
+            "GetRecommendation": {
+              "methods": [
+                "get_recommendation"
+              ]
+            },
+            "ListInsights": {
+              "methods": [
+                "list_insights"
+              ]
+            },
+            "ListRecommendations": {
+              "methods": [
+                "list_recommendations"
+              ]
+            },
+            "MarkInsightAccepted": {
+              "methods": [
+                "mark_insight_accepted"
+              ]
+            },
+            "MarkRecommendationClaimed": {
+              "methods": [
+                "mark_recommendation_claimed"
+              ]
+            },
+            "MarkRecommendationFailed": {
+              "methods": [
+                "mark_recommendation_failed"
+              ]
+            },
+            "MarkRecommendationSucceeded": {
+              "methods": [
+                "mark_recommendation_succeeded"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

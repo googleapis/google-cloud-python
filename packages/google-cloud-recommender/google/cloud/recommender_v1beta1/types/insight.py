@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import struct_pb2 as struct  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -77,39 +74,28 @@ class Insight(proto.Message):
 
     class RecommendationReference(proto.Message):
         r"""Reference to an associated recommendation.
-
         Attributes:
             recommendation (str):
                 Recommendation resource name, e.g.
                 projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/recommendations/[RECOMMENDATION_ID]
         """
 
-        recommendation = proto.Field(proto.STRING, number=1)
+        recommendation = proto.Field(proto.STRING, number=1,)
 
-    name = proto.Field(proto.STRING, number=1)
-
-    description = proto.Field(proto.STRING, number=2)
-
-    target_resources = proto.RepeatedField(proto.STRING, number=9)
-
-    insight_subtype = proto.Field(proto.STRING, number=10)
-
-    content = proto.Field(proto.MESSAGE, number=3, message=struct.Struct,)
-
+    name = proto.Field(proto.STRING, number=1,)
+    description = proto.Field(proto.STRING, number=2,)
+    target_resources = proto.RepeatedField(proto.STRING, number=9,)
+    insight_subtype = proto.Field(proto.STRING, number=10,)
+    content = proto.Field(proto.MESSAGE, number=3, message=struct_pb2.Struct,)
     last_refresh_time = proto.Field(
-        proto.MESSAGE, number=4, message=timestamp.Timestamp,
+        proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
     )
-
     observation_period = proto.Field(
-        proto.MESSAGE, number=5, message=duration.Duration,
+        proto.MESSAGE, number=5, message=duration_pb2.Duration,
     )
-
     state_info = proto.Field(proto.MESSAGE, number=6, message="InsightStateInfo",)
-
     category = proto.Field(proto.ENUM, number=7, enum=Category,)
-
-    etag = proto.Field(proto.STRING, number=11)
-
+    etag = proto.Field(proto.STRING, number=11,)
     associated_recommendations = proto.RepeatedField(
         proto.MESSAGE, number=8, message=RecommendationReference,
     )
@@ -117,7 +103,6 @@ class Insight(proto.Message):
 
 class InsightStateInfo(proto.Message):
     r"""Information related to insight state.
-
     Attributes:
         state (google.cloud.recommender_v1beta1.types.InsightStateInfo.State):
             Insight state.
@@ -134,8 +119,7 @@ class InsightStateInfo(proto.Message):
         DISMISSED = 3
 
     state = proto.Field(proto.ENUM, number=1, enum=State,)
-
-    state_metadata = proto.MapField(proto.STRING, proto.STRING, number=2)
+    state_metadata = proto.MapField(proto.STRING, proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

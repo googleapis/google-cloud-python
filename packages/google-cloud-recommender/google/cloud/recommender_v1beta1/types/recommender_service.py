@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.recommender_v1beta1.types import insight
 from google.cloud.recommender_v1beta1.types import recommendation
@@ -41,7 +38,6 @@ __protobuf__ = proto.module(
 
 class ListInsightsRequest(proto.Message):
     r"""Request for the ``ListInsights`` method.
-
     Attributes:
         parent (str):
             Required. The container resource on which to execute the
@@ -72,18 +68,14 @@ class ListInsightsRequest(proto.Message):
             \`state:"DISMISSED" or state:"ACTIVE".
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
-
-    filter = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+    filter = proto.Field(proto.STRING, number=4,)
 
 
 class ListInsightsResponse(proto.Message):
     r"""Response to the ``ListInsights`` method.
-
     Attributes:
         insights (Sequence[google.cloud.recommender_v1beta1.types.Insight]):
             The set of insights for the ``parent`` resource.
@@ -98,24 +90,21 @@ class ListInsightsResponse(proto.Message):
         return self
 
     insights = proto.RepeatedField(proto.MESSAGE, number=1, message=insight.Insight,)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetInsightRequest(proto.Message):
     r"""Request to the ``GetInsight`` method.
-
     Attributes:
         name (str):
             Required. Name of the insight.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class MarkInsightAcceptedRequest(proto.Message):
     r"""Request for the ``MarkInsightAccepted`` method.
-
     Attributes:
         name (str):
             Required. Name of the insight.
@@ -127,16 +116,13 @@ class MarkInsightAcceptedRequest(proto.Message):
             Provides optimistic locking.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    state_metadata = proto.MapField(proto.STRING, proto.STRING, number=2)
-
-    etag = proto.Field(proto.STRING, number=3)
+    name = proto.Field(proto.STRING, number=1,)
+    state_metadata = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    etag = proto.Field(proto.STRING, number=3,)
 
 
 class ListRecommendationsRequest(proto.Message):
     r"""Request for the ``ListRecommendations`` method.
-
     Attributes:
         parent (str):
             Required. The container resource on which to execute the
@@ -167,18 +153,14 @@ class ListRecommendationsRequest(proto.Message):
             \`state_info.state:"DISMISSED" or state_info.state:"FAILED".
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
-
-    filter = proto.Field(proto.STRING, number=5)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+    filter = proto.Field(proto.STRING, number=5,)
 
 
 class ListRecommendationsResponse(proto.Message):
     r"""Response to the ``ListRecommendations`` method.
-
     Attributes:
         recommendations (Sequence[google.cloud.recommender_v1beta1.types.Recommendation]):
             The set of recommendations for the ``parent`` resource.
@@ -195,24 +177,21 @@ class ListRecommendationsResponse(proto.Message):
     recommendations = proto.RepeatedField(
         proto.MESSAGE, number=1, message=recommendation.Recommendation,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetRecommendationRequest(proto.Message):
     r"""Request to the ``GetRecommendation`` method.
-
     Attributes:
         name (str):
             Required. Name of the recommendation.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class MarkRecommendationClaimedRequest(proto.Message):
     r"""Request for the ``MarkRecommendationClaimed`` Method.
-
     Attributes:
         name (str):
             Required. Name of the recommendation.
@@ -226,16 +205,13 @@ class MarkRecommendationClaimedRequest(proto.Message):
             Provides optimistic locking.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    state_metadata = proto.MapField(proto.STRING, proto.STRING, number=2)
-
-    etag = proto.Field(proto.STRING, number=3)
+    name = proto.Field(proto.STRING, number=1,)
+    state_metadata = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    etag = proto.Field(proto.STRING, number=3,)
 
 
 class MarkRecommendationSucceededRequest(proto.Message):
     r"""Request for the ``MarkRecommendationSucceeded`` Method.
-
     Attributes:
         name (str):
             Required. Name of the recommendation.
@@ -249,16 +225,13 @@ class MarkRecommendationSucceededRequest(proto.Message):
             Provides optimistic locking.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    state_metadata = proto.MapField(proto.STRING, proto.STRING, number=2)
-
-    etag = proto.Field(proto.STRING, number=3)
+    name = proto.Field(proto.STRING, number=1,)
+    state_metadata = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    etag = proto.Field(proto.STRING, number=3,)
 
 
 class MarkRecommendationFailedRequest(proto.Message):
     r"""Request for the ``MarkRecommendationFailed`` Method.
-
     Attributes:
         name (str):
             Required. Name of the recommendation.
@@ -272,11 +245,9 @@ class MarkRecommendationFailedRequest(proto.Message):
             Provides optimistic locking.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    state_metadata = proto.MapField(proto.STRING, proto.STRING, number=2)
-
-    etag = proto.Field(proto.STRING, number=3)
+    name = proto.Field(proto.STRING, number=1,)
+    state_metadata = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    etag = proto.Field(proto.STRING, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

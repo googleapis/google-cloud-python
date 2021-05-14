@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,15 +39,14 @@ def partition(
 class recommenderCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'get_insight': ('name', ),
-    'get_recommendation': ('name', ),
-    'list_insights': ('parent', 'page_size', 'page_token', 'filter', ),
-    'list_recommendations': ('parent', 'page_size', 'page_token', 'filter', ),
-    'mark_insight_accepted': ('name', 'etag', 'state_metadata', ),
-    'mark_recommendation_claimed': ('name', 'etag', 'state_metadata', ),
-    'mark_recommendation_failed': ('name', 'etag', 'state_metadata', ),
-    'mark_recommendation_succeeded': ('name', 'etag', 'state_metadata', ),
-
+          'get_insight': ('name', ),
+          'get_recommendation': ('name', ),
+          'list_insights': ('parent', 'page_size', 'page_token', 'filter', ),
+          'list_recommendations': ('parent', 'page_size', 'page_token', 'filter', ),
+          'mark_insight_accepted': ('name', 'etag', 'state_metadata', ),
+          'mark_recommendation_claimed': ('name', 'etag', 'state_metadata', ),
+          'mark_recommendation_failed': ('name', 'etag', 'state_metadata', ),
+          'mark_recommendation_succeeded': ('name', 'etag', 'state_metadata', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -80,7 +77,7 @@ class recommenderCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that
