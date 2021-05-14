@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,24 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
 from google.api_core import operations_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+import packaging.version
 
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.networkconnectivity_v1alpha1.types import hub
 from google.cloud.networkconnectivity_v1alpha1.types import hub as gcn_hub
-from google.longrunning import operations_pb2 as operations  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
 from .base import HubServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import HubServiceGrpcTransport
 
@@ -59,7 +56,7 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
     def create_channel(
         cls,
         host: str = "networkconnectivity.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -86,13 +83,15 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         Returns:
             aio.Channel: A gRPC AsyncIO channel object.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers_async.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -100,7 +99,7 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         self,
         *,
         host: str = "networkconnectivity.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         channel: aio.Channel = None,
@@ -114,7 +113,8 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -173,7 +173,6 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -301,7 +300,7 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
     @property
     def create_hub(
         self,
-    ) -> Callable[[gcn_hub.CreateHubRequest], Awaitable[operations.Operation]]:
+    ) -> Callable[[gcn_hub.CreateHubRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create hub method over gRPC.
 
         Creates a new Hub in a given project and location.
@@ -320,14 +319,14 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
             self._stubs["create_hub"] = self.grpc_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1alpha1.HubService/CreateHub",
                 request_serializer=gcn_hub.CreateHubRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_hub"]
 
     @property
     def update_hub(
         self,
-    ) -> Callable[[gcn_hub.UpdateHubRequest], Awaitable[operations.Operation]]:
+    ) -> Callable[[gcn_hub.UpdateHubRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update hub method over gRPC.
 
         Updates the parameters of a single Hub.
@@ -346,14 +345,14 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
             self._stubs["update_hub"] = self.grpc_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1alpha1.HubService/UpdateHub",
                 request_serializer=gcn_hub.UpdateHubRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_hub"]
 
     @property
     def delete_hub(
         self,
-    ) -> Callable[[hub.DeleteHubRequest], Awaitable[operations.Operation]]:
+    ) -> Callable[[hub.DeleteHubRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete hub method over gRPC.
 
         Deletes a single Hub.
@@ -372,7 +371,7 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
             self._stubs["delete_hub"] = self.grpc_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1alpha1.HubService/DeleteHub",
                 request_serializer=hub.DeleteHubRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_hub"]
 
@@ -429,7 +428,7 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
     @property
     def create_spoke(
         self,
-    ) -> Callable[[hub.CreateSpokeRequest], Awaitable[operations.Operation]]:
+    ) -> Callable[[hub.CreateSpokeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create spoke method over gRPC.
 
         Creates a new Spoke in a given project and location.
@@ -448,14 +447,14 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
             self._stubs["create_spoke"] = self.grpc_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1alpha1.HubService/CreateSpoke",
                 request_serializer=hub.CreateSpokeRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_spoke"]
 
     @property
     def update_spoke(
         self,
-    ) -> Callable[[hub.UpdateSpokeRequest], Awaitable[operations.Operation]]:
+    ) -> Callable[[hub.UpdateSpokeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update spoke method over gRPC.
 
         Updates the parameters of a single Spoke.
@@ -474,14 +473,14 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
             self._stubs["update_spoke"] = self.grpc_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1alpha1.HubService/UpdateSpoke",
                 request_serializer=hub.UpdateSpokeRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_spoke"]
 
     @property
     def delete_spoke(
         self,
-    ) -> Callable[[hub.DeleteSpokeRequest], Awaitable[operations.Operation]]:
+    ) -> Callable[[hub.DeleteSpokeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete spoke method over gRPC.
 
         Deletes a single Spoke.
@@ -500,7 +499,7 @@ class HubServiceGrpcAsyncIOTransport(HubServiceTransport):
             self._stubs["delete_spoke"] = self.grpc_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1alpha1.HubService/DeleteSpoke",
                 request_serializer=hub.DeleteSpokeRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_spoke"]
 

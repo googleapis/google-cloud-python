@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.cloud.networkconnectivity_v1alpha1.types import hub
 from google.cloud.networkconnectivity_v1alpha1.types import hub as gcn_hub
-from google.longrunning import operations_pb2 as operations  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
 from .base import HubServiceTransport, DEFAULT_CLIENT_INFO
 
 
@@ -56,7 +53,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         self,
         *,
         host: str = "networkconnectivity.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -70,7 +67,8 @@ class HubServiceGrpcTransport(HubServiceTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -181,7 +179,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
     def create_channel(
         cls,
         host: str = "networkconnectivity.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -212,13 +210,15 @@ class HubServiceGrpcTransport(HubServiceTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -291,7 +291,9 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["get_hub"]
 
     @property
-    def create_hub(self) -> Callable[[gcn_hub.CreateHubRequest], operations.Operation]:
+    def create_hub(
+        self,
+    ) -> Callable[[gcn_hub.CreateHubRequest], operations_pb2.Operation]:
         r"""Return a callable for the create hub method over gRPC.
 
         Creates a new Hub in a given project and location.
@@ -310,12 +312,14 @@ class HubServiceGrpcTransport(HubServiceTransport):
             self._stubs["create_hub"] = self.grpc_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1alpha1.HubService/CreateHub",
                 request_serializer=gcn_hub.CreateHubRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_hub"]
 
     @property
-    def update_hub(self) -> Callable[[gcn_hub.UpdateHubRequest], operations.Operation]:
+    def update_hub(
+        self,
+    ) -> Callable[[gcn_hub.UpdateHubRequest], operations_pb2.Operation]:
         r"""Return a callable for the update hub method over gRPC.
 
         Updates the parameters of a single Hub.
@@ -334,12 +338,12 @@ class HubServiceGrpcTransport(HubServiceTransport):
             self._stubs["update_hub"] = self.grpc_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1alpha1.HubService/UpdateHub",
                 request_serializer=gcn_hub.UpdateHubRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_hub"]
 
     @property
-    def delete_hub(self) -> Callable[[hub.DeleteHubRequest], operations.Operation]:
+    def delete_hub(self) -> Callable[[hub.DeleteHubRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete hub method over gRPC.
 
         Deletes a single Hub.
@@ -358,7 +362,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
             self._stubs["delete_hub"] = self.grpc_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1alpha1.HubService/DeleteHub",
                 request_serializer=hub.DeleteHubRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_hub"]
 
@@ -411,7 +415,9 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["get_spoke"]
 
     @property
-    def create_spoke(self) -> Callable[[hub.CreateSpokeRequest], operations.Operation]:
+    def create_spoke(
+        self,
+    ) -> Callable[[hub.CreateSpokeRequest], operations_pb2.Operation]:
         r"""Return a callable for the create spoke method over gRPC.
 
         Creates a new Spoke in a given project and location.
@@ -430,12 +436,14 @@ class HubServiceGrpcTransport(HubServiceTransport):
             self._stubs["create_spoke"] = self.grpc_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1alpha1.HubService/CreateSpoke",
                 request_serializer=hub.CreateSpokeRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_spoke"]
 
     @property
-    def update_spoke(self) -> Callable[[hub.UpdateSpokeRequest], operations.Operation]:
+    def update_spoke(
+        self,
+    ) -> Callable[[hub.UpdateSpokeRequest], operations_pb2.Operation]:
         r"""Return a callable for the update spoke method over gRPC.
 
         Updates the parameters of a single Spoke.
@@ -454,12 +462,14 @@ class HubServiceGrpcTransport(HubServiceTransport):
             self._stubs["update_spoke"] = self.grpc_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1alpha1.HubService/UpdateSpoke",
                 request_serializer=hub.UpdateSpokeRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_spoke"]
 
     @property
-    def delete_spoke(self) -> Callable[[hub.DeleteSpokeRequest], operations.Operation]:
+    def delete_spoke(
+        self,
+    ) -> Callable[[hub.DeleteSpokeRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete spoke method over gRPC.
 
         Deletes a single Spoke.
@@ -478,7 +488,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
             self._stubs["delete_spoke"] = self.grpc_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1alpha1.HubService/DeleteSpoke",
                 request_serializer=hub.DeleteSpokeRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_spoke"]
 

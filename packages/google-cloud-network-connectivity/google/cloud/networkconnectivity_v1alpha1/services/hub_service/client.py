@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -38,10 +36,9 @@ from google.cloud.networkconnectivity_v1alpha1.services.hub_service import pager
 from google.cloud.networkconnectivity_v1alpha1.types import common
 from google.cloud.networkconnectivity_v1alpha1.types import hub
 from google.cloud.networkconnectivity_v1alpha1.types import hub as gcn_hub
-from google.protobuf import empty_pb2 as empty  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import HubServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import HubServiceGrpcTransport
 from .transports.grpc_asyncio import HubServiceGrpcAsyncIOTransport
@@ -60,7 +57,7 @@ class HubServiceClientMeta(type):
     _transport_registry["grpc_asyncio"] = HubServiceGrpcAsyncIOTransport
 
     def get_transport_class(cls, label: str = None,) -> Type[HubServiceTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -87,7 +84,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -121,7 +119,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -138,7 +137,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -157,23 +156,24 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     @property
     def transport(self) -> HubServiceTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            HubServiceTransport: The transport used by the client instance.
+            HubServiceTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
     @staticmethod
     def hub_path(project: str, hub: str,) -> str:
-        """Return a fully-qualified hub string."""
+        """Returns a fully-qualified hub string."""
         return "projects/{project}/locations/global/hubs/{hub}".format(
             project=project, hub=hub,
         )
 
     @staticmethod
     def parse_hub_path(path: str) -> Dict[str, str]:
-        """Parse a hub path into its component segments."""
+        """Parses a hub path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/global/hubs/(?P<hub>.+?)$", path
         )
@@ -181,14 +181,14 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     @staticmethod
     def instance_path(project: str, zone: str, instance: str,) -> str:
-        """Return a fully-qualified instance string."""
+        """Returns a fully-qualified instance string."""
         return "projects/{project}/zones/{zone}/instances/{instance}".format(
             project=project, zone=zone, instance=instance,
         )
 
     @staticmethod
     def parse_instance_path(path: str) -> Dict[str, str]:
-        """Parse a instance path into its component segments."""
+        """Parses a instance path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/zones/(?P<zone>.+?)/instances/(?P<instance>.+?)$",
             path,
@@ -199,14 +199,14 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     def interconnect_attachment_path(
         project: str, region: str, resource_id: str,
     ) -> str:
-        """Return a fully-qualified interconnect_attachment string."""
+        """Returns a fully-qualified interconnect_attachment string."""
         return "projects/{project}/regions/{region}/interconnectAttachments/{resource_id}".format(
             project=project, region=region, resource_id=resource_id,
         )
 
     @staticmethod
     def parse_interconnect_attachment_path(path: str) -> Dict[str, str]:
-        """Parse a interconnect_attachment path into its component segments."""
+        """Parses a interconnect_attachment path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/interconnectAttachments/(?P<resource_id>.+?)$",
             path,
@@ -215,14 +215,14 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     @staticmethod
     def spoke_path(project: str, location: str, spoke: str,) -> str:
-        """Return a fully-qualified spoke string."""
+        """Returns a fully-qualified spoke string."""
         return "projects/{project}/locations/{location}/spokes/{spoke}".format(
             project=project, location=location, spoke=spoke,
         )
 
     @staticmethod
     def parse_spoke_path(path: str) -> Dict[str, str]:
-        """Parse a spoke path into its component segments."""
+        """Parses a spoke path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/spokes/(?P<spoke>.+?)$",
             path,
@@ -231,14 +231,14 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     @staticmethod
     def vpn_tunnel_path(project: str, region: str, resource_id: str,) -> str:
-        """Return a fully-qualified vpn_tunnel string."""
+        """Returns a fully-qualified vpn_tunnel string."""
         return "projects/{project}/regions/{region}/vpnTunnels/{resource_id}".format(
             project=project, region=region, resource_id=resource_id,
         )
 
     @staticmethod
     def parse_vpn_tunnel_path(path: str) -> Dict[str, str]:
-        """Parse a vpn_tunnel path into its component segments."""
+        """Parses a vpn_tunnel path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/vpnTunnels/(?P<resource_id>.+?)$",
             path,
@@ -247,7 +247,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -260,7 +260,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -271,7 +271,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -282,7 +282,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -293,7 +293,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -307,12 +307,12 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, HubServiceTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the hub service client.
+        """Instantiates the hub service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -367,9 +367,10 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -381,12 +382,14 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -401,8 +404,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -438,7 +441,6 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -471,10 +473,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, hub.ListHubsRequest):
             request = hub.ListHubsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -523,7 +523,6 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -557,10 +556,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, hub.GetHubRequest):
             request = hub.GetHubRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -619,7 +616,6 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                 This corresponds to the ``hub_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -653,10 +649,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, gcn_hub.CreateHubRequest):
             request = gcn_hub.CreateHubRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if hub is not None:
@@ -693,7 +687,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         request: gcn_hub.UpdateHubRequest = None,
         *,
         hub: gcn_hub.Hub = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -723,7 +717,6 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -757,10 +750,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, gcn_hub.UpdateHubRequest):
             request = gcn_hub.UpdateHubRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if hub is not None:
                 request.hub = hub
             if update_mask is not None:
@@ -812,7 +803,6 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -854,10 +844,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, hub.DeleteHubRequest):
             request = hub.DeleteHubRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -878,7 +866,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=common.OperationMetadata,
         )
 
@@ -905,7 +893,6 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -937,10 +924,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, hub.ListSpokesRequest):
             request = hub.ListSpokesRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -986,7 +971,6 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1018,10 +1002,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, hub.GetSpokeRequest):
             request = hub.GetSpokeRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1079,7 +1061,6 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                 This corresponds to the ``spoke_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1112,10 +1093,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, hub.CreateSpokeRequest):
             request = hub.CreateSpokeRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if spoke is not None:
@@ -1152,7 +1131,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         request: hub.UpdateSpokeRequest = None,
         *,
         spoke: hub.Spoke = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1182,7 +1161,6 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1215,10 +1193,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, hub.UpdateSpokeRequest):
             request = hub.UpdateSpokeRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if spoke is not None:
                 request.spoke = spoke
             if update_mask is not None:
@@ -1272,7 +1248,6 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1314,10 +1289,8 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, hub.DeleteSpokeRequest):
             request = hub.DeleteSpokeRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1338,7 +1311,7 @@ class HubServiceClient(metaclass=HubServiceClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=common.OperationMetadata,
         )
 

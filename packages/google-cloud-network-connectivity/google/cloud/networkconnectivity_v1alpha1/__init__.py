@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,8 @@
 #
 
 from .services.hub_service import HubServiceClient
+from .services.hub_service import HubServiceAsyncClient
+
 from .types.common import OperationMetadata
 from .types.hub import CreateHubRequest
 from .types.hub import CreateSpokeRequest
@@ -30,12 +31,12 @@ from .types.hub import ListSpokesRequest
 from .types.hub import ListSpokesResponse
 from .types.hub import RouterApplianceInstance
 from .types.hub import Spoke
-from .types.hub import State
 from .types.hub import UpdateHubRequest
 from .types.hub import UpdateSpokeRequest
-
+from .types.hub import State
 
 __all__ = (
+    "HubServiceAsyncClient",
     "CreateHubRequest",
     "CreateSpokeRequest",
     "DeleteHubRequest",
@@ -43,6 +44,7 @@ __all__ = (
     "GetHubRequest",
     "GetSpokeRequest",
     "Hub",
+    "HubServiceClient",
     "ListHubsRequest",
     "ListHubsResponse",
     "ListSpokesRequest",
@@ -53,5 +55,4 @@ __all__ = (
     "State",
     "UpdateHubRequest",
     "UpdateSpokeRequest",
-    "HubServiceClient",
 )
