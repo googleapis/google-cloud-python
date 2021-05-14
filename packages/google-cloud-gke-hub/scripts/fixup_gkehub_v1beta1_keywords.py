@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,15 +39,14 @@ def partition(
 class gkehubCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'create_membership': ('parent', 'membership_id', 'resource', ),
-    'delete_membership': ('name', ),
-    'generate_connect_manifest': ('name', 'connect_agent', 'version', 'is_upgrade', 'registry', 'image_pull_secret_content', ),
-    'generate_exclusivity_manifest': ('name', 'crd_manifest', 'cr_manifest', ),
-    'get_membership': ('name', ),
-    'list_memberships': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
-    'update_membership': ('name', 'update_mask', 'resource', ),
-    'validate_exclusivity': ('parent', 'intended_membership', 'cr_manifest', ),
-
+          'create_membership': ('parent', 'membership_id', 'resource', ),
+          'delete_membership': ('name', ),
+          'generate_connect_manifest': ('name', 'connect_agent', 'version', 'is_upgrade', 'registry', 'image_pull_secret_content', ),
+          'generate_exclusivity_manifest': ('name', 'crd_manifest', 'cr_manifest', ),
+          'get_membership': ('name', ),
+          'list_memberships': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+          'update_membership': ('name', 'update_mask', 'resource', ),
+          'validate_exclusivity': ('parent', 'intended_membership', 'cr_manifest', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -80,7 +77,7 @@ class gkehubCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

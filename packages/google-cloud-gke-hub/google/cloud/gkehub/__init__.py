@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +14,13 @@
 # limitations under the License.
 #
 
-from google.cloud.gkehub_v1beta1.services.gke_hub_membership_service.async_client import (
-    GkeHubMembershipServiceAsyncClient,
-)
 from google.cloud.gkehub_v1beta1.services.gke_hub_membership_service.client import (
     GkeHubMembershipServiceClient,
 )
+from google.cloud.gkehub_v1beta1.services.gke_hub_membership_service.async_client import (
+    GkeHubMembershipServiceAsyncClient,
+)
+
 from google.cloud.gkehub_v1beta1.types.membership import Authority
 from google.cloud.gkehub_v1beta1.types.membership import ConnectAgent
 from google.cloud.gkehub_v1beta1.types.membership import ConnectAgentResource
@@ -52,6 +52,8 @@ from google.cloud.gkehub_v1beta1.types.membership import ValidateExclusivityRequ
 from google.cloud.gkehub_v1beta1.types.membership import ValidateExclusivityResponse
 
 __all__ = (
+    "GkeHubMembershipServiceClient",
+    "GkeHubMembershipServiceAsyncClient",
     "Authority",
     "ConnectAgent",
     "ConnectAgentResource",
@@ -63,8 +65,6 @@ __all__ = (
     "GenerateExclusivityManifestResponse",
     "GetMembershipRequest",
     "GkeCluster",
-    "GkeHubMembershipServiceAsyncClient",
-    "GkeHubMembershipServiceClient",
     "KubernetesMetadata",
     "KubernetesResource",
     "ListMembershipsRequest",
