@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -37,11 +35,10 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.vision_v1.services.product_search import pagers
 from google.cloud.vision_v1.types import geometry
 from google.cloud.vision_v1.types import product_search_service
-from google.protobuf import empty_pb2 as empty  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.rpc import status_pb2 as status  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 from .transports.base import ProductSearchTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import ProductSearchGrpcTransport
 from .transports.grpc_asyncio import ProductSearchGrpcAsyncIOTransport
@@ -60,7 +57,7 @@ class ProductSearchClientMeta(type):
     _transport_registry["grpc_asyncio"] = ProductSearchGrpcAsyncIOTransport
 
     def get_transport_class(cls, label: str = None,) -> Type[ProductSearchTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -101,7 +98,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -135,7 +133,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -152,7 +151,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -171,23 +170,24 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
     @property
     def transport(self) -> ProductSearchTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            ProductSearchTransport: The transport used by the client instance.
+            ProductSearchTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
     @staticmethod
     def product_path(project: str, location: str, product: str,) -> str:
-        """Return a fully-qualified product string."""
+        """Returns a fully-qualified product string."""
         return "projects/{project}/locations/{location}/products/{product}".format(
             project=project, location=location, product=product,
         )
 
     @staticmethod
     def parse_product_path(path: str) -> Dict[str, str]:
-        """Parse a product path into its component segments."""
+        """Parses a product path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/products/(?P<product>.+?)$",
             path,
@@ -196,14 +196,14 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
     @staticmethod
     def product_set_path(project: str, location: str, product_set: str,) -> str:
-        """Return a fully-qualified product_set string."""
+        """Returns a fully-qualified product_set string."""
         return "projects/{project}/locations/{location}/productSets/{product_set}".format(
             project=project, location=location, product_set=product_set,
         )
 
     @staticmethod
     def parse_product_set_path(path: str) -> Dict[str, str]:
-        """Parse a product_set path into its component segments."""
+        """Parses a product_set path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/productSets/(?P<product_set>.+?)$",
             path,
@@ -214,7 +214,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
     def reference_image_path(
         project: str, location: str, product: str, reference_image: str,
     ) -> str:
-        """Return a fully-qualified reference_image string."""
+        """Returns a fully-qualified reference_image string."""
         return "projects/{project}/locations/{location}/products/{product}/referenceImages/{reference_image}".format(
             project=project,
             location=location,
@@ -224,7 +224,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
     @staticmethod
     def parse_reference_image_path(path: str) -> Dict[str, str]:
-        """Parse a reference_image path into its component segments."""
+        """Parses a reference_image path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/products/(?P<product>.+?)/referenceImages/(?P<reference_image>.+?)$",
             path,
@@ -233,7 +233,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -246,7 +246,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -257,7 +257,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -268,7 +268,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -279,7 +279,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -293,12 +293,12 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ProductSearchTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the product search client.
+        """Instantiates the product search client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -353,9 +353,10 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -367,12 +368,14 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -387,8 +390,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -449,7 +452,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``product_set_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -481,10 +483,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # there are no flattened fields.
         if not isinstance(request, product_search_service.CreateProductSetRequest):
             request = product_search_service.CreateProductSetRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if product_set is not None:
@@ -537,7 +537,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -568,10 +567,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # there are no flattened fields.
         if not isinstance(request, product_search_service.ListProductSetsRequest):
             request = product_search_service.ListProductSetsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -625,7 +622,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -657,10 +653,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # there are no flattened fields.
         if not isinstance(request, product_search_service.GetProductSetRequest):
             request = product_search_service.GetProductSetRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -685,7 +679,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         request: product_search_service.UpdateProductSetRequest = None,
         *,
         product_set: product_search_service.ProductSet = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -720,7 +714,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -752,10 +745,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # there are no flattened fields.
         if not isinstance(request, product_search_service.UpdateProductSetRequest):
             request = product_search_service.UpdateProductSetRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if product_set is not None:
                 request.product_set = product_set
             if update_mask is not None:
@@ -806,7 +797,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -829,10 +819,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # there are no flattened fields.
         if not isinstance(request, product_search_service.DeleteProductSetRequest):
             request = product_search_service.DeleteProductSetRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -901,7 +889,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``product_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -928,10 +915,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # there are no flattened fields.
         if not isinstance(request, product_search_service.CreateProductRequest):
             request = product_search_service.CreateProductRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if product is not None:
@@ -984,7 +969,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1015,10 +999,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # there are no flattened fields.
         if not isinstance(request, product_search_service.ListProductsRequest):
             request = product_search_service.ListProductsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1072,7 +1054,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1099,10 +1080,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # there are no flattened fields.
         if not isinstance(request, product_search_service.GetProductRequest):
             request = product_search_service.GetProductRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1127,7 +1106,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         request: product_search_service.UpdateProductRequest = None,
         *,
         product: product_search_service.Product = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1171,7 +1150,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1198,10 +1176,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # there are no flattened fields.
         if not isinstance(request, product_search_service.UpdateProductRequest):
             request = product_search_service.UpdateProductRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if product is not None:
                 request.product = product
             if update_mask is not None:
@@ -1254,7 +1230,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1277,10 +1252,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # there are no flattened fields.
         if not isinstance(request, product_search_service.DeleteProductRequest):
             request = product_search_service.DeleteProductRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1365,7 +1338,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``reference_image_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1394,10 +1366,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # there are no flattened fields.
         if not isinstance(request, product_search_service.CreateReferenceImageRequest):
             request = product_search_service.CreateReferenceImageRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if reference_image is not None:
@@ -1452,7 +1422,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1475,10 +1444,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # there are no flattened fields.
         if not isinstance(request, product_search_service.DeleteReferenceImageRequest):
             request = product_search_service.DeleteReferenceImageRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1528,7 +1495,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1559,10 +1525,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # there are no flattened fields.
         if not isinstance(request, product_search_service.ListReferenceImagesRequest):
             request = product_search_service.ListReferenceImagesRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1617,7 +1581,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1646,10 +1609,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # there are no flattened fields.
         if not isinstance(request, product_search_service.GetReferenceImageRequest):
             request = product_search_service.GetReferenceImageRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1713,7 +1674,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``product`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1738,10 +1698,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             request, product_search_service.AddProductToProductSetRequest
         ):
             request = product_search_service.AddProductToProductSetRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
             if product is not None:
@@ -1800,7 +1758,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``product`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1825,10 +1782,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             request, product_search_service.RemoveProductFromProductSetRequest
         ):
             request = product_search_service.RemoveProductFromProductSetRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
             if product is not None:
@@ -1883,7 +1838,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1917,10 +1871,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             request, product_search_service.ListProductsInProductSetRequest
         ):
             request = product_search_service.ListProductsInProductSetRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1991,7 +1943,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``input_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2029,10 +1980,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # there are no flattened fields.
         if not isinstance(request, product_search_service.ImportProductSetsRequest):
             request = product_search_service.ImportProductSetsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if input_config is not None:
@@ -2112,7 +2061,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2154,10 +2102,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # there are no flattened fields.
         if not isinstance(request, product_search_service.PurgeProductsRequest):
             request = product_search_service.PurgeProductsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -2178,7 +2124,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=product_search_service.BatchOperationMetadata,
         )
 

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import os
 import mock
+import packaging.version
 
 import grpc
 from grpc.experimental import aio
@@ -24,16 +23,16 @@ import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 
-from google import auth
+
 from google.api_core import client_options
-from google.api_core import exceptions
+from google.api_core import exceptions as core_exceptions
 from google.api_core import future
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
-from google.auth import credentials
+from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.vision_v1p3beta1.services.product_search import (
     ProductSearchAsyncClient,
@@ -41,14 +40,44 @@ from google.cloud.vision_v1p3beta1.services.product_search import (
 from google.cloud.vision_v1p3beta1.services.product_search import ProductSearchClient
 from google.cloud.vision_v1p3beta1.services.product_search import pagers
 from google.cloud.vision_v1p3beta1.services.product_search import transports
+from google.cloud.vision_v1p3beta1.services.product_search.transports.base import (
+    _API_CORE_VERSION,
+)
+from google.cloud.vision_v1p3beta1.services.product_search.transports.base import (
+    _GOOGLE_AUTH_VERSION,
+)
 from google.cloud.vision_v1p3beta1.types import geometry
 from google.cloud.vision_v1p3beta1.types import product_search_service
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
-from google.protobuf import any_pb2 as gp_any  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.rpc import status_pb2 as status  # type: ignore
+from google.protobuf import any_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
+import google.auth
+
+
+# TODO(busunkim): Once google-api-core >= 1.26.0 is required:
+# - Delete all the api-core and auth "less than" test cases
+# - Delete these pytest markers (Make the "greater than or equal to" tests the default).
+requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
+    packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
+    reason="This test requires google-auth < 1.25.0",
+)
+requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
+    packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
+    reason="This test requires google-auth >= 1.25.0",
+)
+
+requires_api_core_lt_1_26_0 = pytest.mark.skipif(
+    packaging.version.parse(_API_CORE_VERSION) >= packaging.version.parse("1.26.0"),
+    reason="This test requires google-api-core < 1.26.0",
+)
+
+requires_api_core_gte_1_26_0 = pytest.mark.skipif(
+    packaging.version.parse(_API_CORE_VERSION) < packaging.version.parse("1.26.0"),
+    reason="This test requires google-api-core >= 1.26.0",
+)
 
 
 def client_cert_source_callback():
@@ -99,7 +128,7 @@ def test__get_default_mtls_endpoint():
     "client_class", [ProductSearchClient, ProductSearchAsyncClient,]
 )
 def test_product_search_client_from_service_account_info(client_class):
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -116,7 +145,7 @@ def test_product_search_client_from_service_account_info(client_class):
     "client_class", [ProductSearchClient, ProductSearchAsyncClient,]
 )
 def test_product_search_client_from_service_account_file(client_class):
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -169,7 +198,7 @@ def test_product_search_client_client_options(
 ):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(ProductSearchClient, "get_transport_class") as gtc:
-        transport = transport_class(credentials=credentials.AnonymousCredentials())
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -457,7 +486,7 @@ def test_create_product_set(
     transport: str = "grpc", request_type=product_search_service.CreateProductSetRequest
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -472,21 +501,16 @@ def test_create_product_set(
         call.return_value = product_search_service.ProductSet(
             name="name_value", display_name="display_name_value",
         )
-
         response = client.create_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.CreateProductSetRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, product_search_service.ProductSet)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
 
 
@@ -498,7 +522,7 @@ def test_create_product_set_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -508,7 +532,6 @@ def test_create_product_set_empty_call():
         client.create_product_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.CreateProductSetRequest()
 
 
@@ -518,7 +541,7 @@ async def test_create_product_set_async(
     request_type=product_search_service.CreateProductSetRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -535,20 +558,16 @@ async def test_create_product_set_async(
                 name="name_value", display_name="display_name_value",
             )
         )
-
         response = await client.create_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.CreateProductSetRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, product_search_service.ProductSet)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
 
 
@@ -558,11 +577,12 @@ async def test_create_product_set_async_from_dict():
 
 
 def test_create_product_set_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.CreateProductSetRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -570,7 +590,6 @@ def test_create_product_set_field_headers():
         type(client.transport.create_product_set), "__call__"
     ) as call:
         call.return_value = product_search_service.ProductSet()
-
         client.create_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -585,11 +604,14 @@ def test_create_product_set_field_headers():
 
 @pytest.mark.asyncio
 async def test_create_product_set_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.CreateProductSetRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -599,7 +621,6 @@ async def test_create_product_set_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             product_search_service.ProductSet()
         )
-
         await client.create_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -613,7 +634,7 @@ async def test_create_product_set_field_headers_async():
 
 
 def test_create_product_set_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -621,7 +642,6 @@ def test_create_product_set_flattened():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = product_search_service.ProductSet()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_product_set(
@@ -634,18 +654,15 @@ def test_create_product_set_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
-
         assert args[0].product_set == product_search_service.ProductSet(
             name="name_value"
         )
-
         assert args[0].product_set_id == "product_set_id_value"
 
 
 def test_create_product_set_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -660,7 +677,9 @@ def test_create_product_set_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_product_set_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -684,19 +703,18 @@ async def test_create_product_set_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
-
         assert args[0].product_set == product_search_service.ProductSet(
             name="name_value"
         )
-
         assert args[0].product_set_id == "product_set_id_value"
 
 
 @pytest.mark.asyncio
 async def test_create_product_set_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -713,7 +731,7 @@ def test_list_product_sets(
     transport: str = "grpc", request_type=product_search_service.ListProductSetsRequest
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -728,19 +746,15 @@ def test_list_product_sets(
         call.return_value = product_search_service.ListProductSetsResponse(
             next_page_token="next_page_token_value",
         )
-
         response = client.list_product_sets(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.ListProductSetsRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.ListProductSetsPager)
-
     assert response.next_page_token == "next_page_token_value"
 
 
@@ -752,7 +766,7 @@ def test_list_product_sets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -762,7 +776,6 @@ def test_list_product_sets_empty_call():
         client.list_product_sets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.ListProductSetsRequest()
 
 
@@ -772,7 +785,7 @@ async def test_list_product_sets_async(
     request_type=product_search_service.ListProductSetsRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -789,18 +802,15 @@ async def test_list_product_sets_async(
                 next_page_token="next_page_token_value",
             )
         )
-
         response = await client.list_product_sets(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.ListProductSetsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProductSetsAsyncPager)
-
     assert response.next_page_token == "next_page_token_value"
 
 
@@ -810,11 +820,12 @@ async def test_list_product_sets_async_from_dict():
 
 
 def test_list_product_sets_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.ListProductSetsRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -822,7 +833,6 @@ def test_list_product_sets_field_headers():
         type(client.transport.list_product_sets), "__call__"
     ) as call:
         call.return_value = product_search_service.ListProductSetsResponse()
-
         client.list_product_sets(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -837,11 +847,14 @@ def test_list_product_sets_field_headers():
 
 @pytest.mark.asyncio
 async def test_list_product_sets_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.ListProductSetsRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -851,7 +864,6 @@ async def test_list_product_sets_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             product_search_service.ListProductSetsResponse()
         )
-
         await client.list_product_sets(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -865,7 +877,7 @@ async def test_list_product_sets_field_headers_async():
 
 
 def test_list_product_sets_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -873,7 +885,6 @@ def test_list_product_sets_flattened():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = product_search_service.ListProductSetsResponse()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_product_sets(parent="parent_value",)
@@ -882,12 +893,11 @@ def test_list_product_sets_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
 
 
 def test_list_product_sets_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -899,7 +909,9 @@ def test_list_product_sets_flattened_error():
 
 @pytest.mark.asyncio
 async def test_list_product_sets_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -919,13 +931,14 @@ async def test_list_product_sets_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
 
 
 @pytest.mark.asyncio
 async def test_list_product_sets_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -936,7 +949,7 @@ async def test_list_product_sets_flattened_error_async():
 
 
 def test_list_product_sets_pager():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials,)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -982,7 +995,7 @@ def test_list_product_sets_pager():
 
 
 def test_list_product_sets_pages():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials,)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1020,7 +1033,7 @@ def test_list_product_sets_pages():
 
 @pytest.mark.asyncio
 async def test_list_product_sets_async_pager():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = ProductSearchAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1065,7 +1078,7 @@ async def test_list_product_sets_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_product_sets_async_pages():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = ProductSearchAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1109,7 +1122,7 @@ def test_get_product_set(
     transport: str = "grpc", request_type=product_search_service.GetProductSetRequest
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1122,21 +1135,16 @@ def test_get_product_set(
         call.return_value = product_search_service.ProductSet(
             name="name_value", display_name="display_name_value",
         )
-
         response = client.get_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.GetProductSetRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, product_search_service.ProductSet)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
 
 
@@ -1148,7 +1156,7 @@ def test_get_product_set_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1156,7 +1164,6 @@ def test_get_product_set_empty_call():
         client.get_product_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.GetProductSetRequest()
 
 
@@ -1166,7 +1173,7 @@ async def test_get_product_set_async(
     request_type=product_search_service.GetProductSetRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1181,20 +1188,16 @@ async def test_get_product_set_async(
                 name="name_value", display_name="display_name_value",
             )
         )
-
         response = await client.get_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.GetProductSetRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, product_search_service.ProductSet)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
 
 
@@ -1204,17 +1207,17 @@ async def test_get_product_set_async_from_dict():
 
 
 def test_get_product_set_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.GetProductSetRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_product_set), "__call__") as call:
         call.return_value = product_search_service.ProductSet()
-
         client.get_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1229,11 +1232,14 @@ def test_get_product_set_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_product_set_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.GetProductSetRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1241,7 +1247,6 @@ async def test_get_product_set_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             product_search_service.ProductSet()
         )
-
         await client.get_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1255,13 +1260,12 @@ async def test_get_product_set_field_headers_async():
 
 
 def test_get_product_set_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_product_set), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = product_search_service.ProductSet()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_product_set(name="name_value",)
@@ -1270,12 +1274,11 @@ def test_get_product_set_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_get_product_set_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1287,7 +1290,9 @@ def test_get_product_set_flattened_error():
 
 @pytest.mark.asyncio
 async def test_get_product_set_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_product_set), "__call__") as call:
@@ -1305,13 +1310,14 @@ async def test_get_product_set_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_get_product_set_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1325,7 +1331,7 @@ def test_update_product_set(
     transport: str = "grpc", request_type=product_search_service.UpdateProductSetRequest
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1340,21 +1346,16 @@ def test_update_product_set(
         call.return_value = product_search_service.ProductSet(
             name="name_value", display_name="display_name_value",
         )
-
         response = client.update_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.UpdateProductSetRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, product_search_service.ProductSet)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
 
 
@@ -1366,7 +1367,7 @@ def test_update_product_set_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1376,7 +1377,6 @@ def test_update_product_set_empty_call():
         client.update_product_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.UpdateProductSetRequest()
 
 
@@ -1386,7 +1386,7 @@ async def test_update_product_set_async(
     request_type=product_search_service.UpdateProductSetRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1403,20 +1403,16 @@ async def test_update_product_set_async(
                 name="name_value", display_name="display_name_value",
             )
         )
-
         response = await client.update_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.UpdateProductSetRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, product_search_service.ProductSet)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
 
 
@@ -1426,11 +1422,12 @@ async def test_update_product_set_async_from_dict():
 
 
 def test_update_product_set_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.UpdateProductSetRequest()
+
     request.product_set.name = "product_set.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1438,7 +1435,6 @@ def test_update_product_set_field_headers():
         type(client.transport.update_product_set), "__call__"
     ) as call:
         call.return_value = product_search_service.ProductSet()
-
         client.update_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1455,11 +1451,14 @@ def test_update_product_set_field_headers():
 
 @pytest.mark.asyncio
 async def test_update_product_set_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.UpdateProductSetRequest()
+
     request.product_set.name = "product_set.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1469,7 +1468,6 @@ async def test_update_product_set_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             product_search_service.ProductSet()
         )
-
         await client.update_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1485,7 +1483,7 @@ async def test_update_product_set_field_headers_async():
 
 
 def test_update_product_set_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1493,28 +1491,25 @@ def test_update_product_set_flattened():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = product_search_service.ProductSet()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_product_set(
             product_set=product_search_service.ProductSet(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].product_set == product_search_service.ProductSet(
             name="name_value"
         )
-
-        assert args[0].update_mask == field_mask.FieldMask(paths=["paths_value"])
+        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
 
 
 def test_update_product_set_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1522,13 +1517,15 @@ def test_update_product_set_flattened_error():
         client.update_product_set(
             product_search_service.UpdateProductSetRequest(),
             product_set=product_search_service.ProductSet(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 @pytest.mark.asyncio
 async def test_update_product_set_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1544,24 +1541,24 @@ async def test_update_product_set_flattened_async():
         # using the keyword arguments to the method.
         response = await client.update_product_set(
             product_set=product_search_service.ProductSet(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].product_set == product_search_service.ProductSet(
             name="name_value"
         )
-
-        assert args[0].update_mask == field_mask.FieldMask(paths=["paths_value"])
+        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
 
 
 @pytest.mark.asyncio
 async def test_update_product_set_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1569,7 +1566,7 @@ async def test_update_product_set_flattened_error_async():
         await client.update_product_set(
             product_search_service.UpdateProductSetRequest(),
             product_set=product_search_service.ProductSet(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -1577,7 +1574,7 @@ def test_delete_product_set(
     transport: str = "grpc", request_type=product_search_service.DeleteProductSetRequest
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1590,13 +1587,11 @@ def test_delete_product_set(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-
         response = client.delete_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.DeleteProductSetRequest()
 
     # Establish that the response is the type that we expect.
@@ -1611,7 +1606,7 @@ def test_delete_product_set_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1621,7 +1616,6 @@ def test_delete_product_set_empty_call():
         client.delete_product_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.DeleteProductSetRequest()
 
 
@@ -1631,7 +1625,7 @@ async def test_delete_product_set_async(
     request_type=product_search_service.DeleteProductSetRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1644,13 +1638,11 @@ async def test_delete_product_set_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-
         response = await client.delete_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.DeleteProductSetRequest()
 
     # Establish that the response is the type that we expect.
@@ -1663,11 +1655,12 @@ async def test_delete_product_set_async_from_dict():
 
 
 def test_delete_product_set_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.DeleteProductSetRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1675,7 +1668,6 @@ def test_delete_product_set_field_headers():
         type(client.transport.delete_product_set), "__call__"
     ) as call:
         call.return_value = None
-
         client.delete_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1690,11 +1682,14 @@ def test_delete_product_set_field_headers():
 
 @pytest.mark.asyncio
 async def test_delete_product_set_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.DeleteProductSetRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1702,7 +1697,6 @@ async def test_delete_product_set_field_headers_async():
         type(client.transport.delete_product_set), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-
         await client.delete_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1716,7 +1710,7 @@ async def test_delete_product_set_field_headers_async():
 
 
 def test_delete_product_set_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1724,7 +1718,6 @@ def test_delete_product_set_flattened():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.delete_product_set(name="name_value",)
@@ -1733,12 +1726,11 @@ def test_delete_product_set_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_delete_product_set_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1750,7 +1742,9 @@ def test_delete_product_set_flattened_error():
 
 @pytest.mark.asyncio
 async def test_delete_product_set_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1768,13 +1762,14 @@ async def test_delete_product_set_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_delete_product_set_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1788,7 +1783,7 @@ def test_create_product(
     transport: str = "grpc", request_type=product_search_service.CreateProductRequest
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1804,25 +1799,18 @@ def test_create_product(
             description="description_value",
             product_category="product_category_value",
         )
-
         response = client.create_product(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.CreateProductRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, product_search_service.Product)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
-
     assert response.description == "description_value"
-
     assert response.product_category == "product_category_value"
 
 
@@ -1834,7 +1822,7 @@ def test_create_product_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1842,7 +1830,6 @@ def test_create_product_empty_call():
         client.create_product()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.CreateProductRequest()
 
 
@@ -1852,7 +1839,7 @@ async def test_create_product_async(
     request_type=product_search_service.CreateProductRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1870,24 +1857,18 @@ async def test_create_product_async(
                 product_category="product_category_value",
             )
         )
-
         response = await client.create_product(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.CreateProductRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, product_search_service.Product)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
-
     assert response.description == "description_value"
-
     assert response.product_category == "product_category_value"
 
 
@@ -1897,17 +1878,17 @@ async def test_create_product_async_from_dict():
 
 
 def test_create_product_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.CreateProductRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_product), "__call__") as call:
         call.return_value = product_search_service.Product()
-
         client.create_product(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1922,11 +1903,14 @@ def test_create_product_field_headers():
 
 @pytest.mark.asyncio
 async def test_create_product_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.CreateProductRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1934,7 +1918,6 @@ async def test_create_product_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             product_search_service.Product()
         )
-
         await client.create_product(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1948,13 +1931,12 @@ async def test_create_product_field_headers_async():
 
 
 def test_create_product_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_product), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = product_search_service.Product()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_product(
@@ -1967,16 +1949,13 @@ def test_create_product_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
-
         assert args[0].product == product_search_service.Product(name="name_value")
-
         assert args[0].product_id == "product_id_value"
 
 
 def test_create_product_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1991,7 +1970,9 @@ def test_create_product_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_product_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_product), "__call__") as call:
@@ -2013,17 +1994,16 @@ async def test_create_product_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
-
         assert args[0].product == product_search_service.Product(name="name_value")
-
         assert args[0].product_id == "product_id_value"
 
 
 @pytest.mark.asyncio
 async def test_create_product_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2040,7 +2020,7 @@ def test_list_products(
     transport: str = "grpc", request_type=product_search_service.ListProductsRequest
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2053,19 +2033,15 @@ def test_list_products(
         call.return_value = product_search_service.ListProductsResponse(
             next_page_token="next_page_token_value",
         )
-
         response = client.list_products(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.ListProductsRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.ListProductsPager)
-
     assert response.next_page_token == "next_page_token_value"
 
 
@@ -2077,7 +2053,7 @@ def test_list_products_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2085,7 +2061,6 @@ def test_list_products_empty_call():
         client.list_products()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.ListProductsRequest()
 
 
@@ -2095,7 +2070,7 @@ async def test_list_products_async(
     request_type=product_search_service.ListProductsRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2110,18 +2085,15 @@ async def test_list_products_async(
                 next_page_token="next_page_token_value",
             )
         )
-
         response = await client.list_products(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.ListProductsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProductsAsyncPager)
-
     assert response.next_page_token == "next_page_token_value"
 
 
@@ -2131,17 +2103,17 @@ async def test_list_products_async_from_dict():
 
 
 def test_list_products_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.ListProductsRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_products), "__call__") as call:
         call.return_value = product_search_service.ListProductsResponse()
-
         client.list_products(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2156,11 +2128,14 @@ def test_list_products_field_headers():
 
 @pytest.mark.asyncio
 async def test_list_products_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.ListProductsRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2168,7 +2143,6 @@ async def test_list_products_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             product_search_service.ListProductsResponse()
         )
-
         await client.list_products(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2182,13 +2156,12 @@ async def test_list_products_field_headers_async():
 
 
 def test_list_products_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_products), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = product_search_service.ListProductsResponse()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_products(parent="parent_value",)
@@ -2197,12 +2170,11 @@ def test_list_products_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
 
 
 def test_list_products_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2214,7 +2186,9 @@ def test_list_products_flattened_error():
 
 @pytest.mark.asyncio
 async def test_list_products_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_products), "__call__") as call:
@@ -2232,13 +2206,14 @@ async def test_list_products_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
 
 
 @pytest.mark.asyncio
 async def test_list_products_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2249,7 +2224,7 @@ async def test_list_products_flattened_error_async():
 
 
 def test_list_products_pager():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials,)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_products), "__call__") as call:
@@ -2292,7 +2267,7 @@ def test_list_products_pager():
 
 
 def test_list_products_pages():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials,)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_products), "__call__") as call:
@@ -2327,7 +2302,7 @@ def test_list_products_pages():
 
 @pytest.mark.asyncio
 async def test_list_products_async_pager():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = ProductSearchAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2369,7 +2344,7 @@ async def test_list_products_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_products_async_pages():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = ProductSearchAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2410,7 +2385,7 @@ def test_get_product(
     transport: str = "grpc", request_type=product_search_service.GetProductRequest
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2426,25 +2401,18 @@ def test_get_product(
             description="description_value",
             product_category="product_category_value",
         )
-
         response = client.get_product(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.GetProductRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, product_search_service.Product)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
-
     assert response.description == "description_value"
-
     assert response.product_category == "product_category_value"
 
 
@@ -2456,7 +2424,7 @@ def test_get_product_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2464,7 +2432,6 @@ def test_get_product_empty_call():
         client.get_product()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.GetProductRequest()
 
 
@@ -2474,7 +2441,7 @@ async def test_get_product_async(
     request_type=product_search_service.GetProductRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2492,24 +2459,18 @@ async def test_get_product_async(
                 product_category="product_category_value",
             )
         )
-
         response = await client.get_product(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.GetProductRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, product_search_service.Product)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
-
     assert response.description == "description_value"
-
     assert response.product_category == "product_category_value"
 
 
@@ -2519,17 +2480,17 @@ async def test_get_product_async_from_dict():
 
 
 def test_get_product_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.GetProductRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_product), "__call__") as call:
         call.return_value = product_search_service.Product()
-
         client.get_product(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2544,11 +2505,14 @@ def test_get_product_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_product_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.GetProductRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2556,7 +2520,6 @@ async def test_get_product_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             product_search_service.Product()
         )
-
         await client.get_product(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2570,13 +2533,12 @@ async def test_get_product_field_headers_async():
 
 
 def test_get_product_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_product), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = product_search_service.Product()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_product(name="name_value",)
@@ -2585,12 +2547,11 @@ def test_get_product_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_get_product_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2602,7 +2563,9 @@ def test_get_product_flattened_error():
 
 @pytest.mark.asyncio
 async def test_get_product_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_product), "__call__") as call:
@@ -2620,13 +2583,14 @@ async def test_get_product_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_get_product_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2640,7 +2604,7 @@ def test_update_product(
     transport: str = "grpc", request_type=product_search_service.UpdateProductRequest
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2656,25 +2620,18 @@ def test_update_product(
             description="description_value",
             product_category="product_category_value",
         )
-
         response = client.update_product(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.UpdateProductRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, product_search_service.Product)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
-
     assert response.description == "description_value"
-
     assert response.product_category == "product_category_value"
 
 
@@ -2686,7 +2643,7 @@ def test_update_product_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2694,7 +2651,6 @@ def test_update_product_empty_call():
         client.update_product()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.UpdateProductRequest()
 
 
@@ -2704,7 +2660,7 @@ async def test_update_product_async(
     request_type=product_search_service.UpdateProductRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2722,24 +2678,18 @@ async def test_update_product_async(
                 product_category="product_category_value",
             )
         )
-
         response = await client.update_product(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.UpdateProductRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, product_search_service.Product)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
-
     assert response.description == "description_value"
-
     assert response.product_category == "product_category_value"
 
 
@@ -2749,17 +2699,17 @@ async def test_update_product_async_from_dict():
 
 
 def test_update_product_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.UpdateProductRequest()
+
     request.product.name = "product.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_product), "__call__") as call:
         call.return_value = product_search_service.Product()
-
         client.update_product(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2776,11 +2726,14 @@ def test_update_product_field_headers():
 
 @pytest.mark.asyncio
 async def test_update_product_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.UpdateProductRequest()
+
     request.product.name = "product.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2788,7 +2741,6 @@ async def test_update_product_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             product_search_service.Product()
         )
-
         await client.update_product(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2804,32 +2756,29 @@ async def test_update_product_field_headers_async():
 
 
 def test_update_product_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_product), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = product_search_service.Product()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_product(
             product=product_search_service.Product(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].product == product_search_service.Product(name="name_value")
-
-        assert args[0].update_mask == field_mask.FieldMask(paths=["paths_value"])
+        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
 
 
 def test_update_product_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2837,13 +2786,15 @@ def test_update_product_flattened_error():
         client.update_product(
             product_search_service.UpdateProductRequest(),
             product=product_search_service.Product(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 @pytest.mark.asyncio
 async def test_update_product_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_product), "__call__") as call:
@@ -2857,22 +2808,22 @@ async def test_update_product_flattened_async():
         # using the keyword arguments to the method.
         response = await client.update_product(
             product=product_search_service.Product(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].product == product_search_service.Product(name="name_value")
-
-        assert args[0].update_mask == field_mask.FieldMask(paths=["paths_value"])
+        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
 
 
 @pytest.mark.asyncio
 async def test_update_product_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2880,7 +2831,7 @@ async def test_update_product_flattened_error_async():
         await client.update_product(
             product_search_service.UpdateProductRequest(),
             product=product_search_service.Product(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -2888,7 +2839,7 @@ def test_delete_product(
     transport: str = "grpc", request_type=product_search_service.DeleteProductRequest
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2899,13 +2850,11 @@ def test_delete_product(
     with mock.patch.object(type(client.transport.delete_product), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-
         response = client.delete_product(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.DeleteProductRequest()
 
     # Establish that the response is the type that we expect.
@@ -2920,7 +2869,7 @@ def test_delete_product_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2928,7 +2877,6 @@ def test_delete_product_empty_call():
         client.delete_product()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.DeleteProductRequest()
 
 
@@ -2938,7 +2886,7 @@ async def test_delete_product_async(
     request_type=product_search_service.DeleteProductRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2949,13 +2897,11 @@ async def test_delete_product_async(
     with mock.patch.object(type(client.transport.delete_product), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-
         response = await client.delete_product(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.DeleteProductRequest()
 
     # Establish that the response is the type that we expect.
@@ -2968,17 +2914,17 @@ async def test_delete_product_async_from_dict():
 
 
 def test_delete_product_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.DeleteProductRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_product), "__call__") as call:
         call.return_value = None
-
         client.delete_product(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2993,17 +2939,19 @@ def test_delete_product_field_headers():
 
 @pytest.mark.asyncio
 async def test_delete_product_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.DeleteProductRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_product), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-
         await client.delete_product(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3017,13 +2965,12 @@ async def test_delete_product_field_headers_async():
 
 
 def test_delete_product_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_product), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.delete_product(name="name_value",)
@@ -3032,12 +2979,11 @@ def test_delete_product_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_delete_product_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3049,7 +2995,9 @@ def test_delete_product_flattened_error():
 
 @pytest.mark.asyncio
 async def test_delete_product_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_product), "__call__") as call:
@@ -3065,13 +3013,14 @@ async def test_delete_product_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_delete_product_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3086,7 +3035,7 @@ def test_create_reference_image(
     request_type=product_search_service.CreateReferenceImageRequest,
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3101,21 +3050,16 @@ def test_create_reference_image(
         call.return_value = product_search_service.ReferenceImage(
             name="name_value", uri="uri_value",
         )
-
         response = client.create_reference_image(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.CreateReferenceImageRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, product_search_service.ReferenceImage)
-
     assert response.name == "name_value"
-
     assert response.uri == "uri_value"
 
 
@@ -3127,7 +3071,7 @@ def test_create_reference_image_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3137,7 +3081,6 @@ def test_create_reference_image_empty_call():
         client.create_reference_image()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.CreateReferenceImageRequest()
 
 
@@ -3147,7 +3090,7 @@ async def test_create_reference_image_async(
     request_type=product_search_service.CreateReferenceImageRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3162,20 +3105,16 @@ async def test_create_reference_image_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             product_search_service.ReferenceImage(name="name_value", uri="uri_value",)
         )
-
         response = await client.create_reference_image(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.CreateReferenceImageRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, product_search_service.ReferenceImage)
-
     assert response.name == "name_value"
-
     assert response.uri == "uri_value"
 
 
@@ -3185,11 +3124,12 @@ async def test_create_reference_image_async_from_dict():
 
 
 def test_create_reference_image_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.CreateReferenceImageRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3197,7 +3137,6 @@ def test_create_reference_image_field_headers():
         type(client.transport.create_reference_image), "__call__"
     ) as call:
         call.return_value = product_search_service.ReferenceImage()
-
         client.create_reference_image(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3212,11 +3151,14 @@ def test_create_reference_image_field_headers():
 
 @pytest.mark.asyncio
 async def test_create_reference_image_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.CreateReferenceImageRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3226,7 +3168,6 @@ async def test_create_reference_image_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             product_search_service.ReferenceImage()
         )
-
         await client.create_reference_image(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3240,7 +3181,7 @@ async def test_create_reference_image_field_headers_async():
 
 
 def test_create_reference_image_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3248,7 +3189,6 @@ def test_create_reference_image_flattened():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = product_search_service.ReferenceImage()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_reference_image(
@@ -3261,18 +3201,15 @@ def test_create_reference_image_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
-
         assert args[0].reference_image == product_search_service.ReferenceImage(
             name="name_value"
         )
-
         assert args[0].reference_image_id == "reference_image_id_value"
 
 
 def test_create_reference_image_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3287,7 +3224,9 @@ def test_create_reference_image_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_reference_image_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3311,19 +3250,18 @@ async def test_create_reference_image_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
-
         assert args[0].reference_image == product_search_service.ReferenceImage(
             name="name_value"
         )
-
         assert args[0].reference_image_id == "reference_image_id_value"
 
 
 @pytest.mark.asyncio
 async def test_create_reference_image_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3341,7 +3279,7 @@ def test_delete_reference_image(
     request_type=product_search_service.DeleteReferenceImageRequest,
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3354,13 +3292,11 @@ def test_delete_reference_image(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-
         response = client.delete_reference_image(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.DeleteReferenceImageRequest()
 
     # Establish that the response is the type that we expect.
@@ -3375,7 +3311,7 @@ def test_delete_reference_image_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3385,7 +3321,6 @@ def test_delete_reference_image_empty_call():
         client.delete_reference_image()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.DeleteReferenceImageRequest()
 
 
@@ -3395,7 +3330,7 @@ async def test_delete_reference_image_async(
     request_type=product_search_service.DeleteReferenceImageRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3408,13 +3343,11 @@ async def test_delete_reference_image_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-
         response = await client.delete_reference_image(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.DeleteReferenceImageRequest()
 
     # Establish that the response is the type that we expect.
@@ -3427,11 +3360,12 @@ async def test_delete_reference_image_async_from_dict():
 
 
 def test_delete_reference_image_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.DeleteReferenceImageRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3439,7 +3373,6 @@ def test_delete_reference_image_field_headers():
         type(client.transport.delete_reference_image), "__call__"
     ) as call:
         call.return_value = None
-
         client.delete_reference_image(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3454,11 +3387,14 @@ def test_delete_reference_image_field_headers():
 
 @pytest.mark.asyncio
 async def test_delete_reference_image_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.DeleteReferenceImageRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3466,7 +3402,6 @@ async def test_delete_reference_image_field_headers_async():
         type(client.transport.delete_reference_image), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-
         await client.delete_reference_image(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3480,7 +3415,7 @@ async def test_delete_reference_image_field_headers_async():
 
 
 def test_delete_reference_image_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3488,7 +3423,6 @@ def test_delete_reference_image_flattened():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.delete_reference_image(name="name_value",)
@@ -3497,12 +3431,11 @@ def test_delete_reference_image_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_delete_reference_image_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3514,7 +3447,9 @@ def test_delete_reference_image_flattened_error():
 
 @pytest.mark.asyncio
 async def test_delete_reference_image_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3532,13 +3467,14 @@ async def test_delete_reference_image_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_delete_reference_image_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3553,7 +3489,7 @@ def test_list_reference_images(
     request_type=product_search_service.ListReferenceImagesRequest,
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3568,21 +3504,16 @@ def test_list_reference_images(
         call.return_value = product_search_service.ListReferenceImagesResponse(
             page_size=951, next_page_token="next_page_token_value",
         )
-
         response = client.list_reference_images(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.ListReferenceImagesRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.ListReferenceImagesPager)
-
     assert response.page_size == 951
-
     assert response.next_page_token == "next_page_token_value"
 
 
@@ -3594,7 +3525,7 @@ def test_list_reference_images_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3604,7 +3535,6 @@ def test_list_reference_images_empty_call():
         client.list_reference_images()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.ListReferenceImagesRequest()
 
 
@@ -3614,7 +3544,7 @@ async def test_list_reference_images_async(
     request_type=product_search_service.ListReferenceImagesRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3631,20 +3561,16 @@ async def test_list_reference_images_async(
                 page_size=951, next_page_token="next_page_token_value",
             )
         )
-
         response = await client.list_reference_images(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.ListReferenceImagesRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReferenceImagesAsyncPager)
-
     assert response.page_size == 951
-
     assert response.next_page_token == "next_page_token_value"
 
 
@@ -3654,11 +3580,12 @@ async def test_list_reference_images_async_from_dict():
 
 
 def test_list_reference_images_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.ListReferenceImagesRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3666,7 +3593,6 @@ def test_list_reference_images_field_headers():
         type(client.transport.list_reference_images), "__call__"
     ) as call:
         call.return_value = product_search_service.ListReferenceImagesResponse()
-
         client.list_reference_images(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3681,11 +3607,14 @@ def test_list_reference_images_field_headers():
 
 @pytest.mark.asyncio
 async def test_list_reference_images_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.ListReferenceImagesRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3695,7 +3624,6 @@ async def test_list_reference_images_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             product_search_service.ListReferenceImagesResponse()
         )
-
         await client.list_reference_images(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3709,7 +3637,7 @@ async def test_list_reference_images_field_headers_async():
 
 
 def test_list_reference_images_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3717,7 +3645,6 @@ def test_list_reference_images_flattened():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = product_search_service.ListReferenceImagesResponse()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_reference_images(parent="parent_value",)
@@ -3726,12 +3653,11 @@ def test_list_reference_images_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
 
 
 def test_list_reference_images_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3743,7 +3669,9 @@ def test_list_reference_images_flattened_error():
 
 @pytest.mark.asyncio
 async def test_list_reference_images_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3763,13 +3691,14 @@ async def test_list_reference_images_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
 
 
 @pytest.mark.asyncio
 async def test_list_reference_images_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3780,7 +3709,7 @@ async def test_list_reference_images_flattened_error_async():
 
 
 def test_list_reference_images_pager():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials,)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3828,7 +3757,7 @@ def test_list_reference_images_pager():
 
 
 def test_list_reference_images_pages():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials,)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3866,7 +3795,7 @@ def test_list_reference_images_pages():
 
 @pytest.mark.asyncio
 async def test_list_reference_images_async_pager():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = ProductSearchAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3913,7 +3842,7 @@ async def test_list_reference_images_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_reference_images_async_pages():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = ProductSearchAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3958,7 +3887,7 @@ def test_get_reference_image(
     request_type=product_search_service.GetReferenceImageRequest,
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3973,21 +3902,16 @@ def test_get_reference_image(
         call.return_value = product_search_service.ReferenceImage(
             name="name_value", uri="uri_value",
         )
-
         response = client.get_reference_image(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.GetReferenceImageRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, product_search_service.ReferenceImage)
-
     assert response.name == "name_value"
-
     assert response.uri == "uri_value"
 
 
@@ -3999,7 +3923,7 @@ def test_get_reference_image_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4009,7 +3933,6 @@ def test_get_reference_image_empty_call():
         client.get_reference_image()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.GetReferenceImageRequest()
 
 
@@ -4019,7 +3942,7 @@ async def test_get_reference_image_async(
     request_type=product_search_service.GetReferenceImageRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4034,20 +3957,16 @@ async def test_get_reference_image_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             product_search_service.ReferenceImage(name="name_value", uri="uri_value",)
         )
-
         response = await client.get_reference_image(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.GetReferenceImageRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, product_search_service.ReferenceImage)
-
     assert response.name == "name_value"
-
     assert response.uri == "uri_value"
 
 
@@ -4057,11 +3976,12 @@ async def test_get_reference_image_async_from_dict():
 
 
 def test_get_reference_image_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.GetReferenceImageRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4069,7 +3989,6 @@ def test_get_reference_image_field_headers():
         type(client.transport.get_reference_image), "__call__"
     ) as call:
         call.return_value = product_search_service.ReferenceImage()
-
         client.get_reference_image(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4084,11 +4003,14 @@ def test_get_reference_image_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_reference_image_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.GetReferenceImageRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4098,7 +4020,6 @@ async def test_get_reference_image_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             product_search_service.ReferenceImage()
         )
-
         await client.get_reference_image(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4112,7 +4033,7 @@ async def test_get_reference_image_field_headers_async():
 
 
 def test_get_reference_image_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4120,7 +4041,6 @@ def test_get_reference_image_flattened():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = product_search_service.ReferenceImage()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_reference_image(name="name_value",)
@@ -4129,12 +4049,11 @@ def test_get_reference_image_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_get_reference_image_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4146,7 +4065,9 @@ def test_get_reference_image_flattened_error():
 
 @pytest.mark.asyncio
 async def test_get_reference_image_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4166,13 +4087,14 @@ async def test_get_reference_image_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_get_reference_image_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4187,7 +4109,7 @@ def test_add_product_to_product_set(
     request_type=product_search_service.AddProductToProductSetRequest,
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4200,13 +4122,11 @@ def test_add_product_to_product_set(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-
         response = client.add_product_to_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.AddProductToProductSetRequest()
 
     # Establish that the response is the type that we expect.
@@ -4221,7 +4141,7 @@ def test_add_product_to_product_set_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4231,7 +4151,6 @@ def test_add_product_to_product_set_empty_call():
         client.add_product_to_product_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.AddProductToProductSetRequest()
 
 
@@ -4241,7 +4160,7 @@ async def test_add_product_to_product_set_async(
     request_type=product_search_service.AddProductToProductSetRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4254,13 +4173,11 @@ async def test_add_product_to_product_set_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-
         response = await client.add_product_to_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.AddProductToProductSetRequest()
 
     # Establish that the response is the type that we expect.
@@ -4273,11 +4190,12 @@ async def test_add_product_to_product_set_async_from_dict():
 
 
 def test_add_product_to_product_set_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.AddProductToProductSetRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4285,7 +4203,6 @@ def test_add_product_to_product_set_field_headers():
         type(client.transport.add_product_to_product_set), "__call__"
     ) as call:
         call.return_value = None
-
         client.add_product_to_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4300,11 +4217,14 @@ def test_add_product_to_product_set_field_headers():
 
 @pytest.mark.asyncio
 async def test_add_product_to_product_set_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.AddProductToProductSetRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4312,7 +4232,6 @@ async def test_add_product_to_product_set_field_headers_async():
         type(client.transport.add_product_to_product_set), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-
         await client.add_product_to_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4326,7 +4245,7 @@ async def test_add_product_to_product_set_field_headers_async():
 
 
 def test_add_product_to_product_set_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4334,7 +4253,6 @@ def test_add_product_to_product_set_flattened():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.add_product_to_product_set(
@@ -4345,14 +4263,12 @@ def test_add_product_to_product_set_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
-
         assert args[0].product == "product_value"
 
 
 def test_add_product_to_product_set_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4366,7 +4282,9 @@ def test_add_product_to_product_set_flattened_error():
 
 @pytest.mark.asyncio
 async def test_add_product_to_product_set_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4386,15 +4304,15 @@ async def test_add_product_to_product_set_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
-
         assert args[0].product == "product_value"
 
 
 @pytest.mark.asyncio
 async def test_add_product_to_product_set_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4411,7 +4329,7 @@ def test_remove_product_from_product_set(
     request_type=product_search_service.RemoveProductFromProductSetRequest,
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4424,13 +4342,11 @@ def test_remove_product_from_product_set(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-
         response = client.remove_product_from_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.RemoveProductFromProductSetRequest()
 
     # Establish that the response is the type that we expect.
@@ -4445,7 +4361,7 @@ def test_remove_product_from_product_set_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4455,7 +4371,6 @@ def test_remove_product_from_product_set_empty_call():
         client.remove_product_from_product_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.RemoveProductFromProductSetRequest()
 
 
@@ -4465,7 +4380,7 @@ async def test_remove_product_from_product_set_async(
     request_type=product_search_service.RemoveProductFromProductSetRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4478,13 +4393,11 @@ async def test_remove_product_from_product_set_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-
         response = await client.remove_product_from_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.RemoveProductFromProductSetRequest()
 
     # Establish that the response is the type that we expect.
@@ -4497,11 +4410,12 @@ async def test_remove_product_from_product_set_async_from_dict():
 
 
 def test_remove_product_from_product_set_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.RemoveProductFromProductSetRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4509,7 +4423,6 @@ def test_remove_product_from_product_set_field_headers():
         type(client.transport.remove_product_from_product_set), "__call__"
     ) as call:
         call.return_value = None
-
         client.remove_product_from_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4524,11 +4437,14 @@ def test_remove_product_from_product_set_field_headers():
 
 @pytest.mark.asyncio
 async def test_remove_product_from_product_set_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.RemoveProductFromProductSetRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4536,7 +4452,6 @@ async def test_remove_product_from_product_set_field_headers_async():
         type(client.transport.remove_product_from_product_set), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-
         await client.remove_product_from_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4550,7 +4465,7 @@ async def test_remove_product_from_product_set_field_headers_async():
 
 
 def test_remove_product_from_product_set_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4558,7 +4473,6 @@ def test_remove_product_from_product_set_flattened():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.remove_product_from_product_set(
@@ -4569,14 +4483,12 @@ def test_remove_product_from_product_set_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
-
         assert args[0].product == "product_value"
 
 
 def test_remove_product_from_product_set_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4590,7 +4502,9 @@ def test_remove_product_from_product_set_flattened_error():
 
 @pytest.mark.asyncio
 async def test_remove_product_from_product_set_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4610,15 +4524,15 @@ async def test_remove_product_from_product_set_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
-
         assert args[0].product == "product_value"
 
 
 @pytest.mark.asyncio
 async def test_remove_product_from_product_set_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4635,7 +4549,7 @@ def test_list_products_in_product_set(
     request_type=product_search_service.ListProductsInProductSetRequest,
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4650,19 +4564,15 @@ def test_list_products_in_product_set(
         call.return_value = product_search_service.ListProductsInProductSetResponse(
             next_page_token="next_page_token_value",
         )
-
         response = client.list_products_in_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.ListProductsInProductSetRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.ListProductsInProductSetPager)
-
     assert response.next_page_token == "next_page_token_value"
 
 
@@ -4674,7 +4584,7 @@ def test_list_products_in_product_set_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4684,7 +4594,6 @@ def test_list_products_in_product_set_empty_call():
         client.list_products_in_product_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.ListProductsInProductSetRequest()
 
 
@@ -4694,7 +4603,7 @@ async def test_list_products_in_product_set_async(
     request_type=product_search_service.ListProductsInProductSetRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4711,18 +4620,15 @@ async def test_list_products_in_product_set_async(
                 next_page_token="next_page_token_value",
             )
         )
-
         response = await client.list_products_in_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.ListProductsInProductSetRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListProductsInProductSetAsyncPager)
-
     assert response.next_page_token == "next_page_token_value"
 
 
@@ -4732,11 +4638,12 @@ async def test_list_products_in_product_set_async_from_dict():
 
 
 def test_list_products_in_product_set_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.ListProductsInProductSetRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4744,7 +4651,6 @@ def test_list_products_in_product_set_field_headers():
         type(client.transport.list_products_in_product_set), "__call__"
     ) as call:
         call.return_value = product_search_service.ListProductsInProductSetResponse()
-
         client.list_products_in_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4759,11 +4665,14 @@ def test_list_products_in_product_set_field_headers():
 
 @pytest.mark.asyncio
 async def test_list_products_in_product_set_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.ListProductsInProductSetRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4773,7 +4682,6 @@ async def test_list_products_in_product_set_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             product_search_service.ListProductsInProductSetResponse()
         )
-
         await client.list_products_in_product_set(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4787,7 +4695,7 @@ async def test_list_products_in_product_set_field_headers_async():
 
 
 def test_list_products_in_product_set_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4795,7 +4703,6 @@ def test_list_products_in_product_set_flattened():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = product_search_service.ListProductsInProductSetResponse()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_products_in_product_set(name="name_value",)
@@ -4804,12 +4711,11 @@ def test_list_products_in_product_set_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_list_products_in_product_set_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4821,7 +4727,9 @@ def test_list_products_in_product_set_flattened_error():
 
 @pytest.mark.asyncio
 async def test_list_products_in_product_set_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4841,13 +4749,14 @@ async def test_list_products_in_product_set_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_list_products_in_product_set_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4858,7 +4767,7 @@ async def test_list_products_in_product_set_flattened_error_async():
 
 
 def test_list_products_in_product_set_pager():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials,)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4903,7 +4812,7 @@ def test_list_products_in_product_set_pager():
 
 
 def test_list_products_in_product_set_pages():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials,)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4940,7 +4849,7 @@ def test_list_products_in_product_set_pages():
 
 @pytest.mark.asyncio
 async def test_list_products_in_product_set_async_pager():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = ProductSearchAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4984,7 +4893,7 @@ async def test_list_products_in_product_set_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_products_in_product_set_async_pages():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = ProductSearchAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5030,7 +4939,7 @@ def test_import_product_sets(
     request_type=product_search_service.ImportProductSetsRequest,
 ):
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5043,13 +4952,11 @@ def test_import_product_sets(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-
         response = client.import_product_sets(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.ImportProductSetsRequest()
 
     # Establish that the response is the type that we expect.
@@ -5064,7 +4971,7 @@ def test_import_product_sets_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5074,7 +4981,6 @@ def test_import_product_sets_empty_call():
         client.import_product_sets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.ImportProductSetsRequest()
 
 
@@ -5084,7 +4990,7 @@ async def test_import_product_sets_async(
     request_type=product_search_service.ImportProductSetsRequest,
 ):
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5099,13 +5005,11 @@ async def test_import_product_sets_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-
         response = await client.import_product_sets(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == product_search_service.ImportProductSetsRequest()
 
     # Establish that the response is the type that we expect.
@@ -5118,11 +5022,12 @@ async def test_import_product_sets_async_from_dict():
 
 
 def test_import_product_sets_field_headers():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.ImportProductSetsRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5130,7 +5035,6 @@ def test_import_product_sets_field_headers():
         type(client.transport.import_product_sets), "__call__"
     ) as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         client.import_product_sets(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5145,11 +5049,14 @@ def test_import_product_sets_field_headers():
 
 @pytest.mark.asyncio
 async def test_import_product_sets_field_headers_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = product_search_service.ImportProductSetsRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5159,7 +5066,6 @@ async def test_import_product_sets_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
-
         await client.import_product_sets(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5173,7 +5079,7 @@ async def test_import_product_sets_field_headers_async():
 
 
 def test_import_product_sets_flattened():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5181,7 +5087,6 @@ def test_import_product_sets_flattened():
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.import_product_sets(
@@ -5197,9 +5102,7 @@ def test_import_product_sets_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
-
         assert args[
             0
         ].input_config == product_search_service.ImportProductSetsInputConfig(
@@ -5210,7 +5113,7 @@ def test_import_product_sets_flattened():
 
 
 def test_import_product_sets_flattened_error():
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5228,7 +5131,9 @@ def test_import_product_sets_flattened_error():
 
 @pytest.mark.asyncio
 async def test_import_product_sets_flattened_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5255,9 +5160,7 @@ async def test_import_product_sets_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
-
         assert args[
             0
         ].input_config == product_search_service.ImportProductSetsInputConfig(
@@ -5269,7 +5172,9 @@ async def test_import_product_sets_flattened_async():
 
 @pytest.mark.asyncio
 async def test_import_product_sets_flattened_error_async():
-    client = ProductSearchAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5288,16 +5193,16 @@ async def test_import_product_sets_flattened_error_async():
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ProductSearchGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = ProductSearchClient(
-            credentials=credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.ProductSearchGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = ProductSearchClient(
@@ -5307,7 +5212,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.ProductSearchGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = ProductSearchClient(
@@ -5318,7 +5223,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.ProductSearchGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = ProductSearchClient(transport=transport)
     assert client.transport is transport
@@ -5327,13 +5232,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.ProductSearchGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.ProductSearchGrpcAsyncIOTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -5348,23 +5253,23 @@ def test_transport_get_channel():
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, "default") as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = ProductSearchClient(credentials=credentials.AnonymousCredentials(),)
+    client = ProductSearchClient(credentials=ga_credentials.AnonymousCredentials(),)
     assert isinstance(client.transport, transports.ProductSearchGrpcTransport,)
 
 
 def test_product_search_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
-    with pytest.raises(exceptions.DuplicateCredentialArgs):
+    with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.ProductSearchTransport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -5376,7 +5281,7 @@ def test_product_search_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.ProductSearchTransport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -5411,15 +5316,40 @@ def test_product_search_base_transport():
         transport.operations_client
 
 
+@requires_google_auth_gte_1_25_0
 def test_product_search_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
-        auth, "load_credentials_from_file"
+        google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
         "google.cloud.vision_v1p3beta1.services.product_search.transports.ProductSearchTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (credentials.AnonymousCredentials(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport = transports.ProductSearchTransport(
+            credentials_file="credentials.json", quota_project_id="octopus",
+        )
+        load_creds.assert_called_once_with(
+            "credentials.json",
+            scopes=None,
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-vision",
+            ),
+            quota_project_id="octopus",
+        )
+
+
+@requires_google_auth_lt_1_25_0
+def test_product_search_base_transport_with_credentials_file_old_google_auth():
+    # Instantiate the base transport with a credentials file
+    with mock.patch.object(
+        google.auth, "load_credentials_from_file", autospec=True
+    ) as load_creds, mock.patch(
+        "google.cloud.vision_v1p3beta1.services.product_search.transports.ProductSearchTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ProductSearchTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
         )
@@ -5435,19 +5365,36 @@ def test_product_search_base_transport_with_credentials_file():
 
 def test_product_search_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(auth, "default") as adc, mock.patch(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
         "google.cloud.vision_v1p3beta1.services.product_search.transports.ProductSearchTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ProductSearchTransport()
         adc.assert_called_once()
 
 
+@requires_google_auth_gte_1_25_0
 def test_product_search_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        ProductSearchClient()
+        adc.assert_called_once_with(
+            scopes=None,
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-vision",
+            ),
+            quota_project_id=None,
+        )
+
+
+@requires_google_auth_lt_1_25_0
+def test_product_search_auth_adc_old_google_auth():
+    # If no credentials are provided, we should use ADC credentials.
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         ProductSearchClient()
         adc.assert_called_once_with(
             scopes=(
@@ -5458,16 +5405,23 @@ def test_product_search_auth_adc():
         )
 
 
-def test_product_search_transport_auth_adc():
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.ProductSearchGrpcTransport,
+        transports.ProductSearchGrpcAsyncIOTransport,
+    ],
+)
+@requires_google_auth_gte_1_25_0
+def test_product_search_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
-        transports.ProductSearchGrpcTransport(
-            host="squid.clam.whelk", quota_project_id="octopus"
-        )
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
-            scopes=(
+            scopes=["1", "2"],
+            default_scopes=(
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/cloud-vision",
             ),
@@ -5482,8 +5436,146 @@ def test_product_search_transport_auth_adc():
         transports.ProductSearchGrpcAsyncIOTransport,
     ],
 )
+@requires_google_auth_lt_1_25_0
+def test_product_search_transport_auth_adc_old_google_auth(transport_class):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class(quota_project_id="octopus")
+        adc.assert_called_once_with(
+            scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-vision",
+            ),
+            quota_project_id="octopus",
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.ProductSearchGrpcTransport, grpc_helpers),
+        (transports.ProductSearchGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+@requires_api_core_gte_1_26_0
+def test_product_search_transport_create_channel(transport_class, grpc_helpers):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+
+        create_channel.assert_called_with(
+            "vision.googleapis.com:443",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            default_scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-vision",
+            ),
+            scopes=["1", "2"],
+            default_host="vision.googleapis.com",
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.ProductSearchGrpcTransport, grpc_helpers),
+        (transports.ProductSearchGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+@requires_api_core_lt_1_26_0
+def test_product_search_transport_create_channel_old_api_core(
+    transport_class, grpc_helpers
+):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+        transport_class(quota_project_id="octopus")
+
+        create_channel.assert_called_with(
+            "vision.googleapis.com:443",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            scopes=(
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/cloud-vision",
+            ),
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.ProductSearchGrpcTransport, grpc_helpers),
+        (transports.ProductSearchGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+@requires_api_core_lt_1_26_0
+def test_product_search_transport_create_channel_user_scopes(
+    transport_class, grpc_helpers
+):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+
+        create_channel.assert_called_with(
+            "vision.googleapis.com:443",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            scopes=["1", "2"],
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.ProductSearchGrpcTransport,
+        transports.ProductSearchGrpcAsyncIOTransport,
+    ],
+)
 def test_product_search_grpc_transport_client_cert_source_for_mtls(transport_class):
-    cred = credentials.AnonymousCredentials()
+    cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -5525,7 +5617,7 @@ def test_product_search_grpc_transport_client_cert_source_for_mtls(transport_cla
 
 def test_product_search_host_no_port():
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="vision.googleapis.com"
         ),
@@ -5535,7 +5627,7 @@ def test_product_search_host_no_port():
 
 def test_product_search_host_with_port():
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="vision.googleapis.com:8000"
         ),
@@ -5589,9 +5681,9 @@ def test_product_search_transport_channel_mtls_with_client_cert_source(transport
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = credentials.AnonymousCredentials()
+            cred = ga_credentials.AnonymousCredentials()
             with pytest.warns(DeprecationWarning):
-                with mock.patch.object(auth, "default") as adc:
+                with mock.patch.object(google.auth, "default") as adc:
                     adc.return_value = (cred, None)
                     transport = transport_class(
                         host="squid.clam.whelk",
@@ -5673,7 +5765,7 @@ def test_product_search_transport_channel_mtls_with_adc(transport_class):
 
 def test_product_search_grpc_lro_client():
     client = ProductSearchClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
     transport = client.transport
 
@@ -5686,7 +5778,7 @@ def test_product_search_grpc_lro_client():
 
 def test_product_search_grpc_lro_async_client():
     client = ProductSearchAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
     )
     transport = client.transport
 
@@ -5701,7 +5793,6 @@ def test_product_path():
     project = "squid"
     location = "clam"
     product = "whelk"
-
     expected = "projects/{project}/locations/{location}/products/{product}".format(
         project=project, location=location, product=product,
     )
@@ -5726,7 +5817,6 @@ def test_product_set_path():
     project = "cuttlefish"
     location = "mussel"
     product_set = "winkle"
-
     expected = "projects/{project}/locations/{location}/productSets/{product_set}".format(
         project=project, location=location, product_set=product_set,
     )
@@ -5752,7 +5842,6 @@ def test_reference_image_path():
     location = "clam"
     product = "whelk"
     reference_image = "octopus"
-
     expected = "projects/{project}/locations/{location}/products/{product}/referenceImages/{reference_image}".format(
         project=project,
         location=location,
@@ -5781,7 +5870,6 @@ def test_parse_reference_image_path():
 
 def test_common_billing_account_path():
     billing_account = "winkle"
-
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -5802,7 +5890,6 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "scallop"
-
     expected = "folders/{folder}".format(folder=folder,)
     actual = ProductSearchClient.common_folder_path(folder)
     assert expected == actual
@@ -5821,7 +5908,6 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "squid"
-
     expected = "organizations/{organization}".format(organization=organization,)
     actual = ProductSearchClient.common_organization_path(organization)
     assert expected == actual
@@ -5840,7 +5926,6 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "whelk"
-
     expected = "projects/{project}".format(project=project,)
     actual = ProductSearchClient.common_project_path(project)
     assert expected == actual
@@ -5860,7 +5945,6 @@ def test_parse_common_project_path():
 def test_common_location_path():
     project = "oyster"
     location = "nudibranch"
-
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -5887,7 +5971,7 @@ def test_client_withDEFAULT_CLIENT_INFO():
         transports.ProductSearchTransport, "_prep_wrapped_messages"
     ) as prep:
         client = ProductSearchClient(
-            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -5896,6 +5980,6 @@ def test_client_withDEFAULT_CLIENT_INFO():
     ) as prep:
         transport_class = ProductSearchClient.get_transport_class()
         transport = transport_class(
-            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +18,10 @@ from google.cloud.vision_helpers.decorators import add_single_feature_methods
 from google.cloud.vision_helpers import VisionHelpers
 
 from .services.image_annotator import ImageAnnotatorClient as IacImageAnnotatorClient
+from .services.image_annotator import ImageAnnotatorAsyncClient
 from .services.product_search import ProductSearchClient
+from .services.product_search import ProductSearchAsyncClient
+
 from .types.face import Celebrity
 from .types.face import FaceRecognitionParams
 from .types.face import FaceRecognitionResult
@@ -58,7 +60,6 @@ from .types.image_annotator import ImageProperties
 from .types.image_annotator import ImageSource
 from .types.image_annotator import InputConfig
 from .types.image_annotator import LatLongRect
-from .types.image_annotator import Likelihood
 from .types.image_annotator import LocalizedObjectAnnotation
 from .types.image_annotator import LocationInfo
 from .types.image_annotator import OperationMetadata
@@ -67,6 +68,7 @@ from .types.image_annotator import Property
 from .types.image_annotator import SafeSearchAnnotation
 from .types.image_annotator import TextDetectionParams
 from .types.image_annotator import WebDetectionParams
+from .types.image_annotator import Likelihood
 from .types.product_search import ProductSearchParams
 from .types.product_search import ProductSearchResults
 from .types.product_search_service import AddProductToProductSetRequest
@@ -116,6 +118,8 @@ class ImageAnnotatorClient(VisionHelpers, IacImageAnnotatorClient):
 
 
 __all__ = (
+    "ImageAnnotatorAsyncClient",
+    "ProductSearchAsyncClient",
     "AddProductToProductSetRequest",
     "AnnotateFileRequest",
     "AnnotateFileResponse",
@@ -158,6 +162,7 @@ __all__ = (
     "GetReferenceImageRequest",
     "Image",
     "ImageAnnotationContext",
+    "ImageAnnotatorClient",
     "ImageContext",
     "ImageProperties",
     "ImageSource",
@@ -204,5 +209,4 @@ __all__ = (
     "WebDetection",
     "WebDetectionParams",
     "Word",
-    "ImageAnnotatorClient",
 )

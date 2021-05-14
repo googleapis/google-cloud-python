@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -26,7 +24,6 @@ __protobuf__ = proto.module(
 
 class FaceRecognitionParams(proto.Message):
     r"""Parameters for a celebrity recognition request.
-
     Attributes:
         celebrity_set (Sequence[str]):
             The resource names for one or more
@@ -37,12 +34,11 @@ class FaceRecognitionParams(proto.Message):
             Celebrities in the CelebritySets.
     """
 
-    celebrity_set = proto.RepeatedField(proto.STRING, number=1)
+    celebrity_set = proto.RepeatedField(proto.STRING, number=1,)
 
 
 class Celebrity(proto.Message):
     r"""A Celebrity is a group of Faces with an identity.
-
     Attributes:
         name (str):
             The resource name of the preloaded Celebrity. Has the format
@@ -53,16 +49,13 @@ class Celebrity(proto.Message):
             The Celebrity's description.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
-    description = proto.Field(proto.STRING, number=3)
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
+    description = proto.Field(proto.STRING, number=3,)
 
 
 class FaceRecognitionResult(proto.Message):
     r"""Information about a face's identity.
-
     Attributes:
         celebrity (google.cloud.vision_v1p4beta1.types.Celebrity):
             The [Celebrity][google.cloud.vision.v1p4beta1.Celebrity]
@@ -72,8 +65,7 @@ class FaceRecognitionResult(proto.Message):
     """
 
     celebrity = proto.Field(proto.MESSAGE, number=1, message="Celebrity",)
-
-    confidence = proto.Field(proto.FLOAT, number=2)
+    confidence = proto.Field(proto.FLOAT, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

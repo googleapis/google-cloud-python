@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.vision_v1p1beta1.types import geometry
 from google.cloud.vision_v1p1beta1.types import text_annotation
 from google.cloud.vision_v1p1beta1.types import web_detection as gcv_web_detection
-from google.rpc import status_pb2 as status  # type: ignore
-from google.type import color_pb2 as gt_color  # type: ignore
-from google.type import latlng_pb2 as latlng  # type: ignore
+from google.rpc import status_pb2  # type: ignore
+from google.type import color_pb2  # type: ignore
+from google.type import latlng_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -101,15 +98,12 @@ class Feature(proto.Message):
         WEB_DETECTION = 10
 
     type_ = proto.Field(proto.ENUM, number=1, enum=Type,)
-
-    max_results = proto.Field(proto.INT32, number=2)
-
-    model = proto.Field(proto.STRING, number=3)
+    max_results = proto.Field(proto.INT32, number=2,)
+    model = proto.Field(proto.STRING, number=3,)
 
 
 class ImageSource(proto.Message):
     r"""External image source (Google Cloud Storage image location).
-
     Attributes:
         gcs_image_uri (str):
             NOTE: For new code ``image_uri`` below is preferred. Google
@@ -132,14 +126,12 @@ class ImageSource(proto.Message):
                ``image_uri`` takes precedence.
     """
 
-    gcs_image_uri = proto.Field(proto.STRING, number=1)
-
-    image_uri = proto.Field(proto.STRING, number=2)
+    gcs_image_uri = proto.Field(proto.STRING, number=1,)
+    image_uri = proto.Field(proto.STRING, number=2,)
 
 
 class Image(proto.Message):
     r"""Client image to perform Google Cloud Vision API tasks over.
-
     Attributes:
         content (bytes):
             Image content, represented as a stream of bytes. Note: as
@@ -152,8 +144,7 @@ class Image(proto.Message):
             request.
     """
 
-    content = proto.Field(proto.BYTES, number=1)
-
+    content = proto.Field(proto.BYTES, number=1,)
     source = proto.Field(proto.MESSAGE, number=2, message="ImageSource",)
 
 
@@ -216,7 +207,6 @@ class FaceAnnotation(proto.Message):
 
     class Landmark(proto.Message):
         r"""A face-specific landmark (for example, a face feature).
-
         Attributes:
             type_ (google.cloud.vision_v1p1beta1.types.FaceAnnotation.Landmark.Type):
                 Face landmark type.
@@ -267,56 +257,39 @@ class FaceAnnotation(proto.Message):
             CHIN_RIGHT_GONION = 34
 
         type_ = proto.Field(proto.ENUM, number=3, enum="FaceAnnotation.Landmark.Type",)
-
         position = proto.Field(proto.MESSAGE, number=4, message=geometry.Position,)
 
     bounding_poly = proto.Field(proto.MESSAGE, number=1, message=geometry.BoundingPoly,)
-
     fd_bounding_poly = proto.Field(
         proto.MESSAGE, number=2, message=geometry.BoundingPoly,
     )
-
     landmarks = proto.RepeatedField(proto.MESSAGE, number=3, message=Landmark,)
-
-    roll_angle = proto.Field(proto.FLOAT, number=4)
-
-    pan_angle = proto.Field(proto.FLOAT, number=5)
-
-    tilt_angle = proto.Field(proto.FLOAT, number=6)
-
-    detection_confidence = proto.Field(proto.FLOAT, number=7)
-
-    landmarking_confidence = proto.Field(proto.FLOAT, number=8)
-
+    roll_angle = proto.Field(proto.FLOAT, number=4,)
+    pan_angle = proto.Field(proto.FLOAT, number=5,)
+    tilt_angle = proto.Field(proto.FLOAT, number=6,)
+    detection_confidence = proto.Field(proto.FLOAT, number=7,)
+    landmarking_confidence = proto.Field(proto.FLOAT, number=8,)
     joy_likelihood = proto.Field(proto.ENUM, number=9, enum="Likelihood",)
-
     sorrow_likelihood = proto.Field(proto.ENUM, number=10, enum="Likelihood",)
-
     anger_likelihood = proto.Field(proto.ENUM, number=11, enum="Likelihood",)
-
     surprise_likelihood = proto.Field(proto.ENUM, number=12, enum="Likelihood",)
-
     under_exposed_likelihood = proto.Field(proto.ENUM, number=13, enum="Likelihood",)
-
     blurred_likelihood = proto.Field(proto.ENUM, number=14, enum="Likelihood",)
-
     headwear_likelihood = proto.Field(proto.ENUM, number=15, enum="Likelihood",)
 
 
 class LocationInfo(proto.Message):
     r"""Detected entity location information.
-
     Attributes:
         lat_lng (google.type.latlng_pb2.LatLng):
             lat/long location coordinates.
     """
 
-    lat_lng = proto.Field(proto.MESSAGE, number=1, message=latlng.LatLng,)
+    lat_lng = proto.Field(proto.MESSAGE, number=1, message=latlng_pb2.LatLng,)
 
 
 class Property(proto.Message):
     r"""A ``Property`` consists of a user-supplied name/value pair.
-
     Attributes:
         name (str):
             Name of the property.
@@ -326,16 +299,13 @@ class Property(proto.Message):
             Value of numeric properties.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    value = proto.Field(proto.STRING, number=2)
-
-    uint64_value = proto.Field(proto.UINT64, number=3)
+    name = proto.Field(proto.STRING, number=1,)
+    value = proto.Field(proto.STRING, number=2,)
+    uint64_value = proto.Field(proto.UINT64, number=3,)
 
 
 class EntityAnnotation(proto.Message):
     r"""Set of detected entity features.
-
     Attributes:
         mid (str):
             Opaque entity ID. Some IDs may be available in `Google
@@ -377,22 +347,14 @@ class EntityAnnotation(proto.Message):
             the entity.
     """
 
-    mid = proto.Field(proto.STRING, number=1)
-
-    locale = proto.Field(proto.STRING, number=2)
-
-    description = proto.Field(proto.STRING, number=3)
-
-    score = proto.Field(proto.FLOAT, number=4)
-
-    confidence = proto.Field(proto.FLOAT, number=5)
-
-    topicality = proto.Field(proto.FLOAT, number=6)
-
+    mid = proto.Field(proto.STRING, number=1,)
+    locale = proto.Field(proto.STRING, number=2,)
+    description = proto.Field(proto.STRING, number=3,)
+    score = proto.Field(proto.FLOAT, number=4,)
+    confidence = proto.Field(proto.FLOAT, number=5,)
+    topicality = proto.Field(proto.FLOAT, number=6,)
     bounding_poly = proto.Field(proto.MESSAGE, number=7, message=geometry.BoundingPoly,)
-
     locations = proto.RepeatedField(proto.MESSAGE, number=8, message="LocationInfo",)
-
     properties = proto.RepeatedField(proto.MESSAGE, number=9, message="Property",)
 
 
@@ -426,19 +388,14 @@ class SafeSearchAnnotation(proto.Message):
     """
 
     adult = proto.Field(proto.ENUM, number=1, enum="Likelihood",)
-
     spoof = proto.Field(proto.ENUM, number=2, enum="Likelihood",)
-
     medical = proto.Field(proto.ENUM, number=3, enum="Likelihood",)
-
     violence = proto.Field(proto.ENUM, number=4, enum="Likelihood",)
-
     racy = proto.Field(proto.ENUM, number=9, enum="Likelihood",)
 
 
 class LatLongRect(proto.Message):
     r"""Rectangle determined by min and max ``LatLng`` pairs.
-
     Attributes:
         min_lat_lng (google.type.latlng_pb2.LatLng):
             Min lat/long pair.
@@ -446,9 +403,8 @@ class LatLongRect(proto.Message):
             Max lat/long pair.
     """
 
-    min_lat_lng = proto.Field(proto.MESSAGE, number=1, message=latlng.LatLng,)
-
-    max_lat_lng = proto.Field(proto.MESSAGE, number=2, message=latlng.LatLng,)
+    min_lat_lng = proto.Field(proto.MESSAGE, number=1, message=latlng_pb2.LatLng,)
+    max_lat_lng = proto.Field(proto.MESSAGE, number=2, message=latlng_pb2.LatLng,)
 
 
 class ColorInfo(proto.Message):
@@ -465,16 +421,13 @@ class ColorInfo(proto.Message):
             Value in range [0, 1].
     """
 
-    color = proto.Field(proto.MESSAGE, number=1, message=gt_color.Color,)
-
-    score = proto.Field(proto.FLOAT, number=2)
-
-    pixel_fraction = proto.Field(proto.FLOAT, number=3)
+    color = proto.Field(proto.MESSAGE, number=1, message=color_pb2.Color,)
+    score = proto.Field(proto.FLOAT, number=2,)
+    pixel_fraction = proto.Field(proto.FLOAT, number=3,)
 
 
 class DominantColorsAnnotation(proto.Message):
     r"""Set of dominant colors and their corresponding scores.
-
     Attributes:
         colors (Sequence[google.cloud.vision_v1p1beta1.types.ColorInfo]):
             RGB color values with their score and pixel
@@ -486,7 +439,6 @@ class DominantColorsAnnotation(proto.Message):
 
 class ImageProperties(proto.Message):
     r"""Stores image properties, such as dominant colors.
-
     Attributes:
         dominant_colors (google.cloud.vision_v1p1beta1.types.DominantColorsAnnotation):
             If present, dominant colors completed
@@ -515,10 +467,8 @@ class CropHint(proto.Message):
     """
 
     bounding_poly = proto.Field(proto.MESSAGE, number=1, message=geometry.BoundingPoly,)
-
-    confidence = proto.Field(proto.FLOAT, number=2)
-
-    importance_fraction = proto.Field(proto.FLOAT, number=3)
+    confidence = proto.Field(proto.FLOAT, number=2,)
+    importance_fraction = proto.Field(proto.FLOAT, number=3,)
 
 
 class CropHintsAnnotation(proto.Message):
@@ -535,7 +485,6 @@ class CropHintsAnnotation(proto.Message):
 
 class CropHintsParams(proto.Message):
     r"""Parameters for crop hints annotation request.
-
     Attributes:
         aspect_ratios (Sequence[float]):
             Aspect ratios in floats, representing the
@@ -548,19 +497,18 @@ class CropHintsParams(proto.Message):
             provided after the 16th are ignored.
     """
 
-    aspect_ratios = proto.RepeatedField(proto.FLOAT, number=1)
+    aspect_ratios = proto.RepeatedField(proto.FLOAT, number=1,)
 
 
 class WebDetectionParams(proto.Message):
     r"""Parameters for web detection request.
-
     Attributes:
         include_geo_results (bool):
             Whether to include results derived from the
             geo information in the image.
     """
 
-    include_geo_results = proto.Field(proto.BOOL, number=2)
+    include_geo_results = proto.Field(proto.BOOL, number=2,)
 
 
 class TextDetectionParams(proto.Message):
@@ -574,12 +522,11 @@ class TextDetectionParams(proto.Message):
             include confidence score for TEXT_DETECTION as well.
     """
 
-    enable_text_detection_confidence_score = proto.Field(proto.BOOL, number=9)
+    enable_text_detection_confidence_score = proto.Field(proto.BOOL, number=9,)
 
 
 class ImageContext(proto.Message):
     r"""Image context and/or feature-specific parameters.
-
     Attributes:
         lat_long_rect (google.cloud.vision_v1p1beta1.types.LatLongRect):
             lat/long rectangle that specifies the
@@ -605,15 +552,11 @@ class ImageContext(proto.Message):
     """
 
     lat_long_rect = proto.Field(proto.MESSAGE, number=1, message="LatLongRect",)
-
-    language_hints = proto.RepeatedField(proto.STRING, number=2)
-
+    language_hints = proto.RepeatedField(proto.STRING, number=2,)
     crop_hints_params = proto.Field(proto.MESSAGE, number=4, message="CropHintsParams",)
-
     web_detection_params = proto.Field(
         proto.MESSAGE, number=6, message="WebDetectionParams",
     )
-
     text_detection_params = proto.Field(
         proto.MESSAGE, number=12, message="TextDetectionParams",
     )
@@ -634,15 +577,12 @@ class AnnotateImageRequest(proto.Message):
     """
 
     image = proto.Field(proto.MESSAGE, number=1, message="Image",)
-
     features = proto.RepeatedField(proto.MESSAGE, number=2, message="Feature",)
-
     image_context = proto.Field(proto.MESSAGE, number=3, message="ImageContext",)
 
 
 class AnnotateImageResponse(proto.Message):
     r"""Response to an image annotation request.
-
     Attributes:
         face_annotations (Sequence[google.cloud.vision_v1p1beta1.types.FaceAnnotation]):
             If present, face detection has completed
@@ -685,44 +625,34 @@ class AnnotateImageResponse(proto.Message):
     face_annotations = proto.RepeatedField(
         proto.MESSAGE, number=1, message="FaceAnnotation",
     )
-
     landmark_annotations = proto.RepeatedField(
         proto.MESSAGE, number=2, message="EntityAnnotation",
     )
-
     logo_annotations = proto.RepeatedField(
         proto.MESSAGE, number=3, message="EntityAnnotation",
     )
-
     label_annotations = proto.RepeatedField(
         proto.MESSAGE, number=4, message="EntityAnnotation",
     )
-
     text_annotations = proto.RepeatedField(
         proto.MESSAGE, number=5, message="EntityAnnotation",
     )
-
     full_text_annotation = proto.Field(
         proto.MESSAGE, number=12, message=text_annotation.TextAnnotation,
     )
-
     safe_search_annotation = proto.Field(
         proto.MESSAGE, number=6, message="SafeSearchAnnotation",
     )
-
     image_properties_annotation = proto.Field(
         proto.MESSAGE, number=8, message="ImageProperties",
     )
-
     crop_hints_annotation = proto.Field(
         proto.MESSAGE, number=11, message="CropHintsAnnotation",
     )
-
     web_detection = proto.Field(
         proto.MESSAGE, number=13, message=gcv_web_detection.WebDetection,
     )
-
-    error = proto.Field(proto.MESSAGE, number=9, message=status.Status,)
+    error = proto.Field(proto.MESSAGE, number=9, message=status_pb2.Status,)
 
 
 class BatchAnnotateImagesRequest(proto.Message):
@@ -742,7 +672,6 @@ class BatchAnnotateImagesRequest(proto.Message):
 
 class BatchAnnotateImagesResponse(proto.Message):
     r"""Response to a batch image annotation request.
-
     Attributes:
         responses (Sequence[google.cloud.vision_v1p1beta1.types.AnnotateImageResponse]):
             Individual responses to image annotation
