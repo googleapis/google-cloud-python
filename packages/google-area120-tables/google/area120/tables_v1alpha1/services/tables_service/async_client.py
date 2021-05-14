@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -22,16 +20,15 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.area120.tables_v1alpha1.services.tables_service import pagers
 from google.area120.tables_v1alpha1.types import tables
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-
+from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import TablesServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import TablesServiceGrpcAsyncIOTransport
 from .client import TablesServiceClient
@@ -65,31 +62,26 @@ class TablesServiceAsyncClient:
     parse_table_path = staticmethod(TablesServiceClient.parse_table_path)
     workspace_path = staticmethod(TablesServiceClient.workspace_path)
     parse_workspace_path = staticmethod(TablesServiceClient.parse_workspace_path)
-
     common_billing_account_path = staticmethod(
         TablesServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         TablesServiceClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(TablesServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(
         TablesServiceClient.parse_common_folder_path
     )
-
     common_organization_path = staticmethod(
         TablesServiceClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
         TablesServiceClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(TablesServiceClient.common_project_path)
     parse_common_project_path = staticmethod(
         TablesServiceClient.parse_common_project_path
     )
-
     common_location_path = staticmethod(TablesServiceClient.common_location_path)
     parse_common_location_path = staticmethod(
         TablesServiceClient.parse_common_location_path
@@ -97,7 +89,8 @@ class TablesServiceAsyncClient:
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -112,7 +105,7 @@ class TablesServiceAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -129,7 +122,7 @@ class TablesServiceAsyncClient:
 
     @property
     def transport(self) -> TablesServiceTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             TablesServiceTransport: The transport used by the client instance.
@@ -143,12 +136,12 @@ class TablesServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, TablesServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the tables service client.
+        """Instantiates the tables service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -180,7 +173,6 @@ class TablesServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = TablesServiceClient(
             credentials=credentials,
             transport=transport,
@@ -210,7 +202,6 @@ class TablesServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -235,7 +226,6 @@ class TablesServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -273,7 +263,6 @@ class TablesServiceAsyncClient:
             request (:class:`google.area120.tables_v1alpha1.types.ListTablesRequest`):
                 The request object. Request message for
                 TablesService.ListTables.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -290,7 +279,6 @@ class TablesServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = tables.ListTablesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -337,7 +325,6 @@ class TablesServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -362,7 +349,6 @@ class TablesServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -400,7 +386,6 @@ class TablesServiceAsyncClient:
             request (:class:`google.area120.tables_v1alpha1.types.ListWorkspacesRequest`):
                 The request object. Request message for
                 TablesService.ListWorkspaces.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -417,7 +402,6 @@ class TablesServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = tables.ListWorkspacesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -464,7 +448,6 @@ class TablesServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -489,7 +472,6 @@ class TablesServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -536,7 +518,6 @@ class TablesServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -566,7 +547,6 @@ class TablesServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -625,7 +605,6 @@ class TablesServiceAsyncClient:
                 This corresponds to the ``row`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -650,7 +629,6 @@ class TablesServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if row is not None:
@@ -690,7 +668,6 @@ class TablesServiceAsyncClient:
             request (:class:`google.area120.tables_v1alpha1.types.BatchCreateRowsRequest`):
                 The request object. Request message for
                 TablesService.BatchCreateRows.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -704,7 +681,6 @@ class TablesServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = tables.BatchCreateRowsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -732,7 +708,7 @@ class TablesServiceAsyncClient:
         request: tables.UpdateRowRequest = None,
         *,
         row: tables.Row = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -753,7 +729,6 @@ class TablesServiceAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -778,7 +753,6 @@ class TablesServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if row is not None:
             request.row = row
         if update_mask is not None:
@@ -818,7 +792,6 @@ class TablesServiceAsyncClient:
             request (:class:`google.area120.tables_v1alpha1.types.BatchUpdateRowsRequest`):
                 The request object. Request message for
                 TablesService.BatchUpdateRows.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -832,7 +805,6 @@ class TablesServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = tables.BatchUpdateRowsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -878,7 +850,6 @@ class TablesServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -899,7 +870,6 @@ class TablesServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -936,7 +906,6 @@ class TablesServiceAsyncClient:
             request (:class:`google.area120.tables_v1alpha1.types.BatchDeleteRowsRequest`):
                 The request object. Request message for
                 TablesService.BatchDeleteRows
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -944,7 +913,6 @@ class TablesServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-
         request = tables.BatchDeleteRowsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,

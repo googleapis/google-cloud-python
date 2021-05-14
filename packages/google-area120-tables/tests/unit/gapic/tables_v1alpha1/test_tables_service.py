@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import os
 import mock
+import packaging.version
 
 import grpc
 from grpc.experimental import aio
@@ -24,9 +23,9 @@ import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 
-from google import auth
+
 from google.api_core import client_options
-from google.api_core import exceptions
+from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
@@ -36,12 +35,42 @@ from google.area120.tables_v1alpha1.services.tables_service import (
 from google.area120.tables_v1alpha1.services.tables_service import TablesServiceClient
 from google.area120.tables_v1alpha1.services.tables_service import pagers
 from google.area120.tables_v1alpha1.services.tables_service import transports
+from google.area120.tables_v1alpha1.services.tables_service.transports.base import (
+    _API_CORE_VERSION,
+)
+from google.area120.tables_v1alpha1.services.tables_service.transports.base import (
+    _GOOGLE_AUTH_VERSION,
+)
 from google.area120.tables_v1alpha1.types import tables
-from google.auth import credentials
+from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import struct_pb2 as struct  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+import google.auth
+
+
+# TODO(busunkim): Once google-api-core >= 1.26.0 is required:
+# - Delete all the api-core and auth "less than" test cases
+# - Delete these pytest markers (Make the "greater than or equal to" tests the default).
+requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
+    packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
+    reason="This test requires google-auth < 1.25.0",
+)
+requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
+    packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
+    reason="This test requires google-auth >= 1.25.0",
+)
+
+requires_api_core_lt_1_26_0 = pytest.mark.skipif(
+    packaging.version.parse(_API_CORE_VERSION) >= packaging.version.parse("1.26.0"),
+    reason="This test requires google-api-core < 1.26.0",
+)
+
+requires_api_core_gte_1_26_0 = pytest.mark.skipif(
+    packaging.version.parse(_API_CORE_VERSION) < packaging.version.parse("1.26.0"),
+    reason="This test requires google-api-core >= 1.26.0",
+)
 
 
 def client_cert_source_callback():
@@ -92,7 +121,7 @@ def test__get_default_mtls_endpoint():
     "client_class", [TablesServiceClient, TablesServiceAsyncClient,]
 )
 def test_tables_service_client_from_service_account_info(client_class):
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -109,7 +138,7 @@ def test_tables_service_client_from_service_account_info(client_class):
     "client_class", [TablesServiceClient, TablesServiceAsyncClient,]
 )
 def test_tables_service_client_from_service_account_file(client_class):
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -162,7 +191,7 @@ def test_tables_service_client_client_options(
 ):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(TablesServiceClient, "get_transport_class") as gtc:
-        transport = transport_class(credentials=credentials.AnonymousCredentials())
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -448,7 +477,7 @@ def test_tables_service_client_client_options_from_dict():
 
 def test_get_table(transport: str = "grpc", request_type=tables.GetTableRequest):
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -461,21 +490,16 @@ def test_get_table(transport: str = "grpc", request_type=tables.GetTableRequest)
         call.return_value = tables.Table(
             name="name_value", display_name="display_name_value",
         )
-
         response = client.get_table(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.GetTableRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, tables.Table)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
 
 
@@ -487,7 +511,7 @@ def test_get_table_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -495,7 +519,6 @@ def test_get_table_empty_call():
         client.get_table()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.GetTableRequest()
 
 
@@ -504,7 +527,7 @@ async def test_get_table_async(
     transport: str = "grpc_asyncio", request_type=tables.GetTableRequest
 ):
     client = TablesServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -517,20 +540,16 @@ async def test_get_table_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tables.Table(name="name_value", display_name="display_name_value",)
         )
-
         response = await client.get_table(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.GetTableRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Table)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
 
 
@@ -540,17 +559,17 @@ async def test_get_table_async_from_dict():
 
 
 def test_get_table_field_headers():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.GetTableRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_table), "__call__") as call:
         call.return_value = tables.Table()
-
         client.get_table(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -565,17 +584,19 @@ def test_get_table_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_table_field_headers_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.GetTableRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_table), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(tables.Table())
-
         await client.get_table(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -589,13 +610,12 @@ async def test_get_table_field_headers_async():
 
 
 def test_get_table_flattened():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_table), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tables.Table()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_table(name="name_value",)
@@ -604,12 +624,11 @@ def test_get_table_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_get_table_flattened_error():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -621,7 +640,9 @@ def test_get_table_flattened_error():
 
 @pytest.mark.asyncio
 async def test_get_table_flattened_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_table), "__call__") as call:
@@ -637,13 +658,14 @@ async def test_get_table_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_get_table_flattened_error_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -655,7 +677,7 @@ async def test_get_table_flattened_error_async():
 
 def test_list_tables(transport: str = "grpc", request_type=tables.ListTablesRequest):
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -668,19 +690,15 @@ def test_list_tables(transport: str = "grpc", request_type=tables.ListTablesRequ
         call.return_value = tables.ListTablesResponse(
             next_page_token="next_page_token_value",
         )
-
         response = client.list_tables(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.ListTablesRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.ListTablesPager)
-
     assert response.next_page_token == "next_page_token_value"
 
 
@@ -692,7 +710,7 @@ def test_list_tables_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -700,7 +718,6 @@ def test_list_tables_empty_call():
         client.list_tables()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.ListTablesRequest()
 
 
@@ -709,7 +726,7 @@ async def test_list_tables_async(
     transport: str = "grpc_asyncio", request_type=tables.ListTablesRequest
 ):
     client = TablesServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -722,18 +739,15 @@ async def test_list_tables_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tables.ListTablesResponse(next_page_token="next_page_token_value",)
         )
-
         response = await client.list_tables(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.ListTablesRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTablesAsyncPager)
-
     assert response.next_page_token == "next_page_token_value"
 
 
@@ -743,7 +757,7 @@ async def test_list_tables_async_from_dict():
 
 
 def test_list_tables_pager():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials,)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
@@ -770,7 +784,7 @@ def test_list_tables_pager():
 
 
 def test_list_tables_pages():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials,)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tables), "__call__") as call:
@@ -792,7 +806,7 @@ def test_list_tables_pages():
 
 @pytest.mark.asyncio
 async def test_list_tables_async_pager():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = TablesServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -821,7 +835,7 @@ async def test_list_tables_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_tables_async_pages():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = TablesServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -849,7 +863,7 @@ def test_get_workspace(
     transport: str = "grpc", request_type=tables.GetWorkspaceRequest
 ):
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -862,21 +876,16 @@ def test_get_workspace(
         call.return_value = tables.Workspace(
             name="name_value", display_name="display_name_value",
         )
-
         response = client.get_workspace(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.GetWorkspaceRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, tables.Workspace)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
 
 
@@ -888,7 +897,7 @@ def test_get_workspace_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -896,7 +905,6 @@ def test_get_workspace_empty_call():
         client.get_workspace()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.GetWorkspaceRequest()
 
 
@@ -905,7 +913,7 @@ async def test_get_workspace_async(
     transport: str = "grpc_asyncio", request_type=tables.GetWorkspaceRequest
 ):
     client = TablesServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -918,20 +926,16 @@ async def test_get_workspace_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tables.Workspace(name="name_value", display_name="display_name_value",)
         )
-
         response = await client.get_workspace(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.GetWorkspaceRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Workspace)
-
     assert response.name == "name_value"
-
     assert response.display_name == "display_name_value"
 
 
@@ -941,17 +945,17 @@ async def test_get_workspace_async_from_dict():
 
 
 def test_get_workspace_field_headers():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.GetWorkspaceRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workspace), "__call__") as call:
         call.return_value = tables.Workspace()
-
         client.get_workspace(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -966,17 +970,19 @@ def test_get_workspace_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_workspace_field_headers_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.GetWorkspaceRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workspace), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(tables.Workspace())
-
         await client.get_workspace(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -990,13 +996,12 @@ async def test_get_workspace_field_headers_async():
 
 
 def test_get_workspace_flattened():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workspace), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tables.Workspace()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_workspace(name="name_value",)
@@ -1005,12 +1010,11 @@ def test_get_workspace_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_get_workspace_flattened_error():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1022,7 +1026,9 @@ def test_get_workspace_flattened_error():
 
 @pytest.mark.asyncio
 async def test_get_workspace_flattened_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workspace), "__call__") as call:
@@ -1038,13 +1044,14 @@ async def test_get_workspace_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_get_workspace_flattened_error_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1058,7 +1065,7 @@ def test_list_workspaces(
     transport: str = "grpc", request_type=tables.ListWorkspacesRequest
 ):
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1071,19 +1078,15 @@ def test_list_workspaces(
         call.return_value = tables.ListWorkspacesResponse(
             next_page_token="next_page_token_value",
         )
-
         response = client.list_workspaces(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.ListWorkspacesRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.ListWorkspacesPager)
-
     assert response.next_page_token == "next_page_token_value"
 
 
@@ -1095,7 +1098,7 @@ def test_list_workspaces_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1103,7 +1106,6 @@ def test_list_workspaces_empty_call():
         client.list_workspaces()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.ListWorkspacesRequest()
 
 
@@ -1112,7 +1114,7 @@ async def test_list_workspaces_async(
     transport: str = "grpc_asyncio", request_type=tables.ListWorkspacesRequest
 ):
     client = TablesServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1125,18 +1127,15 @@ async def test_list_workspaces_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tables.ListWorkspacesResponse(next_page_token="next_page_token_value",)
         )
-
         response = await client.list_workspaces(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.ListWorkspacesRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListWorkspacesAsyncPager)
-
     assert response.next_page_token == "next_page_token_value"
 
 
@@ -1146,7 +1145,7 @@ async def test_list_workspaces_async_from_dict():
 
 
 def test_list_workspaces_pager():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials,)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workspaces), "__call__") as call:
@@ -1181,7 +1180,7 @@ def test_list_workspaces_pager():
 
 
 def test_list_workspaces_pages():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials,)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workspaces), "__call__") as call:
@@ -1211,7 +1210,7 @@ def test_list_workspaces_pages():
 
 @pytest.mark.asyncio
 async def test_list_workspaces_async_pager():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = TablesServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1248,7 +1247,7 @@ async def test_list_workspaces_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_workspaces_async_pages():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = TablesServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1282,7 +1281,7 @@ async def test_list_workspaces_async_pages():
 
 def test_get_row(transport: str = "grpc", request_type=tables.GetRowRequest):
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1293,19 +1292,15 @@ def test_get_row(transport: str = "grpc", request_type=tables.GetRowRequest):
     with mock.patch.object(type(client.transport.get_row), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tables.Row(name="name_value",)
-
         response = client.get_row(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.GetRowRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, tables.Row)
-
     assert response.name == "name_value"
 
 
@@ -1317,7 +1312,7 @@ def test_get_row_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1325,7 +1320,6 @@ def test_get_row_empty_call():
         client.get_row()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.GetRowRequest()
 
 
@@ -1334,7 +1328,7 @@ async def test_get_row_async(
     transport: str = "grpc_asyncio", request_type=tables.GetRowRequest
 ):
     client = TablesServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1347,18 +1341,15 @@ async def test_get_row_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tables.Row(name="name_value",)
         )
-
         response = await client.get_row(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.GetRowRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Row)
-
     assert response.name == "name_value"
 
 
@@ -1368,17 +1359,17 @@ async def test_get_row_async_from_dict():
 
 
 def test_get_row_field_headers():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.GetRowRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_row), "__call__") as call:
         call.return_value = tables.Row()
-
         client.get_row(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1393,17 +1384,19 @@ def test_get_row_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_row_field_headers_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.GetRowRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_row), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(tables.Row())
-
         await client.get_row(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1417,13 +1410,12 @@ async def test_get_row_field_headers_async():
 
 
 def test_get_row_flattened():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_row), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tables.Row()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_row(name="name_value",)
@@ -1432,12 +1424,11 @@ def test_get_row_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_get_row_flattened_error():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1449,7 +1440,9 @@ def test_get_row_flattened_error():
 
 @pytest.mark.asyncio
 async def test_get_row_flattened_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_row), "__call__") as call:
@@ -1465,13 +1458,14 @@ async def test_get_row_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_get_row_flattened_error_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1483,7 +1477,7 @@ async def test_get_row_flattened_error_async():
 
 def test_list_rows(transport: str = "grpc", request_type=tables.ListRowsRequest):
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1496,19 +1490,15 @@ def test_list_rows(transport: str = "grpc", request_type=tables.ListRowsRequest)
         call.return_value = tables.ListRowsResponse(
             next_page_token="next_page_token_value",
         )
-
         response = client.list_rows(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.ListRowsRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, pagers.ListRowsPager)
-
     assert response.next_page_token == "next_page_token_value"
 
 
@@ -1520,7 +1510,7 @@ def test_list_rows_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1528,7 +1518,6 @@ def test_list_rows_empty_call():
         client.list_rows()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.ListRowsRequest()
 
 
@@ -1537,7 +1526,7 @@ async def test_list_rows_async(
     transport: str = "grpc_asyncio", request_type=tables.ListRowsRequest
 ):
     client = TablesServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1550,18 +1539,15 @@ async def test_list_rows_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tables.ListRowsResponse(next_page_token="next_page_token_value",)
         )
-
         response = await client.list_rows(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.ListRowsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRowsAsyncPager)
-
     assert response.next_page_token == "next_page_token_value"
 
 
@@ -1571,17 +1557,17 @@ async def test_list_rows_async_from_dict():
 
 
 def test_list_rows_field_headers():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.ListRowsRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rows), "__call__") as call:
         call.return_value = tables.ListRowsResponse()
-
         client.list_rows(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1596,11 +1582,14 @@ def test_list_rows_field_headers():
 
 @pytest.mark.asyncio
 async def test_list_rows_field_headers_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.ListRowsRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1608,7 +1597,6 @@ async def test_list_rows_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tables.ListRowsResponse()
         )
-
         await client.list_rows(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1622,13 +1610,12 @@ async def test_list_rows_field_headers_async():
 
 
 def test_list_rows_flattened():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rows), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tables.ListRowsResponse()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_rows(parent="parent_value",)
@@ -1637,12 +1624,11 @@ def test_list_rows_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
 
 
 def test_list_rows_flattened_error():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1654,7 +1640,9 @@ def test_list_rows_flattened_error():
 
 @pytest.mark.asyncio
 async def test_list_rows_flattened_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rows), "__call__") as call:
@@ -1672,13 +1660,14 @@ async def test_list_rows_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
 
 
 @pytest.mark.asyncio
 async def test_list_rows_flattened_error_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1689,7 +1678,7 @@ async def test_list_rows_flattened_error_async():
 
 
 def test_list_rows_pager():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials,)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rows), "__call__") as call:
@@ -1718,7 +1707,7 @@ def test_list_rows_pager():
 
 
 def test_list_rows_pages():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials,)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_rows), "__call__") as call:
@@ -1739,7 +1728,7 @@ def test_list_rows_pages():
 
 @pytest.mark.asyncio
 async def test_list_rows_async_pager():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = TablesServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1767,7 +1756,7 @@ async def test_list_rows_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_rows_async_pages():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials,)
+    client = TablesServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1792,7 +1781,7 @@ async def test_list_rows_async_pages():
 
 def test_create_row(transport: str = "grpc", request_type=tables.CreateRowRequest):
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1803,19 +1792,15 @@ def test_create_row(transport: str = "grpc", request_type=tables.CreateRowReques
     with mock.patch.object(type(client.transport.create_row), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tables.Row(name="name_value",)
-
         response = client.create_row(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.CreateRowRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, tables.Row)
-
     assert response.name == "name_value"
 
 
@@ -1827,7 +1812,7 @@ def test_create_row_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1835,7 +1820,6 @@ def test_create_row_empty_call():
         client.create_row()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.CreateRowRequest()
 
 
@@ -1844,7 +1828,7 @@ async def test_create_row_async(
     transport: str = "grpc_asyncio", request_type=tables.CreateRowRequest
 ):
     client = TablesServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1857,18 +1841,15 @@ async def test_create_row_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tables.Row(name="name_value",)
         )
-
         response = await client.create_row(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.CreateRowRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Row)
-
     assert response.name == "name_value"
 
 
@@ -1878,17 +1859,17 @@ async def test_create_row_async_from_dict():
 
 
 def test_create_row_field_headers():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.CreateRowRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_row), "__call__") as call:
         call.return_value = tables.Row()
-
         client.create_row(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1903,17 +1884,19 @@ def test_create_row_field_headers():
 
 @pytest.mark.asyncio
 async def test_create_row_field_headers_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.CreateRowRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_row), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(tables.Row())
-
         await client.create_row(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1927,13 +1910,12 @@ async def test_create_row_field_headers_async():
 
 
 def test_create_row_flattened():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_row), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tables.Row()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_row(
@@ -1944,14 +1926,12 @@ def test_create_row_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
-
         assert args[0].row == tables.Row(name="name_value")
 
 
 def test_create_row_flattened_error():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1965,7 +1945,9 @@ def test_create_row_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_row_flattened_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_row), "__call__") as call:
@@ -1983,15 +1965,15 @@ async def test_create_row_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].parent == "parent_value"
-
         assert args[0].row == tables.Row(name="name_value")
 
 
 @pytest.mark.asyncio
 async def test_create_row_flattened_error_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2007,7 +1989,7 @@ def test_batch_create_rows(
     transport: str = "grpc", request_type=tables.BatchCreateRowsRequest
 ):
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2020,17 +2002,14 @@ def test_batch_create_rows(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tables.BatchCreateRowsResponse()
-
         response = client.batch_create_rows(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.BatchCreateRowsRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, tables.BatchCreateRowsResponse)
 
 
@@ -2042,7 +2021,7 @@ def test_batch_create_rows_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2052,7 +2031,6 @@ def test_batch_create_rows_empty_call():
         client.batch_create_rows()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.BatchCreateRowsRequest()
 
 
@@ -2061,7 +2039,7 @@ async def test_batch_create_rows_async(
     transport: str = "grpc_asyncio", request_type=tables.BatchCreateRowsRequest
 ):
     client = TablesServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2076,13 +2054,11 @@ async def test_batch_create_rows_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tables.BatchCreateRowsResponse()
         )
-
         response = await client.batch_create_rows(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.BatchCreateRowsRequest()
 
     # Establish that the response is the type that we expect.
@@ -2095,11 +2071,12 @@ async def test_batch_create_rows_async_from_dict():
 
 
 def test_batch_create_rows_field_headers():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.BatchCreateRowsRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2107,7 +2084,6 @@ def test_batch_create_rows_field_headers():
         type(client.transport.batch_create_rows), "__call__"
     ) as call:
         call.return_value = tables.BatchCreateRowsResponse()
-
         client.batch_create_rows(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2122,11 +2098,14 @@ def test_batch_create_rows_field_headers():
 
 @pytest.mark.asyncio
 async def test_batch_create_rows_field_headers_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.BatchCreateRowsRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2136,7 +2115,6 @@ async def test_batch_create_rows_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tables.BatchCreateRowsResponse()
         )
-
         await client.batch_create_rows(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2151,7 +2129,7 @@ async def test_batch_create_rows_field_headers_async():
 
 def test_update_row(transport: str = "grpc", request_type=tables.UpdateRowRequest):
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2162,19 +2140,15 @@ def test_update_row(transport: str = "grpc", request_type=tables.UpdateRowReques
     with mock.patch.object(type(client.transport.update_row), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tables.Row(name="name_value",)
-
         response = client.update_row(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.UpdateRowRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, tables.Row)
-
     assert response.name == "name_value"
 
 
@@ -2186,7 +2160,7 @@ def test_update_row_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2194,7 +2168,6 @@ def test_update_row_empty_call():
         client.update_row()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.UpdateRowRequest()
 
 
@@ -2203,7 +2176,7 @@ async def test_update_row_async(
     transport: str = "grpc_asyncio", request_type=tables.UpdateRowRequest
 ):
     client = TablesServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2216,18 +2189,15 @@ async def test_update_row_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tables.Row(name="name_value",)
         )
-
         response = await client.update_row(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.UpdateRowRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tables.Row)
-
     assert response.name == "name_value"
 
 
@@ -2237,17 +2207,17 @@ async def test_update_row_async_from_dict():
 
 
 def test_update_row_field_headers():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.UpdateRowRequest()
+
     request.row.name = "row.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_row), "__call__") as call:
         call.return_value = tables.Row()
-
         client.update_row(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2262,17 +2232,19 @@ def test_update_row_field_headers():
 
 @pytest.mark.asyncio
 async def test_update_row_field_headers_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.UpdateRowRequest()
+
     request.row.name = "row.name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_row), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(tables.Row())
-
         await client.update_row(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2286,32 +2258,29 @@ async def test_update_row_field_headers_async():
 
 
 def test_update_row_flattened():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_row), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = tables.Row()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_row(
             row=tables.Row(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].row == tables.Row(name="name_value")
-
-        assert args[0].update_mask == field_mask.FieldMask(paths=["paths_value"])
+        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
 
 
 def test_update_row_flattened_error():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2319,13 +2288,15 @@ def test_update_row_flattened_error():
         client.update_row(
             tables.UpdateRowRequest(),
             row=tables.Row(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 @pytest.mark.asyncio
 async def test_update_row_flattened_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_row), "__call__") as call:
@@ -2337,22 +2308,22 @@ async def test_update_row_flattened_async():
         # using the keyword arguments to the method.
         response = await client.update_row(
             row=tables.Row(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].row == tables.Row(name="name_value")
-
-        assert args[0].update_mask == field_mask.FieldMask(paths=["paths_value"])
+        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
 
 
 @pytest.mark.asyncio
 async def test_update_row_flattened_error_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2360,7 +2331,7 @@ async def test_update_row_flattened_error_async():
         await client.update_row(
             tables.UpdateRowRequest(),
             row=tables.Row(name="name_value"),
-            update_mask=field_mask.FieldMask(paths=["paths_value"]),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
@@ -2368,7 +2339,7 @@ def test_batch_update_rows(
     transport: str = "grpc", request_type=tables.BatchUpdateRowsRequest
 ):
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2381,17 +2352,14 @@ def test_batch_update_rows(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = tables.BatchUpdateRowsResponse()
-
         response = client.batch_update_rows(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.BatchUpdateRowsRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, tables.BatchUpdateRowsResponse)
 
 
@@ -2403,7 +2371,7 @@ def test_batch_update_rows_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2413,7 +2381,6 @@ def test_batch_update_rows_empty_call():
         client.batch_update_rows()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.BatchUpdateRowsRequest()
 
 
@@ -2422,7 +2389,7 @@ async def test_batch_update_rows_async(
     transport: str = "grpc_asyncio", request_type=tables.BatchUpdateRowsRequest
 ):
     client = TablesServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2437,13 +2404,11 @@ async def test_batch_update_rows_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tables.BatchUpdateRowsResponse()
         )
-
         response = await client.batch_update_rows(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.BatchUpdateRowsRequest()
 
     # Establish that the response is the type that we expect.
@@ -2456,11 +2421,12 @@ async def test_batch_update_rows_async_from_dict():
 
 
 def test_batch_update_rows_field_headers():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.BatchUpdateRowsRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2468,7 +2434,6 @@ def test_batch_update_rows_field_headers():
         type(client.transport.batch_update_rows), "__call__"
     ) as call:
         call.return_value = tables.BatchUpdateRowsResponse()
-
         client.batch_update_rows(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2483,11 +2448,14 @@ def test_batch_update_rows_field_headers():
 
 @pytest.mark.asyncio
 async def test_batch_update_rows_field_headers_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.BatchUpdateRowsRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2497,7 +2465,6 @@ async def test_batch_update_rows_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             tables.BatchUpdateRowsResponse()
         )
-
         await client.batch_update_rows(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2512,7 +2479,7 @@ async def test_batch_update_rows_field_headers_async():
 
 def test_delete_row(transport: str = "grpc", request_type=tables.DeleteRowRequest):
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2523,13 +2490,11 @@ def test_delete_row(transport: str = "grpc", request_type=tables.DeleteRowReques
     with mock.patch.object(type(client.transport.delete_row), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-
         response = client.delete_row(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.DeleteRowRequest()
 
     # Establish that the response is the type that we expect.
@@ -2544,7 +2509,7 @@ def test_delete_row_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2552,7 +2517,6 @@ def test_delete_row_empty_call():
         client.delete_row()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.DeleteRowRequest()
 
 
@@ -2561,7 +2525,7 @@ async def test_delete_row_async(
     transport: str = "grpc_asyncio", request_type=tables.DeleteRowRequest
 ):
     client = TablesServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2572,13 +2536,11 @@ async def test_delete_row_async(
     with mock.patch.object(type(client.transport.delete_row), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-
         response = await client.delete_row(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.DeleteRowRequest()
 
     # Establish that the response is the type that we expect.
@@ -2591,17 +2553,17 @@ async def test_delete_row_async_from_dict():
 
 
 def test_delete_row_field_headers():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.DeleteRowRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_row), "__call__") as call:
         call.return_value = None
-
         client.delete_row(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2616,17 +2578,19 @@ def test_delete_row_field_headers():
 
 @pytest.mark.asyncio
 async def test_delete_row_field_headers_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.DeleteRowRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_row), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-
         await client.delete_row(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2640,13 +2604,12 @@ async def test_delete_row_field_headers_async():
 
 
 def test_delete_row_flattened():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_row), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.delete_row(name="name_value",)
@@ -2655,12 +2618,11 @@ def test_delete_row_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_delete_row_flattened_error():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2672,7 +2634,9 @@ def test_delete_row_flattened_error():
 
 @pytest.mark.asyncio
 async def test_delete_row_flattened_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_row), "__call__") as call:
@@ -2688,13 +2652,14 @@ async def test_delete_row_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_delete_row_flattened_error_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2708,7 +2673,7 @@ def test_batch_delete_rows(
     transport: str = "grpc", request_type=tables.BatchDeleteRowsRequest
 ):
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2721,13 +2686,11 @@ def test_batch_delete_rows(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
-
         response = client.batch_delete_rows(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.BatchDeleteRowsRequest()
 
     # Establish that the response is the type that we expect.
@@ -2742,7 +2705,7 @@ def test_batch_delete_rows_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2752,7 +2715,6 @@ def test_batch_delete_rows_empty_call():
         client.batch_delete_rows()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.BatchDeleteRowsRequest()
 
 
@@ -2761,7 +2723,7 @@ async def test_batch_delete_rows_async(
     transport: str = "grpc_asyncio", request_type=tables.BatchDeleteRowsRequest
 ):
     client = TablesServiceAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2774,13 +2736,11 @@ async def test_batch_delete_rows_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-
         response = await client.batch_delete_rows(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == tables.BatchDeleteRowsRequest()
 
     # Establish that the response is the type that we expect.
@@ -2793,11 +2753,12 @@ async def test_batch_delete_rows_async_from_dict():
 
 
 def test_batch_delete_rows_field_headers():
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.BatchDeleteRowsRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2805,7 +2766,6 @@ def test_batch_delete_rows_field_headers():
         type(client.transport.batch_delete_rows), "__call__"
     ) as call:
         call.return_value = None
-
         client.batch_delete_rows(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2820,11 +2780,14 @@ def test_batch_delete_rows_field_headers():
 
 @pytest.mark.asyncio
 async def test_batch_delete_rows_field_headers_async():
-    client = TablesServiceAsyncClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = tables.BatchDeleteRowsRequest()
+
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2832,7 +2795,6 @@ async def test_batch_delete_rows_field_headers_async():
         type(client.transport.batch_delete_rows), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-
         await client.batch_delete_rows(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2848,16 +2810,16 @@ async def test_batch_delete_rows_field_headers_async():
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.TablesServiceGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = TablesServiceClient(
-            credentials=credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.TablesServiceGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = TablesServiceClient(
@@ -2867,7 +2829,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.TablesServiceGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = TablesServiceClient(
@@ -2878,7 +2840,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.TablesServiceGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = TablesServiceClient(transport=transport)
     assert client.transport is transport
@@ -2887,13 +2849,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.TablesServiceGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.TablesServiceGrpcAsyncIOTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -2908,23 +2870,23 @@ def test_transport_get_channel():
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, "default") as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = TablesServiceClient(credentials=credentials.AnonymousCredentials(),)
+    client = TablesServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
     assert isinstance(client.transport, transports.TablesServiceGrpcTransport,)
 
 
 def test_tables_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
-    with pytest.raises(exceptions.DuplicateCredentialArgs):
+    with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.TablesServiceTransport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -2936,7 +2898,7 @@ def test_tables_service_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.TablesServiceTransport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -2960,15 +2922,44 @@ def test_tables_service_base_transport():
             getattr(transport, method)(request=object())
 
 
+@requires_google_auth_gte_1_25_0
 def test_tables_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
-        auth, "load_credentials_from_file"
+        google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
         "google.area120.tables_v1alpha1.services.tables_service.transports.TablesServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (credentials.AnonymousCredentials(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport = transports.TablesServiceTransport(
+            credentials_file="credentials.json", quota_project_id="octopus",
+        )
+        load_creds.assert_called_once_with(
+            "credentials.json",
+            scopes=None,
+            default_scopes=(
+                "https://www.googleapis.com/auth/drive",
+                "https://www.googleapis.com/auth/drive.file",
+                "https://www.googleapis.com/auth/drive.readonly",
+                "https://www.googleapis.com/auth/spreadsheets",
+                "https://www.googleapis.com/auth/spreadsheets.readonly",
+                "https://www.googleapis.com/auth/tables",
+            ),
+            quota_project_id="octopus",
+        )
+
+
+@requires_google_auth_lt_1_25_0
+def test_tables_service_base_transport_with_credentials_file_old_google_auth():
+    # Instantiate the base transport with a credentials file
+    with mock.patch.object(
+        google.auth, "load_credentials_from_file", autospec=True
+    ) as load_creds, mock.patch(
+        "google.area120.tables_v1alpha1.services.tables_service.transports.TablesServiceTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.TablesServiceTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
         )
@@ -2988,19 +2979,40 @@ def test_tables_service_base_transport_with_credentials_file():
 
 def test_tables_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(auth, "default") as adc, mock.patch(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
         "google.area120.tables_v1alpha1.services.tables_service.transports.TablesServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.TablesServiceTransport()
         adc.assert_called_once()
 
 
+@requires_google_auth_gte_1_25_0
 def test_tables_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        TablesServiceClient()
+        adc.assert_called_once_with(
+            scopes=None,
+            default_scopes=(
+                "https://www.googleapis.com/auth/drive",
+                "https://www.googleapis.com/auth/drive.file",
+                "https://www.googleapis.com/auth/drive.readonly",
+                "https://www.googleapis.com/auth/spreadsheets",
+                "https://www.googleapis.com/auth/spreadsheets.readonly",
+                "https://www.googleapis.com/auth/tables",
+            ),
+            quota_project_id=None,
+        )
+
+
+@requires_google_auth_lt_1_25_0
+def test_tables_service_auth_adc_old_google_auth():
+    # If no credentials are provided, we should use ADC credentials.
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         TablesServiceClient()
         adc.assert_called_once_with(
             scopes=(
@@ -3015,16 +3027,23 @@ def test_tables_service_auth_adc():
         )
 
 
-def test_tables_service_transport_auth_adc():
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.TablesServiceGrpcTransport,
+        transports.TablesServiceGrpcAsyncIOTransport,
+    ],
+)
+@requires_google_auth_gte_1_25_0
+def test_tables_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
-        transports.TablesServiceGrpcTransport(
-            host="squid.clam.whelk", quota_project_id="octopus"
-        )
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
-            scopes=(
+            scopes=["1", "2"],
+            default_scopes=(
                 "https://www.googleapis.com/auth/drive",
                 "https://www.googleapis.com/auth/drive.file",
                 "https://www.googleapis.com/auth/drive.readonly",
@@ -3043,8 +3062,158 @@ def test_tables_service_transport_auth_adc():
         transports.TablesServiceGrpcAsyncIOTransport,
     ],
 )
+@requires_google_auth_lt_1_25_0
+def test_tables_service_transport_auth_adc_old_google_auth(transport_class):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class(quota_project_id="octopus")
+        adc.assert_called_once_with(
+            scopes=(
+                "https://www.googleapis.com/auth/drive",
+                "https://www.googleapis.com/auth/drive.file",
+                "https://www.googleapis.com/auth/drive.readonly",
+                "https://www.googleapis.com/auth/spreadsheets",
+                "https://www.googleapis.com/auth/spreadsheets.readonly",
+                "https://www.googleapis.com/auth/tables",
+            ),
+            quota_project_id="octopus",
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.TablesServiceGrpcTransport, grpc_helpers),
+        (transports.TablesServiceGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+@requires_api_core_gte_1_26_0
+def test_tables_service_transport_create_channel(transport_class, grpc_helpers):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+
+        create_channel.assert_called_with(
+            "area120tables.googleapis.com:443",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            default_scopes=(
+                "https://www.googleapis.com/auth/drive",
+                "https://www.googleapis.com/auth/drive.file",
+                "https://www.googleapis.com/auth/drive.readonly",
+                "https://www.googleapis.com/auth/spreadsheets",
+                "https://www.googleapis.com/auth/spreadsheets.readonly",
+                "https://www.googleapis.com/auth/tables",
+            ),
+            scopes=["1", "2"],
+            default_host="area120tables.googleapis.com",
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.TablesServiceGrpcTransport, grpc_helpers),
+        (transports.TablesServiceGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+@requires_api_core_lt_1_26_0
+def test_tables_service_transport_create_channel_old_api_core(
+    transport_class, grpc_helpers
+):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+        transport_class(quota_project_id="octopus")
+
+        create_channel.assert_called_with(
+            "area120tables.googleapis.com:443",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            scopes=(
+                "https://www.googleapis.com/auth/drive",
+                "https://www.googleapis.com/auth/drive.file",
+                "https://www.googleapis.com/auth/drive.readonly",
+                "https://www.googleapis.com/auth/spreadsheets",
+                "https://www.googleapis.com/auth/spreadsheets.readonly",
+                "https://www.googleapis.com/auth/tables",
+            ),
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.TablesServiceGrpcTransport, grpc_helpers),
+        (transports.TablesServiceGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+@requires_api_core_lt_1_26_0
+def test_tables_service_transport_create_channel_user_scopes(
+    transport_class, grpc_helpers
+):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+
+        create_channel.assert_called_with(
+            "area120tables.googleapis.com:443",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            scopes=["1", "2"],
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.TablesServiceGrpcTransport,
+        transports.TablesServiceGrpcAsyncIOTransport,
+    ],
+)
 def test_tables_service_grpc_transport_client_cert_source_for_mtls(transport_class):
-    cred = credentials.AnonymousCredentials()
+    cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -3090,7 +3259,7 @@ def test_tables_service_grpc_transport_client_cert_source_for_mtls(transport_cla
 
 def test_tables_service_host_no_port():
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="area120tables.googleapis.com"
         ),
@@ -3100,7 +3269,7 @@ def test_tables_service_host_no_port():
 
 def test_tables_service_host_with_port():
     client = TablesServiceClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="area120tables.googleapis.com:8000"
         ),
@@ -3154,9 +3323,9 @@ def test_tables_service_transport_channel_mtls_with_client_cert_source(transport
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = credentials.AnonymousCredentials()
+            cred = ga_credentials.AnonymousCredentials()
             with pytest.warns(DeprecationWarning):
-                with mock.patch.object(auth, "default") as adc:
+                with mock.patch.object(google.auth, "default") as adc:
                     adc.return_value = (cred, None)
                     transport = transport_class(
                         host="squid.clam.whelk",
@@ -3247,7 +3416,6 @@ def test_tables_service_transport_channel_mtls_with_adc(transport_class):
 def test_row_path():
     table = "squid"
     row = "clam"
-
     expected = "tables/{table}/rows/{row}".format(table=table, row=row,)
     actual = TablesServiceClient.row_path(table, row)
     assert expected == actual
@@ -3267,7 +3435,6 @@ def test_parse_row_path():
 
 def test_table_path():
     table = "oyster"
-
     expected = "tables/{table}".format(table=table,)
     actual = TablesServiceClient.table_path(table)
     assert expected == actual
@@ -3286,7 +3453,6 @@ def test_parse_table_path():
 
 def test_workspace_path():
     workspace = "cuttlefish"
-
     expected = "workspaces/{workspace}".format(workspace=workspace,)
     actual = TablesServiceClient.workspace_path(workspace)
     assert expected == actual
@@ -3305,7 +3471,6 @@ def test_parse_workspace_path():
 
 def test_common_billing_account_path():
     billing_account = "winkle"
-
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3326,7 +3491,6 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "scallop"
-
     expected = "folders/{folder}".format(folder=folder,)
     actual = TablesServiceClient.common_folder_path(folder)
     assert expected == actual
@@ -3345,7 +3509,6 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "squid"
-
     expected = "organizations/{organization}".format(organization=organization,)
     actual = TablesServiceClient.common_organization_path(organization)
     assert expected == actual
@@ -3364,7 +3527,6 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "whelk"
-
     expected = "projects/{project}".format(project=project,)
     actual = TablesServiceClient.common_project_path(project)
     assert expected == actual
@@ -3384,7 +3546,6 @@ def test_parse_common_project_path():
 def test_common_location_path():
     project = "oyster"
     location = "nudibranch"
-
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -3411,7 +3572,7 @@ def test_client_withDEFAULT_CLIENT_INFO():
         transports.TablesServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = TablesServiceClient(
-            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3420,6 +3581,6 @@ def test_client_withDEFAULT_CLIENT_INFO():
     ) as prep:
         transport_class = TablesServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
