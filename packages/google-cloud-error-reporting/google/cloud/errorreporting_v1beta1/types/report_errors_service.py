@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.errorreporting_v1beta1.types import common
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -34,7 +31,6 @@ __protobuf__ = proto.module(
 
 class ReportErrorEventRequest(proto.Message):
     r"""A request for reporting an individual error event.
-
     Attributes:
         project_name (str):
             Required. The resource name of the Google Cloud Platform
@@ -47,15 +43,14 @@ class ReportErrorEventRequest(proto.Message):
             Required. The error event to be reported.
     """
 
-    project_name = proto.Field(proto.STRING, number=1)
-
+    project_name = proto.Field(proto.STRING, number=1,)
     event = proto.Field(proto.MESSAGE, number=2, message="ReportedErrorEvent",)
 
 
 class ReportErrorEventResponse(proto.Message):
     r"""Response for reporting an individual error event.
     Data may be added to this message in the future.
-    """
+        """
 
 
 class ReportedErrorEvent(proto.Message):
@@ -102,14 +97,11 @@ class ReportedErrorEvent(proto.Message):
             which the error occurred.
     """
 
-    event_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
-
+    event_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
     service_context = proto.Field(
         proto.MESSAGE, number=2, message=common.ServiceContext,
     )
-
-    message = proto.Field(proto.STRING, number=3)
-
+    message = proto.Field(proto.STRING, number=3,)
     context = proto.Field(proto.MESSAGE, number=4, message=common.ErrorContext,)
 
 

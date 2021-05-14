@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -47,7 +44,6 @@ class ResolutionStatus(proto.Enum):
 
 class ErrorGroup(proto.Message):
     r"""Description of a group of similar error events.
-
     Attributes:
         name (str):
             The group resource name.
@@ -66,14 +62,11 @@ class ErrorGroup(proto.Message):
             interpreted as OPEN
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    group_id = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    group_id = proto.Field(proto.STRING, number=2,)
     tracking_issues = proto.RepeatedField(
         proto.MESSAGE, number=3, message="TrackingIssue",
     )
-
     resolution_status = proto.Field(proto.ENUM, number=5, enum="ResolutionStatus",)
 
 
@@ -88,7 +81,7 @@ class TrackingIssue(proto.Message):
             ``https://github.com/user/project/issues/4``
     """
 
-    url = proto.Field(proto.STRING, number=1)
+    url = proto.Field(proto.STRING, number=1,)
 
 
 class ErrorEvent(proto.Message):
@@ -111,12 +104,9 @@ class ErrorEvent(proto.Message):
             occurred.
     """
 
-    event_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
-
+    event_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
     service_context = proto.Field(proto.MESSAGE, number=2, message="ServiceContext",)
-
-    message = proto.Field(proto.STRING, number=3)
-
+    message = proto.Field(proto.STRING, number=3,)
     context = proto.Field(proto.MESSAGE, number=5, message="ErrorContext",)
 
 
@@ -150,11 +140,9 @@ class ServiceContext(proto.Message):
             and must not be set when reporting errors.
     """
 
-    service = proto.Field(proto.STRING, number=2)
-
-    version = proto.Field(proto.STRING, number=3)
-
-    resource_type = proto.Field(proto.STRING, number=4)
+    service = proto.Field(proto.STRING, number=2,)
+    version = proto.Field(proto.STRING, number=3,)
+    resource_type = proto.Field(proto.STRING, number=4,)
 
 
 class ErrorContext(proto.Message):
@@ -186,9 +174,7 @@ class ErrorContext(proto.Message):
     """
 
     http_request = proto.Field(proto.MESSAGE, number=1, message="HttpRequestContext",)
-
-    user = proto.Field(proto.STRING, number=2)
-
+    user = proto.Field(proto.STRING, number=2,)
     report_location = proto.Field(proto.MESSAGE, number=3, message="SourceLocation",)
 
 
@@ -221,17 +207,12 @@ class HttpRequestContext(proto.Message):
             report.
     """
 
-    method = proto.Field(proto.STRING, number=1)
-
-    url = proto.Field(proto.STRING, number=2)
-
-    user_agent = proto.Field(proto.STRING, number=3)
-
-    referrer = proto.Field(proto.STRING, number=4)
-
-    response_status_code = proto.Field(proto.INT32, number=5)
-
-    remote_ip = proto.Field(proto.STRING, number=6)
+    method = proto.Field(proto.STRING, number=1,)
+    url = proto.Field(proto.STRING, number=2,)
+    user_agent = proto.Field(proto.STRING, number=3,)
+    referrer = proto.Field(proto.STRING, number=4,)
+    response_status_code = proto.Field(proto.INT32, number=5,)
+    remote_ip = proto.Field(proto.STRING, number=6,)
 
 
 class SourceLocation(proto.Message):
@@ -255,11 +236,9 @@ class SourceLocation(proto.Message):
             example, ``my.package.MyClass.method`` in case of Java.
     """
 
-    file_path = proto.Field(proto.STRING, number=1)
-
-    line_number = proto.Field(proto.INT32, number=2)
-
-    function_name = proto.Field(proto.STRING, number=4)
+    file_path = proto.Field(proto.STRING, number=1,)
+    line_number = proto.Field(proto.INT32, number=2,)
+    function_name = proto.Field(proto.STRING, number=4,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

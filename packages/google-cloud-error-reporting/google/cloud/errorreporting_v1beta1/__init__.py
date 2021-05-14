@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,21 +15,24 @@
 #
 
 from .services.error_group_service import ErrorGroupServiceClient
+from .services.error_group_service import ErrorGroupServiceAsyncClient
 from .services.error_stats_service import ErrorStatsServiceClient
+from .services.error_stats_service import ErrorStatsServiceAsyncClient
 from .services.report_errors_service import ReportErrorsServiceClient
+from .services.report_errors_service import ReportErrorsServiceAsyncClient
+
 from .types.common import ErrorContext
 from .types.common import ErrorEvent
 from .types.common import ErrorGroup
 from .types.common import HttpRequestContext
-from .types.common import ResolutionStatus
 from .types.common import ServiceContext
 from .types.common import SourceLocation
 from .types.common import TrackingIssue
+from .types.common import ResolutionStatus
 from .types.error_group_service import GetGroupRequest
 from .types.error_group_service import UpdateGroupRequest
 from .types.error_stats_service import DeleteEventsRequest
 from .types.error_stats_service import DeleteEventsResponse
-from .types.error_stats_service import ErrorGroupOrder
 from .types.error_stats_service import ErrorGroupStats
 from .types.error_stats_service import ListEventsRequest
 from .types.error_stats_service import ListEventsResponse
@@ -39,13 +41,16 @@ from .types.error_stats_service import ListGroupStatsResponse
 from .types.error_stats_service import QueryTimeRange
 from .types.error_stats_service import ServiceContextFilter
 from .types.error_stats_service import TimedCount
+from .types.error_stats_service import ErrorGroupOrder
 from .types.error_stats_service import TimedCountAlignment
+from .types.report_errors_service import ReportedErrorEvent
 from .types.report_errors_service import ReportErrorEventRequest
 from .types.report_errors_service import ReportErrorEventResponse
-from .types.report_errors_service import ReportedErrorEvent
-
 
 __all__ = (
+    "ErrorGroupServiceAsyncClient",
+    "ErrorStatsServiceAsyncClient",
+    "ReportErrorsServiceAsyncClient",
     "DeleteEventsRequest",
     "DeleteEventsResponse",
     "ErrorContext",

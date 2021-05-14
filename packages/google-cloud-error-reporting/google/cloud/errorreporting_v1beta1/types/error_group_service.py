@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.errorreporting_v1beta1.types import common
 
@@ -29,7 +26,6 @@ __protobuf__ = proto.module(
 
 class GetGroupRequest(proto.Message):
     r"""A request to return an individual group.
-
     Attributes:
         group_name (str):
             Required. The group resource name. Written as
@@ -40,12 +36,11 @@ class GetGroupRequest(proto.Message):
             Example: ``projects/my-project-123/groups/my-group``
     """
 
-    group_name = proto.Field(proto.STRING, number=1)
+    group_name = proto.Field(proto.STRING, number=1,)
 
 
 class UpdateGroupRequest(proto.Message):
     r"""A request to replace the existing data for the given group.
-
     Attributes:
         group (google.cloud.errorreporting_v1beta1.types.ErrorGroup):
             Required. The group which replaces the
