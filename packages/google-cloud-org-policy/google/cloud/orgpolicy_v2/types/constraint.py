@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -102,9 +100,8 @@ class Constraint(proto.Message):
                 'folders/123' folder.
         """
 
-        supports_in = proto.Field(proto.BOOL, number=1)
-
-        supports_under = proto.Field(proto.BOOL, number=2)
+        supports_in = proto.Field(proto.BOOL, number=1,)
+        supports_under = proto.Field(proto.BOOL, number=2,)
 
     class BooleanConstraint(proto.Message):
         r"""A ``Constraint`` that is either enforced or not.
@@ -113,20 +110,15 @@ class Constraint(proto.Message):
         ``constraints/compute.disableSerialPortAccess``. If it is enforced
         on a VM instance, serial port connections will not be opened to that
         instance.
-        """
+            """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
-    description = proto.Field(proto.STRING, number=3)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
+    description = proto.Field(proto.STRING, number=3,)
     constraint_default = proto.Field(proto.ENUM, number=4, enum=ConstraintDefault,)
-
     list_constraint = proto.Field(
         proto.MESSAGE, number=5, oneof="constraint_type", message=ListConstraint,
     )
-
     boolean_constraint = proto.Field(
         proto.MESSAGE, number=6, oneof="constraint_type", message=BooleanConstraint,
     )

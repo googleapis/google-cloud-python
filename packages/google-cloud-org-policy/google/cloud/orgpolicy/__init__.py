@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,10 +14,11 @@
 # limitations under the License.
 #
 
+from google.cloud.orgpolicy_v2.services.org_policy.client import OrgPolicyClient
 from google.cloud.orgpolicy_v2.services.org_policy.async_client import (
     OrgPolicyAsyncClient,
 )
-from google.cloud.orgpolicy_v2.services.org_policy.client import OrgPolicyClient
+
 from google.cloud.orgpolicy_v2.types.constraint import Constraint
 from google.cloud.orgpolicy_v2.types.orgpolicy import AlternatePolicySpec
 from google.cloud.orgpolicy_v2.types.orgpolicy import CreatePolicyRequest
@@ -34,8 +34,10 @@ from google.cloud.orgpolicy_v2.types.orgpolicy import PolicySpec
 from google.cloud.orgpolicy_v2.types.orgpolicy import UpdatePolicyRequest
 
 __all__ = (
-    "AlternatePolicySpec",
+    "OrgPolicyClient",
+    "OrgPolicyAsyncClient",
     "Constraint",
+    "AlternatePolicySpec",
     "CreatePolicyRequest",
     "DeletePolicyRequest",
     "GetEffectivePolicyRequest",
@@ -44,8 +46,6 @@ __all__ = (
     "ListConstraintsResponse",
     "ListPoliciesRequest",
     "ListPoliciesResponse",
-    "OrgPolicyAsyncClient",
-    "OrgPolicyClient",
     "Policy",
     "PolicySpec",
     "UpdatePolicyRequest",

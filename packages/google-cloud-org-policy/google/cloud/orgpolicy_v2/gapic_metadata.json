@@ -1,0 +1,93 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.orgpolicy_v2",
+  "protoPackage": "google.cloud.orgpolicy.v2",
+  "schema": "1.0",
+  "services": {
+    "OrgPolicy": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "OrgPolicyClient",
+          "rpcs": {
+            "CreatePolicy": {
+              "methods": [
+                "create_policy"
+              ]
+            },
+            "DeletePolicy": {
+              "methods": [
+                "delete_policy"
+              ]
+            },
+            "GetEffectivePolicy": {
+              "methods": [
+                "get_effective_policy"
+              ]
+            },
+            "GetPolicy": {
+              "methods": [
+                "get_policy"
+              ]
+            },
+            "ListConstraints": {
+              "methods": [
+                "list_constraints"
+              ]
+            },
+            "ListPolicies": {
+              "methods": [
+                "list_policies"
+              ]
+            },
+            "UpdatePolicy": {
+              "methods": [
+                "update_policy"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "OrgPolicyAsyncClient",
+          "rpcs": {
+            "CreatePolicy": {
+              "methods": [
+                "create_policy"
+              ]
+            },
+            "DeletePolicy": {
+              "methods": [
+                "delete_policy"
+              ]
+            },
+            "GetEffectivePolicy": {
+              "methods": [
+                "get_effective_policy"
+              ]
+            },
+            "GetPolicy": {
+              "methods": [
+                "get_policy"
+              ]
+            },
+            "ListConstraints": {
+              "methods": [
+                "list_constraints"
+              ]
+            },
+            "ListPolicies": {
+              "methods": [
+                "list_policies"
+              ]
+            },
+            "UpdatePolicy": {
+              "methods": [
+                "update_policy"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
