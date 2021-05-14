@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -55,23 +52,17 @@ class Environment(proto.Message):
             environment was created.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
-    description = proto.Field(proto.STRING, number=3)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
+    description = proto.Field(proto.STRING, number=3,)
     vm_image = proto.Field(
         proto.MESSAGE, number=6, oneof="image_type", message="VmImage",
     )
-
     container_image = proto.Field(
         proto.MESSAGE, number=7, oneof="image_type", message="ContainerImage",
     )
-
-    post_startup_script = proto.Field(proto.STRING, number=8)
-
-    create_time = proto.Field(proto.MESSAGE, number=9, message=timestamp.Timestamp,)
+    post_startup_script = proto.Field(proto.STRING, number=8,)
+    create_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
 
 
 class VmImage(proto.Message):
@@ -90,11 +81,9 @@ class VmImage(proto.Message):
             the newest image in this family will be used.
     """
 
-    project = proto.Field(proto.STRING, number=1)
-
-    image_name = proto.Field(proto.STRING, number=2, oneof="image")
-
-    image_family = proto.Field(proto.STRING, number=3, oneof="image")
+    project = proto.Field(proto.STRING, number=1,)
+    image_name = proto.Field(proto.STRING, number=2, oneof="image",)
+    image_family = proto.Field(proto.STRING, number=3, oneof="image",)
 
 
 class ContainerImage(proto.Message):
@@ -110,9 +99,8 @@ class ContainerImage(proto.Message):
             specified, this defaults to the latest tag.
     """
 
-    repository = proto.Field(proto.STRING, number=1)
-
-    tag = proto.Field(proto.STRING, number=2)
+    repository = proto.Field(proto.STRING, number=1,)
+    tag = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

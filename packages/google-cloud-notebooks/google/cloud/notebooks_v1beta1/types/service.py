@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.notebooks_v1beta1.types import environment as gcn_environment
 from google.cloud.notebooks_v1beta1.types import instance as gcn_instance
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -55,7 +52,6 @@ __protobuf__ = proto.module(
 
 class OperationMetadata(proto.Message):
     r"""Represents the metadata of the long-running operation.
-
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time the operation was created.
@@ -81,26 +77,18 @@ class OperationMetadata(proto.Message):
             API endpoint name of this operation.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
-
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
-    target = proto.Field(proto.STRING, number=3)
-
-    verb = proto.Field(proto.STRING, number=4)
-
-    status_message = proto.Field(proto.STRING, number=5)
-
-    requested_cancellation = proto.Field(proto.BOOL, number=6)
-
-    api_version = proto.Field(proto.STRING, number=7)
-
-    endpoint = proto.Field(proto.STRING, number=8)
+    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    target = proto.Field(proto.STRING, number=3,)
+    verb = proto.Field(proto.STRING, number=4,)
+    status_message = proto.Field(proto.STRING, number=5,)
+    requested_cancellation = proto.Field(proto.BOOL, number=6,)
+    api_version = proto.Field(proto.STRING, number=7,)
+    endpoint = proto.Field(proto.STRING, number=8,)
 
 
 class ListInstancesRequest(proto.Message):
     r"""Request for listing notebook instances.
-
     Attributes:
         parent (str):
             Required. Format:
@@ -112,16 +100,13 @@ class ListInstancesRequest(proto.Message):
             used to continue listing from the last result.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListInstancesResponse(proto.Message):
     r"""Response for listing notebook instances.
-
     Attributes:
         instances (Sequence[google.cloud.notebooks_v1beta1.types.Instance]):
             A list of returned instances.
@@ -142,27 +127,23 @@ class ListInstancesResponse(proto.Message):
     instances = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gcn_instance.Instance,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
-
-    unreachable = proto.RepeatedField(proto.STRING, number=3)
+    next_page_token = proto.Field(proto.STRING, number=2,)
+    unreachable = proto.RepeatedField(proto.STRING, number=3,)
 
 
 class GetInstanceRequest(proto.Message):
     r"""Request for getting a notebook instance.
-
     Attributes:
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateInstanceRequest(proto.Message):
     r"""Request for creating a notebook instance.
-
     Attributes:
         parent (str):
             Required. Format:
@@ -174,16 +155,13 @@ class CreateInstanceRequest(proto.Message):
             Required. The instance to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    instance_id = proto.Field(proto.STRING, number=2)
-
+    parent = proto.Field(proto.STRING, number=1,)
+    instance_id = proto.Field(proto.STRING, number=2,)
     instance = proto.Field(proto.MESSAGE, number=3, message=gcn_instance.Instance,)
 
 
 class RegisterInstanceRequest(proto.Message):
     r"""Request for registering a notebook instance.
-
     Attributes:
         parent (str):
             Required. Format:
@@ -196,14 +174,12 @@ class RegisterInstanceRequest(proto.Message):
             character cannot be a dash.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    instance_id = proto.Field(proto.STRING, number=2)
+    parent = proto.Field(proto.STRING, number=1,)
+    instance_id = proto.Field(proto.STRING, number=2,)
 
 
 class SetInstanceAcceleratorRequest(proto.Message):
     r"""Request for setting instance accelerator.
-
     Attributes:
         name (str):
             Required. Format:
@@ -218,18 +194,15 @@ class SetInstanceAcceleratorRequest(proto.Message):
             to find a valid combination. TPUs are not supported.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     type_ = proto.Field(
         proto.ENUM, number=2, enum=gcn_instance.Instance.AcceleratorType,
     )
-
-    core_count = proto.Field(proto.INT64, number=3)
+    core_count = proto.Field(proto.INT64, number=3,)
 
 
 class SetInstanceMachineTypeRequest(proto.Message):
     r"""Request for setting instance machine type.
-
     Attributes:
         name (str):
             Required. Format:
@@ -239,14 +212,12 @@ class SetInstanceMachineTypeRequest(proto.Message):
             type <https://cloud.google.com/compute/docs/machine-types>`__.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    machine_type = proto.Field(proto.STRING, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    machine_type = proto.Field(proto.STRING, number=2,)
 
 
 class SetInstanceLabelsRequest(proto.Message):
     r"""Request for setting instance labels.
-
     Attributes:
         name (str):
             Required. Format:
@@ -257,57 +228,52 @@ class SetInstanceLabelsRequest(proto.Message):
             method
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=2,)
 
 
 class DeleteInstanceRequest(proto.Message):
     r"""Request for deleting a notebook instance.
-
     Attributes:
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class StartInstanceRequest(proto.Message):
     r"""Request for starting a notebook instance
-
     Attributes:
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class StopInstanceRequest(proto.Message):
     r"""Request for stopping a notebook instance
-
     Attributes:
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ResetInstanceRequest(proto.Message):
     r"""Request for reseting a notebook instance
-
     Attributes:
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ReportInstanceInfoRequest(proto.Message):
@@ -328,28 +294,24 @@ class ReportInstanceInfoRequest(proto.Message):
             will be merged to the instance metadata store
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    vm_id = proto.Field(proto.STRING, number=2)
-
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=3)
+    name = proto.Field(proto.STRING, number=1,)
+    vm_id = proto.Field(proto.STRING, number=2,)
+    metadata = proto.MapField(proto.STRING, proto.STRING, number=3,)
 
 
 class IsInstanceUpgradeableRequest(proto.Message):
     r"""Request for checking if a notebook instance is upgradeable.
-
     Attributes:
         notebook_instance (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    notebook_instance = proto.Field(proto.STRING, number=1)
+    notebook_instance = proto.Field(proto.STRING, number=1,)
 
 
 class IsInstanceUpgradeableResponse(proto.Message):
     r"""Response for checking if a notebook instance is upgradeable.
-
     Attributes:
         upgradeable (bool):
             If an instance is upgradeable.
@@ -361,28 +323,24 @@ class IsInstanceUpgradeableResponse(proto.Message):
             Additional information about upgrade.
     """
 
-    upgradeable = proto.Field(proto.BOOL, number=1)
-
-    upgrade_version = proto.Field(proto.STRING, number=2)
-
-    upgrade_info = proto.Field(proto.STRING, number=3)
+    upgradeable = proto.Field(proto.BOOL, number=1,)
+    upgrade_version = proto.Field(proto.STRING, number=2,)
+    upgrade_info = proto.Field(proto.STRING, number=3,)
 
 
 class UpgradeInstanceRequest(proto.Message):
     r"""Request for upgrading a notebook instance
-
     Attributes:
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class UpgradeInstanceInternalRequest(proto.Message):
     r"""Request for upgrading a notebook instance from within the VM
-
     Attributes:
         name (str):
             Required. Format:
@@ -394,14 +352,12 @@ class UpgradeInstanceInternalRequest(proto.Message):
             instance-identity
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    vm_id = proto.Field(proto.STRING, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    vm_id = proto.Field(proto.STRING, number=2,)
 
 
 class ListEnvironmentsRequest(proto.Message):
     r"""Request for listing environments.
-
     Attributes:
         parent (str):
             Required. Format:
@@ -413,16 +369,13 @@ class ListEnvironmentsRequest(proto.Message):
             used to continue listing from the last result.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListEnvironmentsResponse(proto.Message):
     r"""Response for listing environments.
-
     Attributes:
         environments (Sequence[google.cloud.notebooks_v1beta1.types.Environment]):
             A list of returned environments.
@@ -441,27 +394,23 @@ class ListEnvironmentsResponse(proto.Message):
     environments = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gcn_environment.Environment,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
-
-    unreachable = proto.RepeatedField(proto.STRING, number=3)
+    next_page_token = proto.Field(proto.STRING, number=2,)
+    unreachable = proto.RepeatedField(proto.STRING, number=3,)
 
 
 class GetEnvironmentRequest(proto.Message):
     r"""Request for getting a notebook environment.
-
     Attributes:
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/environments/{environment_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateEnvironmentRequest(proto.Message):
     r"""Request for creating a notebook environment.
-
     Attributes:
         parent (str):
             Required. Format:
@@ -476,10 +425,8 @@ class CreateEnvironmentRequest(proto.Message):
             Required. The environment to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    environment_id = proto.Field(proto.STRING, number=2)
-
+    parent = proto.Field(proto.STRING, number=1,)
+    environment_id = proto.Field(proto.STRING, number=2,)
     environment = proto.Field(
         proto.MESSAGE, number=3, message=gcn_environment.Environment,
     )
@@ -487,14 +434,13 @@ class CreateEnvironmentRequest(proto.Message):
 
 class DeleteEnvironmentRequest(proto.Message):
     r"""Request for deleting a notebook environment.
-
     Attributes:
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/environments/{environment_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
