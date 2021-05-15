@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -40,11 +38,9 @@ class CrawledUrl(proto.Message):
             used to visit the URL.
     """
 
-    http_method = proto.Field(proto.STRING, number=1)
-
-    url = proto.Field(proto.STRING, number=2)
-
-    body = proto.Field(proto.STRING, number=3)
+    http_method = proto.Field(proto.STRING, number=1,)
+    url = proto.Field(proto.STRING, number=2,)
+    body = proto.Field(proto.STRING, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

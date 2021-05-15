@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.websecurityscanner_v1.types import (
     scan_config_error as gcw_scan_config_error,
@@ -61,12 +58,10 @@ class ScanRunErrorTrace(proto.Message):
         TOO_MANY_HTTP_ERRORS = 6
 
     code = proto.Field(proto.ENUM, number=1, enum=Code,)
-
     scan_config_error = proto.Field(
         proto.MESSAGE, number=2, message=gcw_scan_config_error.ScanConfigError,
     )
-
-    most_common_http_error_code = proto.Field(proto.INT32, number=3)
+    most_common_http_error_code = proto.Field(proto.INT32, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

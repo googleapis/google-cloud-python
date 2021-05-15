@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.websecurityscanner_v1beta.types import scan_run_error_trace
 from google.cloud.websecurityscanner_v1beta.types import scan_run_warning_trace
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -94,28 +91,18 @@ class ScanRun(proto.Message):
         ERROR = 2
         KILLED = 3
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     execution_state = proto.Field(proto.ENUM, number=2, enum=ExecutionState,)
-
     result_state = proto.Field(proto.ENUM, number=3, enum=ResultState,)
-
-    start_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
-
-    end_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
-
-    urls_crawled_count = proto.Field(proto.INT64, number=6)
-
-    urls_tested_count = proto.Field(proto.INT64, number=7)
-
-    has_vulnerabilities = proto.Field(proto.BOOL, number=8)
-
-    progress_percent = proto.Field(proto.INT32, number=9)
-
+    start_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    urls_crawled_count = proto.Field(proto.INT64, number=6,)
+    urls_tested_count = proto.Field(proto.INT64, number=7,)
+    has_vulnerabilities = proto.Field(proto.BOOL, number=8,)
+    progress_percent = proto.Field(proto.INT32, number=9,)
     error_trace = proto.Field(
         proto.MESSAGE, number=10, message=scan_run_error_trace.ScanRunErrorTrace,
     )
-
     warning_traces = proto.RepeatedField(
         proto.MESSAGE, number=11, message=scan_run_warning_trace.ScanRunWarningTrace,
     )

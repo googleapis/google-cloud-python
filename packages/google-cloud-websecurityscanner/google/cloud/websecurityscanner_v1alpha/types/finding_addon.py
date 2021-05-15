@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -32,7 +30,6 @@ __protobuf__ = proto.module(
 
 class OutdatedLibrary(proto.Message):
     r"""Information reported for an outdated library.
-
     Attributes:
         library_name (str):
             The name of the outdated library.
@@ -43,11 +40,9 @@ class OutdatedLibrary(proto.Message):
             vulnerabilities in the library.
     """
 
-    library_name = proto.Field(proto.STRING, number=1)
-
-    version = proto.Field(proto.STRING, number=2)
-
-    learn_more_urls = proto.RepeatedField(proto.STRING, number=3)
+    library_name = proto.Field(proto.STRING, number=1,)
+    version = proto.Field(proto.STRING, number=2,)
+    learn_more_urls = proto.RepeatedField(proto.STRING, number=3,)
 
 
 class ViolatingResource(proto.Message):
@@ -61,25 +56,22 @@ class ViolatingResource(proto.Message):
             URL of this violating resource.
     """
 
-    content_type = proto.Field(proto.STRING, number=1)
-
-    resource_url = proto.Field(proto.STRING, number=2)
+    content_type = proto.Field(proto.STRING, number=1,)
+    resource_url = proto.Field(proto.STRING, number=2,)
 
 
 class VulnerableParameters(proto.Message):
     r"""Information about vulnerable request parameters.
-
     Attributes:
         parameter_names (Sequence[str]):
             The vulnerable parameter names.
     """
 
-    parameter_names = proto.RepeatedField(proto.STRING, number=1)
+    parameter_names = proto.RepeatedField(proto.STRING, number=1,)
 
 
 class VulnerableHeaders(proto.Message):
     r"""Information about vulnerable or missing HTTP Headers.
-
     Attributes:
         headers (Sequence[google.cloud.websecurityscanner_v1alpha.types.VulnerableHeaders.Header]):
             List of vulnerable headers.
@@ -89,7 +81,6 @@ class VulnerableHeaders(proto.Message):
 
     class Header(proto.Message):
         r"""Describes a HTTP Header.
-
         Attributes:
             name (str):
                 Header name.
@@ -97,18 +88,15 @@ class VulnerableHeaders(proto.Message):
                 Header value.
         """
 
-        name = proto.Field(proto.STRING, number=1)
-
-        value = proto.Field(proto.STRING, number=2)
+        name = proto.Field(proto.STRING, number=1,)
+        value = proto.Field(proto.STRING, number=2,)
 
     headers = proto.RepeatedField(proto.MESSAGE, number=1, message=Header,)
-
     missing_headers = proto.RepeatedField(proto.MESSAGE, number=2, message=Header,)
 
 
 class Xss(proto.Message):
     r"""Information reported for an XSS.
-
     Attributes:
         stack_traces (Sequence[str]):
             Stack traces leading to the point where the
@@ -118,9 +106,8 @@ class Xss(proto.Message):
             breakage.
     """
 
-    stack_traces = proto.RepeatedField(proto.STRING, number=1)
-
-    error_message = proto.Field(proto.STRING, number=2)
+    stack_traces = proto.RepeatedField(proto.STRING, number=1,)
+    error_message = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

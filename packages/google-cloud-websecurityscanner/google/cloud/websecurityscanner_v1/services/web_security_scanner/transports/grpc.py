@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
@@ -30,8 +28,7 @@ from google.cloud.websecurityscanner_v1.types import finding
 from google.cloud.websecurityscanner_v1.types import scan_config
 from google.cloud.websecurityscanner_v1.types import scan_run
 from google.cloud.websecurityscanner_v1.types import web_security_scanner
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
 from .base import WebSecurityScannerTransport, DEFAULT_CLIENT_INFO
 
 
@@ -57,7 +54,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
         self,
         *,
         host: str = "websecurityscanner.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -71,7 +68,8 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -181,7 +179,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
     def create_channel(
         cls,
         host: str = "websecurityscanner.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -212,13 +210,15 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -259,7 +259,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
     @property
     def delete_scan_config(
         self,
-    ) -> Callable[[web_security_scanner.DeleteScanConfigRequest], empty.Empty]:
+    ) -> Callable[[web_security_scanner.DeleteScanConfigRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete scan config method over gRPC.
 
         Deletes an existing ScanConfig and its child
@@ -279,7 +279,7 @@ class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):
             self._stubs["delete_scan_config"] = self.grpc_channel.unary_unary(
                 "/google.cloud.websecurityscanner.v1.WebSecurityScanner/DeleteScanConfig",
                 request_serializer=web_security_scanner.DeleteScanConfigRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_scan_config"]
 
