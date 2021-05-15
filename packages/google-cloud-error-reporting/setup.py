@@ -32,6 +32,7 @@ dependencies = [
     "google-cloud-logging>=1.14.0, <2.4",
     "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
     "proto-plus >= 1.4.0",
+    "packaging >= 14.3",
 ]
 extras = {}
 
