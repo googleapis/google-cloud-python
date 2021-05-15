@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +14,9 @@
 # limitations under the License.
 #
 
-from google.cloud.dlp_v2.services.dlp_service.async_client import DlpServiceAsyncClient
 from google.cloud.dlp_v2.services.dlp_service.client import DlpServiceClient
+from google.cloud.dlp_v2.services.dlp_service.async_client import DlpServiceAsyncClient
+
 from google.cloud.dlp_v2.types.dlp import Action
 from google.cloud.dlp_v2.types.dlp import ActivateJobTriggerRequest
 from google.cloud.dlp_v2.types.dlp import AnalyzeDataSourceRiskDetails
@@ -30,7 +30,6 @@ from google.cloud.dlp_v2.types.dlp import Color
 from google.cloud.dlp_v2.types.dlp import Container
 from google.cloud.dlp_v2.types.dlp import ContentItem
 from google.cloud.dlp_v2.types.dlp import ContentLocation
-from google.cloud.dlp_v2.types.dlp import ContentOption
 from google.cloud.dlp_v2.types.dlp import CreateDeidentifyTemplateRequest
 from google.cloud.dlp_v2.types.dlp import CreateDlpJobRequest
 from google.cloud.dlp_v2.types.dlp import CreateInspectTemplateRequest
@@ -52,7 +51,6 @@ from google.cloud.dlp_v2.types.dlp import DeleteInspectTemplateRequest
 from google.cloud.dlp_v2.types.dlp import DeleteJobTriggerRequest
 from google.cloud.dlp_v2.types.dlp import DeleteStoredInfoTypeRequest
 from google.cloud.dlp_v2.types.dlp import DlpJob
-from google.cloud.dlp_v2.types.dlp import DlpJobType
 from google.cloud.dlp_v2.types.dlp import DocumentLocation
 from google.cloud.dlp_v2.types.dlp import Error
 from google.cloud.dlp_v2.types.dlp import ExcludeInfoTypes
@@ -75,17 +73,16 @@ from google.cloud.dlp_v2.types.dlp import HybridInspectStatistics
 from google.cloud.dlp_v2.types.dlp import ImageLocation
 from google.cloud.dlp_v2.types.dlp import InfoTypeDescription
 from google.cloud.dlp_v2.types.dlp import InfoTypeStats
-from google.cloud.dlp_v2.types.dlp import InfoTypeSupportedBy
 from google.cloud.dlp_v2.types.dlp import InfoTypeTransformations
 from google.cloud.dlp_v2.types.dlp import InspectConfig
 from google.cloud.dlp_v2.types.dlp import InspectContentRequest
 from google.cloud.dlp_v2.types.dlp import InspectContentResponse
 from google.cloud.dlp_v2.types.dlp import InspectDataSourceDetails
+from google.cloud.dlp_v2.types.dlp import InspectionRule
+from google.cloud.dlp_v2.types.dlp import InspectionRuleSet
 from google.cloud.dlp_v2.types.dlp import InspectJobConfig
 from google.cloud.dlp_v2.types.dlp import InspectResult
 from google.cloud.dlp_v2.types.dlp import InspectTemplate
-from google.cloud.dlp_v2.types.dlp import InspectionRule
-from google.cloud.dlp_v2.types.dlp import InspectionRuleSet
 from google.cloud.dlp_v2.types.dlp import JobTrigger
 from google.cloud.dlp_v2.types.dlp import KmsWrappedCryptoKey
 from google.cloud.dlp_v2.types.dlp import LargeCustomDictionaryConfig
@@ -104,9 +101,7 @@ from google.cloud.dlp_v2.types.dlp import ListStoredInfoTypesRequest
 from google.cloud.dlp_v2.types.dlp import ListStoredInfoTypesResponse
 from google.cloud.dlp_v2.types.dlp import Location
 from google.cloud.dlp_v2.types.dlp import Manual
-from google.cloud.dlp_v2.types.dlp import MatchingType
 from google.cloud.dlp_v2.types.dlp import MetadataLocation
-from google.cloud.dlp_v2.types.dlp import MetadataType
 from google.cloud.dlp_v2.types.dlp import OutputStorageConfig
 from google.cloud.dlp_v2.types.dlp import PrimitiveTransformation
 from google.cloud.dlp_v2.types.dlp import PrivacyMetric
@@ -122,7 +117,6 @@ from google.cloud.dlp_v2.types.dlp import RedactImageRequest
 from google.cloud.dlp_v2.types.dlp import RedactImageResponse
 from google.cloud.dlp_v2.types.dlp import ReidentifyContentRequest
 from google.cloud.dlp_v2.types.dlp import ReidentifyContentResponse
-from google.cloud.dlp_v2.types.dlp import RelationalOperator
 from google.cloud.dlp_v2.types.dlp import ReplaceValueConfig
 from google.cloud.dlp_v2.types.dlp import ReplaceWithInfoTypeConfig
 from google.cloud.dlp_v2.types.dlp import RiskAnalysisJobConfig
@@ -131,7 +125,6 @@ from google.cloud.dlp_v2.types.dlp import StatisticalTable
 from google.cloud.dlp_v2.types.dlp import StorageMetadataLabel
 from google.cloud.dlp_v2.types.dlp import StoredInfoType
 from google.cloud.dlp_v2.types.dlp import StoredInfoTypeConfig
-from google.cloud.dlp_v2.types.dlp import StoredInfoTypeState
 from google.cloud.dlp_v2.types.dlp import StoredInfoTypeStats
 from google.cloud.dlp_v2.types.dlp import StoredInfoTypeVersion
 from google.cloud.dlp_v2.types.dlp import Table
@@ -148,6 +141,13 @@ from google.cloud.dlp_v2.types.dlp import UpdateJobTriggerRequest
 from google.cloud.dlp_v2.types.dlp import UpdateStoredInfoTypeRequest
 from google.cloud.dlp_v2.types.dlp import Value
 from google.cloud.dlp_v2.types.dlp import ValueFrequency
+from google.cloud.dlp_v2.types.dlp import ContentOption
+from google.cloud.dlp_v2.types.dlp import DlpJobType
+from google.cloud.dlp_v2.types.dlp import InfoTypeSupportedBy
+from google.cloud.dlp_v2.types.dlp import MatchingType
+from google.cloud.dlp_v2.types.dlp import MetadataType
+from google.cloud.dlp_v2.types.dlp import RelationalOperator
+from google.cloud.dlp_v2.types.dlp import StoredInfoTypeState
 from google.cloud.dlp_v2.types.storage import BigQueryField
 from google.cloud.dlp_v2.types.storage import BigQueryKey
 from google.cloud.dlp_v2.types.storage import BigQueryOptions
@@ -161,41 +161,34 @@ from google.cloud.dlp_v2.types.storage import DatastoreKey
 from google.cloud.dlp_v2.types.storage import DatastoreOptions
 from google.cloud.dlp_v2.types.storage import EntityId
 from google.cloud.dlp_v2.types.storage import FieldId
-from google.cloud.dlp_v2.types.storage import FileType
 from google.cloud.dlp_v2.types.storage import HybridOptions
 from google.cloud.dlp_v2.types.storage import InfoType
 from google.cloud.dlp_v2.types.storage import Key
 from google.cloud.dlp_v2.types.storage import KindExpression
-from google.cloud.dlp_v2.types.storage import Likelihood
 from google.cloud.dlp_v2.types.storage import PartitionId
 from google.cloud.dlp_v2.types.storage import RecordKey
 from google.cloud.dlp_v2.types.storage import StorageConfig
 from google.cloud.dlp_v2.types.storage import StoredType
 from google.cloud.dlp_v2.types.storage import TableOptions
+from google.cloud.dlp_v2.types.storage import FileType
+from google.cloud.dlp_v2.types.storage import Likelihood
 
 __all__ = (
+    "DlpServiceClient",
+    "DlpServiceAsyncClient",
     "Action",
     "ActivateJobTriggerRequest",
     "AnalyzeDataSourceRiskDetails",
-    "BigQueryField",
-    "BigQueryKey",
-    "BigQueryOptions",
-    "BigQueryTable",
     "BoundingBox",
     "BucketingConfig",
     "ByteContentItem",
     "CancelDlpJobRequest",
     "CharacterMaskConfig",
     "CharsToIgnore",
-    "CloudStorageFileSet",
-    "CloudStorageOptions",
-    "CloudStoragePath",
-    "CloudStorageRegexFileSet",
     "Color",
     "Container",
     "ContentItem",
     "ContentLocation",
-    "ContentOption",
     "CreateDeidentifyTemplateRequest",
     "CreateDlpJobRequest",
     "CreateInspectTemplateRequest",
@@ -205,9 +198,6 @@ __all__ = (
     "CryptoHashConfig",
     "CryptoKey",
     "CryptoReplaceFfxFpeConfig",
-    "CustomInfoType",
-    "DatastoreKey",
-    "DatastoreOptions",
     "DateShiftConfig",
     "DateTime",
     "DeidentifyConfig",
@@ -220,17 +210,11 @@ __all__ = (
     "DeleteJobTriggerRequest",
     "DeleteStoredInfoTypeRequest",
     "DlpJob",
-    "DlpJobType",
-    "DlpServiceAsyncClient",
-    "DlpServiceClient",
     "DocumentLocation",
-    "EntityId",
     "Error",
     "ExcludeInfoTypes",
     "ExclusionRule",
-    "FieldId",
     "FieldTransformation",
-    "FileType",
     "Finding",
     "FinishDlpJobRequest",
     "FixedSizeBucketingConfig",
@@ -245,29 +229,23 @@ __all__ = (
     "HybridInspectJobTriggerRequest",
     "HybridInspectResponse",
     "HybridInspectStatistics",
-    "HybridOptions",
     "ImageLocation",
-    "InfoType",
     "InfoTypeDescription",
     "InfoTypeStats",
-    "InfoTypeSupportedBy",
     "InfoTypeTransformations",
     "InspectConfig",
     "InspectContentRequest",
     "InspectContentResponse",
     "InspectDataSourceDetails",
+    "InspectionRule",
+    "InspectionRuleSet",
     "InspectJobConfig",
     "InspectResult",
     "InspectTemplate",
-    "InspectionRule",
-    "InspectionRuleSet",
     "JobTrigger",
-    "Key",
-    "KindExpression",
     "KmsWrappedCryptoKey",
     "LargeCustomDictionaryConfig",
     "LargeCustomDictionaryStats",
-    "Likelihood",
     "ListDeidentifyTemplatesRequest",
     "ListDeidentifyTemplatesResponse",
     "ListDlpJobsRequest",
@@ -282,18 +260,14 @@ __all__ = (
     "ListStoredInfoTypesResponse",
     "Location",
     "Manual",
-    "MatchingType",
     "MetadataLocation",
-    "MetadataType",
     "OutputStorageConfig",
-    "PartitionId",
     "PrimitiveTransformation",
     "PrivacyMetric",
     "QuasiId",
     "QuoteInfo",
     "Range",
     "RecordCondition",
-    "RecordKey",
     "RecordLocation",
     "RecordSuppression",
     "RecordTransformations",
@@ -302,23 +276,18 @@ __all__ = (
     "RedactImageResponse",
     "ReidentifyContentRequest",
     "ReidentifyContentResponse",
-    "RelationalOperator",
     "ReplaceValueConfig",
     "ReplaceWithInfoTypeConfig",
     "RiskAnalysisJobConfig",
     "Schedule",
     "StatisticalTable",
-    "StorageConfig",
     "StorageMetadataLabel",
     "StoredInfoType",
     "StoredInfoTypeConfig",
-    "StoredInfoTypeState",
     "StoredInfoTypeStats",
     "StoredInfoTypeVersion",
-    "StoredType",
     "Table",
     "TableLocation",
-    "TableOptions",
     "TimePartConfig",
     "TransformationErrorHandling",
     "TransformationOverview",
@@ -331,4 +300,35 @@ __all__ = (
     "UpdateStoredInfoTypeRequest",
     "Value",
     "ValueFrequency",
+    "ContentOption",
+    "DlpJobType",
+    "InfoTypeSupportedBy",
+    "MatchingType",
+    "MetadataType",
+    "RelationalOperator",
+    "StoredInfoTypeState",
+    "BigQueryField",
+    "BigQueryKey",
+    "BigQueryOptions",
+    "BigQueryTable",
+    "CloudStorageFileSet",
+    "CloudStorageOptions",
+    "CloudStoragePath",
+    "CloudStorageRegexFileSet",
+    "CustomInfoType",
+    "DatastoreKey",
+    "DatastoreOptions",
+    "EntityId",
+    "FieldId",
+    "HybridOptions",
+    "InfoType",
+    "Key",
+    "KindExpression",
+    "PartitionId",
+    "RecordKey",
+    "StorageConfig",
+    "StoredType",
+    "TableOptions",
+    "FileType",
+    "Likelihood",
 )

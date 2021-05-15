@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,41 +39,40 @@ def partition(
 class dlpCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'activate_job_trigger': ('name', ),
-    'cancel_dlp_job': ('name', ),
-    'create_deidentify_template': ('parent', 'deidentify_template', 'template_id', 'location_id', ),
-    'create_dlp_job': ('parent', 'inspect_job', 'risk_job', 'job_id', 'location_id', ),
-    'create_inspect_template': ('parent', 'inspect_template', 'template_id', 'location_id', ),
-    'create_job_trigger': ('parent', 'job_trigger', 'trigger_id', 'location_id', ),
-    'create_stored_info_type': ('parent', 'config', 'stored_info_type_id', 'location_id', ),
-    'deidentify_content': ('parent', 'deidentify_config', 'inspect_config', 'item', 'inspect_template_name', 'deidentify_template_name', 'location_id', ),
-    'delete_deidentify_template': ('name', ),
-    'delete_dlp_job': ('name', ),
-    'delete_inspect_template': ('name', ),
-    'delete_job_trigger': ('name', ),
-    'delete_stored_info_type': ('name', ),
-    'finish_dlp_job': ('name', ),
-    'get_deidentify_template': ('name', ),
-    'get_dlp_job': ('name', ),
-    'get_inspect_template': ('name', ),
-    'get_job_trigger': ('name', ),
-    'get_stored_info_type': ('name', ),
-    'hybrid_inspect_dlp_job': ('name', 'hybrid_item', ),
-    'hybrid_inspect_job_trigger': ('name', 'hybrid_item', ),
-    'inspect_content': ('parent', 'inspect_config', 'item', 'inspect_template_name', 'location_id', ),
-    'list_deidentify_templates': ('parent', 'page_token', 'page_size', 'order_by', 'location_id', ),
-    'list_dlp_jobs': ('parent', 'filter', 'page_size', 'page_token', 'type_', 'order_by', 'location_id', ),
-    'list_info_types': ('parent', 'language_code', 'filter', 'location_id', ),
-    'list_inspect_templates': ('parent', 'page_token', 'page_size', 'order_by', 'location_id', ),
-    'list_job_triggers': ('parent', 'page_token', 'page_size', 'order_by', 'filter', 'location_id', ),
-    'list_stored_info_types': ('parent', 'page_token', 'page_size', 'order_by', 'location_id', ),
-    'redact_image': ('parent', 'location_id', 'inspect_config', 'image_redaction_configs', 'include_findings', 'byte_item', ),
-    'reidentify_content': ('parent', 'reidentify_config', 'inspect_config', 'item', 'inspect_template_name', 'reidentify_template_name', 'location_id', ),
-    'update_deidentify_template': ('name', 'deidentify_template', 'update_mask', ),
-    'update_inspect_template': ('name', 'inspect_template', 'update_mask', ),
-    'update_job_trigger': ('name', 'job_trigger', 'update_mask', ),
-    'update_stored_info_type': ('name', 'config', 'update_mask', ),
-
+          'activate_job_trigger': ('name', ),
+          'cancel_dlp_job': ('name', ),
+          'create_deidentify_template': ('parent', 'deidentify_template', 'template_id', 'location_id', ),
+          'create_dlp_job': ('parent', 'inspect_job', 'risk_job', 'job_id', 'location_id', ),
+          'create_inspect_template': ('parent', 'inspect_template', 'template_id', 'location_id', ),
+          'create_job_trigger': ('parent', 'job_trigger', 'trigger_id', 'location_id', ),
+          'create_stored_info_type': ('parent', 'config', 'stored_info_type_id', 'location_id', ),
+          'deidentify_content': ('parent', 'deidentify_config', 'inspect_config', 'item', 'inspect_template_name', 'deidentify_template_name', 'location_id', ),
+          'delete_deidentify_template': ('name', ),
+          'delete_dlp_job': ('name', ),
+          'delete_inspect_template': ('name', ),
+          'delete_job_trigger': ('name', ),
+          'delete_stored_info_type': ('name', ),
+          'finish_dlp_job': ('name', ),
+          'get_deidentify_template': ('name', ),
+          'get_dlp_job': ('name', ),
+          'get_inspect_template': ('name', ),
+          'get_job_trigger': ('name', ),
+          'get_stored_info_type': ('name', ),
+          'hybrid_inspect_dlp_job': ('name', 'hybrid_item', ),
+          'hybrid_inspect_job_trigger': ('name', 'hybrid_item', ),
+          'inspect_content': ('parent', 'inspect_config', 'item', 'inspect_template_name', 'location_id', ),
+          'list_deidentify_templates': ('parent', 'page_token', 'page_size', 'order_by', 'location_id', ),
+          'list_dlp_jobs': ('parent', 'filter', 'page_size', 'page_token', 'type_', 'order_by', 'location_id', ),
+          'list_info_types': ('parent', 'language_code', 'filter', 'location_id', ),
+          'list_inspect_templates': ('parent', 'page_token', 'page_size', 'order_by', 'location_id', ),
+          'list_job_triggers': ('parent', 'page_token', 'page_size', 'order_by', 'filter', 'location_id', ),
+          'list_stored_info_types': ('parent', 'page_token', 'page_size', 'order_by', 'location_id', ),
+          'redact_image': ('parent', 'location_id', 'inspect_config', 'image_redaction_configs', 'include_findings', 'byte_item', ),
+          'reidentify_content': ('parent', 'reidentify_config', 'inspect_config', 'item', 'inspect_template_name', 'reidentify_template_name', 'location_id', ),
+          'update_deidentify_template': ('name', 'deidentify_template', 'update_mask', ),
+          'update_inspect_template': ('name', 'inspect_template', 'update_mask', ),
+          'update_job_trigger': ('name', 'job_trigger', 'update_mask', ),
+          'update_stored_info_type': ('name', 'config', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -106,7 +103,7 @@ class dlpCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

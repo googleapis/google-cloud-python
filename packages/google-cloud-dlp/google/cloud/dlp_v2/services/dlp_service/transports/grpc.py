@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,21 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.cloud.dlp_v2.types import dlp
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
 from .base import DlpServiceTransport, DEFAULT_CLIENT_INFO
 
 
@@ -59,7 +56,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         self,
         *,
         host: str = "dlp.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -73,7 +70,8 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -183,7 +181,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
     def create_channel(
         cls,
         host: str = "dlp.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -214,13 +212,15 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -508,7 +508,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
     @property
     def delete_inspect_template(
         self,
-    ) -> Callable[[dlp.DeleteInspectTemplateRequest], empty.Empty]:
+    ) -> Callable[[dlp.DeleteInspectTemplateRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete inspect template method over gRPC.
 
         Deletes an InspectTemplate.
@@ -529,7 +529,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
             self._stubs["delete_inspect_template"] = self.grpc_channel.unary_unary(
                 "/google.privacy.dlp.v2.DlpService/DeleteInspectTemplate",
                 request_serializer=dlp.DeleteInspectTemplateRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_inspect_template"]
 
@@ -652,7 +652,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
     @property
     def delete_deidentify_template(
         self,
-    ) -> Callable[[dlp.DeleteDeidentifyTemplateRequest], empty.Empty]:
+    ) -> Callable[[dlp.DeleteDeidentifyTemplateRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete deidentify template method over gRPC.
 
         Deletes a DeidentifyTemplate.
@@ -673,7 +673,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
             self._stubs["delete_deidentify_template"] = self.grpc_channel.unary_unary(
                 "/google.privacy.dlp.v2.DlpService/DeleteDeidentifyTemplate",
                 request_serializer=dlp.DeleteDeidentifyTemplateRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_deidentify_template"]
 
@@ -825,7 +825,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
     @property
     def delete_job_trigger(
         self,
-    ) -> Callable[[dlp.DeleteJobTriggerRequest], empty.Empty]:
+    ) -> Callable[[dlp.DeleteJobTriggerRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete job trigger method over gRPC.
 
         Deletes a job trigger.
@@ -846,7 +846,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
             self._stubs["delete_job_trigger"] = self.grpc_channel.unary_unary(
                 "/google.privacy.dlp.v2.DlpService/DeleteJobTrigger",
                 request_serializer=dlp.DeleteJobTriggerRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_job_trigger"]
 
@@ -968,7 +968,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         return self._stubs["get_dlp_job"]
 
     @property
-    def delete_dlp_job(self) -> Callable[[dlp.DeleteDlpJobRequest], empty.Empty]:
+    def delete_dlp_job(self) -> Callable[[dlp.DeleteDlpJobRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete dlp job method over gRPC.
 
         Deletes a long-running DlpJob. This method indicates
@@ -992,12 +992,12 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
             self._stubs["delete_dlp_job"] = self.grpc_channel.unary_unary(
                 "/google.privacy.dlp.v2.DlpService/DeleteDlpJob",
                 request_serializer=dlp.DeleteDlpJobRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_dlp_job"]
 
     @property
-    def cancel_dlp_job(self) -> Callable[[dlp.CancelDlpJobRequest], empty.Empty]:
+    def cancel_dlp_job(self) -> Callable[[dlp.CancelDlpJobRequest], empty_pb2.Empty]:
         r"""Return a callable for the cancel dlp job method over gRPC.
 
         Starts asynchronous cancellation on a long-running
@@ -1021,7 +1021,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
             self._stubs["cancel_dlp_job"] = self.grpc_channel.unary_unary(
                 "/google.privacy.dlp.v2.DlpService/CancelDlpJob",
                 request_serializer=dlp.CancelDlpJobRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["cancel_dlp_job"]
 
@@ -1143,7 +1143,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
     @property
     def delete_stored_info_type(
         self,
-    ) -> Callable[[dlp.DeleteStoredInfoTypeRequest], empty.Empty]:
+    ) -> Callable[[dlp.DeleteStoredInfoTypeRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete stored info type method over gRPC.
 
         Deletes a stored infoType.
@@ -1164,7 +1164,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
             self._stubs["delete_stored_info_type"] = self.grpc_channel.unary_unary(
                 "/google.privacy.dlp.v2.DlpService/DeleteStoredInfoType",
                 request_serializer=dlp.DeleteStoredInfoTypeRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_stored_info_type"]
 
@@ -1201,7 +1201,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         return self._stubs["hybrid_inspect_dlp_job"]
 
     @property
-    def finish_dlp_job(self) -> Callable[[dlp.FinishDlpJobRequest], empty.Empty]:
+    def finish_dlp_job(self) -> Callable[[dlp.FinishDlpJobRequest], empty_pb2.Empty]:
         r"""Return a callable for the finish dlp job method over gRPC.
 
         Finish a running hybrid DlpJob. Triggers the
@@ -1225,7 +1225,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
             self._stubs["finish_dlp_job"] = self.grpc_channel.unary_unary(
                 "/google.privacy.dlp.v2.DlpService/FinishDlpJob",
                 request_serializer=dlp.FinishDlpJobRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["finish_dlp_job"]
 
