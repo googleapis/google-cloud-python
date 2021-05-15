@@ -32,6 +32,7 @@ dependencies = [
     "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
     "google-cloud-core >= 1.4.1, < 2.0dev",
     "proto-plus >= 1.11.0",
+    "packaging >= 14.3",
 ]
 extras = {}
 
