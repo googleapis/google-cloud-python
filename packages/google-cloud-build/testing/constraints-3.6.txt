@@ -8,3 +8,4 @@
 google-api-core==1.22.2
 proto-plus==0.4.0
 libcst==0.2.5
+packaging==14.3
