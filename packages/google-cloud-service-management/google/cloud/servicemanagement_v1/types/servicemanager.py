@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.api import service_pb2 as ga_service  # type: ignore
+from google.api import service_pb2  # type: ignore
 from google.cloud.servicemanagement_v1.types import resources
-from google.protobuf import any_pb2 as gp_any  # type: ignore
+from google.protobuf import any_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -55,7 +52,6 @@ __protobuf__ = proto.module(
 
 class ListServicesRequest(proto.Message):
     r"""Request message for ``ListServices`` method.
-
     Attributes:
         producer_project_id (str):
             Include services produced by the specified
@@ -76,18 +72,14 @@ class ListServicesRequest(proto.Message):
             -  project:<project_id>
     """
 
-    producer_project_id = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=5)
-
-    page_token = proto.Field(proto.STRING, number=6)
-
-    consumer_id = proto.Field(proto.STRING, number=7)
+    producer_project_id = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=5,)
+    page_token = proto.Field(proto.STRING, number=6,)
+    consumer_id = proto.Field(proto.STRING, number=7,)
 
 
 class ListServicesResponse(proto.Message):
     r"""Response message for ``ListServices`` method.
-
     Attributes:
         services (Sequence[google.cloud.servicemanagement_v1.types.ManagedService]):
             The returned services will only have the name
@@ -104,13 +96,11 @@ class ListServicesResponse(proto.Message):
     services = proto.RepeatedField(
         proto.MESSAGE, number=1, message=resources.ManagedService,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetServiceRequest(proto.Message):
     r"""Request message for ``GetService`` method.
-
     Attributes:
         service_name (str):
             Required. The name of the service. See the
@@ -118,12 +108,11 @@ class GetServiceRequest(proto.Message):
             example: ``example.googleapis.com``.
     """
 
-    service_name = proto.Field(proto.STRING, number=1)
+    service_name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateServiceRequest(proto.Message):
     r"""Request message for CreateService method.
-
     Attributes:
         service (google.cloud.servicemanagement_v1.types.ManagedService):
             Required. Initial values for the service
@@ -135,33 +124,32 @@ class CreateServiceRequest(proto.Message):
 
 class DeleteServiceRequest(proto.Message):
     r"""Request message for DeleteService method.
-
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview </service-management/overview>`__ for naming
-            requirements. For example: ``example.googleapis.com``.
+            `overview <https://cloud.google.com/service-management/overview>`__
+            for naming requirements. For example:
+            ``example.googleapis.com``.
     """
 
-    service_name = proto.Field(proto.STRING, number=1)
+    service_name = proto.Field(proto.STRING, number=1,)
 
 
 class UndeleteServiceRequest(proto.Message):
     r"""Request message for UndeleteService method.
-
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview </service-management/overview>`__ for naming
-            requirements. For example: ``example.googleapis.com``.
+            `overview <https://cloud.google.com/service-management/overview>`__
+            for naming requirements. For example:
+            ``example.googleapis.com``.
     """
 
-    service_name = proto.Field(proto.STRING, number=1)
+    service_name = proto.Field(proto.STRING, number=1,)
 
 
 class UndeleteServiceResponse(proto.Message):
     r"""Response message for UndeleteService method.
-
     Attributes:
         service (google.cloud.servicemanagement_v1.types.ManagedService):
             Revived service resource.
@@ -172,12 +160,12 @@ class UndeleteServiceResponse(proto.Message):
 
 class GetServiceConfigRequest(proto.Message):
     r"""Request message for GetServiceConfig method.
-
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview </service-management/overview>`__ for naming
-            requirements. For example: ``example.googleapis.com``.
+            `overview <https://cloud.google.com/service-management/overview>`__
+            for naming requirements. For example:
+            ``example.googleapis.com``.
         config_id (str):
             Required. The id of the service configuration resource.
 
@@ -193,21 +181,19 @@ class GetServiceConfigRequest(proto.Message):
         BASIC = 0
         FULL = 1
 
-    service_name = proto.Field(proto.STRING, number=1)
-
-    config_id = proto.Field(proto.STRING, number=2)
-
+    service_name = proto.Field(proto.STRING, number=1,)
+    config_id = proto.Field(proto.STRING, number=2,)
     view = proto.Field(proto.ENUM, number=3, enum=ConfigView,)
 
 
 class ListServiceConfigsRequest(proto.Message):
     r"""Request message for ListServiceConfigs method.
-
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview </service-management/overview>`__ for naming
-            requirements. For example: ``example.googleapis.com``.
+            `overview <https://cloud.google.com/service-management/overview>`__
+            for naming requirements. For example:
+            ``example.googleapis.com``.
         page_token (str):
             The token of the page to retrieve.
         page_size (int):
@@ -216,16 +202,13 @@ class ListServiceConfigsRequest(proto.Message):
             Maximum value is 100.
     """
 
-    service_name = proto.Field(proto.STRING, number=1)
-
-    page_token = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
+    service_name = proto.Field(proto.STRING, number=1,)
+    page_token = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
 
 
 class ListServiceConfigsResponse(proto.Message):
     r"""Response message for ListServiceConfigs method.
-
     Attributes:
         service_configs (Sequence[google.api.service_pb2.Service]):
             The list of service configuration resources.
@@ -238,37 +221,35 @@ class ListServiceConfigsResponse(proto.Message):
         return self
 
     service_configs = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ga_service.Service,
+        proto.MESSAGE, number=1, message=service_pb2.Service,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class CreateServiceConfigRequest(proto.Message):
     r"""Request message for CreateServiceConfig method.
-
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview </service-management/overview>`__ for naming
-            requirements. For example: ``example.googleapis.com``.
+            `overview <https://cloud.google.com/service-management/overview>`__
+            for naming requirements. For example:
+            ``example.googleapis.com``.
         service_config (google.api.service_pb2.Service):
             Required. The service configuration resource.
     """
 
-    service_name = proto.Field(proto.STRING, number=1)
-
-    service_config = proto.Field(proto.MESSAGE, number=2, message=ga_service.Service,)
+    service_name = proto.Field(proto.STRING, number=1,)
+    service_config = proto.Field(proto.MESSAGE, number=2, message=service_pb2.Service,)
 
 
 class SubmitConfigSourceRequest(proto.Message):
     r"""Request message for SubmitConfigSource method.
-
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview </service-management/overview>`__ for naming
-            requirements. For example: ``example.googleapis.com``.
+            `overview <https://cloud.google.com/service-management/overview>`__
+            for naming requirements. For example:
+            ``example.googleapis.com``.
         config_source (google.cloud.servicemanagement_v1.types.ConfigSource):
             Required. The source configuration for the
             service.
@@ -279,52 +260,48 @@ class SubmitConfigSourceRequest(proto.Message):
             sources will NOT be persisted.
     """
 
-    service_name = proto.Field(proto.STRING, number=1)
-
+    service_name = proto.Field(proto.STRING, number=1,)
     config_source = proto.Field(
         proto.MESSAGE, number=2, message=resources.ConfigSource,
     )
-
-    validate_only = proto.Field(proto.BOOL, number=3)
+    validate_only = proto.Field(proto.BOOL, number=3,)
 
 
 class SubmitConfigSourceResponse(proto.Message):
     r"""Response message for SubmitConfigSource method.
-
     Attributes:
         service_config (google.api.service_pb2.Service):
             The generated service configuration.
     """
 
-    service_config = proto.Field(proto.MESSAGE, number=1, message=ga_service.Service,)
+    service_config = proto.Field(proto.MESSAGE, number=1, message=service_pb2.Service,)
 
 
 class CreateServiceRolloutRequest(proto.Message):
     r"""Request message for 'CreateServiceRollout'
-
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview </service-management/overview>`__ for naming
-            requirements. For example: ``example.googleapis.com``.
+            `overview <https://cloud.google.com/service-management/overview>`__
+            for naming requirements. For example:
+            ``example.googleapis.com``.
         rollout (google.cloud.servicemanagement_v1.types.Rollout):
             Required. The rollout resource. The ``service_name`` field
             is output only.
     """
 
-    service_name = proto.Field(proto.STRING, number=1)
-
+    service_name = proto.Field(proto.STRING, number=1,)
     rollout = proto.Field(proto.MESSAGE, number=2, message=resources.Rollout,)
 
 
 class ListServiceRolloutsRequest(proto.Message):
     r"""Request message for 'ListServiceRollouts'
-
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview </service-management/overview>`__ for naming
-            requirements. For example: ``example.googleapis.com``.
+            `overview <https://cloud.google.com/service-management/overview>`__
+            for naming requirements. For example:
+            ``example.googleapis.com``.
         page_token (str):
             The token of the page to retrieve.
         page_size (int):
@@ -334,27 +311,22 @@ class ListServiceRolloutsRequest(proto.Message):
         filter (str):
             Required. Use ``filter`` to return subset of rollouts. The
             following filters are supported: -- To limit the results to
-            only those in
-            `status <google.api.servicemanagement.v1.RolloutStatus>`__
-            'SUCCESS', use filter='status=SUCCESS' -- To limit the
-            results to those in
-            `status <google.api.servicemanagement.v1.RolloutStatus>`__
+            only those in status
+            (google.api.servicemanagement.v1.RolloutStatus) 'SUCCESS',
+            use filter='status=SUCCESS' -- To limit the results to those
+            in status (google.api.servicemanagement.v1.RolloutStatus)
             'CANCELLED' or 'FAILED', use filter='status=CANCELLED OR
             status=FAILED'
     """
 
-    service_name = proto.Field(proto.STRING, number=1)
-
-    page_token = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    filter = proto.Field(proto.STRING, number=4)
+    service_name = proto.Field(proto.STRING, number=1,)
+    page_token = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    filter = proto.Field(proto.STRING, number=4,)
 
 
 class ListServiceRolloutsResponse(proto.Message):
     r"""Response message for ListServiceRollouts method.
-
     Attributes:
         rollouts (Sequence[google.cloud.servicemanagement_v1.types.Rollout]):
             The list of rollout resources.
@@ -367,30 +339,27 @@ class ListServiceRolloutsResponse(proto.Message):
         return self
 
     rollouts = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Rollout,)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetServiceRolloutRequest(proto.Message):
     r"""Request message for GetServiceRollout method.
-
     Attributes:
         service_name (str):
             Required. The name of the service. See the
-            `overview </service-management/overview>`__ for naming
-            requirements. For example: ``example.googleapis.com``.
+            `overview <https://cloud.google.com/service-management/overview>`__
+            for naming requirements. For example:
+            ``example.googleapis.com``.
         rollout_id (str):
             Required. The id of the rollout resource.
     """
 
-    service_name = proto.Field(proto.STRING, number=1)
-
-    rollout_id = proto.Field(proto.STRING, number=2)
+    service_name = proto.Field(proto.STRING, number=1,)
+    rollout_id = proto.Field(proto.STRING, number=2,)
 
 
 class EnableServiceRequest(proto.Message):
     r"""Request message for EnableService method.
-
     Attributes:
         service_name (str):
             Required. Name of the service to enable.
@@ -409,18 +378,16 @@ class EnableServiceRequest(proto.Message):
             google.api.servicecontrol.v1.Operation.consumer_id.
     """
 
-    service_name = proto.Field(proto.STRING, number=1)
-
-    consumer_id = proto.Field(proto.STRING, number=2)
+    service_name = proto.Field(proto.STRING, number=1,)
+    consumer_id = proto.Field(proto.STRING, number=2,)
 
 
 class EnableServiceResponse(proto.Message):
-    r"""Operation payload for EnableService method."""
+    r"""Operation payload for EnableService method.    """
 
 
 class DisableServiceRequest(proto.Message):
     r"""Request message for DisableService method.
-
     Attributes:
         service_name (str):
             Required. Name of the service to disable.
@@ -439,18 +406,16 @@ class DisableServiceRequest(proto.Message):
             google.api.servicecontrol.v1.Operation.consumer_id.
     """
 
-    service_name = proto.Field(proto.STRING, number=1)
-
-    consumer_id = proto.Field(proto.STRING, number=2)
+    service_name = proto.Field(proto.STRING, number=1,)
+    consumer_id = proto.Field(proto.STRING, number=2,)
 
 
 class DisableServiceResponse(proto.Message):
-    r"""Operation payload for DisableService method."""
+    r"""Operation payload for DisableService method.    """
 
 
 class GenerateConfigReportRequest(proto.Message):
     r"""Request message for GenerateConfigReport method.
-
     Attributes:
         new_config (google.protobuf.any_pb2.Any):
             Required. Service configuration for which we want to
@@ -468,14 +433,12 @@ class GenerateConfigReportRequest(proto.Message):
             and [google.api.Service][google.api.Service]
     """
 
-    new_config = proto.Field(proto.MESSAGE, number=1, message=gp_any.Any,)
-
-    old_config = proto.Field(proto.MESSAGE, number=2, message=gp_any.Any,)
+    new_config = proto.Field(proto.MESSAGE, number=1, message=any_pb2.Any,)
+    old_config = proto.Field(proto.MESSAGE, number=2, message=any_pb2.Any,)
 
 
 class GenerateConfigReportResponse(proto.Message):
     r"""Response message for GenerateConfigReport method.
-
     Attributes:
         service_name (str):
             Name of the service this report belongs to.
@@ -491,14 +454,11 @@ class GenerateConfigReportResponse(proto.Message):
             belongs to.
     """
 
-    service_name = proto.Field(proto.STRING, number=1)
-
-    id = proto.Field(proto.STRING, number=2)
-
+    service_name = proto.Field(proto.STRING, number=1,)
+    id = proto.Field(proto.STRING, number=2,)
     change_reports = proto.RepeatedField(
         proto.MESSAGE, number=3, message=resources.ChangeReport,
     )
-
     diagnostics = proto.RepeatedField(
         proto.MESSAGE, number=4, message=resources.Diagnostic,
     )

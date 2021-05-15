@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.api import config_change_pb2 as config_change  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.api import config_change_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -44,16 +41,15 @@ class ManagedService(proto.Message):
     Attributes:
         service_name (str):
             The name of the service. See the
-            `overview </service-management/overview>`__ for naming
-            requirements.
+            `overview <https://cloud.google.com/service-management/overview>`__
+            for naming requirements.
         producer_project_id (str):
             ID of the project that produces and owns this
             service.
     """
 
-    service_name = proto.Field(proto.STRING, number=2)
-
-    producer_project_id = proto.Field(proto.STRING, number=3)
+    service_name = proto.Field(proto.STRING, number=2,)
+    producer_project_id = proto.Field(proto.STRING, number=3,)
 
 
 class OperationMetadata(proto.Message):
@@ -87,7 +83,6 @@ class OperationMetadata(proto.Message):
 
     class Step(proto.Message):
         r"""Represents the status of one operation step.
-
         Attributes:
             description (str):
                 The short description of the step.
@@ -95,22 +90,17 @@ class OperationMetadata(proto.Message):
                 The status code.
         """
 
-        description = proto.Field(proto.STRING, number=2)
-
+        description = proto.Field(proto.STRING, number=2,)
         status = proto.Field(proto.ENUM, number=4, enum="OperationMetadata.Status",)
 
-    resource_names = proto.RepeatedField(proto.STRING, number=1)
-
+    resource_names = proto.RepeatedField(proto.STRING, number=1,)
     steps = proto.RepeatedField(proto.MESSAGE, number=2, message=Step,)
-
-    progress_percentage = proto.Field(proto.INT32, number=3)
-
-    start_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
+    progress_percentage = proto.Field(proto.INT32, number=3,)
+    start_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
 
 
 class Diagnostic(proto.Message):
     r"""Represents a diagnostic message (error or warning)
-
     Attributes:
         location (str):
             File name and line number of the error or
@@ -126,11 +116,9 @@ class Diagnostic(proto.Message):
         WARNING = 0
         ERROR = 1
 
-    location = proto.Field(proto.STRING, number=1)
-
+    location = proto.Field(proto.STRING, number=1,)
     kind = proto.Field(proto.ENUM, number=2, enum=Kind,)
-
-    message = proto.Field(proto.STRING, number=3)
+    message = proto.Field(proto.STRING, number=3,)
 
 
 class ConfigSource(proto.Message):
@@ -148,14 +136,12 @@ class ConfigSource(proto.Message):
             a service configuration (``google.api.Service``).
     """
 
-    id = proto.Field(proto.STRING, number=5)
-
+    id = proto.Field(proto.STRING, number=5,)
     files = proto.RepeatedField(proto.MESSAGE, number=2, message="ConfigFile",)
 
 
 class ConfigFile(proto.Message):
     r"""Generic specification of a source configuration file
-
     Attributes:
         file_path (str):
             The file name of the configuration file (full
@@ -176,16 +162,13 @@ class ConfigFile(proto.Message):
         FILE_DESCRIPTOR_SET_PROTO = 4
         PROTO_FILE = 6
 
-    file_path = proto.Field(proto.STRING, number=1)
-
-    file_contents = proto.Field(proto.BYTES, number=3)
-
+    file_path = proto.Field(proto.STRING, number=1,)
+    file_contents = proto.Field(proto.BYTES, number=3,)
     file_type = proto.Field(proto.ENUM, number=4, enum=FileType,)
 
 
 class ConfigRef(proto.Message):
     r"""Represents a service configuration with its name and id.
-
     Attributes:
         name (str):
             Resource name of a service config. It must
@@ -193,7 +176,7 @@ class ConfigRef(proto.Message):
             name}/configs/{config id}".
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ChangeReport(proto.Message):
@@ -212,7 +195,7 @@ class ChangeReport(proto.Message):
     """
 
     config_changes = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=config_change.ConfigChange,
+        proto.MESSAGE, number=1, message=config_change_pb2.ConfigChange,
     )
 
 
@@ -307,31 +290,25 @@ class Rollout(proto.Message):
                 the sum must equal to 100.0.
         """
 
-        percentages = proto.MapField(proto.STRING, proto.DOUBLE, number=1)
+        percentages = proto.MapField(proto.STRING, proto.DOUBLE, number=1,)
 
     class DeleteServiceStrategy(proto.Message):
         r"""Strategy used to delete a service. This strategy is a
         placeholder only used by the system generated rollout to delete
         a service.
-        """
+            """
 
-    rollout_id = proto.Field(proto.STRING, number=1)
-
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
-    created_by = proto.Field(proto.STRING, number=3)
-
+    rollout_id = proto.Field(proto.STRING, number=1,)
+    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    created_by = proto.Field(proto.STRING, number=3,)
     status = proto.Field(proto.ENUM, number=4, enum=RolloutStatus,)
-
     traffic_percent_strategy = proto.Field(
         proto.MESSAGE, number=5, oneof="strategy", message=TrafficPercentStrategy,
     )
-
     delete_service_strategy = proto.Field(
         proto.MESSAGE, number=200, oneof="strategy", message=DeleteServiceStrategy,
     )
-
-    service_name = proto.Field(proto.STRING, number=8)
+    service_name = proto.Field(proto.STRING, number=8,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

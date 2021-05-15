@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +14,13 @@
 # limitations under the License.
 #
 
-from google.cloud.servicemanagement_v1.services.service_manager.async_client import (
-    ServiceManagerAsyncClient,
-)
 from google.cloud.servicemanagement_v1.services.service_manager.client import (
     ServiceManagerClient,
 )
+from google.cloud.servicemanagement_v1.services.service_manager.async_client import (
+    ServiceManagerAsyncClient,
+)
+
 from google.cloud.servicemanagement_v1.types.resources import ChangeReport
 from google.cloud.servicemanagement_v1.types.resources import ConfigFile
 from google.cloud.servicemanagement_v1.types.resources import ConfigRef
@@ -84,15 +84,20 @@ from google.cloud.servicemanagement_v1.types.servicemanager import (
 )
 
 __all__ = (
+    "ServiceManagerClient",
+    "ServiceManagerAsyncClient",
     "ChangeReport",
     "ConfigFile",
     "ConfigRef",
     "ConfigSource",
+    "Diagnostic",
+    "ManagedService",
+    "OperationMetadata",
+    "Rollout",
     "CreateServiceConfigRequest",
     "CreateServiceRequest",
     "CreateServiceRolloutRequest",
     "DeleteServiceRequest",
-    "Diagnostic",
     "DisableServiceRequest",
     "DisableServiceResponse",
     "EnableServiceRequest",
@@ -108,11 +113,6 @@ __all__ = (
     "ListServiceRolloutsResponse",
     "ListServicesRequest",
     "ListServicesResponse",
-    "ManagedService",
-    "OperationMetadata",
-    "Rollout",
-    "ServiceManagerAsyncClient",
-    "ServiceManagerClient",
     "SubmitConfigSourceRequest",
     "SubmitConfigSourceResponse",
     "UndeleteServiceRequest",

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,31 +13,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
-from google.api import service_pb2 as service  # type: ignore
+from google.api import service_pb2  # type: ignore
 from google.cloud.servicemanagement_v1.types import resources
 from google.cloud.servicemanagement_v1.types import servicemanager
-from google.longrunning import operations_pb2 as operations  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
 from .base import ServiceManagerTransport, DEFAULT_CLIENT_INFO
 
 
 class ServiceManagerGrpcTransport(ServiceManagerTransport):
     """gRPC backend transport for ServiceManager.
 
-    `Google Service Management API </service-management/overview>`__
+    `Google Service Management
+    API <https://cloud.google.com/service-management/overview>`__
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -54,7 +52,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
         self,
         *,
         host: str = "servicemanagement.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -68,7 +66,8 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -179,7 +178,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
     def create_channel(
         cls,
         host: str = "servicemanagement.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -210,13 +209,15 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -306,7 +307,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
     @property
     def create_service(
         self,
-    ) -> Callable[[servicemanager.CreateServiceRequest], operations.Operation]:
+    ) -> Callable[[servicemanager.CreateServiceRequest], operations_pb2.Operation]:
         r"""Return a callable for the create service method over gRPC.
 
         Creates a new managed service.
@@ -328,14 +329,14 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
             self._stubs["create_service"] = self.grpc_channel.unary_unary(
                 "/google.api.servicemanagement.v1.ServiceManager/CreateService",
                 request_serializer=servicemanager.CreateServiceRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_service"]
 
     @property
     def delete_service(
         self,
-    ) -> Callable[[servicemanager.DeleteServiceRequest], operations.Operation]:
+    ) -> Callable[[servicemanager.DeleteServiceRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete service method over gRPC.
 
         Deletes a managed service. This method will change the service
@@ -361,14 +362,14 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
             self._stubs["delete_service"] = self.grpc_channel.unary_unary(
                 "/google.api.servicemanagement.v1.ServiceManager/DeleteService",
                 request_serializer=servicemanager.DeleteServiceRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_service"]
 
     @property
     def undelete_service(
         self,
-    ) -> Callable[[servicemanager.UndeleteServiceRequest], operations.Operation]:
+    ) -> Callable[[servicemanager.UndeleteServiceRequest], operations_pb2.Operation]:
         r"""Return a callable for the undelete service method over gRPC.
 
         Revives a previously deleted managed service. The
@@ -393,7 +394,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
             self._stubs["undelete_service"] = self.grpc_channel.unary_unary(
                 "/google.api.servicemanagement.v1.ServiceManager/UndeleteService",
                 request_serializer=servicemanager.UndeleteServiceRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["undelete_service"]
 
@@ -430,7 +431,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
     @property
     def get_service_config(
         self,
-    ) -> Callable[[servicemanager.GetServiceConfigRequest], service.Service]:
+    ) -> Callable[[servicemanager.GetServiceConfigRequest], service_pb2.Service]:
         r"""Return a callable for the get service config method over gRPC.
 
         Gets a service configuration (version) for a managed
@@ -450,14 +451,14 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
             self._stubs["get_service_config"] = self.grpc_channel.unary_unary(
                 "/google.api.servicemanagement.v1.ServiceManager/GetServiceConfig",
                 request_serializer=servicemanager.GetServiceConfigRequest.serialize,
-                response_deserializer=service.Service.FromString,
+                response_deserializer=service_pb2.Service.FromString,
             )
         return self._stubs["get_service_config"]
 
     @property
     def create_service_config(
         self,
-    ) -> Callable[[servicemanager.CreateServiceConfigRequest], service.Service]:
+    ) -> Callable[[servicemanager.CreateServiceConfigRequest], service_pb2.Service]:
         r"""Return a callable for the create service config method over gRPC.
 
         Creates a new service configuration (version) for a managed
@@ -484,14 +485,14 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
             self._stubs["create_service_config"] = self.grpc_channel.unary_unary(
                 "/google.api.servicemanagement.v1.ServiceManager/CreateServiceConfig",
                 request_serializer=servicemanager.CreateServiceConfigRequest.serialize,
-                response_deserializer=service.Service.FromString,
+                response_deserializer=service_pb2.Service.FromString,
             )
         return self._stubs["create_service_config"]
 
     @property
     def submit_config_source(
         self,
-    ) -> Callable[[servicemanager.SubmitConfigSourceRequest], operations.Operation]:
+    ) -> Callable[[servicemanager.SubmitConfigSourceRequest], operations_pb2.Operation]:
         r"""Return a callable for the submit config source method over gRPC.
 
         Creates a new service configuration (version) for a managed
@@ -522,7 +523,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
             self._stubs["submit_config_source"] = self.grpc_channel.unary_unary(
                 "/google.api.servicemanagement.v1.ServiceManager/SubmitConfigSource",
                 request_serializer=servicemanager.SubmitConfigSourceRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["submit_config_source"]
 
@@ -587,7 +588,9 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
     @property
     def create_service_rollout(
         self,
-    ) -> Callable[[servicemanager.CreateServiceRolloutRequest], operations.Operation]:
+    ) -> Callable[
+        [servicemanager.CreateServiceRolloutRequest], operations_pb2.Operation
+    ]:
         r"""Return a callable for the create service rollout method over gRPC.
 
         Creates a new service configuration rollout. Based on
@@ -622,7 +625,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
             self._stubs["create_service_rollout"] = self.grpc_channel.unary_unary(
                 "/google.api.servicemanagement.v1.ServiceManager/CreateServiceRollout",
                 request_serializer=servicemanager.CreateServiceRolloutRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_service_rollout"]
 
@@ -669,7 +672,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
     @property
     def enable_service(
         self,
-    ) -> Callable[[servicemanager.EnableServiceRequest], operations.Operation]:
+    ) -> Callable[[servicemanager.EnableServiceRequest], operations_pb2.Operation]:
         r"""Return a callable for the enable service method over gRPC.
 
         Enables a
@@ -694,14 +697,14 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
             self._stubs["enable_service"] = self.grpc_channel.unary_unary(
                 "/google.api.servicemanagement.v1.ServiceManager/EnableService",
                 request_serializer=servicemanager.EnableServiceRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["enable_service"]
 
     @property
     def disable_service(
         self,
-    ) -> Callable[[servicemanager.DisableServiceRequest], operations.Operation]:
+    ) -> Callable[[servicemanager.DisableServiceRequest], operations_pb2.Operation]:
         r"""Return a callable for the disable service method over gRPC.
 
         Disables a
@@ -726,7 +729,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
             self._stubs["disable_service"] = self.grpc_channel.unary_unary(
                 "/google.api.servicemanagement.v1.ServiceManager/DisableService",
                 request_serializer=servicemanager.DisableServiceRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["disable_service"]
 

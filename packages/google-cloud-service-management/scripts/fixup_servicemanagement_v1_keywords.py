@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,22 +39,21 @@ def partition(
 class servicemanagementCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'create_service': ('service', ),
-    'create_service_config': ('service_name', 'service_config', ),
-    'create_service_rollout': ('service_name', 'rollout', ),
-    'delete_service': ('service_name', ),
-    'disable_service': ('service_name', 'consumer_id', ),
-    'enable_service': ('service_name', 'consumer_id', ),
-    'generate_config_report': ('new_config', 'old_config', ),
-    'get_service': ('service_name', ),
-    'get_service_config': ('service_name', 'config_id', 'view', ),
-    'get_service_rollout': ('service_name', 'rollout_id', ),
-    'list_service_configs': ('service_name', 'page_token', 'page_size', ),
-    'list_service_rollouts': ('service_name', 'filter', 'page_token', 'page_size', ),
-    'list_services': ('producer_project_id', 'page_size', 'page_token', 'consumer_id', ),
-    'submit_config_source': ('service_name', 'config_source', 'validate_only', ),
-    'undelete_service': ('service_name', ),
-
+          'create_service': ('service', ),
+          'create_service_config': ('service_name', 'service_config', ),
+          'create_service_rollout': ('service_name', 'rollout', ),
+          'delete_service': ('service_name', ),
+          'disable_service': ('service_name', 'consumer_id', ),
+          'enable_service': ('service_name', 'consumer_id', ),
+          'generate_config_report': ('new_config', 'old_config', ),
+          'get_service': ('service_name', ),
+          'get_service_config': ('service_name', 'config_id', 'view', ),
+          'get_service_rollout': ('service_name', 'rollout_id', ),
+          'list_service_configs': ('service_name', 'page_token', 'page_size', ),
+          'list_service_rollouts': ('service_name', 'filter', 'page_token', 'page_size', ),
+          'list_services': ('producer_project_id', 'page_size', 'page_token', 'consumer_id', ),
+          'submit_config_source': ('service_name', 'config_source', 'validate_only', ),
+          'undelete_service': ('service_name', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -87,7 +84,7 @@ class servicemanagementCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

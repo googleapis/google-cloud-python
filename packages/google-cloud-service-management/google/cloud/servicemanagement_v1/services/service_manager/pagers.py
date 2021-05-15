@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from typing import (
     Any,
     AsyncIterable,
@@ -26,7 +24,7 @@ from typing import (
     Optional,
 )
 
-from google.api import service_pb2 as service  # type: ignore
+from google.api import service_pb2  # type: ignore
 from google.cloud.servicemanagement_v1.types import resources
 from google.cloud.servicemanagement_v1.types import servicemanager
 
@@ -119,7 +117,7 @@ class ListServicesAsyncPager:
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
-        """Instantiate the pager.
+        """Instantiates the pager.
 
         Args:
             method (Callable): The method that was originally called, and
@@ -213,7 +211,7 @@ class ListServiceConfigsPager:
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[service.Service]:
+    def __iter__(self) -> Iterable[service_pb2.Service]:
         for page in self.pages:
             yield from page.service_configs
 
@@ -247,7 +245,7 @@ class ListServiceConfigsAsyncPager:
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
-        """Instantiate the pager.
+        """Instantiates the pager.
 
         Args:
             method (Callable): The method that was originally called, and
@@ -275,7 +273,7 @@ class ListServiceConfigsAsyncPager:
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[service.Service]:
+    def __aiter__(self) -> AsyncIterable[service_pb2.Service]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.service_configs:
@@ -375,7 +373,7 @@ class ListServiceRolloutsAsyncPager:
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
-        """Instantiate the pager.
+        """Instantiates the pager.
 
         Args:
             method (Callable): The method that was originally called, and
