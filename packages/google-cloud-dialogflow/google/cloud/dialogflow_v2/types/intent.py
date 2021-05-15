@@ -1009,7 +1009,16 @@ class ListIntentsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The agent to list all intents from. Format:
-            ``projects/<Project ID>/agent``.
+            ``projects/<Project ID>/agent`` or
+            ``projects/<Project ID>/locations/<Location ID>/agent``.
+
+            Alternatively, you can specify the environment to list
+            intents for. Format:
+            ``projects/<Project ID>/agent/environments/<Environment ID>``
+            or
+            ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``.
+            Note: training phrases of the intents will not be returned
+            for non-draft environment.
         language_code (str):
             Optional. The language used to access language-specific
             data. If not specified, the agent's default language is

@@ -383,7 +383,16 @@ class IntentsClient(metaclass=IntentsClientMeta):
                 [Intents.ListIntents][google.cloud.dialogflow.v2.Intents.ListIntents].
             parent (str):
                 Required. The agent to list all intents from. Format:
-                ``projects/<Project ID>/agent``.
+                ``projects/<Project ID>/agent`` or
+                ``projects/<Project ID>/locations/<Location ID>/agent``.
+
+                Alternatively, you can specify the environment to list
+                intents for. Format:
+                ``projects/<Project ID>/agent/environments/<Environment ID>``
+                or
+                ``projects/<Project ID>/locations/<Location ID>/agent/environments/<Environment ID>``.
+                Note: training phrases of the intents will not be
+                returned for non-draft environment.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
