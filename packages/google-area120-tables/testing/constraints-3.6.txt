@@ -7,3 +7,4 @@
 # Then this file should have foo==1.14.0
 google-api-core==1.22.2
 proto-plus==1.4.0
+packaging==14.3
