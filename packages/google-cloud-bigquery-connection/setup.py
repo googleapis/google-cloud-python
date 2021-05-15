@@ -42,6 +42,7 @@ setuptools.setup(
     install_requires=(
         "google-api-core >= 1.22.2, < 2.0.0dev",
         "proto-plus >= 1.4.0",
+        "packaging >= 14.3",
         "grpc-google-iam-v1 >= 0.12.3, < 0.13.0dev",
     ),
     python_requires=">=3.6",
