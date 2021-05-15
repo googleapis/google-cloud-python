@@ -9,3 +9,4 @@ google-api-core==1.26.3
 grpc-google-iam-v1==0.12.3
 proto-plus==1.4.0
 libcst==0.2.5
+packaging==14.3
