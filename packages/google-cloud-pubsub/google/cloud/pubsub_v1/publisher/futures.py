@@ -25,6 +25,20 @@ class Future(futures.Future):
     ID, unless an error occurs.
     """
 
+    def cancel(self):
+        """Actions in Pub/Sub generally may not be canceled.
+
+        This method always returns ``False``.
+        """
+        return False
+
+    def cancelled(self):
+        """Actions in Pub/Sub generally may not be canceled.
+
+        This method always returns ``False``.
+        """
+        return False
+
     def result(self, timeout=None):
         """Return the message ID or raise an exception.
 
@@ -43,10 +57,4 @@ class Future(futures.Future):
             Exception: For undefined exceptions in the underlying
                 call execution.
         """
-        # Attempt to get the exception if there is one.
-        # If there is not one, then we know everything worked, and we can
-        # return an appropriate value.
-        err = self.exception(timeout=timeout)
-        if err is None:
-            return self._result
-        raise err
+        return super().result(timeout=timeout)

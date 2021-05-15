@@ -20,6 +20,14 @@ from google.cloud.pubsub_v1.publisher import futures
 
 
 class TestFuture(object):
+    def test_cancel(self):
+        future = futures.Future()
+        assert future.cancel() is False
+
+    def test_cancelled(self):
+        future = futures.Future()
+        assert future.cancelled() is False
+
     def test_result_on_success(self):
         future = futures.Future()
         future.set_result("570307942214048")

@@ -380,7 +380,7 @@ class Batch(base.Batch):
 
                 # Track the future on this batch (so that the result of the
                 # future can be set).
-                future = futures.Future(completed=threading.Event())
+                future = futures.Future()
                 self._futures.append(future)
 
         # Try to commit, but it must be **without** the lock held, since

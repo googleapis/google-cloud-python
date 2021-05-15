@@ -31,13 +31,12 @@ class TestStreamingPullFuture(object):
 
     def test_default_state(self):
         future = self.make_future()
+        manager = future._StreamingPullFuture__manager
 
         assert future.running()
         assert not future.done()
         assert not future.cancelled()
-        future._manager.add_close_callback.assert_called_once_with(
-            future._on_close_callback
-        )
+        manager.add_close_callback.assert_called_once_with(future._on_close_callback)
 
     def test__on_close_callback_success(self):
         future = self.make_future()
@@ -71,8 +70,9 @@ class TestStreamingPullFuture(object):
 
     def test_cancel(self):
         future = self.make_future()
+        manager = future._StreamingPullFuture__manager
 
         future.cancel()
 
-        future._manager.close.assert_called_once()
+        manager.close.assert_called_once()
         assert future.cancelled()
