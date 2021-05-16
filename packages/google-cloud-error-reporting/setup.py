@@ -29,7 +29,7 @@ version = "1.1.2"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "google-cloud-logging>=1.14.0, <2.4",
+    "google-cloud-logging>=1.14.0, <2.5",
     "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
     "proto-plus >= 1.4.0",
     "packaging >= 14.3",
