@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
 from google.api_core import operations_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+import packaging.version
 
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.domains_v1beta1.types import domains
-from google.longrunning import operations_pb2 as operations  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
 from .base import DomainsTransport, DEFAULT_CLIENT_INFO
 from .grpc import DomainsGrpcTransport
 
@@ -56,7 +53,7 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
     def create_channel(
         cls,
         host: str = "domains.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -83,13 +80,15 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
         Returns:
             aio.Channel: A gRPC AsyncIO channel object.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers_async.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -97,7 +96,7 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
         self,
         *,
         host: str = "domains.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         channel: aio.Channel = None,
@@ -111,7 +110,8 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -170,7 +170,6 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -312,7 +311,7 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
     @property
     def register_domain(
         self,
-    ) -> Callable[[domains.RegisterDomainRequest], Awaitable[operations.Operation]]:
+    ) -> Callable[[domains.RegisterDomainRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the register domain method over gRPC.
 
         Registers a new domain name and creates a corresponding
@@ -344,7 +343,7 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
             self._stubs["register_domain"] = self.grpc_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/RegisterDomain",
                 request_serializer=domains.RegisterDomainRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["register_domain"]
 
@@ -405,7 +404,9 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
     @property
     def update_registration(
         self,
-    ) -> Callable[[domains.UpdateRegistrationRequest], Awaitable[operations.Operation]]:
+    ) -> Callable[
+        [domains.UpdateRegistrationRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the update registration method over gRPC.
 
         Updates select fields of a ``Registration`` resource, notably
@@ -432,7 +433,7 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
             self._stubs["update_registration"] = self.grpc_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/UpdateRegistration",
                 request_serializer=domains.UpdateRegistrationRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_registration"]
 
@@ -440,7 +441,8 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
     def configure_management_settings(
         self,
     ) -> Callable[
-        [domains.ConfigureManagementSettingsRequest], Awaitable[operations.Operation]
+        [domains.ConfigureManagementSettingsRequest],
+        Awaitable[operations_pb2.Operation],
     ]:
         r"""Return a callable for the configure management settings method over gRPC.
 
@@ -462,7 +464,7 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
             ] = self.grpc_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/ConfigureManagementSettings",
                 request_serializer=domains.ConfigureManagementSettingsRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["configure_management_settings"]
 
@@ -470,7 +472,7 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
     def configure_dns_settings(
         self,
     ) -> Callable[
-        [domains.ConfigureDnsSettingsRequest], Awaitable[operations.Operation]
+        [domains.ConfigureDnsSettingsRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the configure dns settings method over gRPC.
 
@@ -490,7 +492,7 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
             self._stubs["configure_dns_settings"] = self.grpc_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/ConfigureDnsSettings",
                 request_serializer=domains.ConfigureDnsSettingsRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["configure_dns_settings"]
 
@@ -498,7 +500,7 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
     def configure_contact_settings(
         self,
     ) -> Callable[
-        [domains.ConfigureContactSettingsRequest], Awaitable[operations.Operation]
+        [domains.ConfigureContactSettingsRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the configure contact settings method over gRPC.
 
@@ -519,14 +521,16 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
             self._stubs["configure_contact_settings"] = self.grpc_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/ConfigureContactSettings",
                 request_serializer=domains.ConfigureContactSettingsRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["configure_contact_settings"]
 
     @property
     def export_registration(
         self,
-    ) -> Callable[[domains.ExportRegistrationRequest], Awaitable[operations.Operation]]:
+    ) -> Callable[
+        [domains.ExportRegistrationRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the export registration method over gRPC.
 
         Exports a ``Registration`` that you no longer want to use with
@@ -558,14 +562,16 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
             self._stubs["export_registration"] = self.grpc_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/ExportRegistration",
                 request_serializer=domains.ExportRegistrationRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["export_registration"]
 
     @property
     def delete_registration(
         self,
-    ) -> Callable[[domains.DeleteRegistrationRequest], Awaitable[operations.Operation]]:
+    ) -> Callable[
+        [domains.DeleteRegistrationRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the delete registration method over gRPC.
 
         Deletes a ``Registration`` resource.
@@ -590,7 +596,7 @@ class DomainsGrpcAsyncIOTransport(DomainsTransport):
             self._stubs["delete_registration"] = self.grpc_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/DeleteRegistration",
                 request_serializer=domains.DeleteRegistrationRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_registration"]
 

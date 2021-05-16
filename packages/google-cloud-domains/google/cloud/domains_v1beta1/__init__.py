@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,16 +15,15 @@
 #
 
 from .services.domains import DomainsClient
+from .services.domains import DomainsAsyncClient
+
 from .types.domains import AuthorizationCode
 from .types.domains import ConfigureContactSettingsRequest
 from .types.domains import ConfigureDnsSettingsRequest
 from .types.domains import ConfigureManagementSettingsRequest
-from .types.domains import ContactNotice
-from .types.domains import ContactPrivacy
 from .types.domains import ContactSettings
 from .types.domains import DeleteRegistrationRequest
 from .types.domains import DnsSettings
-from .types.domains import DomainNotice
 from .types.domains import ExportRegistrationRequest
 from .types.domains import GetRegistrationRequest
 from .types.domains import ListRegistrationsRequest
@@ -41,11 +39,14 @@ from .types.domains import RetrieveRegisterParametersRequest
 from .types.domains import RetrieveRegisterParametersResponse
 from .types.domains import SearchDomainsRequest
 from .types.domains import SearchDomainsResponse
-from .types.domains import TransferLockState
 from .types.domains import UpdateRegistrationRequest
-
+from .types.domains import ContactNotice
+from .types.domains import ContactPrivacy
+from .types.domains import DomainNotice
+from .types.domains import TransferLockState
 
 __all__ = (
+    "DomainsAsyncClient",
     "AuthorizationCode",
     "ConfigureContactSettingsRequest",
     "ConfigureDnsSettingsRequest",
@@ -56,6 +57,7 @@ __all__ = (
     "DeleteRegistrationRequest",
     "DnsSettings",
     "DomainNotice",
+    "DomainsClient",
     "ExportRegistrationRequest",
     "GetRegistrationRequest",
     "ListRegistrationsRequest",
@@ -73,5 +75,4 @@ __all__ = (
     "SearchDomainsResponse",
     "TransferLockState",
     "UpdateRegistrationRequest",
-    "DomainsClient",
 )

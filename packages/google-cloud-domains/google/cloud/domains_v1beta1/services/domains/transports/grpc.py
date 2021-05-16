@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.cloud.domains_v1beta1.types import domains
-from google.longrunning import operations_pb2 as operations  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
 from .base import DomainsTransport, DEFAULT_CLIENT_INFO
 
 
@@ -53,7 +50,7 @@ class DomainsGrpcTransport(DomainsTransport):
         self,
         *,
         host: str = "domains.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -67,7 +64,8 @@ class DomainsGrpcTransport(DomainsTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -178,7 +176,7 @@ class DomainsGrpcTransport(DomainsTransport):
     def create_channel(
         cls,
         host: str = "domains.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -209,13 +207,15 @@ class DomainsGrpcTransport(DomainsTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -304,7 +304,7 @@ class DomainsGrpcTransport(DomainsTransport):
     @property
     def register_domain(
         self,
-    ) -> Callable[[domains.RegisterDomainRequest], operations.Operation]:
+    ) -> Callable[[domains.RegisterDomainRequest], operations_pb2.Operation]:
         r"""Return a callable for the register domain method over gRPC.
 
         Registers a new domain name and creates a corresponding
@@ -336,7 +336,7 @@ class DomainsGrpcTransport(DomainsTransport):
             self._stubs["register_domain"] = self.grpc_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/RegisterDomain",
                 request_serializer=domains.RegisterDomainRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["register_domain"]
 
@@ -397,7 +397,7 @@ class DomainsGrpcTransport(DomainsTransport):
     @property
     def update_registration(
         self,
-    ) -> Callable[[domains.UpdateRegistrationRequest], operations.Operation]:
+    ) -> Callable[[domains.UpdateRegistrationRequest], operations_pb2.Operation]:
         r"""Return a callable for the update registration method over gRPC.
 
         Updates select fields of a ``Registration`` resource, notably
@@ -424,14 +424,16 @@ class DomainsGrpcTransport(DomainsTransport):
             self._stubs["update_registration"] = self.grpc_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/UpdateRegistration",
                 request_serializer=domains.UpdateRegistrationRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_registration"]
 
     @property
     def configure_management_settings(
         self,
-    ) -> Callable[[domains.ConfigureManagementSettingsRequest], operations.Operation]:
+    ) -> Callable[
+        [domains.ConfigureManagementSettingsRequest], operations_pb2.Operation
+    ]:
         r"""Return a callable for the configure management settings method over gRPC.
 
         Updates a ``Registration``'s management settings.
@@ -452,14 +454,14 @@ class DomainsGrpcTransport(DomainsTransport):
             ] = self.grpc_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/ConfigureManagementSettings",
                 request_serializer=domains.ConfigureManagementSettingsRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["configure_management_settings"]
 
     @property
     def configure_dns_settings(
         self,
-    ) -> Callable[[domains.ConfigureDnsSettingsRequest], operations.Operation]:
+    ) -> Callable[[domains.ConfigureDnsSettingsRequest], operations_pb2.Operation]:
         r"""Return a callable for the configure dns settings method over gRPC.
 
         Updates a ``Registration``'s DNS settings.
@@ -478,14 +480,14 @@ class DomainsGrpcTransport(DomainsTransport):
             self._stubs["configure_dns_settings"] = self.grpc_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/ConfigureDnsSettings",
                 request_serializer=domains.ConfigureDnsSettingsRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["configure_dns_settings"]
 
     @property
     def configure_contact_settings(
         self,
-    ) -> Callable[[domains.ConfigureContactSettingsRequest], operations.Operation]:
+    ) -> Callable[[domains.ConfigureContactSettingsRequest], operations_pb2.Operation]:
         r"""Return a callable for the configure contact settings method over gRPC.
 
         Updates a ``Registration``'s contact settings. Some changes
@@ -505,14 +507,14 @@ class DomainsGrpcTransport(DomainsTransport):
             self._stubs["configure_contact_settings"] = self.grpc_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/ConfigureContactSettings",
                 request_serializer=domains.ConfigureContactSettingsRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["configure_contact_settings"]
 
     @property
     def export_registration(
         self,
-    ) -> Callable[[domains.ExportRegistrationRequest], operations.Operation]:
+    ) -> Callable[[domains.ExportRegistrationRequest], operations_pb2.Operation]:
         r"""Return a callable for the export registration method over gRPC.
 
         Exports a ``Registration`` that you no longer want to use with
@@ -544,14 +546,14 @@ class DomainsGrpcTransport(DomainsTransport):
             self._stubs["export_registration"] = self.grpc_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/ExportRegistration",
                 request_serializer=domains.ExportRegistrationRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["export_registration"]
 
     @property
     def delete_registration(
         self,
-    ) -> Callable[[domains.DeleteRegistrationRequest], operations.Operation]:
+    ) -> Callable[[domains.DeleteRegistrationRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete registration method over gRPC.
 
         Deletes a ``Registration`` resource.
@@ -576,7 +578,7 @@ class DomainsGrpcTransport(DomainsTransport):
             self._stubs["delete_registration"] = self.grpc_channel.unary_unary(
                 "/google.cloud.domains.v1beta1.Domains/DeleteRegistration",
                 request_serializer=domains.DeleteRegistrationRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_registration"]
 

@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,20 +39,19 @@ def partition(
 class domainsCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'configure_contact_settings': ('registration', 'update_mask', 'contact_settings', 'contact_notices', 'validate_only', ),
-    'configure_dns_settings': ('registration', 'update_mask', 'dns_settings', 'validate_only', ),
-    'configure_management_settings': ('registration', 'update_mask', 'management_settings', ),
-    'delete_registration': ('name', ),
-    'export_registration': ('name', ),
-    'get_registration': ('name', ),
-    'list_registrations': ('parent', 'page_size', 'page_token', 'filter', ),
-    'register_domain': ('parent', 'registration', 'yearly_price', 'domain_notices', 'contact_notices', 'validate_only', ),
-    'reset_authorization_code': ('registration', ),
-    'retrieve_authorization_code': ('registration', ),
-    'retrieve_register_parameters': ('domain_name', 'location', ),
-    'search_domains': ('query', 'location', ),
-    'update_registration': ('update_mask', 'registration', ),
-
+          'configure_contact_settings': ('registration', 'update_mask', 'contact_settings', 'contact_notices', 'validate_only', ),
+          'configure_dns_settings': ('registration', 'update_mask', 'dns_settings', 'validate_only', ),
+          'configure_management_settings': ('registration', 'update_mask', 'management_settings', ),
+          'delete_registration': ('name', ),
+          'export_registration': ('name', ),
+          'get_registration': ('name', ),
+          'list_registrations': ('parent', 'page_size', 'page_token', 'filter', ),
+          'register_domain': ('parent', 'registration', 'yearly_price', 'domain_notices', 'contact_notices', 'validate_only', ),
+          'reset_authorization_code': ('registration', ),
+          'retrieve_authorization_code': ('registration', ),
+          'retrieve_register_parameters': ('domain_name', 'location', ),
+          'search_domains': ('query', 'location', ),
+          'update_registration': ('update_mask', 'registration', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -85,7 +82,7 @@ class domainsCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that
