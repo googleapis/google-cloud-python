@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,8 @@
 #
 
 from .services.document_processor_service import DocumentProcessorServiceClient
+from .services.document_processor_service import DocumentProcessorServiceAsyncClient
+
 from .types.document import Document
 from .types.document_io import BatchDocumentsInputConfig
 from .types.document_io import DocumentOutputConfig
@@ -37,8 +38,8 @@ from .types.geometry import BoundingPoly
 from .types.geometry import NormalizedVertex
 from .types.geometry import Vertex
 
-
 __all__ = (
+    "DocumentProcessorServiceAsyncClient",
     "BatchDocumentsInputConfig",
     "BatchProcessMetadata",
     "BatchProcessRequest",
@@ -47,6 +48,7 @@ __all__ = (
     "CommonOperationMetadata",
     "Document",
     "DocumentOutputConfig",
+    "DocumentProcessorServiceClient",
     "GcsDocument",
     "GcsDocuments",
     "GcsPrefix",
@@ -59,5 +61,4 @@ __all__ = (
     "ReviewDocumentRequest",
     "ReviewDocumentResponse",
     "Vertex",
-    "DocumentProcessorServiceClient",
 )

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,10 @@
 #
 
 from .services.document_understanding_service import DocumentUnderstandingServiceClient
+from .services.document_understanding_service import (
+    DocumentUnderstandingServiceAsyncClient,
+)
+
 from .types.document import Document
 from .types.document_understanding import AutoMlParams
 from .types.document_understanding import BatchProcessDocumentsRequest
@@ -37,13 +40,14 @@ from .types.geometry import BoundingPoly
 from .types.geometry import NormalizedVertex
 from .types.geometry import Vertex
 
-
 __all__ = (
+    "DocumentUnderstandingServiceAsyncClient",
     "AutoMlParams",
     "BatchProcessDocumentsRequest",
     "BatchProcessDocumentsResponse",
     "BoundingPoly",
     "Document",
+    "DocumentUnderstandingServiceClient",
     "EntityExtractionParams",
     "FormExtractionParams",
     "GcsDestination",
@@ -59,5 +63,4 @@ __all__ = (
     "TableBoundHint",
     "TableExtractionParams",
     "Vertex",
-    "DocumentUnderstandingServiceClient",
 )

@@ -1,0 +1,43 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.documentai_v1beta2",
+  "protoPackage": "google.cloud.documentai.v1beta2",
+  "schema": "1.0",
+  "services": {
+    "DocumentUnderstandingService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "DocumentUnderstandingServiceClient",
+          "rpcs": {
+            "BatchProcessDocuments": {
+              "methods": [
+                "batch_process_documents"
+              ]
+            },
+            "ProcessDocument": {
+              "methods": [
+                "process_document"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "DocumentUnderstandingServiceAsyncClient",
+          "rpcs": {
+            "BatchProcessDocuments": {
+              "methods": [
+                "batch_process_documents"
+              ]
+            },
+            "ProcessDocument": {
+              "methods": [
+                "process_document"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
