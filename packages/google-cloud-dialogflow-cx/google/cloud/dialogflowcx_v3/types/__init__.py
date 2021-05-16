@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from .agent import (
     Agent,
     AgentValidationResult,
@@ -78,10 +76,14 @@ from .experiment import (
 from .flow import (
     CreateFlowRequest,
     DeleteFlowRequest,
+    ExportFlowRequest,
+    ExportFlowResponse,
     Flow,
     FlowValidationResult,
     GetFlowRequest,
     GetFlowValidationResultRequest,
+    ImportFlowRequest,
+    ImportFlowResponse,
     ListFlowsRequest,
     ListFlowsResponse,
     NluSettings,
@@ -165,6 +167,7 @@ from .test_case import (
     ExportTestCasesRequest,
     ExportTestCasesResponse,
     GetTestCaseRequest,
+    GetTestCaseResultRequest,
     ImportTestCasesMetadata,
     ImportTestCasesRequest,
     ImportTestCasesResponse,
@@ -278,10 +281,14 @@ __all__ = (
     "VersionVariants",
     "CreateFlowRequest",
     "DeleteFlowRequest",
+    "ExportFlowRequest",
+    "ExportFlowResponse",
     "Flow",
     "FlowValidationResult",
     "GetFlowRequest",
     "GetFlowValidationResultRequest",
+    "ImportFlowRequest",
+    "ImportFlowResponse",
     "ListFlowsRequest",
     "ListFlowsResponse",
     "NluSettings",
@@ -353,6 +360,7 @@ __all__ = (
     "ExportTestCasesRequest",
     "ExportTestCasesResponse",
     "GetTestCaseRequest",
+    "GetTestCaseResultRequest",
     "ImportTestCasesMetadata",
     "ImportTestCasesRequest",
     "ImportTestCasesResponse",

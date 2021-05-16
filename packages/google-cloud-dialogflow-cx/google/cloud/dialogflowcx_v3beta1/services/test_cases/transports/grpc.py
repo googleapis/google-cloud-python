@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,24 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import test_case
 from google.cloud.dialogflowcx_v3beta1.types import test_case as gcdc_test_case
-from google.longrunning import operations_pb2 as operations  # type: ignore
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from .base import TestCasesTransport, DEFAULT_CLIENT_INFO
 
 
@@ -56,7 +53,7 @@ class TestCasesGrpcTransport(TestCasesTransport):
         self,
         *,
         host: str = "dialogflow.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -70,7 +67,8 @@ class TestCasesGrpcTransport(TestCasesTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -112,7 +110,10 @@ class TestCasesGrpcTransport(TestCasesTransport):
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
+        self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
+        self._stubs: Dict[str, Callable] = {}
+        self._operations_client = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -120,95 +121,65 @@ class TestCasesGrpcTransport(TestCasesTransport):
             warnings.warn("client_cert_source is deprecated", DeprecationWarning)
 
         if channel:
-            # Sanity check: Ensure that channel and credentials are not both
-            # provided.
+            # Ignore credentials if a channel was passed.
             credentials = False
-
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-        elif api_mtls_endpoint:
-            host = (
-                api_mtls_endpoint
-                if ":" in api_mtls_endpoint
-                else api_mtls_endpoint + ":443"
-            )
 
-            if credentials is None:
-                credentials, _ = auth.default(
-                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
-                )
-
-            # Create SSL credentials with client_cert_source or application
-            # default SSL credentials.
-            if client_cert_source:
-                cert, key = client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
-            else:
-                ssl_credentials = SslCredentials().ssl_credentials
-
-            # create a new channel. The provided one is ignored.
-            self._grpc_channel = type(self).create_channel(
-                host,
-                credentials=credentials,
-                credentials_file=credentials_file,
-                ssl_credentials=ssl_credentials,
-                scopes=scopes or self.AUTH_SCOPES,
-                quota_project_id=quota_project_id,
-                options=[
-                    ("grpc.max_send_message_length", -1),
-                    ("grpc.max_receive_message_length", -1),
-                ],
-            )
-            self._ssl_channel_credentials = ssl_credentials
         else:
-            host = host if ":" in host else host + ":443"
+            if api_mtls_endpoint:
+                host = api_mtls_endpoint
 
-            if credentials is None:
-                credentials, _ = auth.default(
-                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
-                )
+                # Create SSL credentials with client_cert_source or application
+                # default SSL credentials.
+                if client_cert_source:
+                    cert, key = client_cert_source()
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                        certificate_chain=cert, private_key=key
+                    )
+                else:
+                    self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
-            if client_cert_source_for_mtls and not ssl_channel_credentials:
-                cert, key = client_cert_source_for_mtls()
-                self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
+            else:
+                if client_cert_source_for_mtls and not ssl_channel_credentials:
+                    cert, key = client_cert_source_for_mtls()
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                        certificate_chain=cert, private_key=key
+                    )
 
-            # create a new channel. The provided one is ignored.
-            self._grpc_channel = type(self).create_channel(
-                host,
-                credentials=credentials,
-                credentials_file=credentials_file,
-                ssl_credentials=self._ssl_channel_credentials,
-                scopes=scopes or self.AUTH_SCOPES,
-                quota_project_id=quota_project_id,
-                options=[
-                    ("grpc.max_send_message_length", -1),
-                    ("grpc.max_receive_message_length", -1),
-                ],
-            )
-
-        self._stubs = {}  # type: Dict[str, Callable]
-        self._operations_client = None
-
-        # Run the base constructor.
+        # The base transport sets the host, credentials and scopes
         super().__init__(
             host=host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes or self.AUTH_SCOPES,
+            scopes=scopes,
             quota_project_id=quota_project_id,
             client_info=client_info,
         )
+
+        if not self._grpc_channel:
+            self._grpc_channel = type(self).create_channel(
+                self._host,
+                credentials=self._credentials,
+                credentials_file=credentials_file,
+                scopes=self._scopes,
+                ssl_credentials=self._ssl_channel_credentials,
+                quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+
+        # Wrap messages. This must be done after self._grpc_channel exists
+        self._prep_wrapped_messages(client_info)
 
     @classmethod
     def create_channel(
         cls,
         host: str = "dialogflow.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -216,7 +187,7 @@ class TestCasesGrpcTransport(TestCasesTransport):
     ) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
-            address (Optional[str]): The host for the channel to use.
+            host (Optional[str]): The host for the channel to use.
             credentials (Optional[~.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If
@@ -239,13 +210,15 @@ class TestCasesGrpcTransport(TestCasesTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -298,7 +271,7 @@ class TestCasesGrpcTransport(TestCasesTransport):
     @property
     def batch_delete_test_cases(
         self,
-    ) -> Callable[[test_case.BatchDeleteTestCasesRequest], empty.Empty]:
+    ) -> Callable[[test_case.BatchDeleteTestCasesRequest], empty_pb2.Empty]:
         r"""Return a callable for the batch delete test cases method over gRPC.
 
         Batch deletes test cases.
@@ -317,7 +290,7 @@ class TestCasesGrpcTransport(TestCasesTransport):
             self._stubs["batch_delete_test_cases"] = self.grpc_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/BatchDeleteTestCases",
                 request_serializer=test_case.BatchDeleteTestCasesRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["batch_delete_test_cases"]
 
@@ -402,7 +375,7 @@ class TestCasesGrpcTransport(TestCasesTransport):
     @property
     def run_test_case(
         self,
-    ) -> Callable[[test_case.RunTestCaseRequest], operations.Operation]:
+    ) -> Callable[[test_case.RunTestCaseRequest], operations_pb2.Operation]:
         r"""Return a callable for the run test case method over gRPC.
 
         Kicks off a test case run.
@@ -421,14 +394,14 @@ class TestCasesGrpcTransport(TestCasesTransport):
             self._stubs["run_test_case"] = self.grpc_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/RunTestCase",
                 request_serializer=test_case.RunTestCaseRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["run_test_case"]
 
     @property
     def batch_run_test_cases(
         self,
-    ) -> Callable[[test_case.BatchRunTestCasesRequest], operations.Operation]:
+    ) -> Callable[[test_case.BatchRunTestCasesRequest], operations_pb2.Operation]:
         r"""Return a callable for the batch run test cases method over gRPC.
 
         Kicks off a batch run of test cases.
@@ -447,7 +420,7 @@ class TestCasesGrpcTransport(TestCasesTransport):
             self._stubs["batch_run_test_cases"] = self.grpc_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/BatchRunTestCases",
                 request_serializer=test_case.BatchRunTestCasesRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["batch_run_test_cases"]
 
@@ -482,7 +455,7 @@ class TestCasesGrpcTransport(TestCasesTransport):
     @property
     def import_test_cases(
         self,
-    ) -> Callable[[test_case.ImportTestCasesRequest], operations.Operation]:
+    ) -> Callable[[test_case.ImportTestCasesRequest], operations_pb2.Operation]:
         r"""Return a callable for the import test cases method over gRPC.
 
         Imports the test cases from a Cloud Storage bucket or
@@ -504,14 +477,14 @@ class TestCasesGrpcTransport(TestCasesTransport):
             self._stubs["import_test_cases"] = self.grpc_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/ImportTestCases",
                 request_serializer=test_case.ImportTestCasesRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["import_test_cases"]
 
     @property
     def export_test_cases(
         self,
-    ) -> Callable[[test_case.ExportTestCasesRequest], operations.Operation]:
+    ) -> Callable[[test_case.ExportTestCasesRequest], operations_pb2.Operation]:
         r"""Return a callable for the export test cases method over gRPC.
 
         Exports the test cases under the agent to a Cloud
@@ -532,7 +505,7 @@ class TestCasesGrpcTransport(TestCasesTransport):
             self._stubs["export_test_cases"] = self.grpc_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3beta1.TestCases/ExportTestCases",
                 request_serializer=test_case.ExportTestCasesRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["export_test_cases"]
 
@@ -563,6 +536,32 @@ class TestCasesGrpcTransport(TestCasesTransport):
                 response_deserializer=test_case.ListTestCaseResultsResponse.deserialize,
             )
         return self._stubs["list_test_case_results"]
+
+    @property
+    def get_test_case_result(
+        self,
+    ) -> Callable[[test_case.GetTestCaseResultRequest], test_case.TestCaseResult]:
+        r"""Return a callable for the get test case result method over gRPC.
+
+        Gets a test case result.
+
+        Returns:
+            Callable[[~.GetTestCaseResultRequest],
+                    ~.TestCaseResult]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_test_case_result" not in self._stubs:
+            self._stubs["get_test_case_result"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.TestCases/GetTestCaseResult",
+                request_serializer=test_case.GetTestCaseResultRequest.serialize,
+                response_deserializer=test_case.TestCaseResult.deserialize,
+            )
+        return self._stubs["get_test_case_result"]
 
 
 __all__ = ("TestCasesGrpcTransport",)

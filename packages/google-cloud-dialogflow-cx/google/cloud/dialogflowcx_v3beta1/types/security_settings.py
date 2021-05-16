@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -45,7 +42,7 @@ class GetSecuritySettingsRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/securitySettings/<security settings ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class UpdateSecuritySettingsRequest(proto.Message):
@@ -65,13 +62,13 @@ class UpdateSecuritySettingsRequest(proto.Message):
     security_settings = proto.Field(
         proto.MESSAGE, number=1, message="SecuritySettings",
     )
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class ListSecuritySettingsRequest(proto.Message):
     r"""The request message for [SecuritySettings.ListSecuritySettings][].
-
     Attributes:
         parent (str):
             Required. The location to list all security settings for.
@@ -84,16 +81,13 @@ class ListSecuritySettingsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListSecuritySettingsResponse(proto.Message):
     r"""The response message for [SecuritySettings.ListSecuritySettings][].
-
     Attributes:
         security_settings (Sequence[google.cloud.dialogflowcx_v3beta1.types.SecuritySettings]):
             The list of security settings.
@@ -110,13 +104,11 @@ class ListSecuritySettingsResponse(proto.Message):
     security_settings = proto.RepeatedField(
         proto.MESSAGE, number=1, message="SecuritySettings",
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class CreateSecuritySettingsRequest(proto.Message):
     r"""The request message for [SecuritySettings.CreateSecuritySettings][].
-
     Attributes:
         parent (str):
             Required. The location to create an
@@ -127,8 +119,7 @@ class CreateSecuritySettingsRequest(proto.Message):
             Required. The security settings to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     security_settings = proto.Field(
         proto.MESSAGE, number=2, message="SecuritySettings",
     )
@@ -136,7 +127,6 @@ class CreateSecuritySettingsRequest(proto.Message):
 
 class DeleteSecuritySettingsRequest(proto.Message):
     r"""The request message for [SecuritySettings.DeleteSecuritySettings][].
-
     Attributes:
         name (str):
             Required. The name of the
@@ -145,7 +135,7 @@ class DeleteSecuritySettingsRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class SecuritySettings(proto.Message):
@@ -205,18 +195,12 @@ class SecuritySettings(proto.Message):
         PURGE_DATA_TYPE_UNSPECIFIED = 0
         DIALOGFLOW_HISTORY = 1
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
     redaction_strategy = proto.Field(proto.ENUM, number=3, enum=RedactionStrategy,)
-
     redaction_scope = proto.Field(proto.ENUM, number=4, enum=RedactionScope,)
-
-    inspect_template = proto.Field(proto.STRING, number=9)
-
-    retention_window_days = proto.Field(proto.INT32, number=6, oneof="data_retention")
-
+    inspect_template = proto.Field(proto.STRING, number=9,)
+    retention_window_days = proto.Field(proto.INT32, number=6, oneof="data_retention",)
     purge_data_types = proto.RepeatedField(proto.ENUM, number=8, enum=PurgeDataType,)
 
 

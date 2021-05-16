@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -121,7 +118,6 @@ class EntityType(proto.Message):
 
     class Entity(proto.Message):
         r"""An **entity entry** for an associated entity type.
-
         Attributes:
             value (str):
                 Required. The primary value associated with this entity
@@ -147,37 +143,28 @@ class EntityType(proto.Message):
                    ``value``.
         """
 
-        value = proto.Field(proto.STRING, number=1)
-
-        synonyms = proto.RepeatedField(proto.STRING, number=2)
+        value = proto.Field(proto.STRING, number=1,)
+        synonyms = proto.RepeatedField(proto.STRING, number=2,)
 
     class ExcludedPhrase(proto.Message):
         r"""An excluded entity phrase that should not be matched.
-
         Attributes:
             value (str):
                 Required. The word or phrase to be excluded.
         """
 
-        value = proto.Field(proto.STRING, number=1)
+        value = proto.Field(proto.STRING, number=1,)
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
     kind = proto.Field(proto.ENUM, number=3, enum=Kind,)
-
     auto_expansion_mode = proto.Field(proto.ENUM, number=4, enum=AutoExpansionMode,)
-
     entities = proto.RepeatedField(proto.MESSAGE, number=5, message=Entity,)
-
     excluded_phrases = proto.RepeatedField(
         proto.MESSAGE, number=6, message=ExcludedPhrase,
     )
-
-    enable_fuzzy_extraction = proto.Field(proto.BOOL, number=7)
-
-    redact = proto.Field(proto.BOOL, number=9)
+    enable_fuzzy_extraction = proto.Field(proto.BOOL, number=7,)
+    redact = proto.Field(proto.BOOL, number=9,)
 
 
 class ListEntityTypesRequest(proto.Message):
@@ -209,13 +196,10 @@ class ListEntityTypesRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    language_code = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    language_code = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class ListEntityTypesResponse(proto.Message):
@@ -237,8 +221,7 @@ class ListEntityTypesResponse(proto.Message):
         return self
 
     entity_types = proto.RepeatedField(proto.MESSAGE, number=1, message="EntityType",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetEntityTypeRequest(proto.Message):
@@ -264,9 +247,8 @@ class GetEntityTypeRequest(proto.Message):
             before they can be used.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    language_code = proto.Field(proto.STRING, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    language_code = proto.Field(proto.STRING, number=2,)
 
 
 class CreateEntityTypeRequest(proto.Message):
@@ -293,11 +275,9 @@ class CreateEntityTypeRequest(proto.Message):
             before they can be used.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     entity_type = proto.Field(proto.MESSAGE, number=2, message="EntityType",)
-
-    language_code = proto.Field(proto.STRING, number=3)
+    language_code = proto.Field(proto.STRING, number=3,)
 
 
 class UpdateEntityTypeRequest(proto.Message):
@@ -324,10 +304,10 @@ class UpdateEntityTypeRequest(proto.Message):
     """
 
     entity_type = proto.Field(proto.MESSAGE, number=1, message="EntityType",)
-
-    language_code = proto.Field(proto.STRING, number=2)
-
-    update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
+    language_code = proto.Field(proto.STRING, number=2,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteEntityTypeRequest(proto.Message):
@@ -354,9 +334,8 @@ class DeleteEntityTypeRequest(proto.Message):
                of the entity type will be removed).
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    force = proto.Field(proto.BOOL, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    force = proto.Field(proto.BOOL, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

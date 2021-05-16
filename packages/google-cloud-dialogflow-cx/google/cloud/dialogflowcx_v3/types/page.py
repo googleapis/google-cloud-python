@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.dialogflowcx_v3.types import fulfillment
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import struct_pb2 as struct  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -122,22 +119,16 @@ class Page(proto.Message):
             input.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
     entry_fulfillment = proto.Field(
         proto.MESSAGE, number=7, message=fulfillment.Fulfillment,
     )
-
     form = proto.Field(proto.MESSAGE, number=4, message="Form",)
-
-    transition_route_groups = proto.RepeatedField(proto.STRING, number=11)
-
+    transition_route_groups = proto.RepeatedField(proto.STRING, number=11,)
     transition_routes = proto.RepeatedField(
         proto.MESSAGE, number=9, message="TransitionRoute",
     )
-
     event_handlers = proto.RepeatedField(
         proto.MESSAGE, number=10, message="EventHandler",
     )
@@ -159,7 +150,6 @@ class Form(proto.Message):
 
     class Parameter(proto.Message):
         r"""Represents a form parameter.
-
         Attributes:
             display_name (str):
                 Required. The human-readable name of the
@@ -250,26 +240,19 @@ class Form(proto.Message):
             initial_prompt_fulfillment = proto.Field(
                 proto.MESSAGE, number=3, message=fulfillment.Fulfillment,
             )
-
             reprompt_event_handlers = proto.RepeatedField(
                 proto.MESSAGE, number=5, message="EventHandler",
             )
 
-        display_name = proto.Field(proto.STRING, number=1)
-
-        required = proto.Field(proto.BOOL, number=2)
-
-        entity_type = proto.Field(proto.STRING, number=3)
-
-        is_list = proto.Field(proto.BOOL, number=4)
-
+        display_name = proto.Field(proto.STRING, number=1,)
+        required = proto.Field(proto.BOOL, number=2,)
+        entity_type = proto.Field(proto.STRING, number=3,)
+        is_list = proto.Field(proto.BOOL, number=4,)
         fill_behavior = proto.Field(
             proto.MESSAGE, number=7, message="Form.Parameter.FillBehavior",
         )
-
-        default_value = proto.Field(proto.MESSAGE, number=9, message=struct.Value,)
-
-        redact = proto.Field(proto.BOOL, number=11)
+        default_value = proto.Field(proto.MESSAGE, number=9, message=struct_pb2.Value,)
+        redact = proto.Field(proto.BOOL, number=11,)
 
     parameters = proto.RepeatedField(proto.MESSAGE, number=1, message=Parameter,)
 
@@ -312,17 +295,13 @@ class EventHandler(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=6)
-
-    event = proto.Field(proto.STRING, number=4)
-
+    name = proto.Field(proto.STRING, number=6,)
+    event = proto.Field(proto.STRING, number=4,)
     trigger_fulfillment = proto.Field(
         proto.MESSAGE, number=5, message=fulfillment.Fulfillment,
     )
-
-    target_page = proto.Field(proto.STRING, number=2, oneof="target")
-
-    target_flow = proto.Field(proto.STRING, number=3, oneof="target")
+    target_page = proto.Field(proto.STRING, number=2, oneof="target",)
+    target_flow = proto.Field(proto.STRING, number=3, oneof="target",)
 
 
 class TransitionRoute(proto.Message):
@@ -382,19 +361,14 @@ class TransitionRoute(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=6)
-
-    intent = proto.Field(proto.STRING, number=1)
-
-    condition = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=6,)
+    intent = proto.Field(proto.STRING, number=1,)
+    condition = proto.Field(proto.STRING, number=2,)
     trigger_fulfillment = proto.Field(
         proto.MESSAGE, number=3, message=fulfillment.Fulfillment,
     )
-
-    target_page = proto.Field(proto.STRING, number=4, oneof="target")
-
-    target_flow = proto.Field(proto.STRING, number=5, oneof="target")
+    target_page = proto.Field(proto.STRING, number=4, oneof="target",)
+    target_flow = proto.Field(proto.STRING, number=5, oneof="target",)
 
 
 class ListPagesRequest(proto.Message):
@@ -410,12 +384,21 @@ class ListPagesRequest(proto.Message):
             language dependent:
 
             -  ``Page.entry_fulfillment.messages``
+            -  ``Page.entry_fulfillment.conditional_cases``
+            -  ``Page.event_handlers.trigger_fulfillment.messages``
+            -  ``Page.event_handlers.trigger_fulfillment.conditional_cases``
             -  ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages``
-            -  ``Page.form.parameters.fill_behavior.reprompt_event_handlers.messages``
-            -  ``Page.transition_routes.trigger_fulfillment.messages``
             -
 
-            ``Page.transition_route_groups.transition_routes.trigger_fulfillment.messages``
+            ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.conditional_cases``
+
+            -  ``Page.form.parameters.fill_behavior.reprompt_event_handlers.messages``
+            -
+
+            ``Page.form.parameters.fill_behavior.reprompt_event_handlers.conditional_cases``
+
+            -  ``Page.transition_routes.trigger_fulfillment.messages``
+            -  ``Page.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -430,13 +413,10 @@ class ListPagesRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    language_code = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    language_code = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class ListPagesResponse(proto.Message):
@@ -458,8 +438,7 @@ class ListPagesResponse(proto.Message):
         return self
 
     pages = proto.RepeatedField(proto.MESSAGE, number=1, message="Page",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetPageRequest(proto.Message):
@@ -475,12 +454,21 @@ class GetPageRequest(proto.Message):
             are language dependent:
 
             -  ``Page.entry_fulfillment.messages``
+            -  ``Page.entry_fulfillment.conditional_cases``
+            -  ``Page.event_handlers.trigger_fulfillment.messages``
+            -  ``Page.event_handlers.trigger_fulfillment.conditional_cases``
             -  ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages``
-            -  ``Page.form.parameters.fill_behavior.reprompt_event_handlers.messages``
-            -  ``Page.transition_routes.trigger_fulfillment.messages``
             -
 
-            ``Page.transition_route_groups.transition_routes.trigger_fulfillment.messages``
+            ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.conditional_cases``
+
+            -  ``Page.form.parameters.fill_behavior.reprompt_event_handlers.messages``
+            -
+
+            ``Page.form.parameters.fill_behavior.reprompt_event_handlers.conditional_cases``
+
+            -  ``Page.transition_routes.trigger_fulfillment.messages``
+            -  ``Page.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -489,9 +477,8 @@ class GetPageRequest(proto.Message):
             before they can be used.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    language_code = proto.Field(proto.STRING, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    language_code = proto.Field(proto.STRING, number=2,)
 
 
 class CreatePageRequest(proto.Message):
@@ -508,12 +495,21 @@ class CreatePageRequest(proto.Message):
             The language of the following fields in ``page``:
 
             -  ``Page.entry_fulfillment.messages``
+            -  ``Page.entry_fulfillment.conditional_cases``
+            -  ``Page.event_handlers.trigger_fulfillment.messages``
+            -  ``Page.event_handlers.trigger_fulfillment.conditional_cases``
             -  ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages``
-            -  ``Page.form.parameters.fill_behavior.reprompt_event_handlers.messages``
-            -  ``Page.transition_routes.trigger_fulfillment.messages``
             -
 
-            ``Page.transition_route_groups.transition_routes.trigger_fulfillment.messages``
+            ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.conditional_cases``
+
+            -  ``Page.form.parameters.fill_behavior.reprompt_event_handlers.messages``
+            -
+
+            ``Page.form.parameters.fill_behavior.reprompt_event_handlers.conditional_cases``
+
+            -  ``Page.transition_routes.trigger_fulfillment.messages``
+            -  ``Page.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -522,11 +518,9 @@ class CreatePageRequest(proto.Message):
             before they can be used.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     page = proto.Field(proto.MESSAGE, number=2, message="Page",)
-
-    language_code = proto.Field(proto.STRING, number=3)
+    language_code = proto.Field(proto.STRING, number=3,)
 
 
 class UpdatePageRequest(proto.Message):
@@ -540,12 +534,21 @@ class UpdatePageRequest(proto.Message):
             The language of the following fields in ``page``:
 
             -  ``Page.entry_fulfillment.messages``
+            -  ``Page.entry_fulfillment.conditional_cases``
+            -  ``Page.event_handlers.trigger_fulfillment.messages``
+            -  ``Page.event_handlers.trigger_fulfillment.conditional_cases``
             -  ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.messages``
-            -  ``Page.form.parameters.fill_behavior.reprompt_event_handlers.messages``
-            -  ``Page.transition_routes.trigger_fulfillment.messages``
             -
 
-            ``Page.transition_route_groups.transition_routes.trigger_fulfillment.messages``
+            ``Page.form.parameters.fill_behavior.initial_prompt_fulfillment.conditional_cases``
+
+            -  ``Page.form.parameters.fill_behavior.reprompt_event_handlers.messages``
+            -
+
+            ``Page.form.parameters.fill_behavior.reprompt_event_handlers.conditional_cases``
+
+            -  ``Page.transition_routes.trigger_fulfillment.messages``
+            -  ``Page.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -559,10 +562,10 @@ class UpdatePageRequest(proto.Message):
     """
 
     page = proto.Field(proto.MESSAGE, number=1, message="Page",)
-
-    language_code = proto.Field(proto.STRING, number=2)
-
-    update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
+    language_code = proto.Field(proto.STRING, number=2,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeletePageRequest(proto.Message):
@@ -587,9 +590,8 @@ class DeletePageRequest(proto.Message):
                cleared).
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    force = proto.Field(proto.BOOL, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    force = proto.Field(proto.BOOL, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

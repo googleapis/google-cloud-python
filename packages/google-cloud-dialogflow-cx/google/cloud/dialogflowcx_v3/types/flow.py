@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.dialogflowcx_v3.types import page
 from google.cloud.dialogflowcx_v3.types import validation_message
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -39,13 +36,16 @@ __protobuf__ = proto.module(
         "ValidateFlowRequest",
         "GetFlowValidationResultRequest",
         "FlowValidationResult",
+        "ImportFlowRequest",
+        "ImportFlowResponse",
+        "ExportFlowRequest",
+        "ExportFlowResponse",
     },
 )
 
 
 class NluSettings(proto.Message):
     r"""Settings related to NLU.
-
     Attributes:
         model_type (google.cloud.dialogflowcx_v3.types.NluSettings.ModelType):
             Indicates the type of NLU model.
@@ -76,9 +76,7 @@ class NluSettings(proto.Message):
         MODEL_TRAINING_MODE_MANUAL = 2
 
     model_type = proto.Field(proto.ENUM, number=1, enum=ModelType,)
-
-    classification_threshold = proto.Field(proto.FLOAT, number=3)
-
+    classification_threshold = proto.Field(proto.FLOAT, number=3,)
     model_training_mode = proto.Field(proto.ENUM, number=4, enum=ModelTrainingMode,)
 
 
@@ -146,24 +144,31 @@ class Flow(proto.Message):
             these handlers are evaluated on a first-match basis. The
             first one that matches the event get executed, with the rest
             being ignored.
+        transition_route_groups (Sequence[str]):
+            A flow's transition route group serve two purposes:
+
+            -  They are responsible for matching the user's first
+               utterances in the flow.
+            -  They are inherited by every page's [transition route
+               groups][Page.transition_route_groups]. Transition route
+               groups defined in the page have higher priority than
+               those defined in the flow.
+
+            Format:\ ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<TransitionRouteGroup ID>``.
         nlu_settings (google.cloud.dialogflowcx_v3.types.NluSettings):
             NLU related settings of the flow.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
-    description = proto.Field(proto.STRING, number=3)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
+    description = proto.Field(proto.STRING, number=3,)
     transition_routes = proto.RepeatedField(
         proto.MESSAGE, number=4, message=page.TransitionRoute,
     )
-
     event_handlers = proto.RepeatedField(
         proto.MESSAGE, number=10, message=page.EventHandler,
     )
-
+    transition_route_groups = proto.RepeatedField(proto.STRING, number=15,)
     nlu_settings = proto.Field(proto.MESSAGE, number=11, message="NluSettings",)
 
 
@@ -181,7 +186,9 @@ class CreateFlowRequest(proto.Message):
             The language of the following fields in ``flow``:
 
             -  ``Flow.event_handlers.trigger_fulfillment.messages``
+            -  ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
             -  ``Flow.transition_routes.trigger_fulfillment.messages``
+            -  ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -190,11 +197,9 @@ class CreateFlowRequest(proto.Message):
             before they can be used.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     flow = proto.Field(proto.MESSAGE, number=2, message="Flow",)
-
-    language_code = proto.Field(proto.STRING, number=3)
+    language_code = proto.Field(proto.STRING, number=3,)
 
 
 class DeleteFlowRequest(proto.Message):
@@ -219,9 +224,8 @@ class DeleteFlowRequest(proto.Message):
                cleared).
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    force = proto.Field(proto.BOOL, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    force = proto.Field(proto.BOOL, number=2,)
 
 
 class ListFlowsRequest(proto.Message):
@@ -243,7 +247,9 @@ class ListFlowsRequest(proto.Message):
             language dependent:
 
             -  ``Flow.event_handlers.trigger_fulfillment.messages``
+            -  ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
             -  ``Flow.transition_routes.trigger_fulfillment.messages``
+            -  ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -252,13 +258,10 @@ class ListFlowsRequest(proto.Message):
             before they can be used.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
-
-    language_code = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+    language_code = proto.Field(proto.STRING, number=4,)
 
 
 class ListFlowsResponse(proto.Message):
@@ -280,8 +283,7 @@ class ListFlowsResponse(proto.Message):
         return self
 
     flows = proto.RepeatedField(proto.MESSAGE, number=1, message="Flow",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetFlowRequest(proto.Message):
@@ -297,7 +299,9 @@ class GetFlowRequest(proto.Message):
             are language dependent:
 
             -  ``Flow.event_handlers.trigger_fulfillment.messages``
+            -  ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
             -  ``Flow.transition_routes.trigger_fulfillment.messages``
+            -  ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -306,9 +310,8 @@ class GetFlowRequest(proto.Message):
             before they can be used.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    language_code = proto.Field(proto.STRING, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    language_code = proto.Field(proto.STRING, number=2,)
 
 
 class UpdateFlowRequest(proto.Message):
@@ -325,7 +328,9 @@ class UpdateFlowRequest(proto.Message):
             The language of the following fields in ``flow``:
 
             -  ``Flow.event_handlers.trigger_fulfillment.messages``
+            -  ``Flow.event_handlers.trigger_fulfillment.conditional_cases``
             -  ``Flow.transition_routes.trigger_fulfillment.messages``
+            -  ``Flow.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -335,10 +340,10 @@ class UpdateFlowRequest(proto.Message):
     """
 
     flow = proto.Field(proto.MESSAGE, number=1, message="Flow",)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
-
-    language_code = proto.Field(proto.STRING, number=3)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
+    language_code = proto.Field(proto.STRING, number=3,)
 
 
 class TrainFlowRequest(proto.Message):
@@ -351,7 +356,7 @@ class TrainFlowRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ValidateFlowRequest(proto.Message):
@@ -367,9 +372,8 @@ class ValidateFlowRequest(proto.Message):
             language is used.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    language_code = proto.Field(proto.STRING, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    language_code = proto.Field(proto.STRING, number=2,)
 
 
 class GetFlowValidationResultRequest(proto.Message):
@@ -385,9 +389,8 @@ class GetFlowValidationResultRequest(proto.Message):
             language is used.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    language_code = proto.Field(proto.STRING, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    language_code = proto.Field(proto.STRING, number=2,)
 
 
 class FlowValidationResult(proto.Message):
@@ -404,13 +407,96 @@ class FlowValidationResult(proto.Message):
             Last time the flow was validated.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     validation_messages = proto.RepeatedField(
         proto.MESSAGE, number=2, message=validation_message.ValidationMessage,
     )
+    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
 
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+
+class ImportFlowRequest(proto.Message):
+    r"""The request message for
+    [Flows.ImportFlow][google.cloud.dialogflow.cx.v3.Flows.ImportFlow].
+
+    Attributes:
+        parent (str):
+            Required. The agent to import the flow into. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+        flow_uri (str):
+            The `Google Cloud
+            Storage <https://cloud.google.com/storage/docs/>`__ URI to
+            import flow from. The format of this URI must be
+            ``gs://<bucket-name>/<object-name>``.
+        flow_content (bytes):
+            Uncompressed raw byte content for flow.
+        import_option (google.cloud.dialogflowcx_v3.types.ImportFlowRequest.ImportOption):
+            Flow import mode. If not specified, ``KEEP`` is assumed.
+    """
+
+    class ImportOption(proto.Enum):
+        r"""Import option."""
+        IMPORT_OPTION_UNSPECIFIED = 0
+        KEEP = 1
+        FALLBACK = 2
+
+    parent = proto.Field(proto.STRING, number=1,)
+    flow_uri = proto.Field(proto.STRING, number=2, oneof="flow",)
+    flow_content = proto.Field(proto.BYTES, number=3, oneof="flow",)
+    import_option = proto.Field(proto.ENUM, number=4, enum=ImportOption,)
+
+
+class ImportFlowResponse(proto.Message):
+    r"""The response message for
+    [Flows.ImportFlow][google.cloud.dialogflow.cx.v3.Flows.ImportFlow].
+
+    Attributes:
+        flow (str):
+            The unique identifier of the new flow. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+    """
+
+    flow = proto.Field(proto.STRING, number=1,)
+
+
+class ExportFlowRequest(proto.Message):
+    r"""The request message for
+    [Flows.ExportFlow][google.cloud.dialogflow.cx.v3.Flows.ExportFlow].
+
+    Attributes:
+        name (str):
+            Required. The name of the flow to export. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+        flow_uri (str):
+            Optional. The `Google Cloud
+            Storage <https://cloud.google.com/storage/docs/>`__ URI to
+            export the flow to. The format of this URI must be
+            ``gs://<bucket-name>/<object-name>``. If left unspecified,
+            the serialized flow is returned inline.
+        include_referenced_flows (bool):
+            Optional. Whether to export flows referenced
+            by the specified flow.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+    flow_uri = proto.Field(proto.STRING, number=2,)
+    include_referenced_flows = proto.Field(proto.BOOL, number=4,)
+
+
+class ExportFlowResponse(proto.Message):
+    r"""The response message for
+    [Flows.ExportFlow][google.cloud.dialogflow.cx.v3.Flows.ExportFlow].
+
+    Attributes:
+        flow_uri (str):
+            The URI to a file containing the exported flow. This field
+            is populated only if ``flow_uri`` is specified in
+            [ExportFlowRequest][google.cloud.dialogflow.cx.v3.ExportFlowRequest].
+        flow_content (bytes):
+            Uncompressed raw byte content for flow.
+    """
+
+    flow_uri = proto.Field(proto.STRING, number=1, oneof="flow",)
+    flow_content = proto.Field(proto.BYTES, number=2, oneof="flow",)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

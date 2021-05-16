@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -22,10 +20,10 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.api_core import operation  # type: ignore
@@ -33,9 +31,8 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.dialogflowcx_v3beta1.services.test_cases import pagers
 from google.cloud.dialogflowcx_v3beta1.types import test_case
 from google.cloud.dialogflowcx_v3beta1.types import test_case as gcdc_test_case
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import TestCasesTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import TestCasesGrpcAsyncIOTransport
 from .client import TestCasesClient
@@ -78,25 +75,20 @@ class TestCasesAsyncClient:
     )
     webhook_path = staticmethod(TestCasesClient.webhook_path)
     parse_webhook_path = staticmethod(TestCasesClient.parse_webhook_path)
-
     common_billing_account_path = staticmethod(
         TestCasesClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         TestCasesClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(TestCasesClient.common_folder_path)
     parse_common_folder_path = staticmethod(TestCasesClient.parse_common_folder_path)
-
     common_organization_path = staticmethod(TestCasesClient.common_organization_path)
     parse_common_organization_path = staticmethod(
         TestCasesClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(TestCasesClient.common_project_path)
     parse_common_project_path = staticmethod(TestCasesClient.parse_common_project_path)
-
     common_location_path = staticmethod(TestCasesClient.common_location_path)
     parse_common_location_path = staticmethod(
         TestCasesClient.parse_common_location_path
@@ -104,7 +96,8 @@ class TestCasesAsyncClient:
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -119,7 +112,7 @@ class TestCasesAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -136,7 +129,7 @@ class TestCasesAsyncClient:
 
     @property
     def transport(self) -> TestCasesTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             TestCasesTransport: The transport used by the client instance.
@@ -150,12 +143,12 @@ class TestCasesAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, TestCasesTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the test cases client.
+        """Instantiates the test cases client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -187,7 +180,6 @@ class TestCasesAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = TestCasesClient(
             credentials=credentials,
             transport=transport,
@@ -217,7 +209,6 @@ class TestCasesAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -247,7 +238,6 @@ class TestCasesAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -299,7 +289,6 @@ class TestCasesAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -320,7 +309,6 @@ class TestCasesAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -365,7 +353,6 @@ class TestCasesAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -390,7 +377,6 @@ class TestCasesAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -442,7 +428,6 @@ class TestCasesAsyncClient:
                 This corresponds to the ``test_case`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -467,7 +452,6 @@ class TestCasesAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if test_case is not None:
@@ -498,7 +482,7 @@ class TestCasesAsyncClient:
         request: gcdc_test_case.UpdateTestCaseRequest = None,
         *,
         test_case: gcdc_test_case.TestCase = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -525,7 +509,6 @@ class TestCasesAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -550,7 +533,6 @@ class TestCasesAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if test_case is not None:
             request.test_case = test_case
         if update_mask is not None:
@@ -592,7 +574,6 @@ class TestCasesAsyncClient:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.RunTestCaseRequest`):
                 The request object. The request message for
                 [TestCases.RunTestCase][google.cloud.dialogflow.cx.v3beta1.TestCases.RunTestCase].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -610,7 +591,6 @@ class TestCasesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = test_case.RunTestCaseRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -655,7 +635,6 @@ class TestCasesAsyncClient:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.BatchRunTestCasesRequest`):
                 The request object. The request message for
                 [TestCases.BatchRunTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.BatchRunTestCases].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -673,7 +652,6 @@ class TestCasesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = test_case.BatchRunTestCasesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -718,7 +696,6 @@ class TestCasesAsyncClient:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.CalculateCoverageRequest`):
                 The request object. The request message for
                 [TestCases.CalculateCoverage][google.cloud.dialogflow.cx.v3beta1.TestCases.CalculateCoverage].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -732,7 +709,6 @@ class TestCasesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = test_case.CalculateCoverageRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -772,7 +748,6 @@ class TestCasesAsyncClient:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.ImportTestCasesRequest`):
                 The request object. The request message for
                 [TestCases.ImportTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ImportTestCases].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -790,7 +765,6 @@ class TestCasesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = test_case.ImportTestCasesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -837,7 +811,6 @@ class TestCasesAsyncClient:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.ExportTestCasesRequest`):
                 The request object. The request message for
                 [TestCases.ExportTestCases][google.cloud.dialogflow.cx.v3beta1.TestCases.ExportTestCases].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -855,7 +828,6 @@ class TestCasesAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = test_case.ExportTestCasesRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -910,7 +882,6 @@ class TestCasesAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -940,7 +911,6 @@ class TestCasesAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -966,6 +936,77 @@ class TestCasesAsyncClient:
         response = pagers.ListTestCaseResultsAsyncPager(
             method=rpc, request=request, response=response, metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    async def get_test_case_result(
+        self,
+        request: test_case.GetTestCaseResultRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> test_case.TestCaseResult:
+        r"""Gets a test case result.
+
+        Args:
+            request (:class:`google.cloud.dialogflowcx_v3beta1.types.GetTestCaseResultRequest`):
+                The request object. The request message for
+                [TestCases.GetTestCaseResult][google.cloud.dialogflow.cx.v3beta1.TestCases.GetTestCaseResult].
+            name (:class:`str`):
+                Required. The name of the testcase. Format:
+                ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>/results/<TestCaseResult ID>``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dialogflowcx_v3beta1.types.TestCaseResult:
+                Represents a result from running a
+                test case in an agent environment.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = test_case.GetTestCaseResultRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_test_case_result,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response

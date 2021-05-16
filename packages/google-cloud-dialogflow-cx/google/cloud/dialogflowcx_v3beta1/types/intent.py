@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -91,12 +88,12 @@ class Intent(proto.Message):
             assigned to fallback intents act as negative
             examples that triggers no-match event.
         labels (Sequence[google.cloud.dialogflowcx_v3beta1.types.Intent.LabelsEntry]):
-            Optional. The key/value metadata to label an intent. Labels
-            can contain lowercase letters, digits and the symbols '-'
-            and '_'. International characters are allowed, including
-            letters from unicase alphabets. Keys must start with a
-            letter. Keys and values can be no longer than 63 characters
-            and no more than 128 bytes.
+            The key/value metadata to label an intent. Labels can
+            contain lowercase letters, digits and the symbols '-' and
+            '_'. International characters are allowed, including letters
+            from unicase alphabets. Keys must start with a letter. Keys
+            and values can be no longer than 63 characters and no more
+            than 128 bytes.
 
             Prefix "sys-" is reserved for Dialogflow defined labels.
             Currently allowed Dialogflow defined labels include:
@@ -106,10 +103,10 @@ class Intent(proto.Message):
                "sys-head" means the intent is a head intent.
                "sys-contextual" means the intent is a contextual intent.
         description (str):
-            Optional. Human readable description for
-            better understanding an intent like its scope,
-            content, result etc. Maximum character limit:
-            140 characters.
+            Human readable description for better
+            understanding an intent like its scope, content,
+            result etc. Maximum character limit: 140
+            characters.
     """
 
     class TrainingPhrase(proto.Message):
@@ -151,7 +148,6 @@ class Intent(proto.Message):
 
         class Part(proto.Message):
             r"""Represents a part of a training phrase.
-
             Attributes:
                 text (str):
                     Required. The text for this part.
@@ -163,21 +159,17 @@ class Intent(proto.Message):
                     phrase.
             """
 
-            text = proto.Field(proto.STRING, number=1)
+            text = proto.Field(proto.STRING, number=1,)
+            parameter_id = proto.Field(proto.STRING, number=2,)
 
-            parameter_id = proto.Field(proto.STRING, number=2)
-
-        id = proto.Field(proto.STRING, number=1)
-
+        id = proto.Field(proto.STRING, number=1,)
         parts = proto.RepeatedField(
             proto.MESSAGE, number=2, message="Intent.TrainingPhrase.Part",
         )
-
-        repeat_count = proto.Field(proto.INT32, number=3)
+        repeat_count = proto.Field(proto.INT32, number=3,)
 
     class Parameter(proto.Message):
         r"""Represents an intent parameter.
-
         Attributes:
             id (str):
                 Required. The unique identifier of the parameter. This field
@@ -206,31 +198,21 @@ class Intent(proto.Message):
                 is enabled.
         """
 
-        id = proto.Field(proto.STRING, number=1)
+        id = proto.Field(proto.STRING, number=1,)
+        entity_type = proto.Field(proto.STRING, number=2,)
+        is_list = proto.Field(proto.BOOL, number=3,)
+        redact = proto.Field(proto.BOOL, number=4,)
 
-        entity_type = proto.Field(proto.STRING, number=2)
-
-        is_list = proto.Field(proto.BOOL, number=3)
-
-        redact = proto.Field(proto.BOOL, number=4)
-
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
     training_phrases = proto.RepeatedField(
         proto.MESSAGE, number=3, message=TrainingPhrase,
     )
-
     parameters = proto.RepeatedField(proto.MESSAGE, number=4, message=Parameter,)
-
-    priority = proto.Field(proto.INT32, number=5)
-
-    is_fallback = proto.Field(proto.BOOL, number=6)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=7)
-
-    description = proto.Field(proto.STRING, number=8)
+    priority = proto.Field(proto.INT32, number=5,)
+    is_fallback = proto.Field(proto.BOOL, number=6,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=7,)
+    description = proto.Field(proto.STRING, number=8,)
 
 
 class ListIntentsRequest(proto.Message):
@@ -263,15 +245,11 @@ class ListIntentsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    language_code = proto.Field(proto.STRING, number=2)
-
+    parent = proto.Field(proto.STRING, number=1,)
+    language_code = proto.Field(proto.STRING, number=2,)
     intent_view = proto.Field(proto.ENUM, number=5, enum="IntentView",)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class ListIntentsResponse(proto.Message):
@@ -293,8 +271,7 @@ class ListIntentsResponse(proto.Message):
         return self
 
     intents = proto.RepeatedField(proto.MESSAGE, number=1, message="Intent",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetIntentRequest(proto.Message):
@@ -318,9 +295,8 @@ class GetIntentRequest(proto.Message):
             before they can be used.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    language_code = proto.Field(proto.STRING, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    language_code = proto.Field(proto.STRING, number=2,)
 
 
 class CreateIntentRequest(proto.Message):
@@ -345,11 +321,9 @@ class CreateIntentRequest(proto.Message):
             before they can be used.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     intent = proto.Field(proto.MESSAGE, number=2, message="Intent",)
-
-    language_code = proto.Field(proto.STRING, number=3)
+    language_code = proto.Field(proto.STRING, number=3,)
 
 
 class UpdateIntentRequest(proto.Message):
@@ -376,10 +350,10 @@ class UpdateIntentRequest(proto.Message):
     """
 
     intent = proto.Field(proto.MESSAGE, number=1, message="Intent",)
-
-    language_code = proto.Field(proto.STRING, number=2)
-
-    update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
+    language_code = proto.Field(proto.STRING, number=2,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteIntentRequest(proto.Message):
@@ -392,7 +366,7 @@ class DeleteIntentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

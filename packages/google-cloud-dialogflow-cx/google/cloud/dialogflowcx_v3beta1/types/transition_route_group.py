@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.dialogflowcx_v3beta1.types import page
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -57,10 +54,8 @@ class TransitionRouteGroup(proto.Message):
             [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
     transition_routes = proto.RepeatedField(
         proto.MESSAGE, number=5, message=page.TransitionRoute,
     )
@@ -82,11 +77,13 @@ class ListTransitionRouteGroupsRequest(proto.Message):
             The next_page_token value returned from a previous list
             request.
         language_code (str):
-            The language to list transition route groups for. The field
-            [``messages``][TransitionRoute.trigger_fulfillment.messages]
-            in
-            [TransitionRoute][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
-            is language dependent.
+            The language to list transition route groups for. The
+            following fields are language dependent:
+
+            -  ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
+            -
+
+            ``TransitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -95,13 +92,10 @@ class ListTransitionRouteGroupsRequest(proto.Message):
             before they can be used.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
-
-    language_code = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+    language_code = proto.Field(proto.STRING, number=4,)
 
 
 class ListTransitionRouteGroupsResponse(proto.Message):
@@ -128,8 +122,7 @@ class ListTransitionRouteGroupsResponse(proto.Message):
     transition_route_groups = proto.RepeatedField(
         proto.MESSAGE, number=1, message="TransitionRouteGroup",
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetTransitionRouteGroupRequest(proto.Message):
@@ -143,11 +136,13 @@ class GetTransitionRouteGroupRequest(proto.Message):
             Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``.
         language_code (str):
-            The language to list transition route groups for. The field
-            [``messages``][TransitionRoute.trigger_fulfillment.messages]
-            in
-            [TransitionRoute][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
-            is language dependent.
+            The language to retrieve the transition route group for. The
+            following fields are language dependent:
+
+            -  ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
+            -
+
+            ``TransitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -156,9 +151,8 @@ class GetTransitionRouteGroupRequest(proto.Message):
             before they can be used.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    language_code = proto.Field(proto.STRING, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    language_code = proto.Field(proto.STRING, number=2,)
 
 
 class CreateTransitionRouteGroupRequest(proto.Message):
@@ -175,11 +169,13 @@ class CreateTransitionRouteGroupRequest(proto.Message):
             Required. The transition route group to
             create.
         language_code (str):
-            The language to list transition route groups for. The field
-            [``messages``][TransitionRoute.trigger_fulfillment.messages]
-            in
-            [TransitionRoute][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
-            is language dependent.
+            The language of the following fields in
+            ``TransitionRouteGroup``:
+
+            -  ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
+            -
+
+            ``TransitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -188,13 +184,11 @@ class CreateTransitionRouteGroupRequest(proto.Message):
             before they can be used.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     transition_route_group = proto.Field(
         proto.MESSAGE, number=2, message="TransitionRouteGroup",
     )
-
-    language_code = proto.Field(proto.STRING, number=3)
+    language_code = proto.Field(proto.STRING, number=3,)
 
 
 class UpdateTransitionRouteGroupRequest(proto.Message):
@@ -208,11 +202,13 @@ class UpdateTransitionRouteGroupRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The mask to control which fields get updated.
         language_code (str):
-            The language to list transition route groups for. The field
-            [``messages``][TransitionRoute.trigger_fulfillment.messages]
-            in
-            [TransitionRoute][google.cloud.dialogflow.cx.v3beta1.TransitionRoute]
-            is language dependent.
+            The language of the following fields in
+            ``TransitionRouteGroup``:
+
+            -  ``TransitionRouteGroup.transition_routes.trigger_fulfillment.messages``
+            -
+
+            ``TransitionRouteGroup.transition_routes.trigger_fulfillment.conditional_cases``
 
             If not specified, the agent's default language is used.
             `Many
@@ -224,10 +220,10 @@ class UpdateTransitionRouteGroupRequest(proto.Message):
     transition_route_group = proto.Field(
         proto.MESSAGE, number=1, message="TransitionRouteGroup",
     )
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
-
-    language_code = proto.Field(proto.STRING, number=3)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
+    language_code = proto.Field(proto.STRING, number=3,)
 
 
 class DeleteTransitionRouteGroupRequest(proto.Message):
@@ -252,9 +248,8 @@ class DeleteTransitionRouteGroupRequest(proto.Message):
                transition route group, as well as any reference to it.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    force = proto.Field(proto.BOOL, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    force = proto.Field(proto.BOOL, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

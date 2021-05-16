@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,19 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.dialogflowcx_v3.types import audio_config
 from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
 from google.cloud.dialogflowcx_v3.types import page
 from google.cloud.dialogflowcx_v3.types import response_message
 from google.cloud.dialogflowcx_v3.types import session_entity_type
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import struct_pb2 as struct  # type: ignore
-from google.rpc import status_pb2 as status  # type: ignore
-from google.type import latlng_pb2 as latlng  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
+from google.type import latlng_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -57,7 +54,6 @@ __protobuf__ = proto.module(
 
 class DetectIntentRequest(proto.Message):
     r"""The request to detect user's intent.
-
     Attributes:
         session (str):
             Required. The name of the session this query is sent to.
@@ -86,12 +82,9 @@ class DetectIntentRequest(proto.Message):
             generate the output audio.
     """
 
-    session = proto.Field(proto.STRING, number=1)
-
+    session = proto.Field(proto.STRING, number=1,)
     query_params = proto.Field(proto.MESSAGE, number=2, message="QueryParameters",)
-
     query_input = proto.Field(proto.MESSAGE, number=3, message="QueryInput",)
-
     output_audio_config = proto.Field(
         proto.MESSAGE, number=4, message=audio_config.OutputAudioConfig,
     )
@@ -99,7 +92,6 @@ class DetectIntentRequest(proto.Message):
 
 class DetectIntentResponse(proto.Message):
     r"""The message returned from the DetectIntent method.
-
     Attributes:
         response_id (str):
             Output only. The unique identifier of the
@@ -126,12 +118,9 @@ class DetectIntentResponse(proto.Message):
             generate the output audio.
     """
 
-    response_id = proto.Field(proto.STRING, number=1)
-
+    response_id = proto.Field(proto.STRING, number=1,)
     query_result = proto.Field(proto.MESSAGE, number=2, message="QueryResult",)
-
-    output_audio = proto.Field(proto.BYTES, number=4)
-
+    output_audio = proto.Field(proto.BYTES, number=4,)
     output_audio_config = proto.Field(
         proto.MESSAGE, number=5, message=audio_config.OutputAudioConfig,
     )
@@ -202,12 +191,9 @@ class StreamingDetectIntentRequest(proto.Message):
             generate the output audio.
     """
 
-    session = proto.Field(proto.STRING, number=1)
-
+    session = proto.Field(proto.STRING, number=1,)
     query_params = proto.Field(proto.MESSAGE, number=2, message="QueryParameters",)
-
     query_input = proto.Field(proto.MESSAGE, number=3, message="QueryInput",)
-
     output_audio_config = proto.Field(
         proto.MESSAGE, number=4, message=audio_config.OutputAudioConfig,
     )
@@ -225,7 +211,13 @@ class StreamingDetectIntentResponse(proto.Message):
        what the user said. The last ``recognition_result`` has
        ``is_final`` set to ``true``.
 
-    2. The last message contains ``detect_intent_response``.
+    2. If ``enable_partial_response`` is true, the following N messages
+       (currently 1 <= N <= 4) contain ``detect_intent_response``. The
+       first (N-1) ``detect_intent_response``\ s will have
+       ``response_type`` set to ``PARTIAL``. The last
+       ``detect_intent_response`` has ``response_type`` set to
+       ``FINAL``. If ``response_type`` is false, response stream only
+       contains the final ``detect_intent_response``.
 
     Attributes:
         recognition_result (google.cloud.dialogflowcx_v3.types.StreamingRecognitionResult):
@@ -237,7 +229,6 @@ class StreamingDetectIntentResponse(proto.Message):
     recognition_result = proto.Field(
         proto.MESSAGE, number=1, oneof="response", message="StreamingRecognitionResult",
     )
-
     detect_intent_response = proto.Field(
         proto.MESSAGE, number=2, oneof="response", message="DetectIntentResponse",
     )
@@ -328,25 +319,20 @@ class StreamingRecognitionResult(proto.Message):
         END_OF_SINGLE_UTTERANCE = 2
 
     message_type = proto.Field(proto.ENUM, number=1, enum=MessageType,)
-
-    transcript = proto.Field(proto.STRING, number=2)
-
-    is_final = proto.Field(proto.BOOL, number=3)
-
-    confidence = proto.Field(proto.FLOAT, number=4)
-
-    stability = proto.Field(proto.FLOAT, number=6)
-
+    transcript = proto.Field(proto.STRING, number=2,)
+    is_final = proto.Field(proto.BOOL, number=3,)
+    confidence = proto.Field(proto.FLOAT, number=4,)
+    stability = proto.Field(proto.FLOAT, number=6,)
     speech_word_info = proto.RepeatedField(
         proto.MESSAGE, number=7, message=audio_config.SpeechWordInfo,
     )
-
-    speech_end_offset = proto.Field(proto.MESSAGE, number=8, message=duration.Duration,)
+    speech_end_offset = proto.Field(
+        proto.MESSAGE, number=8, message=duration_pb2.Duration,
+    )
 
 
 class QueryParameters(proto.Message):
     r"""Represents the parameters of a conversational query.
-
     Attributes:
         time_zone (str):
             The time zone of this conversational query from the `time
@@ -362,9 +348,20 @@ class QueryParameters(proto.Message):
             synonyms apply to all languages and persist for
             the session of this query.
         payload (google.protobuf.struct_pb2.Struct):
-            This field can be used to pass custom data
-            into the webhook associated with the agent.
-            Arbitrary JSON objects are supported.
+            This field can be used to pass custom data into the webhook
+            associated with the agent. Arbitrary JSON objects are
+            supported. Some integrations that query a Dialogflow agent
+            may provide additional information in the payload. In
+            particular, for the Dialogflow Phone Gateway integration,
+            this field has the form:
+
+            ::
+
+               {
+                "telephony": {
+                  "caller_id": "+18558363987"
+                }
+               }
         parameters (google.protobuf.struct_pb2.Struct):
             Additional parameters to be put into [session
             parameters][SessionInfo.parameters]. To remove a parameter
@@ -390,6 +387,22 @@ class QueryParameters(proto.Message):
                   from composite entity property names to property
                   values
                -  Else: parameter value
+        current_page (str):
+            The unique identifier of the
+            [page][google.cloud.dialogflow.cx.v3.Page] to override the
+            [current page][QueryResult.current_page] in the session.
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/pages/<page ID>``.
+
+            If ``current_page`` is specified, the previous state of the
+            session will be ignored by Dialogflow, including the
+            [previous page][QueryResult.current_page] and the [previous
+            session parameters][QueryResult.parameters]. In most cases,
+            [current_page][google.cloud.dialogflow.cx.v3.QueryParameters.current_page]
+            and
+            [parameters][google.cloud.dialogflow.cx.v3.QueryParameters.parameters]
+            should be configured together to direct a session to a
+            specific state.
         disable_webhook (bool):
             Whether to disable webhook calls for this
             request.
@@ -412,23 +425,17 @@ class QueryParameters(proto.Message):
             None-Match", "X-Forwarded-For", etc.
     """
 
-    time_zone = proto.Field(proto.STRING, number=1)
-
-    geo_location = proto.Field(proto.MESSAGE, number=2, message=latlng.LatLng,)
-
+    time_zone = proto.Field(proto.STRING, number=1,)
+    geo_location = proto.Field(proto.MESSAGE, number=2, message=latlng_pb2.LatLng,)
     session_entity_types = proto.RepeatedField(
         proto.MESSAGE, number=3, message=session_entity_type.SessionEntityType,
     )
-
-    payload = proto.Field(proto.MESSAGE, number=4, message=struct.Struct,)
-
-    parameters = proto.Field(proto.MESSAGE, number=5, message=struct.Struct,)
-
-    disable_webhook = proto.Field(proto.BOOL, number=7)
-
-    analyze_query_text_sentiment = proto.Field(proto.BOOL, number=8)
-
-    webhook_headers = proto.MapField(proto.STRING, proto.STRING, number=10)
+    payload = proto.Field(proto.MESSAGE, number=4, message=struct_pb2.Struct,)
+    parameters = proto.Field(proto.MESSAGE, number=5, message=struct_pb2.Struct,)
+    current_page = proto.Field(proto.STRING, number=6,)
+    disable_webhook = proto.Field(proto.BOOL, number=7,)
+    analyze_query_text_sentiment = proto.Field(proto.BOOL, number=8,)
+    webhook_headers = proto.MapField(proto.STRING, proto.STRING, number=10,)
 
 
 class QueryInput(proto.Message):
@@ -461,21 +468,15 @@ class QueryInput(proto.Message):
     """
 
     text = proto.Field(proto.MESSAGE, number=2, oneof="input", message="TextInput",)
-
     intent = proto.Field(proto.MESSAGE, number=3, oneof="input", message="IntentInput",)
-
     audio = proto.Field(proto.MESSAGE, number=5, oneof="input", message="AudioInput",)
-
     event = proto.Field(proto.MESSAGE, number=6, oneof="input", message="EventInput",)
-
     dtmf = proto.Field(proto.MESSAGE, number=7, oneof="input", message="DtmfInput",)
-
-    language_code = proto.Field(proto.STRING, number=4)
+    language_code = proto.Field(proto.STRING, number=4,)
 
 
 class QueryResult(proto.Message):
     r"""Represents the result of a conversational query.
-
     Attributes:
         text (str):
             If [natural language
@@ -484,12 +485,13 @@ class QueryResult(proto.Message):
         trigger_intent (str):
             If an [intent][google.cloud.dialogflow.cx.v3.IntentInput]
             was provided as input, this field will contain a copy of the
-            intent identifier.
+            intent identifier. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
         transcript (str):
             If [natural language speech
             audio][google.cloud.dialogflow.cx.v3.AudioInput] was
-            provided as input, this field will contain the trascript for
-            the audio.
+            provided as input, this field will contain the transcript
+            for the audio.
         trigger_event (str):
             If an [event][google.cloud.dialogflow.cx.v3.EventInput] was
             provided as input, this field will contain the name of the
@@ -573,40 +575,26 @@ class QueryResult(proto.Message):
             specified in the request.
     """
 
-    text = proto.Field(proto.STRING, number=1, oneof="query")
-
-    trigger_intent = proto.Field(proto.STRING, number=11, oneof="query")
-
-    transcript = proto.Field(proto.STRING, number=12, oneof="query")
-
-    trigger_event = proto.Field(proto.STRING, number=14, oneof="query")
-
-    language_code = proto.Field(proto.STRING, number=2)
-
-    parameters = proto.Field(proto.MESSAGE, number=3, message=struct.Struct,)
-
+    text = proto.Field(proto.STRING, number=1, oneof="query",)
+    trigger_intent = proto.Field(proto.STRING, number=11, oneof="query",)
+    transcript = proto.Field(proto.STRING, number=12, oneof="query",)
+    trigger_event = proto.Field(proto.STRING, number=14, oneof="query",)
+    language_code = proto.Field(proto.STRING, number=2,)
+    parameters = proto.Field(proto.MESSAGE, number=3, message=struct_pb2.Struct,)
     response_messages = proto.RepeatedField(
         proto.MESSAGE, number=4, message=response_message.ResponseMessage,
     )
-
     webhook_statuses = proto.RepeatedField(
-        proto.MESSAGE, number=13, message=status.Status,
+        proto.MESSAGE, number=13, message=status_pb2.Status,
     )
-
     webhook_payloads = proto.RepeatedField(
-        proto.MESSAGE, number=6, message=struct.Struct,
+        proto.MESSAGE, number=6, message=struct_pb2.Struct,
     )
-
     current_page = proto.Field(proto.MESSAGE, number=7, message=page.Page,)
-
     intent = proto.Field(proto.MESSAGE, number=8, message=gcdc_intent.Intent,)
-
-    intent_detection_confidence = proto.Field(proto.FLOAT, number=9)
-
+    intent_detection_confidence = proto.Field(proto.FLOAT, number=9,)
     match = proto.Field(proto.MESSAGE, number=15, message="Match",)
-
-    diagnostic_info = proto.Field(proto.MESSAGE, number=10, message=struct.Struct,)
-
+    diagnostic_info = proto.Field(proto.MESSAGE, number=10, message=struct_pb2.Struct,)
     sentiment_analysis_result = proto.Field(
         proto.MESSAGE, number=17, message="SentimentAnalysisResult",
     )
@@ -614,7 +602,6 @@ class QueryResult(proto.Message):
 
 class TextInput(proto.Message):
     r"""Represents the natural language text to be processed.
-
     Attributes:
         text (str):
             Required. The UTF-8 encoded natural language
@@ -622,7 +609,7 @@ class TextInput(proto.Message):
             exceed 256 characters.
     """
 
-    text = proto.Field(proto.STRING, number=1)
+    text = proto.Field(proto.STRING, number=1,)
 
 
 class IntentInput(proto.Message):
@@ -635,12 +622,11 @@ class IntentInput(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
     """
 
-    intent = proto.Field(proto.STRING, number=1)
+    intent = proto.Field(proto.STRING, number=1,)
 
 
 class AudioInput(proto.Message):
     r"""Represents the natural speech audio to be processed.
-
     Attributes:
         config (google.cloud.dialogflowcx_v3.types.InputAudioConfig):
             Required. Instructs the speech recognizer how
@@ -661,24 +647,21 @@ class AudioInput(proto.Message):
     config = proto.Field(
         proto.MESSAGE, number=1, message=audio_config.InputAudioConfig,
     )
-
-    audio = proto.Field(proto.BYTES, number=2)
+    audio = proto.Field(proto.BYTES, number=2,)
 
 
 class EventInput(proto.Message):
     r"""Represents the event to trigger.
-
     Attributes:
         event (str):
             Name of the event.
     """
 
-    event = proto.Field(proto.STRING, number=1)
+    event = proto.Field(proto.STRING, number=1,)
 
 
 class DtmfInput(proto.Message):
     r"""Represents the input for dtmf event.
-
     Attributes:
         digits (str):
             The dtmf digits.
@@ -686,14 +669,12 @@ class DtmfInput(proto.Message):
             The finish digit (if any).
     """
 
-    digits = proto.Field(proto.STRING, number=1)
-
-    finish_digit = proto.Field(proto.STRING, number=2)
+    digits = proto.Field(proto.STRING, number=1,)
+    finish_digit = proto.Field(proto.STRING, number=2,)
 
 
 class Match(proto.Message):
     r"""Represents one match result of [MatchIntent][].
-
     Attributes:
         intent (google.cloud.dialogflowcx_v3.types.Intent):
             The [Intent][google.cloud.dialogflow.cx.v3.Intent] that
@@ -756,21 +737,15 @@ class Match(proto.Message):
         EVENT = 6
 
     intent = proto.Field(proto.MESSAGE, number=1, message=gcdc_intent.Intent,)
-
-    event = proto.Field(proto.STRING, number=6)
-
-    parameters = proto.Field(proto.MESSAGE, number=2, message=struct.Struct,)
-
-    resolved_input = proto.Field(proto.STRING, number=3)
-
+    event = proto.Field(proto.STRING, number=6,)
+    parameters = proto.Field(proto.MESSAGE, number=2, message=struct_pb2.Struct,)
+    resolved_input = proto.Field(proto.STRING, number=3,)
     match_type = proto.Field(proto.ENUM, number=4, enum=MatchType,)
-
-    confidence = proto.Field(proto.FLOAT, number=5)
+    confidence = proto.Field(proto.FLOAT, number=5,)
 
 
 class MatchIntentRequest(proto.Message):
     r"""Request of [MatchIntent][].
-
     Attributes:
         session (str):
             Required. The name of the session this query is sent to.
@@ -792,16 +767,13 @@ class MatchIntentRequest(proto.Message):
             Required. The input specification.
     """
 
-    session = proto.Field(proto.STRING, number=1)
-
+    session = proto.Field(proto.STRING, number=1,)
     query_params = proto.Field(proto.MESSAGE, number=2, message="QueryParameters",)
-
     query_input = proto.Field(proto.MESSAGE, number=3, message="QueryInput",)
 
 
 class MatchIntentResponse(proto.Message):
     r"""Response of [MatchIntent][].
-
     Attributes:
         text (str):
             If [natural language
@@ -810,12 +782,13 @@ class MatchIntentResponse(proto.Message):
         trigger_intent (str):
             If an [intent][google.cloud.dialogflow.cx.v3.IntentInput]
             was provided as input, this field will contain a copy of the
-            intent identifier.
+            intent identifier. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
         transcript (str):
             If [natural language speech
             audio][google.cloud.dialogflow.cx.v3.AudioInput] was
-            provided as input, this field will contain the trascript for
-            the audio.
+            provided as input, this field will contain the transcript
+            for the audio.
         trigger_event (str):
             If an [event][google.cloud.dialogflow.cx.v3.EventInput] was
             provided as input, this field will contain a copy of the
@@ -830,22 +803,16 @@ class MatchIntentResponse(proto.Message):
             but not limited to ``name`` and ``display_name``.
     """
 
-    text = proto.Field(proto.STRING, number=1, oneof="query")
-
-    trigger_intent = proto.Field(proto.STRING, number=2, oneof="query")
-
-    transcript = proto.Field(proto.STRING, number=3, oneof="query")
-
-    trigger_event = proto.Field(proto.STRING, number=6, oneof="query")
-
+    text = proto.Field(proto.STRING, number=1, oneof="query",)
+    trigger_intent = proto.Field(proto.STRING, number=2, oneof="query",)
+    transcript = proto.Field(proto.STRING, number=3, oneof="query",)
+    trigger_event = proto.Field(proto.STRING, number=6, oneof="query",)
     matches = proto.RepeatedField(proto.MESSAGE, number=4, message="Match",)
-
     current_page = proto.Field(proto.MESSAGE, number=5, message=page.Page,)
 
 
 class FulfillIntentRequest(proto.Message):
     r"""Request of [FulfillIntent][]
-
     Attributes:
         match_intent_request (google.cloud.dialogflowcx_v3.types.MatchIntentRequest):
             Must be same as the corresponding MatchIntent
@@ -860,9 +827,7 @@ class FulfillIntentRequest(proto.Message):
     match_intent_request = proto.Field(
         proto.MESSAGE, number=1, message="MatchIntentRequest",
     )
-
     match = proto.Field(proto.MESSAGE, number=2, message="Match",)
-
     output_audio_config = proto.Field(
         proto.MESSAGE, number=3, message=audio_config.OutputAudioConfig,
     )
@@ -870,7 +835,6 @@ class FulfillIntentRequest(proto.Message):
 
 class FulfillIntentResponse(proto.Message):
     r"""Response of [FulfillIntent][]
-
     Attributes:
         response_id (str):
             Output only. The unique identifier of the
@@ -897,12 +861,9 @@ class FulfillIntentResponse(proto.Message):
             generate the output audio.
     """
 
-    response_id = proto.Field(proto.STRING, number=1)
-
+    response_id = proto.Field(proto.STRING, number=1,)
     query_result = proto.Field(proto.MESSAGE, number=2, message="QueryResult",)
-
-    output_audio = proto.Field(proto.BYTES, number=3)
-
+    output_audio = proto.Field(proto.BYTES, number=3,)
     output_audio_config = proto.Field(
         proto.MESSAGE, number=4, message=audio_config.OutputAudioConfig,
     )
@@ -924,9 +885,8 @@ class SentimentAnalysisResult(proto.Message):
             of score (positive or negative).
     """
 
-    score = proto.Field(proto.FLOAT, number=1)
-
-    magnitude = proto.Field(proto.FLOAT, number=2)
+    score = proto.Field(proto.FLOAT, number=1,)
+    magnitude = proto.Field(proto.FLOAT, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

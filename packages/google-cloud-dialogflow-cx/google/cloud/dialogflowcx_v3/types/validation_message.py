@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -26,7 +24,6 @@ __protobuf__ = proto.module(
 
 class ValidationMessage(proto.Message):
     r"""Agent/flow validation message.
-
     Attributes:
         resource_type (google.cloud.dialogflowcx_v3.types.ValidationMessage.ResourceType):
             The type of the resources where the message
@@ -68,21 +65,16 @@ class ValidationMessage(proto.Message):
         ERROR = 3
 
     resource_type = proto.Field(proto.ENUM, number=1, enum=ResourceType,)
-
-    resources = proto.RepeatedField(proto.STRING, number=2)
-
+    resources = proto.RepeatedField(proto.STRING, number=2,)
     resource_names = proto.RepeatedField(
         proto.MESSAGE, number=6, message="ResourceName",
     )
-
     severity = proto.Field(proto.ENUM, number=3, enum=Severity,)
-
-    detail = proto.Field(proto.STRING, number=4)
+    detail = proto.Field(proto.STRING, number=4,)
 
 
 class ResourceName(proto.Message):
     r"""Resource name and display name.
-
     Attributes:
         name (str):
             Name.
@@ -90,9 +82,8 @@ class ResourceName(proto.Message):
             Display name.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

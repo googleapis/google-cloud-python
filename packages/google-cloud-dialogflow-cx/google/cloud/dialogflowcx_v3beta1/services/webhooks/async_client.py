@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -22,18 +20,17 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.services.webhooks import pagers
 from google.cloud.dialogflowcx_v3beta1.types import webhook
 from google.cloud.dialogflowcx_v3beta1.types import webhook as gcdc_webhook
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import WebhooksTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import WebhooksGrpcAsyncIOTransport
 from .client import WebhooksClient
@@ -49,33 +46,31 @@ class WebhooksAsyncClient:
     DEFAULT_ENDPOINT = WebhooksClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = WebhooksClient.DEFAULT_MTLS_ENDPOINT
 
+    service_path = staticmethod(WebhooksClient.service_path)
+    parse_service_path = staticmethod(WebhooksClient.parse_service_path)
     webhook_path = staticmethod(WebhooksClient.webhook_path)
     parse_webhook_path = staticmethod(WebhooksClient.parse_webhook_path)
-
     common_billing_account_path = staticmethod(
         WebhooksClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         WebhooksClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(WebhooksClient.common_folder_path)
     parse_common_folder_path = staticmethod(WebhooksClient.parse_common_folder_path)
-
     common_organization_path = staticmethod(WebhooksClient.common_organization_path)
     parse_common_organization_path = staticmethod(
         WebhooksClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(WebhooksClient.common_project_path)
     parse_common_project_path = staticmethod(WebhooksClient.parse_common_project_path)
-
     common_location_path = staticmethod(WebhooksClient.common_location_path)
     parse_common_location_path = staticmethod(WebhooksClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -90,7 +85,7 @@ class WebhooksAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -107,7 +102,7 @@ class WebhooksAsyncClient:
 
     @property
     def transport(self) -> WebhooksTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             WebhooksTransport: The transport used by the client instance.
@@ -121,12 +116,12 @@ class WebhooksAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, WebhooksTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the webhooks client.
+        """Instantiates the webhooks client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -158,7 +153,6 @@ class WebhooksAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = WebhooksClient(
             credentials=credentials,
             transport=transport,
@@ -189,7 +183,6 @@ class WebhooksAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -219,7 +212,6 @@ class WebhooksAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -271,7 +263,6 @@ class WebhooksAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -303,7 +294,6 @@ class WebhooksAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -355,7 +345,6 @@ class WebhooksAsyncClient:
                 This corresponds to the ``webhook`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -387,7 +376,6 @@ class WebhooksAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if webhook is not None:
@@ -418,7 +406,7 @@ class WebhooksAsyncClient:
         request: gcdc_webhook.UpdateWebhookRequest = None,
         *,
         webhook: gcdc_webhook.Webhook = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -442,7 +430,6 @@ class WebhooksAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -474,7 +461,6 @@ class WebhooksAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if webhook is not None:
             request.webhook = webhook
         if update_mask is not None:
@@ -524,7 +510,6 @@ class WebhooksAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -545,7 +530,6 @@ class WebhooksAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
