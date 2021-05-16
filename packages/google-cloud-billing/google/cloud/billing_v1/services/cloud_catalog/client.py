@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -34,7 +32,6 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.billing_v1.services.cloud_catalog import pagers
 from google.cloud.billing_v1.types import cloud_catalog
-
 from .transports.base import CloudCatalogTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import CloudCatalogGrpcTransport
 from .transports.grpc_asyncio import CloudCatalogGrpcAsyncIOTransport
@@ -53,7 +50,7 @@ class CloudCatalogClientMeta(type):
     _transport_registry["grpc_asyncio"] = CloudCatalogGrpcAsyncIOTransport
 
     def get_transport_class(cls, label: str = None,) -> Type[CloudCatalogTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -79,7 +76,8 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -113,7 +111,8 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -130,7 +129,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -149,38 +148,39 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
     @property
     def transport(self) -> CloudCatalogTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            CloudCatalogTransport: The transport used by the client instance.
+            CloudCatalogTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
     @staticmethod
     def service_path(service: str,) -> str:
-        """Return a fully-qualified service string."""
+        """Returns a fully-qualified service string."""
         return "services/{service}".format(service=service,)
 
     @staticmethod
     def parse_service_path(path: str) -> Dict[str, str]:
-        """Parse a service path into its component segments."""
+        """Parses a service path into its component segments."""
         m = re.match(r"^services/(?P<service>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
     def sku_path(service: str, sku: str,) -> str:
-        """Return a fully-qualified sku string."""
+        """Returns a fully-qualified sku string."""
         return "services/{service}/skus/{sku}".format(service=service, sku=sku,)
 
     @staticmethod
     def parse_sku_path(path: str) -> Dict[str, str]:
-        """Parse a sku path into its component segments."""
+        """Parses a sku path into its component segments."""
         m = re.match(r"^services/(?P<service>.+?)/skus/(?P<sku>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -193,7 +193,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -204,7 +204,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -215,7 +215,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -226,7 +226,7 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -240,12 +240,12 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, CloudCatalogTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the cloud catalog client.
+        """Instantiates the cloud catalog client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -300,9 +300,10 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -314,12 +315,14 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -334,8 +337,8 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -363,7 +366,6 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         Args:
             request (google.cloud.billing_v1.types.ListServicesRequest):
                 The request object. Request message for `ListServices`.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -379,7 +381,6 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-
         # Minor optimization to avoid making a copy if the user passes
         # in a cloud_catalog.ListServicesRequest.
         # There's no risk of modifying the input as we've already verified
@@ -425,7 +426,6 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -456,10 +456,8 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         # there are no flattened fields.
         if not isinstance(request, cloud_catalog.ListSkusRequest):
             request = cloud_catalog.ListSkusRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
