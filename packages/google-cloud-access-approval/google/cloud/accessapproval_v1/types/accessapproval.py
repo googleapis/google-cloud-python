@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -56,7 +53,6 @@ class EnrollmentLevel(proto.Enum):
 
 class AccessLocations(proto.Message):
     r"""Home office and physical location of the principal.
-
     Attributes:
         principal_office_country (str):
             The "home office" location of the principal.
@@ -94,14 +90,12 @@ class AccessLocations(proto.Message):
             - ANY: Any location
     """
 
-    principal_office_country = proto.Field(proto.STRING, number=1)
-
-    principal_physical_location_country = proto.Field(proto.STRING, number=2)
+    principal_office_country = proto.Field(proto.STRING, number=1,)
+    principal_physical_location_country = proto.Field(proto.STRING, number=2,)
 
 
 class AccessReason(proto.Message):
     r"""
-
     Attributes:
         type_ (google.cloud.accessapproval_v1.types.AccessReason.Type):
             Type of access justification.
@@ -118,8 +112,7 @@ class AccessReason(proto.Message):
         GOOGLE_INITIATED_REVIEW = 3
 
     type_ = proto.Field(proto.ENUM, number=1, enum=Type,)
-
-    detail = proto.Field(proto.STRING, number=2)
+    detail = proto.Field(proto.STRING, number=2,)
 
 
 class ApproveDecision(proto.Message):
@@ -133,38 +126,38 @@ class ApproveDecision(proto.Message):
             The time at which the approval expires.
     """
 
-    approve_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
-
-    expire_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
+    approve_time = proto.Field(
+        proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+    )
+    expire_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
 
 
 class DismissDecision(proto.Message):
     r"""A decision that has been made to dismiss an approval request.
-
     Attributes:
         dismiss_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the approval request was
             dismissed.
     """
 
-    dismiss_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
+    dismiss_time = proto.Field(
+        proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+    )
 
 
 class ResourceProperties(proto.Message):
     r"""The properties associated with the resource of the request.
-
     Attributes:
         excludes_descendants (bool):
             Whether an approval will exclude the
             descendants of the resource being requested.
     """
 
-    excludes_descendants = proto.Field(proto.BOOL, number=1)
+    excludes_descendants = proto.Field(proto.BOOL, number=1,)
 
 
 class ApprovalRequest(proto.Message):
     r"""A request for the customer to approve access to a resource.
-
     Attributes:
         name (str):
             The resource name of the request. Format is
@@ -200,30 +193,24 @@ class ApprovalRequest(proto.Message):
             The request was dismissed.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    requested_resource_name = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    requested_resource_name = proto.Field(proto.STRING, number=2,)
     requested_resource_properties = proto.Field(
         proto.MESSAGE, number=9, message="ResourceProperties",
     )
-
     requested_reason = proto.Field(proto.MESSAGE, number=3, message="AccessReason",)
-
     requested_locations = proto.Field(
         proto.MESSAGE, number=4, message="AccessLocations",
     )
-
-    request_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
-
-    requested_expiration = proto.Field(
-        proto.MESSAGE, number=6, message=timestamp.Timestamp,
+    request_time = proto.Field(
+        proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
     )
-
+    requested_expiration = proto.Field(
+        proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,
+    )
     approve = proto.Field(
         proto.MESSAGE, number=7, oneof="decision", message="ApproveDecision",
     )
-
     dismiss = proto.Field(
         proto.MESSAGE, number=8, oneof="decision", message="DismissDecision",
     )
@@ -252,8 +239,7 @@ class EnrolledService(proto.Message):
             The enrollment level of the service.
     """
 
-    cloud_product = proto.Field(proto.STRING, number=1)
-
+    cloud_product = proto.Field(proto.STRING, number=1,)
     enrollment_level = proto.Field(proto.ENUM, number=2, enum="EnrollmentLevel",)
 
 
@@ -300,20 +286,16 @@ class AccessApprovalSettings(proto.Message):
             ancestors).
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    notification_emails = proto.RepeatedField(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    notification_emails = proto.RepeatedField(proto.STRING, number=2,)
     enrolled_services = proto.RepeatedField(
         proto.MESSAGE, number=3, message="EnrolledService",
     )
-
-    enrolled_ancestor = proto.Field(proto.BOOL, number=4)
+    enrolled_ancestor = proto.Field(proto.BOOL, number=4,)
 
 
 class ListApprovalRequestsMessage(proto.Message):
     r"""Request to list approval requests.
-
     Attributes:
         parent (str):
             The parent resource. This may be "projects/{project_id}",
@@ -335,18 +317,14 @@ class ListApprovalRequestsMessage(proto.Message):
             return.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class ListApprovalRequestsResponse(proto.Message):
     r"""Response to listing of ApprovalRequest objects.
-
     Attributes:
         approval_requests (Sequence[google.cloud.accessapproval_v1.types.ApprovalRequest]):
             Approval request details.
@@ -362,24 +340,21 @@ class ListApprovalRequestsResponse(proto.Message):
     approval_requests = proto.RepeatedField(
         proto.MESSAGE, number=1, message="ApprovalRequest",
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetApprovalRequestMessage(proto.Message):
     r"""Request to get an approval request.
-
     Attributes:
         name (str):
             Name of the approval request to retrieve.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ApproveApprovalRequestMessage(proto.Message):
     r"""Request to approve an ApprovalRequest.
-
     Attributes:
         name (str):
             Name of the approval request to approve.
@@ -387,37 +362,33 @@ class ApproveApprovalRequestMessage(proto.Message):
             The expiration time of this approval.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    expire_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
+    name = proto.Field(proto.STRING, number=1,)
+    expire_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
 
 
 class DismissApprovalRequestMessage(proto.Message):
     r"""Request to dismiss an approval request.
-
     Attributes:
         name (str):
             Name of the ApprovalRequest to dismiss.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class GetAccessApprovalSettingsMessage(proto.Message):
     r"""Request to get access approval settings.
-
     Attributes:
         name (str):
             Name of the AccessApprovalSettings to
             retrieve.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class UpdateAccessApprovalSettingsMessage(proto.Message):
     r"""Request to update access approval settings.
-
     Attributes:
         settings (google.cloud.accessapproval_v1.types.AccessApprovalSettings):
             The new AccessApprovalSettings.
@@ -436,19 +407,19 @@ class UpdateAccessApprovalSettingsMessage(proto.Message):
     """
 
     settings = proto.Field(proto.MESSAGE, number=1, message="AccessApprovalSettings",)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteAccessApprovalSettingsMessage(proto.Message):
     r"""Request to delete access approval settings.
-
     Attributes:
         name (str):
             Name of the AccessApprovalSettings to delete.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

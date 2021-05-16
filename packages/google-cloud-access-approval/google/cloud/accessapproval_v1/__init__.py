@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,8 @@
 #
 
 from .services.access_approval import AccessApprovalClient
+from .services.access_approval import AccessApprovalAsyncClient
+
 from .types.accessapproval import AccessApprovalSettings
 from .types.accessapproval import AccessLocations
 from .types.accessapproval import AccessReason
@@ -26,16 +27,17 @@ from .types.accessapproval import DeleteAccessApprovalSettingsMessage
 from .types.accessapproval import DismissApprovalRequestMessage
 from .types.accessapproval import DismissDecision
 from .types.accessapproval import EnrolledService
-from .types.accessapproval import EnrollmentLevel
 from .types.accessapproval import GetAccessApprovalSettingsMessage
 from .types.accessapproval import GetApprovalRequestMessage
 from .types.accessapproval import ListApprovalRequestsMessage
 from .types.accessapproval import ListApprovalRequestsResponse
 from .types.accessapproval import ResourceProperties
 from .types.accessapproval import UpdateAccessApprovalSettingsMessage
-
+from .types.accessapproval import EnrollmentLevel
 
 __all__ = (
+    "AccessApprovalAsyncClient",
+    "AccessApprovalClient",
     "AccessApprovalSettings",
     "AccessLocations",
     "AccessReason",
@@ -53,5 +55,4 @@ __all__ = (
     "ListApprovalRequestsResponse",
     "ResourceProperties",
     "UpdateAccessApprovalSettingsMessage",
-    "AccessApprovalClient",
 )
