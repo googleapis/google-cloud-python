@@ -1,19 +1,20 @@
-Python Client for Web Risk API (`Alpha`_)
-=========================================
+Python Client for Web Risk API
+==============================
 
+|ga| |pypi| |versions|
 
-
-**Note:** Cloud Web Risk is not yet publicly available. You must be whitelisted in order to gain access. See `Setting up the Web Risk API`_ in the product documentation for a link to the sign-up form.
-
-.. _Setting up the Web Risk API:
-
-`Web Risk API`: https://cloud.google.com/web-risk/docs/quickstart
+.. _Setting up Web Risk: https://cloud.google.com/web-risk/docs/quickstart
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. _Alpha: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
-.. _Web Risk API: https://cloud.google.com/web-risk
+.. |ga| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#ga-support
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-webrisk.svg
+   :target: https://pypi.org/project/google-cloud-webrisk/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-webrisk.svg
+   :target: https://pypi.org/project/google-cloud-webrisk/
+
 .. _Client Library Documentation: https://googleapis.dev/python/webrisk/latest
 .. _Product Documentation:  https://cloud.google.com/web-risk
 
