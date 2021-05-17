@@ -35,7 +35,7 @@ setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/googleapis/python-private-ca",
+    url="https://github.com/googleapis/python-security-private-ca",
     packages=setuptools.PEP420PackageFinder.find(),
     namespace_packages=("google", "google.cloud", "google.cloud.security"),
     platforms="Posix; MacOS X; Windows",
