@@ -6,6 +6,7 @@
   "issue_tracker": "",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-access-approval",
   "distribution_name": "google-cloud-access-approval",
   "api_id": "accessapproval.googleapis.com"
