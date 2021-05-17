@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+### [2.4.1](https://www.github.com/googleapis/python-container/compare/v2.4.0...v2.4.1) (2021-05-16)
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#97](https://www.github.com/googleapis/python-container/issues/97)) ([1c46866](https://www.github.com/googleapis/python-container/commit/1c468663bd59bcb529311bd5736861b332a269b3))
+
 ## [2.4.0](https://www.github.com/googleapis/python-container/compare/v2.3.1...v2.4.0) (2021-03-24)
 
 
