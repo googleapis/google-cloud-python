@@ -18,47 +18,36 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
-versions = ["v1p1beta1", "v1"]
 
+default_version = "v1"
 
-# ----------------------------------------------------------------------------
-# Generate speech GAPIC layer
-# ----------------------------------------------------------------------------
-for version in versions:
-    library = gapic.py_library(
-        service="speech",
-        version=version,
-        bazel_target=f"//google/cloud/speech/{version}:speech-{version}-py",
-        include_protos=True,
-    )
-
-    # Don't move over __init__.py, as we modify it to make the generated client
-    # use helpers.py.
-    s.move(library, excludes=["setup.py", "docs/index.rst", "README.rst"])
-
-
-# Add the manually written SpeechHelpers to v1 and v1p1beta1
-# See google/cloud/speech_v1/helpers.py for details
-count = s.replace(
-["google/cloud/speech_v1/__init__.py", "google/cloud/speech_v1p1beta1/__init__.py"],
-"""__all__ = \(""",
-"""from google.cloud.speech_v1.helpers import SpeechHelpers
+for library in s.get_staging_dirs(default_version):
+    # Add the manually written SpeechHelpers to v1 and v1p1beta1
+    # See google/cloud/speech_v1/helpers.py for details
+    count = s.replace(library / f"google/cloud/speech_{library.name}/__init__.py",
+                        """__all__ = \(""",
+                        """from google.cloud.speech_v1.helpers import SpeechHelpers
 
 class SpeechClient(SpeechHelpers, SpeechClient):
     __doc__ = SpeechClient.__doc__
 
 __all__ = (
-""",
-    )
+                        """,
+                    )
 
-# Import from speech_v1 to get the client with SpeechHelpers
-count = s.replace(
-"google/cloud/speech/__init__.py",
-"""from google\.cloud\.speech_v1\.services\.speech\.client import SpeechClient""",
-"""from google.cloud.speech_v1 import SpeechClient"""
-)
+    if library.name == "v1":
+        # Import from speech_v1 to get the client with SpeechHelpers
+        count = s.replace(library / "google/cloud/speech/__init__.py",
+            """from google\.cloud\.speech_v1\.services\.speech\.client import SpeechClient""",
+            """from google.cloud.speech_v1 import SpeechClient"""
+            )
+
+    # Don't move over __init__.py, as we modify it to make the generated client
+    # use helpers.py.
+    s.move(library, excludes=["setup.py", "docs/index.rst", "README.rst"])
+
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
