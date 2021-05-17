@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559663",
   "release_level": "beta",
   "language": "python",
+  "library_type": "GAPIC_MANUAL",
   "repo": "googleapis/python-runtimeconfig",
   "distribution_name": "google-cloud-runtimeconfig",
   "api_id": "runtimeconfig.googleapis.com",
