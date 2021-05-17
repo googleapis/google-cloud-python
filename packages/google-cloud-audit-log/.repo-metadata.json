@@ -6,6 +6,7 @@
     "issue_tracker": "",
     "release_level": "beta",
     "language": "python",
+    "library_type": "OTHER",
     "repo": "googleapis/python-audit-log",
     "distribution_name": "google-cloud-audit-log",
     "api_id": ""
