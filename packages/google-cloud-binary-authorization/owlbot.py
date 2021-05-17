@@ -20,28 +20,20 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate binary authorization GAPIC layer
-# ----------------------------------------------------------------------------
-versions = ["v1beta1"]
-for version in versions:
-    library = gapic.py_library(
-        service="binaryauthorization",
-        version=version,
-        bazel_target=f"//google/cloud/binaryauthorization/{version}:binaryauthorization-{version}-py",
+default_version = "v1beta1"
+
+for library in s.get_staging_dirs(default_version):
+    # Rename package to 'google-cloud-binary-authorization'
+    s.replace(
+        [library / "google/**/*.py", library / "tests/**/*.py"],
+        "google-cloud-binaryauthorization",
+        "google-cloud-binary-authorization",
     )
+    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
-s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
-
-# Rename package to 'google-cloud-binary-authorization'
-s.replace(
-    ["google/**/*.py", "tests/**/*.py"],
-    "google-cloud-binaryauthorization",
-    "google-cloud-binary-authorization",
-)
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
