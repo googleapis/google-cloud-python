@@ -19,20 +19,14 @@ import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate analytics admin GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="admin",
-    version="v1alpha",
-    bazel_target="//google/analytics/admin/v1alpha:google-analytics-admin-v1alpha-py",
+default_version = "v1alpha"
 
-)
+for library in s.get_staging_dirs(default_version):
+    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
-s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
@@ -48,4 +42,3 @@ s.replace("noxfile.py",
 '''"--cov=google.analytics",''')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
-
