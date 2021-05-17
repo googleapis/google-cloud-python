@@ -60,7 +60,6 @@ class SpeechClient(SpeechHelpers, SpeechClient):
 
 
 __all__ = (
-    "AdaptationClient",
     "CreateCustomClassRequest",
     "CreatePhraseSetRequest",
     "CustomClass",
@@ -83,6 +82,7 @@ __all__ = (
     "RecognizeResponse",
     "SpeakerDiarizationConfig",
     "SpeechAdaptation",
+    "SpeechClient",
     "SpeechContext",
     "SpeechRecognitionAlternative",
     "SpeechRecognitionResult",
@@ -94,5 +94,5 @@ __all__ = (
     "UpdateCustomClassRequest",
     "UpdatePhraseSetRequest",
     "WordInfo",
-    "SpeechClient",
+    "AdaptationClient",
 )
