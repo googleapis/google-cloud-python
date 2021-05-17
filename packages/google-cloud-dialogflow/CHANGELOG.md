@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.1.2...v2.2.0) (2021-05-16)
+
+
+### Features
+
+* added Fulfillment service ([1b39fc0](https://www.github.com/googleapis/python-dialogflow/commit/1b39fc00108af7b00cd8fbc3975a2bcf403b5749))
+* added location in some resource patterns ([1b39fc0](https://www.github.com/googleapis/python-dialogflow/commit/1b39fc00108af7b00cd8fbc3975a2bcf403b5749))
+* added location-aware HTTP path binding for ListIntents ([#294](https://www.github.com/googleapis/python-dialogflow/issues/294)) ([1f71e77](https://www.github.com/googleapis/python-dialogflow/commit/1f71e7788eb996e118767b83818227931750902e))
+* added more Environment RPCs ([1b39fc0](https://www.github.com/googleapis/python-dialogflow/commit/1b39fc00108af7b00cd8fbc3975a2bcf403b5749))
+* added TextToSpeechSettings. ([1b39fc0](https://www.github.com/googleapis/python-dialogflow/commit/1b39fc00108af7b00cd8fbc3975a2bcf403b5749))
+* added Versions service ([1b39fc0](https://www.github.com/googleapis/python-dialogflow/commit/1b39fc00108af7b00cd8fbc3975a2bcf403b5749))
+* support self-signed JWT flow for service accounts ([1b39fc0](https://www.github.com/googleapis/python-dialogflow/commit/1b39fc00108af7b00cd8fbc3975a2bcf403b5749))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([1b39fc0](https://www.github.com/googleapis/python-dialogflow/commit/1b39fc00108af7b00cd8fbc3975a2bcf403b5749))
+* **deps:** add packaging requirement ([#293](https://www.github.com/googleapis/python-dialogflow/issues/293)) ([a9f970c](https://www.github.com/googleapis/python-dialogflow/commit/a9f970c98e62c362f8aa71c26b14d68eaeccbbbd))
+* removed incorrect resource annotation for UpdateEnvironmentRequest. ([1b39fc0](https://www.github.com/googleapis/python-dialogflow/commit/1b39fc00108af7b00cd8fbc3975a2bcf403b5749))
+
 ### [2.1.2](https://www.github.com/googleapis/python-dialogflow/compare/v2.1.1...v2.1.2) (2021-04-13)
 
 
