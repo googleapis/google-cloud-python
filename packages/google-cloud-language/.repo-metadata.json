@@ -6,6 +6,7 @@
   "issue_tracker": "https://issuetracker.google.com/savedsearches/559753",
   "release_level": "ga",
   "language": "python",
+  "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-language",
   "distribution_name": "google-cloud-language",
   "api_id": "language.googleapis.com",
