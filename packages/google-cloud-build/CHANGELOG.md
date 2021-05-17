@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+### [3.2.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.2.0...v3.2.1) (2021-05-16)
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#101](https://www.github.com/googleapis/python-cloudbuild/issues/101)) ([9563889](https://www.github.com/googleapis/python-cloudbuild/commit/956388912b5aab80375c1a2439d934f211627e3a))
+
 ## [3.2.0](https://www.github.com/googleapis/python-cloudbuild/compare/v3.1.1...v3.2.0) (2021-04-01)
 
 
