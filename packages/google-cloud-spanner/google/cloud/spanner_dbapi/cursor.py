@@ -206,7 +206,12 @@ class Cursor(object):
                 (self._result_set, self._checksum,) = self.connection.run_statement(
                     statement
                 )
-                self._itr = PeekIterator(self._result_set)
+                while True:
+                    try:
+                        self._itr = PeekIterator(self._result_set)
+                        break
+                    except Aborted:
+                        self.connection.retry_transaction()
                 return
 
             if classification == parse_utils.STMT_NON_UPDATING:
@@ -352,7 +357,12 @@ class Cursor(object):
                 self._result_set = res
                 # Read the first element so that the StreamedResultSet can
                 # return the metadata after a DQL statement. See issue #155.
-                self._itr = PeekIterator(self._result_set)
+                while True:
+                    try:
+                        self._itr = PeekIterator(self._result_set)
+                        break
+                    except Aborted:
+                        self.connection.retry_transaction()
                 # Unfortunately, Spanner doesn't seem to send back
                 # information about the number of rows available.
                 self._row_count = _UNSET_COUNT
