@@ -609,6 +609,58 @@ class TestIterator(unittest.TestCase):
         self.assertIsNone(page)
         ds_api.run_query.assert_not_called()
 
+    def test__next_page_w_skipped_lt_offset(self):
+        from google.api_core import page_iterator
+        from google.cloud.datastore_v1.types import datastore as datastore_pb2
+        from google.cloud.datastore_v1.types import entity as entity_pb2
+        from google.cloud.datastore_v1.types import query as query_pb2
+        from google.cloud.datastore.query import Query
+
+        project = "prujekt"
+        skipped_1 = 100
+        skipped_cursor_1 = b"DEADBEEF"
+        skipped_2 = 50
+        skipped_cursor_2 = b"FACEDACE"
+
+        more_enum = query_pb2.QueryResultBatch.MoreResultsType.NOT_FINISHED
+
+        result_1 = _make_query_response([], b"", more_enum, skipped_1)
+        result_1.batch.skipped_cursor = skipped_cursor_1
+        result_2 = _make_query_response([], b"", more_enum, skipped_2)
+        result_2.batch.skipped_cursor = skipped_cursor_2
+
+        ds_api = _make_datastore_api(result_1, result_2)
+        client = _Client(project, datastore_api=ds_api)
+
+        query = Query(client)
+        offset = 150
+        iterator = self._make_one(query, client, offset=offset)
+
+        page = iterator._next_page()
+
+        self.assertIsInstance(page, page_iterator.Page)
+        self.assertIs(page._parent, iterator)
+
+        partition_id = entity_pb2.PartitionId(project_id=project)
+        read_options = datastore_pb2.ReadOptions()
+
+        query_1 = query_pb2.Query(offset=offset)
+        query_2 = query_pb2.Query(
+            start_cursor=skipped_cursor_1, offset=(offset - skipped_1)
+        )
+        expected_calls = [
+            mock.call(
+                request={
+                    "project_id": project,
+                    "partition_id": partition_id,
+                    "read_options": read_options,
+                    "query": query,
+                }
+            )
+            for query in [query_1, query_2]
+        ]
+        self.assertEqual(ds_api.run_query.call_args_list, expected_calls)
+
 
 class Test__item_to_entity(unittest.TestCase):
     def _call_fut(self, iterator, entity_pb):
@@ -789,6 +841,10 @@ def _make_query_response(
     )
 
 
-def _make_datastore_api(result=None):
-    run_query = mock.Mock(return_value=result, spec=[])
+def _make_datastore_api(*results):
+    if len(results) == 0:
+        run_query = mock.Mock(return_value=None, spec=[])
+    else:
+        run_query = mock.Mock(side_effect=results, spec=[])
+
     return mock.Mock(run_query=run_query, spec=["run_query"])

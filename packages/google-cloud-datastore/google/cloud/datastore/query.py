@@ -593,8 +593,12 @@ class Iterator(page_iterator.Iterator):
             # skipped all of the results yet. Don't return any results.
             # Instead, rerun query, adjusting offsets. Datastore doesn't process
             # more than 1000 skipped results in a query.
+            old_query_pb = query_pb
+            query_pb = query_pb2.Query()
+            query_pb._pb.CopyFrom(old_query_pb._pb)  # copy for testability
             query_pb.start_cursor = response_pb.batch.skipped_cursor
             query_pb.offset -= response_pb.batch.skipped_results
+
             response_pb = self.client._datastore_api.run_query(
                 request={
                     "project_id": self._query.project,
@@ -604,6 +608,7 @@ class Iterator(page_iterator.Iterator):
                 },
                 **kwargs,
             )
+
         entity_pbs = self._process_query_results(response_pb)
         return page_iterator.Page(self, entity_pbs, self.item_to_value)
 
