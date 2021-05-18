@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-resumable-media/#history
 
+## [1.3.0](https://www.github.com/googleapis/google-resumable-media-python/compare/v1.2.0...v1.3.0) (2021-05-18)
+
+
+### Features
+
+* allow RetryStrategy to be configured with a custom initial wait and multiplier ([#216](https://www.github.com/googleapis/google-resumable-media-python/issues/216)) ([579a54b](https://www.github.com/googleapis/google-resumable-media-python/commit/579a54b56dd7045da7af0dcacacfa5833c1cfa87))
+
+
+### Documentation
+
+* address terminology ([#201](https://www.github.com/googleapis/google-resumable-media-python/issues/201)) ([a88cfb9](https://www.github.com/googleapis/google-resumable-media-python/commit/a88cfb9637015839307ea4e967eef6f232c007a5))
+
 ## [1.2.0](https://www.github.com/googleapis/google-resumable-media-python/compare/v1.1.0...v1.2.0) (2020-12-14)
 
 
