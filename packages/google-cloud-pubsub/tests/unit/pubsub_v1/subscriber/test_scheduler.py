@@ -16,6 +16,7 @@ import concurrent.futures
 import queue
 import threading
 import time
+import warnings
 
 import mock
 
@@ -59,6 +60,24 @@ def test_schedule_executes_submitted_items():
 
     expected_calls = [(("arg1",), {"kwarg1": "meep"}), (("arg2",), {"kwarg2": "boop"})]
     assert sorted(called_with) == expected_calls
+
+
+def test_schedule_after_executor_shutdown_warning():
+    def callback(*args, **kwargs):
+        pass
+
+    scheduler_ = scheduler.ThreadScheduler()
+
+    scheduler_.schedule(callback, "arg1", kwarg1="meep")
+    scheduler_._executor.shutdown()
+
+    with warnings.catch_warnings(record=True) as warned:
+        scheduler_.schedule(callback, "arg2", kwarg2="boop")
+
+    assert len(warned) == 1
+    assert issubclass(warned[0].category, RuntimeWarning)
+    warning_msg = str(warned[0].message)
+    assert "after executor shutdown" in warning_msg
 
 
 def test_shutdown_nonblocking_by_default():
@@ -125,3 +144,30 @@ def test_shutdown_blocking_awaits_running_callbacks():
 
     err_msg = "Shutdown did not wait for the already running callbacks to complete."
     assert at_least_one_completed.is_set(), err_msg
+
+
+def test_shutdown_handles_executor_queue_sentinels():
+    at_least_one_called = threading.Event()
+
+    def callback(_):
+        at_least_one_called.set()
+        time.sleep(1.0)
+
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    scheduler_ = scheduler.ThreadScheduler(executor=executor)
+
+    scheduler_.schedule(callback, "message_1")
+    scheduler_.schedule(callback, "message_2")
+    scheduler_.schedule(callback, "message_3")
+
+    # Simulate executor shutdown from another thread.
+    executor._work_queue.put(None)
+    executor._work_queue.put(None)
+
+    at_least_one_called.wait()
+    dropped = scheduler_.shutdown(await_msg_callbacks=True)
+
+    assert len(set(dropped)) == 2  # Also test for item uniqueness.
+    for msg in dropped:
+        assert msg is not None
+        assert msg.startswith("message_")

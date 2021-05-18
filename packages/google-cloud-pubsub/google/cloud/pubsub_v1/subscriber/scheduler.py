@@ -21,6 +21,7 @@ each message.
 import abc
 import concurrent.futures
 import queue
+import warnings
 
 
 class Scheduler(metaclass=abc.ABCMeta):
@@ -114,7 +115,14 @@ class ThreadScheduler(Scheduler):
         Returns:
             None
         """
-        self._executor.submit(callback, *args, **kwargs)
+        try:
+            self._executor.submit(callback, *args, **kwargs)
+        except RuntimeError:
+            warnings.warn(
+                "Scheduling a callback after executor shutdown.",
+                category=RuntimeWarning,
+                stacklevel=2,
+            )
 
     def shutdown(self, await_msg_callbacks=False):
         """Shut down the scheduler and immediately end all pending callbacks.
@@ -142,6 +150,8 @@ class ThreadScheduler(Scheduler):
         try:
             while True:
                 work_item = self._executor._work_queue.get(block=False)
+                if work_item is None:  # Exceutor in shutdown mode.
+                    continue
                 dropped_messages.append(work_item.args[0])
         except queue.Empty:
             pass
