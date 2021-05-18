@@ -31,7 +31,7 @@ setuptools.setup(
     name="google-cloud-bigquery-reservation",
     description="Google Cloud BigQuery Reservation API client library",
     version=version,
-    release_status="Development Status :: 4 - Beta",
+    release_status="Development Status :: 5 - Production/Stable",
     long_description=readme,
     author="Google LLC",
     author_email="googleapis-packages@google.com",
@@ -47,7 +47,7 @@ setuptools.setup(
     ),
     python_requires=">=3.6",
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3.6",
