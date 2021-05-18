@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.5.0](https://www.github.com/googleapis/python-pubsub/compare/v2.4.2...v2.5.0) (2021-05-18)
+
+
+### Features
+
+* Make publish futures compatible with `concurrent.futures.as_completed()`. ([#397](https://www.github.com/googleapis/python-pubsub/issues/397)) ([e29a2c0](https://www.github.com/googleapis/python-pubsub/commit/e29a2c0ac6c5d2ebf2311646e552a02f184cfedc))
+
+
+### Bug Fixes
+
+* Scheduler errors when executor in shutdown. ([#399](https://www.github.com/googleapis/python-pubsub/issues/399)) ([39a83d3](https://www.github.com/googleapis/python-pubsub/commit/39a83d3eef196e88478ad8362201a2ab12e9f681))
+
 ## 2.4.2
 
 05-06-2021 23:50 PDT
