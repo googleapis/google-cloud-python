@@ -147,8 +147,8 @@ def dialect():
 
 
 @pytest.fixture(scope="session")
-def engine_using_test_dataset():
-    engine = create_engine("bigquery:///test_pybigquery", echo=True)
+def engine_using_test_dataset(bigquery_dataset):
+    engine = create_engine(f"bigquery:///{bigquery_dataset}", echo=True)
     return engine
 
 
@@ -159,8 +159,8 @@ def engine_with_location():
 
 
 @pytest.fixture(scope="session")
-def table(engine):
-    return Table("test_pybigquery.sample", MetaData(bind=engine), autoload=True)
+def table(engine, bigquery_dataset):
+    return Table(f"{bigquery_dataset}.sample", MetaData(bind=engine), autoload=True)
 
 
 @pytest.fixture(scope="session")
@@ -169,8 +169,10 @@ def table_using_test_dataset(engine_using_test_dataset):
 
 
 @pytest.fixture(scope="session")
-def table_one_row(engine):
-    return Table("test_pybigquery.sample_one_row", MetaData(bind=engine), autoload=True)
+def table_one_row(engine, bigquery_dataset):
+    return Table(
+        f"{bigquery_dataset}.sample_one_row", MetaData(bind=engine), autoload=True
+    )
 
 
 @pytest.fixture(scope="session")
@@ -232,8 +234,8 @@ def api_client():
     return ApiClient()
 
 
-def test_dry_run(engine, api_client):
-    sql = "SELECT * FROM test_pybigquery.sample_one_row"
+def test_dry_run(engine, api_client, bigquery_dataset):
+    sql = f"SELECT * FROM {bigquery_dataset}.sample_one_row"
     assert api_client.dry_run_query(sql).total_bytes_processed == 148
 
     sql = "SELECT * FROM sample_one_row"
@@ -243,7 +245,7 @@ def test_dry_run(engine, api_client):
     assert expected_message in str(excinfo.value.message)
 
 
-def test_engine_with_dataset(engine_using_test_dataset):
+def test_engine_with_dataset(engine_using_test_dataset, bigquery_dataset):
     rows = engine_using_test_dataset.execute("SELECT * FROM sample_one_row").fetchall()
     assert list(rows[0]) == ONE_ROW_CONTENTS
 
@@ -254,7 +256,7 @@ def test_engine_with_dataset(engine_using_test_dataset):
     assert list(rows[0]) == ONE_ROW_CONTENTS_EXPANDED
 
     table_one_row = Table(
-        "test_pybigquery.sample_one_row",
+        f"{bigquery_dataset}.sample_one_row",
         MetaData(bind=engine_using_test_dataset),
         autoload=True,
     )
@@ -265,9 +267,11 @@ def test_engine_with_dataset(engine_using_test_dataset):
     assert list(rows[0]) == ONE_ROW_CONTENTS_EXPANDED
 
 
-def test_dataset_location(engine_with_location):
+def test_dataset_location(
+    engine_with_location, bigquery_dataset, bigquery_regional_dataset
+):
     rows = engine_with_location.execute(
-        "SELECT * FROM test_pybigquery_location.sample_one_row"
+        f"SELECT * FROM {bigquery_regional_dataset}.sample_one_row"
     ).fetchall()
     assert list(rows[0]) == ONE_ROW_CONTENTS
 
@@ -297,14 +301,14 @@ def test_reflect_select(table, table_using_test_dataset):
         assert len(rows) == 1000
 
 
-def test_content_from_raw_queries(engine):
-    rows = engine.execute("SELECT * FROM test_pybigquery.sample_one_row").fetchall()
+def test_content_from_raw_queries(engine, bigquery_dataset):
+    rows = engine.execute(f"SELECT * FROM {bigquery_dataset}.sample_one_row").fetchall()
     assert list(rows[0]) == ONE_ROW_CONTENTS
 
 
-def test_record_content_from_raw_queries(engine):
+def test_record_content_from_raw_queries(engine, bigquery_dataset):
     rows = engine.execute(
-        "SELECT record.name FROM test_pybigquery.sample_one_row"
+        f"SELECT record.name FROM {bigquery_dataset}.sample_one_row"
     ).fetchall()
     assert rows[0][0] == "John Doe"
 
@@ -330,14 +334,18 @@ def test_reflect_select_shared_table(engine):
     assert len(row) >= 1
 
 
-def test_reflect_table_does_not_exist(engine):
+def test_reflect_table_does_not_exist(engine, bigquery_dataset):
     with pytest.raises(NoSuchTableError):
         Table(
-            "test_pybigquery.table_does_not_exist", MetaData(bind=engine), autoload=True
+            f"{bigquery_dataset}.table_does_not_exist",
+            MetaData(bind=engine),
+            autoload=True,
         )
 
     assert (
-        Table("test_pybigquery.table_does_not_exist", MetaData(bind=engine)).exists()
+        Table(
+            f"{bigquery_dataset}.table_does_not_exist", MetaData(bind=engine)
+        ).exists()
         is False
     )
 
@@ -351,11 +359,11 @@ def test_reflect_dataset_does_not_exist(engine):
         )
 
 
-def test_tables_list(engine, engine_using_test_dataset):
+def test_tables_list(engine, engine_using_test_dataset, bigquery_dataset):
     tables = engine.table_names()
-    assert "test_pybigquery.sample" in tables
-    assert "test_pybigquery.sample_one_row" in tables
-    assert "test_pybigquery.sample_view" not in tables
+    assert f"{bigquery_dataset}.sample" in tables
+    assert f"{bigquery_dataset}.sample_one_row" in tables
+    assert f"{bigquery_dataset}.sample_view" not in tables
 
     tables = engine_using_test_dataset.table_names()
     assert "sample" in tables
@@ -528,10 +536,10 @@ def test_dml(engine, session, table_dml):
     assert len(result) == 0
 
 
-def test_create_table(engine, bigquery_dml_dataset):
+def test_create_table(engine, bigquery_dataset):
     meta = MetaData()
     Table(
-        f"{bigquery_dml_dataset}.test_table_create",
+        f"{bigquery_dataset}.test_table_create",
         meta,
         Column("integer_c", sqlalchemy.Integer, doc="column description"),
         Column("float_c", sqlalchemy.Float),
@@ -554,7 +562,7 @@ def test_create_table(engine, bigquery_dml_dataset):
     Base = declarative_base()
 
     class TableTest(Base):
-        __tablename__ = f"{bigquery_dml_dataset}.test_table_create2"
+        __tablename__ = f"{bigquery_dataset}.test_table_create2"
         integer_c = Column(sqlalchemy.Integer, primary_key=True)
         float_c = Column(sqlalchemy.Float)
 
@@ -562,41 +570,45 @@ def test_create_table(engine, bigquery_dml_dataset):
     Base.metadata.drop_all(engine)
 
 
-def test_schemas_names(inspector, inspector_using_test_dataset):
+def test_schemas_names(inspector, inspector_using_test_dataset, bigquery_dataset):
     datasets = inspector.get_schema_names()
-    assert "test_pybigquery" in datasets
+    assert f"{bigquery_dataset}" in datasets
 
     datasets = inspector_using_test_dataset.get_schema_names()
-    assert "test_pybigquery" in datasets
+    assert f"{bigquery_dataset}" in datasets
 
 
-def test_table_names_in_schema(inspector, inspector_using_test_dataset):
-    tables = inspector.get_table_names("test_pybigquery")
-    assert "test_pybigquery.sample" in tables
-    assert "test_pybigquery.sample_one_row" in tables
-    assert "test_pybigquery.sample_view" not in tables
-    assert len(tables) == 2
+def test_table_names_in_schema(
+    inspector, inspector_using_test_dataset, bigquery_dataset
+):
+    tables = inspector.get_table_names(bigquery_dataset)
+    assert f"{bigquery_dataset}.sample" in tables
+    assert f"{bigquery_dataset}.sample_one_row" in tables
+    assert f"{bigquery_dataset}.sample_dml_empty" in tables
+    assert f"{bigquery_dataset}.sample_view" not in tables
+    assert len(tables) == 3
 
     tables = inspector_using_test_dataset.get_table_names()
     assert "sample" in tables
     assert "sample_one_row" in tables
+    assert "sample_dml_empty" in tables
     assert "sample_view" not in tables
-    assert len(tables) == 2
+    assert len(tables) == 3
 
 
-def test_view_names(inspector, inspector_using_test_dataset):
+def test_view_names(inspector, inspector_using_test_dataset, bigquery_dataset):
     view_names = inspector.get_view_names()
-    assert "test_pybigquery.sample_view" in view_names
-    assert "test_pybigquery.sample" not in view_names
+    assert f"{bigquery_dataset}.sample_view" in view_names
+    assert f"{bigquery_dataset}.sample" not in view_names
 
     view_names = inspector_using_test_dataset.get_view_names()
     assert "sample_view" in view_names
     assert "sample" not in view_names
 
 
-def test_get_indexes(inspector, inspector_using_test_dataset):
-    for _ in ["test_pybigquery.sample", "test_pybigquery.sample_one_row"]:
-        indexes = inspector.get_indexes("test_pybigquery.sample")
+def test_get_indexes(inspector, inspector_using_test_dataset, bigquery_dataset):
+    for _ in [f"{bigquery_dataset}.sample", f"{bigquery_dataset}.sample_one_row"]:
+        indexes = inspector.get_indexes(f"{bigquery_dataset}.sample")
         assert len(indexes) == 2
         assert indexes[0] == {
             "name": "partition",
@@ -610,9 +622,9 @@ def test_get_indexes(inspector, inspector_using_test_dataset):
         }
 
 
-def test_get_columns(inspector, inspector_using_test_dataset):
-    columns_without_schema = inspector.get_columns("test_pybigquery.sample")
-    columns_schema = inspector.get_columns("sample", "test_pybigquery")
+def test_get_columns(inspector, inspector_using_test_dataset, bigquery_dataset):
+    columns_without_schema = inspector.get_columns(f"{bigquery_dataset}.sample")
+    columns_schema = inspector.get_columns("sample", bigquery_dataset)
     columns_queries = [columns_without_schema, columns_schema]
     for columns in columns_queries:
         for i, col in enumerate(columns):
@@ -627,7 +639,7 @@ def test_get_columns(inspector, inspector_using_test_dataset):
 
     columns_without_schema = inspector_using_test_dataset.get_columns("sample")
     columns_schema = inspector_using_test_dataset.get_columns(
-        "sample", "test_pybigquery"
+        "sample", bigquery_dataset
     )
     columns_queries = [columns_without_schema, columns_schema]
     for columns in columns_queries:
@@ -681,22 +693,14 @@ def test_invalid_table_reference(
         )
 
 
-def test_has_table(engine, engine_using_test_dataset):
-    assert engine.has_table("sample", "test_pybigquery") is True
-    assert engine.has_table("test_pybigquery.sample") is True
-    assert engine.has_table("test_pybigquery.nonexistent_table") is False
+def test_has_table(engine, engine_using_test_dataset, bigquery_dataset):
+    assert engine.has_table("sample", bigquery_dataset) is True
+    assert engine.has_table(f"{bigquery_dataset}.sample") is True
+    assert engine.has_table(f"{bigquery_dataset}.nonexistent_table") is False
     assert engine.has_table("nonexistent_table", "nonexistent_dataset") is False
 
-    assert engine.has_table("sample_alt", "test_pybigquery_alt") is True
-    assert engine.has_table("test_pybigquery_alt.sample_alt") is True
-
     assert engine_using_test_dataset.has_table("sample") is True
-    assert engine_using_test_dataset.has_table("sample", "test_pybigquery") is True
-    assert engine_using_test_dataset.has_table("test_pybigquery.sample") is True
+    assert engine_using_test_dataset.has_table("sample", bigquery_dataset) is True
+    assert engine_using_test_dataset.has_table(f"{bigquery_dataset}.sample") is True
 
     assert engine_using_test_dataset.has_table("sample_alt") is False
-
-    assert (
-        engine_using_test_dataset.has_table("sample_alt", "test_pybigquery_alt") is True
-    )
-    assert engine_using_test_dataset.has_table("test_pybigquery_alt.sample_alt") is True
