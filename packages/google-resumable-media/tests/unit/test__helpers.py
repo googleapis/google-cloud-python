@@ -150,6 +150,14 @@ class Test_calculate_retry_wait(object):
         assert wait_time == 32.875
         randint_mock.assert_called_once_with(0, 1000)
 
+    @mock.patch(u"random.randint", return_value=875)
+    def test_custom_multiplier(self, randint_mock):
+        base_wait, wait_time = _helpers.calculate_retry_wait(16.0, 64.0, 3)
+
+        assert base_wait == 48.0
+        assert wait_time == 48.875
+        randint_mock.assert_called_once_with(0, 1000)
+
 
 class Test_wait_and_retry(object):
     def test_success_no_retry(self):
@@ -194,6 +202,41 @@ class Test_wait_and_retry(object):
         sleep_mock.assert_any_call(1.125)
         sleep_mock.assert_any_call(2.625)
         sleep_mock.assert_any_call(4.375)
+
+    @mock.patch(u"time.sleep")
+    @mock.patch(u"random.randint")
+    def test_success_with_retry_custom_delay(self, randint_mock, sleep_mock):
+        randint_mock.side_effect = [125, 625, 375]
+
+        status_codes = (
+            http_client.INTERNAL_SERVER_ERROR,
+            http_client.BAD_GATEWAY,
+            http_client.SERVICE_UNAVAILABLE,
+            http_client.NOT_FOUND,
+        )
+        responses = [_make_response(status_code) for status_code in status_codes]
+        func = mock.Mock(side_effect=responses, spec=[])
+
+        retry_strategy = common.RetryStrategy(initial_delay=3.0, multiplier=4)
+        ret_val = _helpers.wait_and_retry(func, _get_status_code, retry_strategy)
+
+        assert ret_val == responses[-1]
+        assert status_codes[-1] not in common.RETRYABLE
+
+        assert func.call_count == 4
+        assert func.mock_calls == [mock.call()] * 4
+
+        assert randint_mock.call_count == 3
+        assert randint_mock.mock_calls == [mock.call(0, 1000)] * 3
+
+        assert sleep_mock.call_count == 3
+        sleep_mock.assert_any_call(3.125)  # initial delay 3 + jitter 0.125
+        sleep_mock.assert_any_call(
+            12.625
+        )  # previous delay 3 * multiplier 4 + jitter 0.625
+        sleep_mock.assert_any_call(
+            48.375
+        )  # previous delay 12 * multiplier 4 + jitter 0.375
 
     @mock.patch(u"time.sleep")
     @mock.patch(u"random.randint")

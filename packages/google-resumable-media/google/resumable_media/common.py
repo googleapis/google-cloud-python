@@ -119,12 +119,16 @@ class RetryStrategy(object):
         max_cumulative_retry (Optional[float]): The maximum **total** amount of
             time to sleep during retry process.
         max_retries (Optional[int]): The number of retries to attempt.
+        initial_delay (Optional[float]): The initial delay. Default 1.0 second.
+        muiltiplier (Optional[float]): Exponent of the backoff. Default is 2.0.
 
     Attributes:
         max_sleep (float): Maximum amount of time allowed between requests.
         max_cumulative_retry (Optional[float]): Maximum total sleep time
             allowed during retry process.
         max_retries (Optional[int]): The number retries to attempt.
+        initial_delay (Optional[float]): The initial delay. Default 1.0 second.
+        muiltiplier (Optional[float]): Exponent of the backoff. Default is 2.0.
 
     Raises:
         ValueError: If both of ``max_cumulative_retry`` and ``max_retries``
@@ -132,7 +136,12 @@ class RetryStrategy(object):
     """
 
     def __init__(
-        self, max_sleep=MAX_SLEEP, max_cumulative_retry=None, max_retries=None
+        self,
+        max_sleep=MAX_SLEEP,
+        max_cumulative_retry=None,
+        max_retries=None,
+        initial_delay=1.0,
+        multiplier=2.0,
     ):
         if max_cumulative_retry is not None and max_retries is not None:
             raise ValueError(_SLEEP_RETRY_ERROR_MSG)
@@ -142,6 +151,8 @@ class RetryStrategy(object):
         self.max_sleep = max_sleep
         self.max_cumulative_retry = max_cumulative_retry
         self.max_retries = max_retries
+        self.initial_delay = initial_delay
+        self.multiplier = multiplier
 
     def retry_allowed(self, total_sleep, num_retries):
         """Check if another retry is allowed.

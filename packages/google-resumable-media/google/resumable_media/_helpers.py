@@ -106,7 +106,7 @@ def require_status_code(response, status_codes, get_status_code, callback=do_not
     return status_code
 
 
-def calculate_retry_wait(base_wait, max_sleep):
+def calculate_retry_wait(base_wait, max_sleep, multiplier=2.0):
     """Calculate the amount of time to wait before a retry attempt.
 
     Wait time grows exponentially with the number of attempts, until
@@ -117,15 +117,16 @@ def calculate_retry_wait(base_wait, max_sleep):
 
     Args:
         base_wait (float): The "base" wait time (i.e. without any jitter)
-            that will be doubled until it reaches the maximum sleep.
+            that will be multiplied until it reaches the maximum sleep.
         max_sleep (float): Maximum value that a sleep time is allowed to be.
+        multiplier (float): Multiplier to apply to the base wait.
 
     Returns:
         Tuple[float, float]: The new base wait time as well as the wait time
         to be applied (with a random amount of jitter between 0 and 1 seconds
         added).
     """
-    new_base_wait = 2.0 * base_wait
+    new_base_wait = multiplier * base_wait
     if new_base_wait > max_sleep:
         new_base_wait = max_sleep
 
@@ -157,7 +158,8 @@ def wait_and_retry(func, get_status_code, retry_strategy):
     """
     total_sleep = 0.0
     num_retries = 0
-    base_wait = 0.5  # When doubled will give 1.0
+    # base_wait will be multiplied by the multiplier on the first retry.
+    base_wait = float(retry_strategy.initial_delay) / retry_strategy.multiplier
 
     # Set the retriable_exception_type if possible. We expect requests to be
     # present here and the transport to be using requests.exceptions errors,
@@ -187,7 +189,9 @@ def wait_and_retry(func, get_status_code, retry_strategy):
 
             return response
 
-        base_wait, wait_time = calculate_retry_wait(base_wait, retry_strategy.max_sleep)
+        base_wait, wait_time = calculate_retry_wait(
+            base_wait, retry_strategy.max_sleep, retry_strategy.multiplier
+        )
 
         num_retries += 1
         total_sleep += wait_time

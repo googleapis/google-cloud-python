@@ -40,6 +40,14 @@ class TestRetryStrategy(object):
 
         exc_info.match(common._SLEEP_RETRY_ERROR_MSG)
 
+    def test_constructor_custom_delay_and_multiplier(self):
+        retry_strategy = common.RetryStrategy(initial_delay=3.0, multiplier=4)
+        assert retry_strategy.max_sleep == common.MAX_SLEEP
+        assert retry_strategy.max_cumulative_retry == common.MAX_CUMULATIVE_RETRY
+        assert retry_strategy.max_retries is None
+        assert retry_strategy.initial_delay == 3.0
+        assert retry_strategy.multiplier == 4
+
     def test_constructor_explicit_bound_cumulative(self):
         max_sleep = 10.0
         max_cumulative_retry = 100.0
