@@ -24,6 +24,7 @@ def test_constructor_defaults():
     assert info.api_core_version is not None
     assert info.gapic_version is None
     assert info.client_library_version is None
+    assert info.rest_version is None
 
 
 def test_constructor_options():
@@ -33,7 +34,8 @@ def test_constructor_options():
         api_core_version="3",
         gapic_version="4",
         client_library_version="5",
-        user_agent="6"
+        user_agent="6",
+        rest_version="7",
     )
 
     assert info.python_version == "1"
@@ -42,6 +44,7 @@ def test_constructor_options():
     assert info.gapic_version == "4"
     assert info.client_library_version == "5"
     assert info.user_agent == "6"
+    assert info.rest_version == "7"
 
 
 def test_to_user_agent_minimal():
@@ -67,3 +70,19 @@ def test_to_user_agent_full():
     user_agent = info.to_user_agent()
 
     assert user_agent == "app-name/1.0 gl-python/1 grpc/2 gax/3 gapic/4 gccl/5"
+
+
+def test_to_user_agent_rest():
+    info = client_info.ClientInfo(
+        python_version="1",
+        grpc_version=None,
+        rest_version="2",
+        api_core_version="3",
+        gapic_version="4",
+        client_library_version="5",
+        user_agent="app-name/1.0",
+    )
+
+    user_agent = info.to_user_agent()
+
+    assert user_agent == "app-name/1.0 gl-python/1 rest/2 gax/3 gapic/4 gccl/5"
