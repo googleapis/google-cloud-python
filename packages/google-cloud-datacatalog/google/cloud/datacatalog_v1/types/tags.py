@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -39,30 +36,29 @@ class Tag(proto.Message):
         name (str):
             The resource name of the tag in URL format. Example:
 
-            -  projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}
+            ``projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}``
 
-            where ``tag_id`` is a system-generated identifier. Note that
-            this Tag may not actually be stored in the location in this
-            name.
+            where ``tag_id`` is a system-generated identifier.
+
+            Note: The tag itself might not be stored in the location
+            specified in its name.
         template (str):
             Required. The resource name of the tag template that this
             tag uses. Example:
 
-            -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
+            ``projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}``
 
             This field cannot be modified after creation.
         template_display_name (str):
             Output only. The display name of the tag
             template.
         column (str):
-            Resources like Entry can have schemas associated with them.
+            Resources like entry can have schemas associated with them.
             This scope allows users to attach tags to an individual
             column based on that schema.
 
-            For attaching a tag to a nested column, use ``.`` to
-            separate the column names. Example:
-
-            -  ``outer_column.inner_column``
+            To attach a tag to a nested column, separate column names
+            with a dot (``.``). Example: ``column.nested_column``.
         fields (Sequence[google.cloud.datacatalog_v1.types.Tag.FieldsEntry]):
             Required. This maps the ID of a tag field to
             the value of and additional information about
@@ -71,14 +67,10 @@ class Tag(proto.Message):
             and at most 500 fields.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    template = proto.Field(proto.STRING, number=2)
-
-    template_display_name = proto.Field(proto.STRING, number=5)
-
-    column = proto.Field(proto.STRING, number=4, oneof="scope")
-
+    name = proto.Field(proto.STRING, number=1,)
+    template = proto.Field(proto.STRING, number=2,)
+    template_display_name = proto.Field(proto.STRING, number=5,)
+    column = proto.Field(proto.STRING, number=4, oneof="scope",)
     fields = proto.MapField(proto.STRING, proto.MESSAGE, number=3, message="TagField",)
 
 
@@ -94,7 +86,8 @@ class TagField(proto.Message):
             type.
         string_value (str):
             Holds the value for a tag field with string
-            type.
+            type. The maximum length is 2000 UTF-8
+            characters.
         bool_value (bool):
             Holds the value for a tag field with boolean
             type.
@@ -117,29 +110,22 @@ class TagField(proto.Message):
 
     class EnumValue(proto.Message):
         r"""Holds an enum value.
-
         Attributes:
             display_name (str):
                 The display name of the enum value.
         """
 
-        display_name = proto.Field(proto.STRING, number=1)
+        display_name = proto.Field(proto.STRING, number=1,)
 
-    display_name = proto.Field(proto.STRING, number=1)
-
-    double_value = proto.Field(proto.DOUBLE, number=2, oneof="kind")
-
-    string_value = proto.Field(proto.STRING, number=3, oneof="kind")
-
-    bool_value = proto.Field(proto.BOOL, number=4, oneof="kind")
-
+    display_name = proto.Field(proto.STRING, number=1,)
+    double_value = proto.Field(proto.DOUBLE, number=2, oneof="kind",)
+    string_value = proto.Field(proto.STRING, number=3, oneof="kind",)
+    bool_value = proto.Field(proto.BOOL, number=4, oneof="kind",)
     timestamp_value = proto.Field(
-        proto.MESSAGE, number=5, oneof="kind", message=timestamp.Timestamp,
+        proto.MESSAGE, number=5, oneof="kind", message=timestamp_pb2.Timestamp,
     )
-
     enum_value = proto.Field(proto.MESSAGE, number=6, oneof="kind", message=EnumValue,)
-
-    order = proto.Field(proto.INT32, number=7)
+    order = proto.Field(proto.INT32, number=7,)
 
 
 class TagTemplate(proto.Message):
@@ -158,13 +144,16 @@ class TagTemplate(proto.Message):
             The resource name of the tag template in URL format.
             Example:
 
-            -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
+            ``projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}``
 
-            Note that this TagTemplate and its child resources may not
-            actually be stored in the location in this name.
+            Note: The tag template itself and its child resources might
+            not be stored in the location specified in its name.
         display_name (str):
-            The display name for this template. Defaults
-            to an empty string.
+            Display name for this template. Defaults to an empty string.
+
+            The name must contain only Unicode letters, numbers (0-9),
+            underscores (_), dashes (-), spaces ( ), and can't start or
+            end with spaces. The maximum length is 200 characters.
         fields (Sequence[google.cloud.datacatalog_v1.types.TagTemplate.FieldsEntry]):
             Required. Map of tag template field IDs to the settings for
             the field. This map is an exhaustive list of the allowed
@@ -178,10 +167,8 @@ class TagTemplate(proto.Message):
             must start with a letter or underscore.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
     fields = proto.MapField(
         proto.STRING, proto.MESSAGE, number=3, message="TagTemplateField",
     )
@@ -189,25 +176,35 @@ class TagTemplate(proto.Message):
 
 class TagTemplateField(proto.Message):
     r"""The template for an individual field within a tag template.
-
     Attributes:
         name (str):
             Output only. The resource name of the tag template field in
             URL format. Example:
 
-            -  projects/{project_id}/locations/{location}/tagTemplates/{tag_template}/fields/{field}
+            ``projects/{project_id}/locations/{location}/tagTemplates/{tag_template}/fields/{field}``
 
-            Note that this TagTemplateField may not actually be stored
-            in the location in this name.
+            Note: The ``TagTemplateField`` itself might not be stored in
+            the location specified in its name.
+
+            The name must contain only letters (a-z, A-Z), numbers
+            (0-9), or underscores (_), and must start with a letter or
+            underscore. The maximum length is 64 characters.
         display_name (str):
-            The display name for this field. Defaults to
-            an empty string.
+            The display name for this field. Defaults to an empty
+            string.
+
+            The name must contain only Unicode letters, numbers (0-9),
+            underscores (_), dashes (-), spaces ( ), and can't start or
+            end with spaces. The maximum length is 200 characters.
         type_ (google.cloud.datacatalog_v1.types.FieldType):
             Required. The type of value this tag field
             can contain.
         is_required (bool):
             Whether this is a required field. Defaults to
             false.
+        description (str):
+            The description for this field. Defaults to
+            an empty string.
         order (int):
             The order of this field with respect to other
             fields in this tag template. For example, a
@@ -217,20 +214,16 @@ class TagTemplateField(proto.Message):
             within a tag do not have to be sequential.
     """
 
-    name = proto.Field(proto.STRING, number=6)
-
-    display_name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=6,)
+    display_name = proto.Field(proto.STRING, number=1,)
     type_ = proto.Field(proto.MESSAGE, number=2, message="FieldType",)
-
-    is_required = proto.Field(proto.BOOL, number=3)
-
-    order = proto.Field(proto.INT32, number=5)
+    is_required = proto.Field(proto.BOOL, number=3,)
+    description = proto.Field(proto.STRING, number=4,)
+    order = proto.Field(proto.INT32, number=5,)
 
 
 class FieldType(proto.Message):
     r"""
-
     Attributes:
         primitive_type (google.cloud.datacatalog_v1.types.FieldType.PrimitiveType):
             Represents primitive types - string, bool
@@ -249,31 +242,34 @@ class FieldType(proto.Message):
 
     class EnumType(proto.Message):
         r"""
-
         Attributes:
             allowed_values (Sequence[google.cloud.datacatalog_v1.types.FieldType.EnumType.EnumValue]):
-                Required on create; optional on update. The
-                set of allowed values for this enum. This set
-                must not be empty, the display names of the
-                values in this set must not be empty and the
-                display names of the values must be case-
-                insensitively unique within this set. Currently,
-                enum values can only be added to the list of
-                allowed values. Deletion and renaming of enum
-                values are not supported. Can have up to 500
-                allowed values.
+                The set of allowed values for this enum.
+
+                This set must not be empty and can include up to 100 allowed
+                values. The display names of the values in this set must not
+                be empty and must be case-insensitively unique within this
+                set.
+
+                The order of items in this set is preserved. This field can
+                be used to create, remove and reorder enum values. To rename
+                enum values, use the ``RenameTagTemplateFieldEnumValue``
+                method.
         """
 
         class EnumValue(proto.Message):
             r"""
-
             Attributes:
                 display_name (str):
-                    Required. The display name of the enum value.
-                    Must not be an empty string.
+                    Required. The display name of the enum value. Must not be an
+                    empty string.
+
+                    The name must contain only Unicode letters, numbers (0-9),
+                    underscores (_), dashes (-), spaces ( ), and can't start or
+                    end with spaces. The maximum length is 200 characters.
             """
 
-            display_name = proto.Field(proto.STRING, number=1)
+            display_name = proto.Field(proto.STRING, number=1,)
 
         allowed_values = proto.RepeatedField(
             proto.MESSAGE, number=1, message="FieldType.EnumType.EnumValue",
@@ -282,7 +278,6 @@ class FieldType(proto.Message):
     primitive_type = proto.Field(
         proto.ENUM, number=1, oneof="type_decl", enum=PrimitiveType,
     )
-
     enum_type = proto.Field(
         proto.MESSAGE, number=2, oneof="type_decl", message=EnumType,
     )

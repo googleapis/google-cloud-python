@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,10 +15,16 @@
 #
 
 from .services.data_catalog import DataCatalogClient
+from .services.data_catalog import DataCatalogAsyncClient
 from .services.policy_tag_manager import PolicyTagManagerClient
+from .services.policy_tag_manager import PolicyTagManagerAsyncClient
 from .services.policy_tag_manager_serialization import (
     PolicyTagManagerSerializationClient,
 )
+from .services.policy_tag_manager_serialization import (
+    PolicyTagManagerSerializationAsyncClient,
+)
+
 from .types.common import IntegratedSystem
 from .types.datacatalog import CreateEntryGroupRequest
 from .types.datacatalog import CreateEntryRequest
@@ -33,7 +38,6 @@ from .types.datacatalog import DeleteTagTemplateFieldRequest
 from .types.datacatalog import DeleteTagTemplateRequest
 from .types.datacatalog import Entry
 from .types.datacatalog import EntryGroup
-from .types.datacatalog import EntryType
 from .types.datacatalog import GetEntryGroupRequest
 from .types.datacatalog import GetEntryRequest
 from .types.datacatalog import GetTagTemplateRequest
@@ -52,8 +56,9 @@ from .types.datacatalog import UpdateEntryRequest
 from .types.datacatalog import UpdateTagRequest
 from .types.datacatalog import UpdateTagTemplateFieldRequest
 from .types.datacatalog import UpdateTagTemplateRequest
-from .types.gcs_fileset_spec import GcsFileSpec
+from .types.datacatalog import EntryType
 from .types.gcs_fileset_spec import GcsFilesetSpec
+from .types.gcs_fileset_spec import GcsFileSpec
 from .types.policytagmanager import CreatePolicyTagRequest
 from .types.policytagmanager import CreateTaxonomyRequest
 from .types.policytagmanager import DeletePolicyTagRequest
@@ -81,9 +86,9 @@ from .types.search import SearchCatalogResult
 from .types.search import SearchResultType
 from .types.table_spec import BigQueryDateShardedSpec
 from .types.table_spec import BigQueryTableSpec
-from .types.table_spec import TableSourceType
 from .types.table_spec import TableSpec
 from .types.table_spec import ViewSpec
+from .types.table_spec import TableSourceType
 from .types.tags import FieldType
 from .types.tags import Tag
 from .types.tags import TagField
@@ -91,8 +96,10 @@ from .types.tags import TagTemplate
 from .types.tags import TagTemplateField
 from .types.timestamps import SystemTimestamps
 
-
 __all__ = (
+    "DataCatalogAsyncClient",
+    "PolicyTagManagerAsyncClient",
+    "PolicyTagManagerSerializationAsyncClient",
     "BigQueryDateShardedSpec",
     "BigQueryTableSpec",
     "ColumnSchema",
@@ -141,6 +148,7 @@ __all__ = (
     "LookupEntryRequest",
     "PolicyTag",
     "PolicyTagManagerClient",
+    "PolicyTagManagerSerializationClient",
     "RenameTagTemplateFieldRequest",
     "Schema",
     "SearchCatalogRequest",
@@ -165,5 +173,4 @@ __all__ = (
     "UpdateTagTemplateRequest",
     "UpdateTaxonomyRequest",
     "ViewSpec",
-    "PolicyTagManagerSerializationClient",
 )

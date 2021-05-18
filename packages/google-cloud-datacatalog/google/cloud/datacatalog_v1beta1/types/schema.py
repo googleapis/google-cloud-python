@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -25,7 +23,6 @@ __protobuf__ = proto.module(
 
 class Schema(proto.Message):
     r"""Represents a schema (e.g. BigQuery, GoogleSQL, Avro schema).
-
     Attributes:
         columns (Sequence[google.cloud.datacatalog_v1beta1.types.ColumnSchema]):
             Required. Schema of columns. A maximum of
@@ -57,14 +54,10 @@ class ColumnSchema(proto.Message):
             have zero or more sub-columns.
     """
 
-    column = proto.Field(proto.STRING, number=6)
-
-    type_ = proto.Field(proto.STRING, number=1)
-
-    description = proto.Field(proto.STRING, number=2)
-
-    mode = proto.Field(proto.STRING, number=3)
-
+    column = proto.Field(proto.STRING, number=6,)
+    type_ = proto.Field(proto.STRING, number=1,)
+    description = proto.Field(proto.STRING, number=2,)
+    mode = proto.Field(proto.STRING, number=3,)
     subcolumns = proto.RepeatedField(proto.MESSAGE, number=7, message="ColumnSchema",)
 
 

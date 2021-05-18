@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.datacatalog_v1.types import common
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -66,6 +64,9 @@ class SearchCatalogResult(proto.Message):
             Example:
 
             -  ``//bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId``
+        modify_time (google.protobuf.timestamp_pb2.Timestamp):
+            Last-modified timestamp of the entry from the
+            managing system.
         integrated_system (google.cloud.datacatalog_v1.types.IntegratedSystem):
             Output only. This field indicates the entry's
             source system that Data Catalog integrates with,
@@ -74,21 +75,27 @@ class SearchCatalogResult(proto.Message):
             This field indicates the entry's source
             system that Data Catalog does not integrate
             with.
+        fully_qualified_name (str):
+            Fully Qualified Name of the resource. There are two main
+            forms of FQNs: {system}:{project}.{dot-separated path to
+            resource} for non-regionalized resources
+            {system}:{project}.{location id}.{dot-separated path to
+            resource} for regionalized resources Examples:
+
+            -  dataproc_metastore:projectId.locationId.instanceId.databaseId.tableId
+            -  bigquery:table.project_id.dataset_id.table_id
     """
 
     search_result_type = proto.Field(proto.ENUM, number=1, enum="SearchResultType",)
-
-    search_result_subtype = proto.Field(proto.STRING, number=2)
-
-    relative_resource_name = proto.Field(proto.STRING, number=3)
-
-    linked_resource = proto.Field(proto.STRING, number=4)
-
+    search_result_subtype = proto.Field(proto.STRING, number=2,)
+    relative_resource_name = proto.Field(proto.STRING, number=3,)
+    linked_resource = proto.Field(proto.STRING, number=4,)
+    modify_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
     integrated_system = proto.Field(
         proto.ENUM, number=8, oneof="system", enum=common.IntegratedSystem,
     )
-
-    user_specified_system = proto.Field(proto.STRING, number=9, oneof="system")
+    user_specified_system = proto.Field(proto.STRING, number=9, oneof="system",)
+    fully_qualified_name = proto.Field(proto.STRING, number=10,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

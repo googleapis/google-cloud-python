@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.cloud.datacatalog_v1beta1.types import policytagmanager
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from .base import PolicyTagManagerTransport, DEFAULT_CLIENT_INFO
 
 
@@ -54,7 +51,7 @@ class PolicyTagManagerGrpcTransport(PolicyTagManagerTransport):
         self,
         *,
         host: str = "datacatalog.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -68,7 +65,8 @@ class PolicyTagManagerGrpcTransport(PolicyTagManagerTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -178,7 +176,7 @@ class PolicyTagManagerGrpcTransport(PolicyTagManagerTransport):
     def create_channel(
         cls,
         host: str = "datacatalog.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -209,13 +207,15 @@ class PolicyTagManagerGrpcTransport(PolicyTagManagerTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -254,7 +254,7 @@ class PolicyTagManagerGrpcTransport(PolicyTagManagerTransport):
     @property
     def delete_taxonomy(
         self,
-    ) -> Callable[[policytagmanager.DeleteTaxonomyRequest], empty.Empty]:
+    ) -> Callable[[policytagmanager.DeleteTaxonomyRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete taxonomy method over gRPC.
 
         Deletes a taxonomy. This operation will also delete
@@ -275,7 +275,7 @@ class PolicyTagManagerGrpcTransport(PolicyTagManagerTransport):
             self._stubs["delete_taxonomy"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datacatalog.v1beta1.PolicyTagManager/DeleteTaxonomy",
                 request_serializer=policytagmanager.DeleteTaxonomyRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_taxonomy"]
 
@@ -392,7 +392,7 @@ class PolicyTagManagerGrpcTransport(PolicyTagManagerTransport):
     @property
     def delete_policy_tag(
         self,
-    ) -> Callable[[policytagmanager.DeletePolicyTagRequest], empty.Empty]:
+    ) -> Callable[[policytagmanager.DeletePolicyTagRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete policy tag method over gRPC.
 
         Deletes a policy tag. Also deletes all of its
@@ -412,7 +412,7 @@ class PolicyTagManagerGrpcTransport(PolicyTagManagerTransport):
             self._stubs["delete_policy_tag"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datacatalog.v1beta1.PolicyTagManager/DeletePolicyTag",
                 request_serializer=policytagmanager.DeletePolicyTagRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_policy_tag"]
 
@@ -502,7 +502,7 @@ class PolicyTagManagerGrpcTransport(PolicyTagManagerTransport):
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[[iam_policy.GetIamPolicyRequest], policy.Policy]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the IAM policy for a taxonomy or a policy tag.
@@ -520,15 +520,15 @@ class PolicyTagManagerGrpcTransport(PolicyTagManagerTransport):
         if "get_iam_policy" not in self._stubs:
             self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datacatalog.v1beta1.PolicyTagManager/GetIamPolicy",
-                request_serializer=iam_policy.GetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy.Policy.FromString,
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
             )
         return self._stubs["get_iam_policy"]
 
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[[iam_policy.SetIamPolicyRequest], policy.Policy]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the IAM policy for a taxonomy or a policy tag.
@@ -546,8 +546,8 @@ class PolicyTagManagerGrpcTransport(PolicyTagManagerTransport):
         if "set_iam_policy" not in self._stubs:
             self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datacatalog.v1beta1.PolicyTagManager/SetIamPolicy",
-                request_serializer=iam_policy.SetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy.Policy.FromString,
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
             )
         return self._stubs["set_iam_policy"]
 
@@ -555,7 +555,8 @@ class PolicyTagManagerGrpcTransport(PolicyTagManagerTransport):
     def test_iam_permissions(
         self,
     ) -> Callable[
-        [iam_policy.TestIamPermissionsRequest], iam_policy.TestIamPermissionsResponse
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
@@ -575,8 +576,8 @@ class PolicyTagManagerGrpcTransport(PolicyTagManagerTransport):
         if "test_iam_permissions" not in self._stubs:
             self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datacatalog.v1beta1.PolicyTagManager/TestIamPermissions",
-                request_serializer=iam_policy.TestIamPermissionsRequest.SerializeToString,
-                response_deserializer=iam_policy.TestIamPermissionsResponse.FromString,
+                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
             )
         return self._stubs["test_iam_permissions"]
 

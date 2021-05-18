@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,24 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.cloud.datacatalog_v1.types import datacatalog
 from google.cloud.datacatalog_v1.types import tags
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from .base import DataCatalogTransport, DEFAULT_CLIENT_INFO
 
 
@@ -55,7 +52,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         self,
         *,
         host: str = "datacatalog.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -69,7 +66,8 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -179,7 +177,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     def create_channel(
         cls,
         host: str = "datacatalog.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -210,13 +208,15 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -240,7 +240,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         This is a custom method
         (https://cloud.google.com/apis/design/custom_methods) and does
         not return the complete resource, only the resource identifier
-        and high level fields. Clients can subsequentally call ``Get``
+        and high level fields. Clients can subsequently call ``Get``
         methods.
 
         Note that Data Catalog search queries do not guarantee full
@@ -375,7 +375,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     @property
     def delete_entry_group(
         self,
-    ) -> Callable[[datacatalog.DeleteEntryGroupRequest], empty.Empty]:
+    ) -> Callable[[datacatalog.DeleteEntryGroupRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete entry group method over gRPC.
 
         Deletes an EntryGroup. Only entry groups that do not contain
@@ -399,7 +399,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
             self._stubs["delete_entry_group"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/DeleteEntryGroup",
                 request_serializer=datacatalog.DeleteEntryGroupRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_entry_group"]
 
@@ -437,8 +437,8 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     ) -> Callable[[datacatalog.CreateEntryRequest], datacatalog.Entry]:
         r"""Return a callable for the create entry method over gRPC.
 
-        Creates an entry. Only entries of 'FILESET' type or
-        user-specified type can be created.
+        Creates an entry. Only entries of types 'FILESET', 'CLUSTER',
+        'DATA_STREAM' or with a user-specified type can be created.
 
         Users should enable the Data Catalog API in the project
         identified by the ``parent`` parameter (see [Data Catalog
@@ -497,7 +497,9 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         return self._stubs["update_entry"]
 
     @property
-    def delete_entry(self) -> Callable[[datacatalog.DeleteEntryRequest], empty.Empty]:
+    def delete_entry(
+        self,
+    ) -> Callable[[datacatalog.DeleteEntryRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete entry method over gRPC.
 
         Deletes an existing entry. Only entries created through
@@ -522,7 +524,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
             self._stubs["delete_entry"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/DeleteEntry",
                 request_serializer=datacatalog.DeleteEntryRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_entry"]
 
@@ -698,7 +700,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     @property
     def delete_tag_template(
         self,
-    ) -> Callable[[datacatalog.DeleteTagTemplateRequest], empty.Empty]:
+    ) -> Callable[[datacatalog.DeleteTagTemplateRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete tag template method over gRPC.
 
         Deletes a tag template and all tags using the template. Users
@@ -721,7 +723,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
             self._stubs["delete_tag_template"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/DeleteTagTemplate",
                 request_serializer=datacatalog.DeleteTagTemplateRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_tag_template"]
 
@@ -817,9 +819,41 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         return self._stubs["rename_tag_template_field"]
 
     @property
+    def rename_tag_template_field_enum_value(
+        self,
+    ) -> Callable[
+        [datacatalog.RenameTagTemplateFieldEnumValueRequest], tags.TagTemplateField
+    ]:
+        r"""Return a callable for the rename tag template field enum
+        value method over gRPC.
+
+        Renames an enum value in a tag template. The enum
+        values have to be unique within one enum field.
+
+        Returns:
+            Callable[[~.RenameTagTemplateFieldEnumValueRequest],
+                    ~.TagTemplateField]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "rename_tag_template_field_enum_value" not in self._stubs:
+            self._stubs[
+                "rename_tag_template_field_enum_value"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.datacatalog.v1.DataCatalog/RenameTagTemplateFieldEnumValue",
+                request_serializer=datacatalog.RenameTagTemplateFieldEnumValueRequest.serialize,
+                response_deserializer=tags.TagTemplateField.deserialize,
+            )
+        return self._stubs["rename_tag_template_field_enum_value"]
+
+    @property
     def delete_tag_template_field(
         self,
-    ) -> Callable[[datacatalog.DeleteTagTemplateFieldRequest], empty.Empty]:
+    ) -> Callable[[datacatalog.DeleteTagTemplateFieldRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete tag template field method over gRPC.
 
         Deletes a field in a tag template and all uses of that field.
@@ -843,7 +877,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
             self._stubs["delete_tag_template_field"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/DeleteTagTemplateField",
                 request_serializer=datacatalog.DeleteTagTemplateFieldRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_tag_template_field"]
 
@@ -901,7 +935,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         return self._stubs["update_tag"]
 
     @property
-    def delete_tag(self) -> Callable[[datacatalog.DeleteTagRequest], empty.Empty]:
+    def delete_tag(self) -> Callable[[datacatalog.DeleteTagRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete tag method over gRPC.
 
         Deletes a tag.
@@ -920,7 +954,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
             self._stubs["delete_tag"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/DeleteTag",
                 request_serializer=datacatalog.DeleteTagRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_tag"]
 
@@ -953,7 +987,7 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[[iam_policy.SetIamPolicyRequest], policy.Policy]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the access control policy for a resource. Replaces any
@@ -987,15 +1021,15 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         if "set_iam_policy" not in self._stubs:
             self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/SetIamPolicy",
-                request_serializer=iam_policy.SetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy.Policy.FromString,
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
             )
         return self._stubs["set_iam_policy"]
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[[iam_policy.GetIamPolicyRequest], policy.Policy]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the access control policy for a resource. A ``NOT_FOUND``
@@ -1033,8 +1067,8 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         if "get_iam_policy" not in self._stubs:
             self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/GetIamPolicy",
-                request_serializer=iam_policy.GetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy.Policy.FromString,
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
             )
         return self._stubs["get_iam_policy"]
 
@@ -1042,7 +1076,8 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
     def test_iam_permissions(
         self,
     ) -> Callable[
-        [iam_policy.TestIamPermissionsRequest], iam_policy.TestIamPermissionsResponse
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
@@ -1074,8 +1109,8 @@ class DataCatalogGrpcTransport(DataCatalogTransport):
         if "test_iam_permissions" not in self._stubs:
             self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
                 "/google.cloud.datacatalog.v1.DataCatalog/TestIamPermissions",
-                request_serializer=iam_policy.TestIamPermissionsRequest.SerializeToString,
-                response_deserializer=iam_policy.TestIamPermissionsResponse.FromString,
+                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
             )
         return self._stubs["test_iam_permissions"]
 

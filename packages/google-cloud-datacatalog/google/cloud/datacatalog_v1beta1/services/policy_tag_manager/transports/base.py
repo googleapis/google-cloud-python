@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import abc
-import typing
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
+import packaging.version
 import pkg_resources
 
-from google import auth  # type: ignore
-from google.api_core import exceptions  # type: ignore
+import google.auth  # type: ignore
+import google.api_core  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 
 from google.cloud.datacatalog_v1beta1.types import policytagmanager
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -40,27 +39,41 @@ try:
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
+try:
+    # google.auth.__version__ was added in 1.26.0
+    _GOOGLE_AUTH_VERSION = google.auth.__version__
+except AttributeError:
+    try:  # try pkg_resources if it is available
+        _GOOGLE_AUTH_VERSION = pkg_resources.get_distribution("google-auth").version
+    except pkg_resources.DistributionNotFound:  # pragma: NO COVER
+        _GOOGLE_AUTH_VERSION = None
+
+_API_CORE_VERSION = google.api_core.__version__
+
 
 class PolicyTagManagerTransport(abc.ABC):
     """Abstract transport class for PolicyTagManager."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
+    DEFAULT_HOST: str = "datacatalog.googleapis.com"
+
     def __init__(
         self,
         *,
-        host: str = "datacatalog.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: typing.Optional[str] = None,
-        scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
-        quota_project_id: typing.Optional[str] = None,
+        host: str = DEFAULT_HOST,
+        credentials: ga_credentials.Credentials = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -69,7 +82,7 @@ class PolicyTagManagerTransport(abc.ABC):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is mutually exclusive with credentials.
-            scope (Optional[Sequence[str]]): A list of scopes.
+            scopes (Optional[Sequence[str]]): A list of scopes.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
             client_info (google.api_core.gapic_v1.client_info.ClientInfo):
@@ -83,28 +96,75 @@ class PolicyTagManagerTransport(abc.ABC):
             host += ":443"
         self._host = host
 
+        scopes_kwargs = self._get_scopes_kwargs(self._host, scopes)
+
         # Save the scopes.
         self._scopes = scopes or self.AUTH_SCOPES
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise exceptions.DuplicateCredentialArgs(
+            raise core_exceptions.DuplicateCredentialArgs(
                 "'credentials_file' and 'credentials' are mutually exclusive"
             )
 
         if credentials_file is not None:
-            credentials, _ = auth.load_credentials_from_file(
-                credentials_file, scopes=self._scopes, quota_project_id=quota_project_id
+            credentials, _ = google.auth.load_credentials_from_file(
+                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
             )
 
         elif credentials is None:
-            credentials, _ = auth.default(
-                scopes=self._scopes, quota_project_id=quota_project_id
+            credentials, _ = google.auth.default(
+                **scopes_kwargs, quota_project_id=quota_project_id
             )
 
         # Save the credentials.
         self._credentials = credentials
+
+    # TODO(busunkim): These two class methods are in the base transport
+    # to avoid duplicating code across the transport classes. These functions
+    # should be deleted once the minimum required versions of google-api-core
+    # and google-auth are increased.
+
+    # TODO: Remove this function once google-auth >= 1.25.0 is required
+    @classmethod
+    def _get_scopes_kwargs(
+        cls, host: str, scopes: Optional[Sequence[str]]
+    ) -> Dict[str, Optional[Sequence[str]]]:
+        """Returns scopes kwargs to pass to google-auth methods depending on the google-auth version"""
+
+        scopes_kwargs = {}
+
+        if _GOOGLE_AUTH_VERSION and (
+            packaging.version.parse(_GOOGLE_AUTH_VERSION)
+            >= packaging.version.parse("1.25.0")
+        ):
+            scopes_kwargs = {"scopes": scopes, "default_scopes": cls.AUTH_SCOPES}
+        else:
+            scopes_kwargs = {"scopes": scopes or cls.AUTH_SCOPES}
+
+        return scopes_kwargs
+
+    # TODO: Remove this function once google-api-core >= 1.26.0 is required
+    @classmethod
+    def _get_self_signed_jwt_kwargs(
+        cls, host: str, scopes: Optional[Sequence[str]]
+    ) -> Dict[str, Union[Optional[Sequence[str]], str]]:
+        """Returns kwargs to pass to grpc_helpers.create_channel depending on the google-api-core version"""
+
+        self_signed_jwt_kwargs: Dict[str, Union[Optional[Sequence[str]], str]] = {}
+
+        if _API_CORE_VERSION and (
+            packaging.version.parse(_API_CORE_VERSION)
+            >= packaging.version.parse("1.26.0")
+        ):
+            self_signed_jwt_kwargs["default_scopes"] = cls.AUTH_SCOPES
+            self_signed_jwt_kwargs["scopes"] = scopes
+            self_signed_jwt_kwargs["default_host"] = cls.DEFAULT_HOST
+        else:
+            self_signed_jwt_kwargs["scopes"] = scopes or cls.AUTH_SCOPES
+
+        return self_signed_jwt_kwargs
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
@@ -155,42 +215,38 @@ class PolicyTagManagerTransport(abc.ABC):
     @property
     def create_taxonomy(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [policytagmanager.CreateTaxonomyRequest],
-        typing.Union[
-            policytagmanager.Taxonomy, typing.Awaitable[policytagmanager.Taxonomy]
-        ],
+        Union[policytagmanager.Taxonomy, Awaitable[policytagmanager.Taxonomy]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_taxonomy(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [policytagmanager.DeleteTaxonomyRequest],
-        typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_taxonomy(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [policytagmanager.UpdateTaxonomyRequest],
-        typing.Union[
-            policytagmanager.Taxonomy, typing.Awaitable[policytagmanager.Taxonomy]
-        ],
+        Union[policytagmanager.Taxonomy, Awaitable[policytagmanager.Taxonomy]],
     ]:
         raise NotImplementedError()
 
     @property
     def list_taxonomies(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [policytagmanager.ListTaxonomiesRequest],
-        typing.Union[
+        Union[
             policytagmanager.ListTaxonomiesResponse,
-            typing.Awaitable[policytagmanager.ListTaxonomiesResponse],
+            Awaitable[policytagmanager.ListTaxonomiesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -198,53 +254,47 @@ class PolicyTagManagerTransport(abc.ABC):
     @property
     def get_taxonomy(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [policytagmanager.GetTaxonomyRequest],
-        typing.Union[
-            policytagmanager.Taxonomy, typing.Awaitable[policytagmanager.Taxonomy]
-        ],
+        Union[policytagmanager.Taxonomy, Awaitable[policytagmanager.Taxonomy]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_policy_tag(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [policytagmanager.CreatePolicyTagRequest],
-        typing.Union[
-            policytagmanager.PolicyTag, typing.Awaitable[policytagmanager.PolicyTag]
-        ],
+        Union[policytagmanager.PolicyTag, Awaitable[policytagmanager.PolicyTag]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_policy_tag(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [policytagmanager.DeletePolicyTagRequest],
-        typing.Union[empty.Empty, typing.Awaitable[empty.Empty]],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_policy_tag(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [policytagmanager.UpdatePolicyTagRequest],
-        typing.Union[
-            policytagmanager.PolicyTag, typing.Awaitable[policytagmanager.PolicyTag]
-        ],
+        Union[policytagmanager.PolicyTag, Awaitable[policytagmanager.PolicyTag]],
     ]:
         raise NotImplementedError()
 
     @property
     def list_policy_tags(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [policytagmanager.ListPolicyTagsRequest],
-        typing.Union[
+        Union[
             policytagmanager.ListPolicyTagsResponse,
-            typing.Awaitable[policytagmanager.ListPolicyTagsResponse],
+            Awaitable[policytagmanager.ListPolicyTagsResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -252,40 +302,38 @@ class PolicyTagManagerTransport(abc.ABC):
     @property
     def get_policy_tag(
         self,
-    ) -> typing.Callable[
+    ) -> Callable[
         [policytagmanager.GetPolicyTagRequest],
-        typing.Union[
-            policytagmanager.PolicyTag, typing.Awaitable[policytagmanager.PolicyTag]
-        ],
+        Union[policytagmanager.PolicyTag, Awaitable[policytagmanager.PolicyTag]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> typing.Callable[
-        [iam_policy.GetIamPolicyRequest],
-        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
+    ) -> Callable[
+        [iam_policy_pb2.GetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
     ]:
         raise NotImplementedError()
 
     @property
     def set_iam_policy(
         self,
-    ) -> typing.Callable[
-        [iam_policy.SetIamPolicyRequest],
-        typing.Union[policy.Policy, typing.Awaitable[policy.Policy]],
+    ) -> Callable[
+        [iam_policy_pb2.SetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
     ]:
         raise NotImplementedError()
 
     @property
     def test_iam_permissions(
         self,
-    ) -> typing.Callable[
-        [iam_policy.TestIamPermissionsRequest],
-        typing.Union[
-            iam_policy.TestIamPermissionsResponse,
-            typing.Awaitable[iam_policy.TestIamPermissionsResponse],
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        Union[
+            iam_policy_pb2.TestIamPermissionsResponse,
+            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
         ],
     ]:
         raise NotImplementedError()

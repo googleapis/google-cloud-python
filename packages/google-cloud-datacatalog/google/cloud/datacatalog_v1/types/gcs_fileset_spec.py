@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.datacatalog_v1.types import timestamps
 
@@ -28,7 +25,6 @@ __protobuf__ = proto.module(
 
 class GcsFilesetSpec(proto.Message):
     r"""Describes a Cloud Storage fileset entry.
-
     Attributes:
         file_patterns (Sequence[str]):
             Required. Patterns to identify a set of files in Google
@@ -69,8 +65,7 @@ class GcsFilesetSpec(proto.Message):
             are represented here.
     """
 
-    file_patterns = proto.RepeatedField(proto.STRING, number=1)
-
+    file_patterns = proto.RepeatedField(proto.STRING, number=1,)
     sample_gcs_file_specs = proto.RepeatedField(
         proto.MESSAGE, number=2, message="GcsFileSpec",
     )
@@ -78,7 +73,6 @@ class GcsFilesetSpec(proto.Message):
 
 class GcsFileSpec(proto.Message):
     r"""Specifications of a single file in Cloud Storage.
-
     Attributes:
         file_path (str):
             Required. The full file path. Example:
@@ -90,13 +84,11 @@ class GcsFileSpec(proto.Message):
             Output only. The size of the file, in bytes.
     """
 
-    file_path = proto.Field(proto.STRING, number=1)
-
+    file_path = proto.Field(proto.STRING, number=1,)
     gcs_timestamps = proto.Field(
         proto.MESSAGE, number=2, message=timestamps.SystemTimestamps,
     )
-
-    size_bytes = proto.Field(proto.INT64, number=4)
+    size_bytes = proto.Field(proto.INT64, number=4,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

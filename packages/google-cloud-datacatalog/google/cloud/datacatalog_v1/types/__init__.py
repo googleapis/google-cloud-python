@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
+from .data_source import DataSource
 from .datacatalog import (
     CreateEntryGroupRequest,
     CreateEntryRequest,
     CreateTagRequest,
     CreateTagTemplateFieldRequest,
     CreateTagTemplateRequest,
+    DatabaseTableSpec,
     DeleteEntryGroupRequest,
     DeleteEntryRequest,
     DeleteTagRequest,
@@ -38,6 +38,7 @@ from .datacatalog import (
     ListTagsRequest,
     ListTagsResponse,
     LookupEntryRequest,
+    RenameTagTemplateFieldEnumValueRequest,
     RenameTagTemplateFieldRequest,
     SearchCatalogRequest,
     SearchCatalogResponse,
@@ -51,6 +52,32 @@ from .datacatalog import (
 from .gcs_fileset_spec import (
     GcsFilesetSpec,
     GcsFileSpec,
+)
+from .policytagmanager import (
+    CreatePolicyTagRequest,
+    CreateTaxonomyRequest,
+    DeletePolicyTagRequest,
+    DeleteTaxonomyRequest,
+    GetPolicyTagRequest,
+    GetTaxonomyRequest,
+    ListPolicyTagsRequest,
+    ListPolicyTagsResponse,
+    ListTaxonomiesRequest,
+    ListTaxonomiesResponse,
+    PolicyTag,
+    Taxonomy,
+    UpdatePolicyTagRequest,
+    UpdateTaxonomyRequest,
+)
+from .policytagmanagerserialization import (
+    CrossRegionalSource,
+    ExportTaxonomiesRequest,
+    ExportTaxonomiesResponse,
+    ImportTaxonomiesRequest,
+    ImportTaxonomiesResponse,
+    InlineSource,
+    SerializedPolicyTag,
+    SerializedTaxonomy,
 )
 from .schema import (
     ColumnSchema,
@@ -78,11 +105,13 @@ from .timestamps import SystemTimestamps
 
 __all__ = (
     "IntegratedSystem",
+    "DataSource",
     "CreateEntryGroupRequest",
     "CreateEntryRequest",
     "CreateTagRequest",
     "CreateTagTemplateFieldRequest",
     "CreateTagTemplateRequest",
+    "DatabaseTableSpec",
     "DeleteEntryGroupRequest",
     "DeleteEntryRequest",
     "DeleteTagRequest",
@@ -100,6 +129,7 @@ __all__ = (
     "ListTagsRequest",
     "ListTagsResponse",
     "LookupEntryRequest",
+    "RenameTagTemplateFieldEnumValueRequest",
     "RenameTagTemplateFieldRequest",
     "SearchCatalogRequest",
     "SearchCatalogResponse",
@@ -111,6 +141,28 @@ __all__ = (
     "EntryType",
     "GcsFilesetSpec",
     "GcsFileSpec",
+    "CreatePolicyTagRequest",
+    "CreateTaxonomyRequest",
+    "DeletePolicyTagRequest",
+    "DeleteTaxonomyRequest",
+    "GetPolicyTagRequest",
+    "GetTaxonomyRequest",
+    "ListPolicyTagsRequest",
+    "ListPolicyTagsResponse",
+    "ListTaxonomiesRequest",
+    "ListTaxonomiesResponse",
+    "PolicyTag",
+    "Taxonomy",
+    "UpdatePolicyTagRequest",
+    "UpdateTaxonomyRequest",
+    "CrossRegionalSource",
+    "ExportTaxonomiesRequest",
+    "ExportTaxonomiesResponse",
+    "ImportTaxonomiesRequest",
+    "ImportTaxonomiesResponse",
+    "InlineSource",
+    "SerializedPolicyTag",
+    "SerializedTaxonomy",
     "ColumnSchema",
     "Schema",
     "SearchCatalogResult",

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -34,9 +32,8 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.datacatalog_v1beta1.services.policy_tag_manager import pagers
 from google.cloud.datacatalog_v1beta1.types import policytagmanager
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 from .transports.base import PolicyTagManagerTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import PolicyTagManagerGrpcTransport
 from .transports.grpc_asyncio import PolicyTagManagerGrpcAsyncIOTransport
@@ -57,7 +54,7 @@ class PolicyTagManagerClientMeta(type):
     _transport_registry["grpc_asyncio"] = PolicyTagManagerGrpcAsyncIOTransport
 
     def get_transport_class(cls, label: str = None,) -> Type[PolicyTagManagerTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -82,7 +79,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -116,7 +114,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -133,7 +132,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -152,10 +151,11 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     @property
     def transport(self) -> PolicyTagManagerTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            PolicyTagManagerTransport: The transport used by the client instance.
+            PolicyTagManagerTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
@@ -163,7 +163,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     def policy_tag_path(
         project: str, location: str, taxonomy: str, policy_tag: str,
     ) -> str:
-        """Return a fully-qualified policy_tag string."""
+        """Returns a fully-qualified policy_tag string."""
         return "projects/{project}/locations/{location}/taxonomies/{taxonomy}/policyTags/{policy_tag}".format(
             project=project,
             location=location,
@@ -173,7 +173,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     @staticmethod
     def parse_policy_tag_path(path: str) -> Dict[str, str]:
-        """Parse a policy_tag path into its component segments."""
+        """Parses a policy_tag path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/taxonomies/(?P<taxonomy>.+?)/policyTags/(?P<policy_tag>.+?)$",
             path,
@@ -182,14 +182,14 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     @staticmethod
     def taxonomy_path(project: str, location: str, taxonomy: str,) -> str:
-        """Return a fully-qualified taxonomy string."""
+        """Returns a fully-qualified taxonomy string."""
         return "projects/{project}/locations/{location}/taxonomies/{taxonomy}".format(
             project=project, location=location, taxonomy=taxonomy,
         )
 
     @staticmethod
     def parse_taxonomy_path(path: str) -> Dict[str, str]:
-        """Parse a taxonomy path into its component segments."""
+        """Parses a taxonomy path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/taxonomies/(?P<taxonomy>.+?)$",
             path,
@@ -198,7 +198,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -211,7 +211,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -222,7 +222,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -233,7 +233,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -244,7 +244,7 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -258,12 +258,12 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, PolicyTagManagerTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the policy tag manager client.
+        """Instantiates the policy tag manager client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -318,9 +318,10 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -332,12 +333,14 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -352,8 +355,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -397,7 +400,6 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 This corresponds to the ``taxonomy`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -430,10 +432,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         # there are no flattened fields.
         if not isinstance(request, policytagmanager.CreateTaxonomyRequest):
             request = policytagmanager.CreateTaxonomyRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if taxonomy is not None:
@@ -480,7 +480,6 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -503,10 +502,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         # there are no flattened fields.
         if not isinstance(request, policytagmanager.DeleteTaxonomyRequest):
             request = policytagmanager.DeleteTaxonomyRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -547,7 +544,6 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 This corresponds to the ``taxonomy`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -580,10 +576,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         # there are no flattened fields.
         if not isinstance(request, policytagmanager.UpdateTaxonomyRequest):
             request = policytagmanager.UpdateTaxonomyRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if taxonomy is not None:
                 request.taxonomy = taxonomy
 
@@ -628,7 +622,6 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -660,10 +653,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         # there are no flattened fields.
         if not isinstance(request, policytagmanager.ListTaxonomiesRequest):
             request = policytagmanager.ListTaxonomiesRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -711,7 +702,6 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -744,10 +734,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         # there are no flattened fields.
         if not isinstance(request, policytagmanager.GetTaxonomyRequest):
             request = policytagmanager.GetTaxonomyRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -796,7 +784,6 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 This corresponds to the ``policy_tag`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -831,10 +818,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         # there are no flattened fields.
         if not isinstance(request, policytagmanager.CreatePolicyTagRequest):
             request = policytagmanager.CreatePolicyTagRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if policy_tag is not None:
@@ -880,7 +865,6 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -903,10 +887,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         # there are no flattened fields.
         if not isinstance(request, policytagmanager.DeletePolicyTagRequest):
             request = policytagmanager.DeletePolicyTagRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -948,7 +930,6 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 This corresponds to the ``policy_tag`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -983,10 +964,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         # there are no flattened fields.
         if not isinstance(request, policytagmanager.UpdatePolicyTagRequest):
             request = policytagmanager.UpdatePolicyTagRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if policy_tag is not None:
                 request.policy_tag = policy_tag
 
@@ -1030,7 +1009,6 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1062,10 +1040,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         # there are no flattened fields.
         if not isinstance(request, policytagmanager.ListPolicyTagsRequest):
             request = policytagmanager.ListPolicyTagsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1113,7 +1089,6 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1148,10 +1123,8 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
         # there are no flattened fields.
         if not isinstance(request, policytagmanager.GetPolicyTagRequest):
             request = policytagmanager.GetPolicyTagRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1173,19 +1146,18 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     def get_iam_policy(
         self,
-        request: iam_policy.GetIamPolicyRequest = None,
+        request: iam_policy_pb2.GetIamPolicyRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Gets the IAM policy for a taxonomy or a policy tag.
 
         Args:
             request (google.iam.v1.iam_policy_pb2.GetIamPolicyRequest):
                 The request object. Request message for `GetIamPolicy`
                 method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1252,14 +1224,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.GetIamPolicyRequest(**request)
+            request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.GetIamPolicyRequest()
+            request = iam_policy_pb2.GetIamPolicyRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1279,19 +1250,18 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     def set_iam_policy(
         self,
-        request: iam_policy.SetIamPolicyRequest = None,
+        request: iam_policy_pb2.SetIamPolicyRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Sets the IAM policy for a taxonomy or a policy tag.
 
         Args:
             request (google.iam.v1.iam_policy_pb2.SetIamPolicyRequest):
                 The request object. Request message for `SetIamPolicy`
                 method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1358,14 +1328,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.SetIamPolicyRequest(**request)
+            request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.SetIamPolicyRequest()
+            request = iam_policy_pb2.SetIamPolicyRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1385,12 +1354,12 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
 
     def test_iam_permissions(
         self,
-        request: iam_policy.TestIamPermissionsRequest = None,
+        request: iam_policy_pb2.TestIamPermissionsRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> iam_policy.TestIamPermissionsResponse:
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns the permissions that a caller has on the
         specified taxonomy or policy tag.
 
@@ -1398,7 +1367,6 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
             request (google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest):
                 The request object. Request message for
                 `TestIamPermissions` method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1410,14 +1378,13 @@ class PolicyTagManagerClient(metaclass=PolicyTagManagerClientMeta):
                 Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
-
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.TestIamPermissionsRequest(**request)
+            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.TestIamPermissionsRequest()
+            request = iam_policy_pb2.TestIamPermissionsRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
