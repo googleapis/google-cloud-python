@@ -4,7 +4,7 @@
   "product_documentation": "https://grafeas.io",
   "client_documentation": "https://googleapis.dev/python/grafeas/latest",
   "issue_tracker": "",
-  "release_level": "alpha",
+  "release_level": "ga",
   "language": "python",
   "library_type": "GAPIC_COMBO",
   "repo": "googleapis/python-grafeas",
