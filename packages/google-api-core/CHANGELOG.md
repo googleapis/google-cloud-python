@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [1.27.0](https://www.github.com/googleapis/python-api-core/compare/v1.26.3...v1.27.0) (2021-05-18)
+
+
+### Features
+
+* Add support for `rest/` token in `x-goog-api-client` header ([#189](https://www.github.com/googleapis/python-api-core/issues/189)) ([15aca6b](https://www.github.com/googleapis/python-api-core/commit/15aca6b288b2ec5ce0251e442e1dfa7f52e1b124))
+* retry google.auth TransportError and requests ConnectionError ([#178](https://www.github.com/googleapis/python-api-core/issues/178)) ([6ae04a8](https://www.github.com/googleapis/python-api-core/commit/6ae04a8d134fffe13f06081e15f9723c1b2ea334))
+
 ### [1.26.3](https://www.github.com/googleapis/python-api-core/compare/v1.26.2...v1.26.3) (2021-03-25)
 
 
