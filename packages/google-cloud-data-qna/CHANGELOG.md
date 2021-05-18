@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-data-qna/compare/v0.1.1...v0.2.0) (2021-05-18)
+
+
+### Features
+
+* add from_service_account_info factory and fix sphinx identifiers ([#21](https://www.github.com/googleapis/python-data-qna/issues/21)) ([3fa53fb](https://www.github.com/googleapis/python-data-qna/commit/3fa53fbd42cc640d7f3442d77bd6357ce0e5e8d6))
+* support self-signed JWT flow for service accounts ([762c28c](https://www.github.com/googleapis/python-data-qna/commit/762c28cc095211301e922c9ceafef1d8cd36ad7d))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([762c28c](https://www.github.com/googleapis/python-data-qna/commit/762c28cc095211301e922c9ceafef1d8cd36ad7d))
+* **deps:** add packaging requirement ([#46](https://www.github.com/googleapis/python-data-qna/issues/46)) ([afb3009](https://www.github.com/googleapis/python-data-qna/commit/afb3009e762aff472c07f9884469d1cee78bc660))
+* remove gRPC send/recv limits ([#15](https://www.github.com/googleapis/python-data-qna/issues/15)) ([044d47a](https://www.github.com/googleapis/python-data-qna/commit/044d47ab0ab3c9ccb1b1f81fb974be6375a0cf52))
+
 ### [0.1.1](https://www.github.com/googleapis/python-data-qna/compare/v0.1.0...v0.1.1) (2020-12-04)
 
 
