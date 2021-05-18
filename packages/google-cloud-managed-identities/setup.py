@@ -20,7 +20,7 @@ import os
 import setuptools  # type: ignore
 
 name = "google-cloud-managed-identities"
-version = "0.1.0"
+version = "0.2.0"
 description = "Managed Service for Microsoft Active Directory API client library"
 release_status = "Development Status :: 4 - Beta"
 url = "https://github.com/googleapis/python-managed-identities"
