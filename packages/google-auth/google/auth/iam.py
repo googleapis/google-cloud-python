@@ -79,7 +79,7 @@ class Signer(crypt.Signer):
 
         if response.status != http_client.OK:
             raise exceptions.TransportError(
-                "Error calling the IAM signBytes API: {}".format(response.data)
+                "Error calling the IAM signBlob API: {}".format(response.data)
             )
 
         return json.loads(response.data.decode("utf-8"))
