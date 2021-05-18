@@ -1,15 +1,15 @@
 Python Client for Service Directory
 =================================================
 
-|beta| |pypi| |versions|
+|GA| |pypi| |versions|
 
 `Cloud Service Directory API`_: Allows the registration and lookup of services.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-service-directory.svg
    :target: https://pypi.org/project/google-cloud-service-directory/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-service-directory.svg
