@@ -1,7 +1,7 @@
 Python Client for Retail API
 =================================================
 
-|beta| |pypi| |versions|
+|GA| |pypi| |versions|
 
 `Retail API`_: Cloud Retail service enables customers to build end-to-end personalized
 recommendation systems without requiring a high level of expertise in
@@ -10,8 +10,8 @@ machine learning, recommendation system, or Google Cloud.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-retail.svg
    :target: https://pypi.org/project/google-cloud-retail/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-retail.svg
