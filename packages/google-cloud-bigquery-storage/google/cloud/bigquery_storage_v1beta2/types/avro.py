@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -26,25 +24,23 @@ __protobuf__ = proto.module(
 
 class AvroSchema(proto.Message):
     r"""Avro schema.
-
     Attributes:
         schema (str):
             Json serialized schema, as described at
             https://avro.apache.org/docs/1.8.1/spec.html.
     """
 
-    schema = proto.Field(proto.STRING, number=1)
+    schema = proto.Field(proto.STRING, number=1,)
 
 
 class AvroRows(proto.Message):
     r"""Avro rows.
-
     Attributes:
         serialized_binary_rows (bytes):
             Binary serialized rows in a block.
     """
 
-    serialized_binary_rows = proto.Field(proto.BYTES, number=1)
+    serialized_binary_rows = proto.Field(proto.BYTES, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

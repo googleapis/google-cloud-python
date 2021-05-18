@@ -4,29 +4,15 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-bigquery-storage.git",
-        "sha": "316893b9f69a9a72bd5d9e0d0be17af337c6f2c9"
+        "sha": "ceae220a9fa5daa03da7907ae001d2689a7fbdcb"
       }
     },
     {
       "git": {
         "name": "googleapis",
         "remote": "https://github.com/googleapis/googleapis.git",
-        "sha": "95e7f055087a43f638ffd9a0f25ce36dbea87953",
-        "internalRef": "368275477"
-      }
-    },
-    {
-      "git": {
-        "name": "synthtool",
-        "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "043cc620d6a6111816d9e09f2a97208565fde958"
-      }
-    },
-    {
-      "git": {
-        "name": "synthtool",
-        "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "043cc620d6a6111816d9e09f2a97208565fde958"
+        "sha": "7e1b14e6c7a9ab96d2db7e4a131981f162446d34",
+        "internalRef": "373649163"
       }
     }
   ],
@@ -120,6 +106,7 @@
     "docs/multiprocessing.rst",
     "google/cloud/bigquery_storage/__init__.py",
     "google/cloud/bigquery_storage/py.typed",
+    "google/cloud/bigquery_storage_v1/gapic_metadata.json",
     "google/cloud/bigquery_storage_v1/proto/arrow.proto",
     "google/cloud/bigquery_storage_v1/proto/avro.proto",
     "google/cloud/bigquery_storage_v1/proto/storage.proto",
@@ -138,6 +125,7 @@
     "google/cloud/bigquery_storage_v1/types/avro.py",
     "google/cloud/bigquery_storage_v1/types/storage.py",
     "google/cloud/bigquery_storage_v1/types/stream.py",
+    "google/cloud/bigquery_storage_v1beta2/gapic_metadata.json",
     "google/cloud/bigquery_storage_v1beta2/proto/arrow.proto",
     "google/cloud/bigquery_storage_v1beta2/proto/avro.proto",
     "google/cloud/bigquery_storage_v1beta2/proto/protobuf.proto",
@@ -184,6 +172,9 @@
     "scripts/readme-gen/templates/install_portaudio.tmpl.rst",
     "setup.cfg",
     "testing/.gitignore",
+    "tests/__init__.py",
+    "tests/unit/__init__.py",
+    "tests/unit/gapic/__init__.py",
     "tests/unit/gapic/bigquery_storage_v1/__init__.py",
     "tests/unit/gapic/bigquery_storage_v1/test_big_query_read.py",
     "tests/unit/gapic/bigquery_storage_v1beta2/__init__.py",

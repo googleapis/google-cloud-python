@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import descriptor_pb2 as descriptor  # type: ignore
+from google.protobuf import descriptor_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -42,13 +39,12 @@ class ProtoSchema(proto.Message):
     """
 
     proto_descriptor = proto.Field(
-        proto.MESSAGE, number=1, message=descriptor.DescriptorProto,
+        proto.MESSAGE, number=1, message=descriptor_pb2.DescriptorProto,
     )
 
 
 class ProtoRows(proto.Message):
     r"""
-
     Attributes:
         serialized_rows (Sequence[bytes]):
             A sequence of rows serialized as a Protocol
@@ -58,7 +54,7 @@ class ProtoRows(proto.Message):
             deserializing this field.
     """
 
-    serialized_rows = proto.RepeatedField(proto.BYTES, number=1)
+    serialized_rows = proto.RepeatedField(proto.BYTES, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,7 @@
 #
 
 from google.cloud.bigquery_storage_v1 import BigQueryReadClient
+
 from google.cloud.bigquery_storage_v1 import gapic_types as types
 from google.cloud.bigquery_storage_v1 import __version__
 from google.cloud.bigquery_storage_v1.types.arrow import ArrowRecordBatch
@@ -30,11 +30,12 @@ from google.cloud.bigquery_storage_v1.types.storage import SplitReadStreamReques
 from google.cloud.bigquery_storage_v1.types.storage import SplitReadStreamResponse
 from google.cloud.bigquery_storage_v1.types.storage import StreamStats
 from google.cloud.bigquery_storage_v1.types.storage import ThrottleState
-from google.cloud.bigquery_storage_v1.types.stream import DataFormat
 from google.cloud.bigquery_storage_v1.types.stream import ReadSession
 from google.cloud.bigquery_storage_v1.types.stream import ReadStream
+from google.cloud.bigquery_storage_v1.types.stream import DataFormat
 
 __all__ = (
+    "BigQueryReadClient",
     "__version__",
     "types",
     "ArrowRecordBatch",
@@ -42,15 +43,14 @@ __all__ = (
     "ArrowSerializationOptions",
     "AvroRows",
     "AvroSchema",
-    "BigQueryReadClient",
     "CreateReadSessionRequest",
-    "DataFormat",
     "ReadRowsRequest",
     "ReadRowsResponse",
-    "ReadSession",
-    "ReadStream",
     "SplitReadStreamRequest",
     "SplitReadStreamResponse",
     "StreamStats",
     "ThrottleState",
+    "ReadSession",
+    "ReadStream",
+    "DataFormat",
 )

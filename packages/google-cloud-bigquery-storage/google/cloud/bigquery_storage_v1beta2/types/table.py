@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -26,7 +24,6 @@ __protobuf__ = proto.module(
 
 class TableSchema(proto.Message):
     r"""Schema of a table
-
     Attributes:
         fields (Sequence[google.cloud.bigquery_storage_v1beta2.types.TableFieldSchema]):
             Describes the fields in a table.
@@ -37,7 +34,6 @@ class TableSchema(proto.Message):
 
 class TableFieldSchema(proto.Message):
     r"""A field in TableSchema
-
     Attributes:
         name (str):
             Required. The field name. The name must contain only letters
@@ -83,15 +79,11 @@ class TableFieldSchema(proto.Message):
         REQUIRED = 2
         REPEATED = 3
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     type_ = proto.Field(proto.ENUM, number=2, enum=Type,)
-
     mode = proto.Field(proto.ENUM, number=3, enum=Mode,)
-
     fields = proto.RepeatedField(proto.MESSAGE, number=4, message="TableFieldSchema",)
-
-    description = proto.Field(proto.STRING, number=6)
+    description = proto.Field(proto.STRING, number=6,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
