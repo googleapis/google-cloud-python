@@ -18,10 +18,51 @@ from __future__ import absolute_import
 
 import nox
 
+ALEMBIC_CONF = """
+[alembic]
+script_location = test_migration
+prepend_sys_path = .
+sqlalchemy.url = spanner:///projects/appdev-soda-spanner-staging/instances/sqlalchemy-dialect-test/databases/compliance-test
+[post_write_hooks]
+[loggers]
+keys = root,sqlalchemy,alembic
+[handlers]
+keys = console
+[formatters]
+keys = generic
+[logger_root]
+level = WARN
+handlers = console
+qualname =
+[logger_sqlalchemy]
+level = WARN
+handlers =
+qualname = sqlalchemy.engine
+[logger_alembic]
+level = INFO
+handlers =
+qualname = alembic
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+[formatter_generic]
+format = %(levelname)-5.5s [%(name)s] %(message)s
+datefmt = %H:%M:%S
+"""
+
+UPGRADE_CODE = """def upgrade():
+    op.create_table(
+        'account',
+        sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column('name', sa.String(50), nullable=False),
+        sa.Column('description', sa.Unicode(200)),
+    )"""
+
 
 BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["google", "test", "noxfile.py", "setup.py"]
-
 DEFAULT_PYTHON_VERSION = "3.8"
 
 
@@ -75,3 +116,44 @@ def compliance_test(session):
     session.install("-e", ".")
     session.run("python", "create_test_database.py")
     session.run("pytest", "-v")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def migration_test(session):
+    """Migrate with SQLAlchemy and Alembic and check the result."""
+    import glob
+    import os
+    import shutil
+
+    session.install("pytest")
+    session.install("sqlalchemy")
+    session.install("google-cloud-spanner")
+    session.install("-e", ".")
+    session.install("alembic")
+    session.run("alembic", "init", "test_migration")
+
+    # setting testing configurations
+    os.remove("alembic.ini")
+    with open("alembic.ini", "w") as f:
+        f.write(ALEMBIC_CONF)
+
+    session.run("alembic", "revision", "-m", "migration_for_test")
+    files = glob.glob("test_migration/versions/*.py")
+
+    # updating the upgrade-script code
+    with open(files[0], "r") as f:
+        script_code = f.read()
+
+    script_code = script_code.replace("""def upgrade():\n    pass""", UPGRADE_CODE)
+    with open(files[0], "w") as f:
+        f.write(script_code)
+
+    os.remove("test_migration/env.py")
+    shutil.copyfile("test_migration_env.py", "test_migration/env.py")
+
+    # running the test migration
+    session.run("alembic", "upgrade", "head")
+
+    # clearing the migration data
+    os.remove("alembic.ini")
+    shutil.rmtree("test_migration")
