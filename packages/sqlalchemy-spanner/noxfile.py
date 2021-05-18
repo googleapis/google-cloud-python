@@ -157,3 +157,4 @@ def migration_test(session):
     # clearing the migration data
     os.remove("alembic.ini")
     shutil.rmtree("test_migration")
+    session.run("python", "migration_test_cleanup.py")
