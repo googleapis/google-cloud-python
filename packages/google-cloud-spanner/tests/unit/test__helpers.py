@@ -233,6 +233,65 @@ class Test_make_value_pb(unittest.TestCase):
         with self.assertRaises(ValueError):
             self._callFUT(object())
 
+    def test_w_numeric_precision_and_scale_valid(self):
+        import decimal
+        from google.protobuf.struct_pb2 import Value
+
+        cases = [
+            decimal.Decimal("42"),
+            decimal.Decimal("9.9999999999999999999999999999999999999E+28"),
+            decimal.Decimal("-9.9999999999999999999999999999999999999E+28"),
+            decimal.Decimal("99999999999999999999999999999.999999999"),
+            decimal.Decimal("1E+28"),
+            decimal.Decimal("1E-9"),
+        ]
+        for value in cases:
+            with self.subTest(value=value):
+                value_pb = self._callFUT(value)
+                self.assertIsInstance(value_pb, Value)
+                self.assertEqual(value_pb.string_value, str(value))
+
+    def test_w_numeric_precision_and_scale_invalid(self):
+        import decimal
+        from google.cloud.spanner_v1._helpers import (
+            NUMERIC_MAX_SCALE_ERR_MSG,
+            NUMERIC_MAX_PRECISION_ERR_MSG,
+        )
+
+        max_precision_error_msg = NUMERIC_MAX_PRECISION_ERR_MSG.format("30")
+        max_scale_error_msg = NUMERIC_MAX_SCALE_ERR_MSG.format("10")
+
+        cases = [
+            (
+                decimal.Decimal("9.9999999999999999999999999999999999999E+29"),
+                max_precision_error_msg,
+            ),
+            (
+                decimal.Decimal("-9.9999999999999999999999999999999999999E+29"),
+                max_precision_error_msg,
+            ),
+            (
+                decimal.Decimal("999999999999999999999999999999.99999999"),
+                max_precision_error_msg,
+            ),
+            (
+                decimal.Decimal("-999999999999999999999999999999.99999999"),
+                max_precision_error_msg,
+            ),
+            (
+                decimal.Decimal("999999999999999999999999999999"),
+                max_precision_error_msg,
+            ),
+            (decimal.Decimal("1E+29"), max_precision_error_msg),
+            (decimal.Decimal("1E-10"), max_scale_error_msg),
+        ]
+
+        for value, err_msg in cases:
+            with self.subTest(value=value, err_msg=err_msg):
+                self.assertRaisesRegex(
+                    ValueError, err_msg, lambda: self._callFUT(value),
+                )
+
 
 class Test_make_list_value_pb(unittest.TestCase):
     def _callFUT(self, *args, **kw):

@@ -30,6 +30,16 @@ from google.cloud.spanner_v1 import TypeCode
 from google.cloud.spanner_v1 import ExecuteSqlRequest
 
 
+# Validation error messages
+NUMERIC_MAX_SCALE_ERR_MSG = (
+    "Max scale for a numeric is 9. The requested numeric has scale {}"
+)
+NUMERIC_MAX_PRECISION_ERR_MSG = (
+    "Max precision for the whole component of a numeric is 29. The requested "
+    + "numeric has a whole component with precision {}"
+)
+
+
 def _try_to_coerce_bytes(bytestring):
     """Try to coerce a byte string into the right thing based on Python
     version and whether or not it is base64 encoded.
@@ -87,6 +97,28 @@ def _merge_query_options(base, merge):
     return combined
 
 
+def _assert_numeric_precision_and_scale(value):
+    """
+    Asserts that input numeric field is within Spanner supported range.
+
+    Spanner supports fixed 38 digits of precision and 9 digits of scale.
+    This number can be optionally prefixed with a plus or minus sign.
+    Read more here: https://cloud.google.com/spanner/docs/data-types#numeric_type
+
+    :type value: decimal.Decimal
+    :param value: The value to check for Cloud Spanner compatibility.
+
+    :raises NotSupportedError: If value is not within supported precision or scale of Spanner.
+    """
+    scale = value.as_tuple().exponent
+    precision = len(value.as_tuple().digits)
+
+    if scale < -9:
+        raise ValueError(NUMERIC_MAX_SCALE_ERR_MSG.format(abs(scale)))
+    if precision + scale > 29:
+        raise ValueError(NUMERIC_MAX_PRECISION_ERR_MSG.format(precision + scale))
+
+
 # pylint: disable=too-many-return-statements,too-many-branches
 def _make_value_pb(value):
     """Helper for :func:`_make_list_value_pbs`.
@@ -129,6 +161,7 @@ def _make_value_pb(value):
     if isinstance(value, ListValue):
         return Value(list_value=value)
     if isinstance(value, decimal.Decimal):
+        _assert_numeric_precision_and_scale(value)
         return Value(string_value=str(value))
     raise ValueError("Unknown type: %s" % (value,))
 
