@@ -102,7 +102,8 @@ class ReadSession(proto.Message):
 
                 Restricted to a maximum length for 1 MB.
             arrow_serialization_options (google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions):
-
+                Optional. Options specific to the Apache
+                Arrow output format.
         """
 
         selected_fields = proto.RepeatedField(proto.STRING, number=1,)

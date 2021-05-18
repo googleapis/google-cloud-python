@@ -63,6 +63,7 @@ class ArrowSerializationOptions(proto.Message):
         r"""Compression codec's supported by Arrow."""
         COMPRESSION_UNSPECIFIED = 0
         LZ4_FRAME = 1
+        ZSTD = 2
 
     buffer_compression = proto.Field(proto.ENUM, number=2, enum=CompressionCodec,)
 
