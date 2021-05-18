@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.2.0](https://www.github.com/googleapis/python-datacatalog/compare/v3.1.1...v3.2.0) (2021-05-18)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([85e46e1](https://www.github.com/googleapis/python-datacatalog/commit/85e46e144d32a0d66bc2d7c056453951eb77d592))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([85e46e1](https://www.github.com/googleapis/python-datacatalog/commit/85e46e144d32a0d66bc2d7c056453951eb77d592))
+
 ### [3.1.1](https://www.github.com/googleapis/python-datacatalog/compare/v3.1.0...v3.1.1) (2021-03-29)
 
 
