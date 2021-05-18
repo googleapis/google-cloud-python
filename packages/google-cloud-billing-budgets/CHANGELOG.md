@@ -1,4 +1,23 @@
 # Changelog
+## [1.2.0](https://www.github.com/googleapis/python-billingbudgets/compare/v1.1.1...v1.2.0) (2021-05-17)
+
+### Features
+
+* added support for configurable budget time period ([#91](https://www.github.com/googleapis/python-billingbudgets/issues/91)) ([45110a8](https://github.com/googleapis/python-billingbudgets/commit/45110a819c79deea9232e1da4cd2c3714cc02b0a))
+* support self-signed JWT flow for service accounts ([#91](https://www.github.com/googleapis/python-billingbudgets/issues/91)) ([45110a8](https://github.com/googleapis/python-billingbudgets/commit/45110a819c79deea9232e1da4cd2c3714cc02b0a))
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#93](https://www.github.com/googleapis/python-billingbudgets/issues/93)) ([cbc882c](https://www.github.com/googleapis/python-billingbudgets/commit/cbc882c3562d88b4563ae715b74379390ba41e1f))
+* use correct retry deadlines ([#66](https://www.github.com/googleapis/python-billingbudgets/issues/66)) ([ebf04ba](https://www.github.com/googleapis/python-billingbudgets/commit/ebf04baa60cba88a556465b18fb5fc3a3ae9a0a0))
+* add async client to %name_%version/init.py ([#91](https://www.github.com/googleapis/python-billingbudgets/issues/91)) ([45110a8](https://github.com/googleapis/python-billingbudgets/commit/45110a819c79deea9232e1da4cd2c3714cc02b0a))
+
+
+### Miscellaneous Chores
+
+* release 1.2.0 ([#95](https://www.github.com/googleapis/python-billingbudgets/issues/95)) ([be03be9](https://www.github.com/googleapis/python-billingbudgets/commit/be03be9af446c01ded9f7306eb376a73972de39e))
+
 ### [1.1.1](https://www.github.com/googleapis/python-billingbudgets/compare/v1.1.0...v1.1.1) (2021-02-12)
 
 
