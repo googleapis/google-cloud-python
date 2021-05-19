@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +15,11 @@
 #
 
 from .services.security_center import SecurityCenterClient
+from .services.security_center import SecurityCenterAsyncClient
+
 from .types.asset import Asset
 from .types.finding import Finding
+from .types.folder import Folder
 from .types.notification_config import NotificationConfig
 from .types.notification_message import NotificationMessage
 from .types.organization_settings import OrganizationSettings
@@ -53,14 +55,15 @@ from .types.securitycenter_service import UpdateSecurityMarksRequest
 from .types.securitycenter_service import UpdateSourceRequest
 from .types.source import Source
 
-
 __all__ = (
+    "SecurityCenterAsyncClient",
     "Asset",
     "CreateFindingRequest",
     "CreateNotificationConfigRequest",
     "CreateSourceRequest",
     "DeleteNotificationConfigRequest",
     "Finding",
+    "Folder",
     "GetNotificationConfigRequest",
     "GetOrganizationSettingsRequest",
     "GetSourceRequest",
@@ -83,6 +86,7 @@ __all__ = (
     "Resource",
     "RunAssetDiscoveryRequest",
     "RunAssetDiscoveryResponse",
+    "SecurityCenterClient",
     "SecurityMarks",
     "SetFindingStateRequest",
     "Source",
@@ -91,5 +95,4 @@ __all__ = (
     "UpdateOrganizationSettingsRequest",
     "UpdateSecurityMarksRequest",
     "UpdateSourceRequest",
-    "SecurityCenterClient",
 )

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -52,13 +50,19 @@ class Source(proto.Message):
             cross-site-scripting (XSS), Flash injection,
             mixed content (HTTP in HTTPS), and outdated or
             insecure libraries.".
+        canonical_name (str):
+            The canonical name of the finding. It's either
+            "organizations/{organization_id}/sources/{source_id}",
+            "folders/{folder_id}/sources/{source_id}" or
+            "projects/{project_number}/sources/{source_id}", depending
+            on the closest CRM ancestor of the resource associated with
+            the finding.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
-    description = proto.Field(proto.STRING, number=3)
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
+    description = proto.Field(proto.STRING, number=3,)
+    canonical_name = proto.Field(proto.STRING, number=14,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

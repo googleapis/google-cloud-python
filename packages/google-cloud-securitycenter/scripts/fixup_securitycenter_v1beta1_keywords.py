@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,25 +39,24 @@ def partition(
 class securitycenterCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'create_finding': ('parent', 'finding_id', 'finding', ),
-    'create_source': ('parent', 'source', ),
-    'get_iam_policy': ('resource', 'options', ),
-    'get_organization_settings': ('name', ),
-    'get_source': ('name', ),
-    'group_assets': ('parent', 'group_by', 'filter', 'compare_duration', 'read_time', 'page_token', 'page_size', ),
-    'group_findings': ('parent', 'group_by', 'filter', 'read_time', 'page_token', 'page_size', ),
-    'list_assets': ('parent', 'filter', 'order_by', 'read_time', 'compare_duration', 'field_mask', 'page_token', 'page_size', ),
-    'list_findings': ('parent', 'filter', 'order_by', 'read_time', 'field_mask', 'page_token', 'page_size', ),
-    'list_sources': ('parent', 'page_token', 'page_size', ),
-    'run_asset_discovery': ('parent', ),
-    'set_finding_state': ('name', 'state', 'start_time', ),
-    'set_iam_policy': ('resource', 'policy', ),
-    'test_iam_permissions': ('resource', 'permissions', ),
-    'update_finding': ('finding', 'update_mask', ),
-    'update_organization_settings': ('organization_settings', 'update_mask', ),
-    'update_security_marks': ('security_marks', 'update_mask', 'start_time', ),
-    'update_source': ('source', 'update_mask', ),
-
+          'create_finding': ('parent', 'finding_id', 'finding', ),
+          'create_source': ('parent', 'source', ),
+          'get_iam_policy': ('resource', 'options', ),
+          'get_organization_settings': ('name', ),
+          'get_source': ('name', ),
+          'group_assets': ('parent', 'group_by', 'filter', 'compare_duration', 'read_time', 'page_token', 'page_size', ),
+          'group_findings': ('parent', 'group_by', 'filter', 'read_time', 'page_token', 'page_size', ),
+          'list_assets': ('parent', 'filter', 'order_by', 'read_time', 'compare_duration', 'field_mask', 'page_token', 'page_size', ),
+          'list_findings': ('parent', 'filter', 'order_by', 'read_time', 'field_mask', 'page_token', 'page_size', ),
+          'list_sources': ('parent', 'page_token', 'page_size', ),
+          'run_asset_discovery': ('parent', ),
+          'set_finding_state': ('name', 'state', 'start_time', ),
+          'set_iam_policy': ('resource', 'policy', ),
+          'test_iam_permissions': ('resource', 'permissions', ),
+          'update_finding': ('finding', 'update_mask', ),
+          'update_organization_settings': ('organization_settings', 'update_mask', ),
+          'update_security_marks': ('security_marks', 'update_mask', 'start_time', ),
+          'update_source': ('source', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -90,7 +87,7 @@ class securitycenterCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

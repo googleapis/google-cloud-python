@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from .asset import Asset
 from .finding import Finding
+from .folder import Folder
 from .notification_config import NotificationConfig
 from .notification_message import NotificationMessage
 from .organization_settings import OrganizationSettings
@@ -57,6 +56,7 @@ from .source import Source
 __all__ = (
     "Asset",
     "Finding",
+    "Folder",
     "NotificationConfig",
     "NotificationMessage",
     "OrganizationSettings",

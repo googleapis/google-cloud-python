@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.securitycenter_v1p1beta1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1p1beta1.types import resource as gcs_resource
@@ -29,7 +26,6 @@ __protobuf__ = proto.module(
 
 class NotificationMessage(proto.Message):
     r"""Security Command Center's Notification
-
     Attributes:
         notification_config_name (str):
             Name of the notification config that
@@ -41,12 +37,10 @@ class NotificationMessage(proto.Message):
             The Cloud resource tied to the notification.
     """
 
-    notification_config_name = proto.Field(proto.STRING, number=1)
-
+    notification_config_name = proto.Field(proto.STRING, number=1,)
     finding = proto.Field(
         proto.MESSAGE, number=2, oneof="event", message=gcs_finding.Finding,
     )
-
     resource = proto.Field(proto.MESSAGE, number=3, message=gcs_resource.Resource,)
 
 

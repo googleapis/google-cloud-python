@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
-from google.protobuf import struct_pb2 as struct  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -86,13 +83,23 @@ class Finding(proto.Message):
             believes the firewall became open. The accuracy
             is determined by the detector. If the finding
             were to be resolved afterward, this time would
-            reflect when the finding was resolved.
+            reflect when the finding was resolved. Must not
+            be set to a value greater than the current
+            timestamp.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time at which the finding was created in
             Security Command Center.
         severity (google.cloud.securitycenter_v1.types.Finding.Severity):
             The severity of the finding. This field is
             managed by the source that writes the finding.
+        canonical_name (str):
+            The canonical name of the finding. It's either
+            "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
+            "folders/{folder_id}/sources/{source_id}/findings/{finding_id}"
+            or
+            "projects/{project_number}/sources/{source_id}/findings/{finding_id}",
+            depending on the closest CRM ancestor of the resource
+            associated with the finding.
     """
 
     class State(proto.Enum):
@@ -109,31 +116,24 @@ class Finding(proto.Message):
         MEDIUM = 3
         LOW = 4
 
-    name = proto.Field(proto.STRING, number=1)
-
-    parent = proto.Field(proto.STRING, number=2)
-
-    resource_name = proto.Field(proto.STRING, number=3)
-
+    name = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(proto.STRING, number=2,)
+    resource_name = proto.Field(proto.STRING, number=3,)
     state = proto.Field(proto.ENUM, number=4, enum=State,)
-
-    category = proto.Field(proto.STRING, number=5)
-
-    external_uri = proto.Field(proto.STRING, number=6)
-
+    category = proto.Field(proto.STRING, number=5,)
+    external_uri = proto.Field(proto.STRING, number=6,)
     source_properties = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=7, message=struct.Value,
+        proto.STRING, proto.MESSAGE, number=7, message=struct_pb2.Value,
     )
-
     security_marks = proto.Field(
         proto.MESSAGE, number=8, message=gcs_security_marks.SecurityMarks,
     )
-
-    event_time = proto.Field(proto.MESSAGE, number=9, message=timestamp.Timestamp,)
-
-    create_time = proto.Field(proto.MESSAGE, number=10, message=timestamp.Timestamp,)
-
+    event_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
+    create_time = proto.Field(
+        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+    )
     severity = proto.Field(proto.ENUM, number=12, enum=Severity,)
+    canonical_name = proto.Field(proto.STRING, number=14,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

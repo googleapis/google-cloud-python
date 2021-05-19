@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -53,12 +51,11 @@ from google.cloud.securitycenter_v1p1beta1.types import (
 from google.cloud.securitycenter_v1p1beta1.types import securitycenter_service
 from google.cloud.securitycenter_v1p1beta1.types import source
 from google.cloud.securitycenter_v1p1beta1.types import source as gcs_source
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.protobuf import empty_pb2 as empty  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import SecurityCenterTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import SecurityCenterGrpcTransport
 from .transports.grpc_asyncio import SecurityCenterGrpcAsyncIOTransport
@@ -79,7 +76,7 @@ class SecurityCenterClientMeta(type):
     _transport_registry["grpc_asyncio"] = SecurityCenterGrpcAsyncIOTransport
 
     def get_transport_class(cls, label: str = None,) -> Type[SecurityCenterTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -102,7 +99,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -136,7 +134,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -153,7 +152,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -172,23 +171,24 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     @property
     def transport(self) -> SecurityCenterTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            SecurityCenterTransport: The transport used by the client instance.
+            SecurityCenterTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
     @staticmethod
     def asset_path(organization: str, asset: str,) -> str:
-        """Return a fully-qualified asset string."""
+        """Returns a fully-qualified asset string."""
         return "organizations/{organization}/assets/{asset}".format(
             organization=organization, asset=asset,
         )
 
     @staticmethod
     def parse_asset_path(path: str) -> Dict[str, str]:
-        """Parse a asset path into its component segments."""
+        """Parses a asset path into its component segments."""
         m = re.match(
             r"^organizations/(?P<organization>.+?)/assets/(?P<asset>.+?)$", path
         )
@@ -196,14 +196,14 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     @staticmethod
     def finding_path(organization: str, source: str, finding: str,) -> str:
-        """Return a fully-qualified finding string."""
+        """Returns a fully-qualified finding string."""
         return "organizations/{organization}/sources/{source}/findings/{finding}".format(
             organization=organization, source=source, finding=finding,
         )
 
     @staticmethod
     def parse_finding_path(path: str) -> Dict[str, str]:
-        """Parse a finding path into its component segments."""
+        """Parses a finding path into its component segments."""
         m = re.match(
             r"^organizations/(?P<organization>.+?)/sources/(?P<source>.+?)/findings/(?P<finding>.+?)$",
             path,
@@ -212,14 +212,14 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     @staticmethod
     def notification_config_path(organization: str, notification_config: str,) -> str:
-        """Return a fully-qualified notification_config string."""
+        """Returns a fully-qualified notification_config string."""
         return "organizations/{organization}/notificationConfigs/{notification_config}".format(
             organization=organization, notification_config=notification_config,
         )
 
     @staticmethod
     def parse_notification_config_path(path: str) -> Dict[str, str]:
-        """Parse a notification_config path into its component segments."""
+        """Parses a notification_config path into its component segments."""
         m = re.match(
             r"^organizations/(?P<organization>.+?)/notificationConfigs/(?P<notification_config>.+?)$",
             path,
@@ -228,14 +228,14 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     @staticmethod
     def organization_settings_path(organization: str,) -> str:
-        """Return a fully-qualified organization_settings string."""
+        """Returns a fully-qualified organization_settings string."""
         return "organizations/{organization}/organizationSettings".format(
             organization=organization,
         )
 
     @staticmethod
     def parse_organization_settings_path(path: str) -> Dict[str, str]:
-        """Parse a organization_settings path into its component segments."""
+        """Parses a organization_settings path into its component segments."""
         m = re.match(
             r"^organizations/(?P<organization>.+?)/organizationSettings$", path
         )
@@ -243,14 +243,14 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     @staticmethod
     def security_marks_path(organization: str, asset: str,) -> str:
-        """Return a fully-qualified security_marks string."""
+        """Returns a fully-qualified security_marks string."""
         return "organizations/{organization}/assets/{asset}/securityMarks".format(
             organization=organization, asset=asset,
         )
 
     @staticmethod
     def parse_security_marks_path(path: str) -> Dict[str, str]:
-        """Parse a security_marks path into its component segments."""
+        """Parses a security_marks path into its component segments."""
         m = re.match(
             r"^organizations/(?P<organization>.+?)/assets/(?P<asset>.+?)/securityMarks$",
             path,
@@ -259,14 +259,14 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     @staticmethod
     def source_path(organization: str, source: str,) -> str:
-        """Return a fully-qualified source string."""
+        """Returns a fully-qualified source string."""
         return "organizations/{organization}/sources/{source}".format(
             organization=organization, source=source,
         )
 
     @staticmethod
     def parse_source_path(path: str) -> Dict[str, str]:
-        """Parse a source path into its component segments."""
+        """Parses a source path into its component segments."""
         m = re.match(
             r"^organizations/(?P<organization>.+?)/sources/(?P<source>.+?)$", path
         )
@@ -274,18 +274,18 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     @staticmethod
     def topic_path(project: str, topic: str,) -> str:
-        """Return a fully-qualified topic string."""
+        """Returns a fully-qualified topic string."""
         return "projects/{project}/topics/{topic}".format(project=project, topic=topic,)
 
     @staticmethod
     def parse_topic_path(path: str) -> Dict[str, str]:
-        """Parse a topic path into its component segments."""
+        """Parses a topic path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/topics/(?P<topic>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -298,7 +298,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -309,7 +309,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -320,7 +320,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -331,7 +331,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -345,12 +345,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, SecurityCenterTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the security center client.
+        """Instantiates the security center client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -405,9 +405,10 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -419,12 +420,14 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -439,8 +442,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -486,7 +489,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``source`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -519,10 +521,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         # there are no flattened fields.
         if not isinstance(request, securitycenter_service.CreateSourceRequest):
             request = securitycenter_service.CreateSourceRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if source is not None:
@@ -585,7 +585,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``finding`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -621,10 +620,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         # there are no flattened fields.
         if not isinstance(request, securitycenter_service.CreateFindingRequest):
             request = securitycenter_service.CreateFindingRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if finding_id is not None:
@@ -691,7 +688,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``notification_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -727,10 +723,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             request, securitycenter_service.CreateNotificationConfigRequest
         ):
             request = securitycenter_service.CreateNotificationConfigRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if config_id is not None:
@@ -779,7 +773,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -804,10 +797,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             request, securitycenter_service.DeleteNotificationConfigRequest
         ):
             request = securitycenter_service.DeleteNotificationConfigRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -830,13 +821,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     def get_iam_policy(
         self,
-        request: iam_policy.GetIamPolicyRequest = None,
+        request: iam_policy_pb2.GetIamPolicyRequest = None,
         *,
         resource: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Gets the access control policy on the specified
         Source.
 
@@ -853,7 +844,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -932,11 +922,10 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.GetIamPolicyRequest(**request)
+            request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.GetIamPolicyRequest()
-
+            request = iam_policy_pb2.GetIamPolicyRequest()
             if resource is not None:
                 request.resource = resource
 
@@ -979,7 +968,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1013,10 +1001,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         # there are no flattened fields.
         if not isinstance(request, securitycenter_service.GetNotificationConfigRequest):
             request = securitycenter_service.GetNotificationConfigRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1059,7 +1045,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1091,10 +1076,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             request, securitycenter_service.GetOrganizationSettingsRequest
         ):
             request = securitycenter_service.GetOrganizationSettingsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1139,7 +1122,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1172,10 +1154,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         # there are no flattened fields.
         if not isinstance(request, securitycenter_service.GetSourceRequest):
             request = securitycenter_service.GetSourceRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1210,7 +1190,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             request (google.cloud.securitycenter_v1p1beta1.types.GroupAssetsRequest):
                 The request object. Request message for grouping by
                 assets.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1227,7 +1206,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-
         # Minor optimization to avoid making a copy if the user passes
         # in a securitycenter_service.GroupAssetsRequest.
         # There's no risk of modifying the input as we've already verified
@@ -1271,8 +1249,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         their specified properties.
 
         To group across all sources provide a ``-`` as the source id.
-        Example:
-        /v1p1beta1/organizations/{organization_id}/sources/-/findings
+        Example: /v1/organizations/{organization_id}/sources/-/findings,
+        /v1/folders/{folder_id}/sources/-/findings,
+        /v1/projects/{project_id}/sources/-/findings
 
         Args:
             request (google.cloud.securitycenter_v1p1beta1.types.GroupFindingsRequest):
@@ -1280,10 +1259,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 findings.
             parent (str):
                 Required. Name of the source to groupBy. Its format is
-                "organizations/[organization_id]/sources/[source_id]".
-                To groupBy across all sources provide a source_id of
-                ``-``. For example:
-                organizations/{organization_id}/sources/-
+                "organizations/[organization_id]/sources/[source_id]",
+                folders/[folder_id]/sources/[source_id], or
+                projects/[project_id]/sources/[source_id]. To groupBy
+                across all sources provide a source_id of ``-``. For
+                example: organizations/{organization_id}/sources/-,
+                folders/{folder_id}/sources/-, or
+                projects/{project_id}/sources/-
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1310,7 +1292,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``group_by`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1342,10 +1323,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         # there are no flattened fields.
         if not isinstance(request, securitycenter_service.GroupFindingsRequest):
             request = securitycenter_service.GroupFindingsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if group_by is not None:
@@ -1389,12 +1368,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 The request object. Request message for listing assets.
             parent (str):
                 Required. Name of the organization assets should belong
-                to. Its format is "organizations/[organization_id]".
+                to. Its format is "organizations/[organization_id],
+                folders/[folder_id], or projects/[project_id]".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1425,10 +1404,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         # there are no flattened fields.
         if not isinstance(request, securitycenter_service.ListAssetsRequest):
             request = securitycenter_service.ListAssetsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1476,14 +1453,17 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             parent (str):
                 Required. Name of the source the findings belong to. Its
                 format is
-                "organizations/[organization_id]/sources/[source_id]".
-                To list across all sources provide a source_id of ``-``.
-                For example: organizations/{organization_id}/sources/-
+                "organizations/[organization_id]/sources/[source_id],
+                folders/[folder_id]/sources/[source_id], or
+                projects/[project_id]/sources/[source_id]". To list
+                across all sources provide a source_id of ``-``. For
+                example: organizations/{organization_id}/sources/-,
+                folders/{folder_id}/sources/- or
+                projects/{projects_id}/sources/-
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1515,10 +1495,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         # there are no flattened fields.
         if not isinstance(request, securitycenter_service.ListFindingsRequest):
             request = securitycenter_service.ListFindingsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1567,7 +1545,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1601,10 +1578,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             request, securitycenter_service.ListNotificationConfigsRequest
         ):
             request = securitycenter_service.ListNotificationConfigsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1649,12 +1624,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             parent (str):
                 Required. Resource name of the parent of sources to
                 list. Its format should be
-                "organizations/[organization_id]".
+                "organizations/[organization_id], folders/[folder_id],
+                or projects/[project_id]".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1685,10 +1660,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         # there are no flattened fields.
         if not isinstance(request, securitycenter_service.ListSourcesRequest):
             request = securitycenter_service.ListSourcesRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1742,7 +1715,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1774,10 +1746,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         # there are no flattened fields.
         if not isinstance(request, securitycenter_service.RunAssetDiscoveryRequest):
             request = securitycenter_service.RunAssetDiscoveryRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1799,7 +1769,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             response,
             self._transport.operations_client,
             run_asset_discovery_response.RunAssetDiscoveryResponse,
-            metadata_type=empty.Empty,
+            metadata_type=empty_pb2.Empty,
         )
 
         # Done; return the response.
@@ -1811,7 +1781,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         *,
         name: str = None,
         state: finding.Finding.State = None,
-        start_time: timestamp.Timestamp = None,
+        start_time: timestamp_pb2.Timestamp = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1846,7 +1816,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``start_time`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1882,10 +1851,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         # there are no flattened fields.
         if not isinstance(request, securitycenter_service.SetFindingStateRequest):
             request = securitycenter_service.SetFindingStateRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
             if state is not None:
@@ -1911,13 +1878,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     def set_iam_policy(
         self,
-        request: iam_policy.SetIamPolicyRequest = None,
+        request: iam_policy_pb2.SetIamPolicyRequest = None,
         *,
         resource: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Sets the access control policy on the specified
         Source.
 
@@ -1934,7 +1901,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2013,11 +1979,10 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.SetIamPolicyRequest(**request)
+            request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.SetIamPolicyRequest()
-
+            request = iam_policy_pb2.SetIamPolicyRequest()
             if resource is not None:
                 request.resource = resource
 
@@ -2039,14 +2004,14 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
 
     def test_iam_permissions(
         self,
-        request: iam_policy.TestIamPermissionsRequest = None,
+        request: iam_policy_pb2.TestIamPermissionsRequest = None,
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> iam_policy.TestIamPermissionsResponse:
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns the permissions that a caller has on the
         specified source.
 
@@ -2072,7 +2037,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``permissions`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2096,14 +2060,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.TestIamPermissionsRequest(**request)
+            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.TestIamPermissionsRequest()
-
+            request = iam_policy_pb2.TestIamPermissionsRequest()
             if resource is not None:
                 request.resource = resource
-
             if permissions:
                 request.permissions.extend(permissions)
 
@@ -2128,7 +2090,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         request: securitycenter_service.UpdateFindingRequest = None,
         *,
         finding: gcs_finding.Finding = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -2166,7 +2128,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2202,10 +2163,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         # there are no flattened fields.
         if not isinstance(request, securitycenter_service.UpdateFindingRequest):
             request = securitycenter_service.UpdateFindingRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if finding is not None:
                 request.finding = finding
             if update_mask is not None:
@@ -2234,7 +2193,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         request: securitycenter_service.UpdateNotificationConfigRequest = None,
         *,
         notification_config: gcs_notification_config.NotificationConfig = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -2262,7 +2221,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2298,10 +2256,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             request, securitycenter_service.UpdateNotificationConfigRequest
         ):
             request = securitycenter_service.UpdateNotificationConfigRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if notification_config is not None:
                 request.notification_config = notification_config
             if update_mask is not None:
@@ -2349,7 +2305,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``organization_settings`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2381,10 +2336,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
             request, securitycenter_service.UpdateOrganizationSettingsRequest
         ):
             request = securitycenter_service.UpdateOrganizationSettingsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if organization_settings is not None:
                 request.organization_settings = organization_settings
 
@@ -2413,7 +2366,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         request: securitycenter_service.UpdateSourceRequest = None,
         *,
         source: gcs_source.Source = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -2440,7 +2393,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2473,10 +2425,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         # there are no flattened fields.
         if not isinstance(request, securitycenter_service.UpdateSourceRequest):
             request = securitycenter_service.UpdateSourceRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if source is not None:
                 request.source = source
             if update_mask is not None:
@@ -2505,7 +2455,7 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         request: securitycenter_service.UpdateSecurityMarksRequest = None,
         *,
         security_marks: gcs_security_marks.SecurityMarks = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -2535,7 +2485,6 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2570,10 +2519,8 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         # there are no flattened fields.
         if not isinstance(request, securitycenter_service.UpdateSecurityMarksRequest):
             request = securitycenter_service.UpdateSecurityMarksRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if security_marks is not None:
                 request.security_marks = security_marks
             if update_mask is not None:

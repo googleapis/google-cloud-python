@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +14,16 @@
 # limitations under the License.
 #
 
-from google.cloud.securitycenter_v1.services.security_center.async_client import (
-    SecurityCenterAsyncClient,
-)
 from google.cloud.securitycenter_v1.services.security_center.client import (
     SecurityCenterClient,
 )
+from google.cloud.securitycenter_v1.services.security_center.async_client import (
+    SecurityCenterAsyncClient,
+)
+
 from google.cloud.securitycenter_v1.types.asset import Asset
 from google.cloud.securitycenter_v1.types.finding import Finding
+from google.cloud.securitycenter_v1.types.folder import Folder
 from google.cloud.securitycenter_v1.types.notification_config import NotificationConfig
 from google.cloud.securitycenter_v1.types.notification_message import (
     NotificationMessage,
@@ -115,12 +116,21 @@ from google.cloud.securitycenter_v1.types.securitycenter_service import (
 from google.cloud.securitycenter_v1.types.source import Source
 
 __all__ = (
+    "SecurityCenterClient",
+    "SecurityCenterAsyncClient",
     "Asset",
+    "Finding",
+    "Folder",
+    "NotificationConfig",
+    "NotificationMessage",
+    "OrganizationSettings",
+    "Resource",
+    "RunAssetDiscoveryResponse",
+    "SecurityMarks",
     "CreateFindingRequest",
     "CreateNotificationConfigRequest",
     "CreateSourceRequest",
     "DeleteNotificationConfigRequest",
-    "Finding",
     "GetNotificationConfigRequest",
     "GetOrganizationSettingsRequest",
     "GetSourceRequest",
@@ -137,20 +147,12 @@ __all__ = (
     "ListNotificationConfigsResponse",
     "ListSourcesRequest",
     "ListSourcesResponse",
-    "NotificationConfig",
-    "NotificationMessage",
-    "OrganizationSettings",
-    "Resource",
     "RunAssetDiscoveryRequest",
-    "RunAssetDiscoveryResponse",
-    "SecurityCenterAsyncClient",
-    "SecurityCenterClient",
-    "SecurityMarks",
     "SetFindingStateRequest",
-    "Source",
     "UpdateFindingRequest",
     "UpdateNotificationConfigRequest",
     "UpdateOrganizationSettingsRequest",
     "UpdateSecurityMarksRequest",
     "UpdateSourceRequest",
+    "Source",
 )

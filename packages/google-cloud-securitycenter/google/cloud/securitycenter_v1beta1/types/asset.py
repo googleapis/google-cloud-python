@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.securitycenter_v1beta1.types import (
     security_marks as gcs_security_marks,
 )
-from google.protobuf import struct_pb2 as struct  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -97,33 +94,26 @@ class Asset(proto.Message):
                 Owners of the Google Cloud resource.
         """
 
-        resource_name = proto.Field(proto.STRING, number=1)
+        resource_name = proto.Field(proto.STRING, number=1,)
+        resource_type = proto.Field(proto.STRING, number=2,)
+        resource_parent = proto.Field(proto.STRING, number=3,)
+        resource_project = proto.Field(proto.STRING, number=4,)
+        resource_owners = proto.RepeatedField(proto.STRING, number=5,)
 
-        resource_type = proto.Field(proto.STRING, number=2)
-
-        resource_parent = proto.Field(proto.STRING, number=3)
-
-        resource_project = proto.Field(proto.STRING, number=4)
-
-        resource_owners = proto.RepeatedField(proto.STRING, number=5)
-
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     security_center_properties = proto.Field(
         proto.MESSAGE, number=2, message=SecurityCenterProperties,
     )
-
     resource_properties = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=7, message=struct.Value,
+        proto.STRING, proto.MESSAGE, number=7, message=struct_pb2.Value,
     )
-
     security_marks = proto.Field(
         proto.MESSAGE, number=8, message=gcs_security_marks.SecurityMarks,
     )
-
-    create_time = proto.Field(proto.MESSAGE, number=9, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=10, message=timestamp.Timestamp,)
+    create_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(
+        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

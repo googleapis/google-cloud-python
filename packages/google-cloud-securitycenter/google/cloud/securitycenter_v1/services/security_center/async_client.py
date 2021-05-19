@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -22,10 +20,10 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.api_core import operation  # type: ignore
@@ -47,12 +45,11 @@ from google.cloud.securitycenter_v1.types import security_marks as gcs_security_
 from google.cloud.securitycenter_v1.types import securitycenter_service
 from google.cloud.securitycenter_v1.types import source
 from google.cloud.securitycenter_v1.types import source as gcs_source
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.protobuf import empty_pb2 as empty  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import SecurityCenterTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import SecurityCenterGrpcAsyncIOTransport
 from .client import SecurityCenterClient
@@ -90,31 +87,26 @@ class SecurityCenterAsyncClient:
     parse_source_path = staticmethod(SecurityCenterClient.parse_source_path)
     topic_path = staticmethod(SecurityCenterClient.topic_path)
     parse_topic_path = staticmethod(SecurityCenterClient.parse_topic_path)
-
     common_billing_account_path = staticmethod(
         SecurityCenterClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         SecurityCenterClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(SecurityCenterClient.common_folder_path)
     parse_common_folder_path = staticmethod(
         SecurityCenterClient.parse_common_folder_path
     )
-
     common_organization_path = staticmethod(
         SecurityCenterClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
         SecurityCenterClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(SecurityCenterClient.common_project_path)
     parse_common_project_path = staticmethod(
         SecurityCenterClient.parse_common_project_path
     )
-
     common_location_path = staticmethod(SecurityCenterClient.common_location_path)
     parse_common_location_path = staticmethod(
         SecurityCenterClient.parse_common_location_path
@@ -122,7 +114,8 @@ class SecurityCenterAsyncClient:
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -137,7 +130,7 @@ class SecurityCenterAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -154,7 +147,7 @@ class SecurityCenterAsyncClient:
 
     @property
     def transport(self) -> SecurityCenterTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             SecurityCenterTransport: The transport used by the client instance.
@@ -168,12 +161,12 @@ class SecurityCenterAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, SecurityCenterTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the security center client.
+        """Instantiates the security center client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -205,7 +198,6 @@ class SecurityCenterAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = SecurityCenterClient(
             credentials=credentials,
             transport=transport,
@@ -244,7 +236,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``source`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -275,7 +266,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if source is not None:
@@ -345,7 +335,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``finding`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -379,7 +368,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if finding_id is not None:
@@ -451,7 +439,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``notification_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -482,7 +469,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if config_id is not None:
@@ -533,7 +519,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -554,7 +539,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -579,13 +563,13 @@ class SecurityCenterAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy.GetIamPolicyRequest = None,
+        request: iam_policy_pb2.GetIamPolicyRequest = None,
         *,
         resource: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Gets the access control policy on the specified
         Source.
 
@@ -602,7 +586,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -681,10 +664,9 @@ class SecurityCenterAsyncClient:
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
-            request = iam_policy.GetIamPolicyRequest(**request)
-
+            request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
-            request = iam_policy.GetIamPolicyRequest(resource=resource,)
+            request = iam_policy_pb2.GetIamPolicyRequest(resource=resource,)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -695,7 +677,8 @@ class SecurityCenterAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -738,7 +721,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -769,7 +751,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -782,7 +763,8 @@ class SecurityCenterAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -825,7 +807,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -853,7 +834,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -866,7 +846,8 @@ class SecurityCenterAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -909,7 +890,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -940,7 +920,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -953,7 +932,8 @@ class SecurityCenterAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -988,7 +968,6 @@ class SecurityCenterAsyncClient:
             request (:class:`google.cloud.securitycenter_v1.types.GroupAssetsRequest`):
                 The request object. Request message for grouping by
                 assets.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1005,7 +984,6 @@ class SecurityCenterAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = securitycenter_service.GroupAssetsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1017,7 +995,8 @@ class SecurityCenterAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=480.0,
             ),
@@ -1057,7 +1036,9 @@ class SecurityCenterAsyncClient:
         their specified properties.
 
         To group across all sources provide a ``-`` as the source id.
-        Example: /v1/organizations/{organization_id}/sources/-/findings
+        Example: /v1/organizations/{organization_id}/sources/-/findings,
+        /v1/folders/{folder_id}/sources/-/findings,
+        /v1/projects/{project_id}/sources/-/findings
 
         Args:
             request (:class:`google.cloud.securitycenter_v1.types.GroupFindingsRequest`):
@@ -1065,10 +1046,13 @@ class SecurityCenterAsyncClient:
                 findings.
             parent (:class:`str`):
                 Required. Name of the source to groupBy. Its format is
-                "organizations/[organization_id]/sources/[source_id]".
-                To groupBy across all sources provide a source_id of
-                ``-``. For example:
-                organizations/{organization_id}/sources/-
+                "organizations/[organization_id]/sources/[source_id]",
+                folders/[folder_id]/sources/[source_id], or
+                projects/[project_id]/sources/[source_id]. To groupBy
+                across all sources provide a source_id of ``-``. For
+                example: organizations/{organization_id}/sources/-,
+                folders/{folder_id}/sources/-, or
+                projects/{project_id}/sources/-
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1095,7 +1079,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``group_by`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1125,7 +1108,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if group_by is not None:
@@ -1140,7 +1122,8 @@ class SecurityCenterAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=480.0,
             ),
@@ -1179,7 +1162,6 @@ class SecurityCenterAsyncClient:
         Args:
             request (:class:`google.cloud.securitycenter_v1.types.ListAssetsRequest`):
                 The request object. Request message for listing assets.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1195,7 +1177,6 @@ class SecurityCenterAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = securitycenter_service.ListAssetsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1207,7 +1188,8 @@ class SecurityCenterAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=480.0,
             ),
@@ -1250,7 +1232,6 @@ class SecurityCenterAsyncClient:
             request (:class:`google.cloud.securitycenter_v1.types.ListFindingsRequest`):
                 The request object. Request message for listing
                 findings.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1267,7 +1248,6 @@ class SecurityCenterAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = securitycenter_service.ListFindingsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1279,7 +1259,8 @@ class SecurityCenterAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=480.0,
             ),
@@ -1328,7 +1309,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1358,7 +1338,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -1371,7 +1350,8 @@ class SecurityCenterAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -1414,12 +1394,12 @@ class SecurityCenterAsyncClient:
             parent (:class:`str`):
                 Required. Resource name of the parent of sources to
                 list. Its format should be
-                "organizations/[organization_id]".
+                "organizations/[organization_id], folders/[folder_id],
+                or projects/[project_id]".
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1448,7 +1428,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -1461,7 +1440,8 @@ class SecurityCenterAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -1515,7 +1495,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1545,7 +1524,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -1571,7 +1549,7 @@ class SecurityCenterAsyncClient:
             response,
             self._client._transport.operations_client,
             run_asset_discovery_response.RunAssetDiscoveryResponse,
-            metadata_type=empty.Empty,
+            metadata_type=empty_pb2.Empty,
         )
 
         # Done; return the response.
@@ -1583,7 +1561,7 @@ class SecurityCenterAsyncClient:
         *,
         name: str = None,
         state: finding.Finding.State = None,
-        start_time: timestamp.Timestamp = None,
+        start_time: timestamp_pb2.Timestamp = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1618,7 +1596,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``start_time`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1652,7 +1629,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
         if state is not None:
@@ -1682,13 +1658,13 @@ class SecurityCenterAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy.SetIamPolicyRequest = None,
+        request: iam_policy_pb2.SetIamPolicyRequest = None,
         *,
         resource: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Sets the access control policy on the specified
         Source.
 
@@ -1705,7 +1681,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1784,10 +1759,9 @@ class SecurityCenterAsyncClient:
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
-            request = iam_policy.SetIamPolicyRequest(**request)
-
+            request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
-            request = iam_policy.SetIamPolicyRequest(resource=resource,)
+            request = iam_policy_pb2.SetIamPolicyRequest(resource=resource,)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1811,14 +1785,14 @@ class SecurityCenterAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy.TestIamPermissionsRequest = None,
+        request: iam_policy_pb2.TestIamPermissionsRequest = None,
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> iam_policy.TestIamPermissionsResponse:
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns the permissions that a caller has on the
         specified source.
 
@@ -1844,7 +1818,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``permissions`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1868,10 +1841,9 @@ class SecurityCenterAsyncClient:
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
-            request = iam_policy.TestIamPermissionsRequest(**request)
-
+            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
-            request = iam_policy.TestIamPermissionsRequest(
+            request = iam_policy_pb2.TestIamPermissionsRequest(
                 resource=resource, permissions=permissions,
             )
 
@@ -1884,7 +1856,8 @@ class SecurityCenterAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=60.0,
             ),
@@ -1932,7 +1905,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``finding`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1966,7 +1938,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if finding is not None:
             request.finding = finding
 
@@ -1997,7 +1968,7 @@ class SecurityCenterAsyncClient:
         request: securitycenter_service.UpdateNotificationConfigRequest = None,
         *,
         notification_config: gcs_notification_config.NotificationConfig = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -2025,7 +1996,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2056,7 +2026,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if notification_config is not None:
             request.notification_config = notification_config
         if update_mask is not None:
@@ -2106,7 +2075,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``organization_settings`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2134,7 +2102,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if organization_settings is not None:
             request.organization_settings = organization_settings
 
@@ -2182,7 +2149,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``source`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2213,7 +2179,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if source is not None:
             request.source = source
 
@@ -2261,7 +2226,6 @@ class SecurityCenterAsyncClient:
                 This corresponds to the ``security_marks`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2294,7 +2258,6 @@ class SecurityCenterAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if security_marks is not None:
             request.security_marks = security_marks
 
