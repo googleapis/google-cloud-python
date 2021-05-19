@@ -137,6 +137,17 @@ class SpannerSQLCompiler(SQLCompiler):
             _type_map_inv[type(type_[0])]
         )
 
+    def visit_like_op_binary(self, binary, operator, **kw):
+        """Build a LIKE clause."""
+        if binary.modifiers.get("escape", None):
+            raise NotImplementedError("ESCAPE keyword is not supported by Spanner")
+
+        # TODO: use ternary here, not "and"/ "or"
+        return "%s LIKE %s" % (
+            binary.left._compiler_dispatch(self, **kw),
+            binary.right._compiler_dispatch(self, **kw),
+        )
+
     def render_literal_value(self, value, type_):
         """Render the value of a bind parameter as a quoted literal.
 
