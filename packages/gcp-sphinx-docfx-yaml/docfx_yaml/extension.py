@@ -124,6 +124,7 @@ def _get_cls_module(_type, name):
     Foo
 
     """
+
     cls = None
     if _type in [FUNCTION, EXCEPTION]:
         module = '.'.join(name.split('.')[:-1])
@@ -145,7 +146,7 @@ def _create_reference(datam, parent, is_external=False):
         'uid': datam['uid'],
         'parent': parent,
         'isExternal': is_external,
-        'name': datam['name'],
+        'name': datam['source']['id'],
         'fullName': datam['fullName'],
     }
 
@@ -304,6 +305,7 @@ def _create_datam(app, cls, module, name, _type, obj, lines=None):
                     # Match the defaults with the count
                     if 'object at 0x' not in str(default):
                         args[len(args) - cut_count + count]['defaultValue'] = str(default)
+
     except Exception as e:
         print("Can't get argspec for {}: {}. Exception: {}".format(type(obj), name, e))
 
@@ -733,7 +735,8 @@ def build_finished(app, exception):
                     convert_module_to_package_if_needed(obj)
 
                 if obj['type'] == 'method':
-                    obj['namewithoutparameters'] = obj['source']['id']
+                    # Update the name to use shorter name to show
+                    obj['name'] = obj['source']['id']
 
                 # To distinguish distribution package and import package
                 if obj.get('type', '') == 'package' and obj.get('kind', '') != 'distribution':
