@@ -297,9 +297,23 @@ class AutomatedAgentReply(proto.Message):
         event (str):
             Event name if an event is triggered for the
             query.
+        match_confidence (float):
+            The confidence of the match. Values range
+            from 0.0 (completely uncertain) to 1.0
+            (completely certain). This value is for
+            informational purpose only and is only used to
+            help match the best intent within the
+            classification threshold. This value may change
+            for the same end-user expression at any time due
+            to a model retraining or change in
+            implementation.
+        parameters (google.protobuf.struct_pb2.Struct):
+            The collection of current parameters at the
+            time of this response.
         cx_session_parameters (google.protobuf.struct_pb2.Struct):
-            The collection of current Dialogflow CX agent
-            session parameters at the time of this response.
+            The collection of current Dialogflow CX agent session
+            parameters at the time of this response. Deprecated: Use
+            ``parameters`` instead.
     """
 
     detect_intent_response = proto.Field(
@@ -310,6 +324,8 @@ class AutomatedAgentReply(proto.Message):
     )
     intent = proto.Field(proto.STRING, number=4, oneof="match",)
     event = proto.Field(proto.STRING, number=5, oneof="match",)
+    match_confidence = proto.Field(proto.FLOAT, number=9,)
+    parameters = proto.Field(proto.MESSAGE, number=10, message=struct_pb2.Struct,)
     cx_session_parameters = proto.Field(
         proto.MESSAGE, number=6, message=struct_pb2.Struct,
     )

@@ -777,7 +777,9 @@ class StreamingRecognitionResult(proto.Message):
         r"""Type of the response message."""
         MESSAGE_TYPE_UNSPECIFIED = 0
         TRANSCRIPT = 1
+        DTMF_DIGITS = 3
         END_OF_SINGLE_UTTERANCE = 2
+        PARTIAL_DTMF_DIGITS = 4
 
     message_type = proto.Field(proto.ENUM, number=1, enum=MessageType,)
     transcript = proto.Field(proto.STRING, number=2,)
