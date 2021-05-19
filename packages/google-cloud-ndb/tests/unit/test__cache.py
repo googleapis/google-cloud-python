@@ -104,67 +104,13 @@ def test_global_get(_batch, _global_cache):
     batch.add.return_value = future
     _global_cache.return_value = mock.Mock(
         transient_errors=(),
-        clear_cache_soon=False,
         strict_read=False,
-        spec=("transient_errors", "clear_cache_soon", "strict_read"),
+        spec=("transient_errors", "strict_read"),
     )
 
     assert _cache.global_get(b"foo").result() == "hi mom!"
     _batch.get_batch.assert_called_once_with(_cache._GlobalCacheGetBatch)
     batch.add.assert_called_once_with(b"foo")
-
-
-@pytest.mark.usefixtures("in_context")
-@mock.patch("google.cloud.ndb._cache._global_cache")
-@mock.patch("google.cloud.ndb._cache._batch")
-def test_global_get_clear_cache_soon(_batch, _global_cache):
-    batch = _batch.get_batch.return_value
-    future = _future_result("hi mom!")
-    batch.add.return_value = future
-    _global_cache.return_value = mock.Mock(
-        transient_errors=(),
-        clear_cache_soon=True,
-        strict_read=False,
-        spec=("transient_errors", "clear_cache_soon", "clear", "strict_read"),
-    )
-
-    with warnings.catch_warnings(record=True) as logged:
-        assert _cache.global_get(b"foo").result() == "hi mom!"
-        assert len(logged) == 1
-
-    _batch.get_batch.assert_called_once_with(_cache._GlobalCacheGetBatch)
-    batch.add.assert_called_once_with(b"foo")
-    _global_cache.return_value.clear.assert_called_once_with()
-
-
-@pytest.mark.usefixtures("in_context")
-@mock.patch("google.cloud.ndb._cache._global_cache")
-@mock.patch("google.cloud.ndb._cache._batch")
-def test_global_get_clear_cache_soon_with_error(_batch, _global_cache):
-    """Regression test for #633
-
-    https://github.com/googleapis/python-ndb/issues/633
-    """
-
-    class TransientError(Exception):
-        pass
-
-    batch = _batch.get_batch.return_value
-    future = _future_result("hi mom!")
-    batch.add.return_value = future
-    _global_cache.return_value = mock.Mock(
-        transient_errors=(TransientError),
-        clear_cache_soon=True,
-        strict_read=False,
-        clear=mock.Mock(side_effect=TransientError("oops!"), spec=()),
-        spec=("transient_errors", "clear_cache_soon", "clear", "strict_read"),
-    )
-
-    with warnings.catch_warnings(record=True) as logged:
-        assert _cache.global_get(b"foo").result() is None
-        assert len(logged) == 2
-
-    _global_cache.return_value.clear.assert_called_once_with()
 
 
 @pytest.mark.usefixtures("in_context")
@@ -181,9 +127,8 @@ def test_global_get_with_error_strict(_batch, _global_cache, sleep):
     batch.add.return_value = future
     _global_cache.return_value = mock.Mock(
         transient_errors=(TransientError,),
-        clear_cache_soon=False,
         strict_read=True,
-        spec=("transient_errors", "clear_cache_soon", "strict_read"),
+        spec=("transient_errors", "strict_read"),
     )
 
     with pytest.raises(TransientError):
@@ -191,7 +136,6 @@ def test_global_get_with_error_strict(_batch, _global_cache, sleep):
 
     _batch.get_batch.assert_called_with(_cache._GlobalCacheGetBatch)
     batch.add.assert_called_with(b"foo")
-    assert _global_cache.return_value.clear_cache_soon is True
 
 
 @pytest.mark.usefixtures("in_context")
@@ -210,15 +154,13 @@ def test_global_get_with_error_strict_retry(_batch, _global_cache, sleep):
     ]
     _global_cache.return_value = mock.Mock(
         transient_errors=(TransientError,),
-        clear_cache_soon=False,
         strict_read=True,
-        spec=("transient_errors", "clear_cache_soon", "strict_read"),
+        spec=("transient_errors", "strict_read"),
     )
 
     assert _cache.global_get(b"foo").result() == "hi mom!"
     _batch.get_batch.assert_called_with(_cache._GlobalCacheGetBatch)
     batch.add.assert_called_with(b"foo")
-    assert _global_cache.return_value.clear_cache_soon is False
 
 
 @pytest.mark.usefixtures("in_context")
@@ -233,9 +175,8 @@ def test_global_get_with_error_not_strict(_batch, _global_cache):
     batch.add.return_value = future
     _global_cache.return_value = mock.Mock(
         transient_errors=(TransientError,),
-        clear_cache_soon=False,
         strict_read=False,
-        spec=("transient_errors", "clear_cache_soon", "strict_read"),
+        spec=("transient_errors", "strict_read"),
     )
 
     with warnings.catch_warnings(record=True) as logged:
@@ -325,9 +266,8 @@ class Test_global_set:
         batch.add.return_value = future
         _global_cache.return_value = mock.Mock(
             transient_errors=(),
-            clear_cache_soon=False,
             strict_write=False,
-            spec=("transient_errors", "clear_cache_soon", "strict_write"),
+            spec=("transient_errors", "strict_write"),
         )
 
         assert _cache.global_set(b"key", b"value").result() == "hi mom!"
@@ -348,8 +288,7 @@ class Test_global_set:
         batch.add.return_value = future
         _global_cache.return_value = mock.Mock(
             transient_errors=(TransientError,),
-            clear_cache_soon=False,
-            spec=("transient_errors", "clear_cache_soon", "strict_write"),
+            spec=("transient_errors", "strict_write"),
         )
 
         with pytest.raises(TransientError):
@@ -357,7 +296,6 @@ class Test_global_set:
 
         _batch.get_batch.assert_called_with(_cache._GlobalCacheSetBatch, {})
         batch.add.assert_called_with(b"key", b"value")
-        assert _global_cache.return_value.clear_cache_soon is True
 
     @staticmethod
     @mock.patch("google.cloud.ndb._cache._global_cache")
@@ -373,9 +311,8 @@ class Test_global_set:
         batch.add.return_value = future
         _global_cache.return_value = mock.Mock(
             transient_errors=(TransientError,),
-            clear_cache_soon=False,
             strict_write=False,
-            spec=("transient_errors", "clear_cache_soon", "strict_write"),
+            spec=("transient_errors", "strict_write"),
         )
 
         with warnings.catch_warnings(record=True) as logged:
@@ -384,7 +321,6 @@ class Test_global_set:
 
         _batch.get_batch.assert_called_once_with(_cache._GlobalCacheSetBatch, {})
         batch.add.assert_called_once_with(b"key", b"value")
-        assert _global_cache.return_value.clear_cache_soon is True
 
     @staticmethod
     @mock.patch("google.cloud.ndb._cache._global_cache")
@@ -395,9 +331,8 @@ class Test_global_set:
         batch.add.return_value = future
         _global_cache.return_value = mock.Mock(
             transient_errors=(),
-            clear_cache_soon=False,
             strict_write=False,
-            spec=("transient_errors", "clear_cache_soon", "strict_write"),
+            spec=("transient_errors", "strict_write"),
         )
 
         future = _cache.global_set(b"key", b"value", expires=5)
@@ -475,9 +410,8 @@ def test_global_delete(_batch, _global_cache):
     batch.add.return_value = future
     _global_cache.return_value = mock.Mock(
         transient_errors=(),
-        clear_cache_soon=False,
         strict_write=False,
-        spec=("transient_errors", "clear_cache_soon", "strict_write"),
+        spec=("transient_errors", "strict_write"),
     )
 
     assert _cache.global_delete(b"key").result() == "hi mom!"
@@ -511,9 +445,8 @@ def test_global_watch(_batch, _global_cache):
     batch.add.return_value = future
     _global_cache.return_value = mock.Mock(
         transient_errors=(),
-        clear_cache_soon=False,
         strict_read=False,
-        spec=("transient_errors", "clear_cache_soon", "strict_read"),
+        spec=("transient_errors", "strict_read"),
     )
 
     assert _cache.global_watch(b"key").result() == "hi mom!"
@@ -547,9 +480,8 @@ def test_global_unwatch(_batch, _global_cache):
     batch.add.return_value = future
     _global_cache.return_value = mock.Mock(
         transient_errors=(),
-        clear_cache_soon=False,
         strict_write=False,
-        spec=("transient_errors", "clear_cache_soon", "strict_write"),
+        spec=("transient_errors", "strict_write"),
     )
 
     assert _cache.global_unwatch(b"key").result() == "hi mom!"
@@ -585,9 +517,8 @@ class Test_global_compare_and_swap:
         batch.add.return_value = future
         _global_cache.return_value = mock.Mock(
             transient_errors=(),
-            clear_cache_soon=False,
             strict_read=False,
-            spec=("transient_errors", "clear_cache_soon", "strict_read"),
+            spec=("transient_errors", "strict_read"),
         )
 
         future = _cache.global_compare_and_swap(b"key", b"value")
@@ -606,9 +537,8 @@ class Test_global_compare_and_swap:
         batch.add.return_value = future
         _global_cache.return_value = mock.Mock(
             transient_errors=(),
-            clear_cache_soon=False,
             strict_read=False,
-            spec=("transient_errors", "clear_cache_soon", "strict_read"),
+            spec=("transient_errors", "strict_read"),
         )
 
         future = _cache.global_compare_and_swap(b"key", b"value", expires=5)
@@ -668,9 +598,8 @@ def test_global_lock(_batch, _global_cache):
     batch.add.return_value = future
     _global_cache.return_value = mock.Mock(
         transient_errors=(),
-        clear_cache_soon=False,
         strict_write=False,
-        spec=("transient_errors", "clear_cache_soon", "strict_write"),
+        spec=("transient_errors", "strict_write"),
     )
 
     assert _cache.global_lock(b"key").result() == "hi mom!"

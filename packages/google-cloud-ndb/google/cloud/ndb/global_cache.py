@@ -81,7 +81,6 @@ class GlobalCache(object):
     This should be overridden by subclasses.
     """
 
-    clear_cache_soon = False
     strict_read = True
     strict_write = True
 
@@ -267,13 +266,10 @@ class RedisCache(GlobalCache):
             the application. If :data:`True`, connection errors during write will be
             raised as exceptions in the application. Because write operations involve
             cache invalidation, setting this to :data:`False` may allow other clients to
-            retrieve stale data from the cache.  If there is a connection error, an
-            internal flag will be set to clear the cache the next time any method is
-            called on this object, to try and minimize the opportunity for clients to
-            read stale data from the cache. If :data:`True`, in the event of connection
-            errors, cache operations will be retried a number of times before eventually
-            raising the connection error to the application layer, if it does not
-            resolve after retrying. Setting this to :data:`True` will cause NDB
+            retrieve stale data from the cache. If :data:`True`, in the event of
+            connection errors, cache operations will be retried a number of times before
+            eventually raising the connection error to the application layer, if it does
+            not resolve after retrying. Setting this to :data:`True` will cause NDB
             operations to take longer to complete if there are transient errors in the
             cache layer. Default: :data:`True`.
     """
@@ -309,10 +305,7 @@ class RedisCache(GlobalCache):
                 exception in the application. If :data:`True`, connection errors during
                 write will be raised as exceptions in the application. Because write
                 operations involve cache invalidation, setting this to :data:`False` may
-                allow other clients to retrieve stale data from the cache.  If there is
-                a connection error, an internal flag will be set to clear the cache the
-                next time any method is called on this object, to try and minimize the
-                opportunity for clients to read stale data from the cache. If
+                allow other clients to retrieve stale data from the cache. If
                 :data:`True`, in the event of connection errors, cache operations will
                 be retried a number of times before eventually raising the connection
                 error to the application layer, if it does not resolve after retrying.
@@ -444,16 +437,12 @@ class MemcacheCache(GlobalCache):
             exception in the application. If :data:`True`, connection errors during
             write will be raised as exceptions in the application. Because write
             operations involve cache invalidation, setting this to :data:`False` may
-            allow other clients to retrieve stale data from the cache.  If there is
-            a connection error, an internal flag will be set to clear the cache the
-            next time any method is called on this object, to try and minimize the
-            opportunity for clients to read stale data from the cache. If
-            :data:`True`, in the event of connection errors, cache operations will
-            be retried a number of times before eventually raising the connection
-            error to the application layer, if it does not resolve after retrying.
-            Setting this to :data:`True` will cause NDB operations to take longer to
-            complete if there are transient errors in the cache layer. Default:
-            :data:`True`.
+            allow other clients to retrieve stale data from the cache. If :data:`True`,
+            in the event of connection errors, cache operations will be retried a number
+            of times before eventually raising the connection error to the application
+            layer, if it does not resolve after retrying.  Setting this to :data:`True`
+            will cause NDB operations to take longer to complete if there are transient
+            errors in the cache layer. Default: :data:`True`.
     """
 
     transient_errors = (
@@ -512,10 +501,7 @@ class MemcacheCache(GlobalCache):
                 exception in the application. If :data:`True`, connection errors during
                 write will be raised as exceptions in the application. Because write
                 operations involve cache invalidation, setting this to :data:`False` may
-                allow other clients to retrieve stale data from the cache.  If there is
-                a connection error, an internal flag will be set to clear the cache the
-                next time any method is called on this object, to try and minimize the
-                opportunity for clients to read stale data from the cache. If
+                allow other clients to retrieve stale data from the cache. If
                 :data:`True`, in the event of connection errors, cache operations will
                 be retried a number of times before eventually raising the connection
                 error to the application layer, if it does not resolve after retrying.

@@ -143,7 +143,7 @@ def _handle_transient_errors(read=False):
         def retry(wrapped, transient_errors):
             @functools.wraps(wrapped)
             @tasklets.tasklet
-            def retry_wrapper(*args, **kwargs):
+            def retry_wrapper(key, *args, **kwargs):
                 sleep_generator = core_retry.exponential_sleep_generator(0.1, 1)
                 attempts = 5
                 for sleep_time in sleep_generator:  # pragma: NO BRANCH
@@ -151,7 +151,7 @@ def _handle_transient_errors(read=False):
                     # raised out of.
                     attempts -= 1
                     try:
-                        result = yield wrapped(*args, **kwargs)
+                        result = yield wrapped(key, *args, **kwargs)
                         raise tasklets.Return(result)
                     except transient_errors:
                         if not attempts:
@@ -163,7 +163,7 @@ def _handle_transient_errors(read=False):
 
         @functools.wraps(wrapped)
         @tasklets.tasklet
-        def wrapper(*args, **kwargs):
+        def wrapper(key, *args, **kwargs):
             cache = _global_cache()
 
             is_read = read
@@ -177,17 +177,10 @@ def _handle_transient_errors(read=False):
                 function = wrapped
 
             try:
-                if cache.clear_cache_soon:
-                    warnings.warn("Clearing global cache...", RuntimeWarning)
-                    cache.clear()
-                    cache.clear_cache_soon = False
-
-                result = yield function(*args, **kwargs)
+                result = yield function(key, *args, **kwargs)
                 raise tasklets.Return(result)
 
             except cache.transient_errors as error:
-                cache.clear_cache_soon = True
-
                 if strict:
                     raise
 
