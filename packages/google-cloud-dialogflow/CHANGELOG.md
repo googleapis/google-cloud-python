@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.2.0...v2.3.0) (2021-05-19)
+
+
+### Features
+
+* added location-aware HTTP path binding for ListIntents feat: exposed match confidence and parameter in AnalyzeContentResponse feat: added DTMF and PARTIAL DTMF type in recognition result ([#298](https://www.github.com/googleapis/python-dialogflow/issues/298)) ([e52e9c0](https://www.github.com/googleapis/python-dialogflow/commit/e52e9c001c9830e24286e0251f3a639aaeaa32fd))
+
 ## [2.2.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.1.2...v2.2.0) (2021-05-16)
 
 
