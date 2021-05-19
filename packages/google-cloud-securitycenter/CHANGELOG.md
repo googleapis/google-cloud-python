@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.2.0](https://www.github.com/googleapis/python-securitycenter/compare/v1.1.0...v1.2.0) (2021-05-19)
+
+
+### Features
+
+* add canonical_name and folder fields ([16a33f4](https://www.github.com/googleapis/python-securitycenter/commit/16a33f4c994b80d9c50537f2e1299282d525171e))
+* support self-signed JWT flow for service accounts ([16a33f4](https://www.github.com/googleapis/python-securitycenter/commit/16a33f4c994b80d9c50537f2e1299282d525171e))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([16a33f4](https://www.github.com/googleapis/python-securitycenter/commit/16a33f4c994b80d9c50537f2e1299282d525171e))
+* fix retry deadlines ([#116](https://www.github.com/googleapis/python-securitycenter/issues/116)) ([15c28e8](https://www.github.com/googleapis/python-securitycenter/commit/15c28e88f5b52a6e4f608198446b0753bf48734e))
+
+
+### Documentation
+
+* Fix conflict tag introduced in PR 104 ([#106](https://www.github.com/googleapis/python-securitycenter/issues/106)) ([f4f14ee](https://www.github.com/googleapis/python-securitycenter/commit/f4f14ee32602aad7b7a4837e330919b4276d7b18))
+* standardize new tag with existing tags from other languages ([#104](https://www.github.com/googleapis/python-securitycenter/issues/104)) ([55582ac](https://www.github.com/googleapis/python-securitycenter/commit/55582acd814f7cd290580d5caa531725d2ff58b8))
+
 ## [1.1.0](https://www.github.com/googleapis/python-securitycenter/compare/v1.0.0...v1.1.0) (2020-12-15)
 
 
