@@ -109,13 +109,13 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         if self._operations_client is None:
             from google.api_core import grpc_helpers
 
-            self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(self._host, self._scopes)
-
             self._operations_client = operations_v1.OperationsClient(
                 grpc_helpers.create_channel(
                     self._host,
                     credentials=self._credentials,
-                    **self_signed_jwt_kwargs,
+                    default_scopes=cls.AUTH_SCOPES,
+                    scopes=self._scopes,
+                    default_host=cls.DEFAULT_HOST,
                     options=[
                         ("grpc.max_send_message_length", -1),
                         ("grpc.max_receive_message_length", -1),

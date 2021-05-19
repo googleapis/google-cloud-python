@@ -29,7 +29,6 @@ from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + ser
 {% endif %}
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }} import transports
 from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.base import _GOOGLE_AUTH_VERSION
-from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services.{{ service.name|snake_case }}.transports.base import _API_CORE_VERSION
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import grpc_helpers
@@ -55,8 +54,9 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% endfilter %}
 
 
-# TODO(busunkim): Once google-api-core >= 1.26.0 is required:
-# - Delete all the api-core and auth "less than" test cases
+# TODO(busunkim): Once google-auth >= 1.25.0 is required transitively
+# through google-api-core:
+# - Delete the auth "less than" test cases
 # - Delete these pytest markers (Make the "greater than or equal to" tests the default).
 requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
     packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
@@ -65,16 +65,6 @@ requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
 requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
     packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
     reason="This test requires google-auth >= 1.25.0",
-)
-
-requires_api_core_lt_1_26_0 = pytest.mark.skipif(
-    packaging.version.parse(_API_CORE_VERSION) >= packaging.version.parse("1.26.0"),
-    reason="This test requires google-api-core < 1.26.0",
-)
-
-requires_api_core_gte_1_26_0 = pytest.mark.skipif(
-    packaging.version.parse(_API_CORE_VERSION) < packaging.version.parse("1.26.0"),
-    reason="This test requires google-api-core >= 1.26.0",
 )
 
 def client_cert_source_callback():
@@ -1610,7 +1600,6 @@ def test_{{ service.name|snake_case }}_transport_auth_adc_old_google_auth(transp
         (transports.{{ service.name }}GrpcAsyncIOTransport, grpc_helpers_async)
     ],
 )
-@requires_api_core_gte_1_26_0
 def test_{{ service.name|snake_case }}_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
@@ -1636,78 +1625,6 @@ def test_{{ service.name|snake_case }}_transport_create_channel(transport_class,
                 {% endfor %}),
             scopes=["1", "2"],
             default_host="{{ host }}",
-            ssl_credentials=None,
-            options=[
-                ("grpc.max_send_message_length", -1),
-                ("grpc.max_receive_message_length", -1),
-            ],
-        )
-        {% endwith %}
-
-
-@pytest.mark.parametrize(
-    "transport_class,grpc_helpers",
-    [
-        (transports.{{ service.name }}GrpcTransport, grpc_helpers),
-        (transports.{{ service.name }}GrpcAsyncIOTransport, grpc_helpers_async)
-    ],
-)
-@requires_api_core_lt_1_26_0
-def test_{{ service.name|snake_case }}_transport_create_channel_old_api_core(transport_class, grpc_helpers):
-    # If credentials and host are not provided, the transport class should use
-    # ADC credentials.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
-        creds = ga_credentials.AnonymousCredentials()
-        adc.return_value = (creds, None)
-        transport_class(quota_project_id="octopus")
-
-        {% with host = (service.host|default('localhost', true)) %}
-        create_channel.assert_called_with(
-            "{{ host }}{% if ":" not in service.host %}:443{% endif %}",
-            credentials=creds,
-            credentials_file=None,
-            quota_project_id="octopus",
-            scopes=(
-                {% for scope in service.oauth_scopes %}
-                '{{ scope }}',
-                {% endfor %}),
-            ssl_credentials=None,
-            options=[
-                ("grpc.max_send_message_length", -1),
-                ("grpc.max_receive_message_length", -1),
-            ],
-        )
-        {% endwith %}
-
-
-@pytest.mark.parametrize(
-    "transport_class,grpc_helpers",
-    [
-        (transports.{{ service.name }}GrpcTransport, grpc_helpers),
-        (transports.{{ service.name }}GrpcAsyncIOTransport, grpc_helpers_async)
-    ],
-)
-@requires_api_core_lt_1_26_0
-def test_{{ service.name|snake_case }}_transport_create_channel_user_scopes(transport_class, grpc_helpers):
-    # If credentials and host are not provided, the transport class should use
-    # ADC credentials.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
-        creds = ga_credentials.AnonymousCredentials()
-        adc.return_value = (creds, None)
-        {% with host = (service.host|default('localhost', true)) %}
-
-        transport_class(quota_project_id="octopus", scopes=["1", "2"])
-
-        create_channel.assert_called_with(
-            "{{ host }}{% if ":" not in service.host %}:443{% endif %}",
-            credentials=creds,
-            credentials_file=None,
-            quota_project_id="octopus",
-            scopes=["1", "2"],
             ssl_credentials=None,
             options=[
                 ("grpc.max_send_message_length", -1),
