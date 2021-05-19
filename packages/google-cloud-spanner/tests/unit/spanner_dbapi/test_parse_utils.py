@@ -33,6 +33,7 @@ class TestParseUtils(unittest.TestCase):
         cases = (
             ("SELECT 1", STMT_NON_UPDATING),
             ("SELECT s.SongName FROM Songs AS s", STMT_NON_UPDATING),
+            ("(SELECT s.SongName FROM Songs AS s)", STMT_NON_UPDATING),
             (
                 "WITH sq AS (SELECT SchoolID FROM Roster) SELECT * from sq",
                 STMT_NON_UPDATING,
