@@ -24,6 +24,7 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
         TypeCode.INT64: "IntegerField",
         TypeCode.STRING: "CharField",
         TypeCode.TIMESTAMP: "DateTimeField",
+        TypeCode.NUMERIC: "DecimalField",
     }
 
     def get_field_type(self, data_type, description):

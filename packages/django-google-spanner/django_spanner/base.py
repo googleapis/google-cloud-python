@@ -17,7 +17,6 @@ from .features import DatabaseFeatures
 from .introspection import DatabaseIntrospection
 from .operations import DatabaseOperations
 from .schema import DatabaseSchemaEditor
-from .validation import DatabaseValidation
 
 
 class DatabaseWrapper(BaseDatabaseWrapper):
@@ -34,7 +33,7 @@ class DatabaseWrapper(BaseDatabaseWrapper):
         "CharField": "STRING(%(max_length)s)",
         "DateField": "DATE",
         "DateTimeField": "TIMESTAMP",
-        "DecimalField": "FLOAT64",
+        "DecimalField": "NUMERIC",
         "DurationField": "INT64",
         "EmailField": "STRING(%(max_length)s)",
         "FileField": "STRING(%(max_length)s)",
@@ -104,7 +103,6 @@ class DatabaseWrapper(BaseDatabaseWrapper):
     introspection_class = DatabaseIntrospection
     ops_class = DatabaseOperations
     client_class = DatabaseClient
-    validation_class = DatabaseValidation
 
     @property
     def instance(self):

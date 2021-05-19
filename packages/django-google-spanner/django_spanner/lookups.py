@@ -4,7 +4,6 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-from django.db.models import DecimalField
 from django.db.models.lookups import (
     Contains,
     EndsWith,
@@ -233,13 +232,8 @@ def cast_param_to_float(self, compiler, connection):
     """
     sql, params = self.as_sql(compiler, connection)
     if params:
-        # Cast to DecimaField lookup values to float because
-        # google.cloud.spanner_v1._helpers._make_value_pb() doesn't serialize
-        # decimal.Decimal.
-        if isinstance(self.lhs.output_field, DecimalField):
-            params[0] = float(params[0])
         # Cast remote field lookups that must be integer but come in as string.
-        elif hasattr(self.lhs.output_field, "get_path_info"):
+        if hasattr(self.lhs.output_field, "get_path_info"):
             for i, field in enumerate(
                 self.lhs.output_field.get_path_info()[-1].target_fields
             ):

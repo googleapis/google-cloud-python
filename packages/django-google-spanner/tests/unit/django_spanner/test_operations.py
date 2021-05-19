@@ -7,6 +7,7 @@
 from django.db.utils import DatabaseError
 from datetime import timedelta
 from tests.unit.django_spanner.simple_test import SpannerSimpleTestClass
+from decimal import Decimal
 
 
 class TestOperations(SpannerSimpleTestClass):
@@ -58,7 +59,8 @@ class TestOperations(SpannerSimpleTestClass):
 
     def test_adapt_decimalfield_value(self):
         self.assertIsInstance(
-            self.db_operations.adapt_decimalfield_value(value=1), float,
+            self.db_operations.adapt_decimalfield_value(value=Decimal("1")),
+            Decimal,
         )
 
     def test_adapt_decimalfield_value_none(self):
@@ -91,23 +93,6 @@ class TestOperations(SpannerSimpleTestClass):
     def test_adapt_timefield_value_none(self):
         self.assertIsNone(
             self.db_operations.adapt_timefield_value(value=None),
-        )
-
-    def test_convert_decimalfield_value(self):
-        from decimal import Decimal
-
-        self.assertIsInstance(
-            self.db_operations.convert_decimalfield_value(
-                value=1.0, expression=None, connection=None
-            ),
-            Decimal,
-        )
-
-    def test_convert_decimalfield_value_none(self):
-        self.assertIsNone(
-            self.db_operations.convert_decimalfield_value(
-                value=None, expression=None, connection=None
-            ),
         )
 
     def test_convert_uuidfield_value(self):

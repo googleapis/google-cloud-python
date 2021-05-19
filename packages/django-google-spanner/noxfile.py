@@ -84,7 +84,7 @@ def default(session):
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
-        "--cov-fail-under=68",
+        "--cov-fail-under=65",
         os.path.join("tests", "unit"),
         *session.posargs
     )
