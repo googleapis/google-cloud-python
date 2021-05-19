@@ -220,15 +220,6 @@ class Test_make_value_pb(unittest.TestCase):
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb.string_value, "2021-02-08T07:00:00.000000Z")
 
-    def test_w_numeric(self):
-        import decimal
-        from google.protobuf.struct_pb2 import Value
-
-        value = decimal.Decimal("9999999999999999999999999999.999999999")
-        value_pb = self._callFUT(value)
-        self.assertIsInstance(value_pb, Value)
-        self.assertEqual(value_pb.string_value, str(value))
-
     def test_w_unknown_type(self):
         with self.assertRaises(ValueError):
             self._callFUT(object())
