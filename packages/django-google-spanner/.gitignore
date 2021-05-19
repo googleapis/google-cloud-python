@@ -24,3 +24,7 @@ django_tests_dir
 
 # Built documentation
 docs/_build
+
+# mac hidden files.
+.DS_Store
+

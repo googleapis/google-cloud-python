@@ -4,6 +4,9 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
+import time
+import os
+
 DEBUG = True
 USE_TZ = True
 
@@ -20,12 +23,20 @@ INSTALLED_APPS = [
 
 TIME_ZONE = "UTC"
 
+ENGINE = "django_spanner"
+PROJECT = os.getenv(
+    "GOOGLE_CLOUD_PROJECT", os.getenv("PROJECT_ID", "emulator-test-project"),
+)
+
+INSTANCE = "django-test-instance"
+NAME = "spanner-django-test-{}".format(str(int(time.time())))
+
 DATABASES = {
     "default": {
-        "ENGINE": "django_spanner",
-        "PROJECT": "emulator-local",
-        "INSTANCE": "django-test-instance",
-        "NAME": "django-test-db",
+        "ENGINE": ENGINE,
+        "PROJECT": PROJECT,
+        "INSTANCE": INSTANCE,
+        "NAME": NAME,
     }
 }
 SECRET_KEY = "spanner emulator secret key"
