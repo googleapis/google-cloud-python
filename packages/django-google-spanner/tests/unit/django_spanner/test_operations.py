@@ -33,9 +33,9 @@ class TestOperations(SpannerSimpleTestClass):
 
         self.assertEqual(
             self.db_operations.sql_flush(
-                style=no_style(), tables=["Table1, Table2"]
+                style=no_style(), tables=["Table1", "Table2"]
             ),
-            ["DELETE FROM `Table1, Table2`"],
+            ["DELETE FROM Table1", "DELETE FROM Table2"],
         )
 
     def test_sql_flush_empty_table_list(self):
