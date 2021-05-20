@@ -25,6 +25,14 @@ common = gcp.CommonTemplates()
 default_version = "v1beta2"
 
 for library in s.get_staging_dirs(default_version):
+    # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
+    s.replace(library / f"google/cloud/artifactregistry_{library.name}/types/file.py",
+                r""".
+    Attributes:""",
+                r""".\n
+    Attributes:""",
+    )
+
     s.move(library, excludes=["nox.py", "setup.py", "README.rst", "docs/index.rst"])
 
 s.remove_staging_dirs()

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -35,7 +32,6 @@ __protobuf__ = proto.module(
 
 class Package(proto.Message):
     r"""Packages are named collections of versions.
-
     Attributes:
         name (str):
             The name of the package, for example:
@@ -51,18 +47,14 @@ class Package(proto.Message):
             package.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp.Timestamp,)
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
+    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
 
 
 class ListPackagesRequest(proto.Message):
     r"""The request to list packages.
-
     Attributes:
         parent (str):
             The name of the parent resource whose
@@ -75,16 +67,13 @@ class ListPackagesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListPackagesResponse(proto.Message):
     r"""The response from listing packages.
-
     Attributes:
         packages (Sequence[google.cloud.artifactregistry_v1beta2.types.Package]):
             The packages returned.
@@ -99,30 +88,27 @@ class ListPackagesResponse(proto.Message):
         return self
 
     packages = proto.RepeatedField(proto.MESSAGE, number=1, message="Package",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetPackageRequest(proto.Message):
     r"""The request to retrieve a package.
-
     Attributes:
         name (str):
             The name of the package to retrieve.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class DeletePackageRequest(proto.Message):
     r"""The request to delete a package.
-
     Attributes:
         name (str):
             The name of the package to delete.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

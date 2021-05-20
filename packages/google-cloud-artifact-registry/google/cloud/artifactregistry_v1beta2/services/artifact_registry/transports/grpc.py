@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
@@ -34,11 +32,10 @@ from google.cloud.artifactregistry_v1beta2.types import repository as gda_reposi
 from google.cloud.artifactregistry_v1beta2.types import tag
 from google.cloud.artifactregistry_v1beta2.types import tag as gda_tag
 from google.cloud.artifactregistry_v1beta2.types import version
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.longrunning import operations_pb2 as operations  # type: ignore
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from .base import ArtifactRegistryTransport, DEFAULT_CLIENT_INFO
 
 
@@ -73,7 +70,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         self,
         *,
         host: str = "artifactregistry.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -87,7 +84,8 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -198,7 +196,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
     def create_channel(
         cls,
         host: str = "artifactregistry.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -229,13 +227,15 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -316,7 +316,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
     @property
     def create_repository(
         self,
-    ) -> Callable[[gda_repository.CreateRepositoryRequest], operations.Operation]:
+    ) -> Callable[[gda_repository.CreateRepositoryRequest], operations_pb2.Operation]:
         r"""Return a callable for the create repository method over gRPC.
 
         Creates a repository. The returned Operation will
@@ -337,7 +337,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
             self._stubs["create_repository"] = self.grpc_channel.unary_unary(
                 "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/CreateRepository",
                 request_serializer=gda_repository.CreateRepositoryRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_repository"]
 
@@ -370,7 +370,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
     @property
     def delete_repository(
         self,
-    ) -> Callable[[repository.DeleteRepositoryRequest], operations.Operation]:
+    ) -> Callable[[repository.DeleteRepositoryRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete repository method over gRPC.
 
         Deletes a repository and all of its contents. The
@@ -392,7 +392,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
             self._stubs["delete_repository"] = self.grpc_channel.unary_unary(
                 "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/DeleteRepository",
                 request_serializer=repository.DeleteRepositoryRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_repository"]
 
@@ -449,7 +449,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
     @property
     def delete_package(
         self,
-    ) -> Callable[[package.DeletePackageRequest], operations.Operation]:
+    ) -> Callable[[package.DeletePackageRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete package method over gRPC.
 
         Deletes a package and all of its versions and tags.
@@ -470,7 +470,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
             self._stubs["delete_package"] = self.grpc_channel.unary_unary(
                 "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/DeletePackage",
                 request_serializer=package.DeletePackageRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_package"]
 
@@ -527,7 +527,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
     @property
     def delete_version(
         self,
-    ) -> Callable[[version.DeleteVersionRequest], operations.Operation]:
+    ) -> Callable[[version.DeleteVersionRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete version method over gRPC.
 
         Deletes a version and all of its content. The
@@ -548,7 +548,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
             self._stubs["delete_version"] = self.grpc_channel.unary_unary(
                 "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/DeleteVersion",
                 request_serializer=version.DeleteVersionRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_version"]
 
@@ -697,7 +697,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["update_tag"]
 
     @property
-    def delete_tag(self) -> Callable[[tag.DeleteTagRequest], empty.Empty]:
+    def delete_tag(self) -> Callable[[tag.DeleteTagRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete tag method over gRPC.
 
         Deletes a tag.
@@ -716,14 +716,14 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
             self._stubs["delete_tag"] = self.grpc_channel.unary_unary(
                 "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/DeleteTag",
                 request_serializer=tag.DeleteTagRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_tag"]
 
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[[iam_policy.SetIamPolicyRequest], policy.Policy]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Updates the IAM policy for a given resource.
@@ -741,15 +741,15 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         if "set_iam_policy" not in self._stubs:
             self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
                 "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/SetIamPolicy",
-                request_serializer=iam_policy.SetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy.Policy.FromString,
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
             )
         return self._stubs["set_iam_policy"]
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[[iam_policy.GetIamPolicyRequest], policy.Policy]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the IAM policy for a given resource.
@@ -767,8 +767,8 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         if "get_iam_policy" not in self._stubs:
             self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
                 "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/GetIamPolicy",
-                request_serializer=iam_policy.GetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy.Policy.FromString,
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
             )
         return self._stubs["get_iam_policy"]
 
@@ -776,7 +776,8 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
     def test_iam_permissions(
         self,
     ) -> Callable[
-        [iam_policy.TestIamPermissionsRequest], iam_policy.TestIamPermissionsResponse
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
@@ -796,8 +797,8 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         if "test_iam_permissions" not in self._stubs:
             self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
                 "/google.devtools.artifactregistry.v1beta2.ArtifactRegistry/TestIamPermissions",
-                request_serializer=iam_policy.TestIamPermissionsRequest.SerializeToString,
-                response_deserializer=iam_policy.TestIamPermissionsResponse.FromString,
+                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
             )
         return self._stubs["test_iam_permissions"]
 

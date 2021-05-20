@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.artifactregistry_v1beta2.types import tag
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -67,20 +64,15 @@ class Version(proto.Message):
             version.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    description = proto.Field(proto.STRING, number=3)
-
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp.Timestamp,)
-
+    name = proto.Field(proto.STRING, number=1,)
+    description = proto.Field(proto.STRING, number=3,)
+    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
     related_tags = proto.RepeatedField(proto.MESSAGE, number=7, message=tag.Tag,)
 
 
 class ListVersionsRequest(proto.Message):
     r"""The request to list versions.
-
     Attributes:
         parent (str):
             The name of the parent resource whose
@@ -96,18 +88,14 @@ class ListVersionsRequest(proto.Message):
             response.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
-
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
     view = proto.Field(proto.ENUM, number=4, enum="VersionView",)
 
 
 class ListVersionsResponse(proto.Message):
     r"""The response from listing versions.
-
     Attributes:
         versions (Sequence[google.cloud.artifactregistry_v1beta2.types.Version]):
             The versions returned.
@@ -122,13 +110,11 @@ class ListVersionsResponse(proto.Message):
         return self
 
     versions = proto.RepeatedField(proto.MESSAGE, number=1, message="Version",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetVersionRequest(proto.Message):
     r"""The request to retrieve a version.
-
     Attributes:
         name (str):
             The name of the version to retrieve.
@@ -137,14 +123,12 @@ class GetVersionRequest(proto.Message):
             response.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     view = proto.Field(proto.ENUM, number=2, enum="VersionView",)
 
 
 class DeleteVersionRequest(proto.Message):
     r"""The request to delete a version.
-
     Attributes:
         name (str):
             The name of the version to delete.
@@ -154,9 +138,8 @@ class DeleteVersionRequest(proto.Message):
             tags pointing to the version are deleted.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    force = proto.Field(proto.BOOL, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    force = proto.Field(proto.BOOL, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

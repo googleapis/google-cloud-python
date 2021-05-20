@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -38,7 +35,6 @@ __protobuf__ = proto.module(
 
 class Repository(proto.Message):
     r"""A Repository for storing artifacts with a specific format.
-
     Attributes:
         name (str):
             The name of the repository, for example:
@@ -77,24 +73,17 @@ class Repository(proto.Message):
         FORMAT_UNSPECIFIED = 0
         DOCKER = 1
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     format_ = proto.Field(proto.ENUM, number=2, enum=Format,)
-
-    description = proto.Field(proto.STRING, number=3)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4)
-
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp.Timestamp,)
-
-    kms_key_name = proto.Field(proto.STRING, number=8)
+    description = proto.Field(proto.STRING, number=3,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
+    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    kms_key_name = proto.Field(proto.STRING, number=8,)
 
 
 class ListRepositoriesRequest(proto.Message):
     r"""The request to list repositories.
-
     Attributes:
         parent (str):
             The name of the parent resource whose
@@ -107,16 +96,13 @@ class ListRepositoriesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListRepositoriesResponse(proto.Message):
     r"""The response from listing repositories.
-
     Attributes:
         repositories (Sequence[google.cloud.artifactregistry_v1beta2.types.Repository]):
             The repositories returned.
@@ -131,24 +117,21 @@ class ListRepositoriesResponse(proto.Message):
         return self
 
     repositories = proto.RepeatedField(proto.MESSAGE, number=1, message="Repository",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetRepositoryRequest(proto.Message):
     r"""The request to retrieve a repository.
-
     Attributes:
         name (str):
             The name of the repository to retrieve.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateRepositoryRequest(proto.Message):
     r"""The request to create a new repository.
-
     Attributes:
         parent (str):
             The name of the parent resource where the
@@ -159,16 +142,13 @@ class CreateRepositoryRequest(proto.Message):
             The repository to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    repository_id = proto.Field(proto.STRING, number=2)
-
+    parent = proto.Field(proto.STRING, number=1,)
+    repository_id = proto.Field(proto.STRING, number=2,)
     repository = proto.Field(proto.MESSAGE, number=3, message="Repository",)
 
 
 class UpdateRepositoryRequest(proto.Message):
     r"""The request to update a repository.
-
     Attributes:
         repository (google.cloud.artifactregistry_v1beta2.types.Repository):
             The repository that replaces the resource on
@@ -180,19 +160,19 @@ class UpdateRepositoryRequest(proto.Message):
     """
 
     repository = proto.Field(proto.MESSAGE, number=1, message="Repository",)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteRepositoryRequest(proto.Message):
     r"""The request to delete a repository.
-
     Attributes:
         name (str):
             The name of the repository to delete.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

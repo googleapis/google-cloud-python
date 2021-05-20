@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -49,8 +46,7 @@ class Hash(proto.Message):
         SHA256 = 1
 
     type_ = proto.Field(proto.ENUM, number=1, enum=HashType,)
-
-    value = proto.Field(proto.BYTES, number=2)
+    value = proto.Field(proto.BYTES, number=2,)
 
 
 class File(proto.Message):
@@ -75,17 +71,12 @@ class File(proto.Message):
             this file, if any.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    size_bytes = proto.Field(proto.INT64, number=3)
-
+    name = proto.Field(proto.STRING, number=1,)
+    size_bytes = proto.Field(proto.INT64, number=3,)
     hashes = proto.RepeatedField(proto.MESSAGE, number=4, message="Hash",)
-
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp.Timestamp,)
-
-    owner = proto.Field(proto.STRING, number=7)
+    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    owner = proto.Field(proto.STRING, number=7,)
 
 
 class ListFilesRequest(proto.Message):
@@ -117,13 +108,10 @@ class ListFilesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=4)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=4,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListFilesResponse(proto.Message):
@@ -142,8 +130,7 @@ class ListFilesResponse(proto.Message):
         return self
 
     files = proto.RepeatedField(proto.MESSAGE, number=1, message="File",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetFileRequest(proto.Message):
@@ -154,7 +141,7 @@ class GetFileRequest(proto.Message):
             The name of the file to retrieve.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

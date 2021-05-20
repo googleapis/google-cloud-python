@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -50,14 +47,12 @@ class Tag(proto.Message):
             central1/repositories/repo1/packages/pkg1/versions/sha256:5243811".
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    version = proto.Field(proto.STRING, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    version = proto.Field(proto.STRING, number=2,)
 
 
 class ListTagsRequest(proto.Message):
     r"""The request to list tags.
-
     Attributes:
         parent (str):
             The name of the parent resource whose tags
@@ -82,18 +77,14 @@ class ListTagsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=4)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=4,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListTagsResponse(proto.Message):
     r"""The response from listing tags.
-
     Attributes:
         tags (Sequence[google.cloud.artifactregistry_v1beta2.types.Tag]):
             The tags returned.
@@ -107,24 +98,21 @@ class ListTagsResponse(proto.Message):
         return self
 
     tags = proto.RepeatedField(proto.MESSAGE, number=1, message="Tag",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetTagRequest(proto.Message):
     r"""The request to retrieve a tag.
-
     Attributes:
         name (str):
             The name of the tag to retrieve.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateTagRequest(proto.Message):
     r"""The request to create a new tag.
-
     Attributes:
         parent (str):
             The name of the parent resource where the tag
@@ -135,16 +123,13 @@ class CreateTagRequest(proto.Message):
             The tag to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    tag_id = proto.Field(proto.STRING, number=2)
-
+    parent = proto.Field(proto.STRING, number=1,)
+    tag_id = proto.Field(proto.STRING, number=2,)
     tag = proto.Field(proto.MESSAGE, number=3, message="Tag",)
 
 
 class UpdateTagRequest(proto.Message):
     r"""The request to create or update a tag.
-
     Attributes:
         tag (google.cloud.artifactregistry_v1beta2.types.Tag):
             The tag that replaces the resource on the
@@ -156,19 +141,19 @@ class UpdateTagRequest(proto.Message):
     """
 
     tag = proto.Field(proto.MESSAGE, number=1, message="Tag",)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteTagRequest(proto.Message):
     r"""The request to delete a tag.
-
     Attributes:
         name (str):
             The name of the tag to delete.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

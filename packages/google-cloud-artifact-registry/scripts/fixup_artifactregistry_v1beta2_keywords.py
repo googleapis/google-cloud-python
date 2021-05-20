@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,28 +39,27 @@ def partition(
 class artifactregistryCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'create_repository': ('parent', 'repository_id', 'repository', ),
-    'create_tag': ('parent', 'tag_id', 'tag', ),
-    'delete_package': ('name', ),
-    'delete_repository': ('name', ),
-    'delete_tag': ('name', ),
-    'delete_version': ('name', 'force', ),
-    'get_file': ('name', ),
-    'get_iam_policy': ('resource', 'options', ),
-    'get_package': ('name', ),
-    'get_repository': ('name', ),
-    'get_tag': ('name', ),
-    'get_version': ('name', 'view', ),
-    'list_files': ('parent', 'filter', 'page_size', 'page_token', ),
-    'list_packages': ('parent', 'page_size', 'page_token', ),
-    'list_repositories': ('parent', 'page_size', 'page_token', ),
-    'list_tags': ('parent', 'filter', 'page_size', 'page_token', ),
-    'list_versions': ('parent', 'page_size', 'page_token', 'view', ),
-    'set_iam_policy': ('resource', 'policy', ),
-    'test_iam_permissions': ('resource', 'permissions', ),
-    'update_repository': ('repository', 'update_mask', ),
-    'update_tag': ('tag', 'update_mask', ),
-
+          'create_repository': ('parent', 'repository_id', 'repository', ),
+          'create_tag': ('parent', 'tag_id', 'tag', ),
+          'delete_package': ('name', ),
+          'delete_repository': ('name', ),
+          'delete_tag': ('name', ),
+          'delete_version': ('name', 'force', ),
+          'get_file': ('name', ),
+          'get_iam_policy': ('resource', 'options', ),
+          'get_package': ('name', ),
+          'get_repository': ('name', ),
+          'get_tag': ('name', ),
+          'get_version': ('name', 'view', ),
+          'list_files': ('parent', 'filter', 'page_size', 'page_token', ),
+          'list_packages': ('parent', 'page_size', 'page_token', ),
+          'list_repositories': ('parent', 'page_size', 'page_token', ),
+          'list_tags': ('parent', 'filter', 'page_size', 'page_token', ),
+          'list_versions': ('parent', 'page_size', 'page_token', 'view', ),
+          'set_iam_policy': ('resource', 'policy', ),
+          'test_iam_permissions': ('resource', 'permissions', ),
+          'update_repository': ('repository', 'update_mask', ),
+          'update_tag': ('tag', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -93,7 +90,7 @@ class artifactregistryCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that
