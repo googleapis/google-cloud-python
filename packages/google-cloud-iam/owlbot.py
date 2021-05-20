@@ -47,6 +47,14 @@ for library in s.get_staging_dirs(default_version):
         "google-cloud-iam"
     )
 
+    # Comment out broken assertion in unit test
+    # https://github.com/googleapis/gapic-generator-python/issues/897
+    s.replace(
+        library / "tests/**/*.py",
+        "assert args\[0\]\.lifetime == duration_pb2\.Duration\(seconds=751\)",
+        "# assert args[0].lifetime == duration_pb2.Duration(seconds=751)"
+    )
+
     s.move(library / "google/iam/credentials/", "google/cloud/iam_credentials")
     s.move(library / "google/iam/credentials_v1", "google/cloud/iam_credentials_v1")
     s.move(library / "tests")

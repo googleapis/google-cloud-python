@@ -30,6 +30,7 @@ release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
     "proto-plus >= 0.4.0",
+    "packaging >= 14.3",
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))

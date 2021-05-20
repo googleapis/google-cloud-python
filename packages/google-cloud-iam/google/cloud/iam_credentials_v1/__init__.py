@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,8 @@
 #
 
 from .services.iam_credentials import IAMCredentialsClient
+from .services.iam_credentials import IAMCredentialsAsyncClient
+
 from .types.common import GenerateAccessTokenRequest
 from .types.common import GenerateAccessTokenResponse
 from .types.common import GenerateIdTokenRequest
@@ -25,15 +26,15 @@ from .types.common import SignBlobResponse
 from .types.common import SignJwtRequest
 from .types.common import SignJwtResponse
 
-
 __all__ = (
+    "IAMCredentialsAsyncClient",
     "GenerateAccessTokenRequest",
     "GenerateAccessTokenResponse",
     "GenerateIdTokenRequest",
     "GenerateIdTokenResponse",
+    "IAMCredentialsClient",
     "SignBlobRequest",
     "SignBlobResponse",
     "SignJwtRequest",
     "SignJwtResponse",
-    "IAMCredentialsClient",
 )

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +14,13 @@
 # limitations under the License.
 #
 
-from google.cloud.iam_credentials_v1.services.iam_credentials.async_client import (
-    IAMCredentialsAsyncClient,
-)
 from google.cloud.iam_credentials_v1.services.iam_credentials.client import (
     IAMCredentialsClient,
 )
+from google.cloud.iam_credentials_v1.services.iam_credentials.async_client import (
+    IAMCredentialsAsyncClient,
+)
+
 from google.cloud.iam_credentials_v1.types.common import GenerateAccessTokenRequest
 from google.cloud.iam_credentials_v1.types.common import GenerateAccessTokenResponse
 from google.cloud.iam_credentials_v1.types.common import GenerateIdTokenRequest
@@ -31,12 +31,12 @@ from google.cloud.iam_credentials_v1.types.common import SignJwtRequest
 from google.cloud.iam_credentials_v1.types.common import SignJwtResponse
 
 __all__ = (
+    "IAMCredentialsClient",
+    "IAMCredentialsAsyncClient",
     "GenerateAccessTokenRequest",
     "GenerateAccessTokenResponse",
     "GenerateIdTokenRequest",
     "GenerateIdTokenResponse",
-    "IAMCredentialsAsyncClient",
-    "IAMCredentialsClient",
     "SignBlobRequest",
     "SignBlobResponse",
     "SignJwtRequest",
