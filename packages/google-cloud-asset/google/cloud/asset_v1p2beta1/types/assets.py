@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.protobuf import struct_pb2 as struct  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -45,15 +42,12 @@ class TemporalAsset(proto.Message):
     """
 
     window = proto.Field(proto.MESSAGE, number=1, message="TimeWindow",)
-
-    deleted = proto.Field(proto.BOOL, number=2)
-
+    deleted = proto.Field(proto.BOOL, number=2,)
     asset = proto.Field(proto.MESSAGE, number=3, message="Asset",)
 
 
 class TimeWindow(proto.Message):
     r"""A time window of (start_time, end_time].
-
     Attributes:
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Start time of the time window (exclusive).
@@ -62,9 +56,8 @@ class TimeWindow(proto.Message):
             Current timestamp if not specified.
     """
 
-    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
-
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
+    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
 
 
 class Asset(proto.Message):
@@ -99,20 +92,15 @@ class Asset(proto.Message):
             "organizations/1234"]
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    asset_type = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    asset_type = proto.Field(proto.STRING, number=2,)
     resource = proto.Field(proto.MESSAGE, number=3, message="Resource",)
-
-    iam_policy = proto.Field(proto.MESSAGE, number=4, message=policy.Policy,)
-
-    ancestors = proto.RepeatedField(proto.STRING, number=6)
+    iam_policy = proto.Field(proto.MESSAGE, number=4, message=policy_pb2.Policy,)
+    ancestors = proto.RepeatedField(proto.STRING, number=6,)
 
 
 class Resource(proto.Message):
     r"""Representation of a cloud resource.
-
     Attributes:
         version (str):
             The API version. Example: "v1".
@@ -153,17 +141,12 @@ class Resource(proto.Message):
             be present.
     """
 
-    version = proto.Field(proto.STRING, number=1)
-
-    discovery_document_uri = proto.Field(proto.STRING, number=2)
-
-    discovery_name = proto.Field(proto.STRING, number=3)
-
-    resource_url = proto.Field(proto.STRING, number=4)
-
-    parent = proto.Field(proto.STRING, number=5)
-
-    data = proto.Field(proto.MESSAGE, number=6, message=struct.Struct,)
+    version = proto.Field(proto.STRING, number=1,)
+    discovery_document_uri = proto.Field(proto.STRING, number=2,)
+    discovery_name = proto.Field(proto.STRING, number=3,)
+    resource_url = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(proto.STRING, number=5,)
+    data = proto.Field(proto.MESSAGE, number=6, message=struct_pb2.Struct,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

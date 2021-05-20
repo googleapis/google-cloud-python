@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,18 +39,17 @@ def partition(
 class assetCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'analyze_iam_policy': ('analysis_query', 'execution_timeout', ),
-    'analyze_iam_policy_longrunning': ('analysis_query', 'output_config', ),
-    'batch_get_assets_history': ('parent', 'asset_names', 'content_type', 'read_time_window', ),
-    'create_feed': ('parent', 'feed_id', 'feed', ),
-    'delete_feed': ('name', ),
-    'export_assets': ('parent', 'output_config', 'read_time', 'asset_types', 'content_type', ),
-    'get_feed': ('name', ),
-    'list_feeds': ('parent', ),
-    'search_all_iam_policies': ('scope', 'query', 'page_size', 'page_token', ),
-    'search_all_resources': ('scope', 'query', 'asset_types', 'page_size', 'page_token', 'order_by', ),
-    'update_feed': ('feed', 'update_mask', ),
-
+          'analyze_iam_policy': ('analysis_query', 'execution_timeout', ),
+          'analyze_iam_policy_longrunning': ('analysis_query', 'output_config', ),
+          'batch_get_assets_history': ('parent', 'asset_names', 'content_type', 'read_time_window', ),
+          'create_feed': ('parent', 'feed_id', 'feed', ),
+          'delete_feed': ('name', ),
+          'export_assets': ('parent', 'output_config', 'read_time', 'asset_types', 'content_type', ),
+          'get_feed': ('name', ),
+          'list_feeds': ('parent', ),
+          'search_all_iam_policies': ('scope', 'query', 'page_size', 'page_token', ),
+          'search_all_resources': ('scope', 'query', 'asset_types', 'page_size', 'page_token', 'order_by', ),
+          'update_feed': ('feed', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -83,7 +80,7 @@ class assetCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,18 +15,20 @@
 #
 
 from .services.asset_service import AssetServiceClient
-from .types.asset_service import ContentType
+from .services.asset_service import AssetServiceAsyncClient
+
 from .types.asset_service import ListAssetsRequest
 from .types.asset_service import ListAssetsResponse
+from .types.asset_service import ContentType
 from .types.assets import Asset
 from .types.assets import Resource
 
-
 __all__ = (
+    "AssetServiceAsyncClient",
     "Asset",
+    "AssetServiceClient",
     "ContentType",
     "ListAssetsRequest",
     "ListAssetsResponse",
     "Resource",
-    "AssetServiceClient",
 )

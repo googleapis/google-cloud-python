@@ -28,14 +28,20 @@ for library in s.get_staging_dirs(default_version):
     # Fix import of 'osconfig' type
     s.replace(
         library / f"google/cloud/asset_{library.name}/types/assets.py",
-        f"from google\.cloud\.osconfig\.{library.name} import inventory_pb2 as inventory",
+        f"from google\.cloud\.osconfig\.{library.name} import inventory_pb2",
         f"from google.cloud.osconfig_{library.name} import Inventory"
     )
 
     s.replace(
         library / f"google/cloud/asset_{library.name}/types/assets.py",
-        "message=inventory\.Inventory,",
+        "message=inventory_pb2\.Inventory,",
         "message=Inventory,"
+    )
+
+    s.replace(
+        library / f"google/cloud/asset_{library.name}/types/assets.py",
+        "google\.cloud\.osconfig\.v1\.inventory_pb2\.Inventory",
+        "google.cloud.osconfig_v1.Inventory"
     )
 
     # Remove broken `parse_asset_path` method

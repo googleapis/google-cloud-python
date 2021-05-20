@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.iam.v1 import policy_pb2 as giv_policy  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -29,7 +26,6 @@ __protobuf__ = proto.module(
 
 class StandardResourceMetadata(proto.Message):
     r"""The standard metadata of a cloud resource.
-
     Attributes:
         name (str):
             The full resource name. For example:
@@ -70,28 +66,19 @@ class StandardResourceMetadata(proto.Message):
             for more information.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    asset_type = proto.Field(proto.STRING, number=2)
-
-    project = proto.Field(proto.STRING, number=3)
-
-    display_name = proto.Field(proto.STRING, number=4)
-
-    description = proto.Field(proto.STRING, number=5)
-
-    additional_attributes = proto.RepeatedField(proto.STRING, number=10)
-
-    location = proto.Field(proto.STRING, number=11)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=12)
-
-    network_tags = proto.RepeatedField(proto.STRING, number=13)
+    name = proto.Field(proto.STRING, number=1,)
+    asset_type = proto.Field(proto.STRING, number=2,)
+    project = proto.Field(proto.STRING, number=3,)
+    display_name = proto.Field(proto.STRING, number=4,)
+    description = proto.Field(proto.STRING, number=5,)
+    additional_attributes = proto.RepeatedField(proto.STRING, number=10,)
+    location = proto.Field(proto.STRING, number=11,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=12,)
+    network_tags = proto.RepeatedField(proto.STRING, number=13,)
 
 
 class IamPolicySearchResult(proto.Message):
     r"""The result for a IAM Policy search.
-
     Attributes:
         resource (str):
             The `full resource
@@ -120,7 +107,6 @@ class IamPolicySearchResult(proto.Message):
 
     class Explanation(proto.Message):
         r"""Explanation about the IAM policy search result.
-
         Attributes:
             matched_permissions (Sequence[google.cloud.asset_v1p1beta1.types.IamPolicySearchResult.Explanation.MatchedPermissionsEntry]):
                 The map from roles to their included permission matching the
@@ -135,25 +121,21 @@ class IamPolicySearchResult(proto.Message):
             proto.STRING, proto.MESSAGE, number=1, message="Permissions",
         )
 
-    resource = proto.Field(proto.STRING, number=1)
-
-    project = proto.Field(proto.STRING, number=3)
-
-    policy = proto.Field(proto.MESSAGE, number=4, message=giv_policy.Policy,)
-
+    resource = proto.Field(proto.STRING, number=1,)
+    project = proto.Field(proto.STRING, number=3,)
+    policy = proto.Field(proto.MESSAGE, number=4, message=policy_pb2.Policy,)
     explanation = proto.Field(proto.MESSAGE, number=5, message=Explanation,)
 
 
 class Permissions(proto.Message):
     r"""IAM permissions
-
     Attributes:
         permissions (Sequence[str]):
             A list of permissions. A sample permission
             string: "compute.disk.get".
     """
 
-    permissions = proto.RepeatedField(proto.STRING, number=1)
+    permissions = proto.RepeatedField(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,8 @@
 #
 
 from .services.asset_service import AssetServiceClient
+from .services.asset_service import AssetServiceAsyncClient
+
 from .types.asset_service import SearchAllIamPoliciesRequest
 from .types.asset_service import SearchAllIamPoliciesResponse
 from .types.asset_service import SearchAllResourcesRequest
@@ -24,8 +25,9 @@ from .types.assets import IamPolicySearchResult
 from .types.assets import Permissions
 from .types.assets import StandardResourceMetadata
 
-
 __all__ = (
+    "AssetServiceAsyncClient",
+    "AssetServiceClient",
     "IamPolicySearchResult",
     "Permissions",
     "SearchAllIamPoliciesRequest",
@@ -33,5 +35,4 @@ __all__ = (
     "SearchAllResourcesRequest",
     "SearchAllResourcesResponse",
     "StandardResourceMetadata",
-    "AssetServiceClient",
 )

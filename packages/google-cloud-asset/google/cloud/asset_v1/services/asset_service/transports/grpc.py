@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.cloud.asset_v1.types import asset_service
-from google.longrunning import operations_pb2 as operations  # type: ignore
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from .base import AssetServiceTransport, DEFAULT_CLIENT_INFO
 
 
@@ -53,7 +50,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         self,
         *,
         host: str = "cloudasset.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -67,7 +64,8 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -178,7 +176,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
     def create_channel(
         cls,
         host: str = "cloudasset.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -209,13 +207,15 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -242,7 +242,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
     @property
     def export_assets(
         self,
-    ) -> Callable[[asset_service.ExportAssetsRequest], operations.Operation]:
+    ) -> Callable[[asset_service.ExportAssetsRequest], operations_pb2.Operation]:
         r"""Return a callable for the export assets method over gRPC.
 
         Exports assets with time and resource types to a given Cloud
@@ -273,7 +273,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
             self._stubs["export_assets"] = self.grpc_channel.unary_unary(
                 "/google.cloud.asset.v1.AssetService/ExportAssets",
                 request_serializer=asset_service.ExportAssetsRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["export_assets"]
 
@@ -418,7 +418,9 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
         return self._stubs["update_feed"]
 
     @property
-    def delete_feed(self) -> Callable[[asset_service.DeleteFeedRequest], empty.Empty]:
+    def delete_feed(
+        self,
+    ) -> Callable[[asset_service.DeleteFeedRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete feed method over gRPC.
 
         Deletes an asset feed.
@@ -437,7 +439,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
             self._stubs["delete_feed"] = self.grpc_channel.unary_unary(
                 "/google.cloud.asset.v1.AssetService/DeleteFeed",
                 request_serializer=asset_service.DeleteFeedRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_feed"]
 
@@ -538,7 +540,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
     def analyze_iam_policy_longrunning(
         self,
     ) -> Callable[
-        [asset_service.AnalyzeIamPolicyLongrunningRequest], operations.Operation
+        [asset_service.AnalyzeIamPolicyLongrunningRequest], operations_pb2.Operation
     ]:
         r"""Return a callable for the analyze iam policy longrunning method over gRPC.
 
@@ -571,7 +573,7 @@ class AssetServiceGrpcTransport(AssetServiceTransport):
             ] = self.grpc_channel.unary_unary(
                 "/google.cloud.asset.v1.AssetService/AnalyzeIamPolicyLongrunning",
                 request_serializer=asset_service.AnalyzeIamPolicyLongrunningRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["analyze_iam_policy_longrunning"]
 

@@ -34,6 +34,7 @@ dependencies = [
     "google-cloud-org-policy>=0.1.2, <0.4.0",
     "google-cloud-os-config >= 1.0.0, <2.0.0dev",
     "proto-plus >= 1.10.0",
+    "packaging >= 14.3",
 ]
 
 extras = {"libcst": "libcst >= 0.2.5"}

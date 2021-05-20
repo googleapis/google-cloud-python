@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -49,7 +46,6 @@ class ContentType(proto.Enum):
 
 class CreateFeedRequest(proto.Message):
     r"""Create asset feed request.
-
     Attributes:
         parent (str):
             Required. The name of the
@@ -72,16 +68,13 @@ class CreateFeedRequest(proto.Message):
             organizations/organization_number/feeds/feed_id
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    feed_id = proto.Field(proto.STRING, number=2)
-
+    parent = proto.Field(proto.STRING, number=1,)
+    feed_id = proto.Field(proto.STRING, number=2,)
     feed = proto.Field(proto.MESSAGE, number=3, message="Feed",)
 
 
 class GetFeedRequest(proto.Message):
     r"""Get asset feed request.
-
     Attributes:
         name (str):
             Required. The name of the Feed and it must be in the format
@@ -90,12 +83,11 @@ class GetFeedRequest(proto.Message):
             organizations/organization_number/feeds/feed_id
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListFeedsRequest(proto.Message):
     r"""List asset feeds request.
-
     Attributes:
         parent (str):
             Required. The parent
@@ -106,12 +98,11 @@ class ListFeedsRequest(proto.Message):
             "projects/my-project-id").
     """
 
-    parent = proto.Field(proto.STRING, number=1)
+    parent = proto.Field(proto.STRING, number=1,)
 
 
 class ListFeedsResponse(proto.Message):
     r"""
-
     Attributes:
         feeds (Sequence[google.cloud.asset_v1p2beta1.types.Feed]):
             A list of feeds.
@@ -122,7 +113,6 @@ class ListFeedsResponse(proto.Message):
 
 class UpdateFeedRequest(proto.Message):
     r"""Update asset feed request.
-
     Attributes:
         feed (google.cloud.asset_v1p2beta1.types.Feed):
             Required. The new values of feed details. It must match an
@@ -137,13 +127,13 @@ class UpdateFeedRequest(proto.Message):
     """
 
     feed = proto.Field(proto.MESSAGE, number=1, message="Feed",)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteFeedRequest(proto.Message):
     r"""
-
     Attributes:
         name (str):
             Required. The name of the feed and it must be in the format
@@ -152,12 +142,11 @@ class DeleteFeedRequest(proto.Message):
             organizations/organization_number/feeds/feed_id
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class OutputConfig(proto.Message):
     r"""Output configuration for export assets destination.
-
     Attributes:
         gcs_destination (google.cloud.asset_v1p2beta1.types.GcsDestination):
             Destination on Cloud Storage.
@@ -170,7 +159,6 @@ class OutputConfig(proto.Message):
 
 class GcsDestination(proto.Message):
     r"""A Cloud Storage location.
-
     Attributes:
         uri (str):
             The uri of the Cloud Storage object. It's the same uri that
@@ -181,24 +169,22 @@ class GcsDestination(proto.Message):
             for more information.
     """
 
-    uri = proto.Field(proto.STRING, number=1, oneof="object_uri")
+    uri = proto.Field(proto.STRING, number=1, oneof="object_uri",)
 
 
 class PubsubDestination(proto.Message):
     r"""A Cloud Pubsub destination.
-
     Attributes:
         topic (str):
             The name of the Cloud Pub/Sub topic to publish to. For
             example: ``projects/PROJECT_ID/topics/TOPIC_ID``.
     """
 
-    topic = proto.Field(proto.STRING, number=1)
+    topic = proto.Field(proto.STRING, number=1,)
 
 
 class FeedOutputConfig(proto.Message):
     r"""Output configuration for asset feed destination.
-
     Attributes:
         pubsub_destination (google.cloud.asset_v1p2beta1.types.PubsubDestination):
             Destination on Cloud Pubsub.
@@ -255,14 +241,10 @@ class Feed(proto.Message):
             where the asset updates are published to.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    asset_names = proto.RepeatedField(proto.STRING, number=2)
-
-    asset_types = proto.RepeatedField(proto.STRING, number=3)
-
+    name = proto.Field(proto.STRING, number=1,)
+    asset_names = proto.RepeatedField(proto.STRING, number=2,)
+    asset_types = proto.RepeatedField(proto.STRING, number=3,)
     content_type = proto.Field(proto.ENUM, number=4, enum="ContentType",)
-
     feed_output_config = proto.Field(
         proto.MESSAGE, number=5, message="FeedOutputConfig",
     )

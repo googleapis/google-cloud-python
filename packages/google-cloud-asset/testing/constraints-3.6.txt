@@ -12,3 +12,5 @@ google-cloud-org-policy==0.1.2
 google-cloud-os-config==1.0.0
 proto-plus==1.10.0
 libcst==0.2.5
+packaging==14.3
+google-auth==1.24.0  # TODO: remove when google-auth>=1.25.0 is required transitively through google-api-core

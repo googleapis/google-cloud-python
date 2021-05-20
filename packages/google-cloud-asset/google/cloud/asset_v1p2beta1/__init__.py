@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +15,8 @@
 #
 
 from .services.asset_service import AssetServiceClient
-from .types.asset_service import ContentType
+from .services.asset_service import AssetServiceAsyncClient
+
 from .types.asset_service import CreateFeedRequest
 from .types.asset_service import DeleteFeedRequest
 from .types.asset_service import Feed
@@ -28,14 +28,16 @@ from .types.asset_service import ListFeedsResponse
 from .types.asset_service import OutputConfig
 from .types.asset_service import PubsubDestination
 from .types.asset_service import UpdateFeedRequest
+from .types.asset_service import ContentType
 from .types.assets import Asset
 from .types.assets import Resource
 from .types.assets import TemporalAsset
 from .types.assets import TimeWindow
 
-
 __all__ = (
+    "AssetServiceAsyncClient",
     "Asset",
+    "AssetServiceClient",
     "ContentType",
     "CreateFeedRequest",
     "DeleteFeedRequest",
@@ -51,5 +53,4 @@ __all__ = (
     "TemporalAsset",
     "TimeWindow",
     "UpdateFeedRequest",
-    "AssetServiceClient",
 )
