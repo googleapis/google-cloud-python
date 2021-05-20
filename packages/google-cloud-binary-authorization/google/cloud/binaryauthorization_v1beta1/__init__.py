@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +17,11 @@
 from .services.binauthz_management_service_v1_beta1 import (
     BinauthzManagementServiceV1Beta1Client,
 )
+from .services.binauthz_management_service_v1_beta1 import (
+    BinauthzManagementServiceV1Beta1AsyncClient,
+)
+
+from .types.continuous_validation_logging import ContinuousValidationEvent
 from .types.resources import AdmissionRule
 from .types.resources import AdmissionWhitelistPattern
 from .types.resources import Attestor
@@ -34,12 +38,14 @@ from .types.service import ListAttestorsResponse
 from .types.service import UpdateAttestorRequest
 from .types.service import UpdatePolicyRequest
 
-
 __all__ = (
+    "BinauthzManagementServiceV1Beta1AsyncClient",
     "AdmissionRule",
     "AdmissionWhitelistPattern",
     "Attestor",
     "AttestorPublicKey",
+    "BinauthzManagementServiceV1Beta1Client",
+    "ContinuousValidationEvent",
     "CreateAttestorRequest",
     "DeleteAttestorRequest",
     "GetAttestorRequest",
@@ -51,5 +57,4 @@ __all__ = (
     "UpdateAttestorRequest",
     "UpdatePolicyRequest",
     "UserOwnedDrydockNote",
-    "BinauthzManagementServiceV1Beta1Client",
 )
