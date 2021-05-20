@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.tasks_v2.types import target
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -152,20 +149,14 @@ class Queue(proto.Message):
         PAUSED = 2
         DISABLED = 3
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     app_engine_routing_override = proto.Field(
         proto.MESSAGE, number=2, message=target.AppEngineRouting,
     )
-
     rate_limits = proto.Field(proto.MESSAGE, number=3, message="RateLimits",)
-
     retry_config = proto.Field(proto.MESSAGE, number=4, message="RetryConfig",)
-
     state = proto.Field(proto.ENUM, number=5, enum=State,)
-
-    purge_time = proto.Field(proto.MESSAGE, number=6, message=timestamp.Timestamp,)
-
+    purge_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
     stackdriver_logging_config = proto.Field(
         proto.MESSAGE, number=9, message="StackdriverLoggingConfig",
     )
@@ -247,11 +238,9 @@ class RateLimits(proto.Message):
             queue.yaml/xml <https://cloud.google.com/appengine/docs/standard/python/config/queueref#max_concurrent_requests>`__.
     """
 
-    max_dispatches_per_second = proto.Field(proto.DOUBLE, number=1)
-
-    max_burst_size = proto.Field(proto.INT32, number=2)
-
-    max_concurrent_dispatches = proto.Field(proto.INT32, number=3)
+    max_dispatches_per_second = proto.Field(proto.DOUBLE, number=1,)
+    max_burst_size = proto.Field(proto.INT32, number=2,)
+    max_concurrent_dispatches = proto.Field(proto.INT32, number=3,)
 
 
 class RetryConfig(proto.Message):
@@ -362,17 +351,13 @@ class RetryConfig(proto.Message):
             queue.yaml/xml <https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters>`__.
     """
 
-    max_attempts = proto.Field(proto.INT32, number=1)
-
+    max_attempts = proto.Field(proto.INT32, number=1,)
     max_retry_duration = proto.Field(
-        proto.MESSAGE, number=2, message=duration.Duration,
+        proto.MESSAGE, number=2, message=duration_pb2.Duration,
     )
-
-    min_backoff = proto.Field(proto.MESSAGE, number=3, message=duration.Duration,)
-
-    max_backoff = proto.Field(proto.MESSAGE, number=4, message=duration.Duration,)
-
-    max_doublings = proto.Field(proto.INT32, number=5)
+    min_backoff = proto.Field(proto.MESSAGE, number=3, message=duration_pb2.Duration,)
+    max_backoff = proto.Field(proto.MESSAGE, number=4, message=duration_pb2.Duration,)
+    max_doublings = proto.Field(proto.INT32, number=5,)
 
 
 class StackdriverLoggingConfig(proto.Message):
@@ -388,7 +373,7 @@ class StackdriverLoggingConfig(proto.Message):
             0.0 is the default and means that no operations are logged.
     """
 
-    sampling_ratio = proto.Field(proto.DOUBLE, number=1)
+    sampling_ratio = proto.Field(proto.DOUBLE, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -30,6 +30,19 @@ for library in s.get_staging_dirs(default_version):
     s.replace(library / "google/cloud/*/types/target.py", "X-Google-\*", "X-Google-\\*")
     s.replace(library / "google/cloud/*/types/target.py", "X-AppEngine-\*", "X-AppEngine-\\*")
 
+    # Comment out broken assertion in unit test
+    # https://github.com/googleapis/gapic-generator-python/issues/897
+    s.replace(
+        library / "tests/**/test_cloud_tasks.py",
+        "assert args\[0\]\.lease_duration == duration_pb2\.Duration\(seconds=751\)",
+        "# assert args[0].lease_duration == duration_pb2.Duration(seconds=751)"
+    )
+    s.replace(
+        library / "tests/**/test_cloud_tasks.py",
+        "assert args\[0\].schedule_time == timestamp_pb2\.Timestamp\(seconds=751\)",
+        "# assert args[0].schedule_time == timestamp_pb2.Timestamp(seconds=751)"
+    )
+
     excludes = ["README.rst", "setup.py", "nox*.py", "docs/index.rst", "*.tar.gz"]
     s.copy(library, excludes=excludes)
 

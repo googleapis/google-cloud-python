@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,8 @@
 #
 
 from .services.cloud_tasks import CloudTasksClient
+from .services.cloud_tasks import CloudTasksAsyncClient
+
 from .types.cloudtasks import CreateQueueRequest
 from .types.cloudtasks import CreateTaskRequest
 from .types.cloudtasks import DeleteQueueRequest
@@ -39,20 +40,21 @@ from .types.queue import StackdriverLoggingConfig
 from .types.target import AppEngineHttpQueue
 from .types.target import AppEngineHttpRequest
 from .types.target import AppEngineRouting
-from .types.target import HttpMethod
 from .types.target import HttpRequest
 from .types.target import OAuthToken
 from .types.target import OidcToken
 from .types.target import PullMessage
+from .types.target import HttpMethod
 from .types.task import Attempt
 from .types.task import Task
 
-
 __all__ = (
+    "CloudTasksAsyncClient",
     "AppEngineHttpQueue",
     "AppEngineHttpRequest",
     "AppEngineRouting",
     "Attempt",
+    "CloudTasksClient",
     "CreateQueueRequest",
     "CreateTaskRequest",
     "DeleteQueueRequest",
@@ -79,5 +81,4 @@ __all__ = (
     "StackdriverLoggingConfig",
     "Task",
     "UpdateQueueRequest",
-    "CloudTasksClient",
 )

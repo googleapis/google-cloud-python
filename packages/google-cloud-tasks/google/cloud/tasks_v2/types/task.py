@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.tasks_v2.types import target
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.rpc import status_pb2 as status  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -31,7 +28,6 @@ __protobuf__ = proto.module(
 
 class Task(proto.Message):
     r"""A unit of scheduled work.
-
     Attributes:
         name (str):
             Optionally caller-specified in
@@ -155,39 +151,32 @@ class Task(proto.Message):
         BASIC = 1
         FULL = 2
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     app_engine_http_request = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="message_type",
         message=target.AppEngineHttpRequest,
     )
-
     http_request = proto.Field(
         proto.MESSAGE, number=3, oneof="message_type", message=target.HttpRequest,
     )
-
-    schedule_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
-
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
-
-    dispatch_deadline = proto.Field(proto.MESSAGE, number=6, message=duration.Duration,)
-
-    dispatch_count = proto.Field(proto.INT32, number=7)
-
-    response_count = proto.Field(proto.INT32, number=8)
-
+    schedule_time = proto.Field(
+        proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
+    )
+    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    dispatch_deadline = proto.Field(
+        proto.MESSAGE, number=6, message=duration_pb2.Duration,
+    )
+    dispatch_count = proto.Field(proto.INT32, number=7,)
+    response_count = proto.Field(proto.INT32, number=8,)
     first_attempt = proto.Field(proto.MESSAGE, number=9, message="Attempt",)
-
     last_attempt = proto.Field(proto.MESSAGE, number=10, message="Attempt",)
-
     view = proto.Field(proto.ENUM, number=11, enum=View,)
 
 
 class Attempt(proto.Message):
     r"""The status of a task attempt.
-
     Attributes:
         schedule_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time that this attempt was scheduled.
@@ -213,13 +202,16 @@ class Attempt(proto.Message):
             ``response_status`` field is meaningless.
     """
 
-    schedule_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
-
-    dispatch_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
-    response_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
-
-    response_status = proto.Field(proto.MESSAGE, number=4, message=status.Status,)
+    schedule_time = proto.Field(
+        proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+    )
+    dispatch_time = proto.Field(
+        proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+    )
+    response_time = proto.Field(
+        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+    )
+    response_status = proto.Field(proto.MESSAGE, number=4, message=status_pb2.Status,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
