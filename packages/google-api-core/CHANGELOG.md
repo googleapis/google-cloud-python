@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [1.28.0](https://www.github.com/googleapis/python-api-core/compare/v1.27.0...v1.28.0) (2021-05-20)
+
+
+### Bug Fixes
+
+* require google-auth>=1.25.0 ([#190](https://www.github.com/googleapis/python-api-core/issues/190)) ([155da5e](https://www.github.com/googleapis/python-api-core/commit/155da5e18cc2fdcfa57de6f956b7d078e79cd4b7))
+
+
+### Miscellaneous Chores
+
+* release 1.28.0 ([#192](https://www.github.com/googleapis/python-api-core/issues/192)) ([11b5da4](https://www.github.com/googleapis/python-api-core/commit/11b5da426a842541ca2b861d3387fc312b3f5b60))
+
 ## [1.27.0](https://www.github.com/googleapis/python-api-core/compare/v1.26.3...v1.27.0) (2021-05-18)
 
 
