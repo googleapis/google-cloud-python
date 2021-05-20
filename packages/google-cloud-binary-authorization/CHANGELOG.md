@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-binary-authorization/compare/v0.1.1...v0.2.0) (2021-05-20)
+
+
+### Features
+
+* Publish Binary Authorization ContinuousValidationEvent proto ([#31](https://www.github.com/googleapis/python-binary-authorization/issues/31)) ([d3d2abe](https://www.github.com/googleapis/python-binary-authorization/commit/d3d2abeb22bad714de0591916c1065fda7305a92))
+
 ### [0.1.1](https://www.github.com/googleapis/python-binary-authorization/compare/v0.1.0...v0.1.1) (2021-04-01)
 
 
