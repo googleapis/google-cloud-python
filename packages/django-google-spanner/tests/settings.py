@@ -4,7 +4,6 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-import time
 import os
 
 DEBUG = True
@@ -23,23 +22,26 @@ INSTALLED_APPS = [
 
 TIME_ZONE = "UTC"
 
-ENGINE = "django_spanner"
-PROJECT = os.getenv(
-    "GOOGLE_CLOUD_PROJECT", os.getenv("PROJECT_ID", "emulator-test-project"),
+INSTANCE_ID = os.environ.get(
+    "GOOGLE_CLOUD_TESTS_SPANNER_INSTANCE", "spanner-django-python-systest"
 )
 
-INSTANCE = "django-test-instance"
-NAME = "spanner-django-test-{}".format(str(int(time.time())))
+PROJECT_ID = os.getenv("GOOGLE_CLOUD_PROJECT", "emulator-test-project")
+
+# _get_test_db_name method in creation.py addes prefix of 'test_' to db name.
+DATABASE_NAME = os.getenv("DJANGO_SPANNER_DB", "django_test_db")
 
 DATABASES = {
     "default": {
-        "ENGINE": ENGINE,
-        "PROJECT": PROJECT,
-        "INSTANCE": INSTANCE,
-        "NAME": NAME,
+        "ENGINE": "django_spanner",
+        "PROJECT": PROJECT_ID,
+        "INSTANCE": INSTANCE_ID,
+        "NAME": DATABASE_NAME,
+        "TEST": {"NAME": DATABASE_NAME},
     }
 }
-SECRET_KEY = "spanner emulator secret key"
+
+SECRET_KEY = "spanner env secret key"
 
 PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.MD5PasswordHasher",
@@ -52,6 +54,6 @@ CONN_MAX_AGE = 60
 ENGINE = "django_spanner"
 PROJECT = "emulator-local"
 INSTANCE = "django-test-instance"
-NAME = "django-test-db"
+NAME = "django_test_db"
 OPTIONS = {}
 AUTOCOMMIT = True
