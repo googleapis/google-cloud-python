@@ -10,5 +10,6 @@
   "repo": "googleapis/python-grafeas",
   "distribution_name": "grafeas",
   "api_id": "",
+  "codeowner_team": "@googleapis/cicd",
   "requires_billing": false
 }
