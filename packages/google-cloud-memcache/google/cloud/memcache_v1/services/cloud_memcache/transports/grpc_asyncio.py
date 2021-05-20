@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
 from google.api_core import operations_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+import packaging.version
 
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.memcache_v1.types import cloud_memcache
-from google.longrunning import operations_pb2 as operations  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
 from .base import CloudMemcacheTransport, DEFAULT_CLIENT_INFO
 from .grpc import CloudMemcacheGrpcTransport
 
@@ -73,7 +70,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
     def create_channel(
         cls,
         host: str = "memcache.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -100,13 +97,15 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         Returns:
             aio.Channel: A gRPC AsyncIO channel object.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers_async.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -114,7 +113,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         self,
         *,
         host: str = "memcache.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         channel: aio.Channel = None,
@@ -128,7 +127,8 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -187,7 +187,6 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -323,7 +322,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
     def create_instance(
         self,
     ) -> Callable[
-        [cloud_memcache.CreateInstanceRequest], Awaitable[operations.Operation]
+        [cloud_memcache.CreateInstanceRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the create instance method over gRPC.
 
@@ -343,7 +342,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
             self._stubs["create_instance"] = self.grpc_channel.unary_unary(
                 "/google.cloud.memcache.v1.CloudMemcache/CreateInstance",
                 request_serializer=cloud_memcache.CreateInstanceRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_instance"]
 
@@ -351,7 +350,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
     def update_instance(
         self,
     ) -> Callable[
-        [cloud_memcache.UpdateInstanceRequest], Awaitable[operations.Operation]
+        [cloud_memcache.UpdateInstanceRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the update instance method over gRPC.
 
@@ -372,7 +371,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
             self._stubs["update_instance"] = self.grpc_channel.unary_unary(
                 "/google.cloud.memcache.v1.CloudMemcache/UpdateInstance",
                 request_serializer=cloud_memcache.UpdateInstanceRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_instance"]
 
@@ -380,7 +379,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
     def update_parameters(
         self,
     ) -> Callable[
-        [cloud_memcache.UpdateParametersRequest], Awaitable[operations.Operation]
+        [cloud_memcache.UpdateParametersRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the update parameters method over gRPC.
 
@@ -403,7 +402,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
             self._stubs["update_parameters"] = self.grpc_channel.unary_unary(
                 "/google.cloud.memcache.v1.CloudMemcache/UpdateParameters",
                 request_serializer=cloud_memcache.UpdateParametersRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_parameters"]
 
@@ -411,7 +410,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
     def delete_instance(
         self,
     ) -> Callable[
-        [cloud_memcache.DeleteInstanceRequest], Awaitable[operations.Operation]
+        [cloud_memcache.DeleteInstanceRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the delete instance method over gRPC.
 
@@ -431,7 +430,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
             self._stubs["delete_instance"] = self.grpc_channel.unary_unary(
                 "/google.cloud.memcache.v1.CloudMemcache/DeleteInstance",
                 request_serializer=cloud_memcache.DeleteInstanceRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_instance"]
 
@@ -439,7 +438,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
     def apply_parameters(
         self,
     ) -> Callable[
-        [cloud_memcache.ApplyParametersRequest], Awaitable[operations.Operation]
+        [cloud_memcache.ApplyParametersRequest], Awaitable[operations_pb2.Operation]
     ]:
         r"""Return a callable for the apply parameters method over gRPC.
 
@@ -461,7 +460,7 @@ class CloudMemcacheGrpcAsyncIOTransport(CloudMemcacheTransport):
             self._stubs["apply_parameters"] = self.grpc_channel.unary_unary(
                 "/google.cloud.memcache.v1.CloudMemcache/ApplyParameters",
                 request_serializer=cloud_memcache.ApplyParametersRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["apply_parameters"]
 
