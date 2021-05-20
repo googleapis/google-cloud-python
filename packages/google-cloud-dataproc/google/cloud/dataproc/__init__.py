@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,28 +14,29 @@
 # limitations under the License.
 #
 
-from google.cloud.dataproc_v1.services.autoscaling_policy_service.async_client import (
-    AutoscalingPolicyServiceAsyncClient,
-)
 from google.cloud.dataproc_v1.services.autoscaling_policy_service.client import (
     AutoscalingPolicyServiceClient,
 )
-from google.cloud.dataproc_v1.services.cluster_controller.async_client import (
-    ClusterControllerAsyncClient,
+from google.cloud.dataproc_v1.services.autoscaling_policy_service.async_client import (
+    AutoscalingPolicyServiceAsyncClient,
 )
 from google.cloud.dataproc_v1.services.cluster_controller.client import (
     ClusterControllerClient,
 )
-from google.cloud.dataproc_v1.services.job_controller.async_client import (
-    JobControllerAsyncClient,
+from google.cloud.dataproc_v1.services.cluster_controller.async_client import (
+    ClusterControllerAsyncClient,
 )
 from google.cloud.dataproc_v1.services.job_controller.client import JobControllerClient
-from google.cloud.dataproc_v1.services.workflow_template_service.async_client import (
-    WorkflowTemplateServiceAsyncClient,
+from google.cloud.dataproc_v1.services.job_controller.async_client import (
+    JobControllerAsyncClient,
 )
 from google.cloud.dataproc_v1.services.workflow_template_service.client import (
     WorkflowTemplateServiceClient,
 )
+from google.cloud.dataproc_v1.services.workflow_template_service.async_client import (
+    WorkflowTemplateServiceAsyncClient,
+)
+
 from google.cloud.dataproc_v1.types.autoscaling_policies import AutoscalingPolicy
 from google.cloud.dataproc_v1.types.autoscaling_policies import (
     BasicAutoscalingAlgorithm,
@@ -80,16 +80,23 @@ from google.cloud.dataproc_v1.types.clusters import EncryptionConfig
 from google.cloud.dataproc_v1.types.clusters import EndpointConfig
 from google.cloud.dataproc_v1.types.clusters import GceClusterConfig
 from google.cloud.dataproc_v1.types.clusters import GetClusterRequest
+from google.cloud.dataproc_v1.types.clusters import GkeClusterConfig
+from google.cloud.dataproc_v1.types.clusters import IdentityConfig
 from google.cloud.dataproc_v1.types.clusters import InstanceGroupConfig
 from google.cloud.dataproc_v1.types.clusters import KerberosConfig
 from google.cloud.dataproc_v1.types.clusters import LifecycleConfig
 from google.cloud.dataproc_v1.types.clusters import ListClustersRequest
 from google.cloud.dataproc_v1.types.clusters import ListClustersResponse
 from google.cloud.dataproc_v1.types.clusters import ManagedGroupConfig
+from google.cloud.dataproc_v1.types.clusters import MetastoreConfig
+from google.cloud.dataproc_v1.types.clusters import NodeGroupAffinity
 from google.cloud.dataproc_v1.types.clusters import NodeInitializationAction
 from google.cloud.dataproc_v1.types.clusters import ReservationAffinity
 from google.cloud.dataproc_v1.types.clusters import SecurityConfig
+from google.cloud.dataproc_v1.types.clusters import ShieldedInstanceConfig
 from google.cloud.dataproc_v1.types.clusters import SoftwareConfig
+from google.cloud.dataproc_v1.types.clusters import StartClusterRequest
+from google.cloud.dataproc_v1.types.clusters import StopClusterRequest
 from google.cloud.dataproc_v1.types.clusters import UpdateClusterRequest
 from google.cloud.dataproc_v1.types.jobs import CancelJobRequest
 from google.cloud.dataproc_v1.types.jobs import DeleteJobRequest
@@ -155,88 +162,98 @@ from google.cloud.dataproc_v1.types.workflow_templates import WorkflowTemplate
 from google.cloud.dataproc_v1.types.workflow_templates import WorkflowTemplatePlacement
 
 __all__ = (
-    "AcceleratorConfig",
-    "AutoscalingConfig",
-    "AutoscalingPolicy",
-    "AutoscalingPolicyServiceAsyncClient",
     "AutoscalingPolicyServiceClient",
+    "AutoscalingPolicyServiceAsyncClient",
+    "ClusterControllerClient",
+    "ClusterControllerAsyncClient",
+    "JobControllerClient",
+    "JobControllerAsyncClient",
+    "WorkflowTemplateServiceClient",
+    "WorkflowTemplateServiceAsyncClient",
+    "AutoscalingPolicy",
     "BasicAutoscalingAlgorithm",
     "BasicYarnAutoscalingConfig",
-    "CancelJobRequest",
+    "CreateAutoscalingPolicyRequest",
+    "DeleteAutoscalingPolicyRequest",
+    "GetAutoscalingPolicyRequest",
+    "InstanceGroupAutoscalingPolicyConfig",
+    "ListAutoscalingPoliciesRequest",
+    "ListAutoscalingPoliciesResponse",
+    "UpdateAutoscalingPolicyRequest",
+    "AcceleratorConfig",
+    "AutoscalingConfig",
     "Cluster",
     "ClusterConfig",
-    "ClusterControllerAsyncClient",
-    "ClusterControllerClient",
     "ClusterMetrics",
-    "ClusterOperation",
-    "ClusterOperationMetadata",
-    "ClusterOperationStatus",
-    "ClusterSelector",
     "ClusterStatus",
-    "Component",
-    "CreateAutoscalingPolicyRequest",
     "CreateClusterRequest",
-    "CreateWorkflowTemplateRequest",
-    "DeleteAutoscalingPolicyRequest",
     "DeleteClusterRequest",
-    "DeleteJobRequest",
-    "DeleteWorkflowTemplateRequest",
     "DiagnoseClusterRequest",
     "DiagnoseClusterResults",
     "DiskConfig",
     "EncryptionConfig",
     "EndpointConfig",
     "GceClusterConfig",
-    "GetAutoscalingPolicyRequest",
     "GetClusterRequest",
+    "GkeClusterConfig",
+    "IdentityConfig",
+    "InstanceGroupConfig",
+    "KerberosConfig",
+    "LifecycleConfig",
+    "ListClustersRequest",
+    "ListClustersResponse",
+    "ManagedGroupConfig",
+    "MetastoreConfig",
+    "NodeGroupAffinity",
+    "NodeInitializationAction",
+    "ReservationAffinity",
+    "SecurityConfig",
+    "ShieldedInstanceConfig",
+    "SoftwareConfig",
+    "StartClusterRequest",
+    "StopClusterRequest",
+    "UpdateClusterRequest",
+    "CancelJobRequest",
+    "DeleteJobRequest",
     "GetJobRequest",
-    "GetWorkflowTemplateRequest",
     "HadoopJob",
     "HiveJob",
-    "InstanceGroupAutoscalingPolicyConfig",
-    "InstanceGroupConfig",
-    "InstantiateInlineWorkflowTemplateRequest",
-    "InstantiateWorkflowTemplateRequest",
     "Job",
-    "JobControllerAsyncClient",
-    "JobControllerClient",
     "JobMetadata",
     "JobPlacement",
     "JobReference",
     "JobScheduling",
     "JobStatus",
-    "KerberosConfig",
-    "LifecycleConfig",
-    "ListAutoscalingPoliciesRequest",
-    "ListAutoscalingPoliciesResponse",
-    "ListClustersRequest",
-    "ListClustersResponse",
     "ListJobsRequest",
     "ListJobsResponse",
-    "ListWorkflowTemplatesRequest",
-    "ListWorkflowTemplatesResponse",
     "LoggingConfig",
-    "ManagedCluster",
-    "ManagedGroupConfig",
-    "NodeInitializationAction",
-    "OrderedJob",
-    "ParameterValidation",
     "PigJob",
     "PrestoJob",
     "PySparkJob",
     "QueryList",
-    "RegexValidation",
-    "ReservationAffinity",
-    "SecurityConfig",
-    "SoftwareConfig",
     "SparkJob",
     "SparkRJob",
     "SparkSqlJob",
     "SubmitJobRequest",
-    "TemplateParameter",
-    "UpdateAutoscalingPolicyRequest",
-    "UpdateClusterRequest",
     "UpdateJobRequest",
+    "YarnApplication",
+    "ClusterOperationMetadata",
+    "ClusterOperationStatus",
+    "Component",
+    "ClusterOperation",
+    "ClusterSelector",
+    "CreateWorkflowTemplateRequest",
+    "DeleteWorkflowTemplateRequest",
+    "GetWorkflowTemplateRequest",
+    "InstantiateInlineWorkflowTemplateRequest",
+    "InstantiateWorkflowTemplateRequest",
+    "ListWorkflowTemplatesRequest",
+    "ListWorkflowTemplatesResponse",
+    "ManagedCluster",
+    "OrderedJob",
+    "ParameterValidation",
+    "RegexValidation",
+    "TemplateParameter",
     "UpdateWorkflowTemplateRequest",
     "ValueValidation",
     "WorkflowGraph",
@@ -244,7 +261,4 @@ __all__ = (
     "WorkflowNode",
     "WorkflowTemplate",
     "WorkflowTemplatePlacement",
-    "WorkflowTemplateServiceAsyncClient",
-    "WorkflowTemplateServiceClient",
-    "YarnApplication",
 )

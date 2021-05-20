@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.dataproc_v1.types import clusters
 from google.cloud.dataproc_v1.types import jobs as gcd_jobs
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -53,7 +51,6 @@ __protobuf__ = proto.module(
 
 class WorkflowTemplate(proto.Message):
     r"""A Dataproc workflow template resource.
-
     Attributes:
         id (str):
 
@@ -111,29 +108,34 @@ class WorkflowTemplate(proto.Message):
             are substituted into the template. Values for
             parameters must be provided when the template is
             instantiated.
+        dag_timeout (google.protobuf.duration_pb2.Duration):
+            Optional. Timeout duration for the DAG of jobs, expressed in
+            seconds (see `JSON representation of
+            duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
+            The timeout duration must be from 10 minutes ("600s") to 24
+            hours ("86400s"). The timer begins when the first job is
+            submitted. If the workflow is running at the end of the
+            timeout period, any remaining jobs are cancelled, the
+            workflow is ended, and if the workflow was running on a
+            `managed
+            cluster </dataproc/docs/concepts/workflows/using-workflows#configuring_or_selecting_a_cluster>`__,
+            the cluster is deleted.
     """
 
-    id = proto.Field(proto.STRING, number=2)
-
-    name = proto.Field(proto.STRING, number=1)
-
-    version = proto.Field(proto.INT32, number=3)
-
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=6)
-
+    id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(proto.STRING, number=1,)
+    version = proto.Field(proto.INT32, number=3,)
+    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=6,)
     placement = proto.Field(
         proto.MESSAGE, number=7, message="WorkflowTemplatePlacement",
     )
-
     jobs = proto.RepeatedField(proto.MESSAGE, number=8, message="OrderedJob",)
-
     parameters = proto.RepeatedField(
         proto.MESSAGE, number=9, message="TemplateParameter",
     )
+    dag_timeout = proto.Field(proto.MESSAGE, number=10, message=duration_pb2.Duration,)
 
 
 class WorkflowTemplatePlacement(proto.Message):
@@ -155,7 +157,6 @@ class WorkflowTemplatePlacement(proto.Message):
     managed_cluster = proto.Field(
         proto.MESSAGE, number=1, oneof="placement", message="ManagedCluster",
     )
-
     cluster_selector = proto.Field(
         proto.MESSAGE, number=2, oneof="placement", message="ClusterSelector",
     )
@@ -163,7 +164,6 @@ class WorkflowTemplatePlacement(proto.Message):
 
 class ManagedCluster(proto.Message):
     r"""Cluster that is managed by the workflow.
-
     Attributes:
         cluster_name (str):
             Required. The cluster name prefix. A unique
@@ -191,11 +191,9 @@ class ManagedCluster(proto.Message):
             cluster.
     """
 
-    cluster_name = proto.Field(proto.STRING, number=2)
-
+    cluster_name = proto.Field(proto.STRING, number=2,)
     config = proto.Field(proto.MESSAGE, number=3, message=clusters.ClusterConfig,)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
 
 
 class ClusterSelector(proto.Message):
@@ -214,14 +212,12 @@ class ClusterSelector(proto.Message):
             have all labels to match.
     """
 
-    zone = proto.Field(proto.STRING, number=1)
-
-    cluster_labels = proto.MapField(proto.STRING, proto.STRING, number=2)
+    zone = proto.Field(proto.STRING, number=1,)
+    cluster_labels = proto.MapField(proto.STRING, proto.STRING, number=2,)
 
 
 class OrderedJob(proto.Message):
     r"""A job executed by the workflow.
-
     Attributes:
         step_id (str):
             Required. The step id. The id must be unique among all jobs
@@ -272,45 +268,34 @@ class OrderedJob(proto.Message):
             workflow.
     """
 
-    step_id = proto.Field(proto.STRING, number=1)
-
+    step_id = proto.Field(proto.STRING, number=1,)
     hadoop_job = proto.Field(
         proto.MESSAGE, number=2, oneof="job_type", message=gcd_jobs.HadoopJob,
     )
-
     spark_job = proto.Field(
         proto.MESSAGE, number=3, oneof="job_type", message=gcd_jobs.SparkJob,
     )
-
     pyspark_job = proto.Field(
         proto.MESSAGE, number=4, oneof="job_type", message=gcd_jobs.PySparkJob,
     )
-
     hive_job = proto.Field(
         proto.MESSAGE, number=5, oneof="job_type", message=gcd_jobs.HiveJob,
     )
-
     pig_job = proto.Field(
         proto.MESSAGE, number=6, oneof="job_type", message=gcd_jobs.PigJob,
     )
-
     spark_r_job = proto.Field(
         proto.MESSAGE, number=11, oneof="job_type", message=gcd_jobs.SparkRJob,
     )
-
     spark_sql_job = proto.Field(
         proto.MESSAGE, number=7, oneof="job_type", message=gcd_jobs.SparkSqlJob,
     )
-
     presto_job = proto.Field(
         proto.MESSAGE, number=12, oneof="job_type", message=gcd_jobs.PrestoJob,
     )
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=8)
-
+    labels = proto.MapField(proto.STRING, proto.STRING, number=8,)
     scheduling = proto.Field(proto.MESSAGE, number=9, message=gcd_jobs.JobScheduling,)
-
-    prerequisite_step_ids = proto.RepeatedField(proto.STRING, number=10)
+    prerequisite_step_ids = proto.RepeatedField(proto.STRING, number=10,)
 
 
 class TemplateParameter(proto.Message):
@@ -392,18 +377,14 @@ class TemplateParameter(proto.Message):
             this parameter's value.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    fields = proto.RepeatedField(proto.STRING, number=2)
-
-    description = proto.Field(proto.STRING, number=3)
-
+    name = proto.Field(proto.STRING, number=1,)
+    fields = proto.RepeatedField(proto.STRING, number=2,)
+    description = proto.Field(proto.STRING, number=3,)
     validation = proto.Field(proto.MESSAGE, number=4, message="ParameterValidation",)
 
 
 class ParameterValidation(proto.Message):
     r"""Configuration for parameter validation.
-
     Attributes:
         regex (google.cloud.dataproc_v1.types.RegexValidation):
             Validation based on regular expressions.
@@ -414,7 +395,6 @@ class ParameterValidation(proto.Message):
     regex = proto.Field(
         proto.MESSAGE, number=1, oneof="validation_type", message="RegexValidation",
     )
-
     values = proto.Field(
         proto.MESSAGE, number=2, oneof="validation_type", message="ValueValidation",
     )
@@ -422,7 +402,6 @@ class ParameterValidation(proto.Message):
 
 class RegexValidation(proto.Message):
     r"""Validation based on regular expressions.
-
     Attributes:
         regexes (Sequence[str]):
             Required. RE2 regular expressions used to
@@ -431,24 +410,22 @@ class RegexValidation(proto.Message):
             matches are not sufficient).
     """
 
-    regexes = proto.RepeatedField(proto.STRING, number=1)
+    regexes = proto.RepeatedField(proto.STRING, number=1,)
 
 
 class ValueValidation(proto.Message):
     r"""Validation based on a list of allowed values.
-
     Attributes:
         values (Sequence[str]):
             Required. List of allowed values for the
             parameter.
     """
 
-    values = proto.RepeatedField(proto.STRING, number=1)
+    values = proto.RepeatedField(proto.STRING, number=1,)
 
 
 class WorkflowMetadata(proto.Message):
     r"""A Dataproc workflow template resource.
-
     Attributes:
         template (str):
             Output only. The resource name of the workflow template as
@@ -486,6 +463,18 @@ class WorkflowMetadata(proto.Message):
             Output only. Workflow end time.
         cluster_uuid (str):
             Output only. The UUID of target cluster.
+        dag_timeout (google.protobuf.duration_pb2.Duration):
+            Output only. The timeout duration for the DAG of jobs,
+            expressed in seconds (see `JSON representation of
+            duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
+        dag_start_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. DAG start time, only set for workflows with
+            [dag_timeout][google.cloud.dataproc.v1.WorkflowMetadata.dag_timeout]
+            when DAG begins.
+        dag_end_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. DAG end time, only set for workflows with
+            [dag_timeout][google.cloud.dataproc.v1.WorkflowMetadata.dag_timeout]
+            when DAG ends.
     """
 
     class State(proto.Enum):
@@ -495,32 +484,28 @@ class WorkflowMetadata(proto.Message):
         RUNNING = 2
         DONE = 3
 
-    template = proto.Field(proto.STRING, number=1)
-
-    version = proto.Field(proto.INT32, number=2)
-
+    template = proto.Field(proto.STRING, number=1,)
+    version = proto.Field(proto.INT32, number=2,)
     create_cluster = proto.Field(proto.MESSAGE, number=3, message="ClusterOperation",)
-
     graph = proto.Field(proto.MESSAGE, number=4, message="WorkflowGraph",)
-
     delete_cluster = proto.Field(proto.MESSAGE, number=5, message="ClusterOperation",)
-
     state = proto.Field(proto.ENUM, number=6, enum=State,)
-
-    cluster_name = proto.Field(proto.STRING, number=7)
-
-    parameters = proto.MapField(proto.STRING, proto.STRING, number=8)
-
-    start_time = proto.Field(proto.MESSAGE, number=9, message=timestamp.Timestamp,)
-
-    end_time = proto.Field(proto.MESSAGE, number=10, message=timestamp.Timestamp,)
-
-    cluster_uuid = proto.Field(proto.STRING, number=11)
+    cluster_name = proto.Field(proto.STRING, number=7,)
+    parameters = proto.MapField(proto.STRING, proto.STRING, number=8,)
+    start_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,)
+    cluster_uuid = proto.Field(proto.STRING, number=11,)
+    dag_timeout = proto.Field(proto.MESSAGE, number=12, message=duration_pb2.Duration,)
+    dag_start_time = proto.Field(
+        proto.MESSAGE, number=13, message=timestamp_pb2.Timestamp,
+    )
+    dag_end_time = proto.Field(
+        proto.MESSAGE, number=14, message=timestamp_pb2.Timestamp,
+    )
 
 
 class ClusterOperation(proto.Message):
     r"""The cluster operation triggered by a workflow.
-
     Attributes:
         operation_id (str):
             Output only. The id of the cluster operation.
@@ -530,16 +515,13 @@ class ClusterOperation(proto.Message):
             Output only. Indicates the operation is done.
     """
 
-    operation_id = proto.Field(proto.STRING, number=1)
-
-    error = proto.Field(proto.STRING, number=2)
-
-    done = proto.Field(proto.BOOL, number=3)
+    operation_id = proto.Field(proto.STRING, number=1,)
+    error = proto.Field(proto.STRING, number=2,)
+    done = proto.Field(proto.BOOL, number=3,)
 
 
 class WorkflowGraph(proto.Message):
     r"""The workflow graph.
-
     Attributes:
         nodes (Sequence[google.cloud.dataproc_v1.types.WorkflowNode]):
             Output only. The workflow nodes.
@@ -550,7 +532,6 @@ class WorkflowGraph(proto.Message):
 
 class WorkflowNode(proto.Message):
     r"""The workflow node.
-
     Attributes:
         step_id (str):
             Output only. The name of the node.
@@ -574,20 +555,15 @@ class WorkflowNode(proto.Message):
         COMPLETED = 4
         FAILED = 5
 
-    step_id = proto.Field(proto.STRING, number=1)
-
-    prerequisite_step_ids = proto.RepeatedField(proto.STRING, number=2)
-
-    job_id = proto.Field(proto.STRING, number=3)
-
+    step_id = proto.Field(proto.STRING, number=1,)
+    prerequisite_step_ids = proto.RepeatedField(proto.STRING, number=2,)
+    job_id = proto.Field(proto.STRING, number=3,)
     state = proto.Field(proto.ENUM, number=5, enum=NodeState,)
-
-    error = proto.Field(proto.STRING, number=6)
+    error = proto.Field(proto.STRING, number=6,)
 
 
 class CreateWorkflowTemplateRequest(proto.Message):
     r"""A request to create a workflow template.
-
     Attributes:
         parent (str):
             Required. The resource name of the region or location, as
@@ -606,14 +582,12 @@ class CreateWorkflowTemplateRequest(proto.Message):
             create.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     template = proto.Field(proto.MESSAGE, number=2, message="WorkflowTemplate",)
 
 
 class GetWorkflowTemplateRequest(proto.Message):
     r"""A request to fetch a workflow template.
-
     Attributes:
         name (str):
             Required. The resource name of the workflow template, as
@@ -634,14 +608,12 @@ class GetWorkflowTemplateRequest(proto.Message):
             If unspecified, retrieves the current version.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    version = proto.Field(proto.INT32, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    version = proto.Field(proto.INT32, number=2,)
 
 
 class InstantiateWorkflowTemplateRequest(proto.Message):
     r"""A request to instantiate a workflow template.
-
     Attributes:
         name (str):
             Required. The resource name of the workflow template, as
@@ -678,21 +650,17 @@ class InstantiateWorkflowTemplateRequest(proto.Message):
         parameters (Sequence[google.cloud.dataproc_v1.types.InstantiateWorkflowTemplateRequest.ParametersEntry]):
             Optional. Map from parameter names to values
             that should be used for those parameters. Values
-            may not exceed 100 characters.
+            may not exceed 1000 characters.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    version = proto.Field(proto.INT32, number=2)
-
-    request_id = proto.Field(proto.STRING, number=5)
-
-    parameters = proto.MapField(proto.STRING, proto.STRING, number=6)
+    name = proto.Field(proto.STRING, number=1,)
+    version = proto.Field(proto.INT32, number=2,)
+    request_id = proto.Field(proto.STRING, number=5,)
+    parameters = proto.MapField(proto.STRING, proto.STRING, number=6,)
 
 
 class InstantiateInlineWorkflowTemplateRequest(proto.Message):
     r"""A request to instantiate an inline workflow template.
-
     Attributes:
         parent (str):
             Required. The resource name of the region or location, as
@@ -724,16 +692,13 @@ class InstantiateInlineWorkflowTemplateRequest(proto.Message):
             characters.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     template = proto.Field(proto.MESSAGE, number=2, message="WorkflowTemplate",)
-
-    request_id = proto.Field(proto.STRING, number=3)
+    request_id = proto.Field(proto.STRING, number=3,)
 
 
 class UpdateWorkflowTemplateRequest(proto.Message):
     r"""A request to update a workflow template.
-
     Attributes:
         template (google.cloud.dataproc_v1.types.WorkflowTemplate):
             Required. The updated workflow template.
@@ -747,7 +712,6 @@ class UpdateWorkflowTemplateRequest(proto.Message):
 
 class ListWorkflowTemplatesRequest(proto.Message):
     r"""A request to list workflow templates in a project.
-
     Attributes:
         parent (str):
             Required. The resource name of the region or location, as
@@ -770,11 +734,9 @@ class ListWorkflowTemplatesRequest(proto.Message):
             results.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListWorkflowTemplatesResponse(proto.Message):
@@ -798,8 +760,7 @@ class ListWorkflowTemplatesResponse(proto.Message):
     templates = proto.RepeatedField(
         proto.MESSAGE, number=1, message="WorkflowTemplate",
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class DeleteWorkflowTemplateRequest(proto.Message):
@@ -827,9 +788,8 @@ class DeleteWorkflowTemplateRequest(proto.Message):
             specified version.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    version = proto.Field(proto.INT32, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    version = proto.Field(proto.INT32, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

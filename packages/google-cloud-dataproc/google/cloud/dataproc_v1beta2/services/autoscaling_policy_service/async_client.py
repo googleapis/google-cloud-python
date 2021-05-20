@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -22,15 +20,14 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.dataproc_v1beta2.services.autoscaling_policy_service import pagers
 from google.cloud.dataproc_v1beta2.types import autoscaling_policies
-
 from .transports.base import AutoscalingPolicyServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import AutoscalingPolicyServiceGrpcAsyncIOTransport
 from .client import AutoscalingPolicyServiceClient
@@ -52,33 +49,28 @@ class AutoscalingPolicyServiceAsyncClient:
     parse_autoscaling_policy_path = staticmethod(
         AutoscalingPolicyServiceClient.parse_autoscaling_policy_path
     )
-
     common_billing_account_path = staticmethod(
         AutoscalingPolicyServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         AutoscalingPolicyServiceClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(AutoscalingPolicyServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(
         AutoscalingPolicyServiceClient.parse_common_folder_path
     )
-
     common_organization_path = staticmethod(
         AutoscalingPolicyServiceClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
         AutoscalingPolicyServiceClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(
         AutoscalingPolicyServiceClient.common_project_path
     )
     parse_common_project_path = staticmethod(
         AutoscalingPolicyServiceClient.parse_common_project_path
     )
-
     common_location_path = staticmethod(
         AutoscalingPolicyServiceClient.common_location_path
     )
@@ -88,7 +80,8 @@ class AutoscalingPolicyServiceAsyncClient:
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -103,7 +96,7 @@ class AutoscalingPolicyServiceAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -120,7 +113,7 @@ class AutoscalingPolicyServiceAsyncClient:
 
     @property
     def transport(self) -> AutoscalingPolicyServiceTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             AutoscalingPolicyServiceTransport: The transport used by the client instance.
@@ -135,12 +128,12 @@ class AutoscalingPolicyServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, AutoscalingPolicyServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the autoscaling policy service client.
+        """Instantiates the autoscaling policy service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -172,7 +165,6 @@ class AutoscalingPolicyServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = AutoscalingPolicyServiceClient(
             credentials=credentials,
             transport=transport,
@@ -220,7 +212,6 @@ class AutoscalingPolicyServiceAsyncClient:
                 This corresponds to the ``policy`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -247,7 +238,6 @@ class AutoscalingPolicyServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if policy is not None:
@@ -298,7 +288,6 @@ class AutoscalingPolicyServiceAsyncClient:
                 This corresponds to the ``policy`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -325,7 +314,6 @@ class AutoscalingPolicyServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if policy is not None:
             request.policy = policy
 
@@ -338,7 +326,8 @@ class AutoscalingPolicyServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=600.0,
             ),
@@ -392,7 +381,6 @@ class AutoscalingPolicyServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -419,7 +407,6 @@ class AutoscalingPolicyServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -432,7 +419,8 @@ class AutoscalingPolicyServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=600.0,
             ),
@@ -484,7 +472,6 @@ class AutoscalingPolicyServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -514,7 +501,6 @@ class AutoscalingPolicyServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -527,7 +513,8 @@ class AutoscalingPolicyServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=600.0,
             ),
@@ -591,7 +578,6 @@ class AutoscalingPolicyServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -612,7 +598,6 @@ class AutoscalingPolicyServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 

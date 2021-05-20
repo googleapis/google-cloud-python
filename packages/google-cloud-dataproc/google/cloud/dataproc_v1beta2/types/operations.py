@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -29,7 +26,6 @@ __protobuf__ = proto.module(
 
 class ClusterOperationStatus(proto.Message):
     r"""The status of the operation.
-
     Attributes:
         state (google.cloud.dataproc_v1beta2.types.ClusterOperationStatus.State):
             Output only. A message containing the
@@ -52,19 +48,15 @@ class ClusterOperationStatus(proto.Message):
         DONE = 3
 
     state = proto.Field(proto.ENUM, number=1, enum=State,)
-
-    inner_state = proto.Field(proto.STRING, number=2)
-
-    details = proto.Field(proto.STRING, number=3)
-
+    inner_state = proto.Field(proto.STRING, number=2,)
+    details = proto.Field(proto.STRING, number=3,)
     state_start_time = proto.Field(
-        proto.MESSAGE, number=4, message=timestamp.Timestamp,
+        proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
     )
 
 
 class ClusterOperationMetadata(proto.Message):
     r"""Metadata describing the operation.
-
     Attributes:
         cluster_name (str):
             Output only. Name of the cluster for the
@@ -87,23 +79,16 @@ class ClusterOperationMetadata(proto.Message):
             operation execution.
     """
 
-    cluster_name = proto.Field(proto.STRING, number=7)
-
-    cluster_uuid = proto.Field(proto.STRING, number=8)
-
+    cluster_name = proto.Field(proto.STRING, number=7,)
+    cluster_uuid = proto.Field(proto.STRING, number=8,)
     status = proto.Field(proto.MESSAGE, number=9, message="ClusterOperationStatus",)
-
     status_history = proto.RepeatedField(
         proto.MESSAGE, number=10, message="ClusterOperationStatus",
     )
-
-    operation_type = proto.Field(proto.STRING, number=11)
-
-    description = proto.Field(proto.STRING, number=12)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=13)
-
-    warnings = proto.RepeatedField(proto.STRING, number=14)
+    operation_type = proto.Field(proto.STRING, number=11,)
+    description = proto.Field(proto.STRING, number=12,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=13,)
+    warnings = proto.RepeatedField(proto.STRING, number=14,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -24,12 +22,20 @@ __protobuf__ = proto.module(
 
 
 class Component(proto.Enum):
-    r"""Cluster components that can be activated."""
+    r"""Cluster components that can be activated.
+    Next ID: 16.
+    """
     COMPONENT_UNSPECIFIED = 0
     ANACONDA = 5
+    DOCKER = 13
+    DRUID = 9
+    FLINK = 14
+    HBASE = 11
     HIVE_WEBHCAT = 3
     JUPYTER = 1
     PRESTO = 6
+    RANGER = 12
+    SOLR = 10
     ZEPPELIN = 4
     ZOOKEEPER = 8
 

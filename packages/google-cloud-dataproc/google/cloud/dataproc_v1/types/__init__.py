@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from .autoscaling_policies import (
     AutoscalingPolicy,
     BasicAutoscalingAlgorithm,
@@ -43,16 +41,23 @@ from .clusters import (
     EndpointConfig,
     GceClusterConfig,
     GetClusterRequest,
+    GkeClusterConfig,
+    IdentityConfig,
     InstanceGroupConfig,
     KerberosConfig,
     LifecycleConfig,
     ListClustersRequest,
     ListClustersResponse,
     ManagedGroupConfig,
+    MetastoreConfig,
+    NodeGroupAffinity,
     NodeInitializationAction,
     ReservationAffinity,
     SecurityConfig,
+    ShieldedInstanceConfig,
     SoftwareConfig,
+    StartClusterRequest,
+    StopClusterRequest,
     UpdateClusterRequest,
 )
 from .jobs import (
@@ -135,16 +140,23 @@ __all__ = (
     "EndpointConfig",
     "GceClusterConfig",
     "GetClusterRequest",
+    "GkeClusterConfig",
+    "IdentityConfig",
     "InstanceGroupConfig",
     "KerberosConfig",
     "LifecycleConfig",
     "ListClustersRequest",
     "ListClustersResponse",
     "ManagedGroupConfig",
+    "MetastoreConfig",
+    "NodeGroupAffinity",
     "NodeInitializationAction",
     "ReservationAffinity",
     "SecurityConfig",
+    "ShieldedInstanceConfig",
     "SoftwareConfig",
+    "StartClusterRequest",
+    "StopClusterRequest",
     "UpdateClusterRequest",
     "CancelJobRequest",
     "DeleteJobRequest",
