@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.rpc import status_pb2 as status  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -83,7 +80,6 @@ class Likelihood(proto.Enum):
 
 class AnnotateVideoRequest(proto.Message):
     r"""Video annotation request.
-
     Attributes:
         input_uri (str):
             Input video location. Currently, only `Google Cloud
@@ -125,22 +121,16 @@ class AnnotateVideoRequest(proto.Message):
             a region will be determined based on video file location.
     """
 
-    input_uri = proto.Field(proto.STRING, number=1)
-
-    input_content = proto.Field(proto.BYTES, number=6)
-
+    input_uri = proto.Field(proto.STRING, number=1,)
+    input_content = proto.Field(proto.BYTES, number=6,)
     features = proto.RepeatedField(proto.ENUM, number=2, enum="Feature",)
-
     video_context = proto.Field(proto.MESSAGE, number=3, message="VideoContext",)
-
-    output_uri = proto.Field(proto.STRING, number=4)
-
-    location_id = proto.Field(proto.STRING, number=5)
+    output_uri = proto.Field(proto.STRING, number=4,)
+    location_id = proto.Field(proto.STRING, number=5,)
 
 
 class VideoContext(proto.Message):
     r"""Video context and/or feature-specific parameters.
-
     Attributes:
         segments (Sequence[google.cloud.videointelligence_v1beta2.types.VideoSegment]):
             Video segments to annotate. The segments may
@@ -158,19 +148,15 @@ class VideoContext(proto.Message):
     """
 
     segments = proto.RepeatedField(proto.MESSAGE, number=1, message="VideoSegment",)
-
     label_detection_config = proto.Field(
         proto.MESSAGE, number=2, message="LabelDetectionConfig",
     )
-
     shot_change_detection_config = proto.Field(
         proto.MESSAGE, number=3, message="ShotChangeDetectionConfig",
     )
-
     explicit_content_detection_config = proto.Field(
         proto.MESSAGE, number=4, message="ExplicitContentDetectionConfig",
     )
-
     face_detection_config = proto.Field(
         proto.MESSAGE, number=5, message="FaceDetectionConfig",
     )
@@ -178,7 +164,6 @@ class VideoContext(proto.Message):
 
 class LabelDetectionConfig(proto.Message):
     r"""Config for LABEL_DETECTION.
-
     Attributes:
         label_detection_mode (google.cloud.videointelligence_v1beta2.types.LabelDetectionMode):
             What labels should be detected with LABEL_DETECTION, in
@@ -196,15 +181,12 @@ class LabelDetectionConfig(proto.Message):
     """
 
     label_detection_mode = proto.Field(proto.ENUM, number=1, enum="LabelDetectionMode",)
-
-    stationary_camera = proto.Field(proto.BOOL, number=2)
-
-    model = proto.Field(proto.STRING, number=3)
+    stationary_camera = proto.Field(proto.BOOL, number=2,)
+    model = proto.Field(proto.STRING, number=3,)
 
 
 class ShotChangeDetectionConfig(proto.Message):
     r"""Config for SHOT_CHANGE_DETECTION.
-
     Attributes:
         model (str):
             Model to use for shot change detection.
@@ -212,12 +194,11 @@ class ShotChangeDetectionConfig(proto.Message):
             if unset) and "builtin/latest".
     """
 
-    model = proto.Field(proto.STRING, number=1)
+    model = proto.Field(proto.STRING, number=1,)
 
 
 class ExplicitContentDetectionConfig(proto.Message):
     r"""Config for EXPLICIT_CONTENT_DETECTION.
-
     Attributes:
         model (str):
             Model to use for explicit content detection.
@@ -225,12 +206,11 @@ class ExplicitContentDetectionConfig(proto.Message):
             if unset) and "builtin/latest".
     """
 
-    model = proto.Field(proto.STRING, number=1)
+    model = proto.Field(proto.STRING, number=1,)
 
 
 class FaceDetectionConfig(proto.Message):
     r"""Config for FACE_DETECTION.
-
     Attributes:
         model (str):
             Model to use for face detection.
@@ -241,14 +221,12 @@ class FaceDetectionConfig(proto.Message):
             face annotation output.
     """
 
-    model = proto.Field(proto.STRING, number=1)
-
-    include_bounding_boxes = proto.Field(proto.BOOL, number=2)
+    model = proto.Field(proto.STRING, number=1,)
+    include_bounding_boxes = proto.Field(proto.BOOL, number=2,)
 
 
 class VideoSegment(proto.Message):
     r"""Video segment.
-
     Attributes:
         start_time_offset (google.protobuf.duration_pb2.Duration):
             Time-offset, relative to the beginning of the
@@ -260,14 +238,16 @@ class VideoSegment(proto.Message):
             (inclusive).
     """
 
-    start_time_offset = proto.Field(proto.MESSAGE, number=1, message=duration.Duration,)
-
-    end_time_offset = proto.Field(proto.MESSAGE, number=2, message=duration.Duration,)
+    start_time_offset = proto.Field(
+        proto.MESSAGE, number=1, message=duration_pb2.Duration,
+    )
+    end_time_offset = proto.Field(
+        proto.MESSAGE, number=2, message=duration_pb2.Duration,
+    )
 
 
 class LabelSegment(proto.Message):
     r"""Video segment level annotation results for label detection.
-
     Attributes:
         segment (google.cloud.videointelligence_v1beta2.types.VideoSegment):
             Video segment where a label was detected.
@@ -276,13 +256,11 @@ class LabelSegment(proto.Message):
     """
 
     segment = proto.Field(proto.MESSAGE, number=1, message="VideoSegment",)
-
-    confidence = proto.Field(proto.FLOAT, number=2)
+    confidence = proto.Field(proto.FLOAT, number=2,)
 
 
 class LabelFrame(proto.Message):
     r"""Video frame level annotation results for label detection.
-
     Attributes:
         time_offset (google.protobuf.duration_pb2.Duration):
             Time-offset, relative to the beginning of the
@@ -292,14 +270,12 @@ class LabelFrame(proto.Message):
             Confidence that the label is accurate. Range: [0, 1].
     """
 
-    time_offset = proto.Field(proto.MESSAGE, number=1, message=duration.Duration,)
-
-    confidence = proto.Field(proto.FLOAT, number=2)
+    time_offset = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
+    confidence = proto.Field(proto.FLOAT, number=2,)
 
 
 class Entity(proto.Message):
     r"""Detected entity from video analysis.
-
     Attributes:
         entity_id (str):
             Opaque entity ID. Some IDs may be available in `Google
@@ -311,16 +287,13 @@ class Entity(proto.Message):
             Language code for ``description`` in BCP-47 format.
     """
 
-    entity_id = proto.Field(proto.STRING, number=1)
-
-    description = proto.Field(proto.STRING, number=2)
-
-    language_code = proto.Field(proto.STRING, number=3)
+    entity_id = proto.Field(proto.STRING, number=1,)
+    description = proto.Field(proto.STRING, number=2,)
+    language_code = proto.Field(proto.STRING, number=3,)
 
 
 class LabelAnnotation(proto.Message):
     r"""Label annotation.
-
     Attributes:
         entity (google.cloud.videointelligence_v1beta2.types.Entity):
             Detected entity.
@@ -337,17 +310,13 @@ class LabelAnnotation(proto.Message):
     """
 
     entity = proto.Field(proto.MESSAGE, number=1, message="Entity",)
-
     category_entities = proto.RepeatedField(proto.MESSAGE, number=2, message="Entity",)
-
     segments = proto.RepeatedField(proto.MESSAGE, number=3, message="LabelSegment",)
-
     frames = proto.RepeatedField(proto.MESSAGE, number=4, message="LabelFrame",)
 
 
 class ExplicitContentFrame(proto.Message):
     r"""Video frame level annotation results for explicit content.
-
     Attributes:
         time_offset (google.protobuf.duration_pb2.Duration):
             Time-offset, relative to the beginning of the
@@ -357,8 +326,7 @@ class ExplicitContentFrame(proto.Message):
             Likelihood of the pornography content..
     """
 
-    time_offset = proto.Field(proto.MESSAGE, number=1, message=duration.Duration,)
-
+    time_offset = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
     pornography_likelihood = proto.Field(proto.ENUM, number=2, enum="Likelihood",)
 
 
@@ -393,18 +361,14 @@ class NormalizedBoundingBox(proto.Message):
             Bottom Y coordinate.
     """
 
-    left = proto.Field(proto.FLOAT, number=1)
-
-    top = proto.Field(proto.FLOAT, number=2)
-
-    right = proto.Field(proto.FLOAT, number=3)
-
-    bottom = proto.Field(proto.FLOAT, number=4)
+    left = proto.Field(proto.FLOAT, number=1,)
+    top = proto.Field(proto.FLOAT, number=2,)
+    right = proto.Field(proto.FLOAT, number=3,)
+    bottom = proto.Field(proto.FLOAT, number=4,)
 
 
 class FaceSegment(proto.Message):
     r"""Video segment level annotation results for face detection.
-
     Attributes:
         segment (google.cloud.videointelligence_v1beta2.types.VideoSegment):
             Video segment where a face was detected.
@@ -415,7 +379,6 @@ class FaceSegment(proto.Message):
 
 class FaceFrame(proto.Message):
     r"""Video frame level annotation results for face detection.
-
     Attributes:
         normalized_bounding_boxes (Sequence[google.cloud.videointelligence_v1beta2.types.NormalizedBoundingBox]):
             Normalized Bounding boxes in a frame.
@@ -431,13 +394,11 @@ class FaceFrame(proto.Message):
     normalized_bounding_boxes = proto.RepeatedField(
         proto.MESSAGE, number=1, message="NormalizedBoundingBox",
     )
-
-    time_offset = proto.Field(proto.MESSAGE, number=2, message=duration.Duration,)
+    time_offset = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
 
 
 class FaceAnnotation(proto.Message):
     r"""Face annotation.
-
     Attributes:
         thumbnail (bytes):
             Thumbnail of a representative face view (in
@@ -448,16 +409,13 @@ class FaceAnnotation(proto.Message):
             All video frames where a face was detected.
     """
 
-    thumbnail = proto.Field(proto.BYTES, number=1)
-
+    thumbnail = proto.Field(proto.BYTES, number=1,)
     segments = proto.RepeatedField(proto.MESSAGE, number=2, message="FaceSegment",)
-
     frames = proto.RepeatedField(proto.MESSAGE, number=3, message="FaceFrame",)
 
 
 class VideoAnnotationResults(proto.Message):
     r"""Annotation results for a single video.
-
     Attributes:
         input_uri (str):
             Video file location in `Google Cloud
@@ -488,33 +446,26 @@ class VideoAnnotationResults(proto.Message):
             may fail.
     """
 
-    input_uri = proto.Field(proto.STRING, number=1)
-
+    input_uri = proto.Field(proto.STRING, number=1,)
     segment_label_annotations = proto.RepeatedField(
         proto.MESSAGE, number=2, message="LabelAnnotation",
     )
-
     shot_label_annotations = proto.RepeatedField(
         proto.MESSAGE, number=3, message="LabelAnnotation",
     )
-
     frame_label_annotations = proto.RepeatedField(
         proto.MESSAGE, number=4, message="LabelAnnotation",
     )
-
     face_annotations = proto.RepeatedField(
         proto.MESSAGE, number=5, message="FaceAnnotation",
     )
-
     shot_annotations = proto.RepeatedField(
         proto.MESSAGE, number=6, message="VideoSegment",
     )
-
     explicit_annotation = proto.Field(
         proto.MESSAGE, number=7, message="ExplicitContentAnnotation",
     )
-
-    error = proto.Field(proto.MESSAGE, number=9, message=status.Status,)
+    error = proto.Field(proto.MESSAGE, number=9, message=status_pb2.Status,)
 
 
 class AnnotateVideoResponse(proto.Message):
@@ -535,7 +486,6 @@ class AnnotateVideoResponse(proto.Message):
 
 class VideoAnnotationProgress(proto.Message):
     r"""Annotation progress for a single video.
-
     Attributes:
         input_uri (str):
             Video file location in `Google Cloud
@@ -549,13 +499,10 @@ class VideoAnnotationProgress(proto.Message):
             Time of the most recent update.
     """
 
-    input_uri = proto.Field(proto.STRING, number=1)
-
-    progress_percent = proto.Field(proto.INT32, number=2)
-
-    start_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
+    input_uri = proto.Field(proto.STRING, number=1,)
+    progress_percent = proto.Field(proto.INT32, number=2,)
+    start_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
 
 
 class AnnotateVideoProgress(proto.Message):

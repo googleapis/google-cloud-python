@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,8 @@
 #
 
 from .services.video_intelligence_service import VideoIntelligenceServiceClient
+from .services.video_intelligence_service import VideoIntelligenceServiceAsyncClient
+
 from .types.video_intelligence import AnnotateVideoProgress
 from .types.video_intelligence import AnnotateVideoRequest
 from .types.video_intelligence import AnnotateVideoResponse
@@ -23,13 +24,10 @@ from .types.video_intelligence import Entity
 from .types.video_intelligence import ExplicitContentAnnotation
 from .types.video_intelligence import ExplicitContentDetectionConfig
 from .types.video_intelligence import ExplicitContentFrame
-from .types.video_intelligence import Feature
 from .types.video_intelligence import LabelAnnotation
 from .types.video_intelligence import LabelDetectionConfig
-from .types.video_intelligence import LabelDetectionMode
 from .types.video_intelligence import LabelFrame
 from .types.video_intelligence import LabelSegment
-from .types.video_intelligence import Likelihood
 from .types.video_intelligence import ShotChangeDetectionConfig
 from .types.video_intelligence import SpeechContext
 from .types.video_intelligence import SpeechRecognitionAlternative
@@ -40,9 +38,12 @@ from .types.video_intelligence import VideoAnnotationResults
 from .types.video_intelligence import VideoContext
 from .types.video_intelligence import VideoSegment
 from .types.video_intelligence import WordInfo
-
+from .types.video_intelligence import Feature
+from .types.video_intelligence import LabelDetectionMode
+from .types.video_intelligence import Likelihood
 
 __all__ = (
+    "VideoIntelligenceServiceAsyncClient",
     "AnnotateVideoProgress",
     "AnnotateVideoRequest",
     "AnnotateVideoResponse",
@@ -65,7 +66,7 @@ __all__ = (
     "VideoAnnotationProgress",
     "VideoAnnotationResults",
     "VideoContext",
+    "VideoIntelligenceServiceClient",
     "VideoSegment",
     "WordInfo",
-    "VideoIntelligenceServiceClient",
 )
