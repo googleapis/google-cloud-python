@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -76,7 +74,6 @@ class Distribution(proto.Message):
 
     class LinearBuckets(proto.Message):
         r"""Describing buckets with constant width.
-
         Attributes:
             num_finite_buckets (int):
                 The number of finite buckets. With the underflow and
@@ -93,15 +90,12 @@ class Distribution(proto.Message):
                 num_finite_buckets, inclusive.
         """
 
-        num_finite_buckets = proto.Field(proto.INT32, number=1)
-
-        width = proto.Field(proto.DOUBLE, number=2)
-
-        offset = proto.Field(proto.DOUBLE, number=3)
+        num_finite_buckets = proto.Field(proto.INT32, number=1,)
+        width = proto.Field(proto.DOUBLE, number=2,)
+        offset = proto.Field(proto.DOUBLE, number=3,)
 
     class ExponentialBuckets(proto.Message):
         r"""Describing buckets with exponentially growing width.
-
         Attributes:
             num_finite_buckets (int):
                 The number of finite buckets. With the underflow and
@@ -119,15 +113,12 @@ class Distribution(proto.Message):
                 ranges from 1 to num_finite_buckets inclusive. Must be > 0.
         """
 
-        num_finite_buckets = proto.Field(proto.INT32, number=1)
-
-        growth_factor = proto.Field(proto.DOUBLE, number=2)
-
-        scale = proto.Field(proto.DOUBLE, number=3)
+        num_finite_buckets = proto.Field(proto.INT32, number=1,)
+        growth_factor = proto.Field(proto.DOUBLE, number=2,)
+        scale = proto.Field(proto.DOUBLE, number=3,)
 
     class ExplicitBuckets(proto.Message):
         r"""Describing buckets with arbitrary user-provided width.
-
         Attributes:
             bounds (Sequence[float]):
                 'bound' is a list of strictly increasing boundaries between
@@ -147,28 +138,20 @@ class Distribution(proto.Message):
                 bound_size() (overflow) bound[i-1] +inf
         """
 
-        bounds = proto.RepeatedField(proto.DOUBLE, number=1)
+        bounds = proto.RepeatedField(proto.DOUBLE, number=1,)
 
-    count = proto.Field(proto.INT64, number=1)
-
-    mean = proto.Field(proto.DOUBLE, number=2)
-
-    minimum = proto.Field(proto.DOUBLE, number=3)
-
-    maximum = proto.Field(proto.DOUBLE, number=4)
-
-    sum_of_squared_deviation = proto.Field(proto.DOUBLE, number=5)
-
-    bucket_counts = proto.RepeatedField(proto.INT64, number=6)
-
+    count = proto.Field(proto.INT64, number=1,)
+    mean = proto.Field(proto.DOUBLE, number=2,)
+    minimum = proto.Field(proto.DOUBLE, number=3,)
+    maximum = proto.Field(proto.DOUBLE, number=4,)
+    sum_of_squared_deviation = proto.Field(proto.DOUBLE, number=5,)
+    bucket_counts = proto.RepeatedField(proto.INT64, number=6,)
     linear_buckets = proto.Field(
         proto.MESSAGE, number=7, oneof="bucket_option", message=LinearBuckets,
     )
-
     exponential_buckets = proto.Field(
         proto.MESSAGE, number=8, oneof="bucket_option", message=ExponentialBuckets,
     )
-
     explicit_buckets = proto.Field(
         proto.MESSAGE, number=9, oneof="bucket_option", message=ExplicitBuckets,
     )

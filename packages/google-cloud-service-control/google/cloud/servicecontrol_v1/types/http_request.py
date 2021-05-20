@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import duration_pb2 as duration  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -86,35 +83,21 @@ class HttpRequest(proto.Message):
             "HTTP/1.1", "HTTP/2", "websocket".
     """
 
-    request_method = proto.Field(proto.STRING, number=1)
-
-    request_url = proto.Field(proto.STRING, number=2)
-
-    request_size = proto.Field(proto.INT64, number=3)
-
-    status = proto.Field(proto.INT32, number=4)
-
-    response_size = proto.Field(proto.INT64, number=5)
-
-    user_agent = proto.Field(proto.STRING, number=6)
-
-    remote_ip = proto.Field(proto.STRING, number=7)
-
-    server_ip = proto.Field(proto.STRING, number=13)
-
-    referer = proto.Field(proto.STRING, number=8)
-
-    latency = proto.Field(proto.MESSAGE, number=14, message=duration.Duration,)
-
-    cache_lookup = proto.Field(proto.BOOL, number=11)
-
-    cache_hit = proto.Field(proto.BOOL, number=9)
-
-    cache_validated_with_origin_server = proto.Field(proto.BOOL, number=10)
-
-    cache_fill_bytes = proto.Field(proto.INT64, number=12)
-
-    protocol = proto.Field(proto.STRING, number=15)
+    request_method = proto.Field(proto.STRING, number=1,)
+    request_url = proto.Field(proto.STRING, number=2,)
+    request_size = proto.Field(proto.INT64, number=3,)
+    status = proto.Field(proto.INT32, number=4,)
+    response_size = proto.Field(proto.INT64, number=5,)
+    user_agent = proto.Field(proto.STRING, number=6,)
+    remote_ip = proto.Field(proto.STRING, number=7,)
+    server_ip = proto.Field(proto.STRING, number=13,)
+    referer = proto.Field(proto.STRING, number=8,)
+    latency = proto.Field(proto.MESSAGE, number=14, message=duration_pb2.Duration,)
+    cache_lookup = proto.Field(proto.BOOL, number=11,)
+    cache_hit = proto.Field(proto.BOOL, number=9,)
+    cache_validated_with_origin_server = proto.Field(proto.BOOL, number=10,)
+    cache_fill_bytes = proto.Field(proto.INT64, number=12,)
+    protocol = proto.Field(proto.STRING, number=15,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

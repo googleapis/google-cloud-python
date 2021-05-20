@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.servicecontrol_v1.types import http_request as gas_http_request
-from google.logging.type import log_severity_pb2 as log_severity  # type: ignore
-from google.protobuf import any_pb2 as gp_any  # type: ignore
-from google.protobuf import struct_pb2 as struct  # type: ignore
-from google.protobuf import timestamp_pb2 as gp_timestamp  # type: ignore
+from google.logging.type import log_severity_pb2  # type: ignore
+from google.protobuf import any_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -33,7 +30,6 @@ __protobuf__ = proto.module(
 
 class LogEntry(proto.Message):
     r"""An individual log entry.
-
     Attributes:
         name (str):
             Required. The log to which this log entry belongs. Examples:
@@ -80,34 +76,23 @@ class LogEntry(proto.Message):
             associated with the log entry, if any.
     """
 
-    name = proto.Field(proto.STRING, number=10)
-
-    timestamp = proto.Field(proto.MESSAGE, number=11, message=gp_timestamp.Timestamp,)
-
-    severity = proto.Field(proto.ENUM, number=12, enum=log_severity.LogSeverity,)
-
+    name = proto.Field(proto.STRING, number=10,)
+    timestamp = proto.Field(proto.MESSAGE, number=11, message=timestamp_pb2.Timestamp,)
+    severity = proto.Field(proto.ENUM, number=12, enum=log_severity_pb2.LogSeverity,)
     http_request = proto.Field(
         proto.MESSAGE, number=14, message=gas_http_request.HttpRequest,
     )
-
-    trace = proto.Field(proto.STRING, number=15)
-
-    insert_id = proto.Field(proto.STRING, number=4)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=13)
-
+    trace = proto.Field(proto.STRING, number=15,)
+    insert_id = proto.Field(proto.STRING, number=4,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=13,)
     proto_payload = proto.Field(
-        proto.MESSAGE, number=2, oneof="payload", message=gp_any.Any,
+        proto.MESSAGE, number=2, oneof="payload", message=any_pb2.Any,
     )
-
-    text_payload = proto.Field(proto.STRING, number=3, oneof="payload")
-
+    text_payload = proto.Field(proto.STRING, number=3, oneof="payload",)
     struct_payload = proto.Field(
-        proto.MESSAGE, number=6, oneof="payload", message=struct.Struct,
+        proto.MESSAGE, number=6, oneof="payload", message=struct_pb2.Struct,
     )
-
     operation = proto.Field(proto.MESSAGE, number=16, message="LogEntryOperation",)
-
     source_location = proto.Field(
         proto.MESSAGE, number=17, message="LogEntrySourceLocation",
     )
@@ -135,13 +120,10 @@ class LogEntryOperation(proto.Message):
             last log entry in the operation.
     """
 
-    id = proto.Field(proto.STRING, number=1)
-
-    producer = proto.Field(proto.STRING, number=2)
-
-    first = proto.Field(proto.BOOL, number=3)
-
-    last = proto.Field(proto.BOOL, number=4)
+    id = proto.Field(proto.STRING, number=1,)
+    producer = proto.Field(proto.STRING, number=2,)
+    first = proto.Field(proto.BOOL, number=3,)
+    last = proto.Field(proto.BOOL, number=4,)
 
 
 class LogEntrySourceLocation(proto.Message):
@@ -166,11 +148,9 @@ class LogEntrySourceLocation(proto.Message):
             (Go), ``function`` (Python).
     """
 
-    file = proto.Field(proto.STRING, number=1)
-
-    line = proto.Field(proto.INT64, number=2)
-
-    function = proto.Field(proto.STRING, number=3)
+    file = proto.Field(proto.STRING, number=1,)
+    line = proto.Field(proto.INT64, number=2,)
+    function = proto.Field(proto.STRING, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

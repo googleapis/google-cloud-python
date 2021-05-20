@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.servicecontrol_v1.types import log_entry
 from google.cloud.servicecontrol_v1.types import metric_value
-from google.protobuf import any_pb2 as gp_any  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import any_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -31,7 +28,6 @@ __protobuf__ = proto.module(
 
 class Operation(proto.Message):
     r"""Represents information regarding an operation.
-
     Attributes:
         operation_id (str):
             Identity of the operation. This must be
@@ -120,29 +116,20 @@ class Operation(proto.Message):
         LOW = 0
         HIGH = 1
 
-    operation_id = proto.Field(proto.STRING, number=1)
-
-    operation_name = proto.Field(proto.STRING, number=2)
-
-    consumer_id = proto.Field(proto.STRING, number=3)
-
-    start_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
-
-    end_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=6)
-
+    operation_id = proto.Field(proto.STRING, number=1,)
+    operation_name = proto.Field(proto.STRING, number=2,)
+    consumer_id = proto.Field(proto.STRING, number=3,)
+    start_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=6,)
     metric_value_sets = proto.RepeatedField(
         proto.MESSAGE, number=7, message=metric_value.MetricValueSet,
     )
-
     log_entries = proto.RepeatedField(
         proto.MESSAGE, number=8, message=log_entry.LogEntry,
     )
-
     importance = proto.Field(proto.ENUM, number=11, enum=Importance,)
-
-    extensions = proto.RepeatedField(proto.MESSAGE, number=16, message=gp_any.Any,)
+    extensions = proto.RepeatedField(proto.MESSAGE, number=16, message=any_pb2.Any,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

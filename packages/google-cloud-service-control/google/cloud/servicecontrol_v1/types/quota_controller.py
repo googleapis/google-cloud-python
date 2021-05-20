@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.servicecontrol_v1.types import metric_value
 
@@ -34,7 +31,6 @@ __protobuf__ = proto.module(
 
 class AllocateQuotaRequest(proto.Message):
     r"""Request message for the AllocateQuota method.
-
     Attributes:
         service_name (str):
             Name of the service as specified in the service
@@ -52,16 +48,13 @@ class AllocateQuotaRequest(proto.Message):
             can be found, the latest one will be used.
     """
 
-    service_name = proto.Field(proto.STRING, number=1)
-
+    service_name = proto.Field(proto.STRING, number=1,)
     allocate_operation = proto.Field(proto.MESSAGE, number=2, message="QuotaOperation",)
-
-    service_config_id = proto.Field(proto.STRING, number=4)
+    service_config_id = proto.Field(proto.STRING, number=4,)
 
 
 class QuotaOperation(proto.Message):
     r"""Represents information regarding a quota operation.
-
     Attributes:
         operation_id (str):
             Identity of the operation. This is expected to be unique
@@ -122,24 +115,18 @@ class QuotaOperation(proto.Message):
         QUERY_ONLY = 4
         ADJUST_ONLY = 5
 
-    operation_id = proto.Field(proto.STRING, number=1)
-
-    method_name = proto.Field(proto.STRING, number=2)
-
-    consumer_id = proto.Field(proto.STRING, number=3)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4)
-
+    operation_id = proto.Field(proto.STRING, number=1,)
+    method_name = proto.Field(proto.STRING, number=2,)
+    consumer_id = proto.Field(proto.STRING, number=3,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
     quota_metrics = proto.RepeatedField(
         proto.MESSAGE, number=5, message=metric_value.MetricValueSet,
     )
-
     quota_mode = proto.Field(proto.ENUM, number=6, enum=QuotaMode,)
 
 
 class AllocateQuotaResponse(proto.Message):
     r"""Response message for the AllocateQuota method.
-
     Attributes:
         operation_id (str):
             The same operation_id value used in the
@@ -164,17 +151,14 @@ class AllocateQuotaResponse(proto.Message):
             request.
     """
 
-    operation_id = proto.Field(proto.STRING, number=1)
-
+    operation_id = proto.Field(proto.STRING, number=1,)
     allocate_errors = proto.RepeatedField(
         proto.MESSAGE, number=2, message="QuotaError",
     )
-
     quota_metrics = proto.RepeatedField(
         proto.MESSAGE, number=3, message=metric_value.MetricValueSet,
     )
-
-    service_config_id = proto.Field(proto.STRING, number=4)
+    service_config_id = proto.Field(proto.STRING, number=4,)
 
 
 class QuotaError(proto.Message):
@@ -210,10 +194,8 @@ class QuotaError(proto.Message):
         API_KEY_EXPIRED = 112
 
     code = proto.Field(proto.ENUM, number=1, enum=Code,)
-
-    subject = proto.Field(proto.STRING, number=2)
-
-    description = proto.Field(proto.STRING, number=3)
+    subject = proto.Field(proto.STRING, number=2,)
+    description = proto.Field(proto.STRING, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
