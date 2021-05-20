@@ -24,16 +24,29 @@ common = gcp.CommonTemplates()
 default_version = "v2"
 
 for library in s.get_staging_dirs(default_version):
-    # Do not expose ModelServiceClient, as there is no public API endpoint for the
-    # models service.
+    # Do not expose ModelServiceClient and ModelServiceAsyncClient, as there
+    # is no public API endpoint for the models service.
     s.replace(
         library / f"google/cloud/bigquery_{library.name}/__init__.py",
         r"from \.services\.model_service import ModelServiceClient",
         "",
     )
+
+    s.replace(
+        library / f"google/cloud/bigquery_{library.name}/__init__.py",
+        r"from \.services\.model_service import ModelServiceAsyncClient",
+        "",
+    )
+
     s.replace(
         library / f"google/cloud/bigquery_{library.name}/__init__.py",
         r"""["']ModelServiceClient["'],""",
+        "",
+    )
+
+    s.replace(
+        library / f"google/cloud/bigquery_{library.name}/__init__.py",
+        r"""["']ModelServiceAsyncClient["'],""",
         "",
     )
 

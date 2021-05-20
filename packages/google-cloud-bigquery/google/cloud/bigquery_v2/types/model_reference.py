@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -25,7 +23,6 @@ __protobuf__ = proto.module(
 
 class ModelReference(proto.Message):
     r"""Id path of a model.
-
     Attributes:
         project_id (str):
             Required. The ID of the project containing
@@ -39,11 +36,9 @@ class ModelReference(proto.Message):
             maximum length is 1,024 characters.
     """
 
-    project_id = proto.Field(proto.STRING, number=1)
-
-    dataset_id = proto.Field(proto.STRING, number=2)
-
-    model_id = proto.Field(proto.STRING, number=3)
+    project_id = proto.Field(proto.STRING, number=1,)
+    dataset_id = proto.Field(proto.STRING, number=2,)
+    model_id = proto.Field(proto.STRING, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

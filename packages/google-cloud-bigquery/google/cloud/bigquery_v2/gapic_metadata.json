@@ -1,0 +1,63 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.bigquery_v2",
+  "protoPackage": "google.cloud.bigquery.v2",
+  "schema": "1.0",
+  "services": {
+    "ModelService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ModelServiceClient",
+          "rpcs": {
+            "DeleteModel": {
+              "methods": [
+                "delete_model"
+              ]
+            },
+            "GetModel": {
+              "methods": [
+                "get_model"
+              ]
+            },
+            "ListModels": {
+              "methods": [
+                "list_models"
+              ]
+            },
+            "PatchModel": {
+              "methods": [
+                "patch_model"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ModelServiceAsyncClient",
+          "rpcs": {
+            "DeleteModel": {
+              "methods": [
+                "delete_model"
+              ]
+            },
+            "GetModel": {
+              "methods": [
+                "get_model"
+              ]
+            },
+            "ListModels": {
+              "methods": [
+                "list_models"
+              ]
+            },
+            "PatchModel": {
+              "methods": [
+                "patch_model"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

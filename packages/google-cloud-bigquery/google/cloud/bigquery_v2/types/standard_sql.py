@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -63,11 +61,9 @@ class StandardSqlDataType(proto.Message):
         STRUCT = 17
 
     type_kind = proto.Field(proto.ENUM, number=1, enum=TypeKind,)
-
     array_element_type = proto.Field(
         proto.MESSAGE, number=2, oneof="sub_type", message="StandardSqlDataType",
     )
-
     struct_type = proto.Field(
         proto.MESSAGE, number=3, oneof="sub_type", message="StandardSqlStructType",
     )
@@ -75,7 +71,6 @@ class StandardSqlDataType(proto.Message):
 
 class StandardSqlField(proto.Message):
     r"""A field or a column.
-
     Attributes:
         name (str):
             Optional. The name of this field. Can be
@@ -88,14 +83,12 @@ class StandardSqlField(proto.Message):
             this "type" field).
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     type = proto.Field(proto.MESSAGE, number=2, message="StandardSqlDataType",)
 
 
 class StandardSqlStructType(proto.Message):
     r"""
-
     Attributes:
         fields (Sequence[google.cloud.bigquery_v2.types.StandardSqlField]):
 

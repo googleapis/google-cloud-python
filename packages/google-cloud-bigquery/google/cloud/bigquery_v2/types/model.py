@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.bigquery_v2.types import encryption_config
 from google.cloud.bigquery_v2.types import model_reference as gcb_model_reference
 from google.cloud.bigquery_v2.types import standard_sql
 from google.cloud.bigquery_v2.types import table_reference
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -41,7 +38,6 @@ __protobuf__ = proto.module(
 
 class Model(proto.Message):
     r"""
-
     Attributes:
         etag (str):
             Output only. A hash of this resource.
@@ -251,7 +247,7 @@ class Model(proto.Message):
         EXPLICIT = 2
 
     class SeasonalPeriod(proto.Message):
-        r""""""
+        r"""    """
 
         class SeasonalPeriodType(proto.Enum):
             r""""""
@@ -264,7 +260,7 @@ class Model(proto.Message):
             YEARLY = 6
 
     class KmeansEnums(proto.Message):
-        r""""""
+        r"""    """
 
         class KmeansInitializationMethod(proto.Enum):
             r"""Indicates the method used to initialize the centroids for
@@ -293,22 +289,20 @@ class Model(proto.Message):
         """
 
         mean_absolute_error = proto.Field(
-            proto.MESSAGE, number=1, message=wrappers.DoubleValue,
+            proto.MESSAGE, number=1, message=wrappers_pb2.DoubleValue,
         )
-
         mean_squared_error = proto.Field(
-            proto.MESSAGE, number=2, message=wrappers.DoubleValue,
+            proto.MESSAGE, number=2, message=wrappers_pb2.DoubleValue,
         )
-
         mean_squared_log_error = proto.Field(
-            proto.MESSAGE, number=3, message=wrappers.DoubleValue,
+            proto.MESSAGE, number=3, message=wrappers_pb2.DoubleValue,
         )
-
         median_absolute_error = proto.Field(
-            proto.MESSAGE, number=4, message=wrappers.DoubleValue,
+            proto.MESSAGE, number=4, message=wrappers_pb2.DoubleValue,
         )
-
-        r_squared = proto.Field(proto.MESSAGE, number=5, message=wrappers.DoubleValue,)
+        r_squared = proto.Field(
+            proto.MESSAGE, number=5, message=wrappers_pb2.DoubleValue,
+        )
 
     class AggregateClassificationMetrics(proto.Message):
         r"""Aggregate metrics for classification/classifier models. For
@@ -350,19 +344,25 @@ class Model(proto.Message):
                 is a macro-averaged metric.
         """
 
-        precision = proto.Field(proto.MESSAGE, number=1, message=wrappers.DoubleValue,)
-
-        recall = proto.Field(proto.MESSAGE, number=2, message=wrappers.DoubleValue,)
-
-        accuracy = proto.Field(proto.MESSAGE, number=3, message=wrappers.DoubleValue,)
-
-        threshold = proto.Field(proto.MESSAGE, number=4, message=wrappers.DoubleValue,)
-
-        f1_score = proto.Field(proto.MESSAGE, number=5, message=wrappers.DoubleValue,)
-
-        log_loss = proto.Field(proto.MESSAGE, number=6, message=wrappers.DoubleValue,)
-
-        roc_auc = proto.Field(proto.MESSAGE, number=7, message=wrappers.DoubleValue,)
+        precision = proto.Field(
+            proto.MESSAGE, number=1, message=wrappers_pb2.DoubleValue,
+        )
+        recall = proto.Field(proto.MESSAGE, number=2, message=wrappers_pb2.DoubleValue,)
+        accuracy = proto.Field(
+            proto.MESSAGE, number=3, message=wrappers_pb2.DoubleValue,
+        )
+        threshold = proto.Field(
+            proto.MESSAGE, number=4, message=wrappers_pb2.DoubleValue,
+        )
+        f1_score = proto.Field(
+            proto.MESSAGE, number=5, message=wrappers_pb2.DoubleValue,
+        )
+        log_loss = proto.Field(
+            proto.MESSAGE, number=6, message=wrappers_pb2.DoubleValue,
+        )
+        roc_auc = proto.Field(
+            proto.MESSAGE, number=7, message=wrappers_pb2.DoubleValue,
+        )
 
     class BinaryClassificationMetrics(proto.Message):
         r"""Evaluation metrics for binary classification/classifier
@@ -382,7 +382,6 @@ class Model(proto.Message):
 
         class BinaryConfusionMatrix(proto.Message):
             r"""Confusion matrix for binary classification models.
-
             Attributes:
                 positive_class_threshold (google.protobuf.wrappers_pb2.DoubleValue):
                     Threshold value used when computing each of
@@ -410,52 +409,43 @@ class Model(proto.Message):
             """
 
             positive_class_threshold = proto.Field(
-                proto.MESSAGE, number=1, message=wrappers.DoubleValue,
+                proto.MESSAGE, number=1, message=wrappers_pb2.DoubleValue,
             )
-
             true_positives = proto.Field(
-                proto.MESSAGE, number=2, message=wrappers.Int64Value,
+                proto.MESSAGE, number=2, message=wrappers_pb2.Int64Value,
             )
-
             false_positives = proto.Field(
-                proto.MESSAGE, number=3, message=wrappers.Int64Value,
+                proto.MESSAGE, number=3, message=wrappers_pb2.Int64Value,
             )
-
             true_negatives = proto.Field(
-                proto.MESSAGE, number=4, message=wrappers.Int64Value,
+                proto.MESSAGE, number=4, message=wrappers_pb2.Int64Value,
             )
-
             false_negatives = proto.Field(
-                proto.MESSAGE, number=5, message=wrappers.Int64Value,
+                proto.MESSAGE, number=5, message=wrappers_pb2.Int64Value,
             )
-
             precision = proto.Field(
-                proto.MESSAGE, number=6, message=wrappers.DoubleValue,
+                proto.MESSAGE, number=6, message=wrappers_pb2.DoubleValue,
             )
-
-            recall = proto.Field(proto.MESSAGE, number=7, message=wrappers.DoubleValue,)
-
+            recall = proto.Field(
+                proto.MESSAGE, number=7, message=wrappers_pb2.DoubleValue,
+            )
             f1_score = proto.Field(
-                proto.MESSAGE, number=8, message=wrappers.DoubleValue,
+                proto.MESSAGE, number=8, message=wrappers_pb2.DoubleValue,
             )
-
             accuracy = proto.Field(
-                proto.MESSAGE, number=9, message=wrappers.DoubleValue,
+                proto.MESSAGE, number=9, message=wrappers_pb2.DoubleValue,
             )
 
         aggregate_classification_metrics = proto.Field(
             proto.MESSAGE, number=1, message="Model.AggregateClassificationMetrics",
         )
-
         binary_confusion_matrix_list = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="Model.BinaryClassificationMetrics.BinaryConfusionMatrix",
         )
-
-        positive_label = proto.Field(proto.STRING, number=3)
-
-        negative_label = proto.Field(proto.STRING, number=4)
+        positive_label = proto.Field(proto.STRING, number=3,)
+        negative_label = proto.Field(proto.STRING, number=4,)
 
     class MultiClassClassificationMetrics(proto.Message):
         r"""Evaluation metrics for multi-class classification/classifier
@@ -470,7 +460,6 @@ class Model(proto.Message):
 
         class ConfusionMatrix(proto.Message):
             r"""Confusion matrix for multi-class classification models.
-
             Attributes:
                 confidence_threshold (google.protobuf.wrappers_pb2.DoubleValue):
                     Confidence threshold used when computing the
@@ -481,7 +470,6 @@ class Model(proto.Message):
 
             class Entry(proto.Message):
                 r"""A single entry in the confusion matrix.
-
                 Attributes:
                     predicted_label (str):
                         The predicted label. For confidence_threshold > 0, we will
@@ -492,15 +480,13 @@ class Model(proto.Message):
                         label.
                 """
 
-                predicted_label = proto.Field(proto.STRING, number=1)
-
+                predicted_label = proto.Field(proto.STRING, number=1,)
                 item_count = proto.Field(
-                    proto.MESSAGE, number=2, message=wrappers.Int64Value,
+                    proto.MESSAGE, number=2, message=wrappers_pb2.Int64Value,
                 )
 
             class Row(proto.Message):
                 r"""A single row in the confusion matrix.
-
                 Attributes:
                     actual_label (str):
                         The original label of this row.
@@ -508,8 +494,7 @@ class Model(proto.Message):
                         Info describing predicted label distribution.
                 """
 
-                actual_label = proto.Field(proto.STRING, number=1)
-
+                actual_label = proto.Field(proto.STRING, number=1,)
                 entries = proto.RepeatedField(
                     proto.MESSAGE,
                     number=2,
@@ -517,9 +502,8 @@ class Model(proto.Message):
                 )
 
             confidence_threshold = proto.Field(
-                proto.MESSAGE, number=1, message=wrappers.DoubleValue,
+                proto.MESSAGE, number=1, message=wrappers_pb2.DoubleValue,
             )
-
             rows = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
@@ -529,7 +513,6 @@ class Model(proto.Message):
         aggregate_classification_metrics = proto.Field(
             proto.MESSAGE, number=1, message="Model.AggregateClassificationMetrics",
         )
-
         confusion_matrix_list = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
@@ -538,7 +521,6 @@ class Model(proto.Message):
 
     class ClusteringMetrics(proto.Message):
         r"""Evaluation metrics for clustering models.
-
         Attributes:
             davies_bouldin_index (google.protobuf.wrappers_pb2.DoubleValue):
                 Davies-Bouldin index.
@@ -551,7 +533,6 @@ class Model(proto.Message):
 
         class Cluster(proto.Message):
             r"""Message containing the information about one cluster.
-
             Attributes:
                 centroid_id (int):
                     Centroid id.
@@ -565,7 +546,6 @@ class Model(proto.Message):
 
             class FeatureValue(proto.Message):
                 r"""Representative value of a single feature within the cluster.
-
                 Attributes:
                     feature_column (str):
                         The feature column name.
@@ -578,7 +558,6 @@ class Model(proto.Message):
 
                 class CategoricalValue(proto.Message):
                     r"""Representative value of a categorical feature.
-
                     Attributes:
                         category_counts (Sequence[google.cloud.bigquery_v2.types.Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount]):
                             Counts of all categories for the categorical feature. If
@@ -590,7 +569,6 @@ class Model(proto.Message):
 
                     class CategoryCount(proto.Message):
                         r"""Represents the count of a single category within the cluster.
-
                         Attributes:
                             category (str):
                                 The name of category.
@@ -599,10 +577,9 @@ class Model(proto.Message):
                                 category within the cluster.
                         """
 
-                        category = proto.Field(proto.STRING, number=1)
-
+                        category = proto.Field(proto.STRING, number=1,)
                         count = proto.Field(
-                            proto.MESSAGE, number=2, message=wrappers.Int64Value,
+                            proto.MESSAGE, number=2, message=wrappers_pb2.Int64Value,
                         )
 
                     category_counts = proto.RepeatedField(
@@ -611,15 +588,13 @@ class Model(proto.Message):
                         message="Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue.CategoryCount",
                     )
 
-                feature_column = proto.Field(proto.STRING, number=1)
-
+                feature_column = proto.Field(proto.STRING, number=1,)
                 numerical_value = proto.Field(
                     proto.MESSAGE,
                     number=2,
                     oneof="value",
-                    message=wrappers.DoubleValue,
+                    message=wrappers_pb2.DoubleValue,
                 )
-
                 categorical_value = proto.Field(
                     proto.MESSAGE,
                     number=3,
@@ -627,24 +602,22 @@ class Model(proto.Message):
                     message="Model.ClusteringMetrics.Cluster.FeatureValue.CategoricalValue",
                 )
 
-            centroid_id = proto.Field(proto.INT64, number=1)
-
+            centroid_id = proto.Field(proto.INT64, number=1,)
             feature_values = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Model.ClusteringMetrics.Cluster.FeatureValue",
             )
-
-            count = proto.Field(proto.MESSAGE, number=3, message=wrappers.Int64Value,)
+            count = proto.Field(
+                proto.MESSAGE, number=3, message=wrappers_pb2.Int64Value,
+            )
 
         davies_bouldin_index = proto.Field(
-            proto.MESSAGE, number=1, message=wrappers.DoubleValue,
+            proto.MESSAGE, number=1, message=wrappers_pb2.DoubleValue,
         )
-
         mean_squared_distance = proto.Field(
-            proto.MESSAGE, number=2, message=wrappers.DoubleValue,
+            proto.MESSAGE, number=2, message=wrappers_pb2.DoubleValue,
         )
-
         clusters = proto.RepeatedField(
             proto.MESSAGE, number=3, message="Model.ClusteringMetrics.Cluster",
         )
@@ -677,24 +650,20 @@ class Model(proto.Message):
         """
 
         mean_average_precision = proto.Field(
-            proto.MESSAGE, number=1, message=wrappers.DoubleValue,
+            proto.MESSAGE, number=1, message=wrappers_pb2.DoubleValue,
         )
-
         mean_squared_error = proto.Field(
-            proto.MESSAGE, number=2, message=wrappers.DoubleValue,
+            proto.MESSAGE, number=2, message=wrappers_pb2.DoubleValue,
         )
-
         normalized_discounted_cumulative_gain = proto.Field(
-            proto.MESSAGE, number=3, message=wrappers.DoubleValue,
+            proto.MESSAGE, number=3, message=wrappers_pb2.DoubleValue,
         )
-
         average_rank = proto.Field(
-            proto.MESSAGE, number=4, message=wrappers.DoubleValue,
+            proto.MESSAGE, number=4, message=wrappers_pb2.DoubleValue,
         )
 
     class ArimaForecastingMetrics(proto.Message):
         r"""Model evaluation metrics for ARIMA forecasting models.
-
         Attributes:
             non_seasonal_order (Sequence[google.cloud.bigquery_v2.types.Model.ArimaOrder]):
                 Non-seasonal order.
@@ -737,15 +706,11 @@ class Model(proto.Message):
             non_seasonal_order = proto.Field(
                 proto.MESSAGE, number=1, message="Model.ArimaOrder",
             )
-
             arima_fitting_metrics = proto.Field(
                 proto.MESSAGE, number=2, message="Model.ArimaFittingMetrics",
             )
-
-            has_drift = proto.Field(proto.BOOL, number=3)
-
-            time_series_id = proto.Field(proto.STRING, number=4)
-
+            has_drift = proto.Field(proto.BOOL, number=3,)
+            time_series_id = proto.Field(proto.STRING, number=4,)
             seasonal_periods = proto.RepeatedField(
                 proto.ENUM, number=5, enum="Model.SeasonalPeriod.SeasonalPeriodType",
             )
@@ -753,19 +718,14 @@ class Model(proto.Message):
         non_seasonal_order = proto.RepeatedField(
             proto.MESSAGE, number=1, message="Model.ArimaOrder",
         )
-
         arima_fitting_metrics = proto.RepeatedField(
             proto.MESSAGE, number=2, message="Model.ArimaFittingMetrics",
         )
-
         seasonal_periods = proto.RepeatedField(
             proto.ENUM, number=3, enum="Model.SeasonalPeriod.SeasonalPeriodType",
         )
-
-        has_drift = proto.RepeatedField(proto.BOOL, number=4)
-
-        time_series_id = proto.RepeatedField(proto.STRING, number=5)
-
+        has_drift = proto.RepeatedField(proto.BOOL, number=4,)
+        time_series_id = proto.RepeatedField(proto.STRING, number=5,)
         arima_single_model_forecasting_metrics = proto.RepeatedField(
             proto.MESSAGE,
             number=6,
@@ -800,29 +760,24 @@ class Model(proto.Message):
         regression_metrics = proto.Field(
             proto.MESSAGE, number=1, oneof="metrics", message="Model.RegressionMetrics",
         )
-
         binary_classification_metrics = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="metrics",
             message="Model.BinaryClassificationMetrics",
         )
-
         multi_class_classification_metrics = proto.Field(
             proto.MESSAGE,
             number=3,
             oneof="metrics",
             message="Model.MultiClassClassificationMetrics",
         )
-
         clustering_metrics = proto.Field(
             proto.MESSAGE, number=4, oneof="metrics", message="Model.ClusteringMetrics",
         )
-
         ranking_metrics = proto.Field(
             proto.MESSAGE, number=5, oneof="metrics", message="Model.RankingMetrics",
         )
-
         arima_forecasting_metrics = proto.Field(
             proto.MESSAGE,
             number=6,
@@ -846,7 +801,6 @@ class Model(proto.Message):
         training_table = proto.Field(
             proto.MESSAGE, number=1, message=table_reference.TableReference,
         )
-
         evaluation_table = proto.Field(
             proto.MESSAGE, number=2, message=table_reference.TableReference,
         )
@@ -864,15 +818,12 @@ class Model(proto.Message):
                 Order of the moving-average part.
         """
 
-        p = proto.Field(proto.INT64, number=1)
-
-        d = proto.Field(proto.INT64, number=2)
-
-        q = proto.Field(proto.INT64, number=3)
+        p = proto.Field(proto.INT64, number=1,)
+        d = proto.Field(proto.INT64, number=2,)
+        q = proto.Field(proto.INT64, number=3,)
 
     class ArimaFittingMetrics(proto.Message):
         r"""ARIMA model fitting metrics.
-
         Attributes:
             log_likelihood (float):
                 Log-likelihood.
@@ -882,11 +833,9 @@ class Model(proto.Message):
                 Variance.
         """
 
-        log_likelihood = proto.Field(proto.DOUBLE, number=1)
-
-        aic = proto.Field(proto.DOUBLE, number=2)
-
-        variance = proto.Field(proto.DOUBLE, number=3)
+        log_likelihood = proto.Field(proto.DOUBLE, number=1,)
+        aic = proto.Field(proto.DOUBLE, number=2,)
+        variance = proto.Field(proto.DOUBLE, number=3,)
 
     class GlobalExplanation(proto.Message):
         r"""Global explanations containing the top most important
@@ -906,7 +855,6 @@ class Model(proto.Message):
 
         class Explanation(proto.Message):
             r"""Explanation for a single feature.
-
             Attributes:
                 feature_name (str):
                     Full name of the feature. For non-numerical features, will
@@ -917,21 +865,18 @@ class Model(proto.Message):
                     Attribution of feature.
             """
 
-            feature_name = proto.Field(proto.STRING, number=1)
-
+            feature_name = proto.Field(proto.STRING, number=1,)
             attribution = proto.Field(
-                proto.MESSAGE, number=2, message=wrappers.DoubleValue,
+                proto.MESSAGE, number=2, message=wrappers_pb2.DoubleValue,
             )
 
         explanations = proto.RepeatedField(
             proto.MESSAGE, number=1, message="Model.GlobalExplanation.Explanation",
         )
-
-        class_label = proto.Field(proto.STRING, number=2)
+        class_label = proto.Field(proto.STRING, number=2,)
 
     class TrainingRun(proto.Message):
         r"""Information about a single training query run for the model.
-
         Attributes:
             training_options (google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions):
                 Options that were used for this training run,
@@ -957,7 +902,6 @@ class Model(proto.Message):
 
         class TrainingOptions(proto.Message):
             r"""
-
             Attributes:
                 max_iterations (int):
                     The maximum number of iterations in training.
@@ -1100,131 +1044,88 @@ class Model(proto.Message):
                     The max value of non-seasonal p and q.
             """
 
-            max_iterations = proto.Field(proto.INT64, number=1)
-
+            max_iterations = proto.Field(proto.INT64, number=1,)
             loss_type = proto.Field(proto.ENUM, number=2, enum="Model.LossType",)
-
-            learn_rate = proto.Field(proto.DOUBLE, number=3)
-
+            learn_rate = proto.Field(proto.DOUBLE, number=3,)
             l1_regularization = proto.Field(
-                proto.MESSAGE, number=4, message=wrappers.DoubleValue,
+                proto.MESSAGE, number=4, message=wrappers_pb2.DoubleValue,
             )
-
             l2_regularization = proto.Field(
-                proto.MESSAGE, number=5, message=wrappers.DoubleValue,
+                proto.MESSAGE, number=5, message=wrappers_pb2.DoubleValue,
             )
-
             min_relative_progress = proto.Field(
-                proto.MESSAGE, number=6, message=wrappers.DoubleValue,
+                proto.MESSAGE, number=6, message=wrappers_pb2.DoubleValue,
             )
-
             warm_start = proto.Field(
-                proto.MESSAGE, number=7, message=wrappers.BoolValue,
+                proto.MESSAGE, number=7, message=wrappers_pb2.BoolValue,
             )
-
             early_stop = proto.Field(
-                proto.MESSAGE, number=8, message=wrappers.BoolValue,
+                proto.MESSAGE, number=8, message=wrappers_pb2.BoolValue,
             )
-
-            input_label_columns = proto.RepeatedField(proto.STRING, number=9)
-
+            input_label_columns = proto.RepeatedField(proto.STRING, number=9,)
             data_split_method = proto.Field(
                 proto.ENUM, number=10, enum="Model.DataSplitMethod",
             )
-
-            data_split_eval_fraction = proto.Field(proto.DOUBLE, number=11)
-
-            data_split_column = proto.Field(proto.STRING, number=12)
-
+            data_split_eval_fraction = proto.Field(proto.DOUBLE, number=11,)
+            data_split_column = proto.Field(proto.STRING, number=12,)
             learn_rate_strategy = proto.Field(
                 proto.ENUM, number=13, enum="Model.LearnRateStrategy",
             )
-
-            initial_learn_rate = proto.Field(proto.DOUBLE, number=16)
-
-            label_class_weights = proto.MapField(proto.STRING, proto.DOUBLE, number=17)
-
-            user_column = proto.Field(proto.STRING, number=18)
-
-            item_column = proto.Field(proto.STRING, number=19)
-
+            initial_learn_rate = proto.Field(proto.DOUBLE, number=16,)
+            label_class_weights = proto.MapField(proto.STRING, proto.DOUBLE, number=17,)
+            user_column = proto.Field(proto.STRING, number=18,)
+            item_column = proto.Field(proto.STRING, number=19,)
             distance_type = proto.Field(
                 proto.ENUM, number=20, enum="Model.DistanceType",
             )
-
-            num_clusters = proto.Field(proto.INT64, number=21)
-
-            model_uri = proto.Field(proto.STRING, number=22)
-
+            num_clusters = proto.Field(proto.INT64, number=21,)
+            model_uri = proto.Field(proto.STRING, number=22,)
             optimization_strategy = proto.Field(
                 proto.ENUM, number=23, enum="Model.OptimizationStrategy",
             )
-
-            hidden_units = proto.RepeatedField(proto.INT64, number=24)
-
-            batch_size = proto.Field(proto.INT64, number=25)
-
+            hidden_units = proto.RepeatedField(proto.INT64, number=24,)
+            batch_size = proto.Field(proto.INT64, number=25,)
             dropout = proto.Field(
-                proto.MESSAGE, number=26, message=wrappers.DoubleValue,
+                proto.MESSAGE, number=26, message=wrappers_pb2.DoubleValue,
             )
-
-            max_tree_depth = proto.Field(proto.INT64, number=27)
-
-            subsample = proto.Field(proto.DOUBLE, number=28)
-
+            max_tree_depth = proto.Field(proto.INT64, number=27,)
+            subsample = proto.Field(proto.DOUBLE, number=28,)
             min_split_loss = proto.Field(
-                proto.MESSAGE, number=29, message=wrappers.DoubleValue,
+                proto.MESSAGE, number=29, message=wrappers_pb2.DoubleValue,
             )
-
-            num_factors = proto.Field(proto.INT64, number=30)
-
+            num_factors = proto.Field(proto.INT64, number=30,)
             feedback_type = proto.Field(
                 proto.ENUM, number=31, enum="Model.FeedbackType",
             )
-
             wals_alpha = proto.Field(
-                proto.MESSAGE, number=32, message=wrappers.DoubleValue,
+                proto.MESSAGE, number=32, message=wrappers_pb2.DoubleValue,
             )
-
             kmeans_initialization_method = proto.Field(
                 proto.ENUM,
                 number=33,
                 enum="Model.KmeansEnums.KmeansInitializationMethod",
             )
-
-            kmeans_initialization_column = proto.Field(proto.STRING, number=34)
-
-            time_series_timestamp_column = proto.Field(proto.STRING, number=35)
-
-            time_series_data_column = proto.Field(proto.STRING, number=36)
-
-            auto_arima = proto.Field(proto.BOOL, number=37)
-
+            kmeans_initialization_column = proto.Field(proto.STRING, number=34,)
+            time_series_timestamp_column = proto.Field(proto.STRING, number=35,)
+            time_series_data_column = proto.Field(proto.STRING, number=36,)
+            auto_arima = proto.Field(proto.BOOL, number=37,)
             non_seasonal_order = proto.Field(
                 proto.MESSAGE, number=38, message="Model.ArimaOrder",
             )
-
             data_frequency = proto.Field(
                 proto.ENUM, number=39, enum="Model.DataFrequency",
             )
-
-            include_drift = proto.Field(proto.BOOL, number=41)
-
+            include_drift = proto.Field(proto.BOOL, number=41,)
             holiday_region = proto.Field(
                 proto.ENUM, number=42, enum="Model.HolidayRegion",
             )
-
-            time_series_id_column = proto.Field(proto.STRING, number=43)
-
-            horizon = proto.Field(proto.INT64, number=44)
-
-            preserve_input_structs = proto.Field(proto.BOOL, number=45)
-
-            auto_arima_max_order = proto.Field(proto.INT64, number=46)
+            time_series_id_column = proto.Field(proto.STRING, number=43,)
+            horizon = proto.Field(proto.INT64, number=44,)
+            preserve_input_structs = proto.Field(proto.BOOL, number=45,)
+            auto_arima_max_order = proto.Field(proto.INT64, number=46,)
 
         class IterationResult(proto.Message):
             r"""Information about a single iteration of the training run.
-
             Attributes:
                 index (google.protobuf.wrappers_pb2.Int32Value):
                     Index of the iteration, 0 based.
@@ -1248,7 +1149,6 @@ class Model(proto.Message):
 
             class ClusterInfo(proto.Message):
                 r"""Information about a single cluster for clustering model.
-
                 Attributes:
                     centroid_id (int):
                         Centroid id.
@@ -1260,14 +1160,12 @@ class Model(proto.Message):
                         assigned to the cluster.
                 """
 
-                centroid_id = proto.Field(proto.INT64, number=1)
-
+                centroid_id = proto.Field(proto.INT64, number=1,)
                 cluster_radius = proto.Field(
-                    proto.MESSAGE, number=2, message=wrappers.DoubleValue,
+                    proto.MESSAGE, number=2, message=wrappers_pb2.DoubleValue,
                 )
-
                 cluster_size = proto.Field(
-                    proto.MESSAGE, number=3, message=wrappers.Int64Value,
+                    proto.MESSAGE, number=3, message=wrappers_pb2.Int64Value,
                 )
 
             class ArimaResult(proto.Message):
@@ -1287,7 +1185,6 @@ class Model(proto.Message):
 
                 class ArimaCoefficients(proto.Message):
                     r"""Arima coefficients.
-
                     Attributes:
                         auto_regressive_coefficients (Sequence[float]):
                             Auto-regressive coefficients, an array of
@@ -1301,18 +1198,15 @@ class Model(proto.Message):
                     """
 
                     auto_regressive_coefficients = proto.RepeatedField(
-                        proto.DOUBLE, number=1
+                        proto.DOUBLE, number=1,
                     )
-
                     moving_average_coefficients = proto.RepeatedField(
-                        proto.DOUBLE, number=2
+                        proto.DOUBLE, number=2,
                     )
-
-                    intercept_coefficient = proto.Field(proto.DOUBLE, number=3)
+                    intercept_coefficient = proto.Field(proto.DOUBLE, number=3,)
 
                 class ArimaModelInfo(proto.Message):
                     r"""Arima model information.
-
                     Attributes:
                         non_seasonal_order (google.cloud.bigquery_v2.types.Model.ArimaOrder):
                             Non-seasonal order.
@@ -1333,21 +1227,16 @@ class Model(proto.Message):
                     non_seasonal_order = proto.Field(
                         proto.MESSAGE, number=1, message="Model.ArimaOrder",
                     )
-
                     arima_coefficients = proto.Field(
                         proto.MESSAGE,
                         number=2,
                         message="Model.TrainingRun.IterationResult.ArimaResult.ArimaCoefficients",
                     )
-
                     arima_fitting_metrics = proto.Field(
                         proto.MESSAGE, number=3, message="Model.ArimaFittingMetrics",
                     )
-
-                    has_drift = proto.Field(proto.BOOL, number=4)
-
-                    time_series_id = proto.Field(proto.STRING, number=5)
-
+                    has_drift = proto.Field(proto.BOOL, number=4,)
+                    time_series_id = proto.Field(proto.STRING, number=5,)
                     seasonal_periods = proto.RepeatedField(
                         proto.ENUM,
                         number=6,
@@ -1359,35 +1248,30 @@ class Model(proto.Message):
                     number=1,
                     message="Model.TrainingRun.IterationResult.ArimaResult.ArimaModelInfo",
                 )
-
                 seasonal_periods = proto.RepeatedField(
                     proto.ENUM,
                     number=2,
                     enum="Model.SeasonalPeriod.SeasonalPeriodType",
                 )
 
-            index = proto.Field(proto.MESSAGE, number=1, message=wrappers.Int32Value,)
-
+            index = proto.Field(
+                proto.MESSAGE, number=1, message=wrappers_pb2.Int32Value,
+            )
             duration_ms = proto.Field(
-                proto.MESSAGE, number=4, message=wrappers.Int64Value,
+                proto.MESSAGE, number=4, message=wrappers_pb2.Int64Value,
             )
-
             training_loss = proto.Field(
-                proto.MESSAGE, number=5, message=wrappers.DoubleValue,
+                proto.MESSAGE, number=5, message=wrappers_pb2.DoubleValue,
             )
-
             eval_loss = proto.Field(
-                proto.MESSAGE, number=6, message=wrappers.DoubleValue,
+                proto.MESSAGE, number=6, message=wrappers_pb2.DoubleValue,
             )
-
-            learn_rate = proto.Field(proto.DOUBLE, number=7)
-
+            learn_rate = proto.Field(proto.DOUBLE, number=7,)
             cluster_infos = proto.RepeatedField(
                 proto.MESSAGE,
                 number=8,
                 message="Model.TrainingRun.IterationResult.ClusterInfo",
             )
-
             arima_result = proto.Field(
                 proto.MESSAGE,
                 number=9,
@@ -1397,57 +1281,41 @@ class Model(proto.Message):
         training_options = proto.Field(
             proto.MESSAGE, number=1, message="Model.TrainingRun.TrainingOptions",
         )
-
-        start_time = proto.Field(proto.MESSAGE, number=8, message=timestamp.Timestamp,)
-
+        start_time = proto.Field(
+            proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,
+        )
         results = proto.RepeatedField(
             proto.MESSAGE, number=6, message="Model.TrainingRun.IterationResult",
         )
-
         evaluation_metrics = proto.Field(
             proto.MESSAGE, number=7, message="Model.EvaluationMetrics",
         )
-
         data_split_result = proto.Field(
             proto.MESSAGE, number=9, message="Model.DataSplitResult",
         )
-
         global_explanations = proto.RepeatedField(
             proto.MESSAGE, number=10, message="Model.GlobalExplanation",
         )
 
-    etag = proto.Field(proto.STRING, number=1)
-
+    etag = proto.Field(proto.STRING, number=1,)
     model_reference = proto.Field(
         proto.MESSAGE, number=2, message=gcb_model_reference.ModelReference,
     )
-
-    creation_time = proto.Field(proto.INT64, number=5)
-
-    last_modified_time = proto.Field(proto.INT64, number=6)
-
-    description = proto.Field(proto.STRING, number=12)
-
-    friendly_name = proto.Field(proto.STRING, number=14)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=15)
-
-    expiration_time = proto.Field(proto.INT64, number=16)
-
-    location = proto.Field(proto.STRING, number=13)
-
+    creation_time = proto.Field(proto.INT64, number=5,)
+    last_modified_time = proto.Field(proto.INT64, number=6,)
+    description = proto.Field(proto.STRING, number=12,)
+    friendly_name = proto.Field(proto.STRING, number=14,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=15,)
+    expiration_time = proto.Field(proto.INT64, number=16,)
+    location = proto.Field(proto.STRING, number=13,)
     encryption_configuration = proto.Field(
         proto.MESSAGE, number=17, message=encryption_config.EncryptionConfiguration,
     )
-
     model_type = proto.Field(proto.ENUM, number=7, enum=ModelType,)
-
     training_runs = proto.RepeatedField(proto.MESSAGE, number=9, message=TrainingRun,)
-
     feature_columns = proto.RepeatedField(
         proto.MESSAGE, number=10, message=standard_sql.StandardSqlField,
     )
-
     label_columns = proto.RepeatedField(
         proto.MESSAGE, number=11, message=standard_sql.StandardSqlField,
     )
@@ -1455,7 +1323,6 @@ class Model(proto.Message):
 
 class GetModelRequest(proto.Message):
     r"""
-
     Attributes:
         project_id (str):
             Required. Project ID of the requested model.
@@ -1465,16 +1332,13 @@ class GetModelRequest(proto.Message):
             Required. Model ID of the requested model.
     """
 
-    project_id = proto.Field(proto.STRING, number=1)
-
-    dataset_id = proto.Field(proto.STRING, number=2)
-
-    model_id = proto.Field(proto.STRING, number=3)
+    project_id = proto.Field(proto.STRING, number=1,)
+    dataset_id = proto.Field(proto.STRING, number=2,)
+    model_id = proto.Field(proto.STRING, number=3,)
 
 
 class PatchModelRequest(proto.Message):
     r"""
-
     Attributes:
         project_id (str):
             Required. Project ID of the model to patch.
@@ -1489,18 +1353,14 @@ class PatchModelRequest(proto.Message):
             set to default value.
     """
 
-    project_id = proto.Field(proto.STRING, number=1)
-
-    dataset_id = proto.Field(proto.STRING, number=2)
-
-    model_id = proto.Field(proto.STRING, number=3)
-
+    project_id = proto.Field(proto.STRING, number=1,)
+    dataset_id = proto.Field(proto.STRING, number=2,)
+    model_id = proto.Field(proto.STRING, number=3,)
     model = proto.Field(proto.MESSAGE, number=4, message="Model",)
 
 
 class DeleteModelRequest(proto.Message):
     r"""
-
     Attributes:
         project_id (str):
             Required. Project ID of the model to delete.
@@ -1510,16 +1370,13 @@ class DeleteModelRequest(proto.Message):
             Required. Model ID of the model to delete.
     """
 
-    project_id = proto.Field(proto.STRING, number=1)
-
-    dataset_id = proto.Field(proto.STRING, number=2)
-
-    model_id = proto.Field(proto.STRING, number=3)
+    project_id = proto.Field(proto.STRING, number=1,)
+    dataset_id = proto.Field(proto.STRING, number=2,)
+    model_id = proto.Field(proto.STRING, number=3,)
 
 
 class ListModelsRequest(proto.Message):
     r"""
-
     Attributes:
         project_id (str):
             Required. Project ID of the models to list.
@@ -1534,18 +1391,16 @@ class ListModelsRequest(proto.Message):
             request the next page of results
     """
 
-    project_id = proto.Field(proto.STRING, number=1)
-
-    dataset_id = proto.Field(proto.STRING, number=2)
-
-    max_results = proto.Field(proto.MESSAGE, number=3, message=wrappers.UInt32Value,)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    project_id = proto.Field(proto.STRING, number=1,)
+    dataset_id = proto.Field(proto.STRING, number=2,)
+    max_results = proto.Field(
+        proto.MESSAGE, number=3, message=wrappers_pb2.UInt32Value,
+    )
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class ListModelsResponse(proto.Message):
     r"""
-
     Attributes:
         models (Sequence[google.cloud.bigquery_v2.types.Model]):
             Models in the requested dataset. Only the following fields
@@ -1560,8 +1415,7 @@ class ListModelsResponse(proto.Message):
         return self
 
     models = proto.RepeatedField(proto.MESSAGE, number=1, message="Model",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
