@@ -10,5 +10,6 @@
   "repo": "googleapis/python-containeranalysis",
   "distribution_name": "google-cloud-containeranalysis",
   "api_id": "containeranalysis.googleapis.com",
+  "codeowner_team": "@googleapis/cicd",
   "requires_billing": false
 }
