@@ -33,8 +33,9 @@ templated_files = common.py_library(
         "google-cloud-kms < 2.0dev",
     ],
 )
+
 s.move(
-    templated_files, excludes=["docs/multiprocessing.rst"],
+    templated_files, excludes=["docs/multiprocessing.rst", "noxfile.py", "CONTRIBUTING.rst"],
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
