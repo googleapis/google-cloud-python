@@ -283,3 +283,17 @@ class TestLookups(SpannerSimpleTestClass):
             + "CONCAT('^(?i)', CAST(UPPER(tests_author.name) AS STRING), '$'))",
         )
         self.assertEqual(params, ())
+
+    def test_iexact_sql_query_case_insensitive_value_match(self):
+
+        qs1 = Author.objects.filter(name__upper__iexact="abc").values("name")
+        compiler = SQLCompiler(qs1.query, self.connection, "default")
+        sql_compiled, params = compiler.as_sql()
+
+        self.assertEqual(
+            sql_compiled,
+            "SELECT tests_author.name FROM tests_author WHERE "
+            + "REGEXP_CONTAINS((UPPER(CONCAT('^(?i)', "
+            + "CAST(UPPER(tests_author.name) AS STRING), '$'))), %s)",
+        )
+        self.assertEqual(params, ("abc",))
