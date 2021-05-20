@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.video.transcoder_v1beta1.types import resources
 
@@ -40,7 +37,6 @@ __protobuf__ = proto.module(
 
 class CreateJobRequest(proto.Message):
     r"""Request message for ``TranscoderService.CreateJob``.
-
     Attributes:
         parent (str):
             Required. The parent location to create and process this
@@ -50,8 +46,7 @@ class CreateJobRequest(proto.Message):
             job.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     job = proto.Field(proto.MESSAGE, number=2, message=resources.Job,)
 
 
@@ -70,40 +65,35 @@ class ListJobsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class GetJobRequest(proto.Message):
     r"""Request message for ``TranscoderService.GetJob``.
-
     Attributes:
         name (str):
             Required. The name of the job to retrieve. Format:
             ``projects/{project}/locations/{location}/jobs/{job}``
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class DeleteJobRequest(proto.Message):
     r"""Request message for ``TranscoderService.DeleteJob``.
-
     Attributes:
         name (str):
             Required. The name of the job to delete. Format:
             ``projects/{project}/locations/{location}/jobs/{job}``
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListJobsResponse(proto.Message):
     r"""Response message for ``TranscoderService.ListJobs``.
-
     Attributes:
         jobs (Sequence[google.cloud.video.transcoder_v1beta1.types.Job]):
             List of jobs in the specified region.
@@ -116,13 +106,11 @@ class ListJobsResponse(proto.Message):
         return self
 
     jobs = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Job,)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class CreateJobTemplateRequest(proto.Message):
     r"""Request message for ``TranscoderService.CreateJobTemplate``.
-
     Attributes:
         parent (str):
             Required. The parent location to create this job template.
@@ -140,16 +128,13 @@ class CreateJobTemplateRequest(proto.Message):
             ``[a-zA-Z][a-zA-Z0-9_-]*``.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     job_template = proto.Field(proto.MESSAGE, number=2, message=resources.JobTemplate,)
-
-    job_template_id = proto.Field(proto.STRING, number=3)
+    job_template_id = proto.Field(proto.STRING, number=3,)
 
 
 class ListJobTemplatesRequest(proto.Message):
     r"""Request message for ``TranscoderService.ListJobTemplates``.
-
     Attributes:
         parent (str):
             Required. The parent location from which to retrieve the
@@ -162,40 +147,35 @@ class ListJobTemplatesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class GetJobTemplateRequest(proto.Message):
     r"""Request message for ``TranscoderService.GetJobTemplate``.
-
     Attributes:
         name (str):
             Required. The name of the job template to retrieve. Format:
             ``projects/{project}/locations/{location}/jobTemplates/{job_template}``
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class DeleteJobTemplateRequest(proto.Message):
     r"""Request message for ``TranscoderService.DeleteJobTemplate``.
-
     Attributes:
         name (str):
             Required. The name of the job template to delete.
             ``projects/{project}/locations/{location}/jobTemplates/{job_template}``
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListJobTemplatesResponse(proto.Message):
     r"""Response message for ``TranscoderService.ListJobTemplates``.
-
     Attributes:
         job_templates (Sequence[google.cloud.video.transcoder_v1beta1.types.JobTemplate]):
             List of job templates in the specified
@@ -211,8 +191,7 @@ class ListJobTemplatesResponse(proto.Message):
     job_templates = proto.RepeatedField(
         proto.MESSAGE, number=1, message=resources.JobTemplate,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

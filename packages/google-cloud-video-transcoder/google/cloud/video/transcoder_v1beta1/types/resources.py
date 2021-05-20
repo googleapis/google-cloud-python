@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -52,7 +49,6 @@ __protobuf__ = proto.module(
 
 class Job(proto.Message):
     r"""Transcoding job resource.
-
     Attributes:
         name (str):
             The resource name of the job. Format:
@@ -120,7 +116,6 @@ class Job(proto.Message):
 
     class OriginUri(proto.Message):
         r"""The origin URI.
-
         Attributes:
             hls (str):
                 HLS master manifest URI. If multiple HLS
@@ -131,46 +126,33 @@ class Job(proto.Message):
                 are created, only the first one is listed.
         """
 
-        hls = proto.Field(proto.STRING, number=1)
+        hls = proto.Field(proto.STRING, number=1,)
+        dash = proto.Field(proto.STRING, number=2,)
 
-        dash = proto.Field(proto.STRING, number=2)
-
-    name = proto.Field(proto.STRING, number=1)
-
-    input_uri = proto.Field(proto.STRING, number=2)
-
-    output_uri = proto.Field(proto.STRING, number=3)
-
-    template_id = proto.Field(proto.STRING, number=4, oneof="job_config")
-
+    name = proto.Field(proto.STRING, number=1,)
+    input_uri = proto.Field(proto.STRING, number=2,)
+    output_uri = proto.Field(proto.STRING, number=3,)
+    template_id = proto.Field(proto.STRING, number=4, oneof="job_config",)
     config = proto.Field(
         proto.MESSAGE, number=5, oneof="job_config", message="JobConfig",
     )
-
-    priority = proto.Field(proto.INT32, number=6)
-
+    priority = proto.Field(proto.INT32, number=6,)
     origin_uri = proto.Field(proto.MESSAGE, number=7, message=OriginUri,)
-
     state = proto.Field(proto.ENUM, number=8, enum=ProcessingState,)
-
     progress = proto.Field(proto.MESSAGE, number=9, message="Progress",)
-
-    failure_reason = proto.Field(proto.STRING, number=10)
-
+    failure_reason = proto.Field(proto.STRING, number=10,)
     failure_details = proto.RepeatedField(
         proto.MESSAGE, number=11, message="FailureDetail",
     )
-
-    create_time = proto.Field(proto.MESSAGE, number=12, message=timestamp.Timestamp,)
-
-    start_time = proto.Field(proto.MESSAGE, number=13, message=timestamp.Timestamp,)
-
-    end_time = proto.Field(proto.MESSAGE, number=14, message=timestamp.Timestamp,)
+    create_time = proto.Field(
+        proto.MESSAGE, number=12, message=timestamp_pb2.Timestamp,
+    )
+    start_time = proto.Field(proto.MESSAGE, number=13, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=14, message=timestamp_pb2.Timestamp,)
 
 
 class JobTemplate(proto.Message):
     r"""Transcoding job template resource.
-
     Attributes:
         name (str):
             The resource name of the job template. Format:
@@ -179,14 +161,12 @@ class JobTemplate(proto.Message):
             The configuration for this template.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     config = proto.Field(proto.MESSAGE, number=2, message="JobConfig",)
 
 
 class JobConfig(proto.Message):
     r"""Job configuration
-
     Attributes:
         inputs (Sequence[google.cloud.video.transcoder_v1beta1.types.Input]):
             List of input assets stored in Cloud Storage.
@@ -215,33 +195,23 @@ class JobConfig(proto.Message):
     """
 
     inputs = proto.RepeatedField(proto.MESSAGE, number=1, message="Input",)
-
     edit_list = proto.RepeatedField(proto.MESSAGE, number=2, message="EditAtom",)
-
     elementary_streams = proto.RepeatedField(
         proto.MESSAGE, number=3, message="ElementaryStream",
     )
-
     mux_streams = proto.RepeatedField(proto.MESSAGE, number=4, message="MuxStream",)
-
     manifests = proto.RepeatedField(proto.MESSAGE, number=5, message="Manifest",)
-
     output = proto.Field(proto.MESSAGE, number=6, message="Output",)
-
     ad_breaks = proto.RepeatedField(proto.MESSAGE, number=7, message="AdBreak",)
-
     pubsub_destination = proto.Field(
         proto.MESSAGE, number=8, message="PubsubDestination",
     )
-
     sprite_sheets = proto.RepeatedField(proto.MESSAGE, number=9, message="SpriteSheet",)
-
     overlays = proto.RepeatedField(proto.MESSAGE, number=10, message="Overlay",)
 
 
 class Input(proto.Message):
     r"""Input asset.
-
     Attributes:
         key (str):
             A unique key for this input. Must be
@@ -255,10 +225,8 @@ class Input(proto.Message):
             Preprocessing configurations.
     """
 
-    key = proto.Field(proto.STRING, number=1)
-
-    uri = proto.Field(proto.STRING, number=2)
-
+    key = proto.Field(proto.STRING, number=1,)
+    uri = proto.Field(proto.STRING, number=2,)
     preprocessing_config = proto.Field(
         proto.MESSAGE, number=3, message="PreprocessingConfig",
     )
@@ -266,7 +234,6 @@ class Input(proto.Message):
 
 class Output(proto.Message):
     r"""Location of output file(s) in a Cloud Storage bucket.
-
     Attributes:
         uri (str):
             URI for the output file(s). For example,
@@ -274,12 +241,11 @@ class Output(proto.Message):
             from ``Job.output_uri``.
     """
 
-    uri = proto.Field(proto.STRING, number=1)
+    uri = proto.Field(proto.STRING, number=1,)
 
 
 class EditAtom(proto.Message):
     r"""Edit atom.
-
     Attributes:
         key (str):
             A unique key for this atom. Must be specified
@@ -297,25 +263,27 @@ class EditAtom(proto.Message):
             file timeline. The default is ``0s``.
     """
 
-    key = proto.Field(proto.STRING, number=1)
-
-    inputs = proto.RepeatedField(proto.STRING, number=2)
-
-    end_time_offset = proto.Field(proto.MESSAGE, number=3, message=duration.Duration,)
-
-    start_time_offset = proto.Field(proto.MESSAGE, number=4, message=duration.Duration,)
+    key = proto.Field(proto.STRING, number=1,)
+    inputs = proto.RepeatedField(proto.STRING, number=2,)
+    end_time_offset = proto.Field(
+        proto.MESSAGE, number=3, message=duration_pb2.Duration,
+    )
+    start_time_offset = proto.Field(
+        proto.MESSAGE, number=4, message=duration_pb2.Duration,
+    )
 
 
 class AdBreak(proto.Message):
     r"""Ad break.
-
     Attributes:
         start_time_offset (google.protobuf.duration_pb2.Duration):
             Start time in seconds for the ad break, relative to the
             output file timeline. The default is ``0s``.
     """
 
-    start_time_offset = proto.Field(proto.MESSAGE, number=1, message=duration.Duration,)
+    start_time_offset = proto.Field(
+        proto.MESSAGE, number=1, message=duration_pb2.Duration,
+    )
 
 
 class ElementaryStream(proto.Message):
@@ -335,16 +303,13 @@ class ElementaryStream(proto.Message):
             closed captions or subtitles.
     """
 
-    key = proto.Field(proto.STRING, number=4)
-
+    key = proto.Field(proto.STRING, number=4,)
     video_stream = proto.Field(
         proto.MESSAGE, number=1, oneof="elementary_stream", message="VideoStream",
     )
-
     audio_stream = proto.Field(
         proto.MESSAGE, number=2, oneof="elementary_stream", message="AudioStream",
     )
-
     text_stream = proto.Field(
         proto.MESSAGE, number=3, oneof="elementary_stream", message="TextStream",
     )
@@ -352,7 +317,6 @@ class ElementaryStream(proto.Message):
 
 class MuxStream(proto.Message):
     r"""Multiplexing settings for output stream.
-
     Attributes:
         key (str):
             A unique key for this multiplexed stream. HLS media
@@ -384,22 +348,16 @@ class MuxStream(proto.Message):
             Encryption settings.
     """
 
-    key = proto.Field(proto.STRING, number=1)
-
-    file_name = proto.Field(proto.STRING, number=2)
-
-    container = proto.Field(proto.STRING, number=3)
-
-    elementary_streams = proto.RepeatedField(proto.STRING, number=4)
-
+    key = proto.Field(proto.STRING, number=1,)
+    file_name = proto.Field(proto.STRING, number=2,)
+    container = proto.Field(proto.STRING, number=3,)
+    elementary_streams = proto.RepeatedField(proto.STRING, number=4,)
     segment_settings = proto.Field(proto.MESSAGE, number=5, message="SegmentSettings",)
-
     encryption = proto.Field(proto.MESSAGE, number=6, message="Encryption",)
 
 
 class Manifest(proto.Message):
     r"""Manifest configuration.
-
     Attributes:
         file_name (str):
             The name of the generated file. The default is
@@ -423,16 +381,13 @@ class Manifest(proto.Message):
         HLS = 1
         DASH = 2
 
-    file_name = proto.Field(proto.STRING, number=1)
-
+    file_name = proto.Field(proto.STRING, number=1,)
     type_ = proto.Field(proto.ENUM, number=2, enum=ManifestType,)
-
-    mux_streams = proto.RepeatedField(proto.STRING, number=3)
+    mux_streams = proto.RepeatedField(proto.STRING, number=3,)
 
 
 class PubsubDestination(proto.Message):
     r"""A Pub/Sub destination.
-
     Attributes:
         topic (str):
             The name of the Pub/Sub topic to publish job completion
@@ -440,7 +395,7 @@ class PubsubDestination(proto.Message):
             ``projects/{project}/topics/{topic}``.
     """
 
-    topic = proto.Field(proto.STRING, number=1)
+    topic = proto.Field(proto.STRING, number=1,)
 
 
 class SpriteSheet(proto.Message):
@@ -491,35 +446,29 @@ class SpriteSheet(proto.Message):
             Specify the interval value in seconds.
     """
 
-    format_ = proto.Field(proto.STRING, number=1)
-
-    file_prefix = proto.Field(proto.STRING, number=2)
-
-    sprite_width_pixels = proto.Field(proto.INT32, number=3)
-
-    sprite_height_pixels = proto.Field(proto.INT32, number=4)
-
-    column_count = proto.Field(proto.INT32, number=5)
-
-    row_count = proto.Field(proto.INT32, number=6)
-
-    start_time_offset = proto.Field(proto.MESSAGE, number=7, message=duration.Duration,)
-
-    end_time_offset = proto.Field(proto.MESSAGE, number=8, message=duration.Duration,)
-
-    total_count = proto.Field(proto.INT32, number=9, oneof="extraction_strategy")
-
+    format_ = proto.Field(proto.STRING, number=1,)
+    file_prefix = proto.Field(proto.STRING, number=2,)
+    sprite_width_pixels = proto.Field(proto.INT32, number=3,)
+    sprite_height_pixels = proto.Field(proto.INT32, number=4,)
+    column_count = proto.Field(proto.INT32, number=5,)
+    row_count = proto.Field(proto.INT32, number=6,)
+    start_time_offset = proto.Field(
+        proto.MESSAGE, number=7, message=duration_pb2.Duration,
+    )
+    end_time_offset = proto.Field(
+        proto.MESSAGE, number=8, message=duration_pb2.Duration,
+    )
+    total_count = proto.Field(proto.INT32, number=9, oneof="extraction_strategy",)
     interval = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="extraction_strategy",
-        message=duration.Duration,
+        message=duration_pb2.Duration,
     )
 
 
 class Overlay(proto.Message):
     r"""Overlay configuration.
-
     Attributes:
         image (google.cloud.video.transcoder_v1beta1.types.Overlay.Image):
             Image overlay.
@@ -536,7 +485,6 @@ class Overlay(proto.Message):
 
     class NormalizedCoordinate(proto.Message):
         r"""2D normalized coordinates. Default: ``{0.0, 0.0}``
-
         Attributes:
             x (float):
                 Normalized x coordinate.
@@ -544,13 +492,11 @@ class Overlay(proto.Message):
                 Normalized y coordinate.
         """
 
-        x = proto.Field(proto.DOUBLE, number=1)
-
-        y = proto.Field(proto.DOUBLE, number=2)
+        x = proto.Field(proto.DOUBLE, number=1,)
+        y = proto.Field(proto.DOUBLE, number=2,)
 
     class Image(proto.Message):
         r"""Overlaid jpeg image.
-
         Attributes:
             uri (str):
                 Required. URI of the image in Cloud Storage. For example,
@@ -566,17 +512,14 @@ class Overlay(proto.Message):
                 ``0`` (transparent).
         """
 
-        uri = proto.Field(proto.STRING, number=1)
-
+        uri = proto.Field(proto.STRING, number=1,)
         resolution = proto.Field(
             proto.MESSAGE, number=2, message="Overlay.NormalizedCoordinate",
         )
-
-        alpha = proto.Field(proto.DOUBLE, number=3)
+        alpha = proto.Field(proto.DOUBLE, number=3,)
 
     class AnimationStatic(proto.Message):
         r"""Display static overlay object.
-
         Attributes:
             xy (google.cloud.video.transcoder_v1beta1.types.Overlay.NormalizedCoordinate):
                 Normalized coordinates based on output video resolution.
@@ -590,14 +533,12 @@ class Overlay(proto.Message):
         xy = proto.Field(
             proto.MESSAGE, number=1, message="Overlay.NormalizedCoordinate",
         )
-
         start_time_offset = proto.Field(
-            proto.MESSAGE, number=2, message=duration.Duration,
+            proto.MESSAGE, number=2, message=duration_pb2.Duration,
         )
 
     class AnimationFade(proto.Message):
         r"""Display overlay object with fade animation.
-
         Attributes:
             fade_type (google.cloud.video.transcoder_v1beta1.types.Overlay.FadeType):
                 Required. Type of fade animation: ``FADE_IN`` or
@@ -615,17 +556,14 @@ class Overlay(proto.Message):
         """
 
         fade_type = proto.Field(proto.ENUM, number=1, enum="Overlay.FadeType",)
-
         xy = proto.Field(
             proto.MESSAGE, number=2, message="Overlay.NormalizedCoordinate",
         )
-
         start_time_offset = proto.Field(
-            proto.MESSAGE, number=3, message=duration.Duration,
+            proto.MESSAGE, number=3, message=duration_pb2.Duration,
         )
-
         end_time_offset = proto.Field(
-            proto.MESSAGE, number=4, message=duration.Duration,
+            proto.MESSAGE, number=4, message=duration_pb2.Duration,
         )
 
     class AnimationEnd(proto.Message):
@@ -640,12 +578,11 @@ class Overlay(proto.Message):
         """
 
         start_time_offset = proto.Field(
-            proto.MESSAGE, number=1, message=duration.Duration,
+            proto.MESSAGE, number=1, message=duration_pb2.Duration,
         )
 
     class Animation(proto.Message):
         r"""Animation types.
-
         Attributes:
             animation_static (google.cloud.video.transcoder_v1beta1.types.Overlay.AnimationStatic):
                 Display static overlay object.
@@ -661,14 +598,12 @@ class Overlay(proto.Message):
             oneof="animation_type",
             message="Overlay.AnimationStatic",
         )
-
         animation_fade = proto.Field(
             proto.MESSAGE,
             number=2,
             oneof="animation_type",
             message="Overlay.AnimationFade",
         )
-
         animation_end = proto.Field(
             proto.MESSAGE,
             number=3,
@@ -677,13 +612,11 @@ class Overlay(proto.Message):
         )
 
     image = proto.Field(proto.MESSAGE, number=1, message=Image,)
-
     animations = proto.RepeatedField(proto.MESSAGE, number=2, message=Animation,)
 
 
 class PreprocessingConfig(proto.Message):
     r"""Preprocessing configurations.
-
     Attributes:
         color (google.cloud.video.transcoder_v1beta1.types.PreprocessingConfig.Color):
             Color preprocessing configuration.
@@ -697,7 +630,6 @@ class PreprocessingConfig(proto.Message):
 
     class Color(proto.Message):
         r"""Color preprocessing configuration.
-
         Attributes:
             saturation (float):
                 Control color saturation of the video. Enter
@@ -716,15 +648,12 @@ class PreprocessingConfig(proto.Message):
                 change. The default is 0.
         """
 
-        saturation = proto.Field(proto.DOUBLE, number=1)
-
-        contrast = proto.Field(proto.DOUBLE, number=2)
-
-        brightness = proto.Field(proto.DOUBLE, number=3)
+        saturation = proto.Field(proto.DOUBLE, number=1,)
+        contrast = proto.Field(proto.DOUBLE, number=2,)
+        brightness = proto.Field(proto.DOUBLE, number=3,)
 
     class Denoise(proto.Message):
         r"""Denoise preprocessing configuration.
-
         Attributes:
             strength (float):
                 Set strength of the denoise. Enter a value
@@ -740,13 +669,11 @@ class PreprocessingConfig(proto.Message):
                 -  'grain'
         """
 
-        strength = proto.Field(proto.DOUBLE, number=1)
-
-        tune = proto.Field(proto.STRING, number=2)
+        strength = proto.Field(proto.DOUBLE, number=1,)
+        tune = proto.Field(proto.STRING, number=2,)
 
     class Deblock(proto.Message):
         r"""Deblock preprocessing configuration.
-
         Attributes:
             strength (float):
                 Set strength of the deblocker. Enter a value
@@ -757,13 +684,11 @@ class PreprocessingConfig(proto.Message):
                 Enable deblocker. The default is ``false``.
         """
 
-        strength = proto.Field(proto.DOUBLE, number=1)
-
-        enabled = proto.Field(proto.BOOL, number=2)
+        strength = proto.Field(proto.DOUBLE, number=1,)
+        enabled = proto.Field(proto.BOOL, number=2,)
 
     class Audio(proto.Message):
         r"""Audio preprocessing configuration.
-
         Attributes:
             lufs (float):
                 Specify audio loudness normalization in
@@ -785,24 +710,18 @@ class PreprocessingConfig(proto.Message):
                 ``false``.
         """
 
-        lufs = proto.Field(proto.DOUBLE, number=1)
-
-        high_boost = proto.Field(proto.BOOL, number=2)
-
-        low_boost = proto.Field(proto.BOOL, number=3)
+        lufs = proto.Field(proto.DOUBLE, number=1,)
+        high_boost = proto.Field(proto.BOOL, number=2,)
+        low_boost = proto.Field(proto.BOOL, number=3,)
 
     color = proto.Field(proto.MESSAGE, number=1, message=Color,)
-
     denoise = proto.Field(proto.MESSAGE, number=2, message=Denoise,)
-
     deblock = proto.Field(proto.MESSAGE, number=3, message=Deblock,)
-
     audio = proto.Field(proto.MESSAGE, number=4, message=Audio,)
 
 
 class VideoStream(proto.Message):
     r"""Video stream resource.
-
     Attributes:
         codec (str):
             Codec type. The default is ``"h264"``.
@@ -937,54 +856,33 @@ class VideoStream(proto.Message):
             but smoother image. The default is 0.
     """
 
-    codec = proto.Field(proto.STRING, number=1)
-
-    profile = proto.Field(proto.STRING, number=2)
-
-    tune = proto.Field(proto.STRING, number=3)
-
-    preset = proto.Field(proto.STRING, number=4)
-
-    height_pixels = proto.Field(proto.INT32, number=5)
-
-    width_pixels = proto.Field(proto.INT32, number=6)
-
-    pixel_format = proto.Field(proto.STRING, number=7)
-
-    bitrate_bps = proto.Field(proto.INT32, number=8)
-
-    rate_control_mode = proto.Field(proto.STRING, number=9)
-
-    enable_two_pass = proto.Field(proto.BOOL, number=10)
-
-    crf_level = proto.Field(proto.INT32, number=11)
-
-    vbv_size_bits = proto.Field(proto.INT32, number=12)
-
-    vbv_fullness_bits = proto.Field(proto.INT32, number=13)
-
-    allow_open_gop = proto.Field(proto.BOOL, number=14)
-
-    gop_frame_count = proto.Field(proto.INT32, number=15, oneof="gop_mode")
-
+    codec = proto.Field(proto.STRING, number=1,)
+    profile = proto.Field(proto.STRING, number=2,)
+    tune = proto.Field(proto.STRING, number=3,)
+    preset = proto.Field(proto.STRING, number=4,)
+    height_pixels = proto.Field(proto.INT32, number=5,)
+    width_pixels = proto.Field(proto.INT32, number=6,)
+    pixel_format = proto.Field(proto.STRING, number=7,)
+    bitrate_bps = proto.Field(proto.INT32, number=8,)
+    rate_control_mode = proto.Field(proto.STRING, number=9,)
+    enable_two_pass = proto.Field(proto.BOOL, number=10,)
+    crf_level = proto.Field(proto.INT32, number=11,)
+    vbv_size_bits = proto.Field(proto.INT32, number=12,)
+    vbv_fullness_bits = proto.Field(proto.INT32, number=13,)
+    allow_open_gop = proto.Field(proto.BOOL, number=14,)
+    gop_frame_count = proto.Field(proto.INT32, number=15, oneof="gop_mode",)
     gop_duration = proto.Field(
-        proto.MESSAGE, number=16, oneof="gop_mode", message=duration.Duration,
+        proto.MESSAGE, number=16, oneof="gop_mode", message=duration_pb2.Duration,
     )
-
-    entropy_coder = proto.Field(proto.STRING, number=17)
-
-    b_pyramid = proto.Field(proto.BOOL, number=18)
-
-    b_frame_count = proto.Field(proto.INT32, number=19)
-
-    frame_rate = proto.Field(proto.DOUBLE, number=20)
-
-    aq_strength = proto.Field(proto.DOUBLE, number=21)
+    entropy_coder = proto.Field(proto.STRING, number=17,)
+    b_pyramid = proto.Field(proto.BOOL, number=18,)
+    b_frame_count = proto.Field(proto.INT32, number=19,)
+    frame_rate = proto.Field(proto.DOUBLE, number=20,)
+    aq_strength = proto.Field(proto.DOUBLE, number=21,)
 
 
 class AudioStream(proto.Message):
     r"""Audio stream resource.
-
     Attributes:
         codec (str):
             The codec for this audio stream. The default is ``"aac"``.
@@ -1040,7 +938,6 @@ class AudioStream(proto.Message):
 
         class AudioChannel(proto.Message):
             r"""The audio channel.
-
             Attributes:
                 inputs (Sequence[google.cloud.video.transcoder_v1beta1.types.AudioStream.AudioAtom.AudioChannel.AudioChannelInput]):
                     List of ``Job.inputs`` for this audio channel.
@@ -1065,13 +962,10 @@ class AudioStream(proto.Message):
                         default is 0.
                 """
 
-                key = proto.Field(proto.STRING, number=1)
-
-                track = proto.Field(proto.INT32, number=2)
-
-                channel = proto.Field(proto.INT32, number=3)
-
-                gain_db = proto.Field(proto.DOUBLE, number=4)
+                key = proto.Field(proto.STRING, number=1,)
+                track = proto.Field(proto.INT32, number=2,)
+                channel = proto.Field(proto.INT32, number=3,)
+                gain_db = proto.Field(proto.DOUBLE, number=4,)
 
             inputs = proto.RepeatedField(
                 proto.MESSAGE,
@@ -1079,23 +973,17 @@ class AudioStream(proto.Message):
                 message="AudioStream.AudioAtom.AudioChannel.AudioChannelInput",
             )
 
-        key = proto.Field(proto.STRING, number=1)
-
+        key = proto.Field(proto.STRING, number=1,)
         channels = proto.RepeatedField(
             proto.MESSAGE, number=2, message="AudioStream.AudioAtom.AudioChannel",
         )
 
-    codec = proto.Field(proto.STRING, number=1)
-
-    bitrate_bps = proto.Field(proto.INT32, number=2)
-
-    channel_count = proto.Field(proto.INT32, number=3)
-
-    channel_layout = proto.RepeatedField(proto.STRING, number=4)
-
+    codec = proto.Field(proto.STRING, number=1,)
+    bitrate_bps = proto.Field(proto.INT32, number=2,)
+    channel_count = proto.Field(proto.INT32, number=3,)
+    channel_layout = proto.RepeatedField(proto.STRING, number=4,)
     mapping = proto.RepeatedField(proto.MESSAGE, number=5, message=AudioAtom,)
-
-    sample_rate_hertz = proto.Field(proto.INT32, number=6)
+    sample_rate_hertz = proto.Field(proto.INT32, number=6,)
 
 
 class TextStream(proto.Message):
@@ -1137,7 +1025,6 @@ class TextStream(proto.Message):
 
         class TextInput(proto.Message):
             r"""Identifies which input file and track should be used.
-
             Attributes:
                 key (str):
                     Required. The ``Input.key`` that identifies the input file.
@@ -1146,26 +1033,21 @@ class TextStream(proto.Message):
                     in the input file.
             """
 
-            key = proto.Field(proto.STRING, number=1)
+            key = proto.Field(proto.STRING, number=1,)
+            track = proto.Field(proto.INT32, number=2,)
 
-            track = proto.Field(proto.INT32, number=2)
-
-        key = proto.Field(proto.STRING, number=1)
-
+        key = proto.Field(proto.STRING, number=1,)
         inputs = proto.RepeatedField(
             proto.MESSAGE, number=2, message="TextStream.TextAtom.TextInput",
         )
 
-    codec = proto.Field(proto.STRING, number=1)
-
-    language_code = proto.Field(proto.STRING, number=2)
-
+    codec = proto.Field(proto.STRING, number=1,)
+    language_code = proto.Field(proto.STRING, number=2,)
     mapping = proto.RepeatedField(proto.MESSAGE, number=3, message=TextAtom,)
 
 
 class SegmentSettings(proto.Message):
     r"""Segment settings for ``"ts"``, ``"fmp4"`` and ``"vtt"``.
-
     Attributes:
         segment_duration (google.protobuf.duration_pb2.Duration):
             Duration of the segments in seconds. The default is
@@ -1175,14 +1057,14 @@ class SegmentSettings(proto.Message):
             ``false``.
     """
 
-    segment_duration = proto.Field(proto.MESSAGE, number=1, message=duration.Duration,)
-
-    individual_segments = proto.Field(proto.BOOL, number=3)
+    segment_duration = proto.Field(
+        proto.MESSAGE, number=1, message=duration_pb2.Duration,
+    )
+    individual_segments = proto.Field(proto.BOOL, number=3,)
 
 
 class Encryption(proto.Message):
     r"""Encryption settings.
-
     Attributes:
         key (str):
             Required. 128 bit encryption key represented
@@ -1201,29 +1083,26 @@ class Encryption(proto.Message):
 
     class Aes128Encryption(proto.Message):
         r"""Configuration for AES-128 encryption.
-
         Attributes:
             key_uri (str):
                 Required. URI of the key delivery service.
                 This URI is inserted into the M3U8 header.
         """
 
-        key_uri = proto.Field(proto.STRING, number=1)
+        key_uri = proto.Field(proto.STRING, number=1,)
 
     class SampleAesEncryption(proto.Message):
         r"""Configuration for SAMPLE-AES encryption.
-
         Attributes:
             key_uri (str):
                 Required. URI of the key delivery service.
                 This URI is inserted into the M3U8 header.
         """
 
-        key_uri = proto.Field(proto.STRING, number=1)
+        key_uri = proto.Field(proto.STRING, number=1,)
 
     class MpegCommonEncryption(proto.Message):
         r"""Configuration for MPEG Common Encryption (MPEG-CENC).
-
         Attributes:
             key_id (str):
                 Required. 128 bit Key ID represented as
@@ -1236,22 +1115,17 @@ class Encryption(proto.Message):
                 - 'cbcs'
         """
 
-        key_id = proto.Field(proto.STRING, number=1)
+        key_id = proto.Field(proto.STRING, number=1,)
+        scheme = proto.Field(proto.STRING, number=2,)
 
-        scheme = proto.Field(proto.STRING, number=2)
-
-    key = proto.Field(proto.STRING, number=1)
-
-    iv = proto.Field(proto.STRING, number=2)
-
+    key = proto.Field(proto.STRING, number=1,)
+    iv = proto.Field(proto.STRING, number=2,)
     aes_128 = proto.Field(
         proto.MESSAGE, number=3, oneof="encryption_mode", message=Aes128Encryption,
     )
-
     sample_aes = proto.Field(
         proto.MESSAGE, number=4, oneof="encryption_mode", message=SampleAesEncryption,
     )
-
     mpeg_cenc = proto.Field(
         proto.MESSAGE, number=5, oneof="encryption_mode", message=MpegCommonEncryption,
     )
@@ -1259,7 +1133,6 @@ class Encryption(proto.Message):
 
 class Progress(proto.Message):
     r"""Estimated fractional progress for each step, from ``0`` to ``1``.
-
     Attributes:
         analyzed (float):
             Estimated fractional progress for ``analyzing`` step.
@@ -1271,24 +1144,20 @@ class Progress(proto.Message):
             Estimated fractional progress for ``notifying`` step.
     """
 
-    analyzed = proto.Field(proto.DOUBLE, number=1)
-
-    encoded = proto.Field(proto.DOUBLE, number=2)
-
-    uploaded = proto.Field(proto.DOUBLE, number=3)
-
-    notified = proto.Field(proto.DOUBLE, number=4)
+    analyzed = proto.Field(proto.DOUBLE, number=1,)
+    encoded = proto.Field(proto.DOUBLE, number=2,)
+    uploaded = proto.Field(proto.DOUBLE, number=3,)
+    notified = proto.Field(proto.DOUBLE, number=4,)
 
 
 class FailureDetail(proto.Message):
     r"""Additional information about the reasons for the failure.
-
     Attributes:
         description (str):
             A description of the failure.
     """
 
-    description = proto.Field(proto.STRING, number=1)
+    description = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

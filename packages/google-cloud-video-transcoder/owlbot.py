@@ -24,6 +24,13 @@ common = gcp.CommonTemplates()
 default_version = "v1beta1"
 
 for library in s.get_staging_dirs(default_version):
+    # Work around generator issue https://github.com/googleapis/gapic-generator-python/issues/902
+    s.replace(library / f"google/cloud/video/transcoder_{library.name}/types/resources.py",
+                r"""Sprite sheet configuration.
+    Attributes:""",
+                r"""Sprite sheet configuration.\n
+    Attributes:""")
+
     s.move(
         library,
         excludes=[
