@@ -4975,7 +4975,7 @@ def test_set_finding_state_flattened():
         _, args, _ = call.mock_calls[0]
         assert args[0].name == "name_value"
         assert args[0].state == finding.Finding.State.ACTIVE
-        # # # # # # # assert args[0].start_time == timestamp_pb2.Timestamp(seconds=751)
+        # assert args[0].start_time == timestamp_pb2.Timestamp(seconds=751)
 
 
 def test_set_finding_state_flattened_error():
@@ -5020,7 +5020,7 @@ async def test_set_finding_state_flattened_async():
         _, args, _ = call.mock_calls[0]
         assert args[0].name == "name_value"
         assert args[0].state == finding.Finding.State.ACTIVE
-        # # # # # # # assert args[0].start_time == timestamp_pb2.Timestamp(seconds=751)
+        # assert args[0].start_time == timestamp_pb2.Timestamp(seconds=751)
 
 
 @pytest.mark.asyncio

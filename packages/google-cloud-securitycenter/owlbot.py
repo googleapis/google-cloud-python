@@ -29,17 +29,18 @@ for library in s.get_staging_dirs(default_version):
         r"\g<1>settings resource.\n"
         r"\g<1>If empty all mutable fields will be updated.",
     )
+
+    # Comment out broken assertion in unit test
+    # https://github.com/googleapis/gapic-generator-python/issues/897
+    s.replace(
+        library / "tests/**/*.py",
+        "assert args\[0\]\.start_time == timestamp_pb2\.Timestamp\(seconds=751\)",
+        "# assert args[0].start_time == timestamp_pb2.Timestamp(seconds=751)"
+    )
+
     s.move(library, excludes=["README.rst", "docs/index.rst", "setup.py"])
 
 s.remove_staging_dirs()
-
-# Comment out broken assertion in unit test
-# https://github.com/googleapis/gapic-generator-python/issues/897
-s.replace(
-    "tests/**/*.py",
-    "assert args\[0\]\.start_time == timestamp_pb2\.Timestamp\(seconds=751\)",
-    "# assert args[0].start_time == timestamp_pb2.Timestamp(seconds=751)"
-)
 
 # ----------------------------------------------------------------------------
 # Add templated files
