@@ -9,5 +9,6 @@
   "library_type": "GAPIC_AUTO",
   "repo": "googleapis/python-artifact-registry",
   "distribution_name": "google-cloud-artifact-registry",
-  "api_id": "artifactregistry.googleapis.com"
+  "api_id": "artifactregistry.googleapis.com",
+  "codeowner_team": "@googleapis/cicd"
 }
