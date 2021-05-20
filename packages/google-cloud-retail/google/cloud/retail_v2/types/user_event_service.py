@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.retail_v2.types import user_event as gcr_user_event
 
@@ -35,7 +32,6 @@ __protobuf__ = proto.module(
 
 class WriteUserEventRequest(proto.Message):
     r"""Request message for WriteUserEvent method.
-
     Attributes:
         parent (str):
             Required. The parent catalog resource name, such as
@@ -44,14 +40,12 @@ class WriteUserEventRequest(proto.Message):
             Required. User event to write.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     user_event = proto.Field(proto.MESSAGE, number=2, message=gcr_user_event.UserEvent,)
 
 
 class CollectUserEventRequest(proto.Message):
     r"""Request message for CollectUserEvent method.
-
     Attributes:
         parent (str):
             Required. The parent catalog name, such as
@@ -72,18 +66,14 @@ class CollectUserEventRequest(proto.Message):
             the payload bytes.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    user_event = proto.Field(proto.STRING, number=2)
-
-    uri = proto.Field(proto.STRING, number=3)
-
-    ets = proto.Field(proto.INT64, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    user_event = proto.Field(proto.STRING, number=2,)
+    uri = proto.Field(proto.STRING, number=3,)
+    ets = proto.Field(proto.INT64, number=4,)
 
 
 class RejoinUserEventsRequest(proto.Message):
     r"""Request message for RejoinUserEvents method.
-
     Attributes:
         parent (str):
             Required. The parent catalog resource name, such as
@@ -109,8 +99,7 @@ class RejoinUserEventsRequest(proto.Message):
         JOINED_EVENTS = 1
         UNJOINED_EVENTS = 2
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     user_event_rejoin_scope = proto.Field(
         proto.ENUM, number=2, enum=UserEventRejoinScope,
     )
@@ -118,18 +107,17 @@ class RejoinUserEventsRequest(proto.Message):
 
 class RejoinUserEventsResponse(proto.Message):
     r"""Response message for RejoinUserEvents method.
-
     Attributes:
         rejoined_user_events_count (int):
             Number of user events that were joined with
             latest product catalog.
     """
 
-    rejoined_user_events_count = proto.Field(proto.INT64, number=1)
+    rejoined_user_events_count = proto.Field(proto.INT64, number=1,)
 
 
 class RejoinUserEventsMetadata(proto.Message):
-    r"""Metadata for RejoinUserEvents method."""
+    r"""Metadata for RejoinUserEvents method.    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

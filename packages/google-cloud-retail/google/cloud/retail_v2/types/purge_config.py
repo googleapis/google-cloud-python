@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -28,12 +26,11 @@ class PurgeMetadata(proto.Message):
     r"""Metadata related to the progress of the Purge operation.
     This will be returned by the
     google.longrunning.Operation.metadata field.
-    """
+        """
 
 
 class PurgeUserEventsRequest(proto.Message):
     r"""Request message for PurgeUserEvents method.
-
     Attributes:
         parent (str):
             Required. The resource name of the catalog
@@ -71,11 +68,9 @@ class PurgeUserEventsRequest(proto.Message):
             deleting any user events.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=2)
-
-    force = proto.Field(proto.BOOL, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=2,)
+    force = proto.Field(proto.BOOL, number=3,)
 
 
 class PurgeUserEventsResponse(proto.Message):
@@ -89,7 +84,7 @@ class PurgeUserEventsResponse(proto.Message):
             of the operation.
     """
 
-    purged_events_count = proto.Field(proto.INT64, number=1)
+    purged_events_count = proto.Field(proto.INT64, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

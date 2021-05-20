@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.retail_v2.types import common
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.protobuf import wrappers_pb2 as wrappers  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.protobuf import wrappers_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(package="google.cloud.retail.v2", manifest={"Product",},)
@@ -236,38 +233,26 @@ class Product(proto.Message):
         PREORDER = 3
         BACKORDER = 4
 
-    name = proto.Field(proto.STRING, number=1)
-
-    id = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    id = proto.Field(proto.STRING, number=2,)
     type_ = proto.Field(proto.ENUM, number=3, enum=Type,)
-
-    primary_product_id = proto.Field(proto.STRING, number=4)
-
-    categories = proto.RepeatedField(proto.STRING, number=7)
-
-    title = proto.Field(proto.STRING, number=8)
-
-    description = proto.Field(proto.STRING, number=10)
-
+    primary_product_id = proto.Field(proto.STRING, number=4,)
+    categories = proto.RepeatedField(proto.STRING, number=7,)
+    title = proto.Field(proto.STRING, number=8,)
+    description = proto.Field(proto.STRING, number=10,)
     attributes = proto.MapField(
         proto.STRING, proto.MESSAGE, number=12, message=common.CustomAttribute,
     )
-
-    tags = proto.RepeatedField(proto.STRING, number=13)
-
+    tags = proto.RepeatedField(proto.STRING, number=13,)
     price_info = proto.Field(proto.MESSAGE, number=14, message=common.PriceInfo,)
-
-    available_time = proto.Field(proto.MESSAGE, number=18, message=timestamp.Timestamp,)
-
-    availability = proto.Field(proto.ENUM, number=19, enum=Availability,)
-
-    available_quantity = proto.Field(
-        proto.MESSAGE, number=20, message=wrappers.Int32Value,
+    available_time = proto.Field(
+        proto.MESSAGE, number=18, message=timestamp_pb2.Timestamp,
     )
-
-    uri = proto.Field(proto.STRING, number=22)
-
+    availability = proto.Field(proto.ENUM, number=19, enum=Availability,)
+    available_quantity = proto.Field(
+        proto.MESSAGE, number=20, message=wrappers_pb2.Int32Value,
+    )
+    uri = proto.Field(proto.STRING, number=22,)
     images = proto.RepeatedField(proto.MESSAGE, number=23, message=common.Image,)
 
 

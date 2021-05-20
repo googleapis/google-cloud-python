@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +15,14 @@
 #
 
 from .services.catalog_service import CatalogServiceClient
+from .services.catalog_service import CatalogServiceAsyncClient
 from .services.prediction_service import PredictionServiceClient
+from .services.prediction_service import PredictionServiceAsyncClient
 from .services.product_service import ProductServiceClient
+from .services.product_service import ProductServiceAsyncClient
 from .services.user_event_service import UserEventServiceClient
+from .services.user_event_service import UserEventServiceAsyncClient
+
 from .types.catalog import Catalog
 from .types.catalog import ProductLevelConfig
 from .types.catalog_service import ListCatalogsRequest
@@ -60,8 +64,11 @@ from .types.user_event_service import RejoinUserEventsRequest
 from .types.user_event_service import RejoinUserEventsResponse
 from .types.user_event_service import WriteUserEventRequest
 
-
 __all__ = (
+    "CatalogServiceAsyncClient",
+    "PredictionServiceAsyncClient",
+    "ProductServiceAsyncClient",
+    "UserEventServiceAsyncClient",
     "BigQuerySource",
     "Catalog",
     "CatalogServiceClient",
@@ -103,7 +110,7 @@ __all__ = (
     "UserEventImportSummary",
     "UserEventInlineSource",
     "UserEventInputConfig",
+    "UserEventServiceClient",
     "UserInfo",
     "WriteUserEventRequest",
-    "UserEventServiceClient",
 )

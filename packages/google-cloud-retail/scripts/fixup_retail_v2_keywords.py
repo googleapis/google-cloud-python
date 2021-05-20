@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,20 +39,19 @@ def partition(
 class retailCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'collect_user_event': ('parent', 'user_event', 'uri', 'ets', ),
-    'create_product': ('parent', 'product', 'product_id', ),
-    'delete_product': ('name', ),
-    'get_product': ('name', ),
-    'import_products': ('parent', 'input_config', 'errors_config', 'update_mask', ),
-    'import_user_events': ('parent', 'input_config', 'errors_config', ),
-    'list_catalogs': ('parent', 'page_size', 'page_token', ),
-    'predict': ('placement', 'user_event', 'page_size', 'page_token', 'filter', 'validate_only', 'params', 'labels', ),
-    'purge_user_events': ('parent', 'filter', 'force', ),
-    'rejoin_user_events': ('parent', 'user_event_rejoin_scope', ),
-    'update_catalog': ('catalog', 'update_mask', ),
-    'update_product': ('product', 'update_mask', ),
-    'write_user_event': ('parent', 'user_event', ),
-
+          'collect_user_event': ('parent', 'user_event', 'uri', 'ets', ),
+          'create_product': ('parent', 'product', 'product_id', ),
+          'delete_product': ('name', ),
+          'get_product': ('name', ),
+          'import_products': ('parent', 'input_config', 'errors_config', 'update_mask', ),
+          'import_user_events': ('parent', 'input_config', 'errors_config', ),
+          'list_catalogs': ('parent', 'page_size', 'page_token', ),
+          'predict': ('placement', 'user_event', 'page_size', 'page_token', 'filter', 'validate_only', 'params', 'labels', ),
+          'purge_user_events': ('parent', 'filter', 'force', ),
+          'rejoin_user_events': ('parent', 'user_event_rejoin_scope', ),
+          'update_catalog': ('catalog', 'update_mask', ),
+          'update_product': ('product', 'update_mask', ),
+          'write_user_event': ('parent', 'user_event', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -85,7 +82,7 @@ class retailCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

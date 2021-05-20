@@ -1,0 +1,195 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.retail_v2",
+  "protoPackage": "google.cloud.retail.v2",
+  "schema": "1.0",
+  "services": {
+    "CatalogService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "CatalogServiceClient",
+          "rpcs": {
+            "ListCatalogs": {
+              "methods": [
+                "list_catalogs"
+              ]
+            },
+            "UpdateCatalog": {
+              "methods": [
+                "update_catalog"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "CatalogServiceAsyncClient",
+          "rpcs": {
+            "ListCatalogs": {
+              "methods": [
+                "list_catalogs"
+              ]
+            },
+            "UpdateCatalog": {
+              "methods": [
+                "update_catalog"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "PredictionService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "PredictionServiceClient",
+          "rpcs": {
+            "Predict": {
+              "methods": [
+                "predict"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "PredictionServiceAsyncClient",
+          "rpcs": {
+            "Predict": {
+              "methods": [
+                "predict"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ProductService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ProductServiceClient",
+          "rpcs": {
+            "CreateProduct": {
+              "methods": [
+                "create_product"
+              ]
+            },
+            "DeleteProduct": {
+              "methods": [
+                "delete_product"
+              ]
+            },
+            "GetProduct": {
+              "methods": [
+                "get_product"
+              ]
+            },
+            "ImportProducts": {
+              "methods": [
+                "import_products"
+              ]
+            },
+            "UpdateProduct": {
+              "methods": [
+                "update_product"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ProductServiceAsyncClient",
+          "rpcs": {
+            "CreateProduct": {
+              "methods": [
+                "create_product"
+              ]
+            },
+            "DeleteProduct": {
+              "methods": [
+                "delete_product"
+              ]
+            },
+            "GetProduct": {
+              "methods": [
+                "get_product"
+              ]
+            },
+            "ImportProducts": {
+              "methods": [
+                "import_products"
+              ]
+            },
+            "UpdateProduct": {
+              "methods": [
+                "update_product"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "UserEventService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "UserEventServiceClient",
+          "rpcs": {
+            "CollectUserEvent": {
+              "methods": [
+                "collect_user_event"
+              ]
+            },
+            "ImportUserEvents": {
+              "methods": [
+                "import_user_events"
+              ]
+            },
+            "PurgeUserEvents": {
+              "methods": [
+                "purge_user_events"
+              ]
+            },
+            "RejoinUserEvents": {
+              "methods": [
+                "rejoin_user_events"
+              ]
+            },
+            "WriteUserEvent": {
+              "methods": [
+                "write_user_event"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "UserEventServiceAsyncClient",
+          "rpcs": {
+            "CollectUserEvent": {
+              "methods": [
+                "collect_user_event"
+              ]
+            },
+            "ImportUserEvents": {
+              "methods": [
+                "import_user_events"
+              ]
+            },
+            "PurgeUserEvents": {
+              "methods": [
+                "purge_user_events"
+              ]
+            },
+            "RejoinUserEvents": {
+              "methods": [
+                "rejoin_user_events"
+              ]
+            },
+            "WriteUserEvent": {
+              "methods": [
+                "write_user_event"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.retail_v2.types import user_event as gcr_user_event
-from google.protobuf import struct_pb2 as struct  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -29,7 +26,6 @@ __protobuf__ = proto.module(
 
 class PredictRequest(proto.Message):
     r"""Request message for Predict method.
-
     Attributes:
         placement (str):
             Required. Full resource name of the format:
@@ -149,28 +145,20 @@ class PredictRequest(proto.Message):
             examples of labels.
     """
 
-    placement = proto.Field(proto.STRING, number=1)
-
+    placement = proto.Field(proto.STRING, number=1,)
     user_event = proto.Field(proto.MESSAGE, number=2, message=gcr_user_event.UserEvent,)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
-
-    filter = proto.Field(proto.STRING, number=5)
-
-    validate_only = proto.Field(proto.BOOL, number=6)
-
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
+    filter = proto.Field(proto.STRING, number=5,)
+    validate_only = proto.Field(proto.BOOL, number=6,)
     params = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=7, message=struct.Value,
+        proto.STRING, proto.MESSAGE, number=7, message=struct_pb2.Value,
     )
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=8)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=8,)
 
 
 class PredictResponse(proto.Message):
     r"""Response message for predict method.
-
     Attributes:
         results (Sequence[google.cloud.retail_v2.types.PredictResponse.PredictionResult]):
             A list of recommended products. The order
@@ -209,19 +197,15 @@ class PredictResponse(proto.Message):
                    ``PredictRequest.params``.
         """
 
-        id = proto.Field(proto.STRING, number=1)
-
+        id = proto.Field(proto.STRING, number=1,)
         metadata = proto.MapField(
-            proto.STRING, proto.MESSAGE, number=2, message=struct.Value,
+            proto.STRING, proto.MESSAGE, number=2, message=struct_pb2.Value,
         )
 
     results = proto.RepeatedField(proto.MESSAGE, number=1, message=PredictionResult,)
-
-    attribution_token = proto.Field(proto.STRING, number=2)
-
-    missing_ids = proto.RepeatedField(proto.STRING, number=3)
-
-    validate_only = proto.Field(proto.BOOL, number=4)
+    attribution_token = proto.Field(proto.STRING, number=2,)
+    missing_ids = proto.RepeatedField(proto.STRING, number=3,)
+    validate_only = proto.Field(proto.BOOL, number=4,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -57,14 +55,12 @@ class CustomAttribute(proto.Message):
             returned.
     """
 
-    text = proto.RepeatedField(proto.STRING, number=1)
-
-    numbers = proto.RepeatedField(proto.DOUBLE, number=2)
+    text = proto.RepeatedField(proto.STRING, number=1,)
+    numbers = proto.RepeatedField(proto.DOUBLE, number=2,)
 
 
 class Image(proto.Message):
     r"""[Product][google.cloud.retail.v2.Product] thumbnail/detail image.
-
     Attributes:
         uri (str):
             Required. URI of the image.
@@ -89,11 +85,9 @@ class Image(proto.Message):
             INVALID_ARGUMENT error is returned.
     """
 
-    uri = proto.Field(proto.STRING, number=1)
-
-    height = proto.Field(proto.INT32, number=2)
-
-    width = proto.Field(proto.INT32, number=3)
+    uri = proto.Field(proto.STRING, number=1,)
+    height = proto.Field(proto.INT32, number=2,)
+    width = proto.Field(proto.INT32, number=3,)
 
 
 class PriceInfo(proto.Message):
@@ -129,18 +123,14 @@ class PriceInfo(proto.Message):
             `cost_of_goods_sold <https://support.google.com/merchants/answer/9017895>`__.
     """
 
-    currency_code = proto.Field(proto.STRING, number=1)
-
-    price = proto.Field(proto.FLOAT, number=2)
-
-    original_price = proto.Field(proto.FLOAT, number=3)
-
-    cost = proto.Field(proto.FLOAT, number=4)
+    currency_code = proto.Field(proto.STRING, number=1,)
+    price = proto.Field(proto.FLOAT, number=2,)
+    original_price = proto.Field(proto.FLOAT, number=3,)
+    cost = proto.Field(proto.FLOAT, number=4,)
 
 
 class UserInfo(proto.Message):
     r"""Information of an end user.
-
     Attributes:
         user_id (str):
             Highly recommended for logged-in users. Unique identifier
@@ -190,13 +180,10 @@ class UserInfo(proto.Message):
             [UserEventService.CollectUserEvent][google.cloud.retail.v2.UserEventService.CollectUserEvent].
     """
 
-    user_id = proto.Field(proto.STRING, number=1)
-
-    ip_address = proto.Field(proto.STRING, number=2)
-
-    user_agent = proto.Field(proto.STRING, number=3)
-
-    direct_user_request = proto.Field(proto.BOOL, number=4)
+    user_id = proto.Field(proto.STRING, number=1,)
+    ip_address = proto.Field(proto.STRING, number=2,)
+    user_agent = proto.Field(proto.STRING, number=3,)
+    direct_user_request = proto.Field(proto.BOOL, number=4,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
