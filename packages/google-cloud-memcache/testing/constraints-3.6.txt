@@ -7,5 +7,3 @@
 # Then this file should have google-cloud-foo==1.14.0
 google-api-core==1.22.2
 proto-plus==1.15.0
-packaging==14.3
-google-auth==1.24.0  # TODO: remove when google-auth >= 1.25.0 is transitively required through google-api-core

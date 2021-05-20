@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,20 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-import google.auth  # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
+from google import auth  # type: ignore
+from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.cloud.memcache_v1.types import cloud_memcache
-from google.longrunning import operations_pb2  # type: ignore
+from google.longrunning import operations_pb2 as operations  # type: ignore
+
 from .base import CloudMemcacheTransport, DEFAULT_CLIENT_INFO
 
 
@@ -67,7 +70,7 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
         self,
         *,
         host: str = "memcache.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
+        credentials: credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -81,8 +84,7 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]):
-                 The hostname to connect to.
+            host (Optional[str]): The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -193,7 +195,7 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
     def create_channel(
         cls,
         host: str = "memcache.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
+        credentials: credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -224,15 +226,13 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-
-        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
-
+        scopes = scopes or cls.AUTH_SCOPES
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
+            scopes=scopes,
             quota_project_id=quota_project_id,
-            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -313,7 +313,7 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
     @property
     def create_instance(
         self,
-    ) -> Callable[[cloud_memcache.CreateInstanceRequest], operations_pb2.Operation]:
+    ) -> Callable[[cloud_memcache.CreateInstanceRequest], operations.Operation]:
         r"""Return a callable for the create instance method over gRPC.
 
         Creates a new Instance in a given location.
@@ -332,14 +332,14 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
             self._stubs["create_instance"] = self.grpc_channel.unary_unary(
                 "/google.cloud.memcache.v1.CloudMemcache/CreateInstance",
                 request_serializer=cloud_memcache.CreateInstanceRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+                response_deserializer=operations.Operation.FromString,
             )
         return self._stubs["create_instance"]
 
     @property
     def update_instance(
         self,
-    ) -> Callable[[cloud_memcache.UpdateInstanceRequest], operations_pb2.Operation]:
+    ) -> Callable[[cloud_memcache.UpdateInstanceRequest], operations.Operation]:
         r"""Return a callable for the update instance method over gRPC.
 
         Updates an existing Instance in a given project and
@@ -359,14 +359,14 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
             self._stubs["update_instance"] = self.grpc_channel.unary_unary(
                 "/google.cloud.memcache.v1.CloudMemcache/UpdateInstance",
                 request_serializer=cloud_memcache.UpdateInstanceRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+                response_deserializer=operations.Operation.FromString,
             )
         return self._stubs["update_instance"]
 
     @property
     def update_parameters(
         self,
-    ) -> Callable[[cloud_memcache.UpdateParametersRequest], operations_pb2.Operation]:
+    ) -> Callable[[cloud_memcache.UpdateParametersRequest], operations.Operation]:
         r"""Return a callable for the update parameters method over gRPC.
 
         Updates the defined Memcached Parameters for an
@@ -388,14 +388,14 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
             self._stubs["update_parameters"] = self.grpc_channel.unary_unary(
                 "/google.cloud.memcache.v1.CloudMemcache/UpdateParameters",
                 request_serializer=cloud_memcache.UpdateParametersRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+                response_deserializer=operations.Operation.FromString,
             )
         return self._stubs["update_parameters"]
 
     @property
     def delete_instance(
         self,
-    ) -> Callable[[cloud_memcache.DeleteInstanceRequest], operations_pb2.Operation]:
+    ) -> Callable[[cloud_memcache.DeleteInstanceRequest], operations.Operation]:
         r"""Return a callable for the delete instance method over gRPC.
 
         Deletes a single Instance.
@@ -414,14 +414,14 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
             self._stubs["delete_instance"] = self.grpc_channel.unary_unary(
                 "/google.cloud.memcache.v1.CloudMemcache/DeleteInstance",
                 request_serializer=cloud_memcache.DeleteInstanceRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+                response_deserializer=operations.Operation.FromString,
             )
         return self._stubs["delete_instance"]
 
     @property
     def apply_parameters(
         self,
-    ) -> Callable[[cloud_memcache.ApplyParametersRequest], operations_pb2.Operation]:
+    ) -> Callable[[cloud_memcache.ApplyParametersRequest], operations.Operation]:
         r"""Return a callable for the apply parameters method over gRPC.
 
         ApplyParameters will restart the set of specified
@@ -442,7 +442,7 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
             self._stubs["apply_parameters"] = self.grpc_channel.unary_unary(
                 "/google.cloud.memcache.v1.CloudMemcache/ApplyParameters",
                 request_serializer=cloud_memcache.ApplyParametersRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+                response_deserializer=operations.Operation.FromString,
             )
         return self._stubs["apply_parameters"]
 

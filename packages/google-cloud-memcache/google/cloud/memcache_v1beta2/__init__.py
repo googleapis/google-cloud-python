@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +16,6 @@
 #
 
 from .services.cloud_memcache import CloudMemcacheClient
-from .services.cloud_memcache import CloudMemcacheAsyncClient
-
 from .types.cloud_memcache import ApplyParametersRequest
 from .types.cloud_memcache import ApplySoftwareUpdateRequest
 from .types.cloud_memcache import CreateInstanceRequest
@@ -27,17 +26,16 @@ from .types.cloud_memcache import ListInstancesRequest
 from .types.cloud_memcache import ListInstancesResponse
 from .types.cloud_memcache import LocationMetadata
 from .types.cloud_memcache import MemcacheParameters
+from .types.cloud_memcache import MemcacheVersion
 from .types.cloud_memcache import OperationMetadata
 from .types.cloud_memcache import UpdateInstanceRequest
 from .types.cloud_memcache import UpdateParametersRequest
 from .types.cloud_memcache import ZoneMetadata
-from .types.cloud_memcache import MemcacheVersion
+
 
 __all__ = (
-    "CloudMemcacheAsyncClient",
     "ApplyParametersRequest",
     "ApplySoftwareUpdateRequest",
-    "CloudMemcacheClient",
     "CreateInstanceRequest",
     "DeleteInstanceRequest",
     "GetInstanceRequest",
@@ -51,4 +49,5 @@ __all__ = (
     "UpdateInstanceRequest",
     "UpdateParametersRequest",
     "ZoneMetadata",
+    "CloudMemcacheClient",
 )
