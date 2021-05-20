@@ -10,5 +10,6 @@
   "repo": "googleapis/python-cloudbuild",
   "distribution_name": "google-cloud-build",
   "api_id": "cloudbuild.googleapis.com",
+  "codeowner_team": "@googleapis/cicd",
   "requires_billing": false
 }
