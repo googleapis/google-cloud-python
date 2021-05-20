@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -34,8 +32,7 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.oslogin_v1 import common  # type: ignore
 from google.cloud.oslogin_v1.types import oslogin
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-
+from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import OsLoginServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import OsLoginServiceGrpcTransport
 from .transports.grpc_asyncio import OsLoginServiceGrpcAsyncIOTransport
@@ -56,7 +53,7 @@ class OsLoginServiceClientMeta(type):
     _transport_registry["grpc_asyncio"] = OsLoginServiceGrpcAsyncIOTransport
 
     def get_transport_class(cls, label: str = None,) -> Type[OsLoginServiceTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -83,7 +80,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -117,7 +115,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -134,7 +133,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -153,40 +152,41 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
     @property
     def transport(self) -> OsLoginServiceTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            OsLoginServiceTransport: The transport used by the client instance.
+            OsLoginServiceTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
     @staticmethod
     def posix_account_path(user: str, project: str,) -> str:
-        """Return a fully-qualified posix_account string."""
+        """Returns a fully-qualified posix_account string."""
         return "users/{user}/projects/{project}".format(user=user, project=project,)
 
     @staticmethod
     def parse_posix_account_path(path: str) -> Dict[str, str]:
-        """Parse a posix_account path into its component segments."""
+        """Parses a posix_account path into its component segments."""
         m = re.match(r"^users/(?P<user>.+?)/projects/(?P<project>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
     def ssh_public_key_path(user: str, fingerprint: str,) -> str:
-        """Return a fully-qualified ssh_public_key string."""
+        """Returns a fully-qualified ssh_public_key string."""
         return "users/{user}/sshPublicKeys/{fingerprint}".format(
             user=user, fingerprint=fingerprint,
         )
 
     @staticmethod
     def parse_ssh_public_key_path(path: str) -> Dict[str, str]:
-        """Parse a ssh_public_key path into its component segments."""
+        """Parses a ssh_public_key path into its component segments."""
         m = re.match(r"^users/(?P<user>.+?)/sshPublicKeys/(?P<fingerprint>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -199,7 +199,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -210,7 +210,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -221,7 +221,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -232,7 +232,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -246,12 +246,12 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, OsLoginServiceTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the os login service client.
+        """Instantiates the os login service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -306,9 +306,10 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -320,12 +321,14 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -340,8 +343,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -380,7 +383,6 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -403,10 +405,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, oslogin.DeletePosixAccountRequest):
             request = oslogin.DeletePosixAccountRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -449,7 +449,6 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -472,10 +471,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, oslogin.DeleteSshPublicKeyRequest):
             request = oslogin.DeleteSshPublicKeyRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -517,7 +514,6 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -547,10 +543,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, oslogin.GetLoginProfileRequest):
             request = oslogin.GetLoginProfileRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -594,7 +588,6 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -602,7 +595,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.oslogin.v1.common_pb2.SshPublicKey:
+            google.cloud.oslogin.v1.common.SshPublicKey:
                 The SSH public key information
                 associated with a Google account.
 
@@ -623,10 +616,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, oslogin.GetSshPublicKeyRequest):
             request = oslogin.GetSshPublicKeyRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -673,7 +664,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ssh_public_key (google.cloud.oslogin.v1.common_pb2.SshPublicKey):
+            ssh_public_key (google.cloud.oslogin.v1.common.SshPublicKey):
                 Optional. The SSH public key and
                 expiration time.
 
@@ -687,7 +678,6 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -716,10 +706,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, oslogin.ImportSshPublicKeyRequest):
             request = oslogin.ImportSshPublicKeyRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if ssh_public_key is not None:
@@ -749,7 +737,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         *,
         name: str = None,
         ssh_public_key: common.SshPublicKey = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -770,7 +758,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            ssh_public_key (google.cloud.oslogin.v1.common_pb2.SshPublicKey):
+            ssh_public_key (google.cloud.oslogin.v1.common.SshPublicKey):
                 Required. The SSH public key and
                 expiration time.
 
@@ -784,7 +772,6 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -792,7 +779,7 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.oslogin.v1.common_pb2.SshPublicKey:
+            google.cloud.oslogin.v1.common.SshPublicKey:
                 The SSH public key information
                 associated with a Google account.
 
@@ -813,10 +800,8 @@ class OsLoginServiceClient(metaclass=OsLoginServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, oslogin.UpdateSshPublicKeyRequest):
             request = oslogin.UpdateSshPublicKeyRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
             if ssh_public_key is not None:

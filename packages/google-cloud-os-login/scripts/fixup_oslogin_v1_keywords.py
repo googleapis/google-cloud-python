@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,13 +39,12 @@ def partition(
 class osloginCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'delete_posix_account': ('name', ),
-    'delete_ssh_public_key': ('name', ),
-    'get_login_profile': ('name', 'project_id', 'system_id', ),
-    'get_ssh_public_key': ('name', ),
-    'import_ssh_public_key': ('parent', 'ssh_public_key', 'project_id', ),
-    'update_ssh_public_key': ('name', 'ssh_public_key', 'update_mask', ),
-
+          'delete_posix_account': ('name', ),
+          'delete_ssh_public_key': ('name', ),
+          'get_login_profile': ('name', 'project_id', 'system_id', ),
+          'get_ssh_public_key': ('name', ),
+          'import_ssh_public_key': ('parent', 'ssh_public_key', 'project_id', ),
+          'update_ssh_public_key': ('name', 'ssh_public_key', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -78,7 +75,7 @@ class osloginCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

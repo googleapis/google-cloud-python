@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +14,13 @@
 # limitations under the License.
 #
 
-from google.cloud.oslogin_v1.services.os_login_service.async_client import (
-    OsLoginServiceAsyncClient,
-)
 from google.cloud.oslogin_v1.services.os_login_service.client import (
     OsLoginServiceClient,
 )
+from google.cloud.oslogin_v1.services.os_login_service.async_client import (
+    OsLoginServiceAsyncClient,
+)
+
 from google.cloud.oslogin_v1.types.oslogin import DeletePosixAccountRequest
 from google.cloud.oslogin_v1.types.oslogin import DeleteSshPublicKeyRequest
 from google.cloud.oslogin_v1.types.oslogin import GetLoginProfileRequest
@@ -31,6 +31,8 @@ from google.cloud.oslogin_v1.types.oslogin import LoginProfile
 from google.cloud.oslogin_v1.types.oslogin import UpdateSshPublicKeyRequest
 
 __all__ = (
+    "OsLoginServiceClient",
+    "OsLoginServiceAsyncClient",
     "DeletePosixAccountRequest",
     "DeleteSshPublicKeyRequest",
     "GetLoginProfileRequest",
@@ -38,7 +40,5 @@ __all__ = (
     "ImportSshPublicKeyRequest",
     "ImportSshPublicKeyResponse",
     "LoginProfile",
-    "OsLoginServiceAsyncClient",
-    "OsLoginServiceClient",
     "UpdateSshPublicKeyRequest",
 )

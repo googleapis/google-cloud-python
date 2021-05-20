@@ -43,12 +43,17 @@ s.replace(
     "google-cloud-os-login",
 )
 
-for file in ["google/cloud/**/*.py", "tests/**/*.py"]:
-    s.replace(
-        file,
-        "from google.cloud.oslogin.common import common_pb2 as common",
-        "from google.cloud.oslogin_v1 import common"
-    )
+s.replace(
+    ["google/cloud/**/*.py", "tests/**/*.py"],
+    "from google.cloud.oslogin.common import common_pb2",
+    "from google.cloud.oslogin_v1 import common"
+)
+s.replace(
+    ["google/cloud/**/*.py", "tests/**/*.py"],
+    "common_pb2\.",
+    "common."
+)
+
 s.replace(
     "google/cloud/oslogin_v1/**/*.py",
     "google.cloud.oslogin.common",
