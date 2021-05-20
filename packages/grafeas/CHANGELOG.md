@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.1.0](https://www.github.com/googleapis/python-grafeas/compare/v1.0.1...v1.1.0) (2021-05-20)
+
+
+### Features
+
+* bump release level to production/stable ([#71](https://www.github.com/googleapis/python-grafeas/issues/71)) ([53bd8a5](https://www.github.com/googleapis/python-grafeas/commit/53bd8a50ab731cf43d0c789198d221c7fbff6fb6))
+
 ### [1.0.1](https://www.github.com/googleapis/python-grafeas/compare/v1.0.0...v1.0.1) (2020-08-12)
 
 
