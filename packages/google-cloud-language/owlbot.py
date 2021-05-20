@@ -22,6 +22,13 @@ common = gcp.CommonTemplates()
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
+    # Work around generator issue https://github.com/googleapis/gapic-generator-python/issues/902
+    s.replace(library / f"google/cloud/language_{library.name}/types/language_service.py",
+        r"""Represents the input to API methods.
+    Attributes:""",
+        r"""Represents the input to API methods.\n
+    Attributes:""")
+
     s.move(library, excludes=["docs/index.rst", "README.rst", "setup.py"])
 
 s.remove_staging_dirs()

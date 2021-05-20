@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -96,17 +94,13 @@ class Document(proto.Message):
         HTML = 2
 
     type_ = proto.Field(proto.ENUM, number=1, enum=Type,)
-
-    content = proto.Field(proto.STRING, number=2, oneof="source")
-
-    gcs_content_uri = proto.Field(proto.STRING, number=3, oneof="source")
-
-    language = proto.Field(proto.STRING, number=4)
+    content = proto.Field(proto.STRING, number=2, oneof="source",)
+    gcs_content_uri = proto.Field(proto.STRING, number=3, oneof="source",)
+    language = proto.Field(proto.STRING, number=4,)
 
 
 class Sentence(proto.Message):
     r"""Represents a sentence in the input document.
-
     Attributes:
         text (google.cloud.language_v1.types.TextSpan):
             The sentence text.
@@ -118,7 +112,6 @@ class Sentence(proto.Message):
     """
 
     text = proto.Field(proto.MESSAGE, number=1, message="TextSpan",)
-
     sentiment = proto.Field(proto.MESSAGE, number=2, message="Sentiment",)
 
 
@@ -179,22 +172,16 @@ class Entity(proto.Message):
         NUMBER = 12
         PRICE = 13
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     type_ = proto.Field(proto.ENUM, number=2, enum=Type,)
-
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=3)
-
-    salience = proto.Field(proto.FLOAT, number=4)
-
+    metadata = proto.MapField(proto.STRING, proto.STRING, number=3,)
+    salience = proto.Field(proto.FLOAT, number=4,)
     mentions = proto.RepeatedField(proto.MESSAGE, number=5, message="EntityMention",)
-
     sentiment = proto.Field(proto.MESSAGE, number=6, message="Sentiment",)
 
 
 class Token(proto.Message):
     r"""Represents the smallest syntactic building block of the text.
-
     Attributes:
         text (google.cloud.language_v1.types.TextSpan):
             The token text.
@@ -208,12 +195,9 @@ class Token(proto.Message):
     """
 
     text = proto.Field(proto.MESSAGE, number=1, message="TextSpan",)
-
     part_of_speech = proto.Field(proto.MESSAGE, number=2, message="PartOfSpeech",)
-
     dependency_edge = proto.Field(proto.MESSAGE, number=3, message="DependencyEdge",)
-
-    lemma = proto.Field(proto.STRING, number=4)
+    lemma = proto.Field(proto.STRING, number=4,)
 
 
 class Sentiment(proto.Message):
@@ -230,9 +214,8 @@ class Sentiment(proto.Message):
             sentiment) and 1.0 (positive sentiment).
     """
 
-    magnitude = proto.Field(proto.FLOAT, number=2)
-
-    score = proto.Field(proto.FLOAT, number=3)
+    magnitude = proto.Field(proto.FLOAT, number=2,)
+    score = proto.Field(proto.FLOAT, number=3,)
 
 
 class PartOfSpeech(proto.Message):
@@ -405,27 +388,16 @@ class PartOfSpeech(proto.Message):
         PASSIVE = 3
 
     tag = proto.Field(proto.ENUM, number=1, enum=Tag,)
-
     aspect = proto.Field(proto.ENUM, number=2, enum=Aspect,)
-
     case = proto.Field(proto.ENUM, number=3, enum=Case,)
-
     form = proto.Field(proto.ENUM, number=4, enum=Form,)
-
     gender = proto.Field(proto.ENUM, number=5, enum=Gender,)
-
     mood = proto.Field(proto.ENUM, number=6, enum=Mood,)
-
     number = proto.Field(proto.ENUM, number=7, enum=Number,)
-
     person = proto.Field(proto.ENUM, number=8, enum=Person,)
-
     proper = proto.Field(proto.ENUM, number=9, enum=Proper,)
-
     reciprocity = proto.Field(proto.ENUM, number=10, enum=Reciprocity,)
-
     tense = proto.Field(proto.ENUM, number=11, enum=Tense,)
-
     voice = proto.Field(proto.ENUM, number=12, enum=Voice,)
 
 
@@ -532,8 +504,7 @@ class DependencyEdge(proto.Message):
         MES = 81
         NCOMP = 82
 
-    head_token_index = proto.Field(proto.INT32, number=1)
-
+    head_token_index = proto.Field(proto.INT32, number=1,)
     label = proto.Field(proto.ENUM, number=2, enum=Label,)
 
 
@@ -561,15 +532,12 @@ class EntityMention(proto.Message):
         COMMON = 2
 
     text = proto.Field(proto.MESSAGE, number=1, message="TextSpan",)
-
     type_ = proto.Field(proto.ENUM, number=2, enum=Type,)
-
     sentiment = proto.Field(proto.MESSAGE, number=3, message="Sentiment",)
 
 
 class TextSpan(proto.Message):
     r"""Represents an output piece of text.
-
     Attributes:
         content (str):
             The content of the output text.
@@ -580,14 +548,12 @@ class TextSpan(proto.Message):
             specified in the API request.
     """
 
-    content = proto.Field(proto.STRING, number=1)
-
-    begin_offset = proto.Field(proto.INT32, number=2)
+    content = proto.Field(proto.STRING, number=1,)
+    begin_offset = proto.Field(proto.INT32, number=2,)
 
 
 class ClassificationCategory(proto.Message):
     r"""Represents a category returned from the text classifier.
-
     Attributes:
         name (str):
             The name of the category representing the document, from the
@@ -599,14 +565,12 @@ class ClassificationCategory(proto.Message):
             that this category represents the given text.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    confidence = proto.Field(proto.FLOAT, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    confidence = proto.Field(proto.FLOAT, number=2,)
 
 
 class AnalyzeSentimentRequest(proto.Message):
     r"""The sentiment analysis request message.
-
     Attributes:
         document (google.cloud.language_v1.types.Document):
             Input document.
@@ -616,13 +580,11 @@ class AnalyzeSentimentRequest(proto.Message):
     """
 
     document = proto.Field(proto.MESSAGE, number=1, message="Document",)
-
     encoding_type = proto.Field(proto.ENUM, number=2, enum="EncodingType",)
 
 
 class AnalyzeSentimentResponse(proto.Message):
     r"""The sentiment analysis response message.
-
     Attributes:
         document_sentiment (google.cloud.language_v1.types.Sentiment):
             The overall sentiment of the input document.
@@ -638,15 +600,12 @@ class AnalyzeSentimentResponse(proto.Message):
     """
 
     document_sentiment = proto.Field(proto.MESSAGE, number=1, message="Sentiment",)
-
-    language = proto.Field(proto.STRING, number=2)
-
+    language = proto.Field(proto.STRING, number=2,)
     sentences = proto.RepeatedField(proto.MESSAGE, number=3, message="Sentence",)
 
 
 class AnalyzeEntitySentimentRequest(proto.Message):
     r"""The entity-level sentiment analysis request message.
-
     Attributes:
         document (google.cloud.language_v1.types.Document):
             Input document.
@@ -656,13 +615,11 @@ class AnalyzeEntitySentimentRequest(proto.Message):
     """
 
     document = proto.Field(proto.MESSAGE, number=1, message="Document",)
-
     encoding_type = proto.Field(proto.ENUM, number=2, enum="EncodingType",)
 
 
 class AnalyzeEntitySentimentResponse(proto.Message):
     r"""The entity-level sentiment analysis response message.
-
     Attributes:
         entities (Sequence[google.cloud.language_v1.types.Entity]):
             The recognized entities in the input document
@@ -676,13 +633,11 @@ class AnalyzeEntitySentimentResponse(proto.Message):
     """
 
     entities = proto.RepeatedField(proto.MESSAGE, number=1, message="Entity",)
-
-    language = proto.Field(proto.STRING, number=2)
+    language = proto.Field(proto.STRING, number=2,)
 
 
 class AnalyzeEntitiesRequest(proto.Message):
     r"""The entity analysis request message.
-
     Attributes:
         document (google.cloud.language_v1.types.Document):
             Input document.
@@ -692,13 +647,11 @@ class AnalyzeEntitiesRequest(proto.Message):
     """
 
     document = proto.Field(proto.MESSAGE, number=1, message="Document",)
-
     encoding_type = proto.Field(proto.ENUM, number=2, enum="EncodingType",)
 
 
 class AnalyzeEntitiesResponse(proto.Message):
     r"""The entity analysis response message.
-
     Attributes:
         entities (Sequence[google.cloud.language_v1.types.Entity]):
             The recognized entities in the input
@@ -712,13 +665,11 @@ class AnalyzeEntitiesResponse(proto.Message):
     """
 
     entities = proto.RepeatedField(proto.MESSAGE, number=1, message="Entity",)
-
-    language = proto.Field(proto.STRING, number=2)
+    language = proto.Field(proto.STRING, number=2,)
 
 
 class AnalyzeSyntaxRequest(proto.Message):
     r"""The syntax analysis request message.
-
     Attributes:
         document (google.cloud.language_v1.types.Document):
             Input document.
@@ -728,13 +679,11 @@ class AnalyzeSyntaxRequest(proto.Message):
     """
 
     document = proto.Field(proto.MESSAGE, number=1, message="Document",)
-
     encoding_type = proto.Field(proto.ENUM, number=2, enum="EncodingType",)
 
 
 class AnalyzeSyntaxResponse(proto.Message):
     r"""The syntax analysis response message.
-
     Attributes:
         sentences (Sequence[google.cloud.language_v1.types.Sentence]):
             Sentences in the input document.
@@ -750,15 +699,12 @@ class AnalyzeSyntaxResponse(proto.Message):
     """
 
     sentences = proto.RepeatedField(proto.MESSAGE, number=1, message="Sentence",)
-
     tokens = proto.RepeatedField(proto.MESSAGE, number=2, message="Token",)
-
-    language = proto.Field(proto.STRING, number=3)
+    language = proto.Field(proto.STRING, number=3,)
 
 
 class ClassifyTextRequest(proto.Message):
     r"""The document classification request message.
-
     Attributes:
         document (google.cloud.language_v1.types.Document):
             Input document.
@@ -769,7 +715,6 @@ class ClassifyTextRequest(proto.Message):
 
 class ClassifyTextResponse(proto.Message):
     r"""The document classification response message.
-
     Attributes:
         categories (Sequence[google.cloud.language_v1.types.ClassificationCategory]):
             Categories representing the input document.
@@ -814,26 +759,19 @@ class AnnotateTextRequest(proto.Message):
                 Classify the full document into categories.
         """
 
-        extract_syntax = proto.Field(proto.BOOL, number=1)
-
-        extract_entities = proto.Field(proto.BOOL, number=2)
-
-        extract_document_sentiment = proto.Field(proto.BOOL, number=3)
-
-        extract_entity_sentiment = proto.Field(proto.BOOL, number=4)
-
-        classify_text = proto.Field(proto.BOOL, number=6)
+        extract_syntax = proto.Field(proto.BOOL, number=1,)
+        extract_entities = proto.Field(proto.BOOL, number=2,)
+        extract_document_sentiment = proto.Field(proto.BOOL, number=3,)
+        extract_entity_sentiment = proto.Field(proto.BOOL, number=4,)
+        classify_text = proto.Field(proto.BOOL, number=6,)
 
     document = proto.Field(proto.MESSAGE, number=1, message="Document",)
-
     features = proto.Field(proto.MESSAGE, number=2, message=Features,)
-
     encoding_type = proto.Field(proto.ENUM, number=3, enum="EncodingType",)
 
 
 class AnnotateTextResponse(proto.Message):
     r"""The text annotations response message.
-
     Attributes:
         sentences (Sequence[google.cloud.language_v1.types.Sentence]):
             Sentences in the input document. Populated if the user
@@ -862,15 +800,10 @@ class AnnotateTextResponse(proto.Message):
     """
 
     sentences = proto.RepeatedField(proto.MESSAGE, number=1, message="Sentence",)
-
     tokens = proto.RepeatedField(proto.MESSAGE, number=2, message="Token",)
-
     entities = proto.RepeatedField(proto.MESSAGE, number=3, message="Entity",)
-
     document_sentiment = proto.Field(proto.MESSAGE, number=4, message="Sentiment",)
-
-    language = proto.Field(proto.STRING, number=5)
-
+    language = proto.Field(proto.STRING, number=5,)
     categories = proto.RepeatedField(
         proto.MESSAGE, number=6, message="ClassificationCategory",
     )

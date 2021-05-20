@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,8 @@
 #
 
 from .services.language_service import LanguageServiceClient
+from .services.language_service import LanguageServiceAsyncClient
+
 from .types.language_service import AnalyzeEntitiesRequest
 from .types.language_service import AnalyzeEntitiesResponse
 from .types.language_service import AnalyzeEntitySentimentRequest
@@ -31,7 +32,6 @@ from .types.language_service import ClassifyTextRequest
 from .types.language_service import ClassifyTextResponse
 from .types.language_service import DependencyEdge
 from .types.language_service import Document
-from .types.language_service import EncodingType
 from .types.language_service import Entity
 from .types.language_service import EntityMention
 from .types.language_service import PartOfSpeech
@@ -39,9 +39,10 @@ from .types.language_service import Sentence
 from .types.language_service import Sentiment
 from .types.language_service import TextSpan
 from .types.language_service import Token
-
+from .types.language_service import EncodingType
 
 __all__ = (
+    "LanguageServiceAsyncClient",
     "AnalyzeEntitiesRequest",
     "AnalyzeEntitiesResponse",
     "AnalyzeEntitySentimentRequest",
@@ -60,10 +61,10 @@ __all__ = (
     "EncodingType",
     "Entity",
     "EntityMention",
+    "LanguageServiceClient",
     "PartOfSpeech",
     "Sentence",
     "Sentiment",
     "TextSpan",
     "Token",
-    "LanguageServiceClient",
 )
