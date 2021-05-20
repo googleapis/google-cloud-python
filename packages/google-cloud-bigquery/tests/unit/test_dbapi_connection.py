@@ -51,7 +51,7 @@ class TestConnection(unittest.TestCase):
         from google.cloud.bigquery.dbapi import Connection
 
         mock_client = self._mock_client()
-        mock_client._create_bqstorage_client.return_value = None
+        mock_client._ensure_bqstorage_client.return_value = None
 
         connection = self._make_one(client=mock_client)
         self.assertIsInstance(connection, Connection)
@@ -66,8 +66,14 @@ class TestConnection(unittest.TestCase):
 
         mock_client = self._mock_client()
         mock_bqstorage_client = self._mock_bqstorage_client()
+        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage_client
+
         connection = self._make_one(
             client=mock_client, bqstorage_client=mock_bqstorage_client,
+        )
+
+        mock_client._ensure_bqstorage_client.assert_called_once_with(
+            mock_bqstorage_client
         )
         self.assertIsInstance(connection, Connection)
         self.assertIs(connection._client, mock_client)
@@ -92,9 +98,11 @@ class TestConnection(unittest.TestCase):
 
         mock_client = self._mock_client()
         mock_bqstorage_client = self._mock_bqstorage_client()
-        mock_client._create_bqstorage_client.return_value = mock_bqstorage_client
+        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage_client
 
         connection = connect(client=mock_client)
+
+        mock_client._ensure_bqstorage_client.assert_called_once_with()
         self.assertIsInstance(connection, Connection)
         self.assertIs(connection._client, mock_client)
         self.assertIs(connection._bqstorage_client, mock_bqstorage_client)
@@ -108,8 +116,14 @@ class TestConnection(unittest.TestCase):
 
         mock_client = self._mock_client()
         mock_bqstorage_client = self._mock_bqstorage_client()
+        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage_client
+
         connection = connect(
             client=mock_client, bqstorage_client=mock_bqstorage_client,
+        )
+
+        mock_client._ensure_bqstorage_client.assert_called_once_with(
+            mock_bqstorage_client
         )
         self.assertIsInstance(connection, Connection)
         self.assertIs(connection._client, mock_client)
@@ -140,7 +154,7 @@ class TestConnection(unittest.TestCase):
             return_value=client,
         )
         bqstorage_client_patcher = mock.patch.object(
-            client, "_create_bqstorage_client", return_value=bqstorage_client,
+            client, "_ensure_bqstorage_client", return_value=bqstorage_client,
         )
 
         with client_patcher, bqstorage_client_patcher:

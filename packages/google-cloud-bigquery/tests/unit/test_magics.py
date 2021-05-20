@@ -317,7 +317,10 @@ def test__make_bqstorage_client_false():
     credentials_mock = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
     )
-    got = magics._make_bqstorage_client(False, credentials_mock, {})
+    test_client = bigquery.Client(
+        project="test_project", credentials=credentials_mock, location="test_location"
+    )
+    got = magics._make_bqstorage_client(test_client, False, {})
     assert got is None
 
 
@@ -328,7 +331,10 @@ def test__make_bqstorage_client_true():
     credentials_mock = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
     )
-    got = magics._make_bqstorage_client(True, credentials_mock, {})
+    test_client = bigquery.Client(
+        project="test_project", credentials=credentials_mock, location="test_location"
+    )
+    got = magics._make_bqstorage_client(test_client, True, {})
     assert isinstance(got, bigquery_storage.BigQueryReadClient)
 
 
@@ -336,13 +342,44 @@ def test__make_bqstorage_client_true_raises_import_error(missing_bq_storage):
     credentials_mock = mock.create_autospec(
         google.auth.credentials.Credentials, instance=True
     )
+    test_client = bigquery.Client(
+        project="test_project", credentials=credentials_mock, location="test_location"
+    )
 
     with pytest.raises(ImportError) as exc_context, missing_bq_storage:
-        magics._make_bqstorage_client(True, credentials_mock, {})
+        magics._make_bqstorage_client(test_client, True, {})
 
     error_msg = str(exc_context.value)
     assert "google-cloud-bigquery-storage" in error_msg
     assert "pyarrow" in error_msg
+
+
+@pytest.mark.skipif(
+    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
+)
+def test__make_bqstorage_client_true_obsolete_dependency():
+    from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
+
+    credentials_mock = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+    test_client = bigquery.Client(
+        project="test_project", credentials=credentials_mock, location="test_location"
+    )
+
+    patcher = mock.patch(
+        "google.cloud.bigquery.client._verify_bq_storage_version",
+        side_effect=LegacyBigQueryStorageError("BQ Storage too old"),
+    )
+    with patcher, warnings.catch_warnings(record=True) as warned:
+        got = magics._make_bqstorage_client(test_client, True, {})
+
+    assert got is None
+
+    matching_warnings = [
+        warning for warning in warned if "BQ Storage too old" in str(warning)
+    ]
+    assert matching_warnings, "Obsolete dependency warning not raised."
 
 
 @pytest.mark.skipif(
@@ -887,6 +924,7 @@ def test_bigquery_magic_w_table_id_and_bqstorage_client():
     table_id = "bigquery-public-data.samples.shakespeare"
 
     with default_patch, client_patch as client_mock, bqstorage_client_patch:
+        client_mock()._ensure_bqstorage_client.return_value = bqstorage_instance_mock
         client_mock().list_rows.return_value = row_iterator_mock
 
         ip.run_cell_magic("bigquery", "--max_results=5", table_id)

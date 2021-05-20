@@ -644,7 +644,7 @@ def _cell_magic(line, query):
             bqstorage_client_options.api_endpoint = args.bqstorage_api_endpoint
 
     bqstorage_client = _make_bqstorage_client(
-        use_bqstorage_api, context.credentials, bqstorage_client_options,
+        client, use_bqstorage_api, bqstorage_client_options,
     )
 
     close_transports = functools.partial(_close_transports, client, bqstorage_client)
@@ -762,12 +762,12 @@ def _split_args_line(line):
     return params_option_value, rest_of_args
 
 
-def _make_bqstorage_client(use_bqstorage_api, credentials, client_options):
+def _make_bqstorage_client(client, use_bqstorage_api, client_options):
     if not use_bqstorage_api:
         return None
 
     try:
-        from google.cloud import bigquery_storage
+        from google.cloud import bigquery_storage  # noqa: F401
     except ImportError as err:
         customized_error = ImportError(
             "The default BigQuery Storage API client cannot be used, install "
@@ -785,10 +785,9 @@ def _make_bqstorage_client(use_bqstorage_api, credentials, client_options):
         )
         raise customized_error from err
 
-    return bigquery_storage.BigQueryReadClient(
-        credentials=credentials,
-        client_info=gapic_client_info.ClientInfo(user_agent=IPYTHON_USER_AGENT),
+    return client._ensure_bqstorage_client(
         client_options=client_options,
+        client_info=gapic_client_info.ClientInfo(user_agent=IPYTHON_USER_AGENT),
     )
 
 

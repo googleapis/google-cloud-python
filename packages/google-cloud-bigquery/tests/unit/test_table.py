@@ -24,6 +24,7 @@ import pytest
 import pytz
 
 import google.api_core.exceptions
+from test_utils.imports import maybe_fail_import
 
 try:
     from google.cloud import bigquery_storage
@@ -1768,6 +1769,48 @@ class TestRowIterator(unittest.TestCase):
             )
         )
 
+    def test__validate_bqstorage_returns_false_if_missing_dependency(self):
+        iterator = self._make_one(first_page_response=None)  # not cached
+
+        def fail_bqstorage_import(name, globals, locals, fromlist, level):
+            # NOTE: *very* simplified, assuming a straightforward absolute import
+            return "bigquery_storage" in name or (
+                fromlist is not None and "bigquery_storage" in fromlist
+            )
+
+        no_bqstorage = maybe_fail_import(predicate=fail_bqstorage_import)
+
+        with no_bqstorage:
+            result = iterator._validate_bqstorage(
+                bqstorage_client=None, create_bqstorage_client=True
+            )
+
+        self.assertFalse(result)
+
+    @unittest.skipIf(
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
+    )
+    def test__validate_bqstorage_returns_false_w_warning_if_obsolete_version(self):
+        from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
+
+        iterator = self._make_one(first_page_response=None)  # not cached
+
+        patcher = mock.patch(
+            "google.cloud.bigquery.table._helpers._verify_bq_storage_version",
+            side_effect=LegacyBigQueryStorageError("BQ Storage too old"),
+        )
+        with patcher, warnings.catch_warnings(record=True) as warned:
+            result = iterator._validate_bqstorage(
+                bqstorage_client=None, create_bqstorage_client=True
+            )
+
+        self.assertFalse(result)
+
+        matching_warnings = [
+            warning for warning in warned if "BQ Storage too old" in str(warning)
+        ]
+        assert matching_warnings, "Obsolete dependency warning not raised."
+
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow(self):
         from google.cloud.bigquery.schema import SchemaField
@@ -2003,7 +2046,7 @@ class TestRowIterator(unittest.TestCase):
             and "REST" in str(warning)
         ]
         self.assertEqual(len(matches), 1, msg="User warning was not emitted.")
-        mock_client._create_bqstorage_client.assert_not_called()
+        mock_client._ensure_bqstorage_client.assert_not_called()
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     @unittest.skipIf(
@@ -2099,7 +2142,7 @@ class TestRowIterator(unittest.TestCase):
         bqstorage_client._transport = mock.create_autospec(
             big_query_read_grpc_transport.BigQueryReadGrpcTransport
         )
-        mock_client._create_bqstorage_client.return_value = bqstorage_client
+        mock_client._ensure_bqstorage_client.return_value = bqstorage_client
         session = bigquery_storage.types.ReadSession()
         bqstorage_client.create_read_session.return_value = session
         row_iterator = mut.RowIterator(
@@ -2114,11 +2157,11 @@ class TestRowIterator(unittest.TestCase):
             table=mut.TableReference.from_string("proj.dset.tbl"),
         )
         row_iterator.to_arrow(create_bqstorage_client=True)
-        mock_client._create_bqstorage_client.assert_called_once()
+        mock_client._ensure_bqstorage_client.assert_called_once()
         bqstorage_client._transport.grpc_channel.close.assert_called_once()
 
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
-    def test_to_arrow_create_bqstorage_client_wo_bqstorage(self):
+    def test_to_arrow_ensure_bqstorage_client_wo_bqstorage(self):
         from google.cloud.bigquery.schema import SchemaField
 
         schema = [
@@ -2133,14 +2176,14 @@ class TestRowIterator(unittest.TestCase):
         api_request = mock.Mock(return_value={"rows": rows})
 
         mock_client = _mock_client()
-        mock_client._create_bqstorage_client.return_value = None
+        mock_client._ensure_bqstorage_client.return_value = None
         row_iterator = self._make_one(mock_client, api_request, path, schema)
 
         tbl = row_iterator.to_arrow(create_bqstorage_client=True)
 
         # The client attempted to create a BQ Storage client, and even though
         # that was not possible, results were still returned without errors.
-        mock_client._create_bqstorage_client.assert_called_once()
+        mock_client._ensure_bqstorage_client.assert_called_once()
         self.assertIsInstance(tbl, pyarrow.Table)
         self.assertEqual(tbl.num_rows, 2)
 
@@ -2824,7 +2867,7 @@ class TestRowIterator(unittest.TestCase):
             and "REST" in str(warning)
         ]
         self.assertEqual(len(matches), 1, msg="User warning was not emitted.")
-        mock_client._create_bqstorage_client.assert_not_called()
+        mock_client._ensure_bqstorage_client.assert_not_called()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(
@@ -2839,7 +2882,7 @@ class TestRowIterator(unittest.TestCase):
         bqstorage_client._transport = mock.create_autospec(
             big_query_read_grpc_transport.BigQueryReadGrpcTransport
         )
-        mock_client._create_bqstorage_client.return_value = bqstorage_client
+        mock_client._ensure_bqstorage_client.return_value = bqstorage_client
         session = bigquery_storage.types.ReadSession()
         bqstorage_client.create_read_session.return_value = session
         row_iterator = mut.RowIterator(
@@ -2854,7 +2897,7 @@ class TestRowIterator(unittest.TestCase):
             table=mut.TableReference.from_string("proj.dset.tbl"),
         )
         row_iterator.to_dataframe(create_bqstorage_client=True)
-        mock_client._create_bqstorage_client.assert_called_once()
+        mock_client._ensure_bqstorage_client.assert_called_once()
         bqstorage_client._transport.grpc_channel.close.assert_called_once()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")

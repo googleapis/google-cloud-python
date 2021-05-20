@@ -25,6 +25,10 @@ from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _RFC3339_MICROS
 from google.cloud._helpers import _RFC3339_NO_FRACTION
 from google.cloud._helpers import _to_bytes
+import pkg_resources
+
+from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
+
 
 _RFC3339_MICROS_NO_ZULU = "%Y-%m-%dT%H:%M:%S.%f"
 _TIMEONLY_WO_MICROS = "%H:%M:%S"
@@ -35,6 +39,32 @@ _PROJECT_PREFIX_PATTERN = re.compile(
 """,
     re.VERBOSE,
 )
+
+_MIN_BQ_STORAGE_VERSION = pkg_resources.parse_version("2.0.0")
+
+
+def _verify_bq_storage_version():
+    """Verify that a recent enough version of BigQuery Storage extra is installed.
+
+    The function assumes that google-cloud-bigquery-storage extra is installed, and
+    should thus be used in places where this assumption holds.
+
+    Because `pip` can install an outdated version of this extra despite the constraints
+    in setup.py, the the calling code can use this helper to verify the version
+    compatibility at runtime.
+    """
+    from google.cloud import bigquery_storage
+
+    installed_version = pkg_resources.parse_version(
+        getattr(bigquery_storage, "__version__", "legacy")
+    )
+
+    if installed_version < _MIN_BQ_STORAGE_VERSION:
+        msg = (
+            "Dependency google-cloud-bigquery-storage is outdated, please upgrade "
+            f"it to version >= 2.0.0 (version found: {installed_version})."
+        )
+        raise LegacyBigQueryStorageError(msg)
 
 
 def _not_null(value, field):

@@ -72,7 +72,7 @@ class TestCursor(unittest.TestCase):
         mock_client._default_query_job_config = default_query_job_config
 
         # Assure that the REST client gets used, not the BQ Storage client.
-        mock_client._create_bqstorage_client.return_value = None
+        mock_client._ensure_bqstorage_client.return_value = None
 
         return mock_client
 
@@ -311,6 +311,7 @@ class TestCursor(unittest.TestCase):
         mock_bqstorage_client = self._mock_bqstorage_client(
             stream_count=1, rows=bqstorage_streamed_rows,
         )
+        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage_client
 
         connection = dbapi.connect(
             client=mock_client, bqstorage_client=mock_bqstorage_client,
@@ -341,6 +342,7 @@ class TestCursor(unittest.TestCase):
 
         mock_client = self._mock_client(rows=[])
         mock_bqstorage_client = self._mock_bqstorage_client(stream_count=0)
+        mock_client._ensure_bqstorage_client.return_value = mock_bqstorage_client
 
         connection = dbapi.connect(
             client=mock_client, bqstorage_client=mock_bqstorage_client,
@@ -365,7 +367,11 @@ class TestCursor(unittest.TestCase):
 
         row_data = [table.Row([1.1, 1.2], {"foo": 0, "bar": 1})]
 
+        def fake_ensure_bqstorage_client(bqstorage_client=None, **kwargs):
+            return bqstorage_client
+
         mock_client = self._mock_client(rows=row_data)
+        mock_client._ensure_bqstorage_client.side_effect = fake_ensure_bqstorage_client
         mock_bqstorage_client = self._mock_bqstorage_client(
             stream_count=1, rows=row_data,
         )
@@ -396,7 +402,11 @@ class TestCursor(unittest.TestCase):
         row_data = [table.Row([1.2, 1.1], {"bar": 1, "foo": 0})]
         bqstorage_streamed_rows = [{"bar": _to_pyarrow(1.2), "foo": _to_pyarrow(1.1)}]
 
+        def fake_ensure_bqstorage_client(bqstorage_client=None, **kwargs):
+            return bqstorage_client
+
         mock_client = self._mock_client(rows=row_data)
+        mock_client._ensure_bqstorage_client.side_effect = fake_ensure_bqstorage_client
         mock_bqstorage_client = self._mock_bqstorage_client(
             stream_count=1, rows=bqstorage_streamed_rows,
         )
