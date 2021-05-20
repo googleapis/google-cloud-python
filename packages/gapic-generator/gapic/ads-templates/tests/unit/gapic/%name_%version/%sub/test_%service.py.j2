@@ -444,9 +444,9 @@ def test_{{ method.name|snake_case }}_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         {% for key, field in method.flattened_fields.items() %}{% if not field.oneof or field.proto3_optional %}
-        {% if field.ident|string() == 'timestamp.Timestamp' %}
+        {% if field.ident|string() == 'timestamp_pb2.Timestamp' %}
         assert TimestampRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
-        {% elif field.ident|string() == 'duration.Duration' %}
+        {% elif field.ident|string() == 'duration_pb2.Duration' %}
         assert DurationRule().to_proto(args[0].{{ key }}) == {{ field.mock_value }}
         {% else %}
         assert args[0].{{ key }} == {{ field.mock_value }}
