@@ -141,13 +141,17 @@ def _run_cert_provider_command(command, expect_encrypted_key=False):
     return cert_match[0], key_match[0], None
 
 
-def get_client_ssl_credentials(generate_encrypted_key=False):
+def get_client_ssl_credentials(
+    generate_encrypted_key=False,
+    context_aware_metadata_path=CONTEXT_AWARE_METADATA_PATH,
+):
     """Returns the client side certificate, private key and passphrase.
 
     Args:
         generate_encrypted_key (bool): If set to True, encrypted private key
             and passphrase will be generated; otherwise, unencrypted private key
             will be generated and passphrase will be None.
+        context_aware_metadata_path (str): The context_aware_metadata.json file path.
 
     Returns:
         Tuple[bool, bytes, bytes, bytes]:
@@ -158,7 +162,7 @@ def get_client_ssl_credentials(generate_encrypted_key=False):
         google.auth.exceptions.ClientCertError: if problems occurs when getting
             the cert, key and passphrase.
     """
-    metadata_path = _check_dca_metadata_path(CONTEXT_AWARE_METADATA_PATH)
+    metadata_path = _check_dca_metadata_path(context_aware_metadata_path)
 
     if metadata_path:
         metadata_json = _read_dca_metadata_file(metadata_path)
