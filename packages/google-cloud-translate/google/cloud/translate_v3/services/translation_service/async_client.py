@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -22,18 +20,17 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.translate_v3.services.translation_service import pagers
 from google.cloud.translate_v3.types import translation_service
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import TranslationServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import TranslationServiceGrpcAsyncIOTransport
 from .client import TranslationServiceClient
@@ -49,31 +46,26 @@ class TranslationServiceAsyncClient:
 
     glossary_path = staticmethod(TranslationServiceClient.glossary_path)
     parse_glossary_path = staticmethod(TranslationServiceClient.parse_glossary_path)
-
     common_billing_account_path = staticmethod(
         TranslationServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         TranslationServiceClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(TranslationServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(
         TranslationServiceClient.parse_common_folder_path
     )
-
     common_organization_path = staticmethod(
         TranslationServiceClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
         TranslationServiceClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(TranslationServiceClient.common_project_path)
     parse_common_project_path = staticmethod(
         TranslationServiceClient.parse_common_project_path
     )
-
     common_location_path = staticmethod(TranslationServiceClient.common_location_path)
     parse_common_location_path = staticmethod(
         TranslationServiceClient.parse_common_location_path
@@ -81,7 +73,8 @@ class TranslationServiceAsyncClient:
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -96,7 +89,7 @@ class TranslationServiceAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -113,7 +106,7 @@ class TranslationServiceAsyncClient:
 
     @property
     def transport(self) -> TranslationServiceTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             TranslationServiceTransport: The transport used by the client instance.
@@ -128,12 +121,12 @@ class TranslationServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, TranslationServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the translation service client.
+        """Instantiates the translation service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -165,7 +158,6 @@ class TranslationServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = TranslationServiceClient(
             credentials=credentials,
             transport=transport,
@@ -277,7 +269,6 @@ class TranslationServiceAsyncClient:
                 This corresponds to the ``source_language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -311,7 +302,6 @@ class TranslationServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if target_language_code is not None:
@@ -322,7 +312,6 @@ class TranslationServiceAsyncClient:
             request.mime_type = mime_type
         if source_language_code is not None:
             request.source_language_code = source_language_code
-
         if contents:
             request.contents.extend(contents)
 
@@ -414,7 +403,6 @@ class TranslationServiceAsyncClient:
                 This corresponds to the ``content`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -441,7 +429,6 @@ class TranslationServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if model is not None:
@@ -538,7 +525,6 @@ class TranslationServiceAsyncClient:
                 This corresponds to the ``display_language_code`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -565,7 +551,6 @@ class TranslationServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if model is not None:
@@ -582,7 +567,8 @@ class TranslationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=600.0,
             ),
@@ -623,7 +609,6 @@ class TranslationServiceAsyncClient:
         Args:
             request (:class:`google.cloud.translate_v3.types.BatchTranslateTextRequest`):
                 The request object. The batch translation request.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -641,7 +626,6 @@ class TranslationServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = translation_service.BatchTranslateTextRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -698,7 +682,6 @@ class TranslationServiceAsyncClient:
                 This corresponds to the ``glossary`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -728,7 +711,6 @@ class TranslationServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if glossary is not None:
@@ -785,7 +767,6 @@ class TranslationServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -814,7 +795,6 @@ class TranslationServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -827,7 +807,8 @@ class TranslationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=600.0,
             ),
@@ -875,7 +856,6 @@ class TranslationServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -902,7 +882,6 @@ class TranslationServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -915,7 +894,8 @@ class TranslationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=600.0,
             ),
@@ -958,7 +938,6 @@ class TranslationServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -988,7 +967,6 @@ class TranslationServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -1001,7 +979,8 @@ class TranslationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=600.0,
             ),

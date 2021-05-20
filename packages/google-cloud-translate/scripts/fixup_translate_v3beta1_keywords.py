@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,17 +39,16 @@ def partition(
 class translateCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'batch_translate_document': ('parent', 'source_language_code', 'target_language_codes', 'input_configs', 'output_config', 'models', 'glossaries', ),
-    'batch_translate_text': ('parent', 'source_language_code', 'target_language_codes', 'input_configs', 'output_config', 'models', 'glossaries', 'labels', ),
-    'create_glossary': ('parent', 'glossary', ),
-    'delete_glossary': ('name', ),
-    'detect_language': ('parent', 'model', 'content', 'mime_type', 'labels', ),
-    'get_glossary': ('name', ),
-    'get_supported_languages': ('parent', 'display_language_code', 'model', ),
-    'list_glossaries': ('parent', 'page_size', 'page_token', 'filter', ),
-    'translate_document': ('parent', 'target_language_code', 'document_input_config', 'source_language_code', 'document_output_config', 'model', 'glossary_config', 'labels', ),
-    'translate_text': ('contents', 'target_language_code', 'parent', 'mime_type', 'source_language_code', 'model', 'glossary_config', 'labels', ),
-
+          'batch_translate_document': ('parent', 'source_language_code', 'target_language_codes', 'input_configs', 'output_config', 'models', 'glossaries', ),
+          'batch_translate_text': ('parent', 'source_language_code', 'target_language_codes', 'input_configs', 'output_config', 'models', 'glossaries', 'labels', ),
+          'create_glossary': ('parent', 'glossary', ),
+          'delete_glossary': ('name', ),
+          'detect_language': ('parent', 'model', 'content', 'mime_type', 'labels', ),
+          'get_glossary': ('name', ),
+          'get_supported_languages': ('parent', 'display_language_code', 'model', ),
+          'list_glossaries': ('parent', 'page_size', 'page_token', 'filter', ),
+          'translate_document': ('parent', 'target_language_code', 'document_input_config', 'source_language_code', 'document_output_config', 'model', 'glossary_config', 'labels', ),
+          'translate_text': ('contents', 'target_language_code', 'parent', 'mime_type', 'source_language_code', 'model', 'glossary_config', 'labels', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -82,7 +79,7 @@ class translateCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that
