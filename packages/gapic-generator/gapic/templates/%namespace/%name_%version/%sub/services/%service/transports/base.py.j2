@@ -6,6 +6,9 @@ import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 import packaging.version
 import pkg_resources
+{% if 'rest' in opts.transport %}
+from requests import __version__ as requests_version
+{% endif %}
 
 import google.auth  # type: ignore
 import google.api_core  # type: ignore
@@ -33,6 +36,12 @@ try:
         gapic_version=pkg_resources.get_distribution(
             '{{ api.naming.warehouse_package_name }}',
         ).version,
+        {% if 'grpc' not in opts.transport %}
+        grpc_version=None,
+        {% endif %}
+        {% if 'rest' in opts.transport %}
+        rest_version=requests_version,
+        {% endif %}
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

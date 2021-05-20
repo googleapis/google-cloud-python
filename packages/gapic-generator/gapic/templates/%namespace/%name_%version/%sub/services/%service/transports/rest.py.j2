@@ -208,8 +208,11 @@ class {{ service.name }}RestTransport({{ service.name }}Transport):
         url += '?{}'.format('&'.join(query_params)).replace(' ', '+')
 
         # Send the request
+        headers = dict(metadata)
+        headers['Content-Type'] = 'application/json'
         response = self._session.{{ method.http_opt['verb'] }}(
             url,
+            headers=headers,
             {% if 'body' in method.http_opt %}
             data=body,
             {% endif %}
