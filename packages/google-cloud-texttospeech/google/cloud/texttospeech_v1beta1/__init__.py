@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,20 +15,22 @@
 #
 
 from .services.text_to_speech import TextToSpeechClient
+from .services.text_to_speech import TextToSpeechAsyncClient
+
 from .types.cloud_tts import AudioConfig
-from .types.cloud_tts import AudioEncoding
 from .types.cloud_tts import ListVoicesRequest
 from .types.cloud_tts import ListVoicesResponse
-from .types.cloud_tts import SsmlVoiceGender
 from .types.cloud_tts import SynthesisInput
 from .types.cloud_tts import SynthesizeSpeechRequest
 from .types.cloud_tts import SynthesizeSpeechResponse
 from .types.cloud_tts import Timepoint
 from .types.cloud_tts import Voice
 from .types.cloud_tts import VoiceSelectionParams
-
+from .types.cloud_tts import AudioEncoding
+from .types.cloud_tts import SsmlVoiceGender
 
 __all__ = (
+    "TextToSpeechAsyncClient",
     "AudioConfig",
     "AudioEncoding",
     "ListVoicesRequest",
@@ -38,8 +39,8 @@ __all__ = (
     "SynthesisInput",
     "SynthesizeSpeechRequest",
     "SynthesizeSpeechResponse",
+    "TextToSpeechClient",
     "Timepoint",
     "Voice",
     "VoiceSelectionParams",
-    "TextToSpeechClient",
 )
