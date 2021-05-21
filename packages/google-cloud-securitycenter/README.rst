@@ -1,14 +1,14 @@
-Python Client for Cloud Security Command Center API (`Alpha`_)
-==============================================================
-|alpha| |pypi| |versions| 
+Python Client for Cloud Security Command Center API
+===================================================
+|GA| |pypi| |versions| 
 
 `Cloud Security Command Center API`_: The public Cloud Security Command Center API.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |alpha| image:: https://img.shields.io/badge/support-alpha-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#alpha-support
+.. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-securitycenter.svg
    :target: https://pypi.org/project/google-cloud-securitycenter/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-securitycenter.svg
