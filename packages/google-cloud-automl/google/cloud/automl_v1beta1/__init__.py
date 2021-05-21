@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +15,18 @@
 #
 
 from .services.auto_ml import AutoMlClient
+from .services.auto_ml import AutoMlAsyncClient
 from .services.prediction_service import PredictionServiceClient
 from .services.tables.gcs_client import GcsClient
 from .services.tables.tables_client import TablesClient
+from .services.prediction_service import PredictionServiceAsyncClient
+
 from .types.annotation_payload import AnnotationPayload
 from .types.annotation_spec import AnnotationSpec
 from .types.classification import ClassificationAnnotation
 from .types.classification import ClassificationEvaluationMetrics
-from .types.classification import ClassificationType
 from .types.classification import VideoClassificationAnnotation
+from .types.classification import ClassificationType
 from .types.column_spec import ColumnSpec
 from .types.data_items import Document
 from .types.data_items import DocumentDimensions
@@ -142,13 +144,15 @@ from .types.video import VideoClassificationModelMetadata
 from .types.video import VideoObjectTrackingDatasetMetadata
 from .types.video import VideoObjectTrackingModelMetadata
 
-
 __all__ = (
     "GcsClient",
     "TablesClient",
+    "AutoMlAsyncClient",
+    "PredictionServiceAsyncClient",
     "AnnotationPayload",
     "AnnotationSpec",
     "ArrayStats",
+    "AutoMlClient",
     "BatchPredictInputConfig",
     "BatchPredictOperationMetadata",
     "BatchPredictOutputConfig",
@@ -269,5 +273,4 @@ __all__ = (
     "VideoObjectTrackingDatasetMetadata",
     "VideoObjectTrackingEvaluationMetrics",
     "VideoObjectTrackingModelMetadata",
-    "AutoMlClient",
 )

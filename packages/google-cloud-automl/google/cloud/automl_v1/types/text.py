@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.automl_v1.types import classification
 
@@ -36,7 +33,6 @@ __protobuf__ = proto.module(
 
 class TextClassificationDatasetMetadata(proto.Message):
     r"""Dataset metadata for classification.
-
     Attributes:
         classification_type (google.cloud.automl_v1.types.ClassificationType):
             Required. Type of the classification problem.
@@ -49,7 +45,6 @@ class TextClassificationDatasetMetadata(proto.Message):
 
 class TextClassificationModelMetadata(proto.Message):
     r"""Model metadata that is specific to text classification.
-
     Attributes:
         classification_type (google.cloud.automl_v1.types.ClassificationType):
             Output only. Classification type of the
@@ -62,16 +57,15 @@ class TextClassificationModelMetadata(proto.Message):
 
 
 class TextExtractionDatasetMetadata(proto.Message):
-    r"""Dataset metadata that is specific to text extraction"""
+    r"""Dataset metadata that is specific to text extraction    """
 
 
 class TextExtractionModelMetadata(proto.Message):
-    r"""Model metadata that is specific to text extraction."""
+    r"""Model metadata that is specific to text extraction.    """
 
 
 class TextSentimentDatasetMetadata(proto.Message):
     r"""Dataset metadata for text sentiment.
-
     Attributes:
         sentiment_max (int):
             Required. A sentiment is expressed as an integer ordinal,
@@ -83,11 +77,11 @@ class TextSentimentDatasetMetadata(proto.Message):
             and 10 (inclusive).
     """
 
-    sentiment_max = proto.Field(proto.INT32, number=1)
+    sentiment_max = proto.Field(proto.INT32, number=1,)
 
 
 class TextSentimentModelMetadata(proto.Message):
-    r"""Model metadata that is specific to text sentiment."""
+    r"""Model metadata that is specific to text sentiment.    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

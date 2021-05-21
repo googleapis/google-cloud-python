@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.automl_v1beta1.types import image
 from google.cloud.automl_v1beta1.types import tables
 from google.cloud.automl_v1beta1.types import text
 from google.cloud.automl_v1beta1.types import translation
 from google.cloud.automl_v1beta1.types import video
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(package="google.cloud.automl.v1beta1", manifest={"Model",},)
@@ -31,7 +28,6 @@ __protobuf__ = proto.module(package="google.cloud.automl.v1beta1", manifest={"Mo
 
 class Model(proto.Message):
     r"""API proto representing a trained machine learning model.
-
     Attributes:
         translation_model_metadata (google.cloud.automl_v1beta1.types.TranslationModelMetadata):
             Metadata for translation models.
@@ -88,73 +84,61 @@ class Model(proto.Message):
         oneof="model_metadata",
         message=translation.TranslationModelMetadata,
     )
-
     image_classification_model_metadata = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="model_metadata",
         message=image.ImageClassificationModelMetadata,
     )
-
     text_classification_model_metadata = proto.Field(
         proto.MESSAGE,
         number=14,
         oneof="model_metadata",
         message=text.TextClassificationModelMetadata,
     )
-
     image_object_detection_model_metadata = proto.Field(
         proto.MESSAGE,
         number=20,
         oneof="model_metadata",
         message=image.ImageObjectDetectionModelMetadata,
     )
-
     video_classification_model_metadata = proto.Field(
         proto.MESSAGE,
         number=23,
         oneof="model_metadata",
         message=video.VideoClassificationModelMetadata,
     )
-
     video_object_tracking_model_metadata = proto.Field(
         proto.MESSAGE,
         number=21,
         oneof="model_metadata",
         message=video.VideoObjectTrackingModelMetadata,
     )
-
     text_extraction_model_metadata = proto.Field(
         proto.MESSAGE,
         number=19,
         oneof="model_metadata",
         message=text.TextExtractionModelMetadata,
     )
-
     tables_model_metadata = proto.Field(
         proto.MESSAGE,
         number=24,
         oneof="model_metadata",
         message=tables.TablesModelMetadata,
     )
-
     text_sentiment_model_metadata = proto.Field(
         proto.MESSAGE,
         number=22,
         oneof="model_metadata",
         message=text.TextSentimentModelMetadata,
     )
-
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
-    dataset_id = proto.Field(proto.STRING, number=3)
-
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=11, message=timestamp.Timestamp,)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
+    dataset_id = proto.Field(proto.STRING, number=3,)
+    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(
+        proto.MESSAGE, number=11, message=timestamp_pb2.Timestamp,
+    )
     deployment_state = proto.Field(proto.ENUM, number=8, enum=DeploymentState,)
 
 

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.automl_v1beta1.types import column_spec
 from google.cloud.automl_v1beta1.types import data_stats
 from google.cloud.automl_v1beta1.types import ranges
-from google.protobuf import struct_pb2 as struct  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -38,7 +35,6 @@ __protobuf__ = proto.module(
 
 class TablesDatasetMetadata(proto.Message):
     r"""Metadata for a dataset used for AutoML Tables.
-
     Attributes:
         primary_table_spec_id (str):
             Output only. The table_spec_id of the primary table of this
@@ -105,26 +101,20 @@ class TablesDatasetMetadata(proto.Message):
             effort basis.
     """
 
-    primary_table_spec_id = proto.Field(proto.STRING, number=1)
-
-    target_column_spec_id = proto.Field(proto.STRING, number=2)
-
-    weight_column_spec_id = proto.Field(proto.STRING, number=3)
-
-    ml_use_column_spec_id = proto.Field(proto.STRING, number=4)
-
+    primary_table_spec_id = proto.Field(proto.STRING, number=1,)
+    target_column_spec_id = proto.Field(proto.STRING, number=2,)
+    weight_column_spec_id = proto.Field(proto.STRING, number=3,)
+    ml_use_column_spec_id = proto.Field(proto.STRING, number=4,)
     target_column_correlations = proto.MapField(
         proto.STRING, proto.MESSAGE, number=6, message=data_stats.CorrelationStats,
     )
-
     stats_update_time = proto.Field(
-        proto.MESSAGE, number=7, message=timestamp.Timestamp,
+        proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,
     )
 
 
 class TablesModelMetadata(proto.Message):
     r"""Model metadata specific to AutoML Tables.
-
     Attributes:
         optimization_objective_recall_value (float):
             Required when optimization_objective is
@@ -229,37 +219,28 @@ class TablesModelMetadata(proto.Message):
     """
 
     optimization_objective_recall_value = proto.Field(
-        proto.FLOAT, number=17, oneof="additional_optimization_objective_config"
+        proto.FLOAT, number=17, oneof="additional_optimization_objective_config",
     )
-
     optimization_objective_precision_value = proto.Field(
-        proto.FLOAT, number=18, oneof="additional_optimization_objective_config"
+        proto.FLOAT, number=18, oneof="additional_optimization_objective_config",
     )
-
     target_column_spec = proto.Field(
         proto.MESSAGE, number=2, message=column_spec.ColumnSpec,
     )
-
     input_feature_column_specs = proto.RepeatedField(
         proto.MESSAGE, number=3, message=column_spec.ColumnSpec,
     )
-
-    optimization_objective = proto.Field(proto.STRING, number=4)
-
+    optimization_objective = proto.Field(proto.STRING, number=4,)
     tables_model_column_info = proto.RepeatedField(
         proto.MESSAGE, number=5, message="TablesModelColumnInfo",
     )
-
-    train_budget_milli_node_hours = proto.Field(proto.INT64, number=6)
-
-    train_cost_milli_node_hours = proto.Field(proto.INT64, number=7)
-
-    disable_early_stopping = proto.Field(proto.BOOL, number=12)
+    train_budget_milli_node_hours = proto.Field(proto.INT64, number=6,)
+    train_cost_milli_node_hours = proto.Field(proto.INT64, number=7,)
+    disable_early_stopping = proto.Field(proto.BOOL, number=12,)
 
 
 class TablesAnnotation(proto.Message):
     r"""Contains annotation details specific to Tables.
-
     Attributes:
         score (float):
             Output only. A confidence estimate between 0.0 and 1.0,
@@ -311,19 +292,15 @@ class TablesAnnotation(proto.Message):
             baseline example for the argmax class.
     """
 
-    score = proto.Field(proto.FLOAT, number=1)
-
+    score = proto.Field(proto.FLOAT, number=1,)
     prediction_interval = proto.Field(
         proto.MESSAGE, number=4, message=ranges.DoubleRange,
     )
-
-    value = proto.Field(proto.MESSAGE, number=2, message=struct.Value,)
-
+    value = proto.Field(proto.MESSAGE, number=2, message=struct_pb2.Value,)
     tables_model_column_info = proto.RepeatedField(
         proto.MESSAGE, number=3, message="TablesModelColumnInfo",
     )
-
-    baseline_score = proto.Field(proto.FLOAT, number=5)
+    baseline_score = proto.Field(proto.FLOAT, number=5,)
 
 
 class TablesModelColumnInfo(proto.Message):
@@ -359,11 +336,9 @@ class TablesModelColumnInfo(proto.Message):
             values are computed using the Sampled Shapley method.
     """
 
-    column_spec_name = proto.Field(proto.STRING, number=1)
-
-    column_display_name = proto.Field(proto.STRING, number=2)
-
-    feature_importance = proto.Field(proto.FLOAT, number=3)
+    column_spec_name = proto.Field(proto.STRING, number=1,)
+    column_display_name = proto.Field(proto.STRING, number=2,)
+    feature_importance = proto.Field(proto.FLOAT, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

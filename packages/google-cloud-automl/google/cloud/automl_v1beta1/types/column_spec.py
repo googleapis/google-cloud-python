@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.automl_v1beta1.types import data_stats as gca_data_stats
 from google.cloud.automl_v1beta1.types import data_types
@@ -74,25 +71,19 @@ class ColumnSpec(proto.Message):
                 column.
         """
 
-        column_spec_id = proto.Field(proto.STRING, number=1)
-
+        column_spec_id = proto.Field(proto.STRING, number=1,)
         correlation_stats = proto.Field(
             proto.MESSAGE, number=2, message=gca_data_stats.CorrelationStats,
         )
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     data_type = proto.Field(proto.MESSAGE, number=2, message=data_types.DataType,)
-
-    display_name = proto.Field(proto.STRING, number=3)
-
+    display_name = proto.Field(proto.STRING, number=3,)
     data_stats = proto.Field(proto.MESSAGE, number=4, message=gca_data_stats.DataStats,)
-
     top_correlated_columns = proto.RepeatedField(
         proto.MESSAGE, number=5, message=CorrelatedColumn,
     )
-
-    etag = proto.Field(proto.STRING, number=6)
+    etag = proto.Field(proto.STRING, number=6,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

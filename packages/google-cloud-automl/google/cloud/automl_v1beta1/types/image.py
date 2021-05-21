@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.automl_v1beta1.types import classification
 
@@ -36,7 +33,6 @@ __protobuf__ = proto.module(
 
 class ImageClassificationDatasetMetadata(proto.Message):
     r"""Dataset metadata that is specific to image classification.
-
     Attributes:
         classification_type (google.cloud.automl_v1beta1.types.ClassificationType):
             Required. Type of the classification problem.
@@ -48,12 +44,11 @@ class ImageClassificationDatasetMetadata(proto.Message):
 
 
 class ImageObjectDetectionDatasetMetadata(proto.Message):
-    r"""Dataset metadata specific to image object detection."""
+    r"""Dataset metadata specific to image object detection.    """
 
 
 class ImageClassificationModelMetadata(proto.Message):
     r"""Model metadata for image classification.
-
     Attributes:
         base_model_id (str):
             Optional. The ID of the ``base`` model. If it is specified,
@@ -128,24 +123,17 @@ class ImageClassificationModelMetadata(proto.Message):
             handle online prediction QPS as given in the node_qps field.
     """
 
-    base_model_id = proto.Field(proto.STRING, number=1)
-
-    train_budget = proto.Field(proto.INT64, number=2)
-
-    train_cost = proto.Field(proto.INT64, number=3)
-
-    stop_reason = proto.Field(proto.STRING, number=5)
-
-    model_type = proto.Field(proto.STRING, number=7)
-
-    node_qps = proto.Field(proto.DOUBLE, number=13)
-
-    node_count = proto.Field(proto.INT64, number=14)
+    base_model_id = proto.Field(proto.STRING, number=1,)
+    train_budget = proto.Field(proto.INT64, number=2,)
+    train_cost = proto.Field(proto.INT64, number=3,)
+    stop_reason = proto.Field(proto.STRING, number=5,)
+    model_type = proto.Field(proto.STRING, number=7,)
+    node_qps = proto.Field(proto.DOUBLE, number=13,)
+    node_count = proto.Field(proto.INT64, number=14,)
 
 
 class ImageObjectDetectionModelMetadata(proto.Message):
     r"""Model metadata specific to image object detection.
-
     Attributes:
         model_type (str):
             Optional. Type of the model. The available values are:
@@ -218,22 +206,16 @@ class ImageObjectDetectionModelMetadata(proto.Message):
             budget.
     """
 
-    model_type = proto.Field(proto.STRING, number=1)
-
-    node_count = proto.Field(proto.INT64, number=3)
-
-    node_qps = proto.Field(proto.DOUBLE, number=4)
-
-    stop_reason = proto.Field(proto.STRING, number=5)
-
-    train_budget_milli_node_hours = proto.Field(proto.INT64, number=6)
-
-    train_cost_milli_node_hours = proto.Field(proto.INT64, number=7)
+    model_type = proto.Field(proto.STRING, number=1,)
+    node_count = proto.Field(proto.INT64, number=3,)
+    node_qps = proto.Field(proto.DOUBLE, number=4,)
+    stop_reason = proto.Field(proto.STRING, number=5,)
+    train_budget_milli_node_hours = proto.Field(proto.INT64, number=6,)
+    train_cost_milli_node_hours = proto.Field(proto.INT64, number=7,)
 
 
 class ImageClassificationModelDeploymentMetadata(proto.Message):
     r"""Model deployment metadata specific to Image Classification.
-
     Attributes:
         node_count (int):
             Input only. The number of nodes to deploy the model on. A
@@ -244,12 +226,11 @@ class ImageClassificationModelDeploymentMetadata(proto.Message):
             Must be between 1 and 100, inclusive on both ends.
     """
 
-    node_count = proto.Field(proto.INT64, number=1)
+    node_count = proto.Field(proto.INT64, number=1,)
 
 
 class ImageObjectDetectionModelDeploymentMetadata(proto.Message):
     r"""Model deployment metadata specific to Image Object Detection.
-
     Attributes:
         node_count (int):
             Input only. The number of nodes to deploy the model on. A
@@ -260,7 +241,7 @@ class ImageObjectDetectionModelDeploymentMetadata(proto.Message):
             Must be between 1 and 100, inclusive on both ends.
     """
 
-    node_count = proto.Field(proto.INT64, number=1)
+    node_count = proto.Field(proto.INT64, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

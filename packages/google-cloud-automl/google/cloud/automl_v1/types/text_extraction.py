@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.automl_v1.types import text_segment as gca_text_segment
 
@@ -29,7 +26,6 @@ __protobuf__ = proto.module(
 
 class TextExtractionAnnotation(proto.Message):
     r"""Annotation for identifying spans of text.
-
     Attributes:
         text_segment (google.cloud.automl_v1.types.TextSegment):
             An entity annotation will set this, which is
@@ -47,13 +43,11 @@ class TextExtractionAnnotation(proto.Message):
         oneof="annotation",
         message=gca_text_segment.TextSegment,
     )
-
-    score = proto.Field(proto.FLOAT, number=1)
+    score = proto.Field(proto.FLOAT, number=1,)
 
 
 class TextExtractionEvaluationMetrics(proto.Message):
     r"""Model evaluation metrics for text extraction problems.
-
     Attributes:
         au_prc (float):
             Output only. The Area under precision recall
@@ -66,7 +60,6 @@ class TextExtractionEvaluationMetrics(proto.Message):
 
     class ConfidenceMetricsEntry(proto.Message):
         r"""Metrics for a single confidence threshold.
-
         Attributes:
             confidence_threshold (float):
                 Output only. The confidence threshold value
@@ -84,16 +77,12 @@ class TextExtractionEvaluationMetrics(proto.Message):
                 precision.
         """
 
-        confidence_threshold = proto.Field(proto.FLOAT, number=1)
+        confidence_threshold = proto.Field(proto.FLOAT, number=1,)
+        recall = proto.Field(proto.FLOAT, number=3,)
+        precision = proto.Field(proto.FLOAT, number=4,)
+        f1_score = proto.Field(proto.FLOAT, number=5,)
 
-        recall = proto.Field(proto.FLOAT, number=3)
-
-        precision = proto.Field(proto.FLOAT, number=4)
-
-        f1_score = proto.Field(proto.FLOAT, number=5)
-
-    au_prc = proto.Field(proto.FLOAT, number=1)
-
+    au_prc = proto.Field(proto.FLOAT, number=1,)
     confidence_metrics_entries = proto.RepeatedField(
         proto.MESSAGE, number=2, message=ConfidenceMetricsEntry,
     )

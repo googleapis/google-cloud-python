@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -60,9 +58,8 @@ from google.cloud.automl_v1beta1.types import text_extraction
 from google.cloud.automl_v1beta1.types import text_sentiment
 from google.cloud.automl_v1beta1.types import translation
 from google.cloud.automl_v1beta1.types import video
-from google.protobuf import empty_pb2 as empty  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import AutoMlTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import AutoMlGrpcTransport
 from .transports.grpc_asyncio import AutoMlGrpcAsyncIOTransport
@@ -81,7 +78,7 @@ class AutoMlClientMeta(type):
     _transport_registry["grpc_asyncio"] = AutoMlGrpcAsyncIOTransport
 
     def get_transport_class(cls, label: str = None,) -> Type[AutoMlTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -119,7 +116,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -153,7 +151,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -170,7 +169,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -189,10 +188,11 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     @property
     def transport(self) -> AutoMlTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            AutoMlTransport: The transport used by the client instance.
+            AutoMlTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
@@ -200,7 +200,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
     def annotation_spec_path(
         project: str, location: str, dataset: str, annotation_spec: str,
     ) -> str:
-        """Return a fully-qualified annotation_spec string."""
+        """Returns a fully-qualified annotation_spec string."""
         return "projects/{project}/locations/{location}/datasets/{dataset}/annotationSpecs/{annotation_spec}".format(
             project=project,
             location=location,
@@ -210,7 +210,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     @staticmethod
     def parse_annotation_spec_path(path: str) -> Dict[str, str]:
-        """Parse a annotation_spec path into its component segments."""
+        """Parses a annotation_spec path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/datasets/(?P<dataset>.+?)/annotationSpecs/(?P<annotation_spec>.+?)$",
             path,
@@ -221,7 +221,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
     def column_spec_path(
         project: str, location: str, dataset: str, table_spec: str, column_spec: str,
     ) -> str:
-        """Return a fully-qualified column_spec string."""
+        """Returns a fully-qualified column_spec string."""
         return "projects/{project}/locations/{location}/datasets/{dataset}/tableSpecs/{table_spec}/columnSpecs/{column_spec}".format(
             project=project,
             location=location,
@@ -232,7 +232,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     @staticmethod
     def parse_column_spec_path(path: str) -> Dict[str, str]:
-        """Parse a column_spec path into its component segments."""
+        """Parses a column_spec path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/datasets/(?P<dataset>.+?)/tableSpecs/(?P<table_spec>.+?)/columnSpecs/(?P<column_spec>.+?)$",
             path,
@@ -241,14 +241,14 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     @staticmethod
     def dataset_path(project: str, location: str, dataset: str,) -> str:
-        """Return a fully-qualified dataset string."""
+        """Returns a fully-qualified dataset string."""
         return "projects/{project}/locations/{location}/datasets/{dataset}".format(
             project=project, location=location, dataset=dataset,
         )
 
     @staticmethod
     def parse_dataset_path(path: str) -> Dict[str, str]:
-        """Parse a dataset path into its component segments."""
+        """Parses a dataset path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/datasets/(?P<dataset>.+?)$",
             path,
@@ -257,14 +257,14 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     @staticmethod
     def model_path(project: str, location: str, model: str,) -> str:
-        """Return a fully-qualified model string."""
+        """Returns a fully-qualified model string."""
         return "projects/{project}/locations/{location}/models/{model}".format(
             project=project, location=location, model=model,
         )
 
     @staticmethod
     def parse_model_path(path: str) -> Dict[str, str]:
-        """Parse a model path into its component segments."""
+        """Parses a model path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/models/(?P<model>.+?)$",
             path,
@@ -275,7 +275,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
     def model_evaluation_path(
         project: str, location: str, model: str, model_evaluation: str,
     ) -> str:
-        """Return a fully-qualified model_evaluation string."""
+        """Returns a fully-qualified model_evaluation string."""
         return "projects/{project}/locations/{location}/models/{model}/modelEvaluations/{model_evaluation}".format(
             project=project,
             location=location,
@@ -285,7 +285,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     @staticmethod
     def parse_model_evaluation_path(path: str) -> Dict[str, str]:
-        """Parse a model_evaluation path into its component segments."""
+        """Parses a model_evaluation path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/models/(?P<model>.+?)/modelEvaluations/(?P<model_evaluation>.+?)$",
             path,
@@ -296,14 +296,14 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
     def table_spec_path(
         project: str, location: str, dataset: str, table_spec: str,
     ) -> str:
-        """Return a fully-qualified table_spec string."""
+        """Returns a fully-qualified table_spec string."""
         return "projects/{project}/locations/{location}/datasets/{dataset}/tableSpecs/{table_spec}".format(
             project=project, location=location, dataset=dataset, table_spec=table_spec,
         )
 
     @staticmethod
     def parse_table_spec_path(path: str) -> Dict[str, str]:
-        """Parse a table_spec path into its component segments."""
+        """Parses a table_spec path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/datasets/(?P<dataset>.+?)/tableSpecs/(?P<table_spec>.+?)$",
             path,
@@ -312,7 +312,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -325,7 +325,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -336,7 +336,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -347,7 +347,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -358,7 +358,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -372,12 +372,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, AutoMlTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the auto ml client.
+        """Instantiates the auto ml client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -432,9 +432,10 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -446,12 +447,14 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -466,8 +469,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -510,7 +513,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``dataset`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -541,10 +543,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.CreateDatasetRequest):
             request = service.CreateDatasetRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if dataset is not None:
@@ -588,7 +588,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -619,10 +618,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.GetDatasetRequest):
             request = service.GetDatasetRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -664,7 +661,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -696,10 +692,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.ListDatasetsRequest):
             request = service.ListDatasetsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -747,7 +741,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``dataset`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -778,10 +771,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.UpdateDatasetRequest):
             request = service.UpdateDatasetRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if dataset is not None:
                 request.dataset = dataset
 
@@ -829,7 +820,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -871,10 +861,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.DeleteDatasetRequest):
             request = service.DeleteDatasetRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -895,7 +883,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=operations.OperationMetadata,
         )
 
@@ -943,7 +931,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``input_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -985,10 +972,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.ImportDataRequest):
             request = service.ImportDataRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
             if input_config is not None:
@@ -1011,7 +996,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=operations.OperationMetadata,
         )
 
@@ -1051,7 +1036,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``output_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1093,10 +1077,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.ExportDataRequest):
             request = service.ExportDataRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
             if output_config is not None:
@@ -1119,7 +1101,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=operations.OperationMetadata,
         )
 
@@ -1148,7 +1130,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1175,10 +1156,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.GetAnnotationSpecRequest):
             request = service.GetAnnotationSpecRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1220,7 +1199,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1257,10 +1235,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.GetTableSpecRequest):
             request = service.GetTableSpecRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1302,7 +1278,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1334,10 +1309,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.ListTableSpecsRequest):
             request = service.ListTableSpecsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1385,7 +1358,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``table_spec`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1422,10 +1394,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.UpdateTableSpecRequest):
             request = service.UpdateTableSpecRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if table_spec is not None:
                 request.table_spec = table_spec
 
@@ -1469,7 +1439,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1498,10 +1467,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.GetColumnSpecRequest):
             request = service.GetColumnSpecRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1543,7 +1510,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1575,10 +1541,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.ListColumnSpecsRequest):
             request = service.ListColumnSpecsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1626,7 +1590,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``column_spec`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1655,10 +1618,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.UpdateColumnSpecRequest):
             request = service.UpdateColumnSpecRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if column_spec is not None:
                 request.column_spec = column_spec
 
@@ -1713,7 +1674,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``model`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1745,10 +1705,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.CreateModelRequest):
             request = service.CreateModelRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if model is not None:
@@ -1798,7 +1756,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1827,10 +1784,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.GetModelRequest):
             request = service.GetModelRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1872,7 +1827,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1904,10 +1858,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.ListModelsRequest):
             request = service.ListModelsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1958,7 +1910,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2000,10 +1951,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.DeleteModelRequest):
             request = service.DeleteModelRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -2024,7 +1973,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=operations.OperationMetadata,
         )
 
@@ -2067,7 +2016,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2109,10 +2057,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.DeployModelRequest):
             request = service.DeployModelRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -2133,7 +2079,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=operations.OperationMetadata,
         )
 
@@ -2170,7 +2116,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2212,10 +2157,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.UndeployModelRequest):
             request = service.UndeployModelRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -2236,7 +2179,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=operations.OperationMetadata,
         )
 
@@ -2283,7 +2226,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``output_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2325,10 +2267,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.ExportModelRequest):
             request = service.ExportModelRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
             if output_config is not None:
@@ -2351,7 +2291,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=operations.OperationMetadata,
         )
 
@@ -2403,7 +2343,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``output_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2445,10 +2384,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.ExportEvaluatedExamplesRequest):
             request = service.ExportEvaluatedExamplesRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
             if output_config is not None:
@@ -2473,7 +2410,7 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=operations.OperationMetadata,
         )
 
@@ -2502,7 +2439,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2529,10 +2465,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.GetModelEvaluationRequest):
             request = service.GetModelEvaluationRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -2577,7 +2511,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2609,10 +2542,8 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         # there are no flattened fields.
         if not isinstance(request, service.ListModelEvaluationsRequest):
             request = service.ListModelEvaluationsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 

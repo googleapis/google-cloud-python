@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -38,9 +36,8 @@ class NormalizedVertex(proto.Message):
             Required. Vertical coordinate.
     """
 
-    x = proto.Field(proto.FLOAT, number=1)
-
-    y = proto.Field(proto.FLOAT, number=2)
+    x = proto.Field(proto.FLOAT, number=1,)
+    y = proto.Field(proto.FLOAT, number=2,)
 
 
 class BoundingPoly(proto.Message):

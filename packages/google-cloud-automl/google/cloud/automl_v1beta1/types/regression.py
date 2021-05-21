@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -25,7 +23,6 @@ __protobuf__ = proto.module(
 
 class RegressionEvaluationMetrics(proto.Message):
     r"""Metrics for regression problems.
-
     Attributes:
         root_mean_squared_error (float):
             Output only. Root Mean Squared Error (RMSE).
@@ -41,15 +38,11 @@ class RegressionEvaluationMetrics(proto.Message):
             Output only. Root mean squared log error.
     """
 
-    root_mean_squared_error = proto.Field(proto.FLOAT, number=1)
-
-    mean_absolute_error = proto.Field(proto.FLOAT, number=2)
-
-    mean_absolute_percentage_error = proto.Field(proto.FLOAT, number=3)
-
-    r_squared = proto.Field(proto.FLOAT, number=4)
-
-    root_mean_squared_log_error = proto.Field(proto.FLOAT, number=5)
+    root_mean_squared_error = proto.Field(proto.FLOAT, number=1,)
+    mean_absolute_error = proto.Field(proto.FLOAT, number=2,)
+    mean_absolute_percentage_error = proto.Field(proto.FLOAT, number=3,)
+    r_squared = proto.Field(proto.FLOAT, number=4,)
+    root_mean_squared_log_error = proto.Field(proto.FLOAT, number=5,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

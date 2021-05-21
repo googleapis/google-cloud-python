@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -25,7 +23,6 @@ __protobuf__ = proto.module(
 
 class AnnotationSpec(proto.Message):
     r"""A definition of an annotation spec.
-
     Attributes:
         name (str):
             Output only. Resource name of the annotation spec. Form:
@@ -40,11 +37,9 @@ class AnnotationSpec(proto.Message):
             parent dataset labeled by the annotation spec.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
-    example_count = proto.Field(proto.INT32, number=9)
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
+    example_count = proto.Field(proto.INT32, number=9,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

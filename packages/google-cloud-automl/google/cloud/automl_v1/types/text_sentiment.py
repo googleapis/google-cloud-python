@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.automl_v1.types import classification
 
@@ -29,7 +26,6 @@ __protobuf__ = proto.module(
 
 class TextSentimentAnnotation(proto.Message):
     r"""Contains annotation details specific to text sentiment.
-
     Attributes:
         sentiment (int):
             Output only. The sentiment with the semantic, as given to
@@ -50,12 +46,11 @@ class TextSentimentAnnotation(proto.Message):
             Analysis API.
     """
 
-    sentiment = proto.Field(proto.INT32, number=1)
+    sentiment = proto.Field(proto.INT32, number=1,)
 
 
 class TextSentimentEvaluationMetrics(proto.Message):
     r"""Model evaluation metrics for text sentiment problems.
-
     Attributes:
         precision (float):
             Output only. Precision.
@@ -87,20 +82,13 @@ class TextSentimentEvaluationMetrics(proto.Message):
             annotation spec.
     """
 
-    precision = proto.Field(proto.FLOAT, number=1)
-
-    recall = proto.Field(proto.FLOAT, number=2)
-
-    f1_score = proto.Field(proto.FLOAT, number=3)
-
-    mean_absolute_error = proto.Field(proto.FLOAT, number=4)
-
-    mean_squared_error = proto.Field(proto.FLOAT, number=5)
-
-    linear_kappa = proto.Field(proto.FLOAT, number=6)
-
-    quadratic_kappa = proto.Field(proto.FLOAT, number=7)
-
+    precision = proto.Field(proto.FLOAT, number=1,)
+    recall = proto.Field(proto.FLOAT, number=2,)
+    f1_score = proto.Field(proto.FLOAT, number=3,)
+    mean_absolute_error = proto.Field(proto.FLOAT, number=4,)
+    mean_squared_error = proto.Field(proto.FLOAT, number=5,)
+    linear_kappa = proto.Field(proto.FLOAT, number=6,)
+    quadratic_kappa = proto.Field(proto.FLOAT, number=7,)
     confusion_matrix = proto.Field(
         proto.MESSAGE,
         number=8,

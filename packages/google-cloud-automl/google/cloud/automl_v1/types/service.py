@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,16 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.automl_v1.types import dataset as gca_dataset
 from google.cloud.automl_v1.types import image
 from google.cloud.automl_v1.types import io
 from google.cloud.automl_v1.types import model as gca_model
 from google.cloud.automl_v1.types import model_evaluation as gca_model_evaluation
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -66,8 +63,7 @@ class CreateDatasetRequest(proto.Message):
             Required. The dataset to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     dataset = proto.Field(proto.MESSAGE, number=2, message=gca_dataset.Dataset,)
 
 
@@ -81,7 +77,7 @@ class GetDatasetRequest(proto.Message):
             retrieve.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListDatasetsRequest(proto.Message):
@@ -114,13 +110,10 @@ class ListDatasetsRequest(proto.Message):
             call.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=3)
-
-    page_size = proto.Field(proto.INT32, number=4)
-
-    page_token = proto.Field(proto.STRING, number=6)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=3,)
+    page_size = proto.Field(proto.INT32, number=4,)
+    page_token = proto.Field(proto.STRING, number=6,)
 
 
 class ListDatasetsResponse(proto.Message):
@@ -143,8 +136,7 @@ class ListDatasetsResponse(proto.Message):
     datasets = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gca_dataset.Dataset,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class UpdateDatasetRequest(proto.Message):
@@ -161,8 +153,9 @@ class UpdateDatasetRequest(proto.Message):
     """
 
     dataset = proto.Field(proto.MESSAGE, number=1, message=gca_dataset.Dataset,)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteDatasetRequest(proto.Message):
@@ -175,7 +168,7 @@ class DeleteDatasetRequest(proto.Message):
             delete.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ImportDataRequest(proto.Message):
@@ -192,8 +185,7 @@ class ImportDataRequest(proto.Message):
             domain specific semantics, if any.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     input_config = proto.Field(proto.MESSAGE, number=3, message=io.InputConfig,)
 
 
@@ -208,8 +200,7 @@ class ExportDataRequest(proto.Message):
             Required. The desired output location.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     output_config = proto.Field(proto.MESSAGE, number=3, message=io.OutputConfig,)
 
 
@@ -223,7 +214,7 @@ class GetAnnotationSpecRequest(proto.Message):
             spec to retrieve.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateModelRequest(proto.Message):
@@ -238,8 +229,7 @@ class CreateModelRequest(proto.Message):
             Required. The model to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     model = proto.Field(proto.MESSAGE, number=4, message=gca_model.Model,)
 
 
@@ -252,7 +242,7 @@ class GetModelRequest(proto.Message):
             Required. Resource name of the model.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListModelsRequest(proto.Message):
@@ -288,13 +278,10 @@ class ListModelsRequest(proto.Message):
             call.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=3)
-
-    page_size = proto.Field(proto.INT32, number=4)
-
-    page_token = proto.Field(proto.STRING, number=6)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=3,)
+    page_size = proto.Field(proto.INT32, number=4,)
+    page_token = proto.Field(proto.STRING, number=6,)
 
 
 class ListModelsResponse(proto.Message):
@@ -315,8 +302,7 @@ class ListModelsResponse(proto.Message):
         return self
 
     model = proto.RepeatedField(proto.MESSAGE, number=1, message=gca_model.Model,)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class DeleteModelRequest(proto.Message):
@@ -329,7 +315,7 @@ class DeleteModelRequest(proto.Message):
             deleted.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class UpdateModelRequest(proto.Message):
@@ -346,8 +332,9 @@ class UpdateModelRequest(proto.Message):
     """
 
     model = proto.Field(proto.MESSAGE, number=1, message=gca_model.Model,)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeployModelRequest(proto.Message):
@@ -372,15 +359,13 @@ class DeployModelRequest(proto.Message):
         oneof="model_deployment_metadata",
         message=image.ImageObjectDetectionModelDeploymentMetadata,
     )
-
     image_classification_model_deployment_metadata = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="model_deployment_metadata",
         message=image.ImageClassificationModelDeploymentMetadata,
     )
-
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class UndeployModelRequest(proto.Message):
@@ -393,7 +378,7 @@ class UndeployModelRequest(proto.Message):
             undeploy.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ExportModelRequest(proto.Message):
@@ -411,8 +396,7 @@ class ExportModelRequest(proto.Message):
             configuration.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     output_config = proto.Field(
         proto.MESSAGE, number=3, message=io.ModelExportOutputConfig,
     )
@@ -428,7 +412,7 @@ class GetModelEvaluationRequest(proto.Message):
             evaluation.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListModelEvaluationsRequest(proto.Message):
@@ -465,13 +449,10 @@ class ListModelEvaluationsRequest(proto.Message):
             call.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=3)
-
-    page_size = proto.Field(proto.INT32, number=4)
-
-    page_token = proto.Field(proto.STRING, number=6)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=3,)
+    page_size = proto.Field(proto.INT32, number=4,)
+    page_token = proto.Field(proto.STRING, number=6,)
 
 
 class ListModelEvaluationsResponse(proto.Message):
@@ -497,8 +478,7 @@ class ListModelEvaluationsResponse(proto.Message):
     model_evaluation = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gca_model_evaluation.ModelEvaluation,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

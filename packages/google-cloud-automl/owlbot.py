@@ -30,8 +30,10 @@ for library in s.get_staging_dirs(default_version):
         s.replace(
             library / f"google/cloud/automl_v1beta1/__init__.py",
             "from .services.auto_ml import AutoMlClient\n"
+            "from .services.auto_ml import AutoMlAsyncClient\n"
             "from .services.prediction_service import PredictionServiceClient\n",
             "from .services.auto_ml import AutoMlClient\n"
+            "from .services.auto_ml import AutoMlAsyncClient\n"
             "from .services.prediction_service import PredictionServiceClient\n"
             "from .services.tables.gcs_client import GcsClient\n"
             "from .services.tables.tables_client import TablesClient\n"

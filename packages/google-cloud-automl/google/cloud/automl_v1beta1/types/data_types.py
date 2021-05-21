@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -81,16 +79,12 @@ class DataType(proto.Message):
     list_element_type = proto.Field(
         proto.MESSAGE, number=2, oneof="details", message="DataType",
     )
-
     struct_type = proto.Field(
         proto.MESSAGE, number=3, oneof="details", message="StructType",
     )
-
-    time_format = proto.Field(proto.STRING, number=5, oneof="details")
-
+    time_format = proto.Field(proto.STRING, number=5, oneof="details",)
     type_code = proto.Field(proto.ENUM, number=1, enum="TypeCode",)
-
-    nullable = proto.Field(proto.BOOL, number=4)
+    nullable = proto.Field(proto.BOOL, number=4,)
 
 
 class StructType(proto.Message):

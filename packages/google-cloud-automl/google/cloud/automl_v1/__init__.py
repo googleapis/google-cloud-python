@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +15,10 @@
 #
 
 from .services.auto_ml import AutoMlClient
+from .services.auto_ml import AutoMlAsyncClient
 from .services.prediction_service import PredictionServiceClient
+from .services.prediction_service import PredictionServiceAsyncClient
+
 from .types.annotation_payload import AnnotationPayload
 from .types.annotation_spec import AnnotationSpec
 from .types.classification import ClassificationAnnotation
@@ -100,10 +102,12 @@ from .types.translation import TranslationDatasetMetadata
 from .types.translation import TranslationEvaluationMetrics
 from .types.translation import TranslationModelMetadata
 
-
 __all__ = (
+    "AutoMlAsyncClient",
+    "PredictionServiceAsyncClient",
     "AnnotationPayload",
     "AnnotationSpec",
+    "AutoMlClient",
     "BatchPredictInputConfig",
     "BatchPredictOperationMetadata",
     "BatchPredictOutputConfig",
@@ -185,5 +189,4 @@ __all__ = (
     "UndeployModelRequest",
     "UpdateDatasetRequest",
     "UpdateModelRequest",
-    "AutoMlClient",
 )

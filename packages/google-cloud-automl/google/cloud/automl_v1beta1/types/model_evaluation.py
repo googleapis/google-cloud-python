@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.automl_v1beta1.types import classification
 from google.cloud.automl_v1beta1.types import detection
@@ -24,7 +21,7 @@ from google.cloud.automl_v1beta1.types import regression
 from google.cloud.automl_v1beta1.types import text_extraction
 from google.cloud.automl_v1beta1.types import text_sentiment
 from google.cloud.automl_v1beta1.types import translation
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -34,7 +31,6 @@ __protobuf__ = proto.module(
 
 class ModelEvaluation(proto.Message):
     r"""Evaluation results of a model.
-
     Attributes:
         classification_evaluation_metrics (google.cloud.automl_v1beta1.types.ClassificationEvaluationMetrics):
             Model evaluation metrics for image, text,
@@ -109,58 +105,47 @@ class ModelEvaluation(proto.Message):
         oneof="metrics",
         message=classification.ClassificationEvaluationMetrics,
     )
-
     regression_evaluation_metrics = proto.Field(
         proto.MESSAGE,
         number=24,
         oneof="metrics",
         message=regression.RegressionEvaluationMetrics,
     )
-
     translation_evaluation_metrics = proto.Field(
         proto.MESSAGE,
         number=9,
         oneof="metrics",
         message=translation.TranslationEvaluationMetrics,
     )
-
     image_object_detection_evaluation_metrics = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="metrics",
         message=detection.ImageObjectDetectionEvaluationMetrics,
     )
-
     video_object_tracking_evaluation_metrics = proto.Field(
         proto.MESSAGE,
         number=14,
         oneof="metrics",
         message=detection.VideoObjectTrackingEvaluationMetrics,
     )
-
     text_sentiment_evaluation_metrics = proto.Field(
         proto.MESSAGE,
         number=11,
         oneof="metrics",
         message=text_sentiment.TextSentimentEvaluationMetrics,
     )
-
     text_extraction_evaluation_metrics = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="metrics",
         message=text_extraction.TextExtractionEvaluationMetrics,
     )
-
-    name = proto.Field(proto.STRING, number=1)
-
-    annotation_spec_id = proto.Field(proto.STRING, number=2)
-
-    display_name = proto.Field(proto.STRING, number=15)
-
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
-
-    evaluated_example_count = proto.Field(proto.INT32, number=6)
+    name = proto.Field(proto.STRING, number=1,)
+    annotation_spec_id = proto.Field(proto.STRING, number=2,)
+    display_name = proto.Field(proto.STRING, number=15,)
+    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    evaluated_example_count = proto.Field(proto.INT32, number=6,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

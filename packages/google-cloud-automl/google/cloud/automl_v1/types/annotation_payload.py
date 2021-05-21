@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.automl_v1.types import classification as gca_classification
 from google.cloud.automl_v1.types import detection
@@ -32,7 +29,6 @@ __protobuf__ = proto.module(
 
 class AnnotationPayload(proto.Message):
     r"""Contains annotation information that is relevant to AutoML.
-
     Attributes:
         translation (google.cloud.automl_v1.types.TranslationAnnotation):
             Annotation details for translation.
@@ -68,38 +64,32 @@ class AnnotationPayload(proto.Message):
         oneof="detail",
         message=gca_translation.TranslationAnnotation,
     )
-
     classification = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="detail",
         message=gca_classification.ClassificationAnnotation,
     )
-
     image_object_detection = proto.Field(
         proto.MESSAGE,
         number=4,
         oneof="detail",
         message=detection.ImageObjectDetectionAnnotation,
     )
-
     text_extraction = proto.Field(
         proto.MESSAGE,
         number=6,
         oneof="detail",
         message=gca_text_extraction.TextExtractionAnnotation,
     )
-
     text_sentiment = proto.Field(
         proto.MESSAGE,
         number=7,
         oneof="detail",
         message=gca_text_sentiment.TextSentimentAnnotation,
     )
-
-    annotation_spec_id = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=5)
+    annotation_spec_id = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=5,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

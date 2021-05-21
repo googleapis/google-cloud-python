@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -32,19 +30,19 @@ __protobuf__ = proto.module(
 class VideoClassificationDatasetMetadata(proto.Message):
     r"""Dataset metadata specific to video classification.
     All Video Classification datasets are treated as multi label.
-    """
+        """
 
 
 class VideoObjectTrackingDatasetMetadata(proto.Message):
-    r"""Dataset metadata specific to video object tracking."""
+    r"""Dataset metadata specific to video object tracking.    """
 
 
 class VideoClassificationModelMetadata(proto.Message):
-    r"""Model metadata specific to video classification."""
+    r"""Model metadata specific to video classification.    """
 
 
 class VideoObjectTrackingModelMetadata(proto.Message):
-    r"""Model metadata specific to video object tracking."""
+    r"""Model metadata specific to video object tracking.    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.automl_v1.types import image
 from google.cloud.automl_v1.types import text
 from google.cloud.automl_v1.types import translation
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(package="google.cloud.automl.v1", manifest={"Model",},)
@@ -29,7 +26,6 @@ __protobuf__ = proto.module(package="google.cloud.automl.v1", manifest={"Model",
 
 class Model(proto.Message):
     r"""API proto representing a trained machine learning model.
-
     Attributes:
         translation_model_metadata (google.cloud.automl_v1.types.TranslationModelMetadata):
             Metadata for translation models.
@@ -95,57 +91,46 @@ class Model(proto.Message):
         oneof="model_metadata",
         message=translation.TranslationModelMetadata,
     )
-
     image_classification_model_metadata = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="model_metadata",
         message=image.ImageClassificationModelMetadata,
     )
-
     text_classification_model_metadata = proto.Field(
         proto.MESSAGE,
         number=14,
         oneof="model_metadata",
         message=text.TextClassificationModelMetadata,
     )
-
     image_object_detection_model_metadata = proto.Field(
         proto.MESSAGE,
         number=20,
         oneof="model_metadata",
         message=image.ImageObjectDetectionModelMetadata,
     )
-
     text_extraction_model_metadata = proto.Field(
         proto.MESSAGE,
         number=19,
         oneof="model_metadata",
         message=text.TextExtractionModelMetadata,
     )
-
     text_sentiment_model_metadata = proto.Field(
         proto.MESSAGE,
         number=22,
         oneof="model_metadata",
         message=text.TextSentimentModelMetadata,
     )
-
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
-    dataset_id = proto.Field(proto.STRING, number=3)
-
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=11, message=timestamp.Timestamp,)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
+    dataset_id = proto.Field(proto.STRING, number=3,)
+    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(
+        proto.MESSAGE, number=11, message=timestamp_pb2.Timestamp,
+    )
     deployment_state = proto.Field(proto.ENUM, number=8, enum=DeploymentState,)
-
-    etag = proto.Field(proto.STRING, number=10)
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=34)
+    etag = proto.Field(proto.STRING, number=10,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=34,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.automl_v1beta1.types import data_items
 
@@ -34,7 +31,6 @@ __protobuf__ = proto.module(
 
 class TranslationDatasetMetadata(proto.Message):
     r"""Dataset metadata that is specific to translation.
-
     Attributes:
         source_language_code (str):
             Required. The BCP-47 language code of the
@@ -44,14 +40,12 @@ class TranslationDatasetMetadata(proto.Message):
             target language.
     """
 
-    source_language_code = proto.Field(proto.STRING, number=1)
-
-    target_language_code = proto.Field(proto.STRING, number=2)
+    source_language_code = proto.Field(proto.STRING, number=1,)
+    target_language_code = proto.Field(proto.STRING, number=2,)
 
 
 class TranslationEvaluationMetrics(proto.Message):
     r"""Evaluation metrics for the dataset.
-
     Attributes:
         bleu_score (float):
             Output only. BLEU score.
@@ -59,14 +53,12 @@ class TranslationEvaluationMetrics(proto.Message):
             Output only. BLEU score for base model.
     """
 
-    bleu_score = proto.Field(proto.DOUBLE, number=1)
-
-    base_bleu_score = proto.Field(proto.DOUBLE, number=2)
+    bleu_score = proto.Field(proto.DOUBLE, number=1,)
+    base_bleu_score = proto.Field(proto.DOUBLE, number=2,)
 
 
 class TranslationModelMetadata(proto.Message):
     r"""Model metadata that is specific to translation.
-
     Attributes:
         base_model (str):
             The resource name of the model to use as a baseline to train
@@ -82,16 +74,13 @@ class TranslationModelMetadata(proto.Message):
             language code) that is used for training.
     """
 
-    base_model = proto.Field(proto.STRING, number=1)
-
-    source_language_code = proto.Field(proto.STRING, number=2)
-
-    target_language_code = proto.Field(proto.STRING, number=3)
+    base_model = proto.Field(proto.STRING, number=1,)
+    source_language_code = proto.Field(proto.STRING, number=2,)
+    target_language_code = proto.Field(proto.STRING, number=3,)
 
 
 class TranslationAnnotation(proto.Message):
     r"""Annotation details specific to translation.
-
     Attributes:
         translated_content (google.cloud.automl_v1beta1.types.TextSnippet):
             Output only . The translated content.
