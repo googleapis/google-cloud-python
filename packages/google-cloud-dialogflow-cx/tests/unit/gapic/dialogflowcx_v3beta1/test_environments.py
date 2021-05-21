@@ -2061,6 +2061,533 @@ async def test_lookup_environment_history_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+def test_run_continuous_test(
+    transport: str = "grpc", request_type=environment.RunContinuousTestRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_continuous_test), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.run_continuous_test(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.RunContinuousTestRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_run_continuous_test_from_dict():
+    test_run_continuous_test(request_type=dict)
+
+
+def test_run_continuous_test_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_continuous_test), "__call__"
+    ) as call:
+        client.run_continuous_test()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.RunContinuousTestRequest()
+
+
+@pytest.mark.asyncio
+async def test_run_continuous_test_async(
+    transport: str = "grpc_asyncio", request_type=environment.RunContinuousTestRequest
+):
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_continuous_test), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.run_continuous_test(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.RunContinuousTestRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_run_continuous_test_async_from_dict():
+    await test_run_continuous_test_async(request_type=dict)
+
+
+def test_run_continuous_test_field_headers():
+    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = environment.RunContinuousTestRequest()
+
+    request.environment = "environment/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_continuous_test), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.run_continuous_test(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "environment=environment/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_run_continuous_test_field_headers_async():
+    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = environment.RunContinuousTestRequest()
+
+    request.environment = "environment/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_continuous_test), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.run_continuous_test(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "environment=environment/value",) in kw["metadata"]
+
+
+def test_list_continuous_test_results(
+    transport: str = "grpc", request_type=environment.ListContinuousTestResultsRequest
+):
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_continuous_test_results), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = environment.ListContinuousTestResultsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_continuous_test_results(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.ListContinuousTestResultsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListContinuousTestResultsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_continuous_test_results_from_dict():
+    test_list_continuous_test_results(request_type=dict)
+
+
+def test_list_continuous_test_results_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_continuous_test_results), "__call__"
+    ) as call:
+        client.list_continuous_test_results()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.ListContinuousTestResultsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_continuous_test_results_async(
+    transport: str = "grpc_asyncio",
+    request_type=environment.ListContinuousTestResultsRequest,
+):
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_continuous_test_results), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            environment.ListContinuousTestResultsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_continuous_test_results(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == environment.ListContinuousTestResultsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListContinuousTestResultsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_continuous_test_results_async_from_dict():
+    await test_list_continuous_test_results_async(request_type=dict)
+
+
+def test_list_continuous_test_results_field_headers():
+    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = environment.ListContinuousTestResultsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_continuous_test_results), "__call__"
+    ) as call:
+        call.return_value = environment.ListContinuousTestResultsResponse()
+        client.list_continuous_test_results(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_continuous_test_results_field_headers_async():
+    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = environment.ListContinuousTestResultsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_continuous_test_results), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            environment.ListContinuousTestResultsResponse()
+        )
+        await client.list_continuous_test_results(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_list_continuous_test_results_flattened():
+    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_continuous_test_results), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = environment.ListContinuousTestResultsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_continuous_test_results(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].parent == "parent_value"
+
+
+def test_list_continuous_test_results_flattened_error():
+    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_continuous_test_results(
+            environment.ListContinuousTestResultsRequest(), parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_continuous_test_results_flattened_async():
+    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_continuous_test_results), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = environment.ListContinuousTestResultsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            environment.ListContinuousTestResultsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_continuous_test_results(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].parent == "parent_value"
+
+
+@pytest.mark.asyncio
+async def test_list_continuous_test_results_flattened_error_async():
+    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_continuous_test_results(
+            environment.ListContinuousTestResultsRequest(), parent="parent_value",
+        )
+
+
+def test_list_continuous_test_results_pager():
+    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_continuous_test_results), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            environment.ListContinuousTestResultsResponse(
+                continuous_test_results=[
+                    environment.ContinuousTestResult(),
+                    environment.ContinuousTestResult(),
+                    environment.ContinuousTestResult(),
+                ],
+                next_page_token="abc",
+            ),
+            environment.ListContinuousTestResultsResponse(
+                continuous_test_results=[], next_page_token="def",
+            ),
+            environment.ListContinuousTestResultsResponse(
+                continuous_test_results=[environment.ContinuousTestResult(),],
+                next_page_token="ghi",
+            ),
+            environment.ListContinuousTestResultsResponse(
+                continuous_test_results=[
+                    environment.ContinuousTestResult(),
+                    environment.ContinuousTestResult(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_continuous_test_results(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(isinstance(i, environment.ContinuousTestResult) for i in results)
+
+
+def test_list_continuous_test_results_pages():
+    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_continuous_test_results), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            environment.ListContinuousTestResultsResponse(
+                continuous_test_results=[
+                    environment.ContinuousTestResult(),
+                    environment.ContinuousTestResult(),
+                    environment.ContinuousTestResult(),
+                ],
+                next_page_token="abc",
+            ),
+            environment.ListContinuousTestResultsResponse(
+                continuous_test_results=[], next_page_token="def",
+            ),
+            environment.ListContinuousTestResultsResponse(
+                continuous_test_results=[environment.ContinuousTestResult(),],
+                next_page_token="ghi",
+            ),
+            environment.ListContinuousTestResultsResponse(
+                continuous_test_results=[
+                    environment.ContinuousTestResult(),
+                    environment.ContinuousTestResult(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_continuous_test_results(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_continuous_test_results_async_pager():
+    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_continuous_test_results),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            environment.ListContinuousTestResultsResponse(
+                continuous_test_results=[
+                    environment.ContinuousTestResult(),
+                    environment.ContinuousTestResult(),
+                    environment.ContinuousTestResult(),
+                ],
+                next_page_token="abc",
+            ),
+            environment.ListContinuousTestResultsResponse(
+                continuous_test_results=[], next_page_token="def",
+            ),
+            environment.ListContinuousTestResultsResponse(
+                continuous_test_results=[environment.ContinuousTestResult(),],
+                next_page_token="ghi",
+            ),
+            environment.ListContinuousTestResultsResponse(
+                continuous_test_results=[
+                    environment.ContinuousTestResult(),
+                    environment.ContinuousTestResult(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_continuous_test_results(request={},)
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, environment.ContinuousTestResult) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_continuous_test_results_async_pages():
+    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_continuous_test_results),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            environment.ListContinuousTestResultsResponse(
+                continuous_test_results=[
+                    environment.ContinuousTestResult(),
+                    environment.ContinuousTestResult(),
+                    environment.ContinuousTestResult(),
+                ],
+                next_page_token="abc",
+            ),
+            environment.ListContinuousTestResultsResponse(
+                continuous_test_results=[], next_page_token="def",
+            ),
+            environment.ListContinuousTestResultsResponse(
+                continuous_test_results=[environment.ContinuousTestResult(),],
+                next_page_token="ghi",
+            ),
+            environment.ListContinuousTestResultsResponse(
+                continuous_test_results=[
+                    environment.ContinuousTestResult(),
+                    environment.ContinuousTestResult(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_continuous_test_results(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.EnvironmentsGrpcTransport(
@@ -2164,6 +2691,8 @@ def test_environments_base_transport():
         "update_environment",
         "delete_environment",
         "lookup_environment_history",
+        "run_continuous_test",
+        "list_continuous_test_results",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -2639,11 +3168,45 @@ def test_environments_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_environment_path():
+def test_continuous_test_result_path():
     project = "squid"
     location = "clam"
     agent = "whelk"
     environment = "octopus"
+    continuous_test_result = "oyster"
+    expected = "projects/{project}/locations/{location}/agents/{agent}/environments/{environment}/continuousTestResults/{continuous_test_result}".format(
+        project=project,
+        location=location,
+        agent=agent,
+        environment=environment,
+        continuous_test_result=continuous_test_result,
+    )
+    actual = EnvironmentsClient.continuous_test_result_path(
+        project, location, agent, environment, continuous_test_result
+    )
+    assert expected == actual
+
+
+def test_parse_continuous_test_result_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "agent": "mussel",
+        "environment": "winkle",
+        "continuous_test_result": "nautilus",
+    }
+    path = EnvironmentsClient.continuous_test_result_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = EnvironmentsClient.parse_continuous_test_result_path(path)
+    assert expected == actual
+
+
+def test_environment_path():
+    project = "scallop"
+    location = "abalone"
+    agent = "squid"
+    environment = "clam"
     expected = "projects/{project}/locations/{location}/agents/{agent}/environments/{environment}".format(
         project=project, location=location, agent=agent, environment=environment,
     )
@@ -2653,10 +3216,10 @@ def test_environment_path():
 
 def test_parse_environment_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "agent": "cuttlefish",
-        "environment": "mussel",
+        "project": "whelk",
+        "location": "octopus",
+        "agent": "oyster",
+        "environment": "nudibranch",
     }
     path = EnvironmentsClient.environment_path(**expected)
 
@@ -2665,12 +3228,46 @@ def test_parse_environment_path():
     assert expected == actual
 
 
+def test_test_case_result_path():
+    project = "cuttlefish"
+    location = "mussel"
+    agent = "winkle"
+    test_case = "nautilus"
+    result = "scallop"
+    expected = "projects/{project}/locations/{location}/agents/{agent}/testCases/{test_case}/results/{result}".format(
+        project=project,
+        location=location,
+        agent=agent,
+        test_case=test_case,
+        result=result,
+    )
+    actual = EnvironmentsClient.test_case_result_path(
+        project, location, agent, test_case, result
+    )
+    assert expected == actual
+
+
+def test_parse_test_case_result_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "agent": "clam",
+        "test_case": "whelk",
+        "result": "octopus",
+    }
+    path = EnvironmentsClient.test_case_result_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = EnvironmentsClient.parse_test_case_result_path(path)
+    assert expected == actual
+
+
 def test_version_path():
-    project = "winkle"
-    location = "nautilus"
-    agent = "scallop"
-    flow = "abalone"
-    version = "squid"
+    project = "oyster"
+    location = "nudibranch"
+    agent = "cuttlefish"
+    flow = "mussel"
+    version = "winkle"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/versions/{version}".format(
         project=project, location=location, agent=agent, flow=flow, version=version,
     )
@@ -2680,11 +3277,11 @@ def test_version_path():
 
 def test_parse_version_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "agent": "octopus",
-        "flow": "oyster",
-        "version": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "agent": "abalone",
+        "flow": "squid",
+        "version": "clam",
     }
     path = EnvironmentsClient.version_path(**expected)
 
@@ -2694,7 +3291,7 @@ def test_parse_version_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2704,7 +3301,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "octopus",
     }
     path = EnvironmentsClient.common_billing_account_path(**expected)
 
@@ -2714,7 +3311,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "oyster"
     expected = "folders/{folder}".format(folder=folder,)
     actual = EnvironmentsClient.common_folder_path(folder)
     assert expected == actual
@@ -2722,7 +3319,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "nudibranch",
     }
     path = EnvironmentsClient.common_folder_path(**expected)
 
@@ -2732,7 +3329,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = EnvironmentsClient.common_organization_path(organization)
     assert expected == actual
@@ -2740,7 +3337,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "mussel",
     }
     path = EnvironmentsClient.common_organization_path(**expected)
 
@@ -2750,7 +3347,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "winkle"
     expected = "projects/{project}".format(project=project,)
     actual = EnvironmentsClient.common_project_path(project)
     assert expected == actual
@@ -2758,7 +3355,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "nautilus",
     }
     path = EnvironmentsClient.common_project_path(**expected)
 
@@ -2768,8 +3365,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -2779,8 +3376,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "squid",
+        "location": "clam",
     }
     path = EnvironmentsClient.common_location_path(**expected)
 

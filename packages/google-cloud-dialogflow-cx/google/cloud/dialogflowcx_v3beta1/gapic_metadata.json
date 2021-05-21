@@ -193,6 +193,11 @@
                 "get_environment"
               ]
             },
+            "ListContinuousTestResults": {
+              "methods": [
+                "list_continuous_test_results"
+              ]
+            },
             "ListEnvironments": {
               "methods": [
                 "list_environments"
@@ -201,6 +206,11 @@
             "LookupEnvironmentHistory": {
               "methods": [
                 "lookup_environment_history"
+              ]
+            },
+            "RunContinuousTest": {
+              "methods": [
+                "run_continuous_test"
               ]
             },
             "UpdateEnvironment": {
@@ -228,6 +238,11 @@
                 "get_environment"
               ]
             },
+            "ListContinuousTestResults": {
+              "methods": [
+                "list_continuous_test_results"
+              ]
+            },
             "ListEnvironments": {
               "methods": [
                 "list_environments"
@@ -236,6 +251,11 @@
             "LookupEnvironmentHistory": {
               "methods": [
                 "lookup_environment_history"
+              ]
+            },
+            "RunContinuousTest": {
+              "methods": [
+                "run_continuous_test"
               ]
             },
             "UpdateEnvironment": {

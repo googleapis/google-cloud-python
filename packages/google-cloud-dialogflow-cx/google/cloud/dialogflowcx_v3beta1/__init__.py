@@ -73,14 +73,20 @@ from .types.entity_type import GetEntityTypeRequest
 from .types.entity_type import ListEntityTypesRequest
 from .types.entity_type import ListEntityTypesResponse
 from .types.entity_type import UpdateEntityTypeRequest
+from .types.environment import ContinuousTestResult
 from .types.environment import CreateEnvironmentRequest
 from .types.environment import DeleteEnvironmentRequest
 from .types.environment import Environment
 from .types.environment import GetEnvironmentRequest
+from .types.environment import ListContinuousTestResultsRequest
+from .types.environment import ListContinuousTestResultsResponse
 from .types.environment import ListEnvironmentsRequest
 from .types.environment import ListEnvironmentsResponse
 from .types.environment import LookupEnvironmentHistoryRequest
 from .types.environment import LookupEnvironmentHistoryResponse
+from .types.environment import RunContinuousTestMetadata
+from .types.environment import RunContinuousTestRequest
+from .types.environment import RunContinuousTestResponse
 from .types.environment import UpdateEnvironmentRequest
 from .types.experiment import CreateExperimentRequest
 from .types.experiment import DeleteExperimentRequest
@@ -252,6 +258,7 @@ __all__ = (
     "BatchRunTestCasesResponse",
     "CalculateCoverageRequest",
     "CalculateCoverageResponse",
+    "ContinuousTestResult",
     "ConversationTurn",
     "CreateAgentRequest",
     "CreateEntityTypeRequest",
@@ -333,6 +340,8 @@ __all__ = (
     "IntentsClient",
     "ListAgentsRequest",
     "ListAgentsResponse",
+    "ListContinuousTestResultsRequest",
+    "ListContinuousTestResultsResponse",
     "ListEntityTypesRequest",
     "ListEntityTypesResponse",
     "ListEnvironmentsRequest",
@@ -377,6 +386,9 @@ __all__ = (
     "ResourceName",
     "ResponseMessage",
     "RestoreAgentRequest",
+    "RunContinuousTestMetadata",
+    "RunContinuousTestRequest",
+    "RunContinuousTestResponse",
     "RunTestCaseMetadata",
     "RunTestCaseRequest",
     "RunTestCaseResponse",

@@ -193,6 +193,14 @@ class EnvironmentsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.run_continuous_test: gapic_v1.method.wrap_method(
+                self.run_continuous_test, default_timeout=None, client_info=client_info,
+            ),
+            self.list_continuous_test_results: gapic_v1.method.wrap_method(
+                self.list_continuous_test_results,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     @property
@@ -256,6 +264,27 @@ class EnvironmentsTransport(abc.ABC):
         Union[
             environment.LookupEnvironmentHistoryResponse,
             Awaitable[environment.LookupEnvironmentHistoryResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def run_continuous_test(
+        self,
+    ) -> Callable[
+        [environment.RunContinuousTestRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_continuous_test_results(
+        self,
+    ) -> Callable[
+        [environment.ListContinuousTestResultsRequest],
+        Union[
+            environment.ListContinuousTestResultsResponse,
+            Awaitable[environment.ListContinuousTestResultsResponse],
         ],
     ]:
         raise NotImplementedError()

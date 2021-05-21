@@ -413,5 +413,62 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
             )
         return self._stubs["lookup_environment_history"]
 
+    @property
+    def run_continuous_test(
+        self,
+    ) -> Callable[[environment.RunContinuousTestRequest], operations_pb2.Operation]:
+        r"""Return a callable for the run continuous test method over gRPC.
+
+        Kicks off a continuous test under the specified
+        [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
+
+        Returns:
+            Callable[[~.RunContinuousTestRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "run_continuous_test" not in self._stubs:
+            self._stubs["run_continuous_test"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Environments/RunContinuousTest",
+                request_serializer=environment.RunContinuousTestRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["run_continuous_test"]
+
+    @property
+    def list_continuous_test_results(
+        self,
+    ) -> Callable[
+        [environment.ListContinuousTestResultsRequest],
+        environment.ListContinuousTestResultsResponse,
+    ]:
+        r"""Return a callable for the list continuous test results method over gRPC.
+
+        Fetches a list of continuous test results for a given
+        environment.
+
+        Returns:
+            Callable[[~.ListContinuousTestResultsRequest],
+                    ~.ListContinuousTestResultsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_continuous_test_results" not in self._stubs:
+            self._stubs["list_continuous_test_results"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.Environments/ListContinuousTestResults",
+                request_serializer=environment.ListContinuousTestResultsRequest.serialize,
+                response_deserializer=environment.ListContinuousTestResultsResponse.deserialize,
+            )
+        return self._stubs["list_continuous_test_results"]
+
 
 __all__ = ("EnvironmentsGrpcTransport",)
