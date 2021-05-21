@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,10 +14,11 @@
 # limitations under the License.
 #
 
+from google.cloud.trace_v2.services.trace_service.client import TraceServiceClient
 from google.cloud.trace_v2.services.trace_service.async_client import (
     TraceServiceAsyncClient,
 )
-from google.cloud.trace_v2.services.trace_service.client import TraceServiceClient
+
 from google.cloud.trace_v2.types.trace import AttributeValue
 from google.cloud.trace_v2.types.trace import Module
 from google.cloud.trace_v2.types.trace import Span
@@ -27,12 +27,12 @@ from google.cloud.trace_v2.types.trace import TruncatableString
 from google.cloud.trace_v2.types.tracing import BatchWriteSpansRequest
 
 __all__ = (
+    "TraceServiceClient",
+    "TraceServiceAsyncClient",
     "AttributeValue",
-    "BatchWriteSpansRequest",
     "Module",
     "Span",
     "StackTrace",
-    "TraceServiceAsyncClient",
-    "TraceServiceClient",
     "TruncatableString",
+    "BatchWriteSpansRequest",
 )

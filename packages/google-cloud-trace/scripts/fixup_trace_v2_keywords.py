@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,9 +39,8 @@ def partition(
 class traceCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'batch_write_spans': ('name', 'spans', ),
-    'create_span': ('name', 'span_id', 'display_name', 'start_time', 'end_time', 'parent_span_id', 'attributes', 'stack_trace', 'time_events', 'links', 'status', 'same_process_as_parent_span', 'child_span_count', 'span_kind', ),
-
+          'batch_write_spans': ('name', 'spans', ),
+          'create_span': ('name', 'span_id', 'display_name', 'start_time', 'end_time', 'parent_span_id', 'attributes', 'stack_trace', 'time_events', 'links', 'status', 'same_process_as_parent_span', 'child_span_count', 'span_kind', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -74,7 +71,7 @@ class traceCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

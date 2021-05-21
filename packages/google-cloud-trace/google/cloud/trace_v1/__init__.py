@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,22 +15,24 @@
 #
 
 from .services.trace_service import TraceServiceClient
+from .services.trace_service import TraceServiceAsyncClient
+
 from .types.trace import GetTraceRequest
 from .types.trace import ListTracesRequest
 from .types.trace import ListTracesResponse
 from .types.trace import PatchTracesRequest
 from .types.trace import Trace
-from .types.trace import TraceSpan
 from .types.trace import Traces
-
+from .types.trace import TraceSpan
 
 __all__ = (
+    "TraceServiceAsyncClient",
     "GetTraceRequest",
     "ListTracesRequest",
     "ListTracesResponse",
     "PatchTracesRequest",
     "Trace",
+    "TraceServiceClient",
     "TraceSpan",
     "Traces",
-    "TraceServiceClient",
 )
