@@ -93,6 +93,9 @@ Migration
 -----------
 SQLAlchemy uses [Alembic](https://alembic.sqlalchemy.org/en/latest/#) tool to organize database migrations.
 
+**Warning!**  
+A migration script can produce a lot of DDL statements. In case of executing every one of them separately performance and budget spending issues can occur. To avoid them it's highly recommended to use [Alembic batch context](https://cloud.google.com/spanner/docs/schema-updates) feature to pack DDL statements into more economical groups of statements.
+
 Features and limitations
 -----------
 **Unique constraints**  
@@ -117,7 +120,15 @@ Table(
 )
 ```
 **Autocommit mode**  
-Spanner dialect supports both "autocommit" and "manual commit" modes. To set/change the current mode isolation levels can be used: `SERIALIZABLE` and `AUTOCOMMIT`.
+Spanner dialect supports both `SERIALIZABLE` and `AUTOCOMMIT` isolation levels. `SERIALIZABLE` is the default one, where transactions need to be committed manually. `AUTOCOMMIT` mode corresponds to automatically committing of a query right in its execution time.
+
+Isolation level change example:
+```python
+from sqlalchemy import create_engine
+
+eng = create_engine("spanner:///projects/project-id/instances/instance-id/databases/database-id")
+autocommit_engine = eng.execution_options(isolation_level="AUTOCOMMIT")
+```
 
 **DDL and transactions**  
 DDL statements are executed outside the regular transactions mechanism, which means DDL statements will not be rolled back on normal transaction rollback.
