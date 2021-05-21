@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.rpc import status_pb2 as status  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -45,47 +42,71 @@ class TranslateSpeechConfig(proto.Message):
 
                Uncompressed 16-bit signed little-endian samples (Linear
                PCM).
+
+            -  ``flac``
+
+               ``flac`` (Free Lossless Audio Codec) is the recommended
+               encoding because it is lossless--therefore recognition is
+               not compromised--and requires only about half the
+               bandwidth of ``linear16``.
+
+            -  ``mulaw``
+
+               8-bit samples that compand 14-bit audio samples using
+               G.711 PCMU/mu-law.
+
+            -  ``amr``
+
+               Adaptive Multi-Rate Narrowband codec.
+               ``sample_rate_hertz`` must be 8000.
+
+            -  ``amr-wb``
+
+               Adaptive Multi-Rate Wideband codec. ``sample_rate_hertz``
+               must be 16000.
+
+            -  ``ogg-opus``
+
+               Opus encoded audio frames in
+               `Ogg <https://wikipedia.org/wiki/Ogg>`__ container.
+               ``sample_rate_hertz`` must be one of 8000, 12000, 16000,
+               24000, or 48000.
+
+            -  ``mp3``
+
+               MP3 audio. Support all standard MP3 bitrates (which range
+               from 32-320 kbps). When using this encoding,
+               ``sample_rate_hertz`` has to match the sample rate of the
+               file being used.
         source_language_code (str):
             Required. Source language code (BCP-47) of
             the input audio.
-        alternative_source_language_codes (Sequence[str]):
-            Optional. A list of up to 3 additional language codes
-            (BCP-47), listing possible alternative languages of the
-            supplied audio. If alternative source languages are listed,
-            speech translation result will translate in the most likely
-            language detected including the main source_language_code.
-            The translated result will include the language code of the
-            language detected in the audio.
         target_language_code (str):
             Required. Target language code (BCP-47) of
             the output.
         sample_rate_hertz (int):
-            Optional. Sample rate in Hertz of the audio data. Valid
-            values are: 8000-48000. 16000 is optimal. For best results,
-            set the sampling rate of the audio source to 16000 Hz. If
-            that's not possible, use the native sample rate of the audio
-            source (instead of re-sampling). This field can only be
-            omitted for ``FLAC`` and ``WAV`` audio files.
+            Optional. Sample rate in Hertz of the audio
+            data. Valid values are: 8000-48000. 16000 is
+            optimal. For best results, set the sampling rate
+            of the audio source to 16000 Hz. If that's not
+            possible, use the native sample rate of the
+            audio source (instead of re-sampling).
         model (str):
-            Optional.
+            Optional. ``google-provided-model/video`` and
+            ``google-provided-model/enhanced-phone-call`` are premium
+            models. ``google-provided-model/phone-call`` is not premium
+            model.
     """
 
-    audio_encoding = proto.Field(proto.STRING, number=1)
-
-    source_language_code = proto.Field(proto.STRING, number=2)
-
-    alternative_source_language_codes = proto.RepeatedField(proto.STRING, number=6)
-
-    target_language_code = proto.Field(proto.STRING, number=3)
-
-    sample_rate_hertz = proto.Field(proto.INT32, number=4)
-
-    model = proto.Field(proto.STRING, number=5)
+    audio_encoding = proto.Field(proto.STRING, number=1,)
+    source_language_code = proto.Field(proto.STRING, number=2,)
+    target_language_code = proto.Field(proto.STRING, number=3,)
+    sample_rate_hertz = proto.Field(proto.INT32, number=4,)
+    model = proto.Field(proto.STRING, number=5,)
 
 
 class StreamingTranslateSpeechConfig(proto.Message):
     r"""Config used for streaming translation.
-
     Attributes:
         audio_config (google.cloud.mediatranslation_v1beta1.types.TranslateSpeechConfig):
             Required. The common config for all the
@@ -115,8 +136,7 @@ class StreamingTranslateSpeechConfig(proto.Message):
     audio_config = proto.Field(
         proto.MESSAGE, number=1, message="TranslateSpeechConfig",
     )
-
-    single_utterance = proto.Field(proto.BOOL, number=2)
+    single_utterance = proto.Field(proto.BOOL, number=2,)
 
 
 class StreamingTranslateSpeechRequest(proto.Message):
@@ -153,8 +173,7 @@ class StreamingTranslateSpeechRequest(proto.Message):
         oneof="streaming_request",
         message="StreamingTranslateSpeechConfig",
     )
-
-    audio_content = proto.Field(proto.BYTES, number=2, oneof="streaming_request")
+    audio_content = proto.Field(proto.BYTES, number=2, oneof="streaming_request",)
 
 
 class StreamingTranslateSpeechResult(proto.Message):
@@ -164,19 +183,10 @@ class StreamingTranslateSpeechResult(proto.Message):
     Attributes:
         text_translation_result (google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechResult.TextTranslationResult):
             Text translation result.
-        recognition_result (str):
-            Output only. The debug only recognition
-            result in original language. This field is debug
-            only and will be set to empty string if not
-            available. This is implementation detail and
-            will not be backward compatible.
-            Still need to decide whether to expose this
-            field by default.
     """
 
     class TextTranslationResult(proto.Message):
         r"""Text translation result.
-
         Attributes:
             translation (str):
                 Output only. The translated sentence.
@@ -188,24 +198,14 @@ class StreamingTranslateSpeechResult(proto.Message):
                 ``StreamingTranslateSpeechResult``, the streaming translator
                 will not return any further hypotheses for this portion of
                 the transcript and corresponding audio.
-            detected_source_language_code (str):
-                Output only. The source language code (BCP-47) detected in
-                the audio. Speech translation result will translate in the
-                most likely language detected including the alternative
-                source languages and main source_language_code.
         """
 
-        translation = proto.Field(proto.STRING, number=1)
-
-        is_final = proto.Field(proto.BOOL, number=2)
-
-        detected_source_language_code = proto.Field(proto.STRING, number=3)
+        translation = proto.Field(proto.STRING, number=1,)
+        is_final = proto.Field(proto.BOOL, number=2,)
 
     text_translation_result = proto.Field(
         proto.MESSAGE, number=1, oneof="result", message=TextTranslationResult,
     )
-
-    recognition_result = proto.Field(proto.STRING, number=3)
 
 
 class StreamingTranslateSpeechResponse(proto.Message):
@@ -230,12 +230,10 @@ class StreamingTranslateSpeechResponse(proto.Message):
         SPEECH_EVENT_TYPE_UNSPECIFIED = 0
         END_OF_SINGLE_UTTERANCE = 1
 
-    error = proto.Field(proto.MESSAGE, number=1, message=status.Status,)
-
+    error = proto.Field(proto.MESSAGE, number=1, message=status_pb2.Status,)
     result = proto.Field(
         proto.MESSAGE, number=2, message="StreamingTranslateSpeechResult",
     )
-
     speech_event_type = proto.Field(proto.ENUM, number=3, enum=SpeechEventType,)
 
 

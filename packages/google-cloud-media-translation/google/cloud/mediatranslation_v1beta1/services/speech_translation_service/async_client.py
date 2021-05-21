@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -31,15 +29,14 @@ from typing import (
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.mediatranslation_v1beta1.types import media_translation
-from google.rpc import status_pb2 as status  # type: ignore
-
+from google.rpc import status_pb2  # type: ignore
 from .transports.base import SpeechTranslationServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import SpeechTranslationServiceGrpcAsyncIOTransport
 from .client import SpeechTranslationServiceClient
@@ -59,26 +56,22 @@ class SpeechTranslationServiceAsyncClient:
     parse_common_billing_account_path = staticmethod(
         SpeechTranslationServiceClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(SpeechTranslationServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(
         SpeechTranslationServiceClient.parse_common_folder_path
     )
-
     common_organization_path = staticmethod(
         SpeechTranslationServiceClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
         SpeechTranslationServiceClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(
         SpeechTranslationServiceClient.common_project_path
     )
     parse_common_project_path = staticmethod(
         SpeechTranslationServiceClient.parse_common_project_path
     )
-
     common_location_path = staticmethod(
         SpeechTranslationServiceClient.common_location_path
     )
@@ -88,7 +81,8 @@ class SpeechTranslationServiceAsyncClient:
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -103,7 +97,7 @@ class SpeechTranslationServiceAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -120,7 +114,7 @@ class SpeechTranslationServiceAsyncClient:
 
     @property
     def transport(self) -> SpeechTranslationServiceTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             SpeechTranslationServiceTransport: The transport used by the client instance.
@@ -135,12 +129,12 @@ class SpeechTranslationServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, SpeechTranslationServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the speech translation service client.
+        """Instantiates the speech translation service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -172,7 +166,6 @@ class SpeechTranslationServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = SpeechTranslationServiceClient(
             credentials=credentials,
             transport=transport,

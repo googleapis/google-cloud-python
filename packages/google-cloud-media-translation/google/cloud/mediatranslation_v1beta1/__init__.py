@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,18 +15,20 @@
 #
 
 from .services.speech_translation_service import SpeechTranslationServiceClient
+from .services.speech_translation_service import SpeechTranslationServiceAsyncClient
+
 from .types.media_translation import StreamingTranslateSpeechConfig
 from .types.media_translation import StreamingTranslateSpeechRequest
 from .types.media_translation import StreamingTranslateSpeechResponse
 from .types.media_translation import StreamingTranslateSpeechResult
 from .types.media_translation import TranslateSpeechConfig
 
-
 __all__ = (
+    "SpeechTranslationServiceAsyncClient",
+    "SpeechTranslationServiceClient",
     "StreamingTranslateSpeechConfig",
     "StreamingTranslateSpeechRequest",
     "StreamingTranslateSpeechResponse",
     "StreamingTranslateSpeechResult",
     "TranslateSpeechConfig",
-    "SpeechTranslationServiceClient",
 )

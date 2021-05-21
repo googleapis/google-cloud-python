@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +14,13 @@
 # limitations under the License.
 #
 
-from google.cloud.mediatranslation_v1beta1.services.speech_translation_service.async_client import (
-    SpeechTranslationServiceAsyncClient,
-)
 from google.cloud.mediatranslation_v1beta1.services.speech_translation_service.client import (
     SpeechTranslationServiceClient,
 )
+from google.cloud.mediatranslation_v1beta1.services.speech_translation_service.async_client import (
+    SpeechTranslationServiceAsyncClient,
+)
+
 from google.cloud.mediatranslation_v1beta1.types.media_translation import (
     StreamingTranslateSpeechConfig,
 )
@@ -38,8 +38,8 @@ from google.cloud.mediatranslation_v1beta1.types.media_translation import (
 )
 
 __all__ = (
-    "SpeechTranslationServiceAsyncClient",
     "SpeechTranslationServiceClient",
+    "SpeechTranslationServiceAsyncClient",
     "StreamingTranslateSpeechConfig",
     "StreamingTranslateSpeechRequest",
     "StreamingTranslateSpeechResponse",
