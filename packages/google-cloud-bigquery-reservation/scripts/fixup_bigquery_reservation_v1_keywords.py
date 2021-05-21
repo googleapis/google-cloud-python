@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,26 +39,25 @@ def partition(
 class bigquery_reservationCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'create_assignment': ('parent', 'assignment', ),
-    'create_capacity_commitment': ('parent', 'capacity_commitment', 'enforce_single_admin_project_per_org', ),
-    'create_reservation': ('parent', 'reservation_id', 'reservation', ),
-    'delete_assignment': ('name', ),
-    'delete_capacity_commitment': ('name', ),
-    'delete_reservation': ('name', ),
-    'get_bi_reservation': ('name', ),
-    'get_capacity_commitment': ('name', ),
-    'get_reservation': ('name', ),
-    'list_assignments': ('parent', 'page_size', 'page_token', ),
-    'list_capacity_commitments': ('parent', 'page_size', 'page_token', ),
-    'list_reservations': ('parent', 'page_size', 'page_token', ),
-    'merge_capacity_commitments': ('parent', 'capacity_commitment_ids', ),
-    'move_assignment': ('name', 'destination_id', ),
-    'search_assignments': ('parent', 'query', 'page_size', 'page_token', ),
-    'split_capacity_commitment': ('name', 'slot_count', ),
-    'update_bi_reservation': ('bi_reservation', 'update_mask', ),
-    'update_capacity_commitment': ('capacity_commitment', 'update_mask', ),
-    'update_reservation': ('reservation', 'update_mask', ),
-
+          'create_assignment': ('parent', 'assignment', ),
+          'create_capacity_commitment': ('parent', 'capacity_commitment', 'enforce_single_admin_project_per_org', ),
+          'create_reservation': ('parent', 'reservation_id', 'reservation', ),
+          'delete_assignment': ('name', ),
+          'delete_capacity_commitment': ('name', ),
+          'delete_reservation': ('name', ),
+          'get_bi_reservation': ('name', ),
+          'get_capacity_commitment': ('name', ),
+          'get_reservation': ('name', ),
+          'list_assignments': ('parent', 'page_size', 'page_token', ),
+          'list_capacity_commitments': ('parent', 'page_size', 'page_token', ),
+          'list_reservations': ('parent', 'page_size', 'page_token', ),
+          'merge_capacity_commitments': ('parent', 'capacity_commitment_ids', ),
+          'move_assignment': ('name', 'destination_id', ),
+          'search_assignments': ('parent', 'query', 'page_size', 'page_token', ),
+          'split_capacity_commitment': ('name', 'slot_count', ),
+          'update_bi_reservation': ('bi_reservation', 'update_mask', ),
+          'update_capacity_commitment': ('capacity_commitment', 'update_mask', ),
+          'update_reservation': ('reservation', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -91,7 +88,7 @@ class bigquery_reservationCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

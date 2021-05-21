@@ -42,7 +42,7 @@ s.remove_staging_dirs()
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-templated_files = common.py_library(cov_level=100, microgenerator=True, samples=True,)
+templated_files = common.py_library(cov_level=97, microgenerator=True, samples=True,)
 s.move(
     templated_files,
     excludes=[".coveragerc"],  # the microgenerator has a good coveragerc file
