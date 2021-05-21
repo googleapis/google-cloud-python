@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.iam.v1 import policy_pb2 as gi_policy  # type: ignore
-from google.type import expr_pb2 as expr  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.type import expr_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -83,11 +80,9 @@ class AccessTuple(proto.Message):
             https://cloud.google.com/iam/help/roles/reference.
     """
 
-    principal = proto.Field(proto.STRING, number=1)
-
-    full_resource_name = proto.Field(proto.STRING, number=2)
-
-    permission = proto.Field(proto.STRING, number=3)
+    principal = proto.Field(proto.STRING, number=1,)
+    full_resource_name = proto.Field(proto.STRING, number=2,)
+    permission = proto.Field(proto.STRING, number=3,)
 
 
 class ExplainedPolicy(proto.Message):
@@ -137,15 +132,11 @@ class ExplainedPolicy(proto.Message):
     """
 
     access = proto.Field(proto.ENUM, number=1, enum="AccessState",)
-
-    full_resource_name = proto.Field(proto.STRING, number=2)
-
-    policy = proto.Field(proto.MESSAGE, number=3, message=gi_policy.Policy,)
-
+    full_resource_name = proto.Field(proto.STRING, number=2,)
+    policy = proto.Field(proto.MESSAGE, number=3, message=policy_pb2.Policy,)
     binding_explanations = proto.RepeatedField(
         proto.MESSAGE, number=4, message="BindingExplanation",
     )
-
     relevance = proto.Field(proto.ENUM, number=5, enum="HeuristicRelevance",)
 
 
@@ -231,7 +222,6 @@ class BindingExplanation(proto.Message):
 
     class AnnotatedMembership(proto.Message):
         r"""Details about whether the binding includes the member.
-
         Attributes:
             membership (google.cloud.policytroubleshooter_v1.types.BindingExplanation.Membership):
                 Indicates whether the binding includes the
@@ -244,26 +234,19 @@ class BindingExplanation(proto.Message):
         membership = proto.Field(
             proto.ENUM, number=1, enum="BindingExplanation.Membership",
         )
-
         relevance = proto.Field(proto.ENUM, number=2, enum="HeuristicRelevance",)
 
     access = proto.Field(proto.ENUM, number=1, enum="AccessState",)
-
-    role = proto.Field(proto.STRING, number=2)
-
+    role = proto.Field(proto.STRING, number=2,)
     role_permission = proto.Field(proto.ENUM, number=3, enum=RolePermission,)
-
     role_permission_relevance = proto.Field(
         proto.ENUM, number=4, enum="HeuristicRelevance",
     )
-
     memberships = proto.MapField(
         proto.STRING, proto.MESSAGE, number=5, message=AnnotatedMembership,
     )
-
     relevance = proto.Field(proto.ENUM, number=6, enum="HeuristicRelevance",)
-
-    condition = proto.Field(proto.MESSAGE, number=7, message=expr.Expr,)
+    condition = proto.Field(proto.MESSAGE, number=7, message=expr_pb2.Expr,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

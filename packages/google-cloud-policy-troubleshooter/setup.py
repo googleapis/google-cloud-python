@@ -29,6 +29,7 @@ dependencies = [
     "libcst >= 0.2.5",
     "proto-plus >= 1.15.0",
     "grpc-google-iam-v1",
+    "packaging >= 14.3",
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))
