@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,14 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
@@ -33,10 +31,9 @@ from google.cloud.servicedirectory_v1beta1.types import namespace as gcs_namespa
 from google.cloud.servicedirectory_v1beta1.types import registration_service
 from google.cloud.servicedirectory_v1beta1.types import service
 from google.cloud.servicedirectory_v1beta1.types import service as gcs_service
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from .base import RegistrationServiceTransport, DEFAULT_CLIENT_INFO
 
 
@@ -74,7 +71,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         self,
         *,
         host: str = "servicedirectory.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -88,7 +85,8 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -198,7 +196,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
     def create_channel(
         cls,
         host: str = "servicedirectory.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -229,13 +227,15 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -359,7 +359,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
     @property
     def delete_namespace(
         self,
-    ) -> Callable[[registration_service.DeleteNamespaceRequest], empty.Empty]:
+    ) -> Callable[[registration_service.DeleteNamespaceRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete namespace method over gRPC.
 
         Deletes a namespace. This also deletes all services
@@ -379,7 +379,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
             self._stubs["delete_namespace"] = self.grpc_channel.unary_unary(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/DeleteNamespace",
                 request_serializer=registration_service.DeleteNamespaceRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_namespace"]
 
@@ -493,7 +493,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
     @property
     def delete_service(
         self,
-    ) -> Callable[[registration_service.DeleteServiceRequest], empty.Empty]:
+    ) -> Callable[[registration_service.DeleteServiceRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete service method over gRPC.
 
         Deletes a service. This also deletes all endpoints
@@ -513,7 +513,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
             self._stubs["delete_service"] = self.grpc_channel.unary_unary(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/DeleteService",
                 request_serializer=registration_service.DeleteServiceRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_service"]
 
@@ -627,7 +627,7 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
     @property
     def delete_endpoint(
         self,
-    ) -> Callable[[registration_service.DeleteEndpointRequest], empty.Empty]:
+    ) -> Callable[[registration_service.DeleteEndpointRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete endpoint method over gRPC.
 
         Deletes a endpoint.
@@ -646,14 +646,14 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
             self._stubs["delete_endpoint"] = self.grpc_channel.unary_unary(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/DeleteEndpoint",
                 request_serializer=registration_service.DeleteEndpointRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_endpoint"]
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[[iam_policy.GetIamPolicyRequest], policy.Policy]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the IAM Policy for a resource (namespace or
@@ -672,15 +672,15 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         if "get_iam_policy" not in self._stubs:
             self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/GetIamPolicy",
-                request_serializer=iam_policy.GetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy.Policy.FromString,
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
             )
         return self._stubs["get_iam_policy"]
 
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[[iam_policy.SetIamPolicyRequest], policy.Policy]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the IAM Policy for a resource (namespace or
@@ -699,8 +699,8 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         if "set_iam_policy" not in self._stubs:
             self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/SetIamPolicy",
-                request_serializer=iam_policy.SetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy.Policy.FromString,
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
             )
         return self._stubs["set_iam_policy"]
 
@@ -708,7 +708,8 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
     def test_iam_permissions(
         self,
     ) -> Callable[
-        [iam_policy.TestIamPermissionsRequest], iam_policy.TestIamPermissionsResponse
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
@@ -728,8 +729,8 @@ class RegistrationServiceGrpcTransport(RegistrationServiceTransport):
         if "test_iam_permissions" not in self._stubs:
             self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/TestIamPermissions",
-                request_serializer=iam_policy.TestIamPermissionsRequest.SerializeToString,
-                response_deserializer=iam_policy.TestIamPermissionsResponse.FromString,
+                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
             )
         return self._stubs["test_iam_permissions"]
 

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -40,10 +38,9 @@ from google.cloud.servicedirectory_v1beta1.types import namespace as gcs_namespa
 from google.cloud.servicedirectory_v1beta1.types import registration_service
 from google.cloud.servicedirectory_v1beta1.types import service
 from google.cloud.servicedirectory_v1beta1.types import service as gcs_service
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import RegistrationServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import RegistrationServiceGrpcTransport
 from .transports.grpc_asyncio import RegistrationServiceGrpcAsyncIOTransport
@@ -66,7 +63,7 @@ class RegistrationServiceClientMeta(type):
     def get_transport_class(
         cls, label: str = None,
     ) -> Type[RegistrationServiceTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -105,7 +102,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -139,7 +137,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -156,7 +155,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -175,10 +174,11 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     @property
     def transport(self) -> RegistrationServiceTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            RegistrationServiceTransport: The transport used by the client instance.
+            RegistrationServiceTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
@@ -186,7 +186,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
     def endpoint_path(
         project: str, location: str, namespace: str, service: str, endpoint: str,
     ) -> str:
-        """Return a fully-qualified endpoint string."""
+        """Returns a fully-qualified endpoint string."""
         return "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}/endpoints/{endpoint}".format(
             project=project,
             location=location,
@@ -197,7 +197,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     @staticmethod
     def parse_endpoint_path(path: str) -> Dict[str, str]:
-        """Parse a endpoint path into its component segments."""
+        """Parses a endpoint path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/namespaces/(?P<namespace>.+?)/services/(?P<service>.+?)/endpoints/(?P<endpoint>.+?)$",
             path,
@@ -206,14 +206,14 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     @staticmethod
     def namespace_path(project: str, location: str, namespace: str,) -> str:
-        """Return a fully-qualified namespace string."""
+        """Returns a fully-qualified namespace string."""
         return "projects/{project}/locations/{location}/namespaces/{namespace}".format(
             project=project, location=location, namespace=namespace,
         )
 
     @staticmethod
     def parse_namespace_path(path: str) -> Dict[str, str]:
-        """Parse a namespace path into its component segments."""
+        """Parses a namespace path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/namespaces/(?P<namespace>.+?)$",
             path,
@@ -222,14 +222,14 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     @staticmethod
     def service_path(project: str, location: str, namespace: str, service: str,) -> str:
-        """Return a fully-qualified service string."""
+        """Returns a fully-qualified service string."""
         return "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
             project=project, location=location, namespace=namespace, service=service,
         )
 
     @staticmethod
     def parse_service_path(path: str) -> Dict[str, str]:
-        """Parse a service path into its component segments."""
+        """Parses a service path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/namespaces/(?P<namespace>.+?)/services/(?P<service>.+?)$",
             path,
@@ -238,7 +238,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -251,7 +251,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -262,7 +262,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -273,7 +273,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -284,7 +284,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -298,12 +298,12 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, RegistrationServiceTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the registration service client.
+        """Instantiates the registration service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -358,9 +358,10 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -372,12 +373,14 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -392,8 +395,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -453,7 +456,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 This corresponds to the ``namespace_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -484,10 +486,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, registration_service.CreateNamespaceRequest):
             request = registration_service.CreateNamespaceRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if namespace is not None:
@@ -534,7 +534,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -566,10 +565,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, registration_service.ListNamespacesRequest):
             request = registration_service.ListNamespacesRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -617,7 +614,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -648,10 +644,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, registration_service.GetNamespaceRequest):
             request = registration_service.GetNamespaceRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -676,7 +670,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         request: registration_service.UpdateNamespaceRequest = None,
         *,
         namespace: gcs_namespace.Namespace = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -699,7 +693,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -730,10 +723,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, registration_service.UpdateNamespaceRequest):
             request = registration_service.UpdateNamespaceRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if namespace is not None:
                 request.namespace = namespace
             if update_mask is not None:
@@ -780,7 +771,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -803,10 +793,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, registration_service.DeleteNamespaceRequest):
             request = registration_service.DeleteNamespaceRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -869,7 +857,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 This corresponds to the ``service_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -900,10 +887,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, registration_service.CreateServiceRequest):
             request = registration_service.CreateServiceRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if service is not None:
@@ -950,7 +935,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -982,10 +966,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, registration_service.ListServicesRequest):
             request = registration_service.ListServicesRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1036,7 +1018,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1067,10 +1048,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, registration_service.GetServiceRequest):
             request = registration_service.GetServiceRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1095,7 +1074,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         request: registration_service.UpdateServiceRequest = None,
         *,
         service: gcs_service.Service = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1118,7 +1097,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1149,10 +1127,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, registration_service.UpdateServiceRequest):
             request = registration_service.UpdateServiceRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if service is not None:
                 request.service = service
             if update_mask is not None:
@@ -1199,7 +1175,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1222,10 +1197,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, registration_service.DeleteServiceRequest):
             request = registration_service.DeleteServiceRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1288,7 +1261,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 This corresponds to the ``endpoint_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1318,10 +1290,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, registration_service.CreateEndpointRequest):
             request = registration_service.CreateEndpointRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if endpoint is not None:
@@ -1368,7 +1338,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1400,10 +1369,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, registration_service.ListEndpointsRequest):
             request = registration_service.ListEndpointsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1453,7 +1420,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1483,10 +1449,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, registration_service.GetEndpointRequest):
             request = registration_service.GetEndpointRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1511,7 +1475,7 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         request: registration_service.UpdateEndpointRequest = None,
         *,
         endpoint: gcs_endpoint.Endpoint = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1534,7 +1498,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1564,10 +1527,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, registration_service.UpdateEndpointRequest):
             request = registration_service.UpdateEndpointRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if endpoint is not None:
                 request.endpoint = endpoint
             if update_mask is not None:
@@ -1613,7 +1574,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1636,10 +1596,8 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, registration_service.DeleteEndpointRequest):
             request = registration_service.DeleteEndpointRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1660,12 +1618,12 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def get_iam_policy(
         self,
-        request: iam_policy.GetIamPolicyRequest = None,
+        request: iam_policy_pb2.GetIamPolicyRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Gets the IAM Policy for a resource (namespace or
         service only).
 
@@ -1673,7 +1631,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             request (google.iam.v1.iam_policy_pb2.GetIamPolicyRequest):
                 The request object. Request message for `GetIamPolicy`
                 method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1740,14 +1697,13 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.GetIamPolicyRequest(**request)
+            request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.GetIamPolicyRequest()
+            request = iam_policy_pb2.GetIamPolicyRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1767,12 +1723,12 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def set_iam_policy(
         self,
-        request: iam_policy.SetIamPolicyRequest = None,
+        request: iam_policy_pb2.SetIamPolicyRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Sets the IAM Policy for a resource (namespace or
         service only).
 
@@ -1780,7 +1736,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             request (google.iam.v1.iam_policy_pb2.SetIamPolicyRequest):
                 The request object. Request message for `SetIamPolicy`
                 method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1847,14 +1802,13 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.SetIamPolicyRequest(**request)
+            request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.SetIamPolicyRequest()
+            request = iam_policy_pb2.SetIamPolicyRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1874,12 +1828,12 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
 
     def test_iam_permissions(
         self,
-        request: iam_policy.TestIamPermissionsRequest = None,
+        request: iam_policy_pb2.TestIamPermissionsRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> iam_policy.TestIamPermissionsResponse:
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests IAM permissions for a resource (namespace or
         service only).
 
@@ -1887,7 +1841,6 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
             request (google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest):
                 The request object. Request message for
                 `TestIamPermissions` method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1899,14 +1852,13 @@ class RegistrationServiceClient(metaclass=RegistrationServiceClientMeta):
                 Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
-
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.TestIamPermissionsRequest(**request)
+            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.TestIamPermissionsRequest()
+            request = iam_policy_pb2.TestIamPermissionsRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

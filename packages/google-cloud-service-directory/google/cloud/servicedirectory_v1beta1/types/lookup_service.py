@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.servicedirectory_v1beta1.types import service as gcs_service
 
@@ -62,11 +59,9 @@ class ResolveServiceRequest(proto.Message):
                value that is not "sd" AND have the key/value foo=bar.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    max_endpoints = proto.Field(proto.INT32, number=2)
-
-    endpoint_filter = proto.Field(proto.STRING, number=3)
+    name = proto.Field(proto.STRING, number=1,)
+    max_endpoints = proto.Field(proto.INT32, number=2,)
+    endpoint_filter = proto.Field(proto.STRING, number=3,)
 
 
 class ResolveServiceResponse(proto.Message):
