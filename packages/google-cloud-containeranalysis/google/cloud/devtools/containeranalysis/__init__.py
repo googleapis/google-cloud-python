@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +14,13 @@
 # limitations under the License.
 #
 
-from google.cloud.devtools.containeranalysis_v1.services.container_analysis.async_client import (
-    ContainerAnalysisAsyncClient,
-)
 from google.cloud.devtools.containeranalysis_v1.services.container_analysis.client import (
     ContainerAnalysisClient,
 )
+from google.cloud.devtools.containeranalysis_v1.services.container_analysis.async_client import (
+    ContainerAnalysisAsyncClient,
+)
+
 from google.cloud.devtools.containeranalysis_v1.types.containeranalysis import (
     GetVulnerabilityOccurrencesSummaryRequest,
 )
@@ -29,8 +29,8 @@ from google.cloud.devtools.containeranalysis_v1.types.containeranalysis import (
 )
 
 __all__ = (
-    "ContainerAnalysisAsyncClient",
     "ContainerAnalysisClient",
+    "ContainerAnalysisAsyncClient",
     "GetVulnerabilityOccurrencesSummaryRequest",
     "VulnerabilityOccurrencesSummary",
 )

@@ -35,8 +35,15 @@ for library in s.get_staging_dirs(default_version):
     # Fix imported type from grafeas
     s.replace(
         library / "google/**/types/containeranalysis.py",
-        "from grafeas\.v1 import vulnerability_pb2 as vulnerability",
+        "from grafeas\.v1 import vulnerability_pb2",
         "from grafeas.grafeas_v1.types import vulnerability"
+    )
+
+    # Fix imported type from grafeas
+    s.replace(
+        library / "google/**/types/containeranalysis.py",
+        "vulnerability_pb2",
+        "vulnerability"
     )
 
     # Insert helper method to get grafeas client
