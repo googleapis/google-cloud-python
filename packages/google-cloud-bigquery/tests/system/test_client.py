@@ -2173,6 +2173,35 @@ class TestBigQuery(unittest.TestCase):
         page = next(pages)
         self.assertEqual(page.num_items, num_last_page)
 
+    def test_parameterized_types_round_trip(self):
+        client = Config.CLIENT
+        table_id = f"{Config.DATASET}.test_parameterized_types_round_trip"
+        fields = (
+            ("n", "NUMERIC"),
+            ("n9", "NUMERIC(9)"),
+            ("n92", "NUMERIC(9, 2)"),
+            ("bn", "BIGNUMERIC"),
+            ("bn9", "BIGNUMERIC(38)"),
+            ("bn92", "BIGNUMERIC(38, 22)"),
+            ("s", "STRING"),
+            ("s9", "STRING(9)"),
+            ("b", "BYTES"),
+            ("b9", "BYTES(9)"),
+        )
+        self.to_delete.insert(0, Table(f"{client.project}.{table_id}"))
+        client.query(
+            "create table {} ({})".format(
+                table_id, ", ".join(" ".join(f) for f in fields)
+            )
+        ).result()
+        table = client.get_table(table_id)
+        table_id2 = table_id + "2"
+        self.to_delete.insert(0, Table(f"{client.project}.{table_id2}"))
+        client.create_table(Table(f"{client.project}.{table_id2}", table.schema))
+        table2 = client.get_table(table_id2)
+
+        self.assertEqual(tuple(s._key()[:2] for s in table2.schema), fields)
+
     def temp_dataset(self, dataset_id, location=None):
         project = Config.CLIENT.project
         dataset_ref = bigquery.DatasetReference(project, dataset_id)

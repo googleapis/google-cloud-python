@@ -1302,7 +1302,7 @@ class Test_QueryResults(unittest.TestCase):
                 self.assertEqual(found.description, expected.get("description"))
                 self.assertEqual(found.fields, expected.get("fields", ()))
         else:
-            self.assertEqual(query.schema, ())
+            self.assertEqual(query.schema, [])
 
     def test_ctor_defaults(self):
         query = self._make_one(self._make_resource())
@@ -1312,7 +1312,7 @@ class Test_QueryResults(unittest.TestCase):
         self.assertIsNone(query.page_token)
         self.assertEqual(query.project, self.PROJECT)
         self.assertEqual(query.rows, [])
-        self.assertEqual(query.schema, ())
+        self.assertEqual(query.schema, [])
         self.assertIsNone(query.total_rows)
         self.assertIsNone(query.total_bytes_processed)
 

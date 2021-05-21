@@ -15,6 +15,7 @@
 import unittest
 
 import mock
+import pytest
 
 
 class TestSchemaField(unittest.TestCase):
@@ -715,3 +716,125 @@ class TestPolicyTags(unittest.TestCase):
         set_one = {policy1}
         set_two = {policy2}
         self.assertNotEqual(set_one, set_two)
+
+
+@pytest.mark.parametrize(
+    "api,expect,key2",
+    [
+        (
+            dict(name="n", type="NUMERIC"),
+            ("n", "NUMERIC", None, None, None),
+            ("n", "NUMERIC"),
+        ),
+        (
+            dict(name="n", type="NUMERIC", precision=9),
+            ("n", "NUMERIC", 9, None, None),
+            ("n", "NUMERIC(9)"),
+        ),
+        (
+            dict(name="n", type="NUMERIC", precision=9, scale=2),
+            ("n", "NUMERIC", 9, 2, None),
+            ("n", "NUMERIC(9, 2)"),
+        ),
+        (
+            dict(name="n", type="BIGNUMERIC"),
+            ("n", "BIGNUMERIC", None, None, None),
+            ("n", "BIGNUMERIC"),
+        ),
+        (
+            dict(name="n", type="BIGNUMERIC", precision=40),
+            ("n", "BIGNUMERIC", 40, None, None),
+            ("n", "BIGNUMERIC(40)"),
+        ),
+        (
+            dict(name="n", type="BIGNUMERIC", precision=40, scale=2),
+            ("n", "BIGNUMERIC", 40, 2, None),
+            ("n", "BIGNUMERIC(40, 2)"),
+        ),
+        (
+            dict(name="n", type="STRING"),
+            ("n", "STRING", None, None, None),
+            ("n", "STRING"),
+        ),
+        (
+            dict(name="n", type="STRING", maxLength=9),
+            ("n", "STRING", None, None, 9),
+            ("n", "STRING(9)"),
+        ),
+        (
+            dict(name="n", type="BYTES"),
+            ("n", "BYTES", None, None, None),
+            ("n", "BYTES"),
+        ),
+        (
+            dict(name="n", type="BYTES", maxLength=9),
+            ("n", "BYTES", None, None, 9),
+            ("n", "BYTES(9)"),
+        ),
+    ],
+)
+def test_from_api_repr_parameterized(api, expect, key2):
+    from google.cloud.bigquery.schema import SchemaField
+
+    field = SchemaField.from_api_repr(api)
+
+    assert (
+        field.name,
+        field.field_type,
+        field.precision,
+        field.scale,
+        field.max_length,
+    ) == expect
+
+    assert field._key()[:2] == key2
+
+
+@pytest.mark.parametrize(
+    "field,api",
+    [
+        (
+            dict(name="n", field_type="NUMERIC"),
+            dict(name="n", type="NUMERIC", mode="NULLABLE"),
+        ),
+        (
+            dict(name="n", field_type="NUMERIC", precision=9),
+            dict(name="n", type="NUMERIC", mode="NULLABLE", precision=9),
+        ),
+        (
+            dict(name="n", field_type="NUMERIC", precision=9, scale=2),
+            dict(name="n", type="NUMERIC", mode="NULLABLE", precision=9, scale=2),
+        ),
+        (
+            dict(name="n", field_type="BIGNUMERIC"),
+            dict(name="n", type="BIGNUMERIC", mode="NULLABLE"),
+        ),
+        (
+            dict(name="n", field_type="BIGNUMERIC", precision=40),
+            dict(name="n", type="BIGNUMERIC", mode="NULLABLE", precision=40),
+        ),
+        (
+            dict(name="n", field_type="BIGNUMERIC", precision=40, scale=2),
+            dict(name="n", type="BIGNUMERIC", mode="NULLABLE", precision=40, scale=2),
+        ),
+        (
+            dict(name="n", field_type="STRING"),
+            dict(name="n", type="STRING", mode="NULLABLE"),
+        ),
+        (
+            dict(name="n", field_type="STRING", max_length=9),
+            dict(name="n", type="STRING", mode="NULLABLE", maxLength=9),
+        ),
+        (
+            dict(name="n", field_type="BYTES"),
+            dict(name="n", type="BYTES", mode="NULLABLE"),
+        ),
+        (
+            dict(name="n", field_type="BYTES", max_length=9),
+            dict(name="n", type="BYTES", mode="NULLABLE", maxLength=9),
+        ),
+    ],
+)
+def test_to_api_repr_parameterized(field, api):
+    from google.cloud.bigquery.schema import SchemaField
+
+    assert SchemaField(**field).to_api_repr() == api
