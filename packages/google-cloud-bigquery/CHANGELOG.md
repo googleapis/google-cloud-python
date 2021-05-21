@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [2.17.0](https://www.github.com/googleapis/python-bigquery/compare/v2.16.1...v2.17.0) (2021-05-21)
+
+
+### Features
+
+* detect obsolete BQ Storage extra at runtime ([#666](https://www.github.com/googleapis/python-bigquery/issues/666)) ([bd7dbda](https://www.github.com/googleapis/python-bigquery/commit/bd7dbdae5c972b16bafc53c67911eeaa3255a880))
+* Support parameterized NUMERIC, BIGNUMERIC, STRING, and BYTES types ([#673](https://www.github.com/googleapis/python-bigquery/issues/673)) ([45421e7](https://www.github.com/googleapis/python-bigquery/commit/45421e73bfcddb244822e6a5cd43be6bd1ca2256))
+
+
+### Bug Fixes
+
+* **tests:** invalid path to strptime() ([#672](https://www.github.com/googleapis/python-bigquery/issues/672)) ([591cdd8](https://www.github.com/googleapis/python-bigquery/commit/591cdd851bb1321b048a05a378a0ef48d3ade462))
+
 ### [2.16.1](https://www.github.com/googleapis/python-bigquery/compare/v2.16.0...v2.16.1) (2021-05-12)
 
 
