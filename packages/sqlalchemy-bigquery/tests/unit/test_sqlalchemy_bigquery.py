@@ -137,3 +137,24 @@ def test_get_view_names(
     mock_bigquery_client.list_datasets.assert_called_once()
     assert mock_bigquery_client.list_tables.call_count == len(datasets_list)
     assert list(sorted(view_names)) == list(sorted(expected))
+
+
+@pytest.mark.parametrize(
+    "inp, outp",
+    [
+        ("(NULL IN UNNEST([ NULL) AND (1 != 1 ]))", "(NULL IN(NULL) AND (1 != 1))"),
+        (
+            "(NULL IN UNNEST([ NULL) AND (1 != 1:INT64 ]))",
+            "(NULL IN(NULL) AND (1 != 1))",
+        ),
+        (
+            "(NULL IN UNNEST([ (NULL, NULL)) AND (1 != 1:INT64 ]))",
+            "(NULL IN((NULL, NULL)) AND (1 != 1))",
+        ),
+    ],
+)
+def test__remove_type_from_empty_in(inp, outp):
+    from pybigquery.sqlalchemy_bigquery import BigQueryExecutionContext
+
+    r = BigQueryExecutionContext._BigQueryExecutionContext__remove_type_from_empty_in
+    assert r(None, inp) == outp

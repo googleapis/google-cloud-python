@@ -30,6 +30,8 @@ import google.cloud.bigquery.schema
 import google.cloud.bigquery.table
 import google.cloud.bigquery.dbapi.cursor
 
+from pybigquery._helpers import substitute_re_method
+
 
 class Connection:
     def __init__(self, connection, test_data, client, *args, **kw):
@@ -85,23 +87,18 @@ class Cursor:
         datetime.time,
     )
 
-    def __convert_params(
-        self,
-        operation,
-        parameters,
-        placeholder=re.compile(r"%\((\w+)\)s", re.IGNORECASE),
-    ):
+    @substitute_re_method(r"%\((\w+)\)s", re.IGNORECASE)
+    def __pyformat_to_qmark(self, m, parameters, ordered_parameters):
+        name = m.group(1)
+        value = parameters[name]
+        if isinstance(value, self._need_to_be_pickled):
+            value = pickle.dumps(value, 4).decode("latin1")
+        ordered_parameters.append(value)
+        return "?"
+
+    def __convert_params(self, operation, parameters):
         ordered_parameters = []
-
-        def repl(m):
-            name = m.group(1)
-            value = parameters[name]
-            if isinstance(value, self._need_to_be_pickled):
-                value = pickle.dumps(value, 4).decode("latin1")
-            ordered_parameters.append(value)
-            return "?"
-
-        operation = placeholder.sub(repl, operation)
+        operation = self.__pyformat_to_qmark(operation, parameters, ordered_parameters)
         return operation, ordered_parameters
 
     def __update_comment(self, table, col, comment):
@@ -113,6 +110,23 @@ class Cursor:
         r"\s*create\s+table\s+`(?P<table>\w+)`", re.IGNORECASE
     ).match
 
+    @substitute_re_method(
+        r"(?P<prefix>`(?P<col>\w+)`\s+\w+|\))" r"\s+options\((?P<options>[^)]+)\)",
+        re.IGNORECASE,
+    )
+    def __handle_column_comments(self, m, table_name):
+        col = m.group("col") or ""
+        options = {
+            name.strip().lower(): value.strip()
+            for name, value in (o.split("=") for o in m.group("options").split(","))
+        }
+
+        comment = options.get("description")
+        if comment:
+            self.__update_comment(table_name, col, comment)
+
+        return m.group("prefix")
+
     def __handle_comments(
         self,
         operation,
@@ -121,31 +135,10 @@ class Cursor:
             r"SET\s+OPTIONS\(description=(?P<comment>[^)]+)\)",
             re.IGNORECASE,
         ).match,
-        options=re.compile(
-            r"(?P<prefix>`(?P<col>\w+)`\s+\w+|\))" r"\s+options\((?P<options>[^)]+)\)",
-            re.IGNORECASE,
-        ),
     ):
         m = self.__create_table(operation)
         if m:
-            table_name = m.group("table")
-
-            def repl(m):
-                col = m.group("col") or ""
-                options = {
-                    name.strip().lower(): value.strip()
-                    for name, value in (
-                        o.split("=") for o in m.group("options").split(",")
-                    )
-                }
-
-                comment = options.get("description")
-                if comment:
-                    self.__update_comment(table_name, col, comment)
-
-                return m.group("prefix")
-
-            return options.sub(repl, operation)
+            return self.__handle_column_comments(operation, m.group("table"))
 
         m = alter_table(operation)
         if m:
@@ -156,19 +149,17 @@ class Cursor:
 
         return operation
 
+    @substitute_re_method(
+        r"(?<=[(,])" r"\s*`\w+`\s+\w+<\w+>\s*" r"(?=[,)])", re.IGNORECASE
+    )
+    def __normalize_array_types(self, m):
+        return m.group(0).replace("<", "_").replace(">", "_")
+
     def __handle_array_types(
-        self,
-        operation,
-        array_type=re.compile(
-            r"(?<=[(,])" r"\s*`\w+`\s+\w+<\w+>\s*" r"(?=[,)])", re.IGNORECASE
-        ),
+        self, operation,
     ):
         if self.__create_table(operation):
-
-            def repl(m):
-                return m.group(0).replace("<", "_").replace(">", "_")
-
-            return array_type.sub(repl, operation)
+            return self.__normalize_array_types(operation)
         else:
             return operation
 
@@ -195,18 +186,20 @@ class Cursor:
         else:
             raise AssertionError(type_)  # pragma: NO COVER
 
+    __normalize_bq_datish = substitute_re_method(
+        r"(?<=[[(,])\s*"
+        r"(?P<type>date(?:time)?|time(?:stamp)?) (?P<val>'[^']+')"
+        r"\s*(?=[]),])",
+        re.IGNORECASE,
+        r"parse_datish('\1', \2)",
+    )
+
     def __handle_problematic_literal_inserts(
         self,
         operation,
         literal_insert_values=re.compile(
             r"\s*(insert\s+into\s+.+\s+values\s*)" r"(\([^)]+\))" r"\s*$", re.IGNORECASE
         ).match,
-        bq_dateish=re.compile(
-            r"(?<=[[(,])\s*"
-            r"(?P<type>date(?:time)?|time(?:stamp)?) (?P<val>'[^']+')"
-            r"\s*(?=[]),])",
-            re.IGNORECASE,
-        ),
         need_to_be_pickled_literal=_need_to_be_pickled + (bytes,),
     ):
         if "?" in operation:
@@ -222,7 +215,7 @@ class Cursor:
                 }
             }
 
-            values = bq_dateish.sub(r"parse_datish('\1', \2)", values)
+            values = self.__normalize_bq_datish(values)
             values = eval(values[:-1] + ",)", safe_globals)
             values = ",".join(
                 map(
@@ -241,10 +234,9 @@ class Cursor:
         else:
             return operation
 
-    def __handle_unnest(
-        self, operation, unnest=re.compile(r"UNNEST\(\[ ([^\]]+)? \]\)", re.IGNORECASE),
-    ):
-        return unnest.sub(r"(\1)", operation)
+    __handle_unnest = substitute_re_method(
+        r"UNNEST\(\[ ([^\]]+)? \]\)", re.IGNORECASE, r"(\1)"
+    )
 
     def __handle_true_false(self, operation):
         # Older sqlite versions, like those used on the CI servers
@@ -264,6 +256,7 @@ class Cursor:
         operation = self.__handle_problematic_literal_inserts(operation)
         operation = self.__handle_unnest(operation)
         operation = self.__handle_true_false(operation)
+        operation = operation.replace(" UNION DISTINCT ", " UNION ")
 
         if operation:
             try:
@@ -306,7 +299,7 @@ class Cursor:
         return self._fix_pickled(self.cursor.fetchone())
 
     def fetchall(self):
-        return map(self._fix_pickled, self.cursor)
+        return list(map(self._fix_pickled, self.cursor))
 
 
 class attrdict(dict):

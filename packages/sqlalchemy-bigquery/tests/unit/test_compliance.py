@@ -30,8 +30,8 @@ from sqlalchemy.testing.assertions import eq_, in_
 from conftest import setup_table, sqlalchemy_1_3_or_higher
 
 
-def assert_result(connection, sel, expected):
-    eq_(connection.execute(sel).fetchall(), expected)
+def assert_result(connection, sel, expected, params=()):
+    eq_(connection.execute(sel, params).fetchall(), expected)
 
 
 def some_table(connection):
@@ -106,6 +106,19 @@ def test_percent_sign_round_trip(faux_conn, metadata):
         ),
         "some %% other value",
     )
+
+
+@sqlalchemy_1_3_or_higher
+def test_empty_set_against_integer(faux_conn):
+    table = some_table(faux_conn)
+
+    stmt = (
+        select([table.c.id])
+        .where(table.c.x.in_(sqlalchemy.bindparam("q", expanding=True)))
+        .order_by(table.c.id)
+    )
+
+    assert_result(faux_conn, stmt, [], params={"q": []})
 
 
 @sqlalchemy_1_3_or_higher

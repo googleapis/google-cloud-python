@@ -4,6 +4,9 @@
 # license that can be found in the LICENSE file or at
 # https://opensource.org/licenses/MIT.
 
+import functools
+import re
+
 from google.api_core import client_info
 import google.auth
 from google.cloud import bigquery
@@ -58,3 +61,22 @@ def create_bigquery_client(
         location=location,
         default_query_job_config=default_query_job_config,
     )
+
+
+def substitute_re_method(r, flags=0, repl=None):
+    if repl is None:
+        return lambda f: substitute_re_method(r, flags, f)
+
+    r = re.compile(r, flags)
+
+    if isinstance(repl, str):
+        return lambda self, s: r.sub(repl, s)
+
+    @functools.wraps(repl)
+    def sub(self, s, *args, **kw):
+        def repl_(m):
+            return repl(self, m, *args, **kw)
+
+        return r.sub(repl_, s)
+
+    return sub

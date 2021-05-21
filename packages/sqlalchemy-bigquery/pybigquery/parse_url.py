@@ -44,7 +44,7 @@ def parse_boolean(bool_string):
 
 
 def parse_url(url):  # noqa: C901
-    query = url.query
+    query = dict(url.query)  # need mutable query.
 
     # use_legacy_sql (legacy)
     if "use_legacy_sql" in query:

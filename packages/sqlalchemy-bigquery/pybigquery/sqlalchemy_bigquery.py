@@ -34,6 +34,7 @@ from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import TableReference
 from google.api_core.exceptions import NotFound
 
+import sqlalchemy
 import sqlalchemy.sql.sqltypes
 import sqlalchemy.sql.type_api
 from sqlalchemy.exc import NoSuchTableError
@@ -55,6 +56,11 @@ from .parse_url import parse_url
 from pybigquery import _helpers
 
 FIELD_ILLEGAL_CHARACTERS = re.compile(r"[^\w]+")
+
+
+def assert_(cond, message="Assertion failed"):  # pragma: NO COVER
+    if not cond:
+        raise AssertionError(message)
 
 
 class BigQueryIdentifierPreparer(IdentifierPreparer):
@@ -152,15 +158,25 @@ class BigQueryExecutionContext(DefaultExecutionContext):
         elif isinstance(column.type, String):
             return str(uuid.uuid4())
 
-    def pre_exec(
-        self,
-        in_sub=re.compile(
-            r" IN UNNEST\(\[ "
-            r"(%\([^)]+_\d+\)s(?:, %\([^)]+_\d+\)s)*)?"  # Placeholders. See below.
-            r":([A-Z0-9]+)"  # Type
-            r" \]\)"
-        ).sub,
-    ):
+    __remove_type_from_empty_in = _helpers.substitute_re_method(
+        r" IN UNNEST\(\[ ("
+        r"(?:NULL|\(NULL(?:, NULL)+\))\)"
+        r" (?:AND|OR) \(1 !?= 1"
+        r")"
+        r"(?:[:][A-Z0-9]+)?"
+        r" \]\)",
+        re.IGNORECASE,
+        r" IN(\1)",
+    )
+
+    @_helpers.substitute_re_method(
+        r" IN UNNEST\(\[ "
+        r"(%\([^)]+_\d+\)s(?:, %\([^)]+_\d+\)s)*)?"  # Placeholders. See below.
+        r":([A-Z0-9]+)"  # Type
+        r" \]\)",
+        re.IGNORECASE,
+    )
+    def __distribute_types_to_expanded_placeholders(self, m):
         # If we have an in parameter, it sometimes gets expaned to 0 or more
         # parameters and we need to move the type marker to each
         # parameter.
@@ -171,29 +187,29 @@ class BigQueryExecutionContext(DefaultExecutionContext):
         # suffixes refect that when an array parameter is expanded,
         # numeric suffixes are added.  For example, a placeholder like
         # `%(foo)s` gets expaneded to `%(foo_0)s, `%(foo_1)s, ...`.
+        placeholders, type_ = m.groups()
+        if placeholders:
+            placeholders = placeholders.replace(")", f":{type_})")
+        else:
+            placeholders = ""
+        return f" IN UNNEST([ {placeholders} ])"
 
-        def repl(m):
-            placeholders, type_ = m.groups()
-            if placeholders:
-                placeholders = placeholders.replace(")", f":{type_})")
-            else:
-                placeholders = ""
-            return f" IN UNNEST([ {placeholders} ])"
-
-        self.statement = in_sub(repl, self.statement)
+    def pre_exec(self):
+        self.statement = self.__distribute_types_to_expanded_placeholders(
+            self.__remove_type_from_empty_in(self.statement)
+        )
 
 
 class BigQueryCompiler(SQLCompiler):
 
     compound_keywords = SQLCompiler.compound_keywords.copy()
-    compound_keywords[selectable.CompoundSelect.UNION] = "UNION ALL"
+    compound_keywords[selectable.CompoundSelect.UNION] = "UNION DISTINCT"
+    compound_keywords[selectable.CompoundSelect.UNION_ALL] = "UNION ALL"
 
-    def __init__(self, dialect, statement, column_keys=None, inline=False, **kwargs):
+    def __init__(self, dialect, statement, *args, **kwargs):
         if isinstance(statement, Column):
             kwargs["compile_kwargs"] = util.immutabledict({"include_table": False})
-        super(BigQueryCompiler, self).__init__(
-            dialect, statement, column_keys, inline, **kwargs
-        )
+        super(BigQueryCompiler, self).__init__(dialect, statement, *args, **kwargs)
 
     def visit_insert(self, insert_stmt, asfrom=False, **kw):
         # The (internal) documentation for `inline` is confusing, but
@@ -260,23 +276,36 @@ class BigQueryCompiler(SQLCompiler):
     # no way to tell sqlalchemy that, so it works harder than
     # necessary and makes us do the same.
 
-    _in_expanding_bind = re.compile(r" IN \((\[EXPANDING_\w+\](:[A-Z0-9]+)?)\)$")
+    __sqlalchemy_version_info = tuple(map(int, sqlalchemy.__version__.split(".")))
 
-    def _unnestify_in_expanding_bind(self, in_text):
-        return self._in_expanding_bind.sub(r" IN UNNEST([ \1 ])", in_text)
+    __expandng_text = (
+        "EXPANDING" if __sqlalchemy_version_info < (1, 4) else "POSTCOMPILE"
+    )
+
+    __in_expanding_bind = _helpers.substitute_re_method(
+        fr" IN \((\[" fr"{__expandng_text}" fr"_[^\]]+\](:[A-Z0-9]+)?)\)$",
+        re.IGNORECASE,
+        r" IN UNNEST([ \1 ])",
+    )
 
     def visit_in_op_binary(self, binary, operator_, **kw):
-        return self._unnestify_in_expanding_bind(
+        return self.__in_expanding_bind(
             self._generate_generic_binary(binary, " IN ", **kw)
         )
 
     def visit_empty_set_expr(self, element_types):
         return ""
 
-    def visit_notin_op_binary(self, binary, operator, **kw):
-        return self._unnestify_in_expanding_bind(
-            self._generate_generic_binary(binary, " NOT IN ", **kw)
+    def visit_not_in_op_binary(self, binary, operator, **kw):
+        return (
+            "("
+            + self.__in_expanding_bind(
+                self._generate_generic_binary(binary, " NOT IN ", **kw)
+            )
+            + ")"
         )
+
+    visit_notin_op_binary = visit_not_in_op_binary  # before 1.4
 
     ############################################################################
 
@@ -327,6 +356,10 @@ class BigQueryCompiler(SQLCompiler):
 
     ############################################################################
 
+    __placeholder = re.compile(r"%\(([^\]:]+)(:[^\]:]+)?\)s$").match
+
+    __expanded_param = re.compile(fr"\(\[" fr"{__expandng_text}" fr"_[^\]]+\]\)$").match
+
     def visit_bindparam(
         self,
         bindparam,
@@ -365,8 +398,20 @@ class BigQueryCompiler(SQLCompiler):
             # Values get arrayified at a lower level.
             bq_type = bq_type[6:-1]
 
-        assert param != "%s"
-        return param.replace(")", f":{bq_type})")
+        assert_(param != "%s", f"Unexpected param: {param}")
+
+        if bindparam.expanding:
+            assert_(self.__expanded_param(param), f"Unexpected param: {param}")
+            param = param.replace(")", f":{bq_type})")
+
+        else:
+            m = self.__placeholder(param)
+            if m:
+                name, type_ = m.groups()
+                assert_(type_ is None)
+                param = f"%({name}:{bq_type})s"
+
+        return param
 
 
 class BigQueryTypeCompiler(GenericTypeCompiler):
@@ -541,7 +586,6 @@ class BigQueryDialect(DefaultDialect):
     supports_unicode_statements = True
     supports_unicode_binds = True
     supports_native_decimal = True
-    returns_unicode_strings = True
     description_encoding = None
     supports_native_boolean = True
     supports_simple_order_by_label = True

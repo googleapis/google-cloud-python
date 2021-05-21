@@ -21,7 +21,11 @@ import datetime
 import mock
 import pytest
 import pytz
+import sqlalchemy
 from sqlalchemy import and_
+
+import sqlalchemy.testing.suite.test_types
+from sqlalchemy.testing import util
 from sqlalchemy.testing.assertions import eq_
 from sqlalchemy.testing.suite import config, select, exists
 from sqlalchemy.testing.suite import *  # noqa
@@ -30,21 +34,154 @@ from sqlalchemy.testing.suite import (
     CTETest as _CTETest,
     ExistsTest as _ExistsTest,
     InsertBehaviorTest as _InsertBehaviorTest,
-    LimitOffsetTest as _LimitOffsetTest,
     LongNameBlowoutTest,
     QuotedNameArgumentTest,
     SimpleUpdateDeleteTest as _SimpleUpdateDeleteTest,
     TimestampMicrosecondsTest as _TimestampMicrosecondsTest,
 )
 
+
+if sqlalchemy.__version__ < "1.4":
+    from sqlalchemy.testing.suite import LimitOffsetTest as _LimitOffsetTest
+
+    class LimitOffsetTest(_LimitOffsetTest):
+        @pytest.mark.skip("BigQuery doesn't allow an offset without a limit.")
+        def test_simple_offset(self):
+            pass
+
+        test_bound_offset = test_simple_offset
+
+    class TimestampMicrosecondsTest(_TimestampMicrosecondsTest):
+
+        data = datetime.datetime(2012, 10, 15, 12, 57, 18, 396, tzinfo=pytz.UTC)
+
+        def test_literal(self):
+            # The base tests doesn't set up the literal properly, because
+            # it doesn't pass its datatype to `literal`.
+
+            def literal(value):
+                assert value == self.data
+                import sqlalchemy.sql.sqltypes
+
+                return sqlalchemy.sql.elements.literal(value, self.datatype)
+
+            with mock.patch("sqlalchemy.testing.suite.test_types.literal", literal):
+                super(TimestampMicrosecondsTest, self).test_literal()
+
+
+else:
+    from sqlalchemy.testing.suite import (
+        ComponentReflectionTestExtra as _ComponentReflectionTestExtra,
+        FetchLimitOffsetTest as _FetchLimitOffsetTest,
+        RowCountTest as _RowCountTest,
+    )
+
+    class FetchLimitOffsetTest(_FetchLimitOffsetTest):
+        @pytest.mark.skip("BigQuery doesn't allow an offset without a limit.")
+        def test_simple_offset(self):
+            pass
+
+        test_bound_offset = test_simple_offset
+        test_expr_offset = test_simple_offset_zero = test_simple_offset
+
+        # The original test is missing an order by.
+
+        # Also, note that sqlalchemy union is a union distinct, not a
+        # union all. This test caught that were were getting that wrong.
+        def test_limit_render_multiple_times(self, connection):
+            table = self.tables.some_table
+            stmt = select(table.c.id).order_by(table.c.id).limit(1).scalar_subquery()
+
+            u = sqlalchemy.union(select(stmt), select(stmt)).subquery().select()
+
+            self._assert_result(
+                connection, u, [(1,)],
+            )
+
+    del DifficultParametersTest  # exercises column names illegal in BQ
+    del DistinctOnTest  # expects unquoted table names.
+    del HasIndexTest  # BQ doesn't do the indexes that SQLA is loooking for.
+    del IdentityAutoincrementTest  # BQ doesn't do autoincrement
+
+    # This test makes makes assertions about generated sql and trips
+    # over the backquotes that we add everywhere. XXX Why do we do that?
+    del PostCompileParamsTest
+
+    class ComponentReflectionTestExtra(_ComponentReflectionTestExtra):
+        @pytest.mark.skip("BQ types don't have parameters like precision and length")
+        def test_numeric_reflection(self):
+            pass
+
+        test_varchar_reflection = test_numeric_reflection
+
+    class TimestampMicrosecondsTest(_TimestampMicrosecondsTest):
+
+        data = datetime.datetime(2012, 10, 15, 12, 57, 18, 396, tzinfo=pytz.UTC)
+
+        def test_literal(self, literal_round_trip):
+            # The base tests doesn't set up the literal properly, because
+            # it doesn't pass its datatype to `literal`.
+
+            def literal(value):
+                assert value == self.data
+                import sqlalchemy.sql.sqltypes
+
+                return sqlalchemy.sql.elements.literal(value, self.datatype)
+
+            with mock.patch("sqlalchemy.testing.suite.test_types.literal", literal):
+                super(TimestampMicrosecondsTest, self).test_literal(literal_round_trip)
+
+    def test_round_trip_executemany(self, connection):
+        unicode_table = self.tables.unicode_table
+        connection.execute(
+            unicode_table.insert(),
+            [{"id": i, "unicode_data": self.data} for i in range(3)],
+        )
+
+        rows = connection.execute(select(unicode_table.c.unicode_data)).fetchall()
+        eq_(rows, [(self.data,) for i in range(3)])
+        for row in rows:
+            assert isinstance(row[0], util.text_type)
+
+    sqlalchemy.testing.suite.test_types._UnicodeFixture.test_round_trip_executemany = (
+        test_round_trip_executemany
+    )
+
+    class RowCountTest(_RowCountTest):
+        @classmethod
+        def insert_data(cls, connection):
+            cls.data = data = [
+                ("Angela", "A"),
+                ("Andrew", "A"),
+                ("Anand", "A"),
+                ("Bob", "B"),
+                ("Bobette", "B"),
+                ("Buffy", "B"),
+                ("Charlie", "C"),
+                ("Cynthia", "C"),
+                ("Chris", "C"),
+            ]
+
+            employees_table = cls.tables.employees
+            connection.execute(
+                employees_table.insert(),
+                [
+                    {"employee_id": i, "name": n, "department": d}
+                    for i, (n, d) in enumerate(data)
+                ],
+            )
+
+
 # Quotes aren't allowed in BigQuery table names.
 del QuotedNameArgumentTest
 
 
 class InsertBehaviorTest(_InsertBehaviorTest):
-    @pytest.mark.skip()
+    @pytest.mark.skip(
+        "BQ has no autoinc and client-side defaults can't work for select."
+    )
     def test_insert_from_select_autoinc(cls):
-        """BQ has no autoinc and client-side defaults can't work for select."""
+        pass
 
 
 class ExistsTest(_ExistsTest):
@@ -74,14 +211,6 @@ class ExistsTest(_ExistsTest):
             ).fetchall(),
             [],
         )
-
-
-class LimitOffsetTest(_LimitOffsetTest):
-    @pytest.mark.skip()
-    def test_simple_offset(self):
-        """BigQuery doesn't allow an offset without a limit."""
-
-    test_bound_offset = test_simple_offset
 
 
 # This test requires features (indexes, primary keys, etc., that BigQuery doesn't have.
@@ -130,20 +259,6 @@ class ComponentReflectionTest(_ComponentReflectionTest):
 
     test_numeric_reflection = test_varchar_reflection = course_grained_types
 
-
-class TimestampMicrosecondsTest(_TimestampMicrosecondsTest):
-
-    data = datetime.datetime(2012, 10, 15, 12, 57, 18, 396, tzinfo=pytz.UTC)
-
-    def test_literal(self):
-        # The base tests doesn't set up the literal properly, because
-        # it doesn't pass its datatype to `literal`.
-
-        def literal(value):
-            assert value == self.data
-            import sqlalchemy.sql.sqltypes
-
-            return sqlalchemy.sql.elements.literal(value, self.datatype)
-
-        with mock.patch("sqlalchemy.testing.suite.test_types.literal", literal):
-            super(TimestampMicrosecondsTest, self).test_literal()
+    @pytest.mark.skip("BQ doesn't have indexes (in the way these tests expect).")
+    def test_get_indexes(self):
+        pass

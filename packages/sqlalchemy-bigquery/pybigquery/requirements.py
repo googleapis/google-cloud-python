@@ -154,8 +154,14 @@ class Requirements(sqlalchemy.testing.requirements.SuiteRequirements):
     def unicode_ddl(self):
         """Target driver must support some degree of non-ascii symbol
         names.
+
+        However:
+
+        Must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_)
+
+        https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language#column_name_and_column_schema
         """
-        return supported()
+        return unsupported()
 
     @property
     def datetime_literals(self):
@@ -218,6 +224,14 @@ class Requirements(sqlalchemy.testing.requirements.SuiteRequirements):
 
         """
         return supported()
+
+    @property
+    def sql_expression_limit_offset(self):
+        """target database can render LIMIT and/or OFFSET with a complete
+        SQL expression, such as one that uses the addition operator.
+        parameter
+        """
+        return unsupported()
 
 
 class WithSchemas(Requirements):
