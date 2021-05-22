@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/pybigquery/#history
 
+## [0.8.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.7.0...v0.8.0) (2021-05-21)
+
+
+### Features
+
+* Add support for SQLAlchemy 1.4 ([#177](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/177)) ([b7b6000](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/b7b60007c966cd548448d1d6fd5a14d1f89480cd))
+
 ## [0.7.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.6.1...v0.7.0) (2021-05-12)
 
 
