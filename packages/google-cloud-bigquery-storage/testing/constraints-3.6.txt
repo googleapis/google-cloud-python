@@ -11,3 +11,5 @@ libcst==0.2.5
 fastavro==0.21.2
 pandas==0.21.1
 pyarrow==0.15.0
+packaging==14.3
+google-auth==1.24.0  # TODO: remove when google-auth>=1.25.0 si transitively required through google-api-core
