@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -31,17 +29,16 @@ from typing import (
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.speech_v1p1beta1.types import cloud_speech
-from google.rpc import status_pb2 as status  # type: ignore
-
+from google.rpc import status_pb2  # type: ignore
 from .transports.base import SpeechTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import SpeechGrpcAsyncIOTransport
 from .client import SpeechClient
@@ -59,29 +56,25 @@ class SpeechAsyncClient:
     parse_custom_class_path = staticmethod(SpeechClient.parse_custom_class_path)
     phrase_set_path = staticmethod(SpeechClient.phrase_set_path)
     parse_phrase_set_path = staticmethod(SpeechClient.parse_phrase_set_path)
-
     common_billing_account_path = staticmethod(SpeechClient.common_billing_account_path)
     parse_common_billing_account_path = staticmethod(
         SpeechClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(SpeechClient.common_folder_path)
     parse_common_folder_path = staticmethod(SpeechClient.parse_common_folder_path)
-
     common_organization_path = staticmethod(SpeechClient.common_organization_path)
     parse_common_organization_path = staticmethod(
         SpeechClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(SpeechClient.common_project_path)
     parse_common_project_path = staticmethod(SpeechClient.parse_common_project_path)
-
     common_location_path = staticmethod(SpeechClient.common_location_path)
     parse_common_location_path = staticmethod(SpeechClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -96,7 +89,7 @@ class SpeechAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -113,7 +106,7 @@ class SpeechAsyncClient:
 
     @property
     def transport(self) -> SpeechTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             SpeechTransport: The transport used by the client instance.
@@ -127,12 +120,12 @@ class SpeechAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, SpeechTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the speech client.
+        """Instantiates the speech client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -164,7 +157,6 @@ class SpeechAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = SpeechClient(
             credentials=credentials,
             transport=transport,
@@ -204,7 +196,6 @@ class SpeechAsyncClient:
                 This corresponds to the ``audio`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -232,7 +223,6 @@ class SpeechAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if config is not None:
             request.config = config
         if audio is not None:
@@ -247,7 +237,8 @@ class SpeechAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=5000.0,
             ),
@@ -297,7 +288,6 @@ class SpeechAsyncClient:
                 This corresponds to the ``audio`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -330,7 +320,6 @@ class SpeechAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if config is not None:
             request.config = config
         if audio is not None:
@@ -459,7 +448,8 @@ class SpeechAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=5000.0,
             ),

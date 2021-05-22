@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.speech_v1p1beta1.types import resource
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -43,7 +40,6 @@ __protobuf__ = proto.module(
 
 class CreatePhraseSetRequest(proto.Message):
     r"""Message sent by the client for the ``CreatePhraseSet`` method.
-
     Attributes:
         parent (str):
             Required. The parent resource where this phrase set will be
@@ -59,16 +55,13 @@ class CreatePhraseSetRequest(proto.Message):
             Required. The phrase set to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    phrase_set_id = proto.Field(proto.STRING, number=2)
-
+    parent = proto.Field(proto.STRING, number=1,)
+    phrase_set_id = proto.Field(proto.STRING, number=2,)
     phrase_set = proto.Field(proto.MESSAGE, number=3, message=resource.PhraseSet,)
 
 
 class UpdatePhraseSetRequest(proto.Message):
     r"""Message sent by the client for the ``UpdatePhraseSet`` method.
-
     Attributes:
         phrase_set (google.cloud.speech_v1p1beta1.types.PhraseSet):
             Required. The phrase set to update.
@@ -81,25 +74,24 @@ class UpdatePhraseSetRequest(proto.Message):
     """
 
     phrase_set = proto.Field(proto.MESSAGE, number=1, message=resource.PhraseSet,)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class GetPhraseSetRequest(proto.Message):
     r"""Message sent by the client for the ``GetPhraseSet`` method.
-
     Attributes:
         name (str):
             Required. The name of the phrase set to retrieve. Format:
             {api_version}/projects/{project}/locations/{location}/phraseSets/{phrase_set}
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListPhraseSetRequest(proto.Message):
     r"""Message sent by the client for the ``ListPhraseSet`` method.
-
     Attributes:
         parent (str):
             Required. The parent, which owns this
@@ -120,16 +112,13 @@ class ListPhraseSetRequest(proto.Message):
             token.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListPhraseSetResponse(proto.Message):
     r"""Message returned to the client by the ``ListPhraseSet`` method.
-
     Attributes:
         phrase_sets (Sequence[google.cloud.speech_v1p1beta1.types.PhraseSet]):
             The phrase set.
@@ -146,25 +135,22 @@ class ListPhraseSetResponse(proto.Message):
     phrase_sets = proto.RepeatedField(
         proto.MESSAGE, number=1, message=resource.PhraseSet,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class DeletePhraseSetRequest(proto.Message):
     r"""Message sent by the client for the ``DeletePhraseSet`` method.
-
     Attributes:
         name (str):
             Required. The name of the phrase set to delete. Format:
             {api_version}/projects/{project}/locations/{location}/phraseSets/{phrase_set}
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateCustomClassRequest(proto.Message):
     r"""Message sent by the client for the ``CreateCustomClass`` method.
-
     Attributes:
         parent (str):
             Required. The parent resource where this custom class will
@@ -180,16 +166,13 @@ class CreateCustomClassRequest(proto.Message):
             Required. The custom class to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    custom_class_id = proto.Field(proto.STRING, number=2)
-
+    parent = proto.Field(proto.STRING, number=1,)
+    custom_class_id = proto.Field(proto.STRING, number=2,)
     custom_class = proto.Field(proto.MESSAGE, number=3, message=resource.CustomClass,)
 
 
 class UpdateCustomClassRequest(proto.Message):
     r"""Message sent by the client for the ``UpdateCustomClass`` method.
-
     Attributes:
         custom_class (google.cloud.speech_v1p1beta1.types.CustomClass):
             Required. The custom class to update.
@@ -202,25 +185,24 @@ class UpdateCustomClassRequest(proto.Message):
     """
 
     custom_class = proto.Field(proto.MESSAGE, number=1, message=resource.CustomClass,)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class GetCustomClassRequest(proto.Message):
     r"""Message sent by the client for the ``GetCustomClass`` method.
-
     Attributes:
         name (str):
             Required. The name of the custom class to retrieve. Format:
             {api_version}/projects/{project}/locations/{location}/customClasses/{custom_class}
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListCustomClassesRequest(proto.Message):
     r"""Message sent by the client for the ``ListCustomClasses`` method.
-
     Attributes:
         parent (str):
             Required. The parent, which owns this collection of custom
@@ -241,16 +223,13 @@ class ListCustomClassesRequest(proto.Message):
             page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListCustomClassesResponse(proto.Message):
     r"""Message returned to the client by the ``ListCustomClasses`` method.
-
     Attributes:
         custom_classes (Sequence[google.cloud.speech_v1p1beta1.types.CustomClass]):
             The custom classes.
@@ -267,20 +246,18 @@ class ListCustomClassesResponse(proto.Message):
     custom_classes = proto.RepeatedField(
         proto.MESSAGE, number=1, message=resource.CustomClass,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class DeleteCustomClassRequest(proto.Message):
     r"""Message sent by the client for the ``DeleteCustomClass`` method.
-
     Attributes:
         name (str):
             Required. The name of the custom class to delete. Format:
             {api_version}/projects/{project}/locations/{location}/customClasses/{custom_class}
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
