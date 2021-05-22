@@ -1,0 +1,53 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.speech_v1",
+  "protoPackage": "google.cloud.speech.v1",
+  "schema": "1.0",
+  "services": {
+    "Speech": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "SpeechClient",
+          "rpcs": {
+            "LongRunningRecognize": {
+              "methods": [
+                "long_running_recognize"
+              ]
+            },
+            "Recognize": {
+              "methods": [
+                "recognize"
+              ]
+            },
+            "StreamingRecognize": {
+              "methods": [
+                "streaming_recognize"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "SpeechAsyncClient",
+          "rpcs": {
+            "LongRunningRecognize": {
+              "methods": [
+                "long_running_recognize"
+              ]
+            },
+            "Recognize": {
+              "methods": [
+                "recognize"
+              ]
+            },
+            "StreamingRecognize": {
+              "methods": [
+                "streaming_recognize"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

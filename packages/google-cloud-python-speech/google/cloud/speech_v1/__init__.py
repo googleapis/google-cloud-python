@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,8 @@
 #
 
 from .services.speech import SpeechClient
+from .services.speech import SpeechAsyncClient
+
 from .types.cloud_speech import LongRunningRecognizeMetadata
 from .types.cloud_speech import LongRunningRecognizeRequest
 from .types.cloud_speech import LongRunningRecognizeResponse
@@ -34,7 +35,6 @@ from .types.cloud_speech import StreamingRecognizeRequest
 from .types.cloud_speech import StreamingRecognizeResponse
 from .types.cloud_speech import WordInfo
 
-
 from google.cloud.speech_v1.helpers import SpeechHelpers
 
 
@@ -43,6 +43,7 @@ class SpeechClient(SpeechHelpers, SpeechClient):
 
 
 __all__ = (
+    "SpeechAsyncClient",
     "LongRunningRecognizeMetadata",
     "LongRunningRecognizeRequest",
     "LongRunningRecognizeResponse",
@@ -52,6 +53,7 @@ __all__ = (
     "RecognizeRequest",
     "RecognizeResponse",
     "SpeakerDiarizationConfig",
+    "SpeechClient",
     "SpeechContext",
     "SpeechRecognitionAlternative",
     "SpeechRecognitionResult",
@@ -60,5 +62,4 @@ __all__ = (
     "StreamingRecognizeRequest",
     "StreamingRecognizeResponse",
     "WordInfo",
-    "SpeechClient",
 )
