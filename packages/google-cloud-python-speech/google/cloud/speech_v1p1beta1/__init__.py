@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +15,10 @@
 #
 
 from .services.adaptation import AdaptationClient
+from .services.adaptation import AdaptationAsyncClient
 from .services.speech import SpeechClient
+from .services.speech import SpeechAsyncClient
+
 from .types.cloud_speech import LongRunningRecognizeMetadata
 from .types.cloud_speech import LongRunningRecognizeRequest
 from .types.cloud_speech import LongRunningRecognizeResponse
@@ -51,7 +53,6 @@ from .types.resource import CustomClass
 from .types.resource import PhraseSet
 from .types.resource import SpeechAdaptation
 
-
 from google.cloud.speech_v1.helpers import SpeechHelpers
 
 
@@ -60,6 +61,9 @@ class SpeechClient(SpeechHelpers, SpeechClient):
 
 
 __all__ = (
+    "AdaptationAsyncClient",
+    "SpeechAsyncClient",
+    "AdaptationClient",
     "CreateCustomClassRequest",
     "CreatePhraseSetRequest",
     "CustomClass",
@@ -94,5 +98,4 @@ __all__ = (
     "UpdateCustomClassRequest",
     "UpdatePhraseSetRequest",
     "WordInfo",
-    "AdaptationClient",
 )
