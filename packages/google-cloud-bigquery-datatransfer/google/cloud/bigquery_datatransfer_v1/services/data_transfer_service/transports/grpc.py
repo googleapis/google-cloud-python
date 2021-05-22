@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,22 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.cloud.bigquery_datatransfer_v1.types import datatransfer
 from google.cloud.bigquery_datatransfer_v1.types import transfer
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
 from .base import DataTransferServiceTransport, DEFAULT_CLIENT_INFO
 
 
@@ -55,7 +52,7 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
         self,
         *,
         host: str = "bigquerydatatransfer.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -69,7 +66,8 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -179,7 +177,7 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
     def create_channel(
         cls,
         host: str = "bigquerydatatransfer.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -210,13 +208,15 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -338,7 +338,7 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
     @property
     def delete_transfer_config(
         self,
-    ) -> Callable[[datatransfer.DeleteTransferConfigRequest], empty.Empty]:
+    ) -> Callable[[datatransfer.DeleteTransferConfigRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete transfer config method over gRPC.
 
         Deletes a data transfer configuration,
@@ -358,7 +358,7 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
             self._stubs["delete_transfer_config"] = self.grpc_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/DeleteTransferConfig",
                 request_serializer=datatransfer.DeleteTransferConfigRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_transfer_config"]
 
@@ -513,7 +513,7 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
     @property
     def delete_transfer_run(
         self,
-    ) -> Callable[[datatransfer.DeleteTransferRunRequest], empty.Empty]:
+    ) -> Callable[[datatransfer.DeleteTransferRunRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete transfer run method over gRPC.
 
         Deletes the specified transfer run.
@@ -532,7 +532,7 @@ class DataTransferServiceGrpcTransport(DataTransferServiceTransport):
             self._stubs["delete_transfer_run"] = self.grpc_channel.unary_unary(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/DeleteTransferRun",
                 request_serializer=datatransfer.DeleteTransferRunRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_transfer_run"]
 

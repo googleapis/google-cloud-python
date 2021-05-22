@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +14,13 @@
 # limitations under the License.
 #
 
-from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service.async_client import (
-    DataTransferServiceAsyncClient,
-)
 from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service.client import (
     DataTransferServiceClient,
 )
+from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service.async_client import (
+    DataTransferServiceAsyncClient,
+)
+
 from google.cloud.bigquery_datatransfer_v1.types.datatransfer import (
     CheckValidCredsRequest,
 )
@@ -95,16 +95,15 @@ from google.cloud.bigquery_datatransfer_v1.types.transfer import TransferState
 from google.cloud.bigquery_datatransfer_v1.types.transfer import TransferType
 
 __all__ = (
+    "DataTransferServiceClient",
+    "DataTransferServiceAsyncClient",
     "CheckValidCredsRequest",
     "CheckValidCredsResponse",
     "CreateTransferConfigRequest",
     "DataSource",
     "DataSourceParameter",
-    "DataTransferServiceAsyncClient",
-    "DataTransferServiceClient",
     "DeleteTransferConfigRequest",
     "DeleteTransferRunRequest",
-    "EmailPreferences",
     "GetDataSourceRequest",
     "GetTransferConfigRequest",
     "GetTransferRunRequest",
@@ -116,15 +115,16 @@ __all__ = (
     "ListTransferLogsResponse",
     "ListTransferRunsRequest",
     "ListTransferRunsResponse",
-    "ScheduleOptions",
     "ScheduleTransferRunsRequest",
     "ScheduleTransferRunsResponse",
     "StartManualTransferRunsRequest",
     "StartManualTransferRunsResponse",
+    "UpdateTransferConfigRequest",
+    "EmailPreferences",
+    "ScheduleOptions",
     "TransferConfig",
     "TransferMessage",
     "TransferRun",
     "TransferState",
     "TransferType",
-    "UpdateTransferConfigRequest",
 )

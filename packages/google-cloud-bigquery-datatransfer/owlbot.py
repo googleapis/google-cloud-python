@@ -26,17 +26,18 @@ common = gcp.CommonTemplates()
 # Generate bigquery_datatransfer GAPIC layer
 # ----------------------------------------------------------------------------
 for library in s.get_staging_dirs("v1"):
-    # Fix missing async client in datatransfer_v1
-    # https://github.com/googleapis/gapic-generator-python/issues/815
+
+    # Comment out broken assertion in unit test
+    # https://github.com/googleapis/gapic-generator-python/issues/897
     s.replace(
-        library / "google/cloud/bigquery_datatransfer_v1/__init__.py",
-        r"from \.services\.data_transfer_service import DataTransferServiceClient",
-        "\\g<0>\nfrom .services.data_transfer_service import DataTransferServiceAsyncClient",
+        library / "tests/**/*.py",
+        "assert args\[0\]\.start_time == timestamp_pb2\.Timestamp\(seconds=751\)",
+        "# assert args[0].start_time == timestamp_pb2.Timestamp(seconds=751)"
     )
     s.replace(
-        library / "google/cloud/bigquery_datatransfer_v1/__init__.py",
-        r"'DataTransferServiceClient',",
-        '\\g<0>\n    "DataTransferServiceAsyncClient"',
+        library / "tests/**/*.py",
+        "assert args\[0\]\.end_time == timestamp_pb2\.Timestamp\(seconds=751\)",
+        "# assert args[0].end_time == timestamp_pb2.Timestamp(seconds=751)"
     )
 
     s.move(library, excludes=["*.tar.gz", "docs/index.rst", "README.rst", "setup.py"])

@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,21 +39,20 @@ def partition(
 class bigquery_datatransferCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'check_valid_creds': ('name', ),
-    'create_transfer_config': ('parent', 'transfer_config', 'authorization_code', 'version_info', 'service_account_name', ),
-    'delete_transfer_config': ('name', ),
-    'delete_transfer_run': ('name', ),
-    'get_data_source': ('name', ),
-    'get_transfer_config': ('name', ),
-    'get_transfer_run': ('name', ),
-    'list_data_sources': ('parent', 'page_token', 'page_size', ),
-    'list_transfer_configs': ('parent', 'data_source_ids', 'page_token', 'page_size', ),
-    'list_transfer_logs': ('parent', 'page_token', 'page_size', 'message_types', ),
-    'list_transfer_runs': ('parent', 'states', 'page_token', 'page_size', 'run_attempt', ),
-    'schedule_transfer_runs': ('parent', 'start_time', 'end_time', ),
-    'start_manual_transfer_runs': ('parent', 'requested_time_range', 'requested_run_time', ),
-    'update_transfer_config': ('transfer_config', 'update_mask', 'authorization_code', 'version_info', 'service_account_name', ),
-
+          'check_valid_creds': ('name', ),
+          'create_transfer_config': ('parent', 'transfer_config', 'authorization_code', 'version_info', 'service_account_name', ),
+          'delete_transfer_config': ('name', ),
+          'delete_transfer_run': ('name', ),
+          'get_data_source': ('name', ),
+          'get_transfer_config': ('name', ),
+          'get_transfer_run': ('name', ),
+          'list_data_sources': ('parent', 'page_token', 'page_size', ),
+          'list_transfer_configs': ('parent', 'data_source_ids', 'page_token', 'page_size', ),
+          'list_transfer_logs': ('parent', 'page_token', 'page_size', 'message_types', ),
+          'list_transfer_runs': ('parent', 'states', 'page_token', 'page_size', 'run_attempt', ),
+          'schedule_transfer_runs': ('parent', 'start_time', 'end_time', ),
+          'start_manual_transfer_runs': ('parent', 'requested_time_range', 'requested_run_time', ),
+          'update_transfer_config': ('transfer_config', 'update_mask', 'authorization_code', 'version_info', 'service_account_name', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -86,7 +83,7 @@ class bigquery_datatransferCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

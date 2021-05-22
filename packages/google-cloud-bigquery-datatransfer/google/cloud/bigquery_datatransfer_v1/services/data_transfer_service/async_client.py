@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -22,21 +20,20 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service import pagers
 from google.cloud.bigquery_datatransfer_v1.types import datatransfer
 from google.cloud.bigquery_datatransfer_v1.types import transfer
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import struct_pb2 as struct  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.rpc import status_pb2 as status  # type: ignore
-
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 from .transports.base import DataTransferServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import DataTransferServiceGrpcAsyncIOTransport
 from .client import DataTransferServiceClient
@@ -64,31 +61,26 @@ class DataTransferServiceAsyncClient:
     parse_transfer_config_path = staticmethod(
         DataTransferServiceClient.parse_transfer_config_path
     )
-
     common_billing_account_path = staticmethod(
         DataTransferServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         DataTransferServiceClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(DataTransferServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(
         DataTransferServiceClient.parse_common_folder_path
     )
-
     common_organization_path = staticmethod(
         DataTransferServiceClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
         DataTransferServiceClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(DataTransferServiceClient.common_project_path)
     parse_common_project_path = staticmethod(
         DataTransferServiceClient.parse_common_project_path
     )
-
     common_location_path = staticmethod(DataTransferServiceClient.common_location_path)
     parse_common_location_path = staticmethod(
         DataTransferServiceClient.parse_common_location_path
@@ -96,7 +88,8 @@ class DataTransferServiceAsyncClient:
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -111,7 +104,7 @@ class DataTransferServiceAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -128,7 +121,7 @@ class DataTransferServiceAsyncClient:
 
     @property
     def transport(self) -> DataTransferServiceTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             DataTransferServiceTransport: The transport used by the client instance.
@@ -143,12 +136,12 @@ class DataTransferServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, DataTransferServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the data transfer service client.
+        """Instantiates the data transfer service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -180,7 +173,6 @@ class DataTransferServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = DataTransferServiceClient(
             credentials=credentials,
             transport=transport,
@@ -213,7 +205,6 @@ class DataTransferServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -241,7 +232,6 @@ class DataTransferServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -254,7 +244,8 @@ class DataTransferServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=20.0,
             ),
@@ -299,7 +290,6 @@ class DataTransferServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -329,7 +319,6 @@ class DataTransferServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -342,7 +331,8 @@ class DataTransferServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=20.0,
             ),
@@ -408,7 +398,6 @@ class DataTransferServiceAsyncClient:
                 This corresponds to the ``transfer_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -441,7 +430,6 @@ class DataTransferServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if transfer_config is not None:
@@ -472,7 +460,7 @@ class DataTransferServiceAsyncClient:
         request: datatransfer.UpdateTransferConfigRequest = None,
         *,
         transfer_config: transfer.TransferConfig = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -500,7 +488,6 @@ class DataTransferServiceAsyncClient:
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -533,7 +520,6 @@ class DataTransferServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if transfer_config is not None:
             request.transfer_config = transfer_config
         if update_mask is not None:
@@ -587,7 +573,6 @@ class DataTransferServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -608,7 +593,6 @@ class DataTransferServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -621,7 +605,8 @@ class DataTransferServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=20.0,
             ),
@@ -664,7 +649,6 @@ class DataTransferServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -697,7 +681,6 @@ class DataTransferServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -710,7 +693,8 @@ class DataTransferServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=20.0,
             ),
@@ -754,7 +738,6 @@ class DataTransferServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -784,7 +767,6 @@ class DataTransferServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -797,7 +779,8 @@ class DataTransferServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=20.0,
             ),
@@ -828,8 +811,8 @@ class DataTransferServiceAsyncClient:
         request: datatransfer.ScheduleTransferRunsRequest = None,
         *,
         parent: str = None,
-        start_time: timestamp.Timestamp = None,
-        end_time: timestamp.Timestamp = None,
+        start_time: timestamp_pb2.Timestamp = None,
+        end_time: timestamp_pb2.Timestamp = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -866,7 +849,6 @@ class DataTransferServiceAsyncClient:
                 This corresponds to the ``end_time`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -893,7 +875,6 @@ class DataTransferServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if start_time is not None:
@@ -938,7 +919,6 @@ class DataTransferServiceAsyncClient:
             request (:class:`google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest`):
                 The request object. A request to start manual transfer
                 runs.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -952,7 +932,6 @@ class DataTransferServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = datatransfer.StartManualTransferRunsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1001,7 +980,6 @@ class DataTransferServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1026,7 +1004,6 @@ class DataTransferServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -1039,7 +1016,8 @@ class DataTransferServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=20.0,
             ),
@@ -1084,7 +1062,6 @@ class DataTransferServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1105,7 +1082,6 @@ class DataTransferServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -1118,7 +1094,8 @@ class DataTransferServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=20.0,
             ),
@@ -1164,7 +1141,6 @@ class DataTransferServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1194,7 +1170,6 @@ class DataTransferServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -1207,7 +1182,8 @@ class DataTransferServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=20.0,
             ),
@@ -1258,7 +1234,6 @@ class DataTransferServiceAsyncClient:
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1288,7 +1263,6 @@ class DataTransferServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
 
@@ -1301,7 +1275,8 @@ class DataTransferServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=20.0,
             ),
@@ -1363,7 +1338,6 @@ class DataTransferServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1390,7 +1364,6 @@ class DataTransferServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -1403,7 +1376,8 @@ class DataTransferServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=20.0,
             ),

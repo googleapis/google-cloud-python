@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -35,12 +33,11 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.bigquery_datatransfer_v1.services.data_transfer_service import pagers
 from google.cloud.bigquery_datatransfer_v1.types import datatransfer
 from google.cloud.bigquery_datatransfer_v1.types import transfer
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import struct_pb2 as struct  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.rpc import status_pb2 as status  # type: ignore
-
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 from .transports.base import DataTransferServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import DataTransferServiceGrpcTransport
 from .transports.grpc_asyncio import DataTransferServiceGrpcAsyncIOTransport
@@ -63,7 +60,7 @@ class DataTransferServiceClientMeta(type):
     def get_transport_class(
         cls, label: str = None,
     ) -> Type[DataTransferServiceTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -90,7 +87,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -124,7 +122,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -141,7 +140,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -160,23 +159,24 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
     @property
     def transport(self) -> DataTransferServiceTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            DataTransferServiceTransport: The transport used by the client instance.
+            DataTransferServiceTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
     @staticmethod
     def data_source_path(project: str, data_source: str,) -> str:
-        """Return a fully-qualified data_source string."""
+        """Returns a fully-qualified data_source string."""
         return "projects/{project}/dataSources/{data_source}".format(
             project=project, data_source=data_source,
         )
 
     @staticmethod
     def parse_data_source_path(path: str) -> Dict[str, str]:
-        """Parse a data_source path into its component segments."""
+        """Parses a data_source path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/dataSources/(?P<data_source>.+?)$", path
         )
@@ -184,14 +184,14 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
     @staticmethod
     def run_path(project: str, transfer_config: str, run: str,) -> str:
-        """Return a fully-qualified run string."""
+        """Returns a fully-qualified run string."""
         return "projects/{project}/transferConfigs/{transfer_config}/runs/{run}".format(
             project=project, transfer_config=transfer_config, run=run,
         )
 
     @staticmethod
     def parse_run_path(path: str) -> Dict[str, str]:
-        """Parse a run path into its component segments."""
+        """Parses a run path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/transferConfigs/(?P<transfer_config>.+?)/runs/(?P<run>.+?)$",
             path,
@@ -200,14 +200,14 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
     @staticmethod
     def transfer_config_path(project: str, transfer_config: str,) -> str:
-        """Return a fully-qualified transfer_config string."""
+        """Returns a fully-qualified transfer_config string."""
         return "projects/{project}/transferConfigs/{transfer_config}".format(
             project=project, transfer_config=transfer_config,
         )
 
     @staticmethod
     def parse_transfer_config_path(path: str) -> Dict[str, str]:
-        """Parse a transfer_config path into its component segments."""
+        """Parses a transfer_config path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/transferConfigs/(?P<transfer_config>.+?)$",
             path,
@@ -216,7 +216,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -229,7 +229,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -240,7 +240,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -251,7 +251,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -262,7 +262,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -276,12 +276,12 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, DataTransferServiceTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the data transfer service client.
+        """Instantiates the data transfer service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -336,9 +336,10 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -350,12 +351,14 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -370,8 +373,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -411,7 +414,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -441,10 +443,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, datatransfer.GetDataSourceRequest):
             request = datatransfer.GetDataSourceRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -489,7 +489,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -521,10 +520,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, datatransfer.ListDataSourcesRequest):
             request = datatransfer.ListDataSourcesRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -590,7 +587,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 This corresponds to the ``transfer_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -625,10 +621,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, datatransfer.CreateTransferConfigRequest):
             request = datatransfer.CreateTransferConfigRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if transfer_config is not None:
@@ -655,7 +649,7 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         request: datatransfer.UpdateTransferConfigRequest = None,
         *,
         transfer_config: transfer.TransferConfig = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -683,7 +677,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -718,10 +711,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, datatransfer.UpdateTransferConfigRequest):
             request = datatransfer.UpdateTransferConfigRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if transfer_config is not None:
                 request.transfer_config = transfer_config
             if update_mask is not None:
@@ -771,7 +762,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -794,10 +784,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, datatransfer.DeleteTransferConfigRequest):
             request = datatransfer.DeleteTransferConfigRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -840,7 +828,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -875,10 +862,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, datatransfer.GetTransferConfigRequest):
             request = datatransfer.GetTransferConfigRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -922,7 +907,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -954,10 +938,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, datatransfer.ListTransferConfigsRequest):
             request = datatransfer.ListTransferConfigsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -988,8 +970,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         request: datatransfer.ScheduleTransferRunsRequest = None,
         *,
         parent: str = None,
-        start_time: timestamp.Timestamp = None,
-        end_time: timestamp.Timestamp = None,
+        start_time: timestamp_pb2.Timestamp = None,
+        end_time: timestamp_pb2.Timestamp = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1026,7 +1008,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 This corresponds to the ``end_time`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1055,10 +1036,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, datatransfer.ScheduleTransferRunsRequest):
             request = datatransfer.ScheduleTransferRunsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if start_time is not None:
@@ -1099,7 +1078,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
             request (google.cloud.bigquery_datatransfer_v1.types.StartManualTransferRunsRequest):
                 The request object. A request to start manual transfer
                 runs.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1113,7 +1091,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-
         # Minor optimization to avoid making a copy if the user passes
         # in a datatransfer.StartManualTransferRunsRequest.
         # There's no risk of modifying the input as we've already verified
@@ -1165,7 +1142,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1192,10 +1168,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, datatransfer.GetTransferRunRequest):
             request = datatransfer.GetTransferRunRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1240,7 +1214,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1263,10 +1236,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, datatransfer.DeleteTransferRunRequest):
             request = datatransfer.DeleteTransferRunRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1312,7 +1283,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1344,10 +1314,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, datatransfer.ListTransferRunsRequest):
             request = datatransfer.ListTransferRunsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1398,7 +1366,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1430,10 +1397,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, datatransfer.ListTransferLogsRequest):
             request = datatransfer.ListTransferLogsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1495,7 +1460,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1524,10 +1488,8 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         # there are no flattened fields.
         if not isinstance(request, datatransfer.CheckValidCredsRequest):
             request = datatransfer.CheckValidCredsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
