@@ -31,6 +31,7 @@ release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
     "proto-plus >= 1.4.0",
+    "packaging >= 14.3",
 ]
 extras = {}
 
