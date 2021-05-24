@@ -30,7 +30,7 @@ import google.cloud.bigquery.schema
 import google.cloud.bigquery.table
 import google.cloud.bigquery.dbapi.cursor
 
-from pybigquery._helpers import substitute_re_method
+from pybigquery._helpers import substitute_re_method, substitute_string_re_method
 
 
 class Connection:
@@ -87,7 +87,7 @@ class Cursor:
         datetime.time,
     )
 
-    @substitute_re_method(r"%\((\w+)\)s", re.IGNORECASE)
+    @substitute_re_method(r"%\((\w+)\)s", flags=re.IGNORECASE)
     def __pyformat_to_qmark(self, m, parameters, ordered_parameters):
         name = m.group(1)
         value = parameters[name]
@@ -111,8 +111,12 @@ class Cursor:
     ).match
 
     @substitute_re_method(
-        r"(?P<prefix>`(?P<col>\w+)`\s+\w+|\))" r"\s+options\((?P<options>[^)]+)\)",
-        re.IGNORECASE,
+        r"""
+        (?P<prefix>
+        `(?P<col>\w+)`\s+\w+|\))          # Column def or )
+        \s+options\((?P<options>[^)]+)\)  # ' options(...)'
+        """,
+        flags=re.IGNORECASE | re.VERBOSE,
     )
     def __handle_column_comments(self, m, table_name):
         col = m.group("col") or ""
@@ -131,9 +135,13 @@ class Cursor:
         self,
         operation,
         alter_table=re.compile(
-            r"\s*ALTER\s+TABLE\s+`(?P<table>\w+)`\s+"
-            r"SET\s+OPTIONS\(description=(?P<comment>[^)]+)\)",
-            re.IGNORECASE,
+            r"""
+            # 'ALTER TABLE foo ':
+            \s*ALTER\s+TABLE\s+`(?P<table>\w+)`\s+
+            # 'SET OPTIONS(description='foo comment')':
+            SET\s+OPTIONS\(description=(?P<comment>[^)]+)\)
+            """,
+            re.IGNORECASE | re.VERBOSE,
         ).match,
     ):
         m = self.__create_table(operation)
@@ -150,7 +158,12 @@ class Cursor:
         return operation
 
     @substitute_re_method(
-        r"(?<=[(,])" r"\s*`\w+`\s+\w+<\w+>\s*" r"(?=[,)])", re.IGNORECASE
+        r"""
+        (?<=[(,])                 # Preceeded by ( or ,
+        \s*`\w+`\s+ARRAY<\w+>\s*  # 'foo ARRAY<INT64>'
+        (?=[,)])                  # Followed by , or )
+        """,
+        flags=re.IGNORECASE | re.VERBOSE,
     )
     def __normalize_array_types(self, m):
         return m.group(0).replace("<", "_").replace(">", "_")
@@ -186,19 +199,30 @@ class Cursor:
         else:
             raise AssertionError(type_)  # pragma: NO COVER
 
-    __normalize_bq_datish = substitute_re_method(
-        r"(?<=[[(,])\s*"
-        r"(?P<type>date(?:time)?|time(?:stamp)?) (?P<val>'[^']+')"
-        r"\s*(?=[]),])",
-        re.IGNORECASE,
-        r"parse_datish('\1', \2)",
+    __normalize_bq_datish = substitute_string_re_method(
+        r"""
+        (?<=[[(,])                              # Preceeded by ( or ,
+        \s*
+        (?P<type>date(?:time)?|time(?:stamp)?)  # Type, like 'TIME'
+        \s
+        (?P<val>'[^']+')                        # a string date/time literal
+        \s*
+        (?=[]),])                               # Followed by , or )
+        """,
+        flags=re.IGNORECASE | re.VERBOSE,
+        repl=r"parse_datish('\1', \2)",
     )
 
     def __handle_problematic_literal_inserts(
         self,
         operation,
         literal_insert_values=re.compile(
-            r"\s*(insert\s+into\s+.+\s+values\s*)" r"(\([^)]+\))" r"\s*$", re.IGNORECASE
+            r"""
+            \s*(insert\s+into\s+.+\s+values\s*)  # insert into ... values
+            (\([^)]+\))                          # (...)
+            \s*$                                 # Then end w maybe spaces
+            """,
+            re.IGNORECASE | re.VERBOSE,
         ).match,
         need_to_be_pickled_literal=_need_to_be_pickled + (bytes,),
     ):
@@ -234,8 +258,10 @@ class Cursor:
         else:
             return operation
 
-    __handle_unnest = substitute_re_method(
-        r"UNNEST\(\[ ([^\]]+)? \]\)", re.IGNORECASE, r"(\1)"
+    __handle_unnest = substitute_string_re_method(
+        r"UNNEST\(\[ ([^\]]+)? \]\)",  # UNNEST([ ... ])
+        flags=re.IGNORECASE,
+        repl=r"(\1)",
     )
 
     def __handle_true_false(self, operation):
@@ -329,6 +355,30 @@ class FauxClient:
         result = {d[0]: value for d, value in zip(cursor.description, row)}
         return result
 
+    __string_types = "STRING", "BYTES"
+
+    @substitute_re_method(
+        r"""
+        (STRING|BYTES|NUMERIC|BIGNUMERIC)
+        \s*
+        \(                     # Dimensions e.g. (42) or (4, 2)
+        \s*(\d+)\s*
+        (?:,\s*(\d+)\s*)?
+        \)
+        """,
+        flags=re.VERBOSE,
+    )
+    def __parse_type_parameters(self, m, parameters):
+        name, precision, scale = m.groups()
+        if scale is not None:
+            parameters.update(precision=precision, scale=scale)
+        elif name in self.__string_types:
+            parameters.update(max_length=precision)
+        else:
+            parameters.update(precision=precision)
+
+        return name
+
     def _get_field(
         self,
         type,
@@ -348,12 +398,16 @@ class FauxClient:
         if not mode:
             mode = "REQUIRED" if notnull else "NULLABLE"
 
+        parameters = {}
+        type_ = self.__parse_type_parameters(type, parameters)
+
         field = google.cloud.bigquery.schema.SchemaField(
             name=name,
-            field_type=type,
+            field_type=type_,
             mode=mode,
             description=description,
             fields=tuple(self._get_field(**f) for f in fields),
+            **parameters,
         )
 
         return field

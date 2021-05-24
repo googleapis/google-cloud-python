@@ -71,7 +71,6 @@ if sqlalchemy.__version__ < "1.4":
 
 else:
     from sqlalchemy.testing.suite import (
-        ComponentReflectionTestExtra as _ComponentReflectionTestExtra,
         FetchLimitOffsetTest as _FetchLimitOffsetTest,
         RowCountTest as _RowCountTest,
     )
@@ -106,13 +105,6 @@ else:
     # This test makes makes assertions about generated sql and trips
     # over the backquotes that we add everywhere. XXX Why do we do that?
     del PostCompileParamsTest
-
-    class ComponentReflectionTestExtra(_ComponentReflectionTestExtra):
-        @pytest.mark.skip("BQ types don't have parameters like precision and length")
-        def test_numeric_reflection(self):
-            pass
-
-        test_varchar_reflection = test_numeric_reflection
 
     class TimestampMicrosecondsTest(_TimestampMicrosecondsTest):
 

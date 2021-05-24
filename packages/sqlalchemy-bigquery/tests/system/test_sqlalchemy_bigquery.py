@@ -92,7 +92,7 @@ SAMPLE_COLUMNS = [
     {"name": "timestamp", "type": types.TIMESTAMP(), "nullable": True, "default": None},
     {"name": "string", "type": types.String(), "nullable": True, "default": None},
     {"name": "float", "type": types.Float(), "nullable": True, "default": None},
-    {"name": "numeric", "type": types.DECIMAL(), "nullable": True, "default": None},
+    {"name": "numeric", "type": types.Numeric(), "nullable": True, "default": None},
     {"name": "boolean", "type": types.Boolean(), "nullable": True, "default": None},
     {"name": "date", "type": types.DATE(), "nullable": True, "default": None},
     {"name": "datetime", "type": types.DATETIME(), "nullable": True, "default": None},

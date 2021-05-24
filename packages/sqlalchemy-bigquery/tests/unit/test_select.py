@@ -67,13 +67,13 @@ def dtrepr(v):
         (sqlalchemy.REAL, 1.42, "FLOAT64", repr),
         (sqlalchemy.FLOAT, 0.42, "FLOAT64", repr),
         (sqlalchemy.NUMERIC, Decimal(4.25), "NUMERIC", str),
-        (sqlalchemy.NUMERIC(39), Decimal(4.25), "BIGNUMERIC", str),
-        (sqlalchemy.NUMERIC(30, 10), Decimal(4.25), "BIGNUMERIC", str),
-        (sqlalchemy.NUMERIC(39, 10), Decimal(4.25), "BIGNUMERIC", str),
+        (sqlalchemy.NUMERIC(39), Decimal(4.25), "BIGNUMERIC(39)", str),
+        (sqlalchemy.NUMERIC(30, 10), Decimal(4.25), "BIGNUMERIC(30, 10)", str),
+        (sqlalchemy.NUMERIC(39, 10), Decimal(4.25), "BIGNUMERIC(39, 10)", str),
         (sqlalchemy.DECIMAL, Decimal(0.25), "NUMERIC", str),
-        (sqlalchemy.DECIMAL(39), Decimal(4.25), "BIGNUMERIC", str),
-        (sqlalchemy.DECIMAL(30, 10), Decimal(4.25), "BIGNUMERIC", str),
-        (sqlalchemy.DECIMAL(39, 10), Decimal(4.25), "BIGNUMERIC", str),
+        (sqlalchemy.DECIMAL(39), Decimal(4.25), "BIGNUMERIC(39)", str),
+        (sqlalchemy.DECIMAL(30, 10), Decimal(4.25), "BIGNUMERIC(30, 10)", str),
+        (sqlalchemy.DECIMAL(39, 10), Decimal(4.25), "BIGNUMERIC(39, 10)", str),
         (sqlalchemy.INTEGER, 434343, "INT64", repr),
         (sqlalchemy.INT, 444444, "INT64", repr),
         (sqlalchemy.SMALLINT, 43, "INT64", repr),
@@ -96,10 +96,13 @@ def dtrepr(v):
         (sqlalchemy.TEXT, "myTEXT", "STRING", repr),
         (sqlalchemy.VARCHAR, "myVARCHAR", "STRING", repr),
         (sqlalchemy.NVARCHAR, "myNVARCHAR", "STRING", repr),
+        (sqlalchemy.VARCHAR(42), "myVARCHAR", "STRING(42)", repr),
+        (sqlalchemy.NVARCHAR(42), "myNVARCHAR", "STRING(42)", repr),
         (sqlalchemy.CHAR, "myCHAR", "STRING", repr),
         (sqlalchemy.NCHAR, "myNCHAR", "STRING", repr),
         (sqlalchemy.BINARY, b"myBINARY", "BYTES", repr),
         (sqlalchemy.VARBINARY, b"myVARBINARY", "BYTES", repr),
+        (sqlalchemy.VARBINARY(42), b"myVARBINARY", "BYTES(42)", repr),
         (sqlalchemy.BOOLEAN, False, "BOOL", "false"),
         (sqlalchemy.ARRAY(sqlalchemy.Integer), [1, 2, 3], "ARRAY<INT64>", repr),
         (
@@ -127,8 +130,10 @@ def test_typed_parameters(faux_conn, type_, val, btype, vrep):
     if btype.startswith("ARRAY<"):
         btype = btype[6:-1]
 
+    ptype = btype[: btype.index("(")] if "(" in btype else btype
+
     assert faux_conn.test_data["execute"][-1] == (
-        f"INSERT INTO `t` (`{col_name}`) VALUES (%({col_name}:{btype})s)",
+        f"INSERT INTO `t` (`{col_name}`) VALUES (%({col_name}:{ptype})s)",
         {col_name: val},
     )
 

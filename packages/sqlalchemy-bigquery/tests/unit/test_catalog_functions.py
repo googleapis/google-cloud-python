@@ -159,35 +159,51 @@ def test_get_table_comment(faux_conn):
 
 
 @pytest.mark.parametrize(
-    "btype,atype",
+    "btype,atype,extra",
     [
-        ("STRING", sqlalchemy.types.String),
-        ("BYTES", sqlalchemy.types.BINARY),
-        ("INT64", sqlalchemy.types.Integer),
-        ("FLOAT64", sqlalchemy.types.Float),
-        ("NUMERIC", sqlalchemy.types.DECIMAL),
-        ("BIGNUMERIC", sqlalchemy.types.DECIMAL),
-        ("BOOL", sqlalchemy.types.Boolean),
-        ("TIMESTAMP", sqlalchemy.types.TIMESTAMP),
-        ("DATE", sqlalchemy.types.DATE),
-        ("TIME", sqlalchemy.types.TIME),
-        ("DATETIME", sqlalchemy.types.DATETIME),
-        ("THURSDAY", sqlalchemy.types.NullType),
+        ("STRING", sqlalchemy.types.String(), ()),
+        ("STRING(42)", sqlalchemy.types.String(42), dict(max_length=42)),
+        ("BYTES", sqlalchemy.types.BINARY(), ()),
+        ("BYTES(42)", sqlalchemy.types.BINARY(42), dict(max_length=42)),
+        ("INT64", sqlalchemy.types.Integer, ()),
+        ("FLOAT64", sqlalchemy.types.Float, ()),
+        ("NUMERIC", sqlalchemy.types.NUMERIC(), ()),
+        ("NUMERIC(4)", sqlalchemy.types.NUMERIC(4), dict(precision=4)),
+        ("NUMERIC(4, 2)", sqlalchemy.types.NUMERIC(4, 2), dict(precision=4, scale=2)),
+        ("BIGNUMERIC", sqlalchemy.types.NUMERIC(), ()),
+        ("BIGNUMERIC(42)", sqlalchemy.types.NUMERIC(42), dict(precision=42)),
+        (
+            "BIGNUMERIC(42, 2)",
+            sqlalchemy.types.NUMERIC(42, 2),
+            dict(precision=42, scale=2),
+        ),
+        ("BOOL", sqlalchemy.types.Boolean, ()),
+        ("TIMESTAMP", sqlalchemy.types.TIMESTAMP, ()),
+        ("DATE", sqlalchemy.types.DATE, ()),
+        ("TIME", sqlalchemy.types.TIME, ()),
+        ("DATETIME", sqlalchemy.types.DATETIME, ()),
+        ("THURSDAY", sqlalchemy.types.NullType, ()),
     ],
 )
-def test_get_table_columns(faux_conn, btype, atype):
+def test_get_table_columns(faux_conn, btype, atype, extra):
     cursor = faux_conn.connection.cursor()
     cursor.execute(f"create table foo (x {btype})")
 
-    assert faux_conn.dialect.get_columns(faux_conn, "foo") == [
+    [col] = faux_conn.dialect.get_columns(faux_conn, "foo")
+    col["type"] = str(col["type"])
+    assert col == dict(
         {
             "comment": None,
             "default": None,
+            "max_length": None,
             "name": "x",
             "nullable": True,
-            "type": atype,
-        }
-    ]
+            "type": str(atype),
+            "precision": None,
+            "scale": None,
+        },
+        **(extra or {}),
+    )
 
 
 def test_get_table_columns_special_cases(faux_conn):
@@ -206,13 +222,24 @@ def test_get_table_columns_special_cases(faux_conn):
     assert isinstance(stype, sqlalchemy.types.ARRAY)
     assert isinstance(stype.item_type, sqlalchemy.types.String)
     assert actual == [
-        {"comment": "a fine column", "default": None, "name": "s", "nullable": True},
+        {
+            "comment": "a fine column",
+            "default": None,
+            "name": "s",
+            "nullable": True,
+            "max_length": None,
+            "precision": None,
+            "scale": None,
+        },
         {
             "comment": None,
             "default": None,
             "name": "n",
             "nullable": False,
             "type": sqlalchemy.types.Integer,
+            "max_length": None,
+            "precision": None,
+            "scale": None,
         },
         {
             "comment": None,
@@ -220,6 +247,9 @@ def test_get_table_columns_special_cases(faux_conn):
             "name": "r",
             "nullable": True,
             "type": sqlalchemy.types.JSON,
+            "max_length": None,
+            "precision": None,
+            "scale": None,
         },
         {
             "comment": None,
@@ -227,6 +257,9 @@ def test_get_table_columns_special_cases(faux_conn):
             "name": "r.i",
             "nullable": True,
             "type": sqlalchemy.types.Integer,
+            "max_length": None,
+            "precision": None,
+            "scale": None,
         },
         {
             "comment": None,
@@ -234,6 +267,9 @@ def test_get_table_columns_special_cases(faux_conn):
             "name": "r.f",
             "nullable": True,
             "type": sqlalchemy.types.Float,
+            "max_length": None,
+            "precision": None,
+            "scale": None,
         },
     ]
 
