@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.30.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.30.0...v1.30.1) (2021-05-20)
+
+
+### Bug Fixes
+
+* allow user to customize context aware metadata path in _mtls_helper ([#754](https://www.github.com/googleapis/google-auth-library-python/issues/754)) ([e697687](https://www.github.com/googleapis/google-auth-library-python/commit/e6976879b392508c022610ab3ea2ea55c7089c63))
+* fix function name in signing error message ([#751](https://www.github.com/googleapis/google-auth-library-python/issues/751)) ([e9ca25f](https://www.github.com/googleapis/google-auth-library-python/commit/e9ca25fa39a112cc1a376388ab47a4e1b3ea746c))
+
 ## [1.30.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.29.0...v1.30.0) (2021-04-23)
 
 
