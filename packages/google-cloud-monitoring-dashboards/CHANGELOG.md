@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.1.0](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.0.0...v2.1.0) (2021-05-22)
+
+
+### Features
+
+* add `from_service_account_info` ([bd08227](https://www.github.com/googleapis/python-monitoring-dashboards/commit/bd08227d21ddc68afa3622328ea6660630c3087c))
+* add MosaicLayout  ([#47](https://www.github.com/googleapis/python-monitoring-dashboards/issues/47)) ([bd08227](https://www.github.com/googleapis/python-monitoring-dashboards/commit/bd08227d21ddc68afa3622328ea6660630c3087c))
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#67](https://www.github.com/googleapis/python-monitoring-dashboards/issues/67)) ([80c2b62](https://www.github.com/googleapis/python-monitoring-dashboards/commit/80c2b6279611c3051aa2bc1b7013919f2587780f))
+
 ## [2.0.0](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v1.0.0...v2.0.0) (2021-02-11)
 
 
