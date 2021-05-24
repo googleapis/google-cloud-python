@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-speech/compare/v2.3.0...v2.4.0) (2021-05-22)
+
+
+### Features
+
+* add webm opus support ([eb360ae](https://www.github.com/googleapis/python-speech/commit/eb360aefdac09648852a073ef0837dc7c7b18679))
+* support self-signed JWT flow for service accounts ([eb360ae](https://www.github.com/googleapis/python-speech/commit/eb360aefdac09648852a073ef0837dc7c7b18679))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([eb360ae](https://www.github.com/googleapis/python-speech/commit/eb360aefdac09648852a073ef0837dc7c7b18679))
+
 ## [2.3.0](https://www.github.com/googleapis/python-speech/compare/v2.2.1...v2.3.0) (2021-04-08)
 
 
