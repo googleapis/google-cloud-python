@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+### [2.1.3](https://www.github.com/googleapis/python-datastore/compare/v2.1.2...v2.1.3) (2021-05-25)
+
+
+### Bug Fixes
+
+* **perf:** improve performance unmarshalling entities from protobuf2 ([#175](https://www.github.com/googleapis/python-datastore/issues/175)) ([0e5b718](https://www.github.com/googleapis/python-datastore/commit/0e5b718a70368f656ede3a27174ef74ca324ab65))
+
 ### [2.1.2](https://www.github.com/googleapis/python-datastore/compare/v2.1.1...v2.1.2) (2021-05-03)
 
 
