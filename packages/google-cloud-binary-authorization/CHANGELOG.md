@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-binary-authorization/compare/v0.2.0...v0.2.1) (2021-05-25)
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#34](https://www.github.com/googleapis/python-binary-authorization/issues/34)) ([59752a5](https://www.github.com/googleapis/python-binary-authorization/commit/59752a57cd6fb9a9e4d4caeb0b27793ce829d37c))
+
 ## [0.2.0](https://www.github.com/googleapis/python-binary-authorization/compare/v0.1.1...v0.2.0) (2021-05-20)
 
 
