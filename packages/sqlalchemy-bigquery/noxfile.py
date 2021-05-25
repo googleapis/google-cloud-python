@@ -82,6 +82,22 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
+def install_alembic_for_python_38(session, constraints_path):
+    """
+    install alembic for Python 3.8 unit and system tests
+
+    We don't require alembic and most tests should run without it, however
+
+    - We run some unit tests (Python 3.8) to cover the alembic
+      registration that happens when alembic is installed.
+
+    - We have a system test that demonstrates working with alembic and
+      proves that the things we think should work do work. :)
+    """
+    if session.python == "3.8":
+        session.install("alembic", "-c", constraints_path)
+
+
 def default(session):
     # Install all test dependencies, then install this package in-place.
 
@@ -89,7 +105,7 @@ def default(session):
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     session.install("mock", "pytest", "pytest-cov", "-c", constraints_path)
-
+    install_alembic_for_python_38(session, constraints_path)
     session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the unit tests.
@@ -142,6 +158,7 @@ def system(session):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install("mock", "pytest", "google-cloud-testutils", "-c", constraints_path)
+    install_alembic_for_python_38(session, constraints_path)
     session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the system tests.

@@ -966,3 +966,14 @@ class BigQueryDialect(DefaultDialect):
             view_name = f"{self.dataset_id}.{view_name}"
         view = client.get_table(view_name)
         return view.view_query
+
+
+try:
+    import alembic  # noqa
+except ImportError:
+    pass
+else:
+    from alembic.ddl import impl
+
+    class PyBigQueryImpl(impl.DefaultImpl):
+        __dialect__ = "bigquery"

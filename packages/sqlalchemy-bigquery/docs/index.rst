@@ -2,6 +2,8 @@
 
 .. include:: multiprocessing.rst
 
+.. include:: alembic.rst
+
 API Reference
 -------------
 .. toctree::
