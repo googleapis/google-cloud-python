@@ -675,6 +675,16 @@ class ComponentReflectionTest(_ComponentReflectionTest):
             eq_(typ.precision, 38)
             eq_(typ.scale, 9)
 
+    @testing.requires.table_reflection
+    def test_binary_reflection(self):
+        """
+        Check that a BYTES column with an explicitly
+        set size is correctly reflected.
+        """
+        for typ in self._type_round_trip(LargeBinary(20)):
+            assert isinstance(typ, LargeBinary)
+            eq_(typ.length, 20)
+
 
 class CompositeKeyReflectionTest(_CompositeKeyReflectionTest):
     @testing.requires.foreign_key_constraint_reflection

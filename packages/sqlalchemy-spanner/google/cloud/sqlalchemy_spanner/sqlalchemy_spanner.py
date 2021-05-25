@@ -32,7 +32,7 @@ from google.cloud.sqlalchemy_spanner._opentelemetry_tracing import trace_call
 # Spanner-to-SQLAlchemy types map
 _type_map = {
     "BOOL": types.Boolean,
-    "BYTES(MAX)": types.BINARY,
+    "BYTES": types.LargeBinary,
     "DATE": types.DATE,
     "DATETIME": types.DATETIME,
     "FLOAT64": types.Float,
@@ -46,6 +46,7 @@ _type_map = {
 _type_map_inv = {
     types.Boolean: "BOOL",
     types.BINARY: "BYTES(MAX)",
+    types.LargeBinary: "BYTES(MAX)",
     types.DATE: "DATE",
     types.DATETIME: "DATETIME",
     types.Float: "FLOAT64",
@@ -442,6 +443,11 @@ ORDER BY
                     end = col[1].index(")")
                     size = int(col[1][7:end])
                     type_ = _type_map["STRING"](length=size)
+                # add test creating a table with bytes
+                elif col[1].startswith("BYTES"):
+                    end = col[1].index(")")
+                    size = int(col[1][6:end])
+                    type_ = _type_map["BYTES"](length=size)
                 else:
                     type_ = _type_map[col[1]]
 
