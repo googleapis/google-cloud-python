@@ -30,8 +30,6 @@ for library in s.get_staging_dirs(bigtable_default_version):
     s.move(library / "tests")
     s.move(library / "scripts")
 
-s.remove_staging_dirs()
-
 for library in s.get_staging_dirs(bigtable_admin_default_version):
     s.move(library / "google/cloud/bigtable_admin_v*")
     s.move(library / "tests")
