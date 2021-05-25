@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/pybigquery/#history
 
+## [0.9.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.8.0...v0.9.0) (2021-05-25)
+
+
+### Features
+
+* Alembic support ([#183](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/183)) ([4d5a17c](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/4d5a17c8f63328d4484ea7b2ccc58334a421ba81))
+* Support parameterized NUMERIC, BIGNUMERIC, STRING, and BYTES types ([#180](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/180)) ([d118238](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/d1182385b9f1551e605acdc7e2dd45dff22c8064))
+
 ## [0.8.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.7.0...v0.8.0) (2021-05-21)
 
 

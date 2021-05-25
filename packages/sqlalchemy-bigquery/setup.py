@@ -24,7 +24,7 @@ from setuptools import setup
 # Package metadata.
 
 name = "pybigquery"
-version = "0.8.0"
+version = "0.9.0"
 description = "SQLAlchemy dialect for BigQuery"
 
 # Should be one of:
