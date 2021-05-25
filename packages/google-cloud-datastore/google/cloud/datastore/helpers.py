@@ -138,7 +138,7 @@ def entity_from_protobuf(pb):
     entity_meanings = {}
     exclude_from_indexes = []
 
-    for prop_name, value_pb in _property_tuples(proto_pb):
+    for prop_name, value_pb in _property_tuples(proto_pb._pb):
         value = _get_value_from_value_pb(value_pb)
         entity_props[prop_name] = value
 
@@ -154,7 +154,7 @@ def entity_from_protobuf(pb):
         if is_list and len(value) > 0:
             exclude_values = set(
                 value_pb.exclude_from_indexes
-                for value_pb in value_pb._pb.array_value.values
+                for value_pb in value_pb.array_value.values
             )
             if len(exclude_values) != 1:
                 raise ValueError(
