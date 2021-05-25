@@ -69,13 +69,14 @@ def lint(session):
     )
 
 
-@nox.session(python="3.6")
+@nox.session(python="3.8")
 def blacken(session):
     """Run black.
     Format code to uniform standard.
-    This currently uses Python 3.6 due to the automated Kokoro run of synthtool.
-    That run uses an image that doesn't have 3.6 installed. Before updating this
-    check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
+    The Python version should be consistent with what is
+    supplied in the Python Owlbot postprocessor.
+
+    https://github.com/googleapis/synthtool/blob/master/docker/owlbot/python/Dockerfile
     """
     session.install(BLACK_VERSION)
     session.run("black", *BLACK_PATHS)
