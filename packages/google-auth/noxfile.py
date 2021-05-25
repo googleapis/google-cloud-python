@@ -12,9 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import shutil
 import os
+import pathlib
+import shutil
+
 import nox
+
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 TEST_DEPENDENCIES = [
     "flask",
@@ -84,15 +88,20 @@ def blacken(session):
 
 @nox.session(python=["3.6", "3.7", "3.8", "3.9"])
 def unit(session):
-    session.install(*TEST_DEPENDENCIES)
-    session.install(*(ASYNC_DEPENDENCIES))
-    session.install(".")
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    add_constraints = ["-c", constraints_path]
+    session.install(*(TEST_DEPENDENCIES + add_constraints))
+    session.install(*(ASYNC_DEPENDENCIES + add_constraints))
+    session.install(".", *add_constraints)
     session.run(
         "pytest",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
         "--cov=google.auth",
         "--cov=google.oauth2",
         "--cov=tests",
+        "--cov-report=term-missing",
         "tests",
         "tests_async",
     )
@@ -123,7 +132,7 @@ def cover(session):
         "--cov=google.oauth2",
         "--cov=tests",
         "--cov=tests_async",
-        "--cov-report=",
+        "--cov-report=term-missing",
         "tests",
         "tests_async",
     )
