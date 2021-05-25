@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.3.0...v2.4.0) (2021-05-25)
+
+
+### Features
+
+* add a field to indicate whether slot filling is cancelled ([#304](https://www.github.com/googleapis/python-dialogflow/issues/304)) ([3343504](https://www.github.com/googleapis/python-dialogflow/commit/33435048c05a8897297032415ccfefd171140529))
+* **v2beta1:** add a field to indicate whether slot filling is cancelled ([#306](https://www.github.com/googleapis/python-dialogflow/issues/306)) ([05be019](https://www.github.com/googleapis/python-dialogflow/commit/05be0196ff2998278f174ba076498327180a63f9))
+
 ## [2.3.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.2.0...v2.3.0) (2021-05-19)
 
 
