@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-artifact-registry/compare/v0.1.0...v0.2.0) (2021-05-25)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([#25](https://www.github.com/googleapis/python-artifact-registry/issues/25)) ([fade594](https://www.github.com/googleapis/python-artifact-registry/commit/fade594980fa8f389abc0e3f84e34cb1bcda1f1e))
+
 ## 0.1.0 (2021-03-15)
 
 
