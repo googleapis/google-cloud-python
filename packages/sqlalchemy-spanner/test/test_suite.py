@@ -44,6 +44,7 @@ from sqlalchemy import LargeBinary
 from sqlalchemy import String
 from sqlalchemy.types import Integer
 from sqlalchemy.types import Numeric
+from sqlalchemy.types import Text
 from sqlalchemy.testing import requires
 
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
@@ -781,57 +782,26 @@ class StringTest(_StringTest):
 
 
 class TextTest(_TextTest):
-    def test_text_empty_strings(self, connection):
+    @classmethod
+    def define_tables(cls, metadata):
         """
         SPANNER OVERRIDE:
 
-        Cloud Spanner doesn't support the tables with an empty primary key
-        when column has defined NOT NULL - following insertions will fail with
-        `400 id must not be NULL in table date_table`.
-        Overriding the tests and adding a manual primary key value to avoid the same
-        failures.
+        Cloud Spanner doesn't support auto incrementing ids feature,
+        which is used by the original test. Overriding the test data
+        creation method to disable autoincrement and make id column
+        nullable.
         """
-        text_table = self.tables.text_table
-
-        connection.execute(text_table.insert(), {"id": 1, "text_data": ""})
-        row = connection.execute(select([text_table.c.text_data])).first()
-        eq_(row, ("",))
-
-    def test_text_null_strings(self, connection):
-        """
-        SPANNER OVERRIDE:
-
-        Cloud Spanner doesn't support the tables with an empty primary key
-        when column has defined NOT NULL - following insertions will fail with
-        `400 id must not be NULL in table date_table`.
-        Overriding the tests and adding a manual primary key value to avoid the same
-        failures.
-        """
-        text_table = self.tables.text_table
-
-        connection.execute(text_table.insert(), {"id": 1, "text_data": None})
-        row = connection.execute(select([text_table.c.text_data])).first()
-        eq_(row, (None,))
+        Table(
+            "text_table",
+            metadata,
+            Column("id", Integer, primary_key=True, nullable=True),
+            Column("text_data", Text),
+        )
 
     @pytest.mark.skip("Spanner doesn't support non-ascii characters")
     def test_literal_non_ascii(self):
         pass
-
-    def test_text_roundtrip(self):
-        """
-        SPANNER OVERRIDE:
-
-        Cloud Spanner doesn't support the tables with an empty primary key
-        when column has defined NOT NULL - following insertions will fail with
-        `400 id must not be NULL in table date_table`.
-        Overriding the tests and adding a manual primary key value to avoid the same
-        failures.
-        """
-        text_table = self.tables.text_table
-
-        config.db.execute(text_table.insert(), {"id": 1, "text_data": "some text"})
-        row = config.db.execute(select([text_table.c.text_data])).first()
-        eq_(row, ("some text",))
 
 
 class NumericTest(_NumericTest):
