@@ -57,8 +57,6 @@ for library in s.get_staging_dirs(default_version):
         update_fixup_scripts(library)
         s.move(library / "scripts")
 
-s.remove_staging_dirs()
-
 for library in s.get_staging_dirs(admin_default_version):
     if library.parent.absolute() == 'admin':
         s.move(
@@ -69,8 +67,6 @@ for library in s.get_staging_dirs(admin_default_version):
         s.move(library / f"tests", f"tests")
         update_fixup_scripts(library)
         s.move(library / "scripts")
-
-s.remove_staging_dirs()
 
 for library in s.get_staging_dirs(bundle_default_version):
     if library.parent.absolute() == 'bundle':
