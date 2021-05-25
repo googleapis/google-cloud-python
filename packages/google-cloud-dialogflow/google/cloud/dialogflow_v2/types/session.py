@@ -310,6 +310,9 @@ class QueryResult(proto.Message):
             -  ``true`` if all required parameter values have been
                collected, or if the matched intent doesn't contain any
                required parameters.
+        cancels_slot_filling (bool):
+            Indicates whether the conversational query
+            triggers a cancellation for slot filling.
         fulfillment_text (str):
             The text to be pronounced to the user or shown on the
             screen. Note: This is a legacy field,
@@ -368,6 +371,7 @@ class QueryResult(proto.Message):
     action = proto.Field(proto.STRING, number=3,)
     parameters = proto.Field(proto.MESSAGE, number=4, message=struct_pb2.Struct,)
     all_required_params_present = proto.Field(proto.BOOL, number=5,)
+    cancels_slot_filling = proto.Field(proto.BOOL, number=21,)
     fulfillment_text = proto.Field(proto.STRING, number=6,)
     fulfillment_messages = proto.RepeatedField(
         proto.MESSAGE, number=7, message=gcd_intent.Intent.Message,
