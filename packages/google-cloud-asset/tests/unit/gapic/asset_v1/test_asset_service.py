@@ -597,6 +597,318 @@ async def test_export_assets_field_headers_async():
     assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
 
 
+def test_list_assets(
+    transport: str = "grpc", request_type=asset_service.ListAssetsRequest
+):
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.ListAssetsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListAssetsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAssetsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_assets_from_dict():
+    test_list_assets(request_type=dict)
+
+
+def test_list_assets_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AssetServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        client.list_assets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListAssetsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_assets_async(
+    transport: str = "grpc_asyncio", request_type=asset_service.ListAssetsRequest
+):
+    client = AssetServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.ListAssetsResponse(next_page_token="next_page_token_value",)
+        )
+        response = await client.list_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == asset_service.ListAssetsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAssetsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_assets_async_from_dict():
+    await test_list_assets_async(request_type=dict)
+
+
+def test_list_assets_field_headers():
+    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.ListAssetsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        call.return_value = asset_service.ListAssetsResponse()
+        client.list_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_assets_field_headers_async():
+    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = asset_service.ListAssetsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.ListAssetsResponse()
+        )
+        await client.list_assets(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_list_assets_flattened():
+    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.ListAssetsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_assets(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].parent == "parent_value"
+
+
+def test_list_assets_flattened_error():
+    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_assets(
+            asset_service.ListAssetsRequest(), parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_assets_flattened_async():
+    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = asset_service.ListAssetsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            asset_service.ListAssetsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_assets(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].parent == "parent_value"
+
+
+@pytest.mark.asyncio
+async def test_list_assets_flattened_error_async():
+    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_assets(
+            asset_service.ListAssetsRequest(), parent="parent_value",
+        )
+
+
+def test_list_assets_pager():
+    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.ListAssetsResponse(
+                assets=[assets.Asset(), assets.Asset(), assets.Asset(),],
+                next_page_token="abc",
+            ),
+            asset_service.ListAssetsResponse(assets=[], next_page_token="def",),
+            asset_service.ListAssetsResponse(
+                assets=[assets.Asset(),], next_page_token="ghi",
+            ),
+            asset_service.ListAssetsResponse(assets=[assets.Asset(), assets.Asset(),],),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_assets(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(isinstance(i, assets.Asset) for i in results)
+
+
+def test_list_assets_pages():
+    client = AssetServiceClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.ListAssetsResponse(
+                assets=[assets.Asset(), assets.Asset(), assets.Asset(),],
+                next_page_token="abc",
+            ),
+            asset_service.ListAssetsResponse(assets=[], next_page_token="def",),
+            asset_service.ListAssetsResponse(
+                assets=[assets.Asset(),], next_page_token="ghi",
+            ),
+            asset_service.ListAssetsResponse(assets=[assets.Asset(), assets.Asset(),],),
+            RuntimeError,
+        )
+        pages = list(client.list_assets(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_assets_async_pager():
+    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_assets), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.ListAssetsResponse(
+                assets=[assets.Asset(), assets.Asset(), assets.Asset(),],
+                next_page_token="abc",
+            ),
+            asset_service.ListAssetsResponse(assets=[], next_page_token="def",),
+            asset_service.ListAssetsResponse(
+                assets=[assets.Asset(),], next_page_token="ghi",
+            ),
+            asset_service.ListAssetsResponse(assets=[assets.Asset(), assets.Asset(),],),
+            RuntimeError,
+        )
+        async_pager = await client.list_assets(request={},)
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, assets.Asset) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_assets_async_pages():
+    client = AssetServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_assets), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            asset_service.ListAssetsResponse(
+                assets=[assets.Asset(), assets.Asset(), assets.Asset(),],
+                next_page_token="abc",
+            ),
+            asset_service.ListAssetsResponse(assets=[], next_page_token="def",),
+            asset_service.ListAssetsResponse(
+                assets=[assets.Asset(),], next_page_token="ghi",
+            ),
+            asset_service.ListAssetsResponse(assets=[assets.Asset(), assets.Asset(),],),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_assets(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_batch_get_assets_history(
     transport: str = "grpc", request_type=asset_service.BatchGetAssetsHistoryRequest
 ):
@@ -2912,6 +3224,7 @@ def test_asset_service_base_transport():
     # raise NotImplementedError.
     methods = (
         "export_assets",
+        "list_assets",
         "batch_get_assets_history",
         "create_feed",
         "get_feed",

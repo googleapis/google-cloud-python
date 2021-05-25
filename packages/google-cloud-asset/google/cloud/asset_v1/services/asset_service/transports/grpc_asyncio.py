@@ -285,6 +285,35 @@ class AssetServiceGrpcAsyncIOTransport(AssetServiceTransport):
         return self._stubs["export_assets"]
 
     @property
+    def list_assets(
+        self,
+    ) -> Callable[
+        [asset_service.ListAssetsRequest], Awaitable[asset_service.ListAssetsResponse]
+    ]:
+        r"""Return a callable for the list assets method over gRPC.
+
+        Lists assets with time and resource types and returns
+        paged results in response.
+
+        Returns:
+            Callable[[~.ListAssetsRequest],
+                    Awaitable[~.ListAssetsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_assets" not in self._stubs:
+            self._stubs["list_assets"] = self.grpc_channel.unary_unary(
+                "/google.cloud.asset.v1.AssetService/ListAssets",
+                request_serializer=asset_service.ListAssetsRequest.serialize,
+                response_deserializer=asset_service.ListAssetsResponse.deserialize,
+            )
+        return self._stubs["list_assets"]
+
+    @property
     def batch_get_assets_history(
         self,
     ) -> Callable[

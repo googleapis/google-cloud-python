@@ -35,6 +35,8 @@ from .types.asset_service import GcsOutputResult
 from .types.asset_service import GetFeedRequest
 from .types.asset_service import IamPolicyAnalysisOutputConfig
 from .types.asset_service import IamPolicyAnalysisQuery
+from .types.asset_service import ListAssetsRequest
+from .types.asset_service import ListAssetsResponse
 from .types.asset_service import ListFeedsRequest
 from .types.asset_service import ListFeedsResponse
 from .types.asset_service import OutputConfig
@@ -48,6 +50,7 @@ from .types.asset_service import SearchAllResourcesResponse
 from .types.asset_service import UpdateFeedRequest
 from .types.asset_service import ContentType
 from .types.assets import Asset
+from .types.assets import ConditionEvaluation
 from .types.assets import IamPolicyAnalysisResult
 from .types.assets import IamPolicyAnalysisState
 from .types.assets import IamPolicySearchResult
@@ -67,6 +70,7 @@ __all__ = (
     "BatchGetAssetsHistoryRequest",
     "BatchGetAssetsHistoryResponse",
     "BigQueryDestination",
+    "ConditionEvaluation",
     "ContentType",
     "CreateFeedRequest",
     "DeleteFeedRequest",
@@ -82,6 +86,8 @@ __all__ = (
     "IamPolicyAnalysisResult",
     "IamPolicyAnalysisState",
     "IamPolicySearchResult",
+    "ListAssetsRequest",
+    "ListAssetsResponse",
     "ListFeedsRequest",
     "ListFeedsResponse",
     "OutputConfig",

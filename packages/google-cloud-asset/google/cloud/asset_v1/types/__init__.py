@@ -32,6 +32,8 @@ from .asset_service import (
     GetFeedRequest,
     IamPolicyAnalysisOutputConfig,
     IamPolicyAnalysisQuery,
+    ListAssetsRequest,
+    ListAssetsResponse,
     ListFeedsRequest,
     ListFeedsResponse,
     OutputConfig,
@@ -47,6 +49,7 @@ from .asset_service import (
 )
 from .assets import (
     Asset,
+    ConditionEvaluation,
     IamPolicyAnalysisResult,
     IamPolicyAnalysisState,
     IamPolicySearchResult,
@@ -75,6 +78,8 @@ __all__ = (
     "GetFeedRequest",
     "IamPolicyAnalysisOutputConfig",
     "IamPolicyAnalysisQuery",
+    "ListAssetsRequest",
+    "ListAssetsResponse",
     "ListFeedsRequest",
     "ListFeedsResponse",
     "OutputConfig",
@@ -88,6 +93,7 @@ __all__ = (
     "UpdateFeedRequest",
     "ContentType",
     "Asset",
+    "ConditionEvaluation",
     "IamPolicyAnalysisResult",
     "IamPolicyAnalysisState",
     "IamPolicySearchResult",

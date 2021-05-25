@@ -28,6 +28,8 @@ __protobuf__ = proto.module(
         "ContentType",
         "ExportAssetsRequest",
         "ExportAssetsResponse",
+        "ListAssetsRequest",
+        "ListAssetsResponse",
         "BatchGetAssetsHistoryRequest",
         "BatchGetAssetsHistoryResponse",
         "CreateFeedRequest",
@@ -151,6 +153,93 @@ class ExportAssetsResponse(proto.Message):
     read_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
     output_config = proto.Field(proto.MESSAGE, number=2, message="OutputConfig",)
     output_result = proto.Field(proto.MESSAGE, number=3, message="OutputResult",)
+
+
+class ListAssetsRequest(proto.Message):
+    r"""ListAssets request.
+    Attributes:
+        parent (str):
+            Required. Name of the organization or project the assets
+            belong to. Format: "organizations/[organization-number]"
+            (such as "organizations/123"), "projects/[project-id]" (such
+            as "projects/my-project-id"), or "projects/[project-number]"
+            (such as "projects/12345").
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
+            Timestamp to take an asset snapshot. This can
+            only be set to a timestamp between the current
+            time and the current time minus 35 days
+            (inclusive). If not specified, the current time
+            will be used. Due to delays in resource data
+            collection and indexing, there is a volatile
+            window during which running the same query may
+            get different results.
+        asset_types (Sequence[str]):
+            A list of asset types to take a snapshot for. For example:
+            "compute.googleapis.com/Disk".
+
+            Regular expression is also supported. For example:
+
+            -  "compute.googleapis.com.*" snapshots resources whose
+               asset type starts with "compute.googleapis.com".
+            -  ".*Instance" snapshots resources whose asset type ends
+               with "Instance".
+            -  ".*Instance.*" snapshots resources whose asset type
+               contains "Instance".
+
+            See `RE2 <https://github.com/google/re2/wiki/Syntax>`__ for
+            all supported regular expression syntax. If the regular
+            expression does not match any supported asset type, an
+            INVALID_ARGUMENT error will be returned.
+
+            If specified, only matching assets will be returned,
+            otherwise, it will snapshot all asset types. See
+            `Introduction to Cloud Asset
+            Inventory <https://cloud.google.com/asset-inventory/docs/overview>`__
+            for all supported asset types.
+        content_type (google.cloud.asset_v1.types.ContentType):
+            Asset content type. If not specified, no
+            content but the asset name will be returned.
+        page_size (int):
+            The maximum number of assets to be returned
+            in a single response. Default is 100, minimum is
+            1, and maximum is 1000.
+        page_token (str):
+            The ``next_page_token`` returned from the previous
+            ``ListAssetsResponse``, or unspecified for the first
+            ``ListAssetsRequest``. It is a continuation of a prior
+            ``ListAssets`` call, and the API should return the next page
+            of assets.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    read_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    asset_types = proto.RepeatedField(proto.STRING, number=3,)
+    content_type = proto.Field(proto.ENUM, number=4, enum="ContentType",)
+    page_size = proto.Field(proto.INT32, number=5,)
+    page_token = proto.Field(proto.STRING, number=6,)
+
+
+class ListAssetsResponse(proto.Message):
+    r"""ListAssets response.
+    Attributes:
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
+            Time the snapshot was taken.
+        assets (Sequence[google.cloud.asset_v1.types.Asset]):
+            Assets.
+        next_page_token (str):
+            Token to retrieve the next page of results.
+            It expires 72 hours after the page token for the
+            first page is generated. Set to empty if there
+            are no remaining results.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    read_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    assets = proto.RepeatedField(proto.MESSAGE, number=2, message=gca_assets.Asset,)
+    next_page_token = proto.Field(proto.STRING, number=3,)
 
 
 class BatchGetAssetsHistoryRequest(proto.Message):
@@ -356,6 +445,11 @@ class GcsDestination(proto.Message):
             See `Viewing and Editing Object
             Metadata <https://cloud.google.com/storage/docs/viewing-editing-metadata>`__
             for more information.
+
+            If the specified Cloud Storage object already exists and
+            there is no
+            `hold <https://cloud.google.com/storage/docs/object-holds>`__,
+            it will be overwritten with the exported result.
         uri_prefix (str):
             The uri prefix of all generated Cloud Storage objects.
             Example: "gs://bucket_name/object_name_prefix". Each object
@@ -581,7 +675,7 @@ class SearchAllResourcesRequest(proto.Message):
             Required. A scope can be a project, a folder, or an
             organization. The search is limited to the resources within
             the ``scope``. The caller must be granted the
-            ```cloudasset.assets.searchAllResources`` <http://cloud.google.com/asset-inventory/docs/access-control#required_permissions>`__
+            ```cloudasset.assets.searchAllResources`` <https://cloud.google.com/asset-inventory/docs/access-control#required_permissions>`__
             permission on the desired scope.
 
             The allowed values are:
@@ -593,38 +687,46 @@ class SearchAllResourcesRequest(proto.Message):
                "organizations/123456")
         query (str):
             Optional. The query statement. See `how to construct a
-            query <http://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query>`__
+            query <https://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query>`__
             for more information. If not specified or empty, it will
             search all the resources within the specified ``scope``.
-            Note that the query string is compared against each Cloud
-            IAM policy binding, including its members, roles, and Cloud
-            IAM conditions. The returned Cloud IAM policies will only
-            contain the bindings that match your query. To learn more
-            about the IAM policy structure, see `IAM policy
-            doc <https://cloud.google.com/iam/docs/policies#structure>`__.
 
             Examples:
 
             -  ``name:Important`` to find Cloud resources whose name
                contains "Important" as a word.
+            -  ``name=Important`` to find the Cloud resource whose name
+               is exactly "Important".
             -  ``displayName:Impor*`` to find Cloud resources whose
-               display name contains "Impor" as a prefix.
-            -  ``description:*por*`` to find Cloud resources whose
-               description contains "por" as a substring.
+               display name contains "Impor" as a prefix of any word in
+               the field.
             -  ``location:us-west*`` to find Cloud resources whose
-               location is prefixed with "us-west".
+               location contains both "us" and "west" as prefixes.
             -  ``labels:prod`` to find Cloud resources whose labels
                contain "prod" as a key or value.
             -  ``labels.env:prod`` to find Cloud resources that have a
                label "env" and its value is "prod".
             -  ``labels.env:*`` to find Cloud resources that have a
                label "env".
+            -  ``kmsKey:key`` to find Cloud resources encrypted with a
+               customer-managed encryption key whose name contains the
+               word "key".
+            -  ``state:ACTIVE`` to find Cloud resources whose state
+               contains "ACTIVE" as a word.
+            -  ``NOT state:ACTIVE`` to find {{gcp_name}} resources whose
+               state doesn't contain "ACTIVE" as a word.
+            -  ``createTime<1609459200`` to find Cloud resources that
+               were created before "2021-01-01 00:00:00 UTC". 1609459200
+               is the epoch timestamp of "2021-01-01 00:00:00 UTC" in
+               seconds.
+            -  ``updateTime>1609459200`` to find Cloud resources that
+               were updated after "2021-01-01 00:00:00 UTC". 1609459200
+               is the epoch timestamp of "2021-01-01 00:00:00 UTC" in
+               seconds.
             -  ``Important`` to find Cloud resources that contain
                "Important" as a word in any of the searchable fields.
             -  ``Impor*`` to find Cloud resources that contain "Impor"
-               as a prefix in any of the searchable fields.
-            -  ``*por*`` to find Cloud resources that contain "por" as a
-               substring in any of the searchable fields.
+               as a prefix of any word in any of the searchable fields.
             -  ``Important location:(us-west1 OR global)`` to find Cloud
                resources that contain "Important" as a word in any of
                the searchable fields and are also located in the
@@ -633,6 +735,20 @@ class SearchAllResourcesRequest(proto.Message):
             Optional. A list of asset types that this request searches
             for. If empty, it will search all the `searchable asset
             types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__.
+
+            Regular expressions are also supported. For example:
+
+            -  "compute.googleapis.com.*" snapshots resources whose
+               asset type starts with "compute.googleapis.com".
+            -  ".*Instance" snapshots resources whose asset type ends
+               with "Instance".
+            -  ".*Instance.*" snapshots resources whose asset type
+               contains "Instance".
+
+            See `RE2 <https://github.com/google/re2/wiki/Syntax>`__ for
+            all supported regular expression syntax. If the regular
+            expression does not match any supported asset type, an
+            INVALID_ARGUMENT error will be returned.
         page_size (int):
             Optional. The page size for search result pagination. Page
             size is capped at 500 even if a larger value is given. If
@@ -647,16 +763,28 @@ class SearchAllResourcesRequest(proto.Message):
             the previous response. The values of all other method
             parameters, must be identical to those in the previous call.
         order_by (str):
-            Optional. A comma separated list of fields specifying the
+            Optional. A comma-separated list of fields specifying the
             sorting order of the results. The default order is
             ascending. Add " DESC" after the field name to indicate
             descending order. Redundant space characters are ignored.
-            Example: "location DESC, name". Only string fields in the
-            response are sortable, including ``name``, ``displayName``,
-            ``description``, ``location``. All the other fields such as
-            repeated fields (e.g., ``networkTags``), map fields (e.g.,
-            ``labels``) and struct fields (e.g.,
-            ``additionalAttributes``) are not supported.
+            Example: "location DESC, name". Only singular primitive
+            fields in the response are sortable:
+
+            -  name
+            -  assetType
+            -  project
+            -  displayName
+            -  description
+            -  location
+            -  kmsKey
+            -  createTime
+            -  updateTime
+            -  state
+            -  parentFullResourceName
+            -  parentAssetType All the other fields such as repeated
+               fields (e.g., ``networkTags``), map fields (e.g.,
+               ``labels``) and struct fields (e.g.,
+               ``additionalAttributes``) are not supported.
     """
 
     scope = proto.Field(proto.STRING, number=1,)
@@ -698,7 +826,7 @@ class SearchAllIamPoliciesRequest(proto.Message):
             Required. A scope can be a project, a folder, or an
             organization. The search is limited to the IAM policies
             within the ``scope``. The caller must be granted the
-            ```cloudasset.assets.searchAllIamPolicies`` <http://cloud.google.com/asset-inventory/docs/access-control#required_permissions>`__
+            ```cloudasset.assets.searchAllIamPolicies`` <https://cloud.google.com/asset-inventory/docs/access-control#required_permissions>`__
             permission on the desired scope.
 
             The allowed values are:
@@ -713,6 +841,12 @@ class SearchAllIamPoliciesRequest(proto.Message):
             query <https://cloud.google.com/asset-inventory/docs/searching-iam-policies#how_to_construct_a_query>`__
             for more information. If not specified or empty, it will
             search all the IAM policies within the specified ``scope``.
+            Note that the query string is compared against each Cloud
+            IAM policy binding, including its members, roles, and Cloud
+            IAM conditions. The returned Cloud IAM policies will only
+            contain the bindings that match your query. To learn more
+            about the IAM policy structure, see `IAM policy
+            doc <https://cloud.google.com/iam/docs/policies#structure>`__.
 
             Examples:
 
@@ -720,20 +854,28 @@ class SearchAllIamPoliciesRequest(proto.Message):
                specify user "amy@gmail.com".
             -  ``policy:roles/compute.admin`` to find IAM policy
                bindings that specify the Compute Admin role.
+            -  ``policy:comp*`` to find IAM policy bindings that contain
+               "comp" as a prefix of any word in the binding.
             -  ``policy.role.permissions:storage.buckets.update`` to
                find IAM policy bindings that specify a role containing
                "storage.buckets.update" permission. Note that if callers
                don't have ``iam.roles.get`` access to a role's included
                permissions, policy bindings that specify this role will
                be dropped from the search results.
+            -  ``policy.role.permissions:upd*`` to find IAM policy
+               bindings that specify a role containing "upd" as a prefix
+               of any word in the role permission. Note that if callers
+               don't have ``iam.roles.get`` access to a role's included
+               permissions, policy bindings that specify this role will
+               be dropped from the search results.
             -  ``resource:organizations/123456`` to find IAM policy
                bindings that are set on "organizations/123456".
+            -  ``resource=//cloudresourcemanager.googleapis.com/projects/myproject``
+               to find IAM policy bindings that are set on the project
+               named "myproject".
             -  ``Important`` to find IAM policy bindings that contain
                "Important" as a word in any of the searchable fields
                (except for the included permissions).
-            -  ``*por*`` to find IAM policy bindings that contain "por"
-               as a substring in any of the searchable fields (except
-               for the included permissions).
             -  ``resource:(instance1 OR instance2) policy:amy`` to find
                IAM policy bindings that are set on resources "instance1"
                or "instance2" and also specify user "amy".
@@ -783,7 +925,7 @@ class SearchAllIamPoliciesResponse(proto.Message):
 
 
 class IamPolicyAnalysisQuery(proto.Message):
-    r"""IAM policy analysis query message.
+    r"""## IAM policy analysis query message.
     Attributes:
         scope (str):
             Required. The relative name of the root asset. Only
@@ -810,6 +952,9 @@ class IamPolicyAnalysisQuery(proto.Message):
             analysis. This is optional.
         options (google.cloud.asset_v1.types.IamPolicyAnalysisQuery.Options):
             Optional. The query options.
+        condition_context (google.cloud.asset_v1.types.IamPolicyAnalysisQuery.ConditionContext):
+            Optional. The hypothetical context for IAM
+            conditions evaluation.
     """
 
     class ResourceSelector(proto.Message):
@@ -965,11 +1110,29 @@ class IamPolicyAnalysisQuery(proto.Message):
         output_group_edges = proto.Field(proto.BOOL, number=5,)
         analyze_service_account_impersonation = proto.Field(proto.BOOL, number=6,)
 
+    class ConditionContext(proto.Message):
+        r"""The IAM conditions context.
+        Attributes:
+            access_time (google.protobuf.timestamp_pb2.Timestamp):
+                The hypothetical access timestamp to evaluate IAM
+                conditions. Note that this value must not be earlier than
+                the current time; otherwise, an INVALID_ARGUMENT error will
+                be returned.
+        """
+
+        access_time = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="TimeContext",
+            message=timestamp_pb2.Timestamp,
+        )
+
     scope = proto.Field(proto.STRING, number=1,)
     resource_selector = proto.Field(proto.MESSAGE, number=2, message=ResourceSelector,)
     identity_selector = proto.Field(proto.MESSAGE, number=3, message=IdentitySelector,)
     access_selector = proto.Field(proto.MESSAGE, number=4, message=AccessSelector,)
     options = proto.Field(proto.MESSAGE, number=5, message=Options,)
+    condition_context = proto.Field(proto.MESSAGE, number=6, message=ConditionContext,)
 
 
 class AnalyzeIamPolicyRequest(proto.Message):
@@ -1075,11 +1238,16 @@ class IamPolicyAnalysisOutputConfig(proto.Message):
         Attributes:
             uri (str):
                 Required. The uri of the Cloud Storage object. It's the same
-                uri that is used by gsutil. For example:
-                "gs://bucket_name/object_name". See [Quickstart: Using the
-                gsutil tool]
-                (https://cloud.google.com/storage/docs/quickstart-gsutil)
-                for examples.
+                uri that is used by gsutil. Example:
+                "gs://bucket_name/object_name". See `Viewing and Editing
+                Object
+                Metadata <https://cloud.google.com/storage/docs/viewing-editing-metadata>`__
+                for more information.
+
+                If the specified Cloud Storage object already exists and
+                there is no
+                `hold <https://cloud.google.com/storage/docs/object-holds>`__,
+                it will be overwritten with the analysis result.
         """
 
         uri = proto.Field(proto.STRING, number=1,)

@@ -45,6 +45,11 @@
                 "get_feed"
               ]
             },
+            "ListAssets": {
+              "methods": [
+                "list_assets"
+              ]
+            },
             "ListFeeds": {
               "methods": [
                 "list_feeds"
@@ -103,6 +108,11 @@
             "GetFeed": {
               "methods": [
                 "get_feed"
+              ]
+            },
+            "ListAssets": {
+              "methods": [
+                "list_assets"
               ]
             },
             "ListFeeds": {

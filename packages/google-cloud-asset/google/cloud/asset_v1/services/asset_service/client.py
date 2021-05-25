@@ -422,6 +422,88 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         # Done; return the response.
         return response
 
+    def list_assets(
+        self,
+        request: asset_service.ListAssetsRequest = None,
+        *,
+        parent: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListAssetsPager:
+        r"""Lists assets with time and resource types and returns
+        paged results in response.
+
+        Args:
+            request (google.cloud.asset_v1.types.ListAssetsRequest):
+                The request object. ListAssets request.
+            parent (str):
+                Required. Name of the organization or project the assets
+                belong to. Format: "organizations/[organization-number]"
+                (such as "organizations/123"), "projects/[project-id]"
+                (such as "projects/my-project-id"), or
+                "projects/[project-number]" (such as "projects/12345").
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.asset_v1.services.asset_service.pagers.ListAssetsPager:
+                ListAssets response.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a asset_service.ListAssetsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, asset_service.ListAssetsRequest):
+            request = asset_service.ListAssetsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_assets]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListAssetsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def batch_get_assets_history(
         self,
         request: asset_service.BatchGetAssetsHistoryRequest = None,
@@ -877,7 +959,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 Required. A scope can be a project, a folder, or an
                 organization. The search is limited to the resources
                 within the ``scope``. The caller must be granted the
-                ```cloudasset.assets.searchAllResources`` <http://cloud.google.com/asset-inventory/docs/access-control#required_permissions>`__
+                ```cloudasset.assets.searchAllResources`` <https://cloud.google.com/asset-inventory/docs/access-control#required_permissions>`__
                 permission on the desired scope.
 
                 The allowed values are:
@@ -893,40 +975,48 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 should not be set.
             query (str):
                 Optional. The query statement. See `how to construct a
-                query <http://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query>`__
+                query <https://cloud.google.com/asset-inventory/docs/searching-resources#how_to_construct_a_query>`__
                 for more information. If not specified or empty, it will
                 search all the resources within the specified ``scope``.
-                Note that the query string is compared against each
-                Cloud IAM policy binding, including its members, roles,
-                and Cloud IAM conditions. The returned Cloud IAM
-                policies will only contain the bindings that match your
-                query. To learn more about the IAM policy structure, see
-                `IAM policy
-                doc <https://cloud.google.com/iam/docs/policies#structure>`__.
 
                 Examples:
 
                 -  ``name:Important`` to find Cloud resources whose name
                    contains "Important" as a word.
+                -  ``name=Important`` to find the Cloud resource whose
+                   name is exactly "Important".
                 -  ``displayName:Impor*`` to find Cloud resources whose
-                   display name contains "Impor" as a prefix.
-                -  ``description:*por*`` to find Cloud resources whose
-                   description contains "por" as a substring.
+                   display name contains "Impor" as a prefix of any word
+                   in the field.
                 -  ``location:us-west*`` to find Cloud resources whose
-                   location is prefixed with "us-west".
+                   location contains both "us" and "west" as prefixes.
                 -  ``labels:prod`` to find Cloud resources whose labels
                    contain "prod" as a key or value.
                 -  ``labels.env:prod`` to find Cloud resources that have
                    a label "env" and its value is "prod".
                 -  ``labels.env:*`` to find Cloud resources that have a
                    label "env".
+                -  ``kmsKey:key`` to find Cloud resources encrypted with
+                   a customer-managed encryption key whose name contains
+                   the word "key".
+                -  ``state:ACTIVE`` to find Cloud resources whose state
+                   contains "ACTIVE" as a word.
+                -  ``NOT state:ACTIVE`` to find {{gcp_name}} resources
+                   whose state doesn't contain "ACTIVE" as a word.
+                -  ``createTime<1609459200`` to find Cloud resources
+                   that were created before "2021-01-01 00:00:00 UTC".
+                   1609459200 is the epoch timestamp of "2021-01-01
+                   00:00:00 UTC" in seconds.
+                -  ``updateTime>1609459200`` to find Cloud resources
+                   that were updated after "2021-01-01 00:00:00 UTC".
+                   1609459200 is the epoch timestamp of "2021-01-01
+                   00:00:00 UTC" in seconds.
                 -  ``Important`` to find Cloud resources that contain
                    "Important" as a word in any of the searchable
                    fields.
                 -  ``Impor*`` to find Cloud resources that contain
-                   "Impor" as a prefix in any of the searchable fields.
-                -  ``*por*`` to find Cloud resources that contain "por"
-                   as a substring in any of the searchable fields.
+                   "Impor" as a prefix of any word in any of the
+                   searchable fields.
                 -  ``Important location:(us-west1 OR global)`` to find
                    Cloud resources that contain "Important" as a word in
                    any of the searchable fields and are also located in
@@ -940,6 +1030,20 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 searches for. If empty, it will search all the
                 `searchable asset
                 types <https://cloud.google.com/asset-inventory/docs/supported-asset-types#searchable_asset_types>`__.
+
+                Regular expressions are also supported. For example:
+
+                -  "compute.googleapis.com.*" snapshots resources whose
+                   asset type starts with "compute.googleapis.com".
+                -  ".*Instance" snapshots resources whose asset type
+                   ends with "Instance".
+                -  ".*Instance.*" snapshots resources whose asset type
+                   contains "Instance".
+
+                See `RE2 <https://github.com/google/re2/wiki/Syntax>`__
+                for all supported regular expression syntax. If the
+                regular expression does not match any supported asset
+                type, an INVALID_ARGUMENT error will be returned.
 
                 This corresponds to the ``asset_types`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1027,7 +1131,7 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 Required. A scope can be a project, a folder, or an
                 organization. The search is limited to the IAM policies
                 within the ``scope``. The caller must be granted the
-                ```cloudasset.assets.searchAllIamPolicies`` <http://cloud.google.com/asset-inventory/docs/access-control#required_permissions>`__
+                ```cloudasset.assets.searchAllIamPolicies`` <https://cloud.google.com/asset-inventory/docs/access-control#required_permissions>`__
                 permission on the desired scope.
 
                 The allowed values are:
@@ -1046,7 +1150,13 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 query <https://cloud.google.com/asset-inventory/docs/searching-iam-policies#how_to_construct_a_query>`__
                 for more information. If not specified or empty, it will
                 search all the IAM policies within the specified
-                ``scope``.
+                ``scope``. Note that the query string is compared
+                against each Cloud IAM policy binding, including its
+                members, roles, and Cloud IAM conditions. The returned
+                Cloud IAM policies will only contain the bindings that
+                match your query. To learn more about the IAM policy
+                structure, see `IAM policy
+                doc <https://cloud.google.com/iam/docs/policies#structure>`__.
 
                 Examples:
 
@@ -1054,6 +1164,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                    that specify user "amy@gmail.com".
                 -  ``policy:roles/compute.admin`` to find IAM policy
                    bindings that specify the Compute Admin role.
+                -  ``policy:comp*`` to find IAM policy bindings that
+                   contain "comp" as a prefix of any word in the
+                   binding.
                 -  ``policy.role.permissions:storage.buckets.update`` to
                    find IAM policy bindings that specify a role
                    containing "storage.buckets.update" permission. Note
@@ -1061,15 +1174,22 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                    to a role's included permissions, policy bindings
                    that specify this role will be dropped from the
                    search results.
+                -  ``policy.role.permissions:upd*`` to find IAM policy
+                   bindings that specify a role containing "upd" as a
+                   prefix of any word in the role permission. Note that
+                   if callers don't have ``iam.roles.get`` access to a
+                   role's included permissions, policy bindings that
+                   specify this role will be dropped from the search
+                   results.
                 -  ``resource:organizations/123456`` to find IAM policy
                    bindings that are set on "organizations/123456".
+                -  ``resource=//cloudresourcemanager.googleapis.com/projects/myproject``
+                   to find IAM policy bindings that are set on the
+                   project named "myproject".
                 -  ``Important`` to find IAM policy bindings that
                    contain "Important" as a word in any of the
                    searchable fields (except for the included
                    permissions).
-                -  ``*por*`` to find IAM policy bindings that contain
-                   "por" as a substring in any of the searchable fields
-                   (except for the included permissions).
                 -  ``resource:(instance1 OR instance2) policy:amy`` to
                    find IAM policy bindings that are set on resources
                    "instance1" or "instance2" and also specify user

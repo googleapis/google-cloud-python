@@ -170,6 +170,21 @@ class AssetServiceTransport(abc.ABC):
             self.export_assets: gapic_v1.method.wrap_method(
                 self.export_assets, default_timeout=60.0, client_info=client_info,
             ),
+            self.list_assets: gapic_v1.method.wrap_method(
+                self.list_assets,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
             self.batch_get_assets_history: gapic_v1.method.wrap_method(
                 self.batch_get_assets_history,
                 default_retry=retries.Retry(
@@ -298,6 +313,18 @@ class AssetServiceTransport(abc.ABC):
     ) -> Callable[
         [asset_service.ExportAssetsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_assets(
+        self,
+    ) -> Callable[
+        [asset_service.ListAssetsRequest],
+        Union[
+            asset_service.ListAssetsResponse,
+            Awaitable[asset_service.ListAssetsResponse],
+        ],
     ]:
         raise NotImplementedError()
 
