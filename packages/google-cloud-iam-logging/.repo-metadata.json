@@ -1,0 +1,13 @@
+{
+    "name": "iamlogging",
+    "name_pretty": "IAM Logging Protos",
+    "product_documentation": "https://cloud.google.com/iam/docs/audit-logging",
+    "client_documentation": "https://googleapis.dev/python/iamlogging/latest",
+    "issue_tracker": "https://github.com/googleapis/python-iamlogging/issues",
+    "release_level": "beta",
+    "language": "python",
+    "library_type" : "OTHER",
+    "repo": "googleapis/python-iam-logging",
+    "distribution_name": "google-cloud-iam-logging",
+    "api_id": ""
+  }
