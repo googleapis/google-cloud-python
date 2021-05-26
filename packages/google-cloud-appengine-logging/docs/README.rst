@@ -6,6 +6,7 @@ Python Client for Google Cloud Appengine Logging
 This package contains generated Python types for ``google.appengine.logging.v1.request_log``.
 
 - `Client Library Documentation`_
+- `Product Documentation`_
 
 .. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
@@ -14,6 +15,8 @@ This package contains generated Python types for ``google.appengine.logging.v1.r
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-appengine-logging.svg
    :target: https://pypi.org/project/google-cloud-appengine-logging/
 .. _Client Library Documentation: https://googleapis.dev/python/appenginelogging/latest
+.. _Product Documentation:  https://cloud.google.com/logging/docs/reference/v2/rpc/google.appengine.logging.v1
+
 
 Installation
 ~~~~~~~~~~~~
