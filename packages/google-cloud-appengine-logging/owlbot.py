@@ -25,7 +25,8 @@ default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
     s.move(library)
-    s.remove_staging_dirs()
+
+s.remove_staging_dirs()
 
 templated_files = common.py_library(cov_level=99, microgenerator=True)
 
