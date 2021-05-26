@@ -1367,6 +1367,9 @@ def _parse_from_args(
         # Offload verification of parent to ``google.cloud.datastore.Key()``.
         parent_ds_key = parent._key
 
+    if namespace == "":
+        namespace = None
+
     return google.cloud.datastore.Key(
         *flat, parent=parent_ds_key, project=project, namespace=namespace
     )

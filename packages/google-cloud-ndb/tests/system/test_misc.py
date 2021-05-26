@@ -501,3 +501,27 @@ def test_legacy_local_structured_property_with_boolean(ds_entity):
     assert entity.children[1].bar is False
     assert entity.children[2].foo == "i'm in jail!"
     assert entity.children[2].bar is False
+
+
+@pytest.mark.usefixtures("client_context")
+def test_parent_and_child_in_default_namespace(dispose_of):
+    """Regression test for #661
+
+    https://github.com/googleapis/python-ndb/issues/661
+    """
+
+    class SomeKind(ndb.Model):
+        pass
+
+    class OtherKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    parent = SomeKind(namespace="")
+    parent_key = parent.put()
+    dispose_of(parent_key._key)
+
+    child = OtherKind(parent=parent_key, namespace="", foo=42)
+    child_key = child.put()
+    dispose_of(child_key._key)
+
+    assert OtherKind.query(ancestor=parent_key).get().foo == 42
