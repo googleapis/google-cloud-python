@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.3.0](https://www.github.com/googleapis/python-containeranalysis/compare/v2.2.3...v2.3.0) (2021-05-25)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([b427e90](https://www.github.com/googleapis/python-containeranalysis/commit/b427e9091d4afc482c8d9fd6ff4510ad3b740820))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([b427e90](https://www.github.com/googleapis/python-containeranalysis/commit/b427e9091d4afc482c8d9fd6ff4510ad3b740820))
+* **deps:** add packaging requirement ([#135](https://www.github.com/googleapis/python-containeranalysis/issues/135)) ([3f0bd3a](https://www.github.com/googleapis/python-containeranalysis/commit/3f0bd3af9d809150a81933601bee5b9de0ff834a))
+
 ### [2.2.3](https://www.github.com/googleapis/python-containeranalysis/compare/v2.2.2...v2.2.3) (2021-04-02)
 
 
