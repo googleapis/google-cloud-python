@@ -1,0 +1,13 @@
+{
+    "name": "appenginelogging",
+    "name_pretty": "App Engine Logging Protos",
+    "product_documentation": "https://cloud.google.com/logging/docs/reference/v2/rpc/google.appengine.logging.v1",
+    "client_documentation": "https://googleapis.dev/python/appengine-logging/latest",
+    "issue_tracker": "https://github.com/googleapis/python-appengine-logging/issues",
+    "release_level": "beta",
+    "language": "python",
+    "library_type" : "OTHER",
+    "repo": "googleapis/python-appengine-logging",
+    "distribution_name": "google-cloud-appengine-logging",
+    "api_id": ""
+  }
