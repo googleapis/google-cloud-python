@@ -87,7 +87,7 @@ def default(session):
         "--cov-append",
         "--cov-config=.coveragerc",
         "--cov-report=",
-        "--cov-fail-under=65",
+        "--cov-fail-under=80",
         os.path.join("tests", "unit"),
         *session.posargs,
     )
@@ -157,7 +157,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=65")
+    session.run("coverage", "report", "--show-missing", "--fail-under=80")
 
     session.run("coverage", "erase")
 
