@@ -139,13 +139,78 @@ def fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=10):
     leaser.add = stdlib_types.MethodType(fake_add, leaser)
 
 
-def test_ack_deadline():
+def test__obtain_ack_deadline_no_custom_flow_control_setting():
+    from google.cloud.pubsub_v1.subscriber._protocol import histogram
+
     manager = make_manager()
-    assert manager.ack_deadline == 10
-    manager.ack_histogram.add(20)
-    assert manager.ack_deadline == 20
-    manager.ack_histogram.add(10)
-    assert manager.ack_deadline == 20
+
+    # Make sure that max_duration_per_lease_extension is disabled.
+    manager._flow_control = types.FlowControl(max_duration_per_lease_extension=0)
+
+    deadline = manager._obtain_ack_deadline(maybe_update=True)
+    assert deadline == histogram.MIN_ACK_DEADLINE
+
+    # When we get some historical data, the deadline is adjusted.
+    manager.ack_histogram.add(histogram.MIN_ACK_DEADLINE * 2)
+    deadline = manager._obtain_ack_deadline(maybe_update=True)
+    assert deadline == histogram.MIN_ACK_DEADLINE * 2
+
+    # Adding just a single additional data point does not yet change the deadline.
+    manager.ack_histogram.add(histogram.MIN_ACK_DEADLINE)
+    deadline = manager._obtain_ack_deadline(maybe_update=True)
+    assert deadline == histogram.MIN_ACK_DEADLINE * 2
+
+
+def test__obtain_ack_deadline_with_max_duration_per_lease_extension():
+    from google.cloud.pubsub_v1.subscriber._protocol import histogram
+
+    manager = make_manager()
+    manager._flow_control = types.FlowControl(
+        max_duration_per_lease_extension=histogram.MIN_ACK_DEADLINE + 1
+    )
+    manager.ack_histogram.add(histogram.MIN_ACK_DEADLINE * 3)  # make p99 value large
+
+    # The deadline configured in flow control should prevail.
+    deadline = manager._obtain_ack_deadline(maybe_update=True)
+    assert deadline == histogram.MIN_ACK_DEADLINE + 1
+
+
+def test__obtain_ack_deadline_with_max_duration_per_lease_extension_too_low():
+    from google.cloud.pubsub_v1.subscriber._protocol import histogram
+
+    manager = make_manager()
+    manager._flow_control = types.FlowControl(
+        max_duration_per_lease_extension=histogram.MIN_ACK_DEADLINE - 1
+    )
+    manager.ack_histogram.add(histogram.MIN_ACK_DEADLINE * 3)  # make p99 value large
+
+    # The deadline configured in flow control should be adjusted to the minimum allowed.
+    deadline = manager._obtain_ack_deadline(maybe_update=True)
+    assert deadline == histogram.MIN_ACK_DEADLINE
+
+
+def test__obtain_ack_deadline_no_value_update():
+    manager = make_manager()
+
+    # Make sure that max_duration_per_lease_extension is disabled.
+    manager._flow_control = types.FlowControl(max_duration_per_lease_extension=0)
+
+    manager.ack_histogram.add(21)
+    deadline = manager._obtain_ack_deadline(maybe_update=True)
+    assert deadline == 21
+
+    for _ in range(5):
+        manager.ack_histogram.add(35)  # Gather some new ACK data.
+
+    deadline = manager._obtain_ack_deadline(maybe_update=False)
+    assert deadline == 21  # still the same
+
+    # Accessing the value through the ack_deadline property has no side effects either.
+    assert manager.ack_deadline == 21
+
+    # Updating the ack deadline is reflected on ack_deadline wrapper, too.
+    deadline = manager._obtain_ack_deadline(maybe_update=True)
+    assert manager.ack_deadline == deadline == 35
 
 
 def test_client_id():
@@ -179,17 +244,6 @@ def test_streaming_flow_control_use_legacy_flow_control():
     request = manager._get_initial_request(stream_ack_deadline_seconds=10)
     assert request.max_outstanding_messages == 0
     assert request.max_outstanding_bytes == 0
-
-
-def test_ack_deadline_with_max_duration_per_lease_extension():
-    manager = make_manager()
-    manager._flow_control = types.FlowControl(max_duration_per_lease_extension=5)
-
-    assert manager.ack_deadline == 5
-    for _ in range(5):
-        manager.ack_histogram.add(20)
-
-    assert manager.ack_deadline == 5
 
 
 def test_maybe_pause_consumer_wo_consumer_set():
@@ -476,7 +530,10 @@ def test_heartbeat_inactive():
 def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bidi_rpc):
     manager = make_manager()
 
-    manager.open(mock.sentinel.callback, mock.sentinel.on_callback_error)
+    with mock.patch.object(
+        type(manager), "ack_deadline", new=mock.PropertyMock(return_value=18)
+    ):
+        manager.open(mock.sentinel.callback, mock.sentinel.on_callback_error)
 
     heartbeater.assert_called_once_with(manager)
     heartbeater.return_value.start.assert_called_once()
@@ -503,7 +560,7 @@ def test_open(heartbeater, dispatcher, leaser, background_consumer, resumable_bi
     )
     initial_request_arg = resumable_bidi_rpc.call_args.kwargs["initial_request"]
     assert initial_request_arg.func == manager._get_initial_request
-    assert initial_request_arg.args[0] == 10  # the default stream ACK timeout
+    assert initial_request_arg.args[0] == 18
     assert not manager._client.api.get_subscription.called
 
     resumable_bidi_rpc.return_value.add_done_callback.assert_called_once_with(
@@ -772,6 +829,38 @@ def test__on_response_delivery_attempt():
     assert msg1.delivery_attempt is None
     msg2 = schedule_calls[1][1][1]
     assert msg2.delivery_attempt == 6
+
+
+def test__on_response_modifies_ack_deadline():
+    manager, _, dispatcher, leaser, _, scheduler = make_running_manager()
+    manager._callback = mock.sentinel.callback
+
+    # Set up the messages.
+    response = gapic_types.StreamingPullResponse(
+        received_messages=[
+            gapic_types.ReceivedMessage(
+                ack_id="ack_1",
+                message=gapic_types.PubsubMessage(data=b"foo", message_id="1"),
+            ),
+            gapic_types.ReceivedMessage(
+                ack_id="ack_2",
+                message=gapic_types.PubsubMessage(data=b"bar", message_id="2"),
+            ),
+        ]
+    )
+
+    # adjust message bookkeeping in leaser
+    fake_leaser_add(leaser, init_msg_count=0, assumed_msg_size=80)
+
+    # Actually run the method and chack that correct MODACK value is used.
+    with mock.patch.object(
+        type(manager), "ack_deadline", new=mock.PropertyMock(return_value=18)
+    ):
+        manager._on_response(response)
+
+    dispatcher.modify_ack_deadline.assert_called_once_with(
+        [requests.ModAckRequest("ack_1", 18), requests.ModAckRequest("ack_2", 18)]
+    )
 
 
 def test__on_response_no_leaser_overload():

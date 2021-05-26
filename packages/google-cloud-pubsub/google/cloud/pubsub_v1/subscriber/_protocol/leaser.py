@@ -128,7 +128,9 @@ class Leaser(object):
             # Determine the appropriate duration for the lease. This is
             # based off of how long previous messages have taken to ack, with
             # a sensible default and within the ranges allowed by Pub/Sub.
-            deadline = self._manager.ack_deadline
+            # Also update the deadline currently used if enough new ACK data has been
+            # gathered since the last deadline update.
+            deadline = self._manager._obtain_ack_deadline(maybe_update=True)
             _LOGGER.debug("The current deadline value is %d seconds.", deadline)
 
             # Make a copy of the leased messages. This is needed because it's

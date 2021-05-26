@@ -33,7 +33,7 @@ def test_contains():
 
 def test_max():
     histo = histogram.Histogram()
-    assert histo.max == 600
+    assert histo.max == histogram.MAX_ACK_DEADLINE
     histo.add(120)
     assert histo.max == 120
     histo.add(150)
@@ -44,7 +44,7 @@ def test_max():
 
 def test_min():
     histo = histogram.Histogram()
-    assert histo.min == 10
+    assert histo.min == histogram.MIN_ACK_DEADLINE
     histo.add(60)
     assert histo.min == 60
     histo.add(30)
@@ -63,20 +63,23 @@ def test_add():
 
 def test_add_lower_limit():
     histo = histogram.Histogram()
-    histo.add(5)
-    assert 5 not in histo
-    assert 10 in histo
+    low_value = histogram.MIN_ACK_DEADLINE - 1
+    histo.add(low_value)
+    assert low_value not in histo
+    assert histogram.MIN_ACK_DEADLINE in histo
 
 
 def test_add_upper_limit():
     histo = histogram.Histogram()
-    histo.add(12000)
-    assert 12000 not in histo
-    assert 600 in histo
+    high_value = histogram.MAX_ACK_DEADLINE + 1
+    histo.add(high_value)
+    assert high_value not in histo
+    assert histogram.MAX_ACK_DEADLINE in histo
 
 
 def test_percentile():
     histo = histogram.Histogram()
+    assert histo.percentile(42) == histogram.MIN_ACK_DEADLINE  # default when empty
     [histo.add(i) for i in range(101, 201)]
     assert histo.percentile(100) == 200
     assert histo.percentile(101) == 200

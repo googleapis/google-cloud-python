@@ -15,6 +15,10 @@
 from __future__ import absolute_import, division
 
 
+MIN_ACK_DEADLINE = 10
+MAX_ACK_DEADLINE = 600
+
+
 class Histogram(object):
     """Representation of a single histogram.
 
@@ -27,8 +31,9 @@ class Histogram(object):
     are free to use a different formula.
 
     The precision of data stored is to the nearest integer. Additionally,
-    values outside the range of ``10 <= x <= 600`` are stored as ``10`` or
-    ``600``, since these are the boundaries of leases in the actual API.
+    values outside the range of ``MIN_ACK_DEADLINE <= x <= MAX_ACK_DEADLINE`` are stored
+    as ``MIN_ACK_DEADLINE`` or ``MAX_ACK_DEADLINE``, since these are the boundaries of
+    leases in the actual API.
     """
 
     def __init__(self, data=None):
@@ -83,41 +88,43 @@ class Histogram(object):
     def max(self):
         """Return the maximum value in this histogram.
 
-        If there are no values in the histogram at all, return 600.
+        If there are no values in the histogram at all, return ``MAX_ACK_DEADLINE``.
 
         Returns:
             int: The maximum value in the histogram.
         """
         if len(self._data) == 0:
-            return 600
+            return MAX_ACK_DEADLINE
         return next(iter(reversed(sorted(self._data.keys()))))
 
     @property
     def min(self):
         """Return the minimum value in this histogram.
 
-        If there are no values in the histogram at all, return 10.
+        If there are no values in the histogram at all, return ``MIN_ACK_DEADLINE``.
 
         Returns:
             int: The minimum value in the histogram.
         """
         if len(self._data) == 0:
-            return 10
+            return MIN_ACK_DEADLINE
         return next(iter(sorted(self._data.keys())))
 
     def add(self, value):
         """Add the value to this histogram.
 
         Args:
-            value (int): The value. Values outside of ``10 <= x <= 600``
-                will be raised to ``10`` or reduced to ``600``.
+            value (int): The value. Values outside of
+            ``MIN_ACK_DEADLINE <= x <= MAX_ACK_DEADLINE``
+                will be raised to ``MIN_ACK_DEADLINE`` or reduced to
+                ``MAX_ACK_DEADLINE``.
         """
         # If the value is out of bounds, bring it in bounds.
         value = int(value)
-        if value < 10:
-            value = 10
-        if value > 600:
-            value = 600
+        if value < MIN_ACK_DEADLINE:
+            value = MIN_ACK_DEADLINE
+        elif value > MAX_ACK_DEADLINE:
+            value = MAX_ACK_DEADLINE
 
         # Add the value to the histogram's data dictionary.
         self._data.setdefault(value, 0)
@@ -129,7 +136,7 @@ class Histogram(object):
 
         Args:
             percent (Union[int, float]): The precentile being sought. The
-                default consumer implementations use consistently use ``99``.
+                default consumer implementations consistently use ``99``.
 
         Returns:
             int: The value corresponding to the requested percentile.
@@ -150,5 +157,5 @@ class Histogram(object):
                 return k
 
         # The only way to get here is if there was no data.
-        # In this case, just return 10 seconds.
-        return 10
+        # In this case, just return the shortest possible deadline.
+        return MIN_ACK_DEADLINE
