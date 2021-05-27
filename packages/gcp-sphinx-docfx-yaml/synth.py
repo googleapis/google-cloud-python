@@ -41,6 +41,7 @@ s.move(
         ".kokoro/test-sample*",
         "CONTRIBUTING.rst",  # repo has a CONTRIBUTING.md
         ".github/CONTRIBUTING.md",
-        ".github/PULL_REQUEST_TEMPLATE.md"
+        ".github/PULL_REQUEST_TEMPLATE.md",
+        ".gitignore"
     ],
 )
