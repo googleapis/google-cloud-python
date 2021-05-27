@@ -15,6 +15,7 @@
 #
 import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3.types import test_case
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
@@ -31,6 +32,12 @@ __protobuf__ = proto.module(
         "DeleteEnvironmentRequest",
         "LookupEnvironmentHistoryRequest",
         "LookupEnvironmentHistoryResponse",
+        "ContinuousTestResult",
+        "RunContinuousTestRequest",
+        "RunContinuousTestResponse",
+        "RunContinuousTestMetadata",
+        "ListContinuousTestResultsRequest",
+        "ListContinuousTestResultsResponse",
     },
 )
 
@@ -243,6 +250,121 @@ class LookupEnvironmentHistoryResponse(proto.Message):
         return self
 
     environments = proto.RepeatedField(proto.MESSAGE, number=1, message="Environment",)
+    next_page_token = proto.Field(proto.STRING, number=2,)
+
+
+class ContinuousTestResult(proto.Message):
+    r"""Represents a result from running a test case in an agent
+    environment.
+
+    Attributes:
+        name (str):
+            The resource name for the continuous test result. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/continuousTestResults/<ContinuousTestResult ID>``.
+        result (google.cloud.dialogflowcx_v3.types.ContinuousTestResult.AggregatedTestResult):
+            The result of this continuous test run, i.e.
+            whether all the tests in this continuous test
+            run pass or not.
+        test_case_results (Sequence[str]):
+            A list of individual test case results names
+            in this continuous test run.
+        run_time (google.protobuf.timestamp_pb2.Timestamp):
+            Time when the continuous testing run starts.
+    """
+
+    class AggregatedTestResult(proto.Enum):
+        r"""The overall result for a continuous test run in an agent
+        environment.
+        """
+        AGGREGATED_TEST_RESULT_UNSPECIFIED = 0
+        PASSED = 1
+        FAILED = 2
+
+    name = proto.Field(proto.STRING, number=1,)
+    result = proto.Field(proto.ENUM, number=2, enum=AggregatedTestResult,)
+    test_case_results = proto.RepeatedField(proto.STRING, number=3,)
+    run_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+
+
+class RunContinuousTestRequest(proto.Message):
+    r"""The request message for
+    [Environments.RunContinuousTest][google.cloud.dialogflow.cx.v3.Environments.RunContinuousTest].
+
+    Attributes:
+        environment (str):
+            Required. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
+    """
+
+    environment = proto.Field(proto.STRING, number=1,)
+
+
+class RunContinuousTestResponse(proto.Message):
+    r"""The response message for
+    [Environments.RunContinuousTest][google.cloud.dialogflow.cx.v3.Environments.RunContinuousTest].
+
+    Attributes:
+        continuous_test_result (google.cloud.dialogflowcx_v3.types.ContinuousTestResult):
+            The result for a continuous test run.
+    """
+
+    continuous_test_result = proto.Field(
+        proto.MESSAGE, number=1, message="ContinuousTestResult",
+    )
+
+
+class RunContinuousTestMetadata(proto.Message):
+    r"""Metadata returned for the
+    [Environments.RunContinuousTest][google.cloud.dialogflow.cx.v3.Environments.RunContinuousTest]
+    long running operation.
+
+    Attributes:
+        errors (Sequence[google.cloud.dialogflowcx_v3.types.TestError]):
+            The test errors.
+    """
+
+    errors = proto.RepeatedField(proto.MESSAGE, number=1, message=test_case.TestError,)
+
+
+class ListContinuousTestResultsRequest(proto.Message):
+    r"""The request message for
+    [Environments.ListContinuousTestResults][google.cloud.dialogflow.cx.v3.Environments.ListContinuousTestResults].
+
+    Attributes:
+        parent (str):
+            Required. The environment to list results for. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/ environments/<Environment ID>``.
+        page_size (int):
+            The maximum number of items to return in a
+            single page. By default 100 and at most 1000.
+        page_token (str):
+            The next_page_token value returned from a previous list
+            request.
+    """
+
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+
+
+class ListContinuousTestResultsResponse(proto.Message):
+    r"""The response message for [Environments.ListTestCaseResults][].
+    Attributes:
+        continuous_test_results (Sequence[google.cloud.dialogflowcx_v3.types.ContinuousTestResult]):
+            The list of continuous test results.
+        next_page_token (str):
+            Token to retrieve the next page of results,
+            or empty if there are no more results in the
+            list.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    continuous_test_results = proto.RepeatedField(
+        proto.MESSAGE, number=1, message="ContinuousTestResult",
+    )
     next_page_token = proto.Field(proto.STRING, number=2,)
 
 
