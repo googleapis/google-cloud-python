@@ -1,6 +1,9 @@
 *.py[cod]
 *.sw[op]
 
+# Bazel
+bazel-*
+
 # C extensions
 *.so
 
