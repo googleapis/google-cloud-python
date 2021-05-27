@@ -1,0 +1,146 @@
+#!/bin/sh
+
+# Copyright 2021 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Pre-commit Git checks.
+# Set up:
+#  ln -s .githooks/pre-commit .git/hooks/pre-commit
+
+# Constants.
+BOLD="\e[1m"
+UNSET="\e[0m"
+WHITE="\e[97m"
+RED="\e[91m"
+BACK_MAGENTA="\e[45m"
+BACK_BLUE="\e[44m"
+BACK_RED="\e[41m"
+BACK_GREEN="\e[42m"
+
+# Methods.
+function echo_error {
+  ERR_MSG=$1
+  HELP_MSG=$2
+  echo -e "$BOLD $BACK_BLUE $WHITE Precommit:\t $BACK_RED Changes NOT committed. $UNSET"
+  echo -e "$BOLD $BACK_BLUE $WHITE Precommit:\t $BACK_RED $WHITE $ERR_MSG $BACK_BLUE $HELP_MSG $UNSET"
+}
+
+function echo_status {
+  STATUS_MSG=$1
+  echo -e "$BOLD $BACK_BLUE $WHITE Precommit:\t $STATUS_MSG $UNSET"
+}
+
+function echo_success {
+  echo -e "$BOLD $BACK_BLUE $WHITE Precommit:\t $BACK_GREEN $WHITE SUCCESS. $UNSET All checks passed!"
+}
+
+function header_check_preparation {
+  echo_status "Setting up license check environment"
+  export GOPATH=$(go env GOPATH)
+  if [ $? -ne 0 ];
+  then
+      echo_status "Please install Go first, instructions can be found here: https://golang.org/doc/install."
+  else
+      export ENV_PATH=$(echo $PATH)
+      if [[ $ENV_PATH != *$GOPATH* ]];
+      then
+        echo_status "GOPATH is not in the system path, adding it now."
+        export PATH=$GOPATH/bin:$PATH
+      fi
+      which addlicense
+      if [ $? -ne 0 ];
+      then
+        echo_status "addlicense tool is not yet installed, downloading it now."
+        go get -u github.com/google/addlicense
+      fi
+  fi
+}
+
+# Disk cache.
+BAZEL_CACHE_DIR=/tmp/bazel_cache_gapic_generator_java
+if [ ! -d $BAZEL_CACHE_DIR ]
+then
+  mkdir $BAZEL_CACHE_DIR
+fi
+
+# Check only the staged files.
+NUM_TOTAL_FILES_CHANGED=$(git diff --cached --name-only | wc -l)
+NUM_PYTHON_FILES_CHANGED=$(git diff --cached --name-only "*.java" | wc -l)
+NUM_UNIT_GOLDEN_FILES_CHANGED=$(git diff --cached --name-only "src/test/*/*.golden" | wc -l)
+NUM_INTEGRATION_GOLDEN_FILES_CHANGED=$(git diff --cached --name-only "tests/integration/goldens/*/*.golden" | wc -l)
+NUM_INTEGRATION_BAZEL_FILES_CHANGED=$(git diff --cached --name-only "tests/integration/*/BUILD.bazel" | wc -l)
+NUM_BAZEL_FILES_CHANGED=$(git diff --cached --name-only "*BUILD.bazel" | wc -l)
+
+if [ $NUM_TOTAL_FILES_CHANGED -le 0 ]
+then
+  echo_error "No new files to commit." ""
+  exit 1
+fi
+
+
+if [ -x /usr/lib/git-core/google_hook ]; then
+  /usr/lib/git-core/google_hook pre-commit "$@"
+fi
+
+# Check Python format.
+if [ $NUM_PYTHON_FILES_CHANGED -gt 0 ]
+then
+  echo_status "Running Python linter..."
+  find gapic tests -name "*.py" -not -path 'tests/integration/goldens/*' | xargs autopep8 --diff --exit-code
+  FORMAT_STATUS=$?
+  if [ $FORMAT_STATUS != 0 ]
+  then
+    echo_error "Linting failed." "Please try again after running autopep8 on the gapic/ and tests/ directories."
+    exit 1
+  fi
+fi
+
+# Check unit tests.
+if [ $NUM_PYTHON_FILES_CHANGED -gt 0 ] || [ $NUM_UNIT_GOLDEN_FILES_CHANGED -gt 0 ]
+then
+  echo_status "Checking unit tests..."
+  nox -s unit-3.9
+  TEST_STATUS=$?
+  if [ $TEST_STATUS != 0 ]
+  then
+    echo_error "Tests failed." "Please fix them and try again."
+    exit 1
+  fi
+fi
+
+# Check integration tests.
+if [ $NUM_PYTHON_FILES_CHANGED -gt 0 ] \
+  || [ $NUM_INTEGRATION_GOLDEN_FILES_CHANGED -gt 0 ] \
+  || [ $NUM_INTEGRATION_BAZEL_FILES_CHANGED -gt 0 ]
+then
+  echo_status "Checking integration tests..."
+  bazel --batch test --disk_cache="$BAZEL_CACHE_DIR" //tests/integration/...
+  TEST_STATUS=$?
+  if [ $TEST_STATUS != 0 ]
+  then
+    echo_error "Tests failed." "Please fix them and try again."
+    exit 1
+  fi
+fi
+
+# Check and fix Bazel format.
+if [ $NUM_BAZEL_FILES_CHANGED -gt 0 ]
+then
+  for FILE in $(find ./ -name BUILD.bazel)
+  do
+    buildifier --lint=fix $FILE
+  done
+fi
+
+echo_success
