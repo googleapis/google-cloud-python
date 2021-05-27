@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@com_google_api_codegen//rules_gapic:gapic_pkg.bzl", "construct_package_dir_paths")
+load("@rules_gapic//:gapic_pkg.bzl", "construct_package_dir_paths")
 
 def _py_gapic_src_pkg_impl(ctx):
     srcjar_srcs = []
@@ -66,5 +66,3 @@ def py_gapic_assembly_pkg(name, deps, assembly_name = None, **kwargs):
         package_dir = package_dir,
         **kwargs
     )
-
-

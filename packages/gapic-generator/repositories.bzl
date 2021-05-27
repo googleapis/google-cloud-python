@@ -61,6 +61,21 @@ def gapic_generator_python():
         urls = ["https://github.com/googleapis/gapic-generator/archive/03abac35ec0716c6f426ffc1532f9a62f1c9e6a2.zip"],
     )
 
+    _rules_gapic_version = "0.5.3"
+    _maybe(
+        http_archive,
+        name = "rules_gapic",
+        strip_prefix = "rules_gapic-%s" % _rules_gapic_version,
+        urls = ["https://github.com/googleapis/rules_gapic/archive/v%s.tar.gz" % _rules_gapic_version],
+    )
+
+    _maybe(
+        http_archive,
+        name = "com_google_googleapis",
+        strip_prefix = "googleapis-51fe6432d4076a4c101f561967df4bf1f27818e1",
+        urls = ["https://github.com/googleapis/googleapis/archive/51fe6432d4076a4c101f561967df4bf1f27818e1.zip"],
+    )
+
 def gapic_generator_register_toolchains():
     native.register_toolchains(
         "@gapic_generator_python//:pandoc_toolchain_linux",

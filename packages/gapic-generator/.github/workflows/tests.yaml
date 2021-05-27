@@ -313,6 +313,34 @@ jobs:
       - name: Submit coverage data to codecov.
         run: codecov
         if: always()
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          access_token: ${{ github.token }}
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install system dependencies.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl pandoc unzip gcc
+      - name: Install Bazel
+        run: |
+          wget -q "https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/$BAZEL_BINARY"
+          wget -q "https://github.com/bazelbuild/bazel/releases/download/$BAZEL_VERSION/$BAZEL_BINARY.sha256"
+          sha256sum -c "$BAZEL_BINARY.sha256"
+          sudo dpkg -i "$BAZEL_BINARY"
+        env:
+          BAZEL_VERSION: 3.5.0
+          BAZEL_BINARY: bazel_3.5.0-linux-x86_64.deb
+      - name: Integration Tests
+        run: bazel test tests/integration:asset tests/integration:credentials tests/integration:logging tests/integration:redis
+
   style-check:
     runs-on: ubuntu-latest
     steps:
@@ -330,4 +358,4 @@ jobs:
             python -m pip install autopep8
       - name: Check diff
         run: |
-            find gapic tests -name "*.py" | xargs autopep8 --diff --exit-code
+            find gapic tests -name "*.py" -not -path 'tests/integration/goldens/*' | xargs autopep8 --diff --exit-code

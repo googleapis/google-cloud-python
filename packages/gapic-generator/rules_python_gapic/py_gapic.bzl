@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-load("@com_google_api_codegen//rules_gapic:gapic.bzl", "proto_custom_library")
+load("@rules_gapic//:gapic.bzl", "proto_custom_library")
 
 def py_gapic_library(
         name,
@@ -34,7 +34,7 @@ def py_gapic_library(
 
     file_args = {}
     if grpc_service_config:
-        file_args[grpc_service_config] =  "retry-config"
+        file_args[grpc_service_config] = "retry-config"
 
     proto_custom_library(
         name = srcjar_target_name,

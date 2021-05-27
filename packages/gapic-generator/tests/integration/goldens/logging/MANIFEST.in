@@ -1,0 +1,2 @@
+recursive-include google/cloud/logging *.py
+recursive-include google/cloud/logging_v2 *.py
