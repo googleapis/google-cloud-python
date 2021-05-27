@@ -101,7 +101,7 @@ class Queue(proto.Message):
         state (google.cloud.tasks_v2beta2.types.Queue.State):
             Output only. The state of the queue.
 
-            ``state`` can only be changed by called
+            ``state`` can only be changed by calling
             [PauseQueue][google.cloud.tasks.v2beta2.CloudTasks.PauseQueue],
             [ResumeQueue][google.cloud.tasks.v2beta2.CloudTasks.ResumeQueue],
             or uploading
