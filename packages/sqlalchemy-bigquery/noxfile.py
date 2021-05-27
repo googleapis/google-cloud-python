@@ -48,8 +48,8 @@ nox.options.sessions = [
 ]
 
 # Error if a python version is missing
-nox.options.error_on_missing_interpreters = True
 nox.options.stop_on_first_error = True
+nox.options.error_on_missing_interpreters = True
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -86,7 +86,7 @@ def install_alembic_for_python_38(session, constraints_path):
     """
     install alembic for Python 3.8 unit and system tests
 
-    We don't require alembic and most tests should run without it, however
+    We do not require alembic and most tests should run without it, however
 
     - We run some unit tests (Python 3.8) to cover the alembic
       registration that happens when alembic is installed.
@@ -105,6 +105,7 @@ def default(session):
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     session.install("mock", "pytest", "pytest-cov", "-c", constraints_path)
+
     install_alembic_for_python_38(session, constraints_path)
     session.install("-e", ".", "-c", constraints_path)
 
@@ -182,30 +183,23 @@ def system(session):
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def compliance(session):
-    """Run the system test suite."""
+    """Run the SQLAlchemy dialect-compliance system tests"""
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     system_test_folder_path = os.path.join("tests", "sqlalchemy_dialect_compliance")
 
-    # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_COMPLIANCE_TESTS", "true") == "false":
         session.skip("RUN_COMPLIANCE_TESTS is set to false, skipping")
-    # Sanity check: Only run tests if the environment variable is set.
     if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
         session.skip("Credentials must be set via environment variable")
-    # Install pyopenssl for mTLS testing.
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
         session.install("pyopenssl")
-    # Sanity check: only run tests if found.
     if not os.path.exists(system_test_folder_path):
         session.skip("Compliance tests were not found")
 
-    # Use pre-release gRPC for system tests.
     session.install("--pre", "grpcio")
 
-    # Install all test dependencies, then install this package into the
-    # virtualenv's dist-packages.
     session.install(
         "mock",
         "pytest",
@@ -249,7 +243,7 @@ def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".")
-    session.install("sphinx", "alabaster", "recommonmark")
+    session.install("sphinx==4.0.1", "alabaster", "recommonmark")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
@@ -271,7 +265,9 @@ def docfx(session):
     """Build the docfx yaml files for this library."""
 
     session.install("-e", ".")
-    session.install("sphinx", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml")
+    session.install(
+        "sphinx==4.0.1", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml"
+    )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
