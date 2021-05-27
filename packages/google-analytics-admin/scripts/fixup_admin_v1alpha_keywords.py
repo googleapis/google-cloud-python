@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,55 +39,74 @@ def partition(
 class adminCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'audit_user_links': ('parent', 'page_size', 'page_token', ),
-    'batch_create_user_links': ('parent', 'requests', 'notify_new_users', ),
-    'batch_delete_user_links': ('parent', 'requests', ),
-    'batch_get_user_links': ('parent', 'names', ),
-    'batch_update_user_links': ('parent', 'requests', ),
-    'create_android_app_data_stream': ('android_app_data_stream', 'parent', ),
-    'create_firebase_link': ('parent', 'firebase_link', ),
-    'create_google_ads_link': ('parent', 'google_ads_link', ),
-    'create_ios_app_data_stream': ('ios_app_data_stream', 'parent', ),
-    'create_property': ('property', ),
-    'create_user_link': ('parent', 'user_link', 'notify_new_user', ),
-    'create_web_data_stream': ('web_data_stream', 'parent', ),
-    'delete_account': ('name', ),
-    'delete_android_app_data_stream': ('name', ),
-    'delete_firebase_link': ('name', ),
-    'delete_google_ads_link': ('name', ),
-    'delete_ios_app_data_stream': ('name', ),
-    'delete_property': ('name', ),
-    'delete_user_link': ('name', ),
-    'delete_web_data_stream': ('name', ),
-    'get_account': ('name', ),
-    'get_android_app_data_stream': ('name', ),
-    'get_data_sharing_settings': ('name', ),
-    'get_enhanced_measurement_settings': ('name', ),
-    'get_global_site_tag': ('name', ),
-    'get_ios_app_data_stream': ('name', ),
-    'get_property': ('name', ),
-    'get_user_link': ('name', ),
-    'get_web_data_stream': ('name', ),
-    'list_accounts': ('page_size', 'page_token', 'show_deleted', ),
-    'list_account_summaries': ('page_size', 'page_token', ),
-    'list_android_app_data_streams': ('parent', 'page_size', 'page_token', ),
-    'list_firebase_links': ('parent', 'page_size', 'page_token', ),
-    'list_google_ads_links': ('parent', 'page_size', 'page_token', ),
-    'list_ios_app_data_streams': ('parent', 'page_size', 'page_token', ),
-    'list_properties': ('filter', 'page_size', 'page_token', 'show_deleted', ),
-    'list_user_links': ('parent', 'page_size', 'page_token', ),
-    'list_web_data_streams': ('parent', 'page_size', 'page_token', ),
-    'provision_account_ticket': ('account', 'redirect_uri', ),
-    'update_account': ('account', 'update_mask', ),
-    'update_android_app_data_stream': ('android_app_data_stream', 'update_mask', ),
-    'update_enhanced_measurement_settings': ('enhanced_measurement_settings', 'update_mask', ),
-    'update_firebase_link': ('firebase_link', 'update_mask', ),
-    'update_google_ads_link': ('update_mask', 'google_ads_link', ),
-    'update_ios_app_data_stream': ('ios_app_data_stream', 'update_mask', ),
-    'update_property': ('property', 'update_mask', ),
-    'update_user_link': ('user_link', ),
-    'update_web_data_stream': ('web_data_stream', 'update_mask', ),
-
+          'archive_custom_dimension': ('name', ),
+          'archive_custom_metric': ('name', ),
+          'audit_user_links': ('parent', 'page_size', 'page_token', ),
+          'batch_create_user_links': ('parent', 'requests', 'notify_new_users', ),
+          'batch_delete_user_links': ('parent', 'requests', ),
+          'batch_get_user_links': ('parent', 'names', ),
+          'batch_update_user_links': ('parent', 'requests', ),
+          'create_conversion_event': ('conversion_event', 'parent', ),
+          'create_custom_dimension': ('parent', 'custom_dimension', ),
+          'create_custom_metric': ('parent', 'custom_metric', ),
+          'create_firebase_link': ('parent', 'firebase_link', ),
+          'create_google_ads_link': ('parent', 'google_ads_link', ),
+          'create_measurement_protocol_secret': ('parent', 'measurement_protocol_secret', ),
+          'create_property': ('property', ),
+          'create_user_link': ('parent', 'user_link', 'notify_new_user', ),
+          'create_web_data_stream': ('web_data_stream', 'parent', ),
+          'delete_account': ('name', ),
+          'delete_android_app_data_stream': ('name', ),
+          'delete_conversion_event': ('name', ),
+          'delete_firebase_link': ('name', ),
+          'delete_google_ads_link': ('name', ),
+          'delete_ios_app_data_stream': ('name', ),
+          'delete_measurement_protocol_secret': ('name', ),
+          'delete_property': ('name', ),
+          'delete_user_link': ('name', ),
+          'delete_web_data_stream': ('name', ),
+          'get_account': ('name', ),
+          'get_android_app_data_stream': ('name', ),
+          'get_conversion_event': ('name', ),
+          'get_custom_dimension': ('name', ),
+          'get_custom_metric': ('name', ),
+          'get_data_sharing_settings': ('name', ),
+          'get_enhanced_measurement_settings': ('name', ),
+          'get_global_site_tag': ('name', ),
+          'get_google_signals_settings': ('name', ),
+          'get_ios_app_data_stream': ('name', ),
+          'get_measurement_protocol_secret': ('name', ),
+          'get_property': ('name', ),
+          'get_user_link': ('name', ),
+          'get_web_data_stream': ('name', ),
+          'list_accounts': ('page_size', 'page_token', 'show_deleted', ),
+          'list_account_summaries': ('page_size', 'page_token', ),
+          'list_android_app_data_streams': ('parent', 'page_size', 'page_token', ),
+          'list_conversion_events': ('parent', 'page_size', 'page_token', ),
+          'list_custom_dimensions': ('parent', 'page_size', 'page_token', ),
+          'list_custom_metrics': ('parent', 'page_size', 'page_token', ),
+          'list_firebase_links': ('parent', 'page_size', 'page_token', ),
+          'list_google_ads_links': ('parent', 'page_size', 'page_token', ),
+          'list_ios_app_data_streams': ('parent', 'page_size', 'page_token', ),
+          'list_measurement_protocol_secrets': ('parent', 'page_size', 'page_token', ),
+          'list_properties': ('filter', 'page_size', 'page_token', 'show_deleted', ),
+          'list_user_links': ('parent', 'page_size', 'page_token', ),
+          'list_web_data_streams': ('parent', 'page_size', 'page_token', ),
+          'provision_account_ticket': ('account', 'redirect_uri', ),
+          'search_change_history_events': ('account', 'property', 'resource_type', 'action', 'actor_email', 'earliest_change_time', 'latest_change_time', 'page_size', 'page_token', ),
+          'update_account': ('account', 'update_mask', ),
+          'update_android_app_data_stream': ('android_app_data_stream', 'update_mask', ),
+          'update_custom_dimension': ('update_mask', 'custom_dimension', ),
+          'update_custom_metric': ('update_mask', 'custom_metric', ),
+          'update_enhanced_measurement_settings': ('enhanced_measurement_settings', 'update_mask', ),
+          'update_firebase_link': ('firebase_link', 'update_mask', ),
+          'update_google_ads_link': ('update_mask', 'google_ads_link', ),
+          'update_google_signals_settings': ('google_signals_settings', 'update_mask', ),
+          'update_ios_app_data_stream': ('ios_app_data_stream', 'update_mask', ),
+          'update_measurement_protocol_secret': ('measurement_protocol_secret', 'update_mask', ),
+          'update_property': ('property', 'update_mask', ),
+          'update_user_link': ('user_link', ),
+          'update_web_data_stream': ('web_data_stream', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -120,7 +137,7 @@ class adminCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that
