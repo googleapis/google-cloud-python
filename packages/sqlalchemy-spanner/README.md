@@ -63,17 +63,15 @@ from sqlalchemy import (
     MetaData,
     Table,
     create_engine,
-    insert,
 )
 
 engine = create_engine(
     "spanner:///projects/project-id/instances/instance-id/databases/database-id"
 )
-metadata = MetaData(bind=engine)
+user = Table("users", MetaData(bind=engine), autoload=True)
 
-user = Table("users", metadata, autoload=True)
-
-insert(user).values(user_id=1, user_name="Full Name").execute()
+with engine.begin() as connection:
+    connection.execute(user.insert(), {"user_id": 1, "user_name": "Full Name"})
 ```
 
 **Read**
@@ -83,10 +81,11 @@ from sqlalchemy import MetaData, Table, create_engine, select
 engine = create_engine(
     "spanner:///projects/project-id/instances/instance-id/databases/database-id"
 )
-
 table = Table("users", MetaData(bind=engine), autoload=True)
-for row in select(["*"], from_obj=table).execute().fetchall():
-    print(row)
+
+with engine.begin() as connection:
+    for row in connection.execute(select(["*"], from_obj=table)).fetchall():
+        print(row)
 ```
 
 Migration
@@ -160,6 +159,23 @@ Data types table mapping SQLAlchemy types to Cloud Spanner types:
 - Named schemas are not supported.
 - Temporary tables are not supported, real tables are used instead.
 - Numeric type dimensions (scale and precision) are constant. See the [docs](https://cloud.google.com/spanner/docs/data-types#numeric_types).
+
+Best practices
+-----------
+When a SQLAlchemy function is called, a new connection to a database is established and a Spanner session object is fetched. In case of connectionless execution these fetches are done for every `execute()` call, which can cause a significant latency. To avoid initiating a Spanner session on every `execute()` call it's recommended to write code in connection-bounded fashion. Once a `Connection()` object is explicitly initiated, it fetches a Spanner session object and uses it for all the following calls made on this `Connection()` object.
+
+Non-optimal connectionless use:
+```python
+# execute() is called on object, which is not a Connection() object
+insert(user).values(user_id=1, user_name="Full Name").execute()
+```
+Optimal connection-bounded use:
+```python
+with engine.begin() as connection:
+    # execute() is called on a Connection() object
+    connection.execute(user.insert(), {"user_id": 1, "user_name": "Full Name"})
+```
+Connectionless way of use is also deprecated since SQLAlchemy 2.0 and soon will be removed (see in [SQLAlchemy docs](https://docs.sqlalchemy.org/en/14/core/connections.html#connectionless-execution-implicit-execution)).
 
 Contributing
 ------------
