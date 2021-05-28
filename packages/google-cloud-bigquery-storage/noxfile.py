@@ -186,7 +186,7 @@ def docs(session):
     """Build the docs for this library."""
 
     session.install("-e", ".")
-    session.install("sphinx<3.0.0", "alabaster", "recommonmark")
+    session.install("sphinx==4.0.1", "alabaster", "recommonmark")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
@@ -209,7 +209,7 @@ def docfx(session):
 
     session.install("-e", ".")
     session.install(
-        "sphinx<3.0.0", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml"
+        "sphinx==4.0.1", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml"
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)

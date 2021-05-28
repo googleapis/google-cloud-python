@@ -40,6 +40,7 @@ class ArrowSchema(proto.Message):
 
 class ArrowRecordBatch(proto.Message):
     r"""Arrow RecordBatch.
+
     Attributes:
         serialized_record_batch (bytes):
             IPC-serialized Arrow RecordBatch.
@@ -53,6 +54,7 @@ class ArrowRecordBatch(proto.Message):
 
 class ArrowSerializationOptions(proto.Message):
     r"""Contains options specific to Arrow Serialization.
+
     Attributes:
         buffer_compression (google.cloud.bigquery_storage_v1.types.ArrowSerializationOptions.CompressionCodec):
             The compression codec to use for Arrow

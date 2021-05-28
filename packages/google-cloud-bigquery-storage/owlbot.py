@@ -25,6 +25,14 @@ common = gcp.CommonTemplates()
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
+    # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
+    s.replace(library / f"google/cloud/bigquery_storage_{library.name}/types/arrow.py",
+                r""".
+    Attributes:""",
+                r""".\n
+    Attributes:""",
+    )
+
     # We don't want the generated client to be accessible through
     # "google.cloud.bigquery_storage", replace it with the hand written client that
     # wraps it.
@@ -140,7 +148,5 @@ s.move(
 
 python.py_samples(skip_readmes=True)
 
-# TODO(busunkim): Use latest sphinx after microgenerator transition
-s.replace("noxfile.py", """['"]sphinx['"]""", '"sphinx<3.0.0"')
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

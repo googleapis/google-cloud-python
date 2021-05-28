@@ -40,6 +40,7 @@ class ArrowSchema(proto.Message):
 
 class ArrowRecordBatch(proto.Message):
     r"""Arrow RecordBatch.
+
     Attributes:
         serialized_record_batch (bytes):
             IPC-serialized Arrow RecordBatch.
@@ -50,6 +51,7 @@ class ArrowRecordBatch(proto.Message):
 
 class ArrowSerializationOptions(proto.Message):
     r"""Contains options specific to Arrow Serialization.
+
     Attributes:
         format_ (google.cloud.bigquery_storage_v1beta2.types.ArrowSerializationOptions.Format):
             The Arrow IPC format to use.
