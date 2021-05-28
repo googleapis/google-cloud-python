@@ -47,9 +47,9 @@ s.move(
 
 # ignore docs warnings (only fail on errors)
 s.replace(
-    "noxfile.py",
-    "'-W',  # warnings as errors",
-    ""
+    'noxfile.py',
+    '"-W",  # warnings as errors',
+    ''
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
