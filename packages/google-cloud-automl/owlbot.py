@@ -75,8 +75,8 @@ s.move(templated_files)
 # regex replaces are a brittle temporary solution.
 s.replace(
 "noxfile.py",
-"""'-W',  # warnings as errors
-\s+'-T',  \# show full traceback on exception""",
+""""-W",  # warnings as errors
+\s+"-T",  \# show full traceback on exception""",
 """"-T",  # show full traceback on exception""")
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
