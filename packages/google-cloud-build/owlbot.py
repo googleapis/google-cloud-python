@@ -22,6 +22,14 @@ common = gcp.CommonTemplates()
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
+    # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
+    s.replace(library / f"google/devtools/cloudbuild_{library.name}/types/cloudbuild.py",
+                r""".
+    Attributes:""",
+                r""".\n
+    Attributes:""",
+    )
+
     # Fix namespace
     s.replace(
         library / f"google/devtools/**/*.py",

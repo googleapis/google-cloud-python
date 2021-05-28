@@ -79,6 +79,7 @@ __protobuf__ = proto.module(
 
 class RetryBuildRequest(proto.Message):
     r"""Specifies a build to retry.
+
     Attributes:
         name (str):
             The name of the ``Build`` to retry. Format:
@@ -96,6 +97,7 @@ class RetryBuildRequest(proto.Message):
 
 class RunBuildTriggerRequest(proto.Message):
     r"""Specifies a build trigger to run and the source to use.
+
     Attributes:
         project_id (str):
             Required. ID of the project.
@@ -137,6 +139,7 @@ class StorageSource(proto.Message):
 
 class RepoSource(proto.Message):
     r"""Location of the source in a Google Cloud Source Repository.
+
     Attributes:
         project_id (str):
             ID of the project that owns the Cloud Source
@@ -207,6 +210,7 @@ class StorageSourceManifest(proto.Message):
 
 class Source(proto.Message):
     r"""Location of the source in a supported storage service.
+
     Attributes:
         storage_source (google.cloud.devtools.cloudbuild_v1.types.StorageSource):
             If provided, get the source from this
@@ -233,6 +237,7 @@ class Source(proto.Message):
 
 class BuiltImage(proto.Message):
     r"""An image built by the pipeline.
+
     Attributes:
         name (str):
             Name used to push the container image to Google Container
@@ -251,6 +256,7 @@ class BuiltImage(proto.Message):
 
 class BuildStep(proto.Message):
     r"""A step in the build pipeline.
+
     Attributes:
         name (str):
             Required. The name of the container image that will run this
@@ -384,6 +390,7 @@ class Volume(proto.Message):
 
 class Results(proto.Message):
     r"""Artifacts created by the build pipeline.
+
     Attributes:
         images (Sequence[google.cloud.devtools.cloudbuild_v1.types.BuiltImage]):
             Container images that were built as a part of
@@ -675,6 +682,7 @@ class Artifacts(proto.Message):
 
 class TimeSpan(proto.Message):
     r"""Start and end times for a build execution phase.
+
     Attributes:
         start_time (google.protobuf.timestamp_pb2.Timestamp):
             Start of time span.
@@ -688,6 +696,7 @@ class TimeSpan(proto.Message):
 
 class BuildOperationMetadata(proto.Message):
     r"""Metadata for build operations.
+
     Attributes:
         build (google.cloud.devtools.cloudbuild_v1.types.Build):
             The build that the operation is tracking.
@@ -753,6 +762,7 @@ class FileHashes(proto.Message):
 
 class Hash(proto.Message):
     r"""Container message for hash values.
+
     Attributes:
         type_ (google.cloud.devtools.cloudbuild_v1.types.Hash.HashType):
             The type of hash that was performed.
@@ -772,6 +782,7 @@ class Hash(proto.Message):
 
 class Secrets(proto.Message):
     r"""Secrets and secret environment variables.
+
     Attributes:
         secret_manager (Sequence[google.cloud.devtools.cloudbuild_v1.types.SecretManagerSecret]):
             Secrets in Secret Manager and associated
@@ -857,6 +868,7 @@ class Secret(proto.Message):
 
 class CreateBuildRequest(proto.Message):
     r"""Request to create a new build.
+
     Attributes:
         parent (str):
             The parent resource where this build will be created.
@@ -874,6 +886,7 @@ class CreateBuildRequest(proto.Message):
 
 class GetBuildRequest(proto.Message):
     r"""Request to get a build.
+
     Attributes:
         name (str):
             The name of the ``Build`` to retrieve. Format:
@@ -891,6 +904,7 @@ class GetBuildRequest(proto.Message):
 
 class ListBuildsRequest(proto.Message):
     r"""Request to list builds.
+
     Attributes:
         parent (str):
             The parent of the collection of ``Builds``. Format:
@@ -923,6 +937,7 @@ class ListBuildsRequest(proto.Message):
 
 class ListBuildsResponse(proto.Message):
     r"""Response including listed builds.
+
     Attributes:
         builds (Sequence[google.cloud.devtools.cloudbuild_v1.types.Build]):
             Builds will be sorted by ``create_time``, descending.
@@ -942,6 +957,7 @@ class ListBuildsResponse(proto.Message):
 
 class CancelBuildRequest(proto.Message):
     r"""Request to cancel an ongoing build.
+
     Attributes:
         name (str):
             The name of the ``Build`` to cancel. Format:
@@ -1183,6 +1199,7 @@ class PushFilter(proto.Message):
 
 class CreateBuildTriggerRequest(proto.Message):
     r"""Request to create a new ``BuildTrigger``.
+
     Attributes:
         project_id (str):
             Required. ID of the project for which to
@@ -1197,6 +1214,7 @@ class CreateBuildTriggerRequest(proto.Message):
 
 class GetBuildTriggerRequest(proto.Message):
     r"""Returns the ``BuildTrigger`` with the specified ID.
+
     Attributes:
         project_id (str):
             Required. ID of the project that owns the
@@ -1212,6 +1230,7 @@ class GetBuildTriggerRequest(proto.Message):
 
 class ListBuildTriggersRequest(proto.Message):
     r"""Request to list existing ``BuildTriggers``.
+
     Attributes:
         project_id (str):
             Required. ID of the project for which to list
@@ -1230,6 +1249,7 @@ class ListBuildTriggersRequest(proto.Message):
 
 class ListBuildTriggersResponse(proto.Message):
     r"""Response containing existing ``BuildTriggers``.
+
     Attributes:
         triggers (Sequence[google.cloud.devtools.cloudbuild_v1.types.BuildTrigger]):
             ``BuildTriggers`` for the project, sorted by ``create_time``
@@ -1248,6 +1268,7 @@ class ListBuildTriggersResponse(proto.Message):
 
 class DeleteBuildTriggerRequest(proto.Message):
     r"""Request to delete a ``BuildTrigger``.
+
     Attributes:
         project_id (str):
             Required. ID of the project that owns the
@@ -1262,6 +1283,7 @@ class DeleteBuildTriggerRequest(proto.Message):
 
 class UpdateBuildTriggerRequest(proto.Message):
     r"""Request to update an existing ``BuildTrigger``.
+
     Attributes:
         project_id (str):
             Required. ID of the project that owns the
@@ -1279,6 +1301,7 @@ class UpdateBuildTriggerRequest(proto.Message):
 
 class BuildOptions(proto.Message):
     r"""Optional arguments to enable specific features of builds.
+
     Attributes:
         source_provenance_hash (Sequence[google.cloud.devtools.cloudbuild_v1.types.Hash.HashType]):
             Requested hash for SourceProvenance.
@@ -1557,6 +1580,7 @@ class WorkerConfig(proto.Message):
 
 class Network(proto.Message):
     r"""Network describes the GCP network used to create workers in.
+
     Attributes:
         project_id (str):
             Project id containing the defined network and subnetwork.
@@ -1580,6 +1604,7 @@ class Network(proto.Message):
 
 class CreateWorkerPoolRequest(proto.Message):
     r"""Request to create a new ``WorkerPool``.
+
     Attributes:
         parent (str):
             ID of the parent project.
@@ -1593,6 +1618,7 @@ class CreateWorkerPoolRequest(proto.Message):
 
 class GetWorkerPoolRequest(proto.Message):
     r"""Request to get a ``WorkerPool`` with the specified name.
+
     Attributes:
         name (str):
             The field will contain name of the resource
@@ -1605,6 +1631,7 @@ class GetWorkerPoolRequest(proto.Message):
 
 class DeleteWorkerPoolRequest(proto.Message):
     r"""Request to delete a ``WorkerPool``.
+
     Attributes:
         name (str):
             The field will contain name of the resource
@@ -1617,6 +1644,7 @@ class DeleteWorkerPoolRequest(proto.Message):
 
 class UpdateWorkerPoolRequest(proto.Message):
     r"""Request to update a ``WorkerPool``.
+
     Attributes:
         name (str):
             The field will contain name of the resource
@@ -1632,6 +1660,7 @@ class UpdateWorkerPoolRequest(proto.Message):
 
 class ListWorkerPoolsRequest(proto.Message):
     r"""Request to list ``WorkerPools``.
+
     Attributes:
         parent (str):
             ID of the parent project.
@@ -1642,6 +1671,7 @@ class ListWorkerPoolsRequest(proto.Message):
 
 class ListWorkerPoolsResponse(proto.Message):
     r"""Response containing existing ``WorkerPools``.
+
     Attributes:
         worker_pools (Sequence[google.cloud.devtools.cloudbuild_v1.types.WorkerPool]):
             ``WorkerPools`` for the project.
