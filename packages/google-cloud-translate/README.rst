@@ -83,3 +83,24 @@ Windows
     virtualenv <your-env>
     <your-env>\Scripts\activate
     <your-env>\Scripts\pip.exe install google-cloud-translate
+
+Samples
+-----------
+
+The `samples folder`_ contains all of the Cloud Translation API code snippets
+found in `its documentation`_ as well as complete sample apps:
+
+- `Mini Google Translate "MVP"`_ app
+
+  - Shows how to use the API in a Python/Flask web app
+  - Deployable locally or any on-prem or cloud host supporting Flask apps
+  - Also deployable to `Google Cloud serverless hosting platforms`_ (`App Engine`_, `Cloud Functions`_, or `Cloud Run`_) with only minor configuration changes
+
+.. _samples folder: samples
+.. _its documentation: https://cloud.google.com/translate/docs
+.. _Mini Google Translate "MVP": https://github.com/googlecodelabs/cloud-nebulous-serverless-python
+.. _Google Cloud serverless hosting platforms: https://cloud.google.com/serverless#serverless-products
+.. _App Engine: https://cloud.google.com/appengine
+.. _Cloud Functions: https://cloud.google.com/functions
+.. _Cloud Run: https://cloud.google.com/run
+
