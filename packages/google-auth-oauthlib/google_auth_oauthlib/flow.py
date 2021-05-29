@@ -88,7 +88,7 @@ class Flow(object):
     from the `Google API Console`_.
 
     .. _client secrets file:
-        https://developers.google.com/identity/protocols/OAuth2WebServer
+        https://developers.google.com/identity/protocols/oauth2/web-server
         #creatingcred
     .. _Google API Console:
         https://console.developers.google.com/apis/credentials
@@ -119,8 +119,8 @@ class Flow(object):
             autogenerate_code_verifier (bool): If true, auto-generate a
                 code_verifier.
         .. _client secrets:
-            https://developers.google.com/api-client-library/python/guide
-            /aaa_client_secrets
+            https://github.com/googleapis/google-api-python-client/blob
+            /master/docs/client-secrets.md
         """
         self.client_type = client_type
         """str: The client type, either ``'web'`` or ``'installed'``"""
@@ -153,8 +153,8 @@ class Flow(object):
                 format.
 
         .. _client secrets:
-            https://developers.google.com/api-client-library/python/guide
-            /aaa_client_secrets
+            https://github.com/googleapis/google-api-python-client/blob/
+            master/docs/client-secrets.md
         """
         if "web" in client_config:
             client_type = "web"
@@ -357,8 +357,7 @@ class InstalledAppFlow(Flow):
     response, such as using an embedded web view.
 
     .. _Installed Application Authorization Flow:
-        https://developers.google.com/api-client-library/python/auth
-        /installed-app
+        https://github.com/googleapis/google-api-python-client/blob/master/docs/oauth-installed.md
     """
 
     _OOB_REDIRECT_URI = "urn:ietf:wg:oauth:2.0:oob"
