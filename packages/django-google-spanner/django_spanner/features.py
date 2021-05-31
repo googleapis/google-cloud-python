@@ -283,9 +283,6 @@ class DatabaseFeatures(BaseDatabaseFeatures):
         "backends.tests.BackendTestCase.test_cursor_execute_with_pyformat",
         "backends.tests.BackendTestCase.test_cursor_executemany_with_pyformat",
         "backends.tests.BackendTestCase.test_cursor_executemany_with_pyformat_iterator",
-        # duplicate table raises GoogleAPICallError rather than DatabaseError:
-        # https://github.com/googleapis/python-spanner-django/issues/344
-        "backends.tests.BackendTestCase.test_duplicate_table_error",
         "migrations.test_commands.MigrateTests.test_migrate_fake_initial",
         "migrations.test_commands.MigrateTests.test_migrate_initial_false",
         "migrations.test_executor.ExecutorTests.test_soft_apply",
