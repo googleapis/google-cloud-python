@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-channel/compare/v0.2.1...v0.3.0) (2021-05-28)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([c218e2e](https://www.github.com/googleapis/python-channel/commit/c218e2efeef2f2e4cf1646644a8d4c38be021bdf))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([c218e2e](https://www.github.com/googleapis/python-channel/commit/c218e2efeef2f2e4cf1646644a8d4c38be021bdf))
+* **deps:** add packaging requirement ([#43](https://www.github.com/googleapis/python-channel/issues/43)) ([e368062](https://www.github.com/googleapis/python-channel/commit/e36806211b8b3392811eb5ee1047517f840265c7))
+
 ### [0.2.1](https://www.github.com/googleapis/python-channel/compare/v0.2.0...v0.2.1) (2021-04-07)
 
 
