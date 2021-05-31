@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/googleapis/python-documentai/compare/v0.4.0...v0.5.0) (2021-05-28)
+
+
+### Features
+
+* add confidence field to the PageAnchor.PageRef in document.proto. ([be671a8](https://www.github.com/googleapis/python-documentai/commit/be671a832839d6efeae76d168b7913a9408572b4))
+* support self-signed JWT flow for service accounts ([be671a8](https://www.github.com/googleapis/python-documentai/commit/be671a832839d6efeae76d168b7913a9408572b4))
+* Use non-regionalized default host name for documentai.googleapis.com ([be671a8](https://www.github.com/googleapis/python-documentai/commit/be671a832839d6efeae76d168b7913a9408572b4))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([be671a8](https://www.github.com/googleapis/python-documentai/commit/be671a832839d6efeae76d168b7913a9408572b4))
+* Parsing pages, but should be paragraphs ([#147](https://www.github.com/googleapis/python-documentai/issues/147)) ([c4aca1b](https://www.github.com/googleapis/python-documentai/commit/c4aca1bc1c01b3e1fdcc644eaf8922552c6c99a7))
+
 ## [0.4.0](https://www.github.com/googleapis/python-documentai/compare/v0.3.0...v0.4.0) (2021-03-25)
 
 
