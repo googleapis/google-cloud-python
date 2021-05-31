@@ -20,7 +20,7 @@ import os
 import setuptools  # type: ignore
 
 name = "google-cloud-appengine-admin"
-version = "0.1.0"
+version = "0.2.0"
 description = "App Engine Admin API client library"
 release_status = "Development Status :: 4 - Beta"
 url = "https://github.com/googleapis/python-appengine-admin"
