@@ -62,16 +62,9 @@ def lint(session):
     session.run("flake8", "google", "tests")
 
 
-@nox.session(python="3.6")
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def blacken(session):
-    """Run black.
-
-    Format code to uniform standard.
-
-    This currently uses Python 3.6 due to the automated Kokoro run of synthtool.
-    That run uses an image that doesn't have 3.6 installed. Before updating this
-    check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
-    """
+    """Run black. Format code to uniform standard."""
     session.install(BLACK_VERSION)
     session.run(
         "black", *BLACK_PATHS,
@@ -131,9 +124,6 @@ def system(session):
     # Check the value of `RUN_SYSTEM_TESTS` env var. It defaults to true.
     if os.environ.get("RUN_SYSTEM_TESTS", "true") == "false":
         session.skip("RUN_SYSTEM_TESTS is set to false, skipping")
-    # Sanity check: Only run tests if the environment variable is set.
-    if not os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", ""):
-        session.skip("Credentials must be set via environment variable")
     # Install pyopenssl for mTLS testing.
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
         session.install("pyopenssl")
@@ -179,7 +169,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=98")
+    session.run("coverage", "report", "--show-missing", "--fail-under=100")
 
     session.run("coverage", "erase")
 
@@ -211,9 +201,7 @@ def docfx(session):
     """Build the docfx yaml files for this library."""
 
     session.install("-e", ".")
-    # sphinx-docfx-yaml supports up to sphinx version 1.5.5.
-    # https://github.com/docascode/sphinx-docfx-yaml/issues/97
-    session.install("sphinx==1.5.5", "alabaster", "recommonmark", "sphinx-docfx-yaml")
+    session.install("sphinx", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(

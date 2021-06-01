@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,32 +15,26 @@
 #
 
 from .services.resource_settings_service import ResourceSettingsServiceClient
-from .types.resource_settings import CreateSettingValueRequest
-from .types.resource_settings import DeleteSettingValueRequest
-from .types.resource_settings import GetSettingValueRequest
+from .services.resource_settings_service import ResourceSettingsServiceAsyncClient
+
+from .types.resource_settings import GetSettingRequest
 from .types.resource_settings import ListSettingsRequest
 from .types.resource_settings import ListSettingsResponse
-from .types.resource_settings import LookupEffectiveSettingValueRequest
-from .types.resource_settings import SearchSettingValuesRequest
-from .types.resource_settings import SearchSettingValuesResponse
 from .types.resource_settings import Setting
-from .types.resource_settings import SettingValue
-from .types.resource_settings import UpdateSettingValueRequest
+from .types.resource_settings import SettingMetadata
+from .types.resource_settings import UpdateSettingRequest
 from .types.resource_settings import Value
-
+from .types.resource_settings import SettingView
 
 __all__ = (
-    "CreateSettingValueRequest",
-    "DeleteSettingValueRequest",
-    "GetSettingValueRequest",
+    "ResourceSettingsServiceAsyncClient",
+    "GetSettingRequest",
     "ListSettingsRequest",
     "ListSettingsResponse",
-    "LookupEffectiveSettingValueRequest",
-    "SearchSettingValuesRequest",
-    "SearchSettingValuesResponse",
-    "Setting",
-    "SettingValue",
-    "UpdateSettingValueRequest",
-    "Value",
     "ResourceSettingsServiceClient",
+    "Setting",
+    "SettingMetadata",
+    "SettingView",
+    "UpdateSettingRequest",
+    "Value",
 )

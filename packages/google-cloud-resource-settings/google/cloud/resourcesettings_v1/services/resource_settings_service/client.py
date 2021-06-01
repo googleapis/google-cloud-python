@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -34,8 +32,6 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.resourcesettings_v1.services.resource_settings_service import pagers
 from google.cloud.resourcesettings_v1.types import resource_settings
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-
 from .transports.base import ResourceSettingsServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import ResourceSettingsServiceGrpcTransport
 from .transports.grpc_asyncio import ResourceSettingsServiceGrpcAsyncIOTransport
@@ -58,7 +54,7 @@ class ResourceSettingsServiceClientMeta(type):
     def get_transport_class(
         cls, label: str = None,
     ) -> Type[ResourceSettingsServiceTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -81,7 +77,7 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
     throughout the resource hierarchy.
 
     Services may surface a number of settings for users to control how
-    their resources behave. Setting values applied on a given Cloud
+    their resources behave. Values of settings applied on a given Cloud
     resource are evaluated hierarchically and inherited by all
     descendants of that resource.
 
@@ -94,7 +90,8 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -128,7 +125,8 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -145,7 +143,7 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -164,47 +162,32 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
 
     @property
     def transport(self) -> ResourceSettingsServiceTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            ResourceSettingsServiceTransport: The transport used by the client instance.
+            ResourceSettingsServiceTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
     @staticmethod
     def setting_path(project_number: str, setting_name: str,) -> str:
-        """Return a fully-qualified setting string."""
+        """Returns a fully-qualified setting string."""
         return "projects/{project_number}/settings/{setting_name}".format(
             project_number=project_number, setting_name=setting_name,
         )
 
     @staticmethod
     def parse_setting_path(path: str) -> Dict[str, str]:
-        """Parse a setting path into its component segments."""
+        """Parses a setting path into its component segments."""
         m = re.match(
             r"^projects/(?P<project_number>.+?)/settings/(?P<setting_name>.+?)$", path
         )
         return m.groupdict() if m else {}
 
     @staticmethod
-    def setting_value_path(project_number: str, setting_name: str,) -> str:
-        """Return a fully-qualified setting_value string."""
-        return "projects/{project_number}/settings/{setting_name}/value".format(
-            project_number=project_number, setting_name=setting_name,
-        )
-
-    @staticmethod
-    def parse_setting_value_path(path: str) -> Dict[str, str]:
-        """Parse a setting_value path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project_number>.+?)/settings/(?P<setting_name>.+?)/value$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -217,7 +200,7 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -228,7 +211,7 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -239,7 +222,7 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -250,7 +233,7 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -264,12 +247,12 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, ResourceSettingsServiceTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the resource settings service client.
+        """Instantiates the resource settings service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -324,9 +307,10 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -338,12 +322,14 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -358,8 +344,8 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -401,7 +387,6 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -432,10 +417,8 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
         # there are no flattened fields.
         if not isinstance(request, resource_settings.ListSettingsRequest):
             request = resource_settings.ListSettingsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -461,95 +444,31 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
         # Done; return the response.
         return response
 
-    def search_setting_values(
+    def get_setting(
         self,
-        request: resource_settings.SearchSettingValuesRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.SearchSettingValuesPager:
-        r"""Searches for all setting values that exist on the resource
-        ``parent``. The setting values are not limited to those of a
-        particular setting.
-
-        Args:
-            request (google.cloud.resourcesettings_v1.types.SearchSettingValuesRequest):
-                The request object. The request for SearchSettingValues.
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.resourcesettings_v1.services.resource_settings_service.pagers.SearchSettingValuesPager:
-                The response from
-                SearchSettingValues.
-                Iterating over this object will yield
-                results and resolve additional pages
-                automatically.
-
-        """
-        # Create or coerce a protobuf request object.
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a resource_settings.SearchSettingValuesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, resource_settings.SearchSettingValuesRequest):
-            request = resource_settings.SearchSettingValuesRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.search_setting_values]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.SearchSettingValuesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
-        )
-
-        # Done; return the response.
-        return response
-
-    def get_setting_value(
-        self,
-        request: resource_settings.GetSettingValueRequest = None,
+        request: resource_settings.GetSettingRequest = None,
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resource_settings.SettingValue:
-        r"""Gets a setting value.
+    ) -> resource_settings.Setting:
+        r"""Gets a setting.
 
         Returns a ``google.rpc.Status`` with
-        ``google.rpc.Code.NOT_FOUND`` if the setting value does not
-        exist.
+        ``google.rpc.Code.NOT_FOUND`` if the setting does not exist.
 
         Args:
-            request (google.cloud.resourcesettings_v1.types.GetSettingValueRequest):
-                The request object. The request for GetSettingValue.
+            request (google.cloud.resourcesettings_v1.types.GetSettingRequest):
+                The request object. The request for GetSetting.
             name (str):
-                Required. The name of the setting value to get. See
-                [SettingValue][google.cloud.resourcesettings.v1.SettingValue]
-                for naming requirements.
+                Required. The name of the setting to get. See
+                [Setting][google.cloud.resourcesettings.v1.Setting] for
+                naming requirements.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -557,11 +476,8 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.resourcesettings_v1.types.SettingValue:
-                The instantiation of a setting. Every
-                setting value is parented by its
-                corresponding setting.
-
+            google.cloud.resourcesettings_v1.types.Setting:
+                The schema for settings.
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
@@ -574,21 +490,19 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
             )
 
         # Minor optimization to avoid making a copy if the user passes
-        # in a resource_settings.GetSettingValueRequest.
+        # in a resource_settings.GetSettingRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, resource_settings.GetSettingValueRequest):
-            request = resource_settings.GetSettingValueRequest(request)
-
+        if not isinstance(request, resource_settings.GetSettingRequest):
+            request = resource_settings.GetSettingRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_setting_value]
+        rpc = self._transport._wrapped_methods[self._transport.get_setting]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -602,197 +516,34 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
         # Done; return the response.
         return response
 
-    def lookup_effective_setting_value(
+    def update_setting(
         self,
-        request: resource_settings.LookupEffectiveSettingValueRequest = None,
+        request: resource_settings.UpdateSettingRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resource_settings.SettingValue:
-        r"""Computes the effective setting value of a setting at the Cloud
-        resource ``parent``. The effective setting value is the
-        calculated setting value at a Cloud resource and evaluates to
-        one of the following options in the given order (the next option
-        is used if the previous one does not exist):
-
-        1. the setting value on the given resource
-        2. the setting value on the given resource's nearest ancestor
-        3. the setting's default value
-        4. an empty setting value, defined as a ``SettingValue`` with
-           all fields unset
-
-        Returns a ``google.rpc.Status`` with
-        ``google.rpc.Code.NOT_FOUND`` if the setting does not exist.
-
-        Args:
-            request (google.cloud.resourcesettings_v1.types.LookupEffectiveSettingValueRequest):
-                The request object. The request for
-                LookupEffectiveSettingValue.
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.resourcesettings_v1.types.SettingValue:
-                The instantiation of a setting. Every
-                setting value is parented by its
-                corresponding setting.
-
-        """
-        # Create or coerce a protobuf request object.
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a resource_settings.LookupEffectiveSettingValueRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(
-            request, resource_settings.LookupEffectiveSettingValueRequest
-        ):
-            request = resource_settings.LookupEffectiveSettingValueRequest(request)
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.lookup_effective_setting_value
-        ]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    def create_setting_value(
-        self,
-        request: resource_settings.CreateSettingValueRequest = None,
-        *,
-        parent: str = None,
-        setting_value: resource_settings.SettingValue = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resource_settings.SettingValue:
-        r"""Creates a setting value.
+    ) -> resource_settings.Setting:
+        r"""Updates a setting.
 
         Returns a ``google.rpc.Status`` with
         ``google.rpc.Code.NOT_FOUND`` if the setting does not exist.
         Returns a ``google.rpc.Status`` with
-        ``google.rpc.Code.ALREADY_EXISTS`` if the setting value already
-        exists on the given Cloud resource. Returns a
-        ``google.rpc.Status`` with
-        ``google.rpc.Code.FAILED_PRECONDITION`` if the setting is
-        flagged as read only.
-
-        Args:
-            request (google.cloud.resourcesettings_v1.types.CreateSettingValueRequest):
-                The request object. The request for CreateSettingValue.
-            parent (str):
-                Required. The name of the setting for which a value
-                should be created. See
-                [Setting][google.cloud.resourcesettings.v1.Setting] for
-                naming requirements.
-
-                This corresponds to the ``parent`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-            setting_value (google.cloud.resourcesettings_v1.types.SettingValue):
-                Required. The setting value to create. See
-                [SettingValue][google.cloud.resourcesettings.v1.SettingValue]
-                for field requirements.
-
-                This corresponds to the ``setting_value`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-
-        Returns:
-            google.cloud.resourcesettings_v1.types.SettingValue:
-                The instantiation of a setting. Every
-                setting value is parented by its
-                corresponding setting.
-
-        """
-        # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([parent, setting_value])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a resource_settings.CreateSettingValueRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, resource_settings.CreateSettingValueRequest):
-            request = resource_settings.CreateSettingValueRequest(request)
-
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-
-            if parent is not None:
-                request.parent = parent
-            if setting_value is not None:
-                request.setting_value = setting_value
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_setting_value]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
-
-        # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
-
-        # Done; return the response.
-        return response
-
-    def update_setting_value(
-        self,
-        request: resource_settings.UpdateSettingValueRequest = None,
-        *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> resource_settings.SettingValue:
-        r"""Updates a setting value.
-
-        Returns a ``google.rpc.Status`` with
-        ``google.rpc.Code.NOT_FOUND`` if the setting or the setting
-        value does not exist. Returns a ``google.rpc.Status`` with
         ``google.rpc.Code.FAILED_PRECONDITION`` if the setting is
         flagged as read only. Returns a ``google.rpc.Status`` with
         ``google.rpc.Code.ABORTED`` if the etag supplied in the request
         does not match the persisted etag of the setting value.
 
-        Note: the supplied setting value will perform a full overwrite
-        of all fields.
+        On success, the response will contain only ``name``,
+        ``local_value`` and ``etag``. The ``metadata`` and
+        ``effective_value`` cannot be updated through this API.
+
+        Note: the supplied setting will perform a full overwrite of the
+        ``local_value`` field.
 
         Args:
-            request (google.cloud.resourcesettings_v1.types.UpdateSettingValueRequest):
-                The request object. The request for UpdateSettingValue.
-
+            request (google.cloud.resourcesettings_v1.types.UpdateSettingRequest):
+                The request object. The request for UpdateSetting.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -800,30 +551,26 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.resourcesettings_v1.types.SettingValue:
-                The instantiation of a setting. Every
-                setting value is parented by its
-                corresponding setting.
-
+            google.cloud.resourcesettings_v1.types.Setting:
+                The schema for settings.
         """
         # Create or coerce a protobuf request object.
-
         # Minor optimization to avoid making a copy if the user passes
-        # in a resource_settings.UpdateSettingValueRequest.
+        # in a resource_settings.UpdateSettingRequest.
         # There's no risk of modifying the input as we've already verified
         # there are no flattened fields.
-        if not isinstance(request, resource_settings.UpdateSettingValueRequest):
-            request = resource_settings.UpdateSettingValueRequest(request)
+        if not isinstance(request, resource_settings.UpdateSettingRequest):
+            request = resource_settings.UpdateSettingRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_setting_value]
+        rpc = self._transport._wrapped_methods[self._transport.update_setting]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("setting_value.name", request.setting_value.name),)
+                (("setting.name", request.setting.name),)
             ),
         )
 
@@ -832,82 +579,6 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
 
         # Done; return the response.
         return response
-
-    def delete_setting_value(
-        self,
-        request: resource_settings.DeleteSettingValueRequest = None,
-        *,
-        name: str = None,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
-        metadata: Sequence[Tuple[str, str]] = (),
-    ) -> None:
-        r"""Deletes a setting value. If the setting value does not exist,
-        the operation is a no-op.
-
-        Returns a ``google.rpc.Status`` with
-        ``google.rpc.Code.NOT_FOUND`` if the setting or the setting
-        value does not exist. The setting value will not exist if a
-        prior call to ``DeleteSettingValue`` for the setting value
-        already returned a success code. Returns a ``google.rpc.Status``
-        with ``google.rpc.Code.FAILED_PRECONDITION`` if the setting is
-        flagged as read only.
-
-        Args:
-            request (google.cloud.resourcesettings_v1.types.DeleteSettingValueRequest):
-                The request object. The request for DeleteSettingValue.
-            name (str):
-                Required. The name of the setting value to delete. See
-                [SettingValue][google.cloud.resourcesettings.v1.SettingValue]
-                for naming requirements.
-
-                This corresponds to the ``name`` field
-                on the ``request`` instance; if ``request`` is provided, this
-                should not be set.
-
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                should be retried.
-            timeout (float): The timeout for this request.
-            metadata (Sequence[Tuple[str, str]]): Strings which should be
-                sent along with the request as metadata.
-        """
-        # Create or coerce a protobuf request object.
-        # Sanity check: If we got a request object, we should *not* have
-        # gotten any keyword arguments that map to the request.
-        has_flattened_params = any([name])
-        if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
-
-        # Minor optimization to avoid making a copy if the user passes
-        # in a resource_settings.DeleteSettingValueRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, resource_settings.DeleteSettingValueRequest):
-            request = resource_settings.DeleteSettingValueRequest(request)
-
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-
-            if name is not None:
-                request.name = name
-
-        # Wrap the RPC method; this adds retry and timeout information,
-        # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_setting_value]
-
-        # Certain fields should be provided within the metadata header;
-        # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
-
-        # Send the request.
-        rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
-        )
 
 
 try:

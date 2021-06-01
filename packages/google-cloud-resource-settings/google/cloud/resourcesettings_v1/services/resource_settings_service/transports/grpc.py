@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,21 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
 from google.cloud.resourcesettings_v1.types import resource_settings
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
 from .base import ResourceSettingsServiceTransport, DEFAULT_CLIENT_INFO
 
 
@@ -39,7 +35,7 @@ class ResourceSettingsServiceGrpcTransport(ResourceSettingsServiceTransport):
     throughout the resource hierarchy.
 
     Services may surface a number of settings for users to control how
-    their resources behave. Setting values applied on a given Cloud
+    their resources behave. Values of settings applied on a given Cloud
     resource are evaluated hierarchically and inherited by all
     descendants of that resource.
 
@@ -63,7 +59,7 @@ class ResourceSettingsServiceGrpcTransport(ResourceSettingsServiceTransport):
         self,
         *,
         host: str = "resourcesettings.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -77,7 +73,8 @@ class ResourceSettingsServiceGrpcTransport(ResourceSettingsServiceTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -187,7 +184,7 @@ class ResourceSettingsServiceGrpcTransport(ResourceSettingsServiceTransport):
     def create_channel(
         cls,
         host: str = "resourcesettings.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -218,13 +215,15 @@ class ResourceSettingsServiceGrpcTransport(ResourceSettingsServiceTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -264,95 +263,19 @@ class ResourceSettingsServiceGrpcTransport(ResourceSettingsServiceTransport):
         return self._stubs["list_settings"]
 
     @property
-    def search_setting_values(
+    def get_setting(
         self,
-    ) -> Callable[
-        [resource_settings.SearchSettingValuesRequest],
-        resource_settings.SearchSettingValuesResponse,
-    ]:
-        r"""Return a callable for the search setting values method over gRPC.
+    ) -> Callable[[resource_settings.GetSettingRequest], resource_settings.Setting]:
+        r"""Return a callable for the get setting method over gRPC.
 
-        Searches for all setting values that exist on the resource
-        ``parent``. The setting values are not limited to those of a
-        particular setting.
-
-        Returns:
-            Callable[[~.SearchSettingValuesRequest],
-                    ~.SearchSettingValuesResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "search_setting_values" not in self._stubs:
-            self._stubs["search_setting_values"] = self.grpc_channel.unary_unary(
-                "/google.cloud.resourcesettings.v1.ResourceSettingsService/SearchSettingValues",
-                request_serializer=resource_settings.SearchSettingValuesRequest.serialize,
-                response_deserializer=resource_settings.SearchSettingValuesResponse.deserialize,
-            )
-        return self._stubs["search_setting_values"]
-
-    @property
-    def get_setting_value(
-        self,
-    ) -> Callable[
-        [resource_settings.GetSettingValueRequest], resource_settings.SettingValue
-    ]:
-        r"""Return a callable for the get setting value method over gRPC.
-
-        Gets a setting value.
-
-        Returns a ``google.rpc.Status`` with
-        ``google.rpc.Code.NOT_FOUND`` if the setting value does not
-        exist.
-
-        Returns:
-            Callable[[~.GetSettingValueRequest],
-                    ~.SettingValue]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_setting_value" not in self._stubs:
-            self._stubs["get_setting_value"] = self.grpc_channel.unary_unary(
-                "/google.cloud.resourcesettings.v1.ResourceSettingsService/GetSettingValue",
-                request_serializer=resource_settings.GetSettingValueRequest.serialize,
-                response_deserializer=resource_settings.SettingValue.deserialize,
-            )
-        return self._stubs["get_setting_value"]
-
-    @property
-    def lookup_effective_setting_value(
-        self,
-    ) -> Callable[
-        [resource_settings.LookupEffectiveSettingValueRequest],
-        resource_settings.SettingValue,
-    ]:
-        r"""Return a callable for the lookup effective setting value method over gRPC.
-
-        Computes the effective setting value of a setting at the Cloud
-        resource ``parent``. The effective setting value is the
-        calculated setting value at a Cloud resource and evaluates to
-        one of the following options in the given order (the next option
-        is used if the previous one does not exist):
-
-        1. the setting value on the given resource
-        2. the setting value on the given resource's nearest ancestor
-        3. the setting's default value
-        4. an empty setting value, defined as a ``SettingValue`` with
-           all fields unset
+        Gets a setting.
 
         Returns a ``google.rpc.Status`` with
         ``google.rpc.Code.NOT_FOUND`` if the setting does not exist.
 
         Returns:
-            Callable[[~.LookupEffectiveSettingValueRequest],
-                    ~.SettingValue]:
+            Callable[[~.GetSettingRequest],
+                    ~.Setting]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -360,77 +283,40 @@ class ResourceSettingsServiceGrpcTransport(ResourceSettingsServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "lookup_effective_setting_value" not in self._stubs:
-            self._stubs[
-                "lookup_effective_setting_value"
-            ] = self.grpc_channel.unary_unary(
-                "/google.cloud.resourcesettings.v1.ResourceSettingsService/LookupEffectiveSettingValue",
-                request_serializer=resource_settings.LookupEffectiveSettingValueRequest.serialize,
-                response_deserializer=resource_settings.SettingValue.deserialize,
+        if "get_setting" not in self._stubs:
+            self._stubs["get_setting"] = self.grpc_channel.unary_unary(
+                "/google.cloud.resourcesettings.v1.ResourceSettingsService/GetSetting",
+                request_serializer=resource_settings.GetSettingRequest.serialize,
+                response_deserializer=resource_settings.Setting.deserialize,
             )
-        return self._stubs["lookup_effective_setting_value"]
+        return self._stubs["get_setting"]
 
     @property
-    def create_setting_value(
+    def update_setting(
         self,
-    ) -> Callable[
-        [resource_settings.CreateSettingValueRequest], resource_settings.SettingValue
-    ]:
-        r"""Return a callable for the create setting value method over gRPC.
+    ) -> Callable[[resource_settings.UpdateSettingRequest], resource_settings.Setting]:
+        r"""Return a callable for the update setting method over gRPC.
 
-        Creates a setting value.
+        Updates a setting.
 
         Returns a ``google.rpc.Status`` with
         ``google.rpc.Code.NOT_FOUND`` if the setting does not exist.
         Returns a ``google.rpc.Status`` with
-        ``google.rpc.Code.ALREADY_EXISTS`` if the setting value already
-        exists on the given Cloud resource. Returns a
-        ``google.rpc.Status`` with
-        ``google.rpc.Code.FAILED_PRECONDITION`` if the setting is
-        flagged as read only.
-
-        Returns:
-            Callable[[~.CreateSettingValueRequest],
-                    ~.SettingValue]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_setting_value" not in self._stubs:
-            self._stubs["create_setting_value"] = self.grpc_channel.unary_unary(
-                "/google.cloud.resourcesettings.v1.ResourceSettingsService/CreateSettingValue",
-                request_serializer=resource_settings.CreateSettingValueRequest.serialize,
-                response_deserializer=resource_settings.SettingValue.deserialize,
-            )
-        return self._stubs["create_setting_value"]
-
-    @property
-    def update_setting_value(
-        self,
-    ) -> Callable[
-        [resource_settings.UpdateSettingValueRequest], resource_settings.SettingValue
-    ]:
-        r"""Return a callable for the update setting value method over gRPC.
-
-        Updates a setting value.
-
-        Returns a ``google.rpc.Status`` with
-        ``google.rpc.Code.NOT_FOUND`` if the setting or the setting
-        value does not exist. Returns a ``google.rpc.Status`` with
         ``google.rpc.Code.FAILED_PRECONDITION`` if the setting is
         flagged as read only. Returns a ``google.rpc.Status`` with
         ``google.rpc.Code.ABORTED`` if the etag supplied in the request
         does not match the persisted etag of the setting value.
 
-        Note: the supplied setting value will perform a full overwrite
-        of all fields.
+        On success, the response will contain only ``name``,
+        ``local_value`` and ``etag``. The ``metadata`` and
+        ``effective_value`` cannot be updated through this API.
+
+        Note: the supplied setting will perform a full overwrite of the
+        ``local_value`` field.
 
         Returns:
-            Callable[[~.UpdateSettingValueRequest],
-                    ~.SettingValue]:
+            Callable[[~.UpdateSettingRequest],
+                    ~.Setting]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -438,48 +324,13 @@ class ResourceSettingsServiceGrpcTransport(ResourceSettingsServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "update_setting_value" not in self._stubs:
-            self._stubs["update_setting_value"] = self.grpc_channel.unary_unary(
-                "/google.cloud.resourcesettings.v1.ResourceSettingsService/UpdateSettingValue",
-                request_serializer=resource_settings.UpdateSettingValueRequest.serialize,
-                response_deserializer=resource_settings.SettingValue.deserialize,
+        if "update_setting" not in self._stubs:
+            self._stubs["update_setting"] = self.grpc_channel.unary_unary(
+                "/google.cloud.resourcesettings.v1.ResourceSettingsService/UpdateSetting",
+                request_serializer=resource_settings.UpdateSettingRequest.serialize,
+                response_deserializer=resource_settings.Setting.deserialize,
             )
-        return self._stubs["update_setting_value"]
-
-    @property
-    def delete_setting_value(
-        self,
-    ) -> Callable[[resource_settings.DeleteSettingValueRequest], empty.Empty]:
-        r"""Return a callable for the delete setting value method over gRPC.
-
-        Deletes a setting value. If the setting value does not exist,
-        the operation is a no-op.
-
-        Returns a ``google.rpc.Status`` with
-        ``google.rpc.Code.NOT_FOUND`` if the setting or the setting
-        value does not exist. The setting value will not exist if a
-        prior call to ``DeleteSettingValue`` for the setting value
-        already returned a success code. Returns a ``google.rpc.Status``
-        with ``google.rpc.Code.FAILED_PRECONDITION`` if the setting is
-        flagged as read only.
-
-        Returns:
-            Callable[[~.DeleteSettingValueRequest],
-                    ~.Empty]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_setting_value" not in self._stubs:
-            self._stubs["delete_setting_value"] = self.grpc_channel.unary_unary(
-                "/google.cloud.resourcesettings.v1.ResourceSettingsService/DeleteSettingValue",
-                request_serializer=resource_settings.DeleteSettingValueRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
-            )
-        return self._stubs["delete_setting_value"]
+        return self._stubs["update_setting"]
 
 
 __all__ = ("ResourceSettingsServiceGrpcTransport",)
