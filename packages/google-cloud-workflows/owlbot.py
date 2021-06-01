@@ -43,8 +43,6 @@ for library in s.get_staging_dirs(workflows_executions_default_version):
             ],
         )
 
-s.remove_staging_dirs()
-
 # move workflows after executions, since we want to use "workflows" for the name
 for library in s.get_staging_dirs(workflows_default_version):
     if library.parent.absolute() == 'workflows':
