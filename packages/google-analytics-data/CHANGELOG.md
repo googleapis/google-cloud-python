@@ -1,5 +1,17 @@
 # Changelog
 
+### [0.5.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.5.0...v0.5.1) (2021-05-28)
+
+
+### Bug Fixes
+
+* **deps:** require google-api-core>=1.22.2 ([675ae9f](https://www.github.com/googleapis/python-analytics-data/commit/675ae9fb45bc4ea1adbbba1a302f04daf6368fbf))
+
+
+### Documentation
+
+* add sample code for Data API v1 ([#57](https://www.github.com/googleapis/python-analytics-data/issues/57)) ([a1e63c5](https://www.github.com/googleapis/python-analytics-data/commit/a1e63c56f5fa5835c528724c9d861c18cb34d6ad))
+
 ## [0.5.0](https://www.github.com/googleapis/python-analytics-data/compare/v0.4.1...v0.5.0) (2021-04-01)
 
 
