@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-media-translation/compare/v0.3.0...v0.4.0) (2021-05-27)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([b610e3d](https://www.github.com/googleapis/python-media-translation/commit/b610e3d81f7f65b00cad3da5cccdc8038b7122d4))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([b610e3d](https://www.github.com/googleapis/python-media-translation/commit/b610e3d81f7f65b00cad3da5cccdc8038b7122d4))
+* Remove unsupported fields: recognition_result and alternative_source_language_codes ([#61](https://www.github.com/googleapis/python-media-translation/issues/61)) ([b610e3d](https://www.github.com/googleapis/python-media-translation/commit/b610e3d81f7f65b00cad3da5cccdc8038b7122d4))
+
+
+### Documentation
+
+* Add more comments for supported audio type. ([b610e3d](https://www.github.com/googleapis/python-media-translation/commit/b610e3d81f7f65b00cad3da5cccdc8038b7122d4))
+
 ## [0.3.0](https://www.github.com/googleapis/python-media-translation/compare/v0.2.0...v0.3.0) (2021-02-11)
 
 
