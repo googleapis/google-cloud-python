@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.6.0](https://www.github.com/googleapis/python-functions/compare/v0.5.1...v0.6.0) (2021-05-28)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([167f431](https://www.github.com/googleapis/python-functions/commit/167f43144f4f9c5ef88a68bd880ec47a3062a3b6))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([167f431](https://www.github.com/googleapis/python-functions/commit/167f43144f4f9c5ef88a68bd880ec47a3062a3b6))
+* **deps:** add packaging requirement ([#62](https://www.github.com/googleapis/python-functions/issues/62)) ([1384f55](https://www.github.com/googleapis/python-functions/commit/1384f55b4e35f6263d42639667c4a38ab1689b16))
+* use correct default retry and timeout ([#42](https://www.github.com/googleapis/python-functions/issues/42)) ([8c7db91](https://www.github.com/googleapis/python-functions/commit/8c7db919535193151ed52465a3038d3ac72d701e))
+
 ### [0.5.1](https://www.github.com/googleapis/python-functions/compare/v0.5.0...v0.5.1) (2021-02-08)
 
 
