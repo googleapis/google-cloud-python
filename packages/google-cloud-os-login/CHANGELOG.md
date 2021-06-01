@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-oslogin/compare/v2.1.0...v2.2.0) (2021-05-28)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([857db06](https://www.github.com/googleapis/python-oslogin/commit/857db06e1b777e62eba0180655d059e2729ba898))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([857db06](https://www.github.com/googleapis/python-oslogin/commit/857db06e1b777e62eba0180655d059e2729ba898))
+* use correct retry deadline ([#56](https://www.github.com/googleapis/python-oslogin/issues/56)) ([a226955](https://www.github.com/googleapis/python-oslogin/commit/a22695516e8e89ccce2c500ade38c29451432b14))
+
 ## [2.1.0](https://www.github.com/googleapis/python-oslogin/compare/v2.0.0...v2.1.0) (2021-01-06)
 
 
