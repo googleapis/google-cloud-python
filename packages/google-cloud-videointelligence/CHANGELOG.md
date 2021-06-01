@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-videointelligence/compare/v2.1.0...v2.2.0) (2021-05-28)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([50da518](https://www.github.com/googleapis/python-videointelligence/commit/50da51820e11cb446a2803eff5895c2eba878adb))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([50da518](https://www.github.com/googleapis/python-videointelligence/commit/50da51820e11cb446a2803eff5895c2eba878adb))
+* **deps:** add packaging requirement ([#154](https://www.github.com/googleapis/python-videointelligence/issues/154)) ([26214ed](https://www.github.com/googleapis/python-videointelligence/commit/26214ed1603599bd3034c615f73224bc4fc5f42d))
+
 ## [2.1.0](https://www.github.com/googleapis/python-videointelligence/compare/v2.0.0...v2.1.0) (2021-03-31)
 
 
