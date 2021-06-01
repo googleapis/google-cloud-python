@@ -20,7 +20,7 @@ import os
 import setuptools  # type: ignore
 
 version = "0.1.0"
-
+description = "Resource Settings API client library"
 package_root = os.path.abspath(os.path.dirname(__file__))
 
 readme_filename = os.path.join(package_root, "README.rst")
@@ -30,7 +30,12 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
 setuptools.setup(
     name="google-cloud-resource-settings",
     version=version,
+    description=description,
     long_description=readme,
+    author="Google LLC",
+    author_email="googleapis-packages@oogle.com",
+    license="Apache 2.0",
+    url="https://github.com/googleapis/python-resource-settings",
     packages=setuptools.PEP420PackageFinder.find(),
     namespace_packages=("google", "google.cloud"),
     platforms="Posix; MacOS X; Windows",
