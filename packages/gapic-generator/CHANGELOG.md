@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.48.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.47.0...v0.48.0) (2021-05-27)
+
+
+### Features
+
+* Add `x-goog-api-client` header to rest clients ([#888](https://www.github.com/googleapis/gapic-generator-python/issues/888)) ([2d1d3ae](https://www.github.com/googleapis/gapic-generator-python/commit/2d1d3ae135a75bbfff13df7703de5d0dad44695c))
+* **dev:** Add Git pre-commit hooks [gapic-generator-python] ([#908](https://www.github.com/googleapis/gapic-generator-python/issues/908)) ([298db39](https://www.github.com/googleapis/gapic-generator-python/commit/298db39064e29de764537f25dc38f9e5ac301390))
+* Raise GoogleAPICallError on REST response errors ([#891](https://www.github.com/googleapis/gapic-generator-python/issues/891)) ([edb8c63](https://www.github.com/googleapis/gapic-generator-python/commit/edb8c63e8a331f5e08ea19202d8de42de7051299))
+* **tests:** Add integration test framework, goldens for 4 APIs [gapic-generator-python] ([#905](https://www.github.com/googleapis/gapic-generator-python/issues/905)) ([48db1e6](https://www.github.com/googleapis/gapic-generator-python/commit/48db1e644badc2180253e11d9a3d3657e8f9aeed))
+
+
+### Bug Fixes
+
+* fix datetime comparison unit tests ([#898](https://www.github.com/googleapis/gapic-generator-python/issues/898)) ([81932a2](https://www.github.com/googleapis/gapic-generator-python/commit/81932a2b71e6ca5f424ddc5c52933ad1d452583a))
+* remove support for google-api-core<1.26.0 ([#893](https://www.github.com/googleapis/gapic-generator-python/issues/893)) ([ce558ac](https://www.github.com/googleapis/gapic-generator-python/commit/ce558acef9ec9c9bcc54243cddb708ef168c05f0))
+
+
+### Documentation
+
+* Add DEVELOPMENT.md ([#876](https://www.github.com/googleapis/gapic-generator-python/issues/876)) ([592ec06](https://www.github.com/googleapis/gapic-generator-python/commit/592ec061d4eec35e35633c5a9e62cf1e598a8461))
+
 ## [0.47.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.46.3...v0.47.0) (2021-05-13)
 
 
