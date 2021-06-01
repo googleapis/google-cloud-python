@@ -27,13 +27,9 @@ for library in s.get_staging_dirs(spanner_default_version):
     if library.parent.absolute() == "spanner":
         s.move(library, excludes=["google/cloud/spanner/**", "*.*", "docs/index.rst", "google/cloud/spanner_v1/__init__.py"])
 
-s.remove_staging_dirs()
-
 for library in s.get_staging_dirs(spanner_admin_instance_default_version):
     if library.parent.absolute() == "spanner_admin_instance":
         s.move(library, excludes=["google/cloud/spanner_admin_instance/**", "*.*", "docs/index.rst"])
-
-s.remove_staging_dirs()
 
 for library in s.get_staging_dirs(spanner_admin_database_default_version):
     if library.parent.absolute() == "spanner_admin_database":
