@@ -21,7 +21,7 @@ import setuptools
 
 name = "google-cloud-dlp"
 description = "Cloud Data Loss Prevention (DLP) API API client library"
-version = "3.0.1"
+version = "3.1.0"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",

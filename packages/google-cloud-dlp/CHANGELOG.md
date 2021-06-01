@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.1.0](https://www.github.com/googleapis/python-dlp/compare/v3.0.1...v3.1.0) (2021-05-28)
+
+
+### Features
+
+* crypto_deterministic_config ([#108](https://www.github.com/googleapis/python-dlp/issues/108)) ([#119](https://www.github.com/googleapis/python-dlp/issues/119)) ([396804d](https://www.github.com/googleapis/python-dlp/commit/396804d65e40c1ae9ced16aa0f04ef4bdffa54c5))
+* support self-signed JWT flow for service accounts ([cdea974](https://www.github.com/googleapis/python-dlp/commit/cdea9744d0bc7244a42894acc1446080a16b2dab))
+
+
+### Bug Fixes
+
+* add async client ([cdea974](https://www.github.com/googleapis/python-dlp/commit/cdea9744d0bc7244a42894acc1446080a16b2dab))
+* require google-api-core>=1.22.2 ([d146cf5](https://www.github.com/googleapis/python-dlp/commit/d146cf59db14b3c3afbef72d7a86419532ad347e))
+* use correct retry deadlines ([#96](https://www.github.com/googleapis/python-dlp/issues/96)) ([d146cf5](https://www.github.com/googleapis/python-dlp/commit/d146cf59db14b3c3afbef72d7a86419532ad347e))
+
 ### [3.0.1](https://www.github.com/googleapis/python-dlp/compare/v3.0.0...v3.0.1) (2021-01-28)
 
 
