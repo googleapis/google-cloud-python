@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.2.0](https://www.github.com/googleapis/python-translate/compare/v3.1.0...v3.2.0) (2021-05-28)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([959a35c](https://www.github.com/googleapis/python-translate/commit/959a35c85e32867ed63c63d96593a240a5e8a1c4))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([959a35c](https://www.github.com/googleapis/python-translate/commit/959a35c85e32867ed63c63d96593a240a5e8a1c4))
+* **deps:** add packaging requirement ([959a35c](https://www.github.com/googleapis/python-translate/commit/959a35c85e32867ed63c63d96593a240a5e8a1c4))
+
+
+### Documentation
+
+* connect Python Translate client library to nebulous serverless example ([#162](https://www.github.com/googleapis/python-translate/issues/162)) ([2986864](https://www.github.com/googleapis/python-translate/commit/2986864db391e5216dbead83eb822fd1fb2c19d0))
+
 ## [3.1.0](https://www.github.com/googleapis/python-translate/compare/v3.0.2...v3.1.0) (2021-03-31)
 
 
