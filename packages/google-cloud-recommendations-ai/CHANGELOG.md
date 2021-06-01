@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.2.0...v0.2.1) (2021-05-28)
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#46](https://www.github.com/googleapis/python-recommendations-ai/issues/46)) ([d2eb28f](https://www.github.com/googleapis/python-recommendations-ai/commit/d2eb28fdc016de1b9f82e46f36b8bf8c8bb7edbd))
+
 ## [0.2.0](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.1.0...v0.2.0) (2021-03-29)
 
 
