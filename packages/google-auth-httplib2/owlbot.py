@@ -10,4 +10,4 @@ templated_files = common.py_library(unit_cov_level=100, cov_level=100)
 
 paths = [".kokoro", ".github", ".flake8"]
 for p in paths:
-    s.move(templated_files)
+    s.move(templated_files / p)
