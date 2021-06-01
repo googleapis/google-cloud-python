@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-recommender/compare/v2.1.0...v2.2.0) (2021-05-28)
+
+
+### Features
+
+* add `from_service_account_info` ([94a006e](https://www.github.com/googleapis/python-recommender/commit/94a006ea95f692e431cda4cea9e5042f494c0704))
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#91](https://www.github.com/googleapis/python-recommender/issues/91)) ([bf202ab](https://www.github.com/googleapis/python-recommender/commit/bf202ab5656cbd7dfdff6847310d4321c48735d4))
+* fix retry deadlines ([#74](https://www.github.com/googleapis/python-recommender/issues/74)) ([94a006e](https://www.github.com/googleapis/python-recommender/commit/94a006ea95f692e431cda4cea9e5042f494c0704))
+
 ## [2.1.0](https://www.github.com/googleapis/python-recommender/compare/v2.0.0...v2.1.0) (2021-01-29)
 
 
