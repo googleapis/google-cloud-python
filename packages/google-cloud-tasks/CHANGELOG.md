@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-tasks/compare/v2.2.0...v2.3.0) (2021-05-28)
+
+
+### Features
+
+* add `from_service_account_info` ([#80](https://www.github.com/googleapis/python-tasks/issues/80)) ([2498225](https://www.github.com/googleapis/python-tasks/commit/2498225112ddb4b112b387dec71631c29a6db71e))
+* support self-signed JWT flow for service accounts ([1acf20c](https://www.github.com/googleapis/python-tasks/commit/1acf20ca440a5396ee03205b5c2301b84e368926))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([1acf20c](https://www.github.com/googleapis/python-tasks/commit/1acf20ca440a5396ee03205b5c2301b84e368926))
+* use correct retry deadlines ([2498225](https://www.github.com/googleapis/python-tasks/commit/2498225112ddb4b112b387dec71631c29a6db71e))
+
+
+### Documentation
+
+* fix grammar in documentation ([#112](https://www.github.com/googleapis/python-tasks/issues/112)) ([6f93a19](https://www.github.com/googleapis/python-tasks/commit/6f93a190311bd5468827496685072388a951e670))
+
 ## [2.2.0](https://www.github.com/googleapis/python-tasks/compare/v2.1.0...v2.2.0) (2021-02-24)
 
 
