@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-redis/#history
 
+### [2.1.1](https://www.github.com/googleapis/python-redis/compare/v2.1.0...v2.1.1) (2021-05-28)
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#76](https://www.github.com/googleapis/python-redis/issues/76)) ([7d53117](https://www.github.com/googleapis/python-redis/commit/7d53117aa37a3a9e878cad76ed1b48ec6200b7b1))
+* remove libcst from requirements ([#54](https://www.github.com/googleapis/python-redis/issues/54)) ([6a10fff](https://www.github.com/googleapis/python-redis/commit/6a10fff85baceff2061807f43350fd0a7235dcac))
+
 ## [2.1.0](https://www.github.com/googleapis/python-redis/compare/v2.0.0...v2.1.0) (2021-01-29)
 
 
