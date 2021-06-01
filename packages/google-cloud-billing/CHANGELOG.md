@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-billing/compare/v1.1.1...v1.2.0) (2021-05-28)
+
+
+### Features
+
+* add from_service_account_info factory and fix sphinx identifiers ([#42](https://www.github.com/googleapis/python-billing/issues/42)) ([95ba269](https://www.github.com/googleapis/python-billing/commit/95ba26961090dc76e75064cba10c21ca4897675e))
+* support self-signed JWT flow for service accounts ([a2a6aaf](https://www.github.com/googleapis/python-billing/commit/a2a6aaf71864cd1a9e093fd77f6426e2a39ebe25))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([a2a6aaf](https://www.github.com/googleapis/python-billing/commit/a2a6aaf71864cd1a9e093fd77f6426e2a39ebe25))
+* **deps:** add packaging requirement ([#75](https://www.github.com/googleapis/python-billing/issues/75)) ([73d8957](https://www.github.com/googleapis/python-billing/commit/73d895725d396d7f930c8259dfbec269897a5b62))
+
 ### [1.1.1](https://www.github.com/googleapis/python-billing/compare/v1.1.0...v1.1.1) (2021-02-11)
 
 
