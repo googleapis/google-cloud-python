@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-notebooks/compare/v0.1.2...v0.2.0) (2021-05-28)
+
+
+### Features
+
+* add `from_service_account_info` ([#26](https://www.github.com/googleapis/python-notebooks/issues/26)) ([4999922](https://www.github.com/googleapis/python-notebooks/commit/4999922dc0f6eaebc8aec58929176ab6b87cfdca))
+* support self-signed JWT flow for service accounts ([7a84b3b](https://www.github.com/googleapis/python-notebooks/commit/7a84b3b9b8c206a0dc33ccc09821ffa8ee8c3ddd))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([7a84b3b](https://www.github.com/googleapis/python-notebooks/commit/7a84b3b9b8c206a0dc33ccc09821ffa8ee8c3ddd))
+* **deps:** add packaging requirement ([#45](https://www.github.com/googleapis/python-notebooks/issues/45)) ([9790dc9](https://www.github.com/googleapis/python-notebooks/commit/9790dc9da532ec396a8d81e3946da53cf243c066))
+
 ### [0.1.2](https://www.github.com/googleapis/python-notebooks/compare/v0.1.1...v0.1.2) (2021-02-08)
 
 
