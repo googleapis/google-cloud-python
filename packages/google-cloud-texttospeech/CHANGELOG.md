@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-texttospeech/compare/v2.3.0...v2.4.0) (2021-05-28)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([8a08836](https://www.github.com/googleapis/python-texttospeech/commit/8a08836487c1b7e4e58d3c07a4e26005d40793f0))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([8a08836](https://www.github.com/googleapis/python-texttospeech/commit/8a08836487c1b7e4e58d3c07a4e26005d40793f0))
+
 ## [2.3.0](https://www.github.com/googleapis/python-texttospeech/compare/v2.2.0...v2.3.0) (2021-03-31)
 
 
