@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.2.0](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.1.0...v1.2.0) (2021-05-28)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([3091749](https://www.github.com/googleapis/python-websecurityscanner/commit/309174923e00e7463ea98d3f5c2805afafddf7fe))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([3091749](https://www.github.com/googleapis/python-websecurityscanner/commit/309174923e00e7463ea98d3f5c2805afafddf7fe))
+* **deps:** add packaging requirement ([#62](https://www.github.com/googleapis/python-websecurityscanner/issues/62)) ([ce2c90d](https://www.github.com/googleapis/python-websecurityscanner/commit/ce2c90d738cb1f47dbd41826a879dc2e3d5f0c0b))
+
 ## [1.1.0](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.0.0...v1.1.0) (2021-03-31)
 
 
