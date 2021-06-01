@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.3.0...v0.3.1) (2021-05-28)
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#68](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/68)) ([176bbe9](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/176bbe954a38c0dbbe4669035bb4a807031c7a9d))
+
 ## [0.3.0](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.2.1...v0.3.0) (2021-02-08)
 
 
