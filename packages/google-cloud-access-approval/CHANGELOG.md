@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-access-approval/compare/v1.1.1...v1.2.0) (2021-05-28)
+
+
+### Features
+
+* add `from_service_account_info` ([8f6833a](https://www.github.com/googleapis/python-access-approval/commit/8f6833aa95e7610576fba4500857a4143de7d1d7))
+* support self-signed JWT flow for service accounts ([e761cff](https://www.github.com/googleapis/python-access-approval/commit/e761cfffccd416a4552ccdece2a6d6f1ae84cad8))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([e761cff](https://www.github.com/googleapis/python-access-approval/commit/e761cfffccd416a4552ccdece2a6d6f1ae84cad8))
+* **deps:** add packaging requirement ([#78](https://www.github.com/googleapis/python-access-approval/issues/78)) ([fd1417b](https://www.github.com/googleapis/python-access-approval/commit/fd1417b61019150963c83b4594fd86e2fb304355))
+* use correct retry deadlines ([#57](https://www.github.com/googleapis/python-access-approval/issues/57)) ([8f6833a](https://www.github.com/googleapis/python-access-approval/commit/8f6833aa95e7610576fba4500857a4143de7d1d7))
+
 ### [1.1.1](https://www.github.com/googleapis/python-access-approval/compare/v1.1.0...v1.1.1) (2021-02-12)
 
 
