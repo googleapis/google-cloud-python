@@ -1,0 +1,13 @@
+{
+    "name": "cloudprivatecatalog",
+    "name_pretty": "Private Catalog",
+    "product_documentation": "https://cloud.google.com/private-catalog/",
+    "client_documentation": "https://googleapis.dev/python/cloudprivatecatalog/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type" : "GAPIC_AUTO",
+    "repo": "googleapis/python-private-catalog",
+    "distribution_name": "google-cloud-private-catalog",
+    "api_id": "cloudprivatecatalog.googleapis.com"
+  }
