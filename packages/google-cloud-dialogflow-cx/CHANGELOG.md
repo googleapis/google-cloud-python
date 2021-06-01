@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.4.1...v0.5.0) (2021-05-28)
+
+
+### Features
+
+* add export / import flow API ([20df7c3](https://www.github.com/googleapis/python-dialogflow-cx/commit/20df7c3bfabef5da23970512a3f925f4dfe7d2f9))
+* add support for service directory webhooks ([20df7c3](https://www.github.com/googleapis/python-dialogflow-cx/commit/20df7c3bfabef5da23970512a3f925f4dfe7d2f9))
+* added API for continuous test ([#91](https://www.github.com/googleapis/python-dialogflow-cx/issues/91)) ([81d4f53](https://www.github.com/googleapis/python-dialogflow-cx/commit/81d4f53cd4a4080b21221126dacaf2e13ca2efcf))
+* added API for running continuous test ([#94](https://www.github.com/googleapis/python-dialogflow-cx/issues/94)) ([cc30fa3](https://www.github.com/googleapis/python-dialogflow-cx/commit/cc30fa3e767bac2f33637ce1c29766ff41e9225b))
+* added fallback option when restoring an agent ([20df7c3](https://www.github.com/googleapis/python-dialogflow-cx/commit/20df7c3bfabef5da23970512a3f925f4dfe7d2f9))
+* Expose supported languages of the agent; ([20df7c3](https://www.github.com/googleapis/python-dialogflow-cx/commit/20df7c3bfabef5da23970512a3f925f4dfe7d2f9))
+* include original user query in WebhookRequest; add GetTextCaseresult API. ([20df7c3](https://www.github.com/googleapis/python-dialogflow-cx/commit/20df7c3bfabef5da23970512a3f925f4dfe7d2f9))
+* support self-signed JWT flow for service accounts ([20df7c3](https://www.github.com/googleapis/python-dialogflow-cx/commit/20df7c3bfabef5da23970512a3f925f4dfe7d2f9))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([20df7c3](https://www.github.com/googleapis/python-dialogflow-cx/commit/20df7c3bfabef5da23970512a3f925f4dfe7d2f9))
+* require google-api-core>=1.22.2 ([3440f18](https://www.github.com/googleapis/python-dialogflow-cx/commit/3440f186cd879fd4ddc9b3442bf857a4f286698e))
+* **v3:** BREAKING rename `UserInput.input_` to `UserInput.input` ([#58](https://www.github.com/googleapis/python-dialogflow-cx/issues/58)) ([3440f18](https://www.github.com/googleapis/python-dialogflow-cx/commit/3440f186cd879fd4ddc9b3442bf857a4f286698e))
+
+
+### Documentation
+
+* clarified documentation for security settings docs: clarified documentation for session parameters ([#89](https://www.github.com/googleapis/python-dialogflow-cx/issues/89)) ([750a055](https://www.github.com/googleapis/python-dialogflow-cx/commit/750a055b688ebeda8e8882cdb02bdc87524a69a5))
+* clarified documentation for security settings docs: clarified documentation for session parameters ([#90](https://www.github.com/googleapis/python-dialogflow-cx/issues/90)) ([c1c0fb9](https://www.github.com/googleapis/python-dialogflow-cx/commit/c1c0fb9eb9e62dc794aef1bac357bb5c20e322dc))
+* clarified experiment length ([20df7c3](https://www.github.com/googleapis/python-dialogflow-cx/commit/20df7c3bfabef5da23970512a3f925f4dfe7d2f9))
+* clarify resource format for session response. ([20df7c3](https://www.github.com/googleapis/python-dialogflow-cx/commit/20df7c3bfabef5da23970512a3f925f4dfe7d2f9))
+* Update docs on Pages, Session, Version, etc. ([20df7c3](https://www.github.com/googleapis/python-dialogflow-cx/commit/20df7c3bfabef5da23970512a3f925f4dfe7d2f9))
+
 ### [0.4.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.4.0...v0.4.1) (2021-03-07)
 
 
