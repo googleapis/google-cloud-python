@@ -21,7 +21,7 @@ import setuptools
 
 name = "google-cloud-iam"
 description = "IAM Service Account Credentials API client library"
-version = "2.1.0"
+version = "2.2.0"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'

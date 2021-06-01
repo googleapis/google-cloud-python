@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-iam/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-iam/compare/v2.1.0...v2.2.0) (2021-05-28)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([50ca9be](https://www.github.com/googleapis/python-iam/commit/50ca9becf959a2872e8a33b9afc00766dbfaa196))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([50ca9be](https://www.github.com/googleapis/python-iam/commit/50ca9becf959a2872e8a33b9afc00766dbfaa196))
+* require google-api-core>=1.22.2 ([#61](https://www.github.com/googleapis/python-iam/issues/61)) ([959b03d](https://www.github.com/googleapis/python-iam/commit/959b03d7c557881e586b29960d3aaaba75b3adbc))
+* use correct retry deadlines ([#63](https://www.github.com/googleapis/python-iam/issues/63)) ([1fbdece](https://www.github.com/googleapis/python-iam/commit/1fbdeceee5eba78233b913885be2cbffc3ca7904))
+
 ## [2.1.0](https://www.github.com/googleapis/python-iam/compare/v2.0.0...v2.1.0) (2021-01-25)
 
 
