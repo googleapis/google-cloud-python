@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-os-config/compare/v1.1.0...v1.0.0) (2021-05-28)
+
+
+### Features
+
+* release as GA ([#46](https://www.github.com/googleapis/python-os-config/issues/46)) ([d5aece9](https://www.github.com/googleapis/python-os-config/commit/d5aece996ff225dc747e7c59978576bfcb79a3d1))
+* support self-signed JWT flow for service accounts ([6fbaf4b](https://www.github.com/googleapis/python-os-config/commit/6fbaf4bb16b0bb381edf13957b85297c1659a206))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([6fbaf4b](https://www.github.com/googleapis/python-os-config/commit/6fbaf4bb16b0bb381edf13957b85297c1659a206))
+* **deps:** add packaging requirement ([#72](https://www.github.com/googleapis/python-os-config/issues/72)) ([44e0947](https://www.github.com/googleapis/python-os-config/commit/44e09479922f8569b8d95657009e7c806eb101f9))
+
+
+### Documentation
+
+* fix sphinx identifiers ([#52](https://www.github.com/googleapis/python-os-config/issues/52)) ([940916d](https://www.github.com/googleapis/python-os-config/commit/940916de78ac19bea3f63f75ce073648f920c70b))
+
 ## [1.1.0](https://www.github.com/googleapis/python-os-config/compare/v1.0.0...v1.1.0) (2021-02-12)
 
 
