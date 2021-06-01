@@ -7,8 +7,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    gapic/v2/api
-    gapic/v2/types
+    privatecatalog_v1beta1/services
+    privatecatalog_v1beta1/types
 
 Changelog
 ---------
