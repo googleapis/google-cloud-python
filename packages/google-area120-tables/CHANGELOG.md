@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-area120-tables/compare/v0.2.0...v0.3.0) (2021-05-28)
+
+
+### Features
+
+* Added ListWorkspaces, GetWorkspace, BatchDeleteRows APIs ([#25](https://www.github.com/googleapis/python-area120-tables/issues/25)) ([99c6918](https://www.github.com/googleapis/python-area120-tables/commit/99c691819824ab6cc1915ba23867a5051b94b8a2))
+* support self-signed JWT flow for service accounts ([fe5836e](https://www.github.com/googleapis/python-area120-tables/commit/fe5836e050cc3f548c9a98af73d01466e23e8404))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([fe5836e](https://www.github.com/googleapis/python-area120-tables/commit/fe5836e050cc3f548c9a98af73d01466e23e8404))
+* **deps:** add packaging requirement ([#47](https://www.github.com/googleapis/python-area120-tables/issues/47)) ([c7cee0b](https://www.github.com/googleapis/python-area120-tables/commit/c7cee0bd0252560e603f1456bdc577b26d477c87))
+
 ## [0.2.0](https://www.github.com/googleapis/python-area120-tables/compare/v0.1.0...v0.2.0) (2021-01-29)
 
 
