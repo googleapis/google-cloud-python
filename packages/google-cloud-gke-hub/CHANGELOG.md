@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.1](https://www.github.com/googleapis/python-gke-hub/compare/v0.1.0...v0.1.1) (2021-05-27)
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#31](https://www.github.com/googleapis/python-gke-hub/issues/31)) ([71eb607](https://www.github.com/googleapis/python-gke-hub/commit/71eb607254ce524cf47765fd3e9fb2427d139dc8))
+
 ## 0.1.0 (2021-03-16)
 
 
