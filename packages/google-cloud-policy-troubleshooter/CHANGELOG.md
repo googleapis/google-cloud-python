@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-policy-troubleshooter/compare/v0.2.0...v1.0.0) (2021-06-02)
+
+
+### Features
+
+* bump release level to production/stable ([#22](https://www.github.com/googleapis/python-policy-troubleshooter/issues/22)) ([8411e45](https://www.github.com/googleapis/python-policy-troubleshooter/commit/8411e45cdef6268f51cf54e043ed341303918e41))
+
 ## [0.2.0](https://www.github.com/googleapis/python-policy-troubleshooter/compare/v0.1.0...v0.2.0) (2021-05-28)
 
 
