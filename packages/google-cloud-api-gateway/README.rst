@@ -1,7 +1,7 @@
 Python Client for API Gateway
 =============================
 
-|beta| |pypi| |versions|
+|GA| |pypi| |versions|
 
 `API Gateway`_ allows you to create, secure, and monitor APIs for Google Cloud
 serverless back ends, including Cloud Functions, Cloud Run, and App Engine.
@@ -12,8 +12,8 @@ means you can better manage cost.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-api-gateway.svg
    :target: https://pypi.org/project/google-cloud-api-gateway/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-api-gateway.svg

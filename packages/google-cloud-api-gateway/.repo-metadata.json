@@ -4,7 +4,7 @@
     "product_documentation": "https://cloud.google.com/api-gateway",
     "client_documentation": "https://googleapis.dev/python/apigateway/latest",
     "issue_tracker": "",
-    "release_level": "beta",
+    "release_level": "ga",
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-api-gateway",
