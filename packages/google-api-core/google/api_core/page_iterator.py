@@ -179,7 +179,7 @@ class Iterator(object):
             single item.
         """
         self.max_results = max_results
-        """int: The maximum number of results to fetch."""
+        """int: The maximum number of results to fetch"""
 
         # The attributes below will change over the life of the iterator.
         self.page_number = 0
@@ -298,7 +298,8 @@ class HTTPIterator(Iterator):
             can be found.
         page_token (str): A token identifying a page in a result set to start
             fetching results from.
-        max_results (int): The maximum number of results to fetch.
+        page_size (int): The maximum number of results to fetch per page
+        max_results (int): The maximum number of results to fetch
         extra_params (dict): Extra query string parameters for the
             API call.
         page_start (Callable[
@@ -329,6 +330,7 @@ class HTTPIterator(Iterator):
         item_to_value,
         items_key=_DEFAULT_ITEMS_KEY,
         page_token=None,
+        page_size=None,
         max_results=None,
         extra_params=None,
         page_start=_do_nothing_page_start,
@@ -341,6 +343,7 @@ class HTTPIterator(Iterator):
         self.path = path
         self._items_key = items_key
         self.extra_params = extra_params
+        self._page_size = page_size
         self._page_start = page_start
         self._next_token = next_token
         # Verify inputs / provide defaults.
@@ -399,8 +402,18 @@ class HTTPIterator(Iterator):
         result = {}
         if self.next_page_token is not None:
             result[self._PAGE_TOKEN] = self.next_page_token
+
+        page_size = None
         if self.max_results is not None:
-            result[self._MAX_RESULTS] = self.max_results - self.num_results
+            page_size = self.max_results - self.num_results
+            if self._page_size is not None:
+                page_size = min(page_size, self._page_size)
+        elif self._page_size is not None:
+            page_size = self._page_size
+
+        if page_size is not None:
+            result[self._MAX_RESULTS] = page_size
+
         result.update(self.extra_params)
         return result
 

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import math
 import types
 
 import mock
@@ -235,6 +236,7 @@ class TestHTTPIterator(object):
         assert iterator.page_number == 0
         assert iterator.next_page_token is None
         assert iterator.num_results == 0
+        assert iterator._page_size is None
 
     def test_constructor_w_extra_param_collision(self):
         extra_params = {"pageToken": "val"}
@@ -431,6 +433,66 @@ class TestHTTPIterator(object):
 
         with pytest.raises(ValueError):
             iterator._get_next_page_response()
+
+    @pytest.mark.parametrize(
+        "page_size,max_results,pages",
+        [(3, None, False), (3, 8, False), (3, None, True), (3, 8, True)])
+    def test_page_size_items(self, page_size, max_results, pages):
+        path = "/foo"
+        NITEMS = 10
+
+        n = [0]  # blast you python 2!
+
+        def api_request(*args, **kw):
+            assert not args
+            query_params = dict(
+                maxResults=(
+                    page_size if max_results is None
+                    else min(page_size, max_results - n[0]))
+            )
+            if n[0]:
+                query_params.update(pageToken='test')
+            assert kw == {'method': 'GET', 'path': '/foo',
+                          'query_params': query_params}
+            n_items = min(kw['query_params']['maxResults'], NITEMS - n[0])
+            items = [dict(name=str(i + n[0])) for i in range(n_items)]
+            n[0] += n_items
+            result = dict(items=items)
+            if n[0] < NITEMS:
+                result.update(nextPageToken='test')
+            return result
+
+        iterator = page_iterator.HTTPIterator(
+            mock.sentinel.client,
+            api_request,
+            path=path,
+            item_to_value=page_iterator._item_to_value_identity,
+            page_size=page_size,
+            max_results=max_results,
+        )
+
+        assert iterator.num_results == 0
+
+        n_results = max_results if max_results is not None else NITEMS
+        if pages:
+            items_iter = iter(iterator.pages)
+            npages = int(math.ceil(float(n_results) / page_size))
+            for ipage in range(npages):
+                assert (
+                    list(six.next(items_iter)) == [
+                        dict(name=str(i))
+                        for i in range(ipage * page_size,
+                                       min((ipage + 1) * page_size, n_results),
+                                       )
+                    ])
+        else:
+            items_iter = iter(iterator)
+            for i in range(n_results):
+                assert six.next(items_iter) == dict(name=str(i))
+                assert iterator.num_results == i + 1
+
+        with pytest.raises(StopIteration):
+            six.next(items_iter)
 
 
 class TestGRPCIterator(object):
