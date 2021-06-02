@@ -19,5 +19,6 @@ from google.cloud import bigquery_logging_v1
 # NOTE: These are dummy tests to reach 100% coverage
 # They simply check that the message can be created.
 
+
 def test_audit_data():
     bigquery_logging_v1.AuditData()
