@@ -700,3 +700,38 @@ class TestLoadJobConfig(_Base):
         self.assertEqual(
             config._properties["load"]["writeDisposition"], write_disposition
         )
+
+    def test_parquet_options_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.parquet_options)
+
+    def test_parquet_options_hit(self):
+        config = self._get_target_class()()
+        config._properties["load"]["parquetOptions"] = dict(
+            enumAsString=True, enableListInference=False
+        )
+        self.assertTrue(config.parquet_options.enum_as_string)
+        self.assertFalse(config.parquet_options.enable_list_inference)
+
+    def test_parquet_options_setter(self):
+        from google.cloud.bigquery.format_options import ParquetOptions
+
+        parquet_options = ParquetOptions.from_api_repr(
+            dict(enumAsString=False, enableListInference=True)
+        )
+        config = self._get_target_class()()
+
+        config.parquet_options = parquet_options
+        self.assertEqual(
+            config._properties["load"]["parquetOptions"],
+            {"enumAsString": False, "enableListInference": True},
+        )
+
+    def test_parquet_options_setter_clearing(self):
+        config = self._get_target_class()()
+        config._properties["load"]["parquetOptions"] = dict(
+            enumAsString=False, enableListInference=True
+        )
+
+        config.parquet_options = None
+        self.assertNotIn("parquetOptions", config._properties["load"])

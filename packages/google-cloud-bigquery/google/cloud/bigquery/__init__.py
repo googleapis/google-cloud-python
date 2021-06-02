@@ -47,6 +47,7 @@ from google.cloud.bigquery.external_config import BigtableColumn
 from google.cloud.bigquery.external_config import CSVOptions
 from google.cloud.bigquery.external_config import GoogleSheetsOptions
 from google.cloud.bigquery.external_config import ExternalSourceFormat
+from google.cloud.bigquery.format_options import ParquetOptions
 from google.cloud.bigquery.job import Compression
 from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import CopyJobConfig
@@ -136,6 +137,7 @@ __all__ = [
     "BigtableColumn",
     "CSVOptions",
     "GoogleSheetsOptions",
+    "ParquetOptions",
     "DEFAULT_RETRY",
     # Enum Constants
     "enums",

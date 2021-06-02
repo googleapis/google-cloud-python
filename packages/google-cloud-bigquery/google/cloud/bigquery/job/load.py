@@ -16,6 +16,7 @@
 
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 from google.cloud.bigquery.external_config import HivePartitioningOptions
+from google.cloud.bigquery.format_options import ParquetOptions
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.schema import _to_schema_fields
@@ -438,6 +439,26 @@ class LoadJobConfig(_JobConfig):
     @write_disposition.setter
     def write_disposition(self, value):
         self._set_sub_prop("writeDisposition", value)
+
+    @property
+    def parquet_options(self):
+        """Optional[google.cloud.bigquery.format_options.ParquetOptions]: Additional
+            properties to set if ``sourceFormat`` is set to PARQUET.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.parquet_options
+        """
+        prop = self._get_sub_prop("parquetOptions")
+        if prop is not None:
+            prop = ParquetOptions.from_api_repr(prop)
+        return prop
+
+    @parquet_options.setter
+    def parquet_options(self, value):
+        if value is not None:
+            self._set_sub_prop("parquetOptions", value.to_api_repr())
+        else:
+            self._del_sub_prop("parquetOptions")
 
 
 class LoadJob(_AsyncJob):
