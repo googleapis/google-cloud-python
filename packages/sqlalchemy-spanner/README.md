@@ -93,7 +93,7 @@ Migration
 SQLAlchemy uses [Alembic](https://alembic.sqlalchemy.org/en/latest/#) tool to organize database migrations.
 
 **Warning!**  
-A migration script can produce a lot of DDL statements. In case of executing every one of them separately performance and budget spending issues can occur. To avoid them it's highly recommended to use [Alembic batch context](https://cloud.google.com/spanner/docs/schema-updates) feature to pack DDL statements into more economical groups of statements.
+A migration script can produce a lot of DDL statements. If each of the statements are executed separately, performance issues can occur. To avoid these, it's highly recommended to use the [Alembic batch context](https://alembic.sqlalchemy.org/en/latest/batch.html) feature to pack DDL statements into groups of statements.
 
 Features and limitations
 -----------
