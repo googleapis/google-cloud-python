@@ -19,14 +19,18 @@ from google.cloud import appengine_logging_v1
 # NOTE: These are dummy tests to reach 100% coverage
 # They simply check that each message can be created.
 
+
 def test_log_line():
     appengine_logging_v1.LogLine()
+
 
 def test_source_location():
     appengine_logging_v1.SourceLocation()
 
+
 def test_source_reference():
     appengine_logging_v1.SourceReference()
+
 
 def test_request_log():
     appengine_logging_v1.RequestLog()
