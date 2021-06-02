@@ -22,7 +22,7 @@ import setuptools  # type: ignore
 name = "google-cloud-policy-troubleshooter"
 version = "0.2.0"
 description = "IAM Policy Troubleshooter API client library"
-release_status = "Development Status :: 4 - Beta"
+release_status = "Development Status :: 5 - Production/Stable"
 url = "https://github.com/googleapis/python-policy-troubleshooter"
 dependencies = [
     "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
