@@ -9,3 +9,4 @@ google-api-core==1.22.2
 proto-plus==1.15.0
 packaging==14.3
 grpc-google-iam-v1==0.12.3
+google-auth==1.24.0  # TODO: remove once google-auth>=1.25.0 is required transitively through google-api-core
