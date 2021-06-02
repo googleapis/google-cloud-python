@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-channel/compare/v0.3.0...v1.0.0) (2021-06-02)
+
+
+### Features
+
+* bump release level to production/stable ([#46](https://www.github.com/googleapis/python-channel/issues/46)) ([3460f68](https://www.github.com/googleapis/python-channel/commit/3460f683a4e8f1a2f94a1eeb92af7eae1dcdb02b))
+
+
+### Miscellaneous Chores
+
+* release as 1.0.0 ([#51](https://www.github.com/googleapis/python-channel/issues/51)) ([00710b6](https://www.github.com/googleapis/python-channel/commit/00710b6566540ba111c5bb3705f892e8f743b1c2))
+
 ## [0.3.0](https://www.github.com/googleapis/python-channel/compare/v0.2.1...v0.3.0) (2021-05-28)
 
 
