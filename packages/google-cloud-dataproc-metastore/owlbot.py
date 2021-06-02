@@ -22,7 +22,7 @@ from synthtool.languages import python
 
 common = gcp.CommonTemplates()
 
-default_version = "v1beta"
+default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])

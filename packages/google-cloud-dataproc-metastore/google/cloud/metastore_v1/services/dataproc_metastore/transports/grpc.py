@@ -25,7 +25,7 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
 
-from google.cloud.metastore_v1alpha.types import metastore
+from google.cloud.metastore_v1.types import metastore
 from google.longrunning import operations_pb2  # type: ignore
 from .base import DataprocMetastoreTransport, DEFAULT_CLIENT_INFO
 
@@ -280,7 +280,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "list_services" not in self._stubs:
             self._stubs["list_services"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/ListServices",
+                "/google.cloud.metastore.v1.DataprocMetastore/ListServices",
                 request_serializer=metastore.ListServicesRequest.serialize,
                 response_deserializer=metastore.ListServicesResponse.deserialize,
             )
@@ -304,7 +304,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "get_service" not in self._stubs:
             self._stubs["get_service"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/GetService",
+                "/google.cloud.metastore.v1.DataprocMetastore/GetService",
                 request_serializer=metastore.GetServiceRequest.serialize,
                 response_deserializer=metastore.Service.deserialize,
             )
@@ -331,7 +331,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "create_service" not in self._stubs:
             self._stubs["create_service"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/CreateService",
+                "/google.cloud.metastore.v1.DataprocMetastore/CreateService",
                 request_serializer=metastore.CreateServiceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -357,7 +357,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "update_service" not in self._stubs:
             self._stubs["update_service"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/UpdateService",
+                "/google.cloud.metastore.v1.DataprocMetastore/UpdateService",
                 request_serializer=metastore.UpdateServiceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -383,7 +383,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "delete_service" not in self._stubs:
             self._stubs["delete_service"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/DeleteService",
+                "/google.cloud.metastore.v1.DataprocMetastore/DeleteService",
                 request_serializer=metastore.DeleteServiceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -411,7 +411,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "list_metadata_imports" not in self._stubs:
             self._stubs["list_metadata_imports"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/ListMetadataImports",
+                "/google.cloud.metastore.v1.DataprocMetastore/ListMetadataImports",
                 request_serializer=metastore.ListMetadataImportsRequest.serialize,
                 response_deserializer=metastore.ListMetadataImportsResponse.deserialize,
             )
@@ -437,7 +437,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "get_metadata_import" not in self._stubs:
             self._stubs["get_metadata_import"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/GetMetadataImport",
+                "/google.cloud.metastore.v1.DataprocMetastore/GetMetadataImport",
                 request_serializer=metastore.GetMetadataImportRequest.serialize,
                 response_deserializer=metastore.MetadataImport.deserialize,
             )
@@ -464,7 +464,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "create_metadata_import" not in self._stubs:
             self._stubs["create_metadata_import"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/CreateMetadataImport",
+                "/google.cloud.metastore.v1.DataprocMetastore/CreateMetadataImport",
                 request_serializer=metastore.CreateMetadataImportRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -492,7 +492,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "update_metadata_import" not in self._stubs:
             self._stubs["update_metadata_import"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/UpdateMetadataImport",
+                "/google.cloud.metastore.v1.DataprocMetastore/UpdateMetadataImport",
                 request_serializer=metastore.UpdateMetadataImportRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -518,139 +518,11 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "export_metadata" not in self._stubs:
             self._stubs["export_metadata"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/ExportMetadata",
+                "/google.cloud.metastore.v1.DataprocMetastore/ExportMetadata",
                 request_serializer=metastore.ExportMetadataRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["export_metadata"]
-
-    @property
-    def restore_service(
-        self,
-    ) -> Callable[[metastore.RestoreServiceRequest], operations_pb2.Operation]:
-        r"""Return a callable for the restore service method over gRPC.
-
-        Restores a service from a backup.
-
-        Returns:
-            Callable[[~.RestoreServiceRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "restore_service" not in self._stubs:
-            self._stubs["restore_service"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/RestoreService",
-                request_serializer=metastore.RestoreServiceRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["restore_service"]
-
-    @property
-    def list_backups(
-        self,
-    ) -> Callable[[metastore.ListBackupsRequest], metastore.ListBackupsResponse]:
-        r"""Return a callable for the list backups method over gRPC.
-
-        Lists backups in a service.
-
-        Returns:
-            Callable[[~.ListBackupsRequest],
-                    ~.ListBackupsResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_backups" not in self._stubs:
-            self._stubs["list_backups"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/ListBackups",
-                request_serializer=metastore.ListBackupsRequest.serialize,
-                response_deserializer=metastore.ListBackupsResponse.deserialize,
-            )
-        return self._stubs["list_backups"]
-
-    @property
-    def get_backup(self) -> Callable[[metastore.GetBackupRequest], metastore.Backup]:
-        r"""Return a callable for the get backup method over gRPC.
-
-        Gets details of a single backup.
-
-        Returns:
-            Callable[[~.GetBackupRequest],
-                    ~.Backup]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_backup" not in self._stubs:
-            self._stubs["get_backup"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/GetBackup",
-                request_serializer=metastore.GetBackupRequest.serialize,
-                response_deserializer=metastore.Backup.deserialize,
-            )
-        return self._stubs["get_backup"]
-
-    @property
-    def create_backup(
-        self,
-    ) -> Callable[[metastore.CreateBackupRequest], operations_pb2.Operation]:
-        r"""Return a callable for the create backup method over gRPC.
-
-        Creates a new Backup in a given project and location.
-
-        Returns:
-            Callable[[~.CreateBackupRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_backup" not in self._stubs:
-            self._stubs["create_backup"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/CreateBackup",
-                request_serializer=metastore.CreateBackupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["create_backup"]
-
-    @property
-    def delete_backup(
-        self,
-    ) -> Callable[[metastore.DeleteBackupRequest], operations_pb2.Operation]:
-        r"""Return a callable for the delete backup method over gRPC.
-
-        Deletes a single backup.
-
-        Returns:
-            Callable[[~.DeleteBackupRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_backup" not in self._stubs:
-            self._stubs["delete_backup"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/DeleteBackup",
-                request_serializer=metastore.DeleteBackupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["delete_backup"]
 
 
 __all__ = ("DataprocMetastoreGrpcTransport",)

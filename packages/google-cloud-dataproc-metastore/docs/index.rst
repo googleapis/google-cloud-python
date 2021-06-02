@@ -3,7 +3,15 @@
 .. include:: multiprocessing.rst
 
 This package includes clients for multiple versions of the Dataproc Metastore
-API. By default, you will get ``v1beta``, the latest version.
+API. By default, you will get ``v1``, the latest version.
+
+v1 API Reference
+--------------------
+.. toctree::
+    :maxdepth: 2
+
+    metastore_v1/services
+    metastore_v1/types
 
 v1beta API Reference
 --------------------

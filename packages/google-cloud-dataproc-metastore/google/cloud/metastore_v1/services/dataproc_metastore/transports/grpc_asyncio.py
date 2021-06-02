@@ -14,24 +14,26 @@
 # limitations under the License.
 #
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import grpc_helpers  # type: ignore
-from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-import google.auth  # type: ignore
+from google.api_core import grpc_helpers_async  # type: ignore
+from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+import packaging.version
 
 import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
 
-from google.cloud.metastore_v1alpha.types import metastore
+from google.cloud.metastore_v1.types import metastore
 from google.longrunning import operations_pb2  # type: ignore
 from .base import DataprocMetastoreTransport, DEFAULT_CLIENT_INFO
+from .grpc import DataprocMetastoreGrpcTransport
 
 
-class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
-    """gRPC backend transport for DataprocMetastore.
+class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
+    """gRPC AsyncIO backend transport for DataprocMetastore.
 
     Configures and manages metastore services. Metastore services are
     fully managed, highly available, auto-scaled, auto-healing,
@@ -65,21 +67,65 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _stubs: Dict[str, Callable]
+    _grpc_channel: aio.Channel
+    _stubs: Dict[str, Callable] = {}
+
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "metastore.googleapis.com",
+        credentials: ga_credentials.Credentials = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> aio.Channel:
+        """Create and return a gRPC AsyncIO channel object.
+        Args:
+            host (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is ignored if ``channel`` is provided.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            aio.Channel: A gRPC AsyncIO channel object.
+        """
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
+        return grpc_helpers_async.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
+            **kwargs,
+        )
 
     def __init__(
         self,
         *,
         host: str = "metastore.googleapis.com",
         credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        channel: grpc.Channel = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: aio.Channel = None,
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
         ssl_channel_credentials: grpc.ChannelCredentials = None,
         client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
-        quota_project_id: Optional[str] = None,
+        quota_project_id=None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the transport.
@@ -96,9 +142,10 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
-                ignored if ``channel`` is provided.
-            channel (Optional[grpc.Channel]): A ``Channel`` instance through
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            channel (Optional[aio.Channel]): A ``Channel`` instance through
                 which to make calls.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
@@ -123,7 +170,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
                 your own client library.
 
         Raises:
-          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -144,7 +191,6 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -193,61 +239,18 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
 
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "metastore.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> grpc.Channel:
-        """Create and return a gRPC channel object.
-        Args:
-            host (Optional[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is mutually exclusive with credentials.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            grpc.Channel: A gRPC channel object.
-
-        Raises:
-            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
-              and ``credentials_file`` are passed.
-        """
-
-        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
-
-        return grpc_helpers.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            quota_project_id=quota_project_id,
-            **self_signed_jwt_kwargs,
-            **kwargs,
-        )
-
     @property
-    def grpc_channel(self) -> grpc.Channel:
-        """Return the channel designed to connect to this service.
+    def grpc_channel(self) -> aio.Channel:
+        """Create the channel designed to connect to this service.
+
+        This property caches on the instance; repeated calls return
+        the same channel.
         """
+        # Return the channel from cache.
         return self._grpc_channel
 
     @property
-    def operations_client(self) -> operations_v1.OperationsClient:
+    def operations_client(self) -> operations_v1.OperationsAsyncClient:
         """Create the client designed to process long-running operations.
 
         This property caches on the instance; repeated calls return the same
@@ -255,7 +258,9 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         """
         # Sanity check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+            self._operations_client = operations_v1.OperationsAsyncClient(
+                self.grpc_channel
+            )
 
         # Return the client from cache.
         return self._operations_client
@@ -263,14 +268,16 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
     @property
     def list_services(
         self,
-    ) -> Callable[[metastore.ListServicesRequest], metastore.ListServicesResponse]:
+    ) -> Callable[
+        [metastore.ListServicesRequest], Awaitable[metastore.ListServicesResponse]
+    ]:
         r"""Return a callable for the list services method over gRPC.
 
         Lists services in a project and location.
 
         Returns:
             Callable[[~.ListServicesRequest],
-                    ~.ListServicesResponse]:
+                    Awaitable[~.ListServicesResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -280,21 +287,23 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "list_services" not in self._stubs:
             self._stubs["list_services"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/ListServices",
+                "/google.cloud.metastore.v1.DataprocMetastore/ListServices",
                 request_serializer=metastore.ListServicesRequest.serialize,
                 response_deserializer=metastore.ListServicesResponse.deserialize,
             )
         return self._stubs["list_services"]
 
     @property
-    def get_service(self) -> Callable[[metastore.GetServiceRequest], metastore.Service]:
+    def get_service(
+        self,
+    ) -> Callable[[metastore.GetServiceRequest], Awaitable[metastore.Service]]:
         r"""Return a callable for the get service method over gRPC.
 
         Gets the details of a single service.
 
         Returns:
             Callable[[~.GetServiceRequest],
-                    ~.Service]:
+                    Awaitable[~.Service]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -304,7 +313,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "get_service" not in self._stubs:
             self._stubs["get_service"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/GetService",
+                "/google.cloud.metastore.v1.DataprocMetastore/GetService",
                 request_serializer=metastore.GetServiceRequest.serialize,
                 response_deserializer=metastore.Service.deserialize,
             )
@@ -313,7 +322,9 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
     @property
     def create_service(
         self,
-    ) -> Callable[[metastore.CreateServiceRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [metastore.CreateServiceRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the create service method over gRPC.
 
         Creates a metastore service in a project and
@@ -321,7 +332,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
 
         Returns:
             Callable[[~.CreateServiceRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -331,7 +342,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "create_service" not in self._stubs:
             self._stubs["create_service"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/CreateService",
+                "/google.cloud.metastore.v1.DataprocMetastore/CreateService",
                 request_serializer=metastore.CreateServiceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -340,14 +351,16 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
     @property
     def update_service(
         self,
-    ) -> Callable[[metastore.UpdateServiceRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [metastore.UpdateServiceRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the update service method over gRPC.
 
         Updates the parameters of a single service.
 
         Returns:
             Callable[[~.UpdateServiceRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -357,7 +370,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "update_service" not in self._stubs:
             self._stubs["update_service"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/UpdateService",
+                "/google.cloud.metastore.v1.DataprocMetastore/UpdateService",
                 request_serializer=metastore.UpdateServiceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -366,14 +379,16 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
     @property
     def delete_service(
         self,
-    ) -> Callable[[metastore.DeleteServiceRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [metastore.DeleteServiceRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the delete service method over gRPC.
 
         Deletes a single service.
 
         Returns:
             Callable[[~.DeleteServiceRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -383,7 +398,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "delete_service" not in self._stubs:
             self._stubs["delete_service"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/DeleteService",
+                "/google.cloud.metastore.v1.DataprocMetastore/DeleteService",
                 request_serializer=metastore.DeleteServiceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -393,7 +408,8 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
     def list_metadata_imports(
         self,
     ) -> Callable[
-        [metastore.ListMetadataImportsRequest], metastore.ListMetadataImportsResponse
+        [metastore.ListMetadataImportsRequest],
+        Awaitable[metastore.ListMetadataImportsResponse],
     ]:
         r"""Return a callable for the list metadata imports method over gRPC.
 
@@ -401,7 +417,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
 
         Returns:
             Callable[[~.ListMetadataImportsRequest],
-                    ~.ListMetadataImportsResponse]:
+                    Awaitable[~.ListMetadataImportsResponse]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -411,7 +427,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "list_metadata_imports" not in self._stubs:
             self._stubs["list_metadata_imports"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/ListMetadataImports",
+                "/google.cloud.metastore.v1.DataprocMetastore/ListMetadataImports",
                 request_serializer=metastore.ListMetadataImportsRequest.serialize,
                 response_deserializer=metastore.ListMetadataImportsResponse.deserialize,
             )
@@ -420,14 +436,16 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
     @property
     def get_metadata_import(
         self,
-    ) -> Callable[[metastore.GetMetadataImportRequest], metastore.MetadataImport]:
+    ) -> Callable[
+        [metastore.GetMetadataImportRequest], Awaitable[metastore.MetadataImport]
+    ]:
         r"""Return a callable for the get metadata import method over gRPC.
 
         Gets details of a single import.
 
         Returns:
             Callable[[~.GetMetadataImportRequest],
-                    ~.MetadataImport]:
+                    Awaitable[~.MetadataImport]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -437,7 +455,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "get_metadata_import" not in self._stubs:
             self._stubs["get_metadata_import"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/GetMetadataImport",
+                "/google.cloud.metastore.v1.DataprocMetastore/GetMetadataImport",
                 request_serializer=metastore.GetMetadataImportRequest.serialize,
                 response_deserializer=metastore.MetadataImport.deserialize,
             )
@@ -446,7 +464,9 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
     @property
     def create_metadata_import(
         self,
-    ) -> Callable[[metastore.CreateMetadataImportRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [metastore.CreateMetadataImportRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the create metadata import method over gRPC.
 
         Creates a new MetadataImport in a given project and
@@ -454,7 +474,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
 
         Returns:
             Callable[[~.CreateMetadataImportRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -464,7 +484,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "create_metadata_import" not in self._stubs:
             self._stubs["create_metadata_import"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/CreateMetadataImport",
+                "/google.cloud.metastore.v1.DataprocMetastore/CreateMetadataImport",
                 request_serializer=metastore.CreateMetadataImportRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -473,7 +493,9 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
     @property
     def update_metadata_import(
         self,
-    ) -> Callable[[metastore.UpdateMetadataImportRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [metastore.UpdateMetadataImportRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the update metadata import method over gRPC.
 
         Updates a single import.
@@ -482,7 +504,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
 
         Returns:
             Callable[[~.UpdateMetadataImportRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -492,7 +514,7 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "update_metadata_import" not in self._stubs:
             self._stubs["update_metadata_import"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/UpdateMetadataImport",
+                "/google.cloud.metastore.v1.DataprocMetastore/UpdateMetadataImport",
                 request_serializer=metastore.UpdateMetadataImportRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
@@ -501,14 +523,16 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
     @property
     def export_metadata(
         self,
-    ) -> Callable[[metastore.ExportMetadataRequest], operations_pb2.Operation]:
+    ) -> Callable[
+        [metastore.ExportMetadataRequest], Awaitable[operations_pb2.Operation]
+    ]:
         r"""Return a callable for the export metadata method over gRPC.
 
         Exports metadata from a service.
 
         Returns:
             Callable[[~.ExportMetadataRequest],
-                    ~.Operation]:
+                    Awaitable[~.Operation]]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -518,139 +542,11 @@ class DataprocMetastoreGrpcTransport(DataprocMetastoreTransport):
         # to pass in the functions for each.
         if "export_metadata" not in self._stubs:
             self._stubs["export_metadata"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/ExportMetadata",
+                "/google.cloud.metastore.v1.DataprocMetastore/ExportMetadata",
                 request_serializer=metastore.ExportMetadataRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["export_metadata"]
 
-    @property
-    def restore_service(
-        self,
-    ) -> Callable[[metastore.RestoreServiceRequest], operations_pb2.Operation]:
-        r"""Return a callable for the restore service method over gRPC.
 
-        Restores a service from a backup.
-
-        Returns:
-            Callable[[~.RestoreServiceRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "restore_service" not in self._stubs:
-            self._stubs["restore_service"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/RestoreService",
-                request_serializer=metastore.RestoreServiceRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["restore_service"]
-
-    @property
-    def list_backups(
-        self,
-    ) -> Callable[[metastore.ListBackupsRequest], metastore.ListBackupsResponse]:
-        r"""Return a callable for the list backups method over gRPC.
-
-        Lists backups in a service.
-
-        Returns:
-            Callable[[~.ListBackupsRequest],
-                    ~.ListBackupsResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_backups" not in self._stubs:
-            self._stubs["list_backups"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/ListBackups",
-                request_serializer=metastore.ListBackupsRequest.serialize,
-                response_deserializer=metastore.ListBackupsResponse.deserialize,
-            )
-        return self._stubs["list_backups"]
-
-    @property
-    def get_backup(self) -> Callable[[metastore.GetBackupRequest], metastore.Backup]:
-        r"""Return a callable for the get backup method over gRPC.
-
-        Gets details of a single backup.
-
-        Returns:
-            Callable[[~.GetBackupRequest],
-                    ~.Backup]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "get_backup" not in self._stubs:
-            self._stubs["get_backup"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/GetBackup",
-                request_serializer=metastore.GetBackupRequest.serialize,
-                response_deserializer=metastore.Backup.deserialize,
-            )
-        return self._stubs["get_backup"]
-
-    @property
-    def create_backup(
-        self,
-    ) -> Callable[[metastore.CreateBackupRequest], operations_pb2.Operation]:
-        r"""Return a callable for the create backup method over gRPC.
-
-        Creates a new Backup in a given project and location.
-
-        Returns:
-            Callable[[~.CreateBackupRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "create_backup" not in self._stubs:
-            self._stubs["create_backup"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/CreateBackup",
-                request_serializer=metastore.CreateBackupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["create_backup"]
-
-    @property
-    def delete_backup(
-        self,
-    ) -> Callable[[metastore.DeleteBackupRequest], operations_pb2.Operation]:
-        r"""Return a callable for the delete backup method over gRPC.
-
-        Deletes a single backup.
-
-        Returns:
-            Callable[[~.DeleteBackupRequest],
-                    ~.Operation]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_backup" not in self._stubs:
-            self._stubs["delete_backup"] = self.grpc_channel.unary_unary(
-                "/google.cloud.metastore.v1alpha.DataprocMetastore/DeleteBackup",
-                request_serializer=metastore.DeleteBackupRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
-            )
-        return self._stubs["delete_backup"]
-
-
-__all__ = ("DataprocMetastoreGrpcTransport",)
+__all__ = ("DataprocMetastoreGrpcAsyncIOTransport",)
