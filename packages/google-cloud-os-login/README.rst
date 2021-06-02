@@ -10,9 +10,9 @@ Python Client for Google Cloud OS Login API
 
 .. |ga| image:: https://img.shields.io/badge/support-GA-gold.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-oslogin.svg
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-os-login.svg
    :target: https://pypi.org/project/google-cloud-os-login/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-oslogin.svg
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-os-login.svg
    :target: https://pypi.org/project/google-cloud-os-login/
 .. _Google Cloud OS Login API: https://cloud.google.com/os-login
 .. _Client Library Documentation: https://googleapis.dev/python/oslogin/latest
