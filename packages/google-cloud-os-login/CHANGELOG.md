@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+### [2.2.1](https://www.github.com/googleapis/python-oslogin/compare/v2.2.0...v2.2.1) (2021-06-02)
+
+
+### Documentation
+
+* Fix broken links in README ([#75](https://www.github.com/googleapis/python-oslogin/issues/75)) ([d01d15f](https://www.github.com/googleapis/python-oslogin/commit/d01d15f034178e6bc9e36c80d0c0b1cf6cfd2f17))
+
 ## [2.2.0](https://www.github.com/googleapis/python-oslogin/compare/v2.1.0...v2.2.0) (2021-05-28)
 
 
