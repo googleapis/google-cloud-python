@@ -1,7 +1,7 @@
 Python Client for Cloud Document AI API
 ==================================================
 
-|beta| |pypi| |versions|
+|GA| |pypi| |versions|
 
 `Cloud Document AI API`_: Service to parse structured information from unstructured or
 semi-structured documents using state-of-the-art Google AI such as natural
@@ -10,8 +10,8 @@ language, computer vision, translation, and AutoML.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-service-directory.svg
    :target: https://pypi.org/project/google-cloud-service-directory/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-documentai.svg
