@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [2.18.0](https://www.github.com/googleapis/python-bigquery/compare/v2.17.0...v2.18.0) (2021-06-02)
+
+
+### Features
+
+* add support for Parquet options ([#679](https://www.github.com/googleapis/python-bigquery/issues/679)) ([d792ce0](https://www.github.com/googleapis/python-bigquery/commit/d792ce09388a6ee3706777915dd2818d4c854f79))
+
 ## [2.17.0](https://www.github.com/googleapis/python-bigquery/compare/v2.16.1...v2.17.0) (2021-05-21)
 
 
