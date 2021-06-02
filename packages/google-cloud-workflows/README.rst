@@ -1,7 +1,7 @@
 Python Client for Cloud Workflows
 =================================================
 
-|beta| |pypi| |versions|
+|GA| |pypi| |versions|
 
 `Cloud Workflows API`_: Orchestrate and automateGoogle Cloud and HTTP-based
 API services with serverless workflows.
@@ -9,8 +9,8 @@ API services with serverless workflows.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-workflows.svg
    :target: https://pypi.org/project/google-cloud-workflows/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-workflows.svg
