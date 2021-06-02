@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-workflows/compare/v0.3.0...v1.0.0) (2021-06-02)
+
+
+### Features
+
+* bump release level to production/stable ([#54](https://www.github.com/googleapis/python-workflows/issues/54)) ([3cd61a5](https://www.github.com/googleapis/python-workflows/commit/3cd61a5670707e56a67749a31805e091e0ab87b2))
+
 ## [0.3.0](https://www.github.com/googleapis/python-workflows/compare/v0.2.0...v0.3.0) (2021-04-30)
 
 
