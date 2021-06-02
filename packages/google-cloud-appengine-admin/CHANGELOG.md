@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-appengine-admin/compare/v0.2.0...v1.0.0) (2021-06-02)
+
+
+### Features
+
+* bump release level to production/stable ([#23](https://www.github.com/googleapis/python-appengine-admin/issues/23)) ([4cb1678](https://www.github.com/googleapis/python-appengine-admin/commit/4cb167891b8d926389dd9561de8ea7b5314906c4))
+
+
+### Miscellaneous Chores
+
+* release as 1.0.0 ([#28](https://www.github.com/googleapis/python-appengine-admin/issues/28)) ([de071b0](https://www.github.com/googleapis/python-appengine-admin/commit/de071b09a7ec19637452856e1bbdb522e5f1d050))
+
 ## [0.2.0](https://www.github.com/googleapis/python-appengine-admin/compare/v0.1.0...v0.2.0) (2021-05-28)
 
 
