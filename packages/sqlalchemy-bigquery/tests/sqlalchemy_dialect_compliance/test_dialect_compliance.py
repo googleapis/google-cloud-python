@@ -114,8 +114,11 @@ else:
             # The base tests doesn't set up the literal properly, because
             # it doesn't pass its datatype to `literal`.
 
-            def literal(value):
+            def literal(value, type_=None):
                 assert value == self.data
+                if type_ is not None:
+                    assert type_ is self.datatype
+
                 import sqlalchemy.sql.sqltypes
 
                 return sqlalchemy.sql.elements.literal(value, self.datatype)
