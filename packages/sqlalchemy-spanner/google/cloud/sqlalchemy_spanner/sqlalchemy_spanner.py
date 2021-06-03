@@ -125,6 +125,16 @@ class SpannerSQLCompiler(SQLCompiler):
 
     compound_keywords = _compound_keywords
 
+    def get_from_hint_text(self, _, text):
+        """Return a hint text.
+
+        Overriden to avoid adding square brackets to the hint text.
+
+        Args:
+            text (str): The hint text.
+        """
+        return text
+
     def visit_empty_set_expr(self, type_):
         """Return an empty set expression of the given type.
 

@@ -20,6 +20,7 @@ import decimal
 import pytz
 
 import sqlalchemy
+from sqlalchemy import create_engine
 from sqlalchemy import inspect
 from sqlalchemy import testing
 from sqlalchemy import ForeignKey
@@ -42,6 +43,9 @@ from sqlalchemy import Boolean
 from sqlalchemy import Float
 from sqlalchemy import LargeBinary
 from sqlalchemy import String
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relation
+from sqlalchemy.orm import Session
 from sqlalchemy.types import Integer
 from sqlalchemy.types import Numeric
 from sqlalchemy.types import Text
@@ -1210,3 +1214,48 @@ class CompoundSelectTest(_CompoundSelectTest):
     )
     def test_order_by_selectable_in_unions(self):
         pass
+
+
+class TestQueryHints(fixtures.TablesTest):
+    """
+    Compile a complex query with JOIN and check that
+    the table hint was set into the right place.
+    """
+
+    __backend__ = True
+
+    def test_complex_query_table_hints(self):
+        EXPECTED_QUERY = (
+            "SELECT users.id, users.name \nFROM users @{FORCE_INDEX=table_1_by_int_idx}"
+            " JOIN addresses ON users.id = addresses.user_id "
+            "\nWHERE users.name IN (%s, %s)"
+        )
+
+        Base = declarative_base()
+        engine = create_engine(
+            "spanner:///projects/project-id/instances/instance-id/databases/database-id"
+        )
+
+        class User(Base):
+            __tablename__ = "users"
+            id = Column(Integer, primary_key=True)
+            name = Column(String(50))
+            addresses = relation("Address", backref="user")
+
+        class Address(Base):
+            __tablename__ = "addresses"
+            id = Column(Integer, primary_key=True)
+            email = Column(String(50))
+            user_id = Column(Integer, ForeignKey("users.id"))
+
+        session = Session(engine)
+
+        query = session.query(User)
+        query = query.with_hint(
+            selectable=User, text="@{FORCE_INDEX=table_1_by_int_idx}"
+        )
+
+        query = query.filter(User.name.in_(["val1", "val2"]))
+        query = query.join(Address)
+
+        assert str(query.statement.compile(session.bind)) == EXPECTED_QUERY
