@@ -17,7 +17,15 @@ import io
 import os
 import setuptools  # type: ignore
 
+name = "google-cloud-private-catalog"
+description = "Private Catalog API client library"
 version = "0.1.0"
+release_status = "Development Status :: 4 - Beta"
+dependencies = [
+    "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
+    "proto-plus >= 1.15.0",
+    "packaging >= 14.3",
+]
 
 package_root = os.path.abspath(os.path.dirname(__file__))
 
@@ -26,22 +34,22 @@ with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
 setuptools.setup(
-    name="google-cloud-private-catalog",
+    name=name,
     version=version,
+    description=description,
     long_description=readme,
+    author="Google LLC",
+    author_email="googleapis-packages@google.com",
+    license="Apache 2.0",
+    url="https://github.com/googleapis/python-private-catalog",
     packages=setuptools.PEP420PackageFinder.find(),
     namespace_packages=("google", "google.cloud"),
     platforms="Posix; MacOS X; Windows",
     include_package_data=True,
-    install_requires=(
-        "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
-        "libcst >= 0.2.5",
-        "proto-plus >= 1.15.0",
-        "packaging >= 14.3",
-    ),
+    install_requires=dependencies,
     python_requires=">=3.6",
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        release_status,
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 3.6",

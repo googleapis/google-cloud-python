@@ -24,7 +24,7 @@ common = gcp.CommonTemplates()
 default_version = "v1beta1"
 
 for library in s.get_staging_dirs(default_version):
-    s.move(library)
+    s.move(library, excludes=["docs/index.rst", "setup.py", "README.rst"])
 
 s.remove_staging_dirs()
 
@@ -32,7 +32,7 @@ s.remove_staging_dirs()
 # Add templated files
 # ----------------------------------------------------------------------------
 
-templated_files = common.py_library(cov_level=99, microgenerator=True)
+templated_files = common.py_library(cov_level=97, microgenerator=True)
 
 s.move(templated_files, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
