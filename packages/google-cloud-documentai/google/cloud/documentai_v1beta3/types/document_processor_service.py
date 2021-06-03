@@ -17,6 +17,7 @@ import proto  # type: ignore
 
 from google.cloud.documentai_v1beta3.types import document as gcd_document
 from google.cloud.documentai_v1beta3.types import document_io
+from google.cloud.documentai_v1beta3.types import operation_metadata
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 
@@ -33,7 +34,6 @@ __protobuf__ = proto.module(
         "ReviewDocumentRequest",
         "ReviewDocumentResponse",
         "ReviewDocumentOperationMetadata",
-        "CommonOperationMetadata",
     },
 )
 
@@ -323,37 +323,8 @@ class ReviewDocumentOperationMetadata(proto.Message):
     create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
     update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
     common_metadata = proto.Field(
-        proto.MESSAGE, number=5, message="CommonOperationMetadata",
+        proto.MESSAGE, number=5, message=operation_metadata.CommonOperationMetadata,
     )
-
-
-class CommonOperationMetadata(proto.Message):
-    r"""The common metadata for long running operations.
-    Attributes:
-        state (google.cloud.documentai_v1beta3.types.CommonOperationMetadata.State):
-            The state of the operation.
-        state_message (str):
-            A message providing more details about the
-            current state of processing.
-        create_time (google.protobuf.timestamp_pb2.Timestamp):
-            The creation time of the operation.
-        update_time (google.protobuf.timestamp_pb2.Timestamp):
-            The last update time of the operation.
-    """
-
-    class State(proto.Enum):
-        r"""State of the longrunning operation."""
-        STATE_UNSPECIFIED = 0
-        RUNNING = 1
-        CANCELLING = 2
-        SUCCEEDED = 3
-        FAILED = 4
-        CANCELLED = 5
-
-    state = proto.Field(proto.ENUM, number=1, enum=State,)
-    state_message = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -27,7 +27,6 @@ from .types.document_io import RawDocument
 from .types.document_processor_service import BatchProcessMetadata
 from .types.document_processor_service import BatchProcessRequest
 from .types.document_processor_service import BatchProcessResponse
-from .types.document_processor_service import CommonOperationMetadata
 from .types.document_processor_service import HumanReviewStatus
 from .types.document_processor_service import ProcessRequest
 from .types.document_processor_service import ProcessResponse
@@ -37,6 +36,7 @@ from .types.document_processor_service import ReviewDocumentResponse
 from .types.geometry import BoundingPoly
 from .types.geometry import NormalizedVertex
 from .types.geometry import Vertex
+from .types.operation_metadata import CommonOperationMetadata
 
 __all__ = (
     "DocumentProcessorServiceAsyncClient",
