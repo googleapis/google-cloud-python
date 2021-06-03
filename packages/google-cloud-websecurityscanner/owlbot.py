@@ -21,10 +21,7 @@ common = gcp.CommonTemplates()
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
-    s.move(library / f"google/cloud/websecurityscanner_{library.name}")
-    s.move(library / "tests")
-    s.move(library / "scripts")
-    s.move(library / "docs", excludes=["index.rst"])
+    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
 s.remove_staging_dirs()
 
