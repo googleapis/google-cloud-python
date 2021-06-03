@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [1.29.0](https://www.github.com/googleapis/python-api-core/compare/v1.28.0...v1.29.0) (2021-06-02)
+
+
+### Features
+
+* HTTPIterator now accepts a page_size parameter to control page … ([#197](https://www.github.com/googleapis/python-api-core/issues/197)) ([a421913](https://www.github.com/googleapis/python-api-core/commit/a4219137a5bfcf2a6f44780ecdbf475c1129e461))
+
+
+### Documentation
+
+* fix broken links in multiprocessing.rst ([#195](https://www.github.com/googleapis/python-api-core/issues/195)) ([8d8bc51](https://www.github.com/googleapis/python-api-core/commit/8d8bc5150ee5543b4aeb2c271da034a5305d1436))
+
 ## [1.28.0](https://www.github.com/googleapis/python-api-core/compare/v1.27.0...v1.28.0) (2021-05-20)
 
 
