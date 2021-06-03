@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-artifact-registry/compare/v0.2.0...v0.2.1) (2021-06-01)
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#33](https://www.github.com/googleapis/python-artifact-registry/issues/33)) ([ca2907e](https://www.github.com/googleapis/python-artifact-registry/commit/ca2907efdcd05a88a63c798a367baa71f2fb78b4))
+
 ## [0.2.0](https://www.github.com/googleapis/python-artifact-registry/compare/v0.1.0...v0.2.0) (2021-05-25)
 
 
