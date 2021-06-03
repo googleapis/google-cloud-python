@@ -26,9 +26,7 @@ import aiohttp
 from google.auth.transport import _aiohttp_requests as aiohttp_requests
 from system_tests.system_tests_sync import conftest as sync_conftest
 
-ASYNC_REQUESTS_SESSION = aiohttp.ClientSession()
 
-ASYNC_REQUESTS_SESSION.verify = False
 TOKEN_INFO_URL = "https://www.googleapis.com/oauth2/v3/tokeninfo"
 
 
@@ -49,10 +47,18 @@ def authorized_user_file():
     """The full path to a valid authorized user file."""
     yield sync_conftest.AUTHORIZED_USER_FILE
 
+
+@pytest.fixture
+async def aiohttp_session():
+    async with aiohttp.ClientSession(auto_decompress=False) as session:
+        yield session
+
+
 @pytest.fixture(params=["aiohttp"])
-async def http_request(request):
+async def http_request(request, aiohttp_session):
     """A transport.request object."""
-    yield aiohttp_requests.Request(ASYNC_REQUESTS_SESSION)
+    yield aiohttp_requests.Request(aiohttp_session)
+
 
 @pytest.fixture
 async def token_info(http_request):

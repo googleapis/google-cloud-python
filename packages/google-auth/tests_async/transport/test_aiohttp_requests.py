@@ -112,11 +112,18 @@ class TestRequestResponse(async_compliance.RequestResponseTests):
         return aiohttp_requests.Request()
 
     def make_with_parameter_request(self):
-        http = mock.create_autospec(aiohttp.ClientSession, instance=True)
+        http = aiohttp.ClientSession(auto_decompress=False)
         return aiohttp_requests.Request(http)
 
+    def test_unsupported_session(self):
+        http = aiohttp.ClientSession(auto_decompress=True)
+        with pytest.raises(ValueError):
+            aiohttp_requests.Request(http)
+
     def test_timeout(self):
-        http = mock.create_autospec(aiohttp.ClientSession, instance=True)
+        http = mock.create_autospec(
+            aiohttp.ClientSession, instance=True, _auto_decompress=False
+        )
         request = aiohttp_requests.Request(http)
         request(url="http://example.com", method="GET", timeout=5)
 
@@ -142,7 +149,9 @@ class TestAuthorizedSession(object):
         assert authed_session.credentials == mock.sentinel.credentials
 
     def test_constructor_with_auth_request(self):
-        http = mock.create_autospec(aiohttp.ClientSession)
+        http = mock.create_autospec(
+            aiohttp.ClientSession, instance=True, _auto_decompress=False
+        )
         auth_request = aiohttp_requests.Request(http)
 
         authed_session = aiohttp_requests.AuthorizedSession(
