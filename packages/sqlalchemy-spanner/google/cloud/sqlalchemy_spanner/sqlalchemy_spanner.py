@@ -759,12 +759,17 @@ LIMIT 1
         return "AUTOCOMMIT" if conn.autocommit else "SERIALIZABLE"
 
     def do_rollback(self, dbapi_connection):
-        """To prevent transaction rollback error, rollback is ignored if
-        DBAPI rollback is already executed."""
+        """
+        To prevent rollback exception, don't rollback
+        committed/rolled back transactions.
+        """
         if (
             not isinstance(dbapi_connection, spanner_dbapi.Connection)
             and dbapi_connection.connection._transaction
-            and dbapi_connection.connection._transaction.rolled_back
+            and (
+                dbapi_connection.connection._transaction.rolled_back
+                or dbapi_connection.connection._transaction.committed
+            )
         ):
             pass
         else:
