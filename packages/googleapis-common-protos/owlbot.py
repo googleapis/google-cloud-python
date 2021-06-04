@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import os
+import subprocess
+import shutil
 
 
 import synthtool as s
 import synthtool.gcp as gcp
-from synthtool import tmp
 from synthtool.languages import python
 from synthtool.sources import git
 
@@ -26,29 +27,46 @@ GOOGLEAPIS_REPO = "googleapis/googleapis"
 #  Get api-common-protos
 # ----------------------------------------------------------------------------
 
-# Use api-common-protos as a proper synthtool git source
+# Clean up api-common-protos
+shutil.rmtree('api-common-protos', ignore_errors=True)
+
+# Clone api-common-protos
 api_common_protos_url = git.make_repo_clone_url(API_COMMON_PROTOS_REPO)
-api_common_protos = git.clone(api_common_protos_url)
+subprocess.run(["git", "clone", api_common_protos_url])
+
+# This is required in order for s.copy() to work
+s._tracked_paths.add("api-common-protos/google")
 
 excludes = [
     # Exclude iam protos (they are released in a separate package)
     "iam/**/*",
     "**/BUILD.bazel",
 ]
-s.copy(api_common_protos / "google", excludes=excludes)
+s.copy("api-common-protos/google", "google", excludes=excludes)
+
+# Clean up api-common-protos
+shutil.rmtree('api-common-protos')
 
 # ----------------------------------------------------------------------------
 #  Get gapic metadata proto from googleapis
 # ----------------------------------------------------------------------------
 
-# Use googleapis as a proper synthtool git source
+# Clean up googleapis
+shutil.rmtree('googleapis', ignore_errors=True)
+
+# Clone googleapis
 googleapis_url = git.make_repo_clone_url(GOOGLEAPIS_REPO)
-googleapis_protos = git.clone(googleapis_url)
+subprocess.run(["git", "clone", googleapis_url])
+
+# This is required in order for s.copy() to work
+s._tracked_paths.add("googleapis/gapic")
 
 # Gapic metadata proto needed by gapic-generator-python
 # Desired import is "from google.gapic.metadata import gapic_metadata_pb2"
-s.copy(googleapis_protos / "gapic",  "google/gapic", excludes=["lang/", "packaging/", "**/BUILD.bazel"],)
+s.copy("googleapis/gapic",  "google/gapic", excludes=["lang/", "packaging/", "**/BUILD.bazel"],)
 
+# Clean up googleapis
+shutil.rmtree('googleapis')
 
 # ----------------------------------------------------------------------------
 #  Add templated files
