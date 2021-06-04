@@ -1941,9 +1941,7 @@ class Test__datastore_run_query:
         _datastore_api.make_call.assert_called_once_with(
             "RunQuery", request, timeout=None
         )
-        _datastore_api.get_read_options.assert_called_once_with(
-            query, default_read_consistency=_datastore_api.EVENTUAL
-        )
+        _datastore_api.get_read_options.assert_called_once_with(query)
 
 
 class TestCursor:
