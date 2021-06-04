@@ -30,12 +30,14 @@ s.move(
     templated_files,
     excludes=[
         ".flake8",
+        ".trampolinerc",
         "MANIFEST.in",
         "setup.cfg",
         ".coveragerc",
         "noxfile.py",  # repo uses nox
         "docs/**/*",  # no docs to publish
         ".kokoro/docs/",
+        ".kokoro/docker/",
         ".kokoro/publish-docs.sh",
         ".kokoro/samples/**", # no samples
         ".kokoro/test-sample*",
