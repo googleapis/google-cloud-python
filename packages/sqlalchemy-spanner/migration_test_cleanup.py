@@ -14,11 +14,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import configparser
+import os
+import re
+
 from google.cloud import spanner
 
-client = spanner.Client()
+config = configparser.ConfigParser()
+if os.path.exists("test.cfg"):
+    config.read("test.cfg")
+else:
+    config.read("setup.cfg")
+db_url = config.get("db", "default")
 
-instance = client.instance("sqlalchemy-dialect-test")
+project = re.findall(r'projects(.*?)instances', db_url)
+instance_id = re.findall(r'instances(.*?)databases', db_url)
+
+client = spanner.Client(project="".join(project).replace('/', ''))
+instance = client.instance(instance_id="".join(instance_id).replace('/', ''))
 database = instance.database("compliance-test")
 
 database.update_ddl(["DROP TABLE account", "DROP TABLE alembic_version"]).result(120)
