@@ -33,8 +33,13 @@ def test_list_models_empty_w_timeout(client, PROJECT, DS_ID):
     )
 
 
+@pytest.mark.parametrize(
+    "extra,query", [({}, {}), (dict(page_size=42), dict(maxResults=42))]
+)
 @dataset_polymorphic
-def test_list_models_defaults(make_dataset, get_reference, client, PROJECT, DS_ID):
+def test_list_models_defaults(
+    make_dataset, get_reference, client, PROJECT, DS_ID, extra, query,
+):
     from google.cloud.bigquery.model import Model
 
     MODEL_1 = "model_one"
@@ -64,7 +69,7 @@ def test_list_models_defaults(make_dataset, get_reference, client, PROJECT, DS_I
     conn = client._connection = make_connection(DATA)
     dataset = make_dataset(PROJECT, DS_ID)
 
-    iterator = client.list_models(dataset)
+    iterator = client.list_models(dataset, **extra)
     assert iterator.dataset == get_reference(dataset)
     page = next(iterator.pages)
     models = list(page)
@@ -77,7 +82,7 @@ def test_list_models_defaults(make_dataset, get_reference, client, PROJECT, DS_I
     assert token == TOKEN
 
     conn.api_request.assert_called_once_with(
-        method="GET", path="/%s" % PATH, query_params={}, timeout=None
+        method="GET", path="/%s" % PATH, query_params=query, timeout=None
     )
 
 

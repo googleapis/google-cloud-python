@@ -157,3 +157,22 @@ def test_list_tables_explicit(client, PROJECT, DS_ID):
 def test_list_tables_wrong_type(client):
     with pytest.raises(TypeError):
         client.list_tables(42)
+
+
+@dataset_polymorphic
+def test_list_tables_page_size(make_dataset, get_reference, client, PROJECT, DS_ID):
+    path = "/projects/{}/datasets/{}/tables".format(PROJECT, DS_ID)
+    conn = client._connection = make_connection({})
+
+    dataset = make_dataset(PROJECT, DS_ID)
+    iterator = client.list_tables(dataset, timeout=7.5, page_size=42)
+    assert iterator.dataset == get_reference(dataset)
+    page = next(iterator.pages)
+    tables = list(page)
+    token = iterator.next_page_token
+
+    assert tables == []
+    assert token is None
+    conn.api_request.assert_called_once_with(
+        method="GET", path=path, query_params=dict(maxResults=42), timeout=7.5
+    )

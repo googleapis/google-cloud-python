@@ -34,8 +34,13 @@ def test_list_routines_empty_w_timeout(client):
     )
 
 
+@pytest.mark.parametrize(
+    "extra,query", [({}, {}), (dict(page_size=42), dict(maxResults=42))]
+)
 @dataset_polymorphic
-def test_list_routines_defaults(make_dataset, get_reference, client, PROJECT):
+def test_list_routines_defaults(
+    make_dataset, get_reference, client, PROJECT, extra, query
+):
     from google.cloud.bigquery.routine import Routine
 
     project_id = PROJECT
@@ -67,7 +72,7 @@ def test_list_routines_defaults(make_dataset, get_reference, client, PROJECT):
     conn = client._connection = make_connection(resource)
     dataset = make_dataset(client.project, dataset_id)
 
-    iterator = client.list_routines(dataset)
+    iterator = client.list_routines(dataset, **extra)
     assert iterator.dataset == get_reference(dataset)
     page = next(iterator.pages)
     routines = list(page)
@@ -80,7 +85,7 @@ def test_list_routines_defaults(make_dataset, get_reference, client, PROJECT):
     assert actual_token == token
 
     conn.api_request.assert_called_once_with(
-        method="GET", path=path, query_params={}, timeout=None
+        method="GET", path=path, query_params=query, timeout=None
     )
 
 

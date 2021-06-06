@@ -286,6 +286,7 @@ class Client(ClientWithProject):
         page_token: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: float = None,
+        page_size: int = None,
     ) -> page_iterator.Iterator:
         """List projects for the project associated with this client.
 
@@ -294,8 +295,8 @@ class Client(ClientWithProject):
 
         Args:
             max_results (Optional[int]):
-                Maximum number of projects to return, If not passed,
-                defaults to a value set by the API.
+                Maximum number of projects to return.
+                Defaults to a value set by the API.
 
             page_token (Optional[str]):
                 Token representing a cursor into the projects. If not passed,
@@ -309,6 +310,10 @@ class Client(ClientWithProject):
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
+
+            page_size (Optional[int]):
+                Maximum number of projects to return in each page.
+                Defaults to a value set by the API.
 
         Returns:
             google.api_core.page_iterator.Iterator:
@@ -335,6 +340,7 @@ class Client(ClientWithProject):
             items_key="projects",
             page_token=page_token,
             max_results=max_results,
+            page_size=page_size,
         )
 
     def list_datasets(
@@ -346,6 +352,7 @@ class Client(ClientWithProject):
         page_token: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: float = None,
+        page_size: int = None,
     ) -> page_iterator.Iterator:
         """List datasets for the project associated with this client.
 
@@ -375,6 +382,8 @@ class Client(ClientWithProject):
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
+            page_size (Optional[int]):
+                Maximum number of datasets to return per page.
 
         Returns:
             google.api_core.page_iterator.Iterator:
@@ -414,6 +423,7 @@ class Client(ClientWithProject):
             page_token=page_token,
             max_results=max_results,
             extra_params=extra_params,
+            page_size=page_size,
         )
 
     def dataset(self, dataset_id: str, project: str = None) -> DatasetReference:
@@ -1270,6 +1280,7 @@ class Client(ClientWithProject):
         page_token: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: float = None,
+        page_size: int = None,
     ) -> page_iterator.Iterator:
         """[Beta] List models in the dataset.
 
@@ -1288,7 +1299,7 @@ class Client(ClientWithProject):
                 to create a dataset reference from a string using
                 :func:`google.cloud.bigquery.dataset.DatasetReference.from_string`.
             max_results (Optional[int]):
-                Maximum number of models to return. If not passed, defaults to a
+                Maximum number of models to return. Defaults to a
                 value set by the API.
             page_token (Optional[str]):
                 Token representing a cursor into the models. If not passed,
@@ -1301,6 +1312,9 @@ class Client(ClientWithProject):
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
+            page_size (Optional[int]):
+                Maximum number of models to return per page.
+                Defaults to a value set by the API.
 
          Returns:
             google.api_core.page_iterator.Iterator:
@@ -1331,6 +1345,7 @@ class Client(ClientWithProject):
             items_key="models",
             page_token=page_token,
             max_results=max_results,
+            page_size=page_size,
         )
         result.dataset = dataset
         return result
@@ -1342,6 +1357,7 @@ class Client(ClientWithProject):
         page_token: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: float = None,
+        page_size: int = None,
     ) -> page_iterator.Iterator:
         """[Beta] List routines in the dataset.
 
@@ -1360,7 +1376,7 @@ class Client(ClientWithProject):
                 to create a dataset reference from a string using
                 :func:`google.cloud.bigquery.dataset.DatasetReference.from_string`.
             max_results (Optional[int]):
-                Maximum number of routines to return. If not passed, defaults
+                Maximum number of routines to return. Defaults
                 to a value set by the API.
             page_token (Optional[str]):
                 Token representing a cursor into the routines. If not passed,
@@ -1373,6 +1389,9 @@ class Client(ClientWithProject):
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
+            page_size (Optional[int]):
+                Maximum number of routines to return per page.
+                Defaults to a value set by the API.
 
          Returns:
             google.api_core.page_iterator.Iterator:
@@ -1403,6 +1422,7 @@ class Client(ClientWithProject):
             items_key="routines",
             page_token=page_token,
             max_results=max_results,
+            page_size=page_size,
         )
         result.dataset = dataset
         return result
@@ -1414,6 +1434,7 @@ class Client(ClientWithProject):
         page_token: str = None,
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: float = None,
+        page_size: int = None,
     ) -> page_iterator.Iterator:
         """List tables in the dataset.
 
@@ -1432,7 +1453,7 @@ class Client(ClientWithProject):
                 to create a dataset reference from a string using
                 :func:`google.cloud.bigquery.dataset.DatasetReference.from_string`.
             max_results (Optional[int]):
-                Maximum number of tables to return. If not passed, defaults
+                Maximum number of tables to return. Defaults
                 to a value set by the API.
             page_token (Optional[str]):
                 Token representing a cursor into the tables. If not passed,
@@ -1445,6 +1466,9 @@ class Client(ClientWithProject):
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
+            page_size (Optional[int]):
+                Maximum number of tables to return per page.
+                Defaults to a value set by the API.
 
         Returns:
             google.api_core.page_iterator.Iterator:
@@ -1474,6 +1498,7 @@ class Client(ClientWithProject):
             items_key="tables",
             page_token=page_token,
             max_results=max_results,
+            page_size=page_size,
         )
         result.dataset = dataset
         return result
@@ -2112,6 +2137,7 @@ class Client(ClientWithProject):
         timeout: float = None,
         min_creation_time: datetime.datetime = None,
         max_creation_time: datetime.datetime = None,
+        page_size: int = None,
     ) -> page_iterator.Iterator:
         """List jobs for the project associated with this client.
 
@@ -2157,6 +2183,8 @@ class Client(ClientWithProject):
                 Max value for job creation time. If set, only jobs created
                 before or at this timestamp are returned. If the datetime has
                 no time zone assumes UTC time.
+            page_size (Optional[int]):
+                Maximum number of jobs to return per page.
 
         Returns:
             google.api_core.page_iterator.Iterator:
@@ -2208,6 +2236,7 @@ class Client(ClientWithProject):
             page_token=page_token,
             max_results=max_results,
             extra_params=extra_params,
+            page_size=page_size,
         )
 
     def load_table_from_uri(
