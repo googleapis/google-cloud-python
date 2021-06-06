@@ -37,7 +37,7 @@ s.move(
         "noxfile.py",  # repo uses nox
         "docs/**/*",  # no docs to publish
         ".kokoro/docs/",
-        ".kokoro/docker/",
+        ".kokoro/docker/**",
         ".kokoro/publish-docs.sh",
         ".kokoro/samples/**", # no samples
         ".kokoro/test-sample*",
