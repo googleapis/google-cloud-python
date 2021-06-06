@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [2.19.0](https://www.github.com/googleapis/python-bigquery/compare/v2.18.0...v2.19.0) (2021-06-06)
+
+
+### Features
+
+* list_tables, list_projects, list_datasets, list_models, list_routines, and list_jobs now accept a page_size parameter to control page size  ([#686](https://www.github.com/googleapis/python-bigquery/issues/686)) ([1f1c4b7](https://www.github.com/googleapis/python-bigquery/commit/1f1c4b7ba4390fc4c5c8186bc22b83b45304ca06))
+
 ## [2.18.0](https://www.github.com/googleapis/python-bigquery/compare/v2.17.0...v2.18.0) (2021-06-02)
 
 
