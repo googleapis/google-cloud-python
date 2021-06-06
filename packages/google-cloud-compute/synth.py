@@ -45,6 +45,11 @@ s.move(
   templated_files, excludes=[".coveragerc"] # the microgenerator has a good coveragerc file
 )
 
+# --------------------------------------------------------------------------
+# Samples templates
+# --------------------------------------------------------------------------
+python.py_samples()
+
 # Don't treat docs warnings as errors
 # A few errors like:
 # docstring of google.cloud.compute_v1.types.compute.InterconnectOutageNotification:31: WARNING: Unknown target name: "it".
