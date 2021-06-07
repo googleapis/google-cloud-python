@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +15,10 @@
 #
 
 from .services.bigtable_instance_admin import BigtableInstanceAdminClient
+from .services.bigtable_instance_admin import BigtableInstanceAdminAsyncClient
 from .services.bigtable_table_admin import BigtableTableAdminClient
+from .services.bigtable_table_admin import BigtableTableAdminAsyncClient
+
 from .types.bigtable_instance_admin import CreateAppProfileRequest
 from .types.bigtable_instance_admin import CreateClusterMetadata
 from .types.bigtable_instance_admin import CreateClusterRequest
@@ -79,15 +81,17 @@ from .types.table import ColumnFamily
 from .types.table import EncryptionInfo
 from .types.table import GcRule
 from .types.table import RestoreInfo
-from .types.table import RestoreSourceType
 from .types.table import Snapshot
 from .types.table import Table
-
+from .types.table import RestoreSourceType
 
 __all__ = (
+    "BigtableInstanceAdminAsyncClient",
+    "BigtableTableAdminAsyncClient",
     "AppProfile",
     "Backup",
     "BackupInfo",
+    "BigtableInstanceAdminClient",
     "BigtableTableAdminClient",
     "CheckConsistencyRequest",
     "CheckConsistencyResponse",
@@ -151,5 +155,4 @@ __all__ = (
     "UpdateBackupRequest",
     "UpdateClusterMetadata",
     "UpdateInstanceMetadata",
-    "BigtableInstanceAdminClient",
 )

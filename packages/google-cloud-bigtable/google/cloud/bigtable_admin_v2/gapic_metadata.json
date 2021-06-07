@@ -1,0 +1,447 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.bigtable_admin_v2",
+  "protoPackage": "google.bigtable.admin.v2",
+  "schema": "1.0",
+  "services": {
+    "BigtableInstanceAdmin": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "BigtableInstanceAdminClient",
+          "rpcs": {
+            "CreateAppProfile": {
+              "methods": [
+                "create_app_profile"
+              ]
+            },
+            "CreateCluster": {
+              "methods": [
+                "create_cluster"
+              ]
+            },
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "DeleteAppProfile": {
+              "methods": [
+                "delete_app_profile"
+              ]
+            },
+            "DeleteCluster": {
+              "methods": [
+                "delete_cluster"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "GetAppProfile": {
+              "methods": [
+                "get_app_profile"
+              ]
+            },
+            "GetCluster": {
+              "methods": [
+                "get_cluster"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "ListAppProfiles": {
+              "methods": [
+                "list_app_profiles"
+              ]
+            },
+            "ListClusters": {
+              "methods": [
+                "list_clusters"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "PartialUpdateInstance": {
+              "methods": [
+                "partial_update_instance"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
+            },
+            "UpdateAppProfile": {
+              "methods": [
+                "update_app_profile"
+              ]
+            },
+            "UpdateCluster": {
+              "methods": [
+                "update_cluster"
+              ]
+            },
+            "UpdateInstance": {
+              "methods": [
+                "update_instance"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "BigtableInstanceAdminAsyncClient",
+          "rpcs": {
+            "CreateAppProfile": {
+              "methods": [
+                "create_app_profile"
+              ]
+            },
+            "CreateCluster": {
+              "methods": [
+                "create_cluster"
+              ]
+            },
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "DeleteAppProfile": {
+              "methods": [
+                "delete_app_profile"
+              ]
+            },
+            "DeleteCluster": {
+              "methods": [
+                "delete_cluster"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "GetAppProfile": {
+              "methods": [
+                "get_app_profile"
+              ]
+            },
+            "GetCluster": {
+              "methods": [
+                "get_cluster"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "ListAppProfiles": {
+              "methods": [
+                "list_app_profiles"
+              ]
+            },
+            "ListClusters": {
+              "methods": [
+                "list_clusters"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "PartialUpdateInstance": {
+              "methods": [
+                "partial_update_instance"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
+            },
+            "UpdateAppProfile": {
+              "methods": [
+                "update_app_profile"
+              ]
+            },
+            "UpdateCluster": {
+              "methods": [
+                "update_cluster"
+              ]
+            },
+            "UpdateInstance": {
+              "methods": [
+                "update_instance"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "BigtableTableAdmin": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "BigtableTableAdminClient",
+          "rpcs": {
+            "CheckConsistency": {
+              "methods": [
+                "check_consistency"
+              ]
+            },
+            "CreateBackup": {
+              "methods": [
+                "create_backup"
+              ]
+            },
+            "CreateTable": {
+              "methods": [
+                "create_table"
+              ]
+            },
+            "CreateTableFromSnapshot": {
+              "methods": [
+                "create_table_from_snapshot"
+              ]
+            },
+            "DeleteBackup": {
+              "methods": [
+                "delete_backup"
+              ]
+            },
+            "DeleteSnapshot": {
+              "methods": [
+                "delete_snapshot"
+              ]
+            },
+            "DeleteTable": {
+              "methods": [
+                "delete_table"
+              ]
+            },
+            "DropRowRange": {
+              "methods": [
+                "drop_row_range"
+              ]
+            },
+            "GenerateConsistencyToken": {
+              "methods": [
+                "generate_consistency_token"
+              ]
+            },
+            "GetBackup": {
+              "methods": [
+                "get_backup"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "GetSnapshot": {
+              "methods": [
+                "get_snapshot"
+              ]
+            },
+            "GetTable": {
+              "methods": [
+                "get_table"
+              ]
+            },
+            "ListBackups": {
+              "methods": [
+                "list_backups"
+              ]
+            },
+            "ListSnapshots": {
+              "methods": [
+                "list_snapshots"
+              ]
+            },
+            "ListTables": {
+              "methods": [
+                "list_tables"
+              ]
+            },
+            "ModifyColumnFamilies": {
+              "methods": [
+                "modify_column_families"
+              ]
+            },
+            "RestoreTable": {
+              "methods": [
+                "restore_table"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "SnapshotTable": {
+              "methods": [
+                "snapshot_table"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
+            },
+            "UpdateBackup": {
+              "methods": [
+                "update_backup"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "BigtableTableAdminAsyncClient",
+          "rpcs": {
+            "CheckConsistency": {
+              "methods": [
+                "check_consistency"
+              ]
+            },
+            "CreateBackup": {
+              "methods": [
+                "create_backup"
+              ]
+            },
+            "CreateTable": {
+              "methods": [
+                "create_table"
+              ]
+            },
+            "CreateTableFromSnapshot": {
+              "methods": [
+                "create_table_from_snapshot"
+              ]
+            },
+            "DeleteBackup": {
+              "methods": [
+                "delete_backup"
+              ]
+            },
+            "DeleteSnapshot": {
+              "methods": [
+                "delete_snapshot"
+              ]
+            },
+            "DeleteTable": {
+              "methods": [
+                "delete_table"
+              ]
+            },
+            "DropRowRange": {
+              "methods": [
+                "drop_row_range"
+              ]
+            },
+            "GenerateConsistencyToken": {
+              "methods": [
+                "generate_consistency_token"
+              ]
+            },
+            "GetBackup": {
+              "methods": [
+                "get_backup"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "GetSnapshot": {
+              "methods": [
+                "get_snapshot"
+              ]
+            },
+            "GetTable": {
+              "methods": [
+                "get_table"
+              ]
+            },
+            "ListBackups": {
+              "methods": [
+                "list_backups"
+              ]
+            },
+            "ListSnapshots": {
+              "methods": [
+                "list_snapshots"
+              ]
+            },
+            "ListTables": {
+              "methods": [
+                "list_tables"
+              ]
+            },
+            "ModifyColumnFamilies": {
+              "methods": [
+                "modify_column_families"
+              ]
+            },
+            "RestoreTable": {
+              "methods": [
+                "restore_table"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "SnapshotTable": {
+              "methods": [
+                "snapshot_table"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
+            },
+            "UpdateBackup": {
+              "methods": [
+                "update_backup"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

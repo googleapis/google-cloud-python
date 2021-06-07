@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.bigtable_admin_v2.types import instance as gba_instance
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -54,7 +51,6 @@ __protobuf__ = proto.module(
 
 class CreateInstanceRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.CreateInstance.
-
     Attributes:
         parent (str):
             Required. The unique name of the project in which to create
@@ -76,12 +72,9 @@ class CreateInstanceRequest(proto.Message):
             at most four clusters can be specified.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    instance_id = proto.Field(proto.STRING, number=2)
-
+    parent = proto.Field(proto.STRING, number=1,)
+    instance_id = proto.Field(proto.STRING, number=2,)
     instance = proto.Field(proto.MESSAGE, number=3, message=gba_instance.Instance,)
-
     clusters = proto.MapField(
         proto.STRING, proto.MESSAGE, number=4, message=gba_instance.Cluster,
     )
@@ -89,19 +82,17 @@ class CreateInstanceRequest(proto.Message):
 
 class GetInstanceRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.GetInstance.
-
     Attributes:
         name (str):
             Required. The unique name of the requested instance. Values
             are of the form ``projects/{project}/instances/{instance}``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListInstancesRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.ListInstances.
-
     Attributes:
         parent (str):
             Required. The unique name of the project for which a list of
@@ -111,14 +102,12 @@ class ListInstancesRequest(proto.Message):
             DEPRECATED: This field is unused and ignored.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_token = proto.Field(proto.STRING, number=2)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_token = proto.Field(proto.STRING, number=2,)
 
 
 class ListInstancesResponse(proto.Message):
     r"""Response message for BigtableInstanceAdmin.ListInstances.
-
     Attributes:
         instances (Sequence[google.cloud.bigtable_admin_v2.types.Instance]):
             The list of requested instances.
@@ -141,10 +130,8 @@ class ListInstancesResponse(proto.Message):
     instances = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gba_instance.Instance,
     )
-
-    failed_locations = proto.RepeatedField(proto.STRING, number=2)
-
-    next_page_token = proto.Field(proto.STRING, number=3)
+    failed_locations = proto.RepeatedField(proto.STRING, number=2,)
+    next_page_token = proto.Field(proto.STRING, number=3,)
 
 
 class PartialUpdateInstanceRequest(proto.Message):
@@ -161,13 +148,13 @@ class PartialUpdateInstanceRequest(proto.Message):
     """
 
     instance = proto.Field(proto.MESSAGE, number=1, message=gba_instance.Instance,)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class DeleteInstanceRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.DeleteInstance.
-
     Attributes:
         name (str):
             Required. The unique name of the instance to be deleted.
@@ -175,12 +162,11 @@ class DeleteInstanceRequest(proto.Message):
             ``projects/{project}/instances/{instance}``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateClusterRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.CreateCluster.
-
     Attributes:
         parent (str):
             Required. The unique name of the instance in which to create
@@ -196,16 +182,13 @@ class CreateClusterRequest(proto.Message):
             ``OutputOnly`` must be left blank.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    cluster_id = proto.Field(proto.STRING, number=2)
-
+    parent = proto.Field(proto.STRING, number=1,)
+    cluster_id = proto.Field(proto.STRING, number=2,)
     cluster = proto.Field(proto.MESSAGE, number=3, message=gba_instance.Cluster,)
 
 
 class GetClusterRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.GetCluster.
-
     Attributes:
         name (str):
             Required. The unique name of the requested cluster. Values
@@ -213,12 +196,11 @@ class GetClusterRequest(proto.Message):
             ``projects/{project}/instances/{instance}/clusters/{cluster}``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListClustersRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.ListClusters.
-
     Attributes:
         parent (str):
             Required. The unique name of the instance for which a list
@@ -230,14 +212,12 @@ class ListClustersRequest(proto.Message):
             DEPRECATED: This field is unused and ignored.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_token = proto.Field(proto.STRING, number=2)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_token = proto.Field(proto.STRING, number=2,)
 
 
 class ListClustersResponse(proto.Message):
     r"""Response message for BigtableInstanceAdmin.ListClusters.
-
     Attributes:
         clusters (Sequence[google.cloud.bigtable_admin_v2.types.Cluster]):
             The list of requested clusters.
@@ -259,15 +239,12 @@ class ListClustersResponse(proto.Message):
     clusters = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gba_instance.Cluster,
     )
-
-    failed_locations = proto.RepeatedField(proto.STRING, number=2)
-
-    next_page_token = proto.Field(proto.STRING, number=3)
+    failed_locations = proto.RepeatedField(proto.STRING, number=2,)
+    next_page_token = proto.Field(proto.STRING, number=3,)
 
 
 class DeleteClusterRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.DeleteCluster.
-
     Attributes:
         name (str):
             Required. The unique name of the cluster to be deleted.
@@ -275,12 +252,11 @@ class DeleteClusterRequest(proto.Message):
             ``projects/{project}/instances/{instance}/clusters/{cluster}``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateInstanceMetadata(proto.Message):
     r"""The metadata for the Operation returned by CreateInstance.
-
     Attributes:
         original_request (google.cloud.bigtable_admin_v2.types.CreateInstanceRequest):
             The request that prompted the initiation of
@@ -296,15 +272,14 @@ class CreateInstanceMetadata(proto.Message):
     original_request = proto.Field(
         proto.MESSAGE, number=1, message="CreateInstanceRequest",
     )
-
-    request_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
-    finish_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+    request_time = proto.Field(
+        proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+    )
+    finish_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
 
 
 class UpdateInstanceMetadata(proto.Message):
     r"""The metadata for the Operation returned by UpdateInstance.
-
     Attributes:
         original_request (google.cloud.bigtable_admin_v2.types.PartialUpdateInstanceRequest):
             The request that prompted the initiation of
@@ -320,15 +295,14 @@ class UpdateInstanceMetadata(proto.Message):
     original_request = proto.Field(
         proto.MESSAGE, number=1, message="PartialUpdateInstanceRequest",
     )
-
-    request_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
-    finish_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+    request_time = proto.Field(
+        proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+    )
+    finish_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
 
 
 class CreateClusterMetadata(proto.Message):
     r"""The metadata for the Operation returned by CreateCluster.
-
     Attributes:
         original_request (google.cloud.bigtable_admin_v2.types.CreateClusterRequest):
             The request that prompted the initiation of
@@ -344,15 +318,14 @@ class CreateClusterMetadata(proto.Message):
     original_request = proto.Field(
         proto.MESSAGE, number=1, message="CreateClusterRequest",
     )
-
-    request_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
-    finish_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+    request_time = proto.Field(
+        proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+    )
+    finish_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
 
 
 class UpdateClusterMetadata(proto.Message):
     r"""The metadata for the Operation returned by UpdateCluster.
-
     Attributes:
         original_request (google.cloud.bigtable_admin_v2.types.Cluster):
             The request that prompted the initiation of
@@ -368,15 +341,14 @@ class UpdateClusterMetadata(proto.Message):
     original_request = proto.Field(
         proto.MESSAGE, number=1, message=gba_instance.Cluster,
     )
-
-    request_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
-    finish_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+    request_time = proto.Field(
+        proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+    )
+    finish_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
 
 
 class CreateAppProfileRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.CreateAppProfile.
-
     Attributes:
         parent (str):
             Required. The unique name of the instance in which to create
@@ -395,18 +367,14 @@ class CreateAppProfileRequest(proto.Message):
             the app profile.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    app_profile_id = proto.Field(proto.STRING, number=2)
-
+    parent = proto.Field(proto.STRING, number=1,)
+    app_profile_id = proto.Field(proto.STRING, number=2,)
     app_profile = proto.Field(proto.MESSAGE, number=3, message=gba_instance.AppProfile,)
-
-    ignore_warnings = proto.Field(proto.BOOL, number=4)
+    ignore_warnings = proto.Field(proto.BOOL, number=4,)
 
 
 class GetAppProfileRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.GetAppProfile.
-
     Attributes:
         name (str):
             Required. The unique name of the requested app profile.
@@ -414,12 +382,11 @@ class GetAppProfileRequest(proto.Message):
             ``projects/{project}/instances/{instance}/appProfiles/{app_profile}``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListAppProfilesRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.ListAppProfiles.
-
     Attributes:
         parent (str):
             Required. The unique name of the instance for which a list
@@ -444,16 +411,13 @@ class ListAppProfilesRequest(proto.Message):
             call.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=2)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=2,)
 
 
 class ListAppProfilesResponse(proto.Message):
     r"""Response message for BigtableInstanceAdmin.ListAppProfiles.
-
     Attributes:
         app_profiles (Sequence[google.cloud.bigtable_admin_v2.types.AppProfile]):
             The list of requested app profiles.
@@ -476,15 +440,12 @@ class ListAppProfilesResponse(proto.Message):
     app_profiles = proto.RepeatedField(
         proto.MESSAGE, number=1, message=gba_instance.AppProfile,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
-
-    failed_locations = proto.RepeatedField(proto.STRING, number=3)
+    next_page_token = proto.Field(proto.STRING, number=2,)
+    failed_locations = proto.RepeatedField(proto.STRING, number=3,)
 
 
 class UpdateAppProfileRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.UpdateAppProfile.
-
     Attributes:
         app_profile (google.cloud.bigtable_admin_v2.types.AppProfile):
             Required. The app profile which will
@@ -499,15 +460,14 @@ class UpdateAppProfileRequest(proto.Message):
     """
 
     app_profile = proto.Field(proto.MESSAGE, number=1, message=gba_instance.AppProfile,)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
-
-    ignore_warnings = proto.Field(proto.BOOL, number=3)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
+    ignore_warnings = proto.Field(proto.BOOL, number=3,)
 
 
 class DeleteAppProfileRequest(proto.Message):
     r"""Request message for BigtableInstanceAdmin.DeleteAppProfile.
-
     Attributes:
         name (str):
             Required. The unique name of the app profile to be deleted.
@@ -518,13 +478,12 @@ class DeleteAppProfileRequest(proto.Message):
             deleting the app profile.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    ignore_warnings = proto.Field(proto.BOOL, number=2)
+    name = proto.Field(proto.STRING, number=1,)
+    ignore_warnings = proto.Field(proto.BOOL, number=2,)
 
 
 class UpdateAppProfileMetadata(proto.Message):
-    r"""The metadata for the Operation returned by UpdateAppProfile."""
+    r"""The metadata for the Operation returned by UpdateAppProfile.    """
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

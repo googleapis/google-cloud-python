@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -38,11 +36,10 @@ from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import pagers
 from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
 from google.cloud.bigtable_admin_v2.types import table
 from google.cloud.bigtable_admin_v2.types import table as gba_table
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import BigtableTableAdminTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import BigtableTableAdminGrpcTransport
 from .transports.grpc_asyncio import BigtableTableAdminGrpcAsyncIOTransport
@@ -65,7 +62,7 @@ class BigtableTableAdminClientMeta(type):
     def get_transport_class(
         cls, label: str = None,
     ) -> Type[BigtableTableAdminTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -93,7 +90,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -127,7 +125,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -144,7 +143,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -163,23 +162,24 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
     @property
     def transport(self) -> BigtableTableAdminTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            BigtableTableAdminTransport: The transport used by the client instance.
+            BigtableTableAdminTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
     @staticmethod
     def backup_path(project: str, instance: str, cluster: str, backup: str,) -> str:
-        """Return a fully-qualified backup string."""
+        """Returns a fully-qualified backup string."""
         return "projects/{project}/instances/{instance}/clusters/{cluster}/backups/{backup}".format(
             project=project, instance=instance, cluster=cluster, backup=backup,
         )
 
     @staticmethod
     def parse_backup_path(path: str) -> Dict[str, str]:
-        """Parse a backup path into its component segments."""
+        """Parses a backup path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)/clusters/(?P<cluster>.+?)/backups/(?P<backup>.+?)$",
             path,
@@ -188,14 +188,14 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
     @staticmethod
     def cluster_path(project: str, instance: str, cluster: str,) -> str:
-        """Return a fully-qualified cluster string."""
+        """Returns a fully-qualified cluster string."""
         return "projects/{project}/instances/{instance}/clusters/{cluster}".format(
             project=project, instance=instance, cluster=cluster,
         )
 
     @staticmethod
     def parse_cluster_path(path: str) -> Dict[str, str]:
-        """Parse a cluster path into its component segments."""
+        """Parses a cluster path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)/clusters/(?P<cluster>.+?)$",
             path,
@@ -210,7 +210,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         crypto_key: str,
         crypto_key_version: str,
     ) -> str:
-        """Return a fully-qualified crypto_key_version string."""
+        """Returns a fully-qualified crypto_key_version string."""
         return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
             project=project,
             location=location,
@@ -221,7 +221,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
     @staticmethod
     def parse_crypto_key_version_path(path: str) -> Dict[str, str]:
-        """Parse a crypto_key_version path into its component segments."""
+        """Parses a crypto_key_version path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)/cryptoKeyVersions/(?P<crypto_key_version>.+?)$",
             path,
@@ -230,27 +230,27 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
     @staticmethod
     def instance_path(project: str, instance: str,) -> str:
-        """Return a fully-qualified instance string."""
+        """Returns a fully-qualified instance string."""
         return "projects/{project}/instances/{instance}".format(
             project=project, instance=instance,
         )
 
     @staticmethod
     def parse_instance_path(path: str) -> Dict[str, str]:
-        """Parse a instance path into its component segments."""
+        """Parses a instance path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
     def snapshot_path(project: str, instance: str, cluster: str, snapshot: str,) -> str:
-        """Return a fully-qualified snapshot string."""
+        """Returns a fully-qualified snapshot string."""
         return "projects/{project}/instances/{instance}/clusters/{cluster}/snapshots/{snapshot}".format(
             project=project, instance=instance, cluster=cluster, snapshot=snapshot,
         )
 
     @staticmethod
     def parse_snapshot_path(path: str) -> Dict[str, str]:
-        """Parse a snapshot path into its component segments."""
+        """Parses a snapshot path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)/clusters/(?P<cluster>.+?)/snapshots/(?P<snapshot>.+?)$",
             path,
@@ -259,14 +259,14 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
     @staticmethod
     def table_path(project: str, instance: str, table: str,) -> str:
-        """Return a fully-qualified table string."""
+        """Returns a fully-qualified table string."""
         return "projects/{project}/instances/{instance}/tables/{table}".format(
             project=project, instance=instance, table=table,
         )
 
     @staticmethod
     def parse_table_path(path: str) -> Dict[str, str]:
-        """Parse a table path into its component segments."""
+        """Parses a table path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)/tables/(?P<table>.+?)$",
             path,
@@ -275,7 +275,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -288,7 +288,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -299,7 +299,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -310,7 +310,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -321,7 +321,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -335,12 +335,12 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, BigtableTableAdminTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the bigtable table admin client.
+        """Instantiates the bigtable table admin client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -395,9 +395,10 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -409,12 +410,14 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -429,8 +432,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -486,7 +489,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``table`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -517,10 +519,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, bigtable_table_admin.CreateTableRequest):
             request = bigtable_table_admin.CreateTableRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if table_id is not None:
@@ -600,7 +600,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``source_snapshot`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -632,10 +631,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, bigtable_table_admin.CreateTableFromSnapshotRequest):
             request = bigtable_table_admin.CreateTableFromSnapshotRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if table_id is not None:
@@ -692,7 +689,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -724,10 +720,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, bigtable_table_admin.ListTablesRequest):
             request = bigtable_table_admin.ListTablesRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -776,7 +770,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -807,10 +800,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, bigtable_table_admin.GetTableRequest):
             request = bigtable_table_admin.GetTableRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -854,7 +845,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -877,10 +867,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, bigtable_table_admin.DeleteTableRequest):
             request = bigtable_table_admin.DeleteTableRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -941,7 +929,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``modifications`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -972,10 +959,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, bigtable_table_admin.ModifyColumnFamiliesRequest):
             request = bigtable_table_admin.ModifyColumnFamiliesRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
             if modifications is not None:
@@ -1014,7 +999,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
             request (google.cloud.bigtable_admin_v2.types.DropRowRangeRequest):
                 The request object. Request message for
                 [google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange][google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange]
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1022,7 +1006,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
-
         # Minor optimization to avoid making a copy if the user passes
         # in a bigtable_table_admin.DropRowRangeRequest.
         # There's no risk of modifying the input as we've already verified
@@ -1072,7 +1055,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1103,10 +1085,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
             request, bigtable_table_admin.GenerateConsistencyTokenRequest
         ):
             request = bigtable_table_admin.GenerateConsistencyTokenRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1162,7 +1142,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``consistency_token`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1191,10 +1170,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, bigtable_table_admin.CheckConsistencyRequest):
             request = bigtable_table_admin.CheckConsistencyRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
             if consistency_token is not None:
@@ -1279,7 +1256,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``description`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1318,10 +1294,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, bigtable_table_admin.SnapshotTableRequest):
             request = bigtable_table_admin.SnapshotTableRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
             if cluster is not None:
@@ -1391,7 +1365,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1430,10 +1403,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, bigtable_table_admin.GetSnapshotRequest):
             request = bigtable_table_admin.GetSnapshotRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1492,7 +1463,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1531,10 +1501,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, bigtable_table_admin.ListSnapshotsRequest):
             request = bigtable_table_admin.ListSnapshotsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1595,7 +1563,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1618,10 +1585,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, bigtable_table_admin.DeleteSnapshotRequest):
             request = bigtable_table_admin.DeleteSnapshotRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1691,7 +1656,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``backup`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1723,10 +1687,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, bigtable_table_admin.CreateBackupRequest):
             request = bigtable_table_admin.CreateBackupRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if backup_id is not None:
@@ -1781,7 +1743,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1808,10 +1769,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, bigtable_table_admin.GetBackupRequest):
             request = bigtable_table_admin.GetBackupRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1836,7 +1795,7 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         request: bigtable_table_admin.UpdateBackupRequest = None,
         *,
         backup: table.Backup = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1870,7 +1829,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1897,10 +1855,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, bigtable_table_admin.UpdateBackupRequest):
             request = bigtable_table_admin.UpdateBackupRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if backup is not None:
                 request.backup = backup
             if update_mask is not None:
@@ -1947,7 +1903,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1970,10 +1925,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, bigtable_table_admin.DeleteBackupRequest):
             request = bigtable_table_admin.DeleteBackupRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -2019,7 +1972,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2051,10 +2003,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, bigtable_table_admin.ListBackupsRequest):
             request = bigtable_table_admin.ListBackupsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -2089,8 +2039,8 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Create a new table by restoring from a completed backup. The new
-        table must be in the same instance as the instance containing
-        the backup. The returned table [long-running
+        table must be in the same project as the instance containing the
+        backup. The returned table [long-running
         operation][google.longrunning.Operation] can be used to track
         the progress of the operation, and to cancel it. The
         [metadata][google.longrunning.Operation.metadata] field type is
@@ -2102,7 +2052,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
             request (google.cloud.bigtable_admin_v2.types.RestoreTableRequest):
                 The request object. The request for
                 [RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable].
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2119,7 +2068,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
         """
         # Create or coerce a protobuf request object.
-
         # Minor optimization to avoid making a copy if the user passes
         # in a bigtable_table_admin.RestoreTableRequest.
         # There's no risk of modifying the input as we've already verified
@@ -2153,13 +2101,13 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
     def get_iam_policy(
         self,
-        request: iam_policy.GetIamPolicyRequest = None,
+        request: iam_policy_pb2.GetIamPolicyRequest = None,
         *,
         resource: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Gets the access control policy for a Table or Backup
         resource. Returns an empty policy if the resource exists
         but does not have a policy set.
@@ -2177,7 +2125,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2256,11 +2203,10 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.GetIamPolicyRequest(**request)
+            request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.GetIamPolicyRequest()
-
+            request = iam_policy_pb2.GetIamPolicyRequest()
             if resource is not None:
                 request.resource = resource
 
@@ -2282,13 +2228,13 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
     def set_iam_policy(
         self,
-        request: iam_policy.SetIamPolicyRequest = None,
+        request: iam_policy_pb2.SetIamPolicyRequest = None,
         *,
         resource: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Sets the access control policy on a Table or Backup
         resource. Replaces any existing policy.
 
@@ -2305,7 +2251,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2384,11 +2329,10 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.SetIamPolicyRequest(**request)
+            request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.SetIamPolicyRequest()
-
+            request = iam_policy_pb2.SetIamPolicyRequest()
             if resource is not None:
                 request.resource = resource
 
@@ -2410,14 +2354,14 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
 
     def test_iam_permissions(
         self,
-        request: iam_policy.TestIamPermissionsRequest = None,
+        request: iam_policy_pb2.TestIamPermissionsRequest = None,
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> iam_policy.TestIamPermissionsResponse:
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that the caller has on the
         specified Table or Backup resource.
 
@@ -2443,7 +2387,6 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
                 This corresponds to the ``permissions`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2467,14 +2410,12 @@ class BigtableTableAdminClient(metaclass=BigtableTableAdminClientMeta):
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.TestIamPermissionsRequest(**request)
+            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.TestIamPermissionsRequest()
-
+            request = iam_policy_pb2.TestIamPermissionsRequest()
             if resource is not None:
                 request.resource = resource
-
             if permissions:
                 request.permissions.extend(permissions)
 

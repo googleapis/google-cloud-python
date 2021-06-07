@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,45 +39,44 @@ def partition(
 class bigtable_adminCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'check_consistency': ('name', 'consistency_token', ),
-    'create_app_profile': ('parent', 'app_profile_id', 'app_profile', 'ignore_warnings', ),
-    'create_backup': ('parent', 'backup_id', 'backup', ),
-    'create_cluster': ('parent', 'cluster_id', 'cluster', ),
-    'create_instance': ('parent', 'instance_id', 'instance', 'clusters', ),
-    'create_table': ('parent', 'table_id', 'table', 'initial_splits', ),
-    'create_table_from_snapshot': ('parent', 'table_id', 'source_snapshot', ),
-    'delete_app_profile': ('name', 'ignore_warnings', ),
-    'delete_backup': ('name', ),
-    'delete_cluster': ('name', ),
-    'delete_instance': ('name', ),
-    'delete_snapshot': ('name', ),
-    'delete_table': ('name', ),
-    'drop_row_range': ('name', 'row_key_prefix', 'delete_all_data_from_table', ),
-    'generate_consistency_token': ('name', ),
-    'get_app_profile': ('name', ),
-    'get_backup': ('name', ),
-    'get_cluster': ('name', ),
-    'get_iam_policy': ('resource', 'options', ),
-    'get_instance': ('name', ),
-    'get_snapshot': ('name', ),
-    'get_table': ('name', 'view', ),
-    'list_app_profiles': ('parent', 'page_size', 'page_token', ),
-    'list_backups': ('parent', 'filter', 'order_by', 'page_size', 'page_token', ),
-    'list_clusters': ('parent', 'page_token', ),
-    'list_instances': ('parent', 'page_token', ),
-    'list_snapshots': ('parent', 'page_size', 'page_token', ),
-    'list_tables': ('parent', 'view', 'page_size', 'page_token', ),
-    'modify_column_families': ('name', 'modifications', ),
-    'partial_update_instance': ('instance', 'update_mask', ),
-    'restore_table': ('parent', 'table_id', 'backup', ),
-    'set_iam_policy': ('resource', 'policy', ),
-    'snapshot_table': ('name', 'cluster', 'snapshot_id', 'ttl', 'description', ),
-    'test_iam_permissions': ('resource', 'permissions', ),
-    'update_app_profile': ('app_profile', 'update_mask', 'ignore_warnings', ),
-    'update_backup': ('backup', 'update_mask', ),
-    'update_cluster': ('serve_nodes', 'name', 'location', 'state', 'default_storage_type', 'encryption_config', ),
-    'update_instance': ('display_name', 'name', 'state', 'type_', 'labels', ),
-
+          'check_consistency': ('name', 'consistency_token', ),
+          'create_app_profile': ('parent', 'app_profile_id', 'app_profile', 'ignore_warnings', ),
+          'create_backup': ('parent', 'backup_id', 'backup', ),
+          'create_cluster': ('parent', 'cluster_id', 'cluster', ),
+          'create_instance': ('parent', 'instance_id', 'instance', 'clusters', ),
+          'create_table': ('parent', 'table_id', 'table', 'initial_splits', ),
+          'create_table_from_snapshot': ('parent', 'table_id', 'source_snapshot', ),
+          'delete_app_profile': ('name', 'ignore_warnings', ),
+          'delete_backup': ('name', ),
+          'delete_cluster': ('name', ),
+          'delete_instance': ('name', ),
+          'delete_snapshot': ('name', ),
+          'delete_table': ('name', ),
+          'drop_row_range': ('name', 'row_key_prefix', 'delete_all_data_from_table', ),
+          'generate_consistency_token': ('name', ),
+          'get_app_profile': ('name', ),
+          'get_backup': ('name', ),
+          'get_cluster': ('name', ),
+          'get_iam_policy': ('resource', 'options', ),
+          'get_instance': ('name', ),
+          'get_snapshot': ('name', ),
+          'get_table': ('name', 'view', ),
+          'list_app_profiles': ('parent', 'page_size', 'page_token', ),
+          'list_backups': ('parent', 'filter', 'order_by', 'page_size', 'page_token', ),
+          'list_clusters': ('parent', 'page_token', ),
+          'list_instances': ('parent', 'page_token', ),
+          'list_snapshots': ('parent', 'page_size', 'page_token', ),
+          'list_tables': ('parent', 'view', 'page_size', 'page_token', ),
+          'modify_column_families': ('name', 'modifications', ),
+          'partial_update_instance': ('instance', 'update_mask', ),
+          'restore_table': ('parent', 'table_id', 'backup', ),
+          'set_iam_policy': ('resource', 'policy', ),
+          'snapshot_table': ('name', 'cluster', 'snapshot_id', 'ttl', 'description', ),
+          'test_iam_permissions': ('resource', 'permissions', ),
+          'update_app_profile': ('app_profile', 'update_mask', 'ignore_warnings', ),
+          'update_backup': ('backup', 'update_mask', ),
+          'update_cluster': ('serve_nodes', 'name', 'location', 'state', 'default_storage_type', 'encryption_config', ),
+          'update_instance': ('display_name', 'name', 'state', 'type_', 'labels', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -110,7 +107,7 @@ class bigtable_adminCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

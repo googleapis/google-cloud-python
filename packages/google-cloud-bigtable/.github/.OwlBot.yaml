@@ -20,9 +20,9 @@ deep-remove-regex:
 
 deep-copy-regex:
   - source: /google/bigtable/admin/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/admin/$1/$2
+    dest: /owl-bot-staging/bigtable_admin/$1/$2
   - source: /google/bigtable/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/$1/$2
+    dest: /owl-bot-staging/bigtable/$1/$2
 
 begin-after-commit-hash: a21f1091413a260393548c1b2ac44b7347923f08
 

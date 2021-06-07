@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,15 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Callable, Dict, Optional, Sequence, Tuple
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
@@ -30,11 +28,10 @@ import grpc  # type: ignore
 from google.cloud.bigtable_admin_v2.types import bigtable_table_admin
 from google.cloud.bigtable_admin_v2.types import table
 from google.cloud.bigtable_admin_v2.types import table as gba_table
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.longrunning import operations_pb2 as operations  # type: ignore
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from .base import BigtableTableAdminTransport, DEFAULT_CLIENT_INFO
 
 
@@ -61,7 +58,7 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
         self,
         *,
         host: str = "bigtableadmin.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
@@ -75,7 +72,8 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -186,7 +184,7 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
     def create_channel(
         cls,
         host: str = "bigtableadmin.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -217,13 +215,15 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -279,7 +279,7 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
     def create_table_from_snapshot(
         self,
     ) -> Callable[
-        [bigtable_table_admin.CreateTableFromSnapshotRequest], operations.Operation
+        [bigtable_table_admin.CreateTableFromSnapshotRequest], operations_pb2.Operation
     ]:
         r"""Return a callable for the create table from snapshot method over gRPC.
 
@@ -307,7 +307,7 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
             self._stubs["create_table_from_snapshot"] = self.grpc_channel.unary_unary(
                 "/google.bigtable.admin.v2.BigtableTableAdmin/CreateTableFromSnapshot",
                 request_serializer=bigtable_table_admin.CreateTableFromSnapshotRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_table_from_snapshot"]
 
@@ -369,7 +369,7 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
     @property
     def delete_table(
         self,
-    ) -> Callable[[bigtable_table_admin.DeleteTableRequest], empty.Empty]:
+    ) -> Callable[[bigtable_table_admin.DeleteTableRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete table method over gRPC.
 
         Permanently deletes a specified table and all of its
@@ -389,7 +389,7 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
             self._stubs["delete_table"] = self.grpc_channel.unary_unary(
                 "/google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable",
                 request_serializer=bigtable_table_admin.DeleteTableRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_table"]
 
@@ -426,7 +426,7 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
     @property
     def drop_row_range(
         self,
-    ) -> Callable[[bigtable_table_admin.DropRowRangeRequest], empty.Empty]:
+    ) -> Callable[[bigtable_table_admin.DropRowRangeRequest], empty_pb2.Empty]:
         r"""Return a callable for the drop row range method over gRPC.
 
         Permanently drop/delete a row range from a specified
@@ -448,7 +448,7 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
             self._stubs["drop_row_range"] = self.grpc_channel.unary_unary(
                 "/google.bigtable.admin.v2.BigtableTableAdmin/DropRowRange",
                 request_serializer=bigtable_table_admin.DropRowRangeRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["drop_row_range"]
 
@@ -520,7 +520,9 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
     @property
     def snapshot_table(
         self,
-    ) -> Callable[[bigtable_table_admin.SnapshotTableRequest], operations.Operation]:
+    ) -> Callable[
+        [bigtable_table_admin.SnapshotTableRequest], operations_pb2.Operation
+    ]:
         r"""Return a callable for the snapshot table method over gRPC.
 
         Creates a new snapshot in the specified cluster from
@@ -547,7 +549,7 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
             self._stubs["snapshot_table"] = self.grpc_channel.unary_unary(
                 "/google.bigtable.admin.v2.BigtableTableAdmin/SnapshotTable",
                 request_serializer=bigtable_table_admin.SnapshotTableRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["snapshot_table"]
 
@@ -623,7 +625,7 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
     @property
     def delete_snapshot(
         self,
-    ) -> Callable[[bigtable_table_admin.DeleteSnapshotRequest], empty.Empty]:
+    ) -> Callable[[bigtable_table_admin.DeleteSnapshotRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete snapshot method over gRPC.
 
         Permanently deletes the specified snapshot.
@@ -648,14 +650,14 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
             self._stubs["delete_snapshot"] = self.grpc_channel.unary_unary(
                 "/google.bigtable.admin.v2.BigtableTableAdmin/DeleteSnapshot",
                 request_serializer=bigtable_table_admin.DeleteSnapshotRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_snapshot"]
 
     @property
     def create_backup(
         self,
-    ) -> Callable[[bigtable_table_admin.CreateBackupRequest], operations.Operation]:
+    ) -> Callable[[bigtable_table_admin.CreateBackupRequest], operations_pb2.Operation]:
         r"""Return a callable for the create backup method over gRPC.
 
         Starts creating a new Cloud Bigtable Backup. The returned backup
@@ -682,7 +684,7 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
             self._stubs["create_backup"] = self.grpc_channel.unary_unary(
                 "/google.bigtable.admin.v2.BigtableTableAdmin/CreateBackup",
                 request_serializer=bigtable_table_admin.CreateBackupRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["create_backup"]
 
@@ -742,7 +744,7 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
     @property
     def delete_backup(
         self,
-    ) -> Callable[[bigtable_table_admin.DeleteBackupRequest], empty.Empty]:
+    ) -> Callable[[bigtable_table_admin.DeleteBackupRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete backup method over gRPC.
 
         Deletes a pending or completed Cloud Bigtable backup.
@@ -761,7 +763,7 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
             self._stubs["delete_backup"] = self.grpc_channel.unary_unary(
                 "/google.bigtable.admin.v2.BigtableTableAdmin/DeleteBackup",
                 request_serializer=bigtable_table_admin.DeleteBackupRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_backup"]
 
@@ -798,12 +800,12 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
     @property
     def restore_table(
         self,
-    ) -> Callable[[bigtable_table_admin.RestoreTableRequest], operations.Operation]:
+    ) -> Callable[[bigtable_table_admin.RestoreTableRequest], operations_pb2.Operation]:
         r"""Return a callable for the restore table method over gRPC.
 
         Create a new table by restoring from a completed backup. The new
-        table must be in the same instance as the instance containing
-        the backup. The returned table [long-running
+        table must be in the same project as the instance containing the
+        backup. The returned table [long-running
         operation][google.longrunning.Operation] can be used to track
         the progress of the operation, and to cancel it. The
         [metadata][google.longrunning.Operation.metadata] field type is
@@ -825,14 +827,14 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
             self._stubs["restore_table"] = self.grpc_channel.unary_unary(
                 "/google.bigtable.admin.v2.BigtableTableAdmin/RestoreTable",
                 request_serializer=bigtable_table_admin.RestoreTableRequest.serialize,
-                response_deserializer=operations.Operation.FromString,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["restore_table"]
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[[iam_policy.GetIamPolicyRequest], policy.Policy]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the access control policy for a Table or Backup
@@ -852,15 +854,15 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
         if "get_iam_policy" not in self._stubs:
             self._stubs["get_iam_policy"] = self.grpc_channel.unary_unary(
                 "/google.bigtable.admin.v2.BigtableTableAdmin/GetIamPolicy",
-                request_serializer=iam_policy.GetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy.Policy.FromString,
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
             )
         return self._stubs["get_iam_policy"]
 
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[[iam_policy.SetIamPolicyRequest], policy.Policy]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the access control policy on a Table or Backup
@@ -879,8 +881,8 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
         if "set_iam_policy" not in self._stubs:
             self._stubs["set_iam_policy"] = self.grpc_channel.unary_unary(
                 "/google.bigtable.admin.v2.BigtableTableAdmin/SetIamPolicy",
-                request_serializer=iam_policy.SetIamPolicyRequest.SerializeToString,
-                response_deserializer=policy.Policy.FromString,
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
             )
         return self._stubs["set_iam_policy"]
 
@@ -888,7 +890,8 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
     def test_iam_permissions(
         self,
     ) -> Callable[
-        [iam_policy.TestIamPermissionsRequest], iam_policy.TestIamPermissionsResponse
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
@@ -908,8 +911,8 @@ class BigtableTableAdminGrpcTransport(BigtableTableAdminTransport):
         if "test_iam_permissions" not in self._stubs:
             self._stubs["test_iam_permissions"] = self.grpc_channel.unary_unary(
                 "/google.bigtable.admin.v2.BigtableTableAdmin/TestIamPermissions",
-                request_serializer=iam_policy.TestIamPermissionsRequest.SerializeToString,
-                response_deserializer=iam_policy.TestIamPermissionsResponse.FromString,
+                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
             )
         return self._stubs["test_iam_permissions"]
 
