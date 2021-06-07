@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,22 +39,21 @@ def partition(
 class spannerCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'batch_create_sessions': ('database', 'session_count', 'session_template', ),
-    'begin_transaction': ('session', 'options', 'request_options', ),
-    'commit': ('session', 'transaction_id', 'single_use_transaction', 'mutations', 'return_commit_stats', 'request_options', ),
-    'create_session': ('database', 'session', ),
-    'delete_session': ('name', ),
-    'execute_batch_dml': ('session', 'transaction', 'statements', 'seqno', 'request_options', ),
-    'execute_sql': ('session', 'sql', 'transaction', 'params', 'param_types', 'resume_token', 'query_mode', 'partition_token', 'seqno', 'query_options', 'request_options', ),
-    'execute_streaming_sql': ('session', 'sql', 'transaction', 'params', 'param_types', 'resume_token', 'query_mode', 'partition_token', 'seqno', 'query_options', 'request_options', ),
-    'get_session': ('name', ),
-    'list_sessions': ('database', 'page_size', 'page_token', 'filter', ),
-    'partition_query': ('session', 'sql', 'transaction', 'params', 'param_types', 'partition_options', ),
-    'partition_read': ('session', 'table', 'key_set', 'transaction', 'index', 'columns', 'partition_options', ),
-    'read': ('session', 'table', 'columns', 'key_set', 'transaction', 'index', 'limit', 'resume_token', 'partition_token', 'request_options', ),
-    'rollback': ('session', 'transaction_id', ),
-    'streaming_read': ('session', 'table', 'columns', 'key_set', 'transaction', 'index', 'limit', 'resume_token', 'partition_token', 'request_options', ),
-
+          'batch_create_sessions': ('database', 'session_count', 'session_template', ),
+          'begin_transaction': ('session', 'options', 'request_options', ),
+          'commit': ('session', 'transaction_id', 'single_use_transaction', 'mutations', 'return_commit_stats', 'request_options', ),
+          'create_session': ('database', 'session', ),
+          'delete_session': ('name', ),
+          'execute_batch_dml': ('session', 'transaction', 'statements', 'seqno', 'request_options', ),
+          'execute_sql': ('session', 'sql', 'transaction', 'params', 'param_types', 'resume_token', 'query_mode', 'partition_token', 'seqno', 'query_options', 'request_options', ),
+          'execute_streaming_sql': ('session', 'sql', 'transaction', 'params', 'param_types', 'resume_token', 'query_mode', 'partition_token', 'seqno', 'query_options', 'request_options', ),
+          'get_session': ('name', ),
+          'list_sessions': ('database', 'page_size', 'page_token', 'filter', ),
+          'partition_query': ('session', 'sql', 'transaction', 'params', 'param_types', 'partition_options', ),
+          'partition_read': ('session', 'table', 'key_set', 'transaction', 'index', 'columns', 'partition_options', ),
+          'read': ('session', 'table', 'columns', 'key_set', 'transaction', 'index', 'limit', 'resume_token', 'partition_token', 'request_options', ),
+          'rollback': ('session', 'transaction_id', ),
+          'streaming_read': ('session', 'table', 'columns', 'key_set', 'transaction', 'index', 'limit', 'resume_token', 'partition_token', 'request_options', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -87,7 +84,7 @@ class spannerCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

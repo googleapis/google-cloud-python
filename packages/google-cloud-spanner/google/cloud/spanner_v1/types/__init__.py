@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
+from .commit_response import CommitResponse
 from .keys import (
     KeyRange,
     KeySet,
@@ -35,7 +34,6 @@ from .spanner import (
     BatchCreateSessionsResponse,
     BeginTransactionRequest,
     CommitRequest,
-    CommitResponse,
     CreateSessionRequest,
     DeleteSessionRequest,
     ExecuteBatchDmlRequest,
@@ -66,6 +64,7 @@ from .type import (
 )
 
 __all__ = (
+    "CommitResponse",
     "KeyRange",
     "KeySet",
     "Mutation",
@@ -79,7 +78,6 @@ __all__ = (
     "BatchCreateSessionsResponse",
     "BeginTransactionRequest",
     "CommitRequest",
-    "CommitResponse",
     "CreateSessionRequest",
     "DeleteSessionRequest",
     "ExecuteBatchDmlRequest",

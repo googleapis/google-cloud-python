@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -36,10 +34,9 @@ from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.spanner_admin_instance_v1.services.instance_admin import pagers
 from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.protobuf import field_mask_pb2 as gp_field_mask  # type: ignore
-
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import InstanceAdminTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import InstanceAdminGrpcTransport
 from .transports.grpc_asyncio import InstanceAdminGrpcAsyncIOTransport
@@ -58,7 +55,7 @@ class InstanceAdminClientMeta(type):
     _transport_registry["grpc_asyncio"] = InstanceAdminGrpcAsyncIOTransport
 
     def get_transport_class(cls, label: str = None,) -> Type[InstanceAdminTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -102,7 +99,8 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -136,7 +134,8 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -153,7 +152,7 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -172,36 +171,37 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
     @property
     def transport(self) -> InstanceAdminTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            InstanceAdminTransport: The transport used by the client instance.
+            InstanceAdminTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
     @staticmethod
     def instance_path(project: str, instance: str,) -> str:
-        """Return a fully-qualified instance string."""
+        """Returns a fully-qualified instance string."""
         return "projects/{project}/instances/{instance}".format(
             project=project, instance=instance,
         )
 
     @staticmethod
     def parse_instance_path(path: str) -> Dict[str, str]:
-        """Parse a instance path into its component segments."""
+        """Parses a instance path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
     def instance_config_path(project: str, instance_config: str,) -> str:
-        """Return a fully-qualified instance_config string."""
+        """Returns a fully-qualified instance_config string."""
         return "projects/{project}/instanceConfigs/{instance_config}".format(
             project=project, instance_config=instance_config,
         )
 
     @staticmethod
     def parse_instance_config_path(path: str) -> Dict[str, str]:
-        """Parse a instance_config path into its component segments."""
+        """Parses a instance_config path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/instanceConfigs/(?P<instance_config>.+?)$",
             path,
@@ -210,7 +210,7 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -223,7 +223,7 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -234,7 +234,7 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -245,7 +245,7 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -256,7 +256,7 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -270,12 +270,12 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, InstanceAdminTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the instance admin client.
+        """Instantiates the instance admin client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -330,9 +330,10 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -344,12 +345,14 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -364,8 +367,8 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -404,7 +407,6 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -436,10 +438,8 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, spanner_instance_admin.ListInstanceConfigsRequest):
             request = spanner_instance_admin.ListInstanceConfigsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -489,7 +489,6 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -520,10 +519,8 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, spanner_instance_admin.GetInstanceConfigRequest):
             request = spanner_instance_admin.GetInstanceConfigRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -566,7 +563,6 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -598,10 +594,8 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, spanner_instance_admin.ListInstancesRequest):
             request = spanner_instance_admin.ListInstancesRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -649,7 +643,6 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -679,10 +672,8 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, spanner_instance_admin.GetInstanceRequest):
             request = spanner_instance_admin.GetInstanceRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -779,7 +770,6 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
                 This corresponds to the ``instance`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -812,10 +802,8 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, spanner_instance_admin.CreateInstanceRequest):
             request = spanner_instance_admin.CreateInstanceRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if instance_id is not None:
@@ -852,7 +840,7 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
         request: spanner_instance_admin.UpdateInstanceRequest = None,
         *,
         instance: spanner_instance_admin.Instance = None,
-        field_mask: gp_field_mask.FieldMask = None,
+        field_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -929,7 +917,6 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
                 This corresponds to the ``field_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -962,10 +949,8 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, spanner_instance_admin.UpdateInstanceRequest):
             request = spanner_instance_admin.UpdateInstanceRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if instance is not None:
                 request.instance = instance
             if field_mask is not None:
@@ -1030,7 +1015,6 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1053,10 +1037,8 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, spanner_instance_admin.DeleteInstanceRequest):
             request = spanner_instance_admin.DeleteInstanceRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1077,13 +1059,13 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
     def set_iam_policy(
         self,
-        request: iam_policy.SetIamPolicyRequest = None,
+        request: iam_policy_pb2.SetIamPolicyRequest = None,
         *,
         resource: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Sets the access control policy on an instance resource. Replaces
         any existing policy.
 
@@ -1103,7 +1085,6 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1182,11 +1163,10 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.SetIamPolicyRequest(**request)
+            request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.SetIamPolicyRequest()
-
+            request = iam_policy_pb2.SetIamPolicyRequest()
             if resource is not None:
                 request.resource = resource
 
@@ -1208,13 +1188,13 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
     def get_iam_policy(
         self,
-        request: iam_policy.GetIamPolicyRequest = None,
+        request: iam_policy_pb2.GetIamPolicyRequest = None,
         *,
         resource: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Gets the access control policy for an instance resource. Returns
         an empty policy if an instance exists but does not have a policy
         set.
@@ -1235,7 +1215,6 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1314,11 +1293,10 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.GetIamPolicyRequest(**request)
+            request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.GetIamPolicyRequest()
-
+            request = iam_policy_pb2.GetIamPolicyRequest()
             if resource is not None:
                 request.resource = resource
 
@@ -1340,14 +1318,14 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
 
     def test_iam_permissions(
         self,
-        request: iam_policy.TestIamPermissionsRequest = None,
+        request: iam_policy_pb2.TestIamPermissionsRequest = None,
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> iam_policy.TestIamPermissionsResponse:
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that the caller has on the specified
         instance resource.
 
@@ -1378,7 +1356,6 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
                 This corresponds to the ``permissions`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1402,14 +1379,12 @@ class InstanceAdminClient(metaclass=InstanceAdminClientMeta):
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.TestIamPermissionsRequest(**request)
+            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.TestIamPermissionsRequest()
-
+            request = iam_policy_pb2.TestIamPermissionsRequest()
             if resource is not None:
                 request.resource = resource
-
             if permissions:
                 request.permissions.extend(permissions)
 

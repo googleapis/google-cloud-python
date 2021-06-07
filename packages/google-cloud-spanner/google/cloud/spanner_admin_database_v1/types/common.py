@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.rpc import status_pb2 as status  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -43,16 +40,13 @@ class OperationProgress(proto.Message):
             failed or was completed successfully.
     """
 
-    progress_percent = proto.Field(proto.INT32, number=1)
-
-    start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
-    end_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+    progress_percent = proto.Field(proto.INT32, number=1,)
+    start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
 
 
 class EncryptionConfig(proto.Message):
     r"""Encryption configuration for a Cloud Spanner database.
-
     Attributes:
         kms_key_name (str):
             The Cloud KMS key to be used for encrypting and decrypting
@@ -60,7 +54,7 @@ class EncryptionConfig(proto.Message):
             ``projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>``.
     """
 
-    kms_key_name = proto.Field(proto.STRING, number=2)
+    kms_key_name = proto.Field(proto.STRING, number=2,)
 
 
 class EncryptionInfo(proto.Message):
@@ -87,10 +81,8 @@ class EncryptionInfo(proto.Message):
         CUSTOMER_MANAGED_ENCRYPTION = 2
 
     encryption_type = proto.Field(proto.ENUM, number=3, enum=Type,)
-
-    encryption_status = proto.Field(proto.MESSAGE, number=4, message=status.Status,)
-
-    kms_key_version = proto.Field(proto.STRING, number=2)
+    encryption_status = proto.Field(proto.MESSAGE, number=4, message=status_pb2.Status,)
+    kms_key_version = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

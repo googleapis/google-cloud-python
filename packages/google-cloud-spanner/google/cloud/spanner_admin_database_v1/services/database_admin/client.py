@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 from distutils import util
 import os
@@ -23,10 +21,10 @@ from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
@@ -39,13 +37,12 @@ from google.cloud.spanner_admin_database_v1.types import backup
 from google.cloud.spanner_admin_database_v1.types import backup as gsad_backup
 from google.cloud.spanner_admin_database_v1.types import common
 from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.longrunning import operations_pb2 as operations  # type: ignore
-from google.protobuf import empty_pb2 as empty  # type: ignore
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import DatabaseAdminTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import DatabaseAdminGrpcTransport
 from .transports.grpc_asyncio import DatabaseAdminGrpcAsyncIOTransport
@@ -64,7 +61,7 @@ class DatabaseAdminClientMeta(type):
     _transport_registry["grpc_asyncio"] = DatabaseAdminGrpcAsyncIOTransport
 
     def get_transport_class(cls, label: str = None,) -> Type[DatabaseAdminTransport]:
-        """Return an appropriate transport class.
+        """Returns an appropriate transport class.
 
         Args:
             label: The name of the desired transport. If none is
@@ -93,7 +90,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
-        """Convert api endpoint to mTLS endpoint.
+        """Converts api endpoint to mTLS endpoint.
+
         Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
         "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
         Args:
@@ -127,7 +125,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -144,7 +143,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -163,23 +162,24 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     @property
     def transport(self) -> DatabaseAdminTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
-            DatabaseAdminTransport: The transport used by the client instance.
+            DatabaseAdminTransport: The transport used by the client
+                instance.
         """
         return self._transport
 
     @staticmethod
     def backup_path(project: str, instance: str, backup: str,) -> str:
-        """Return a fully-qualified backup string."""
+        """Returns a fully-qualified backup string."""
         return "projects/{project}/instances/{instance}/backups/{backup}".format(
             project=project, instance=instance, backup=backup,
         )
 
     @staticmethod
     def parse_backup_path(path: str) -> Dict[str, str]:
-        """Parse a backup path into its component segments."""
+        """Parses a backup path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)/backups/(?P<backup>.+?)$",
             path,
@@ -190,7 +190,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
     def crypto_key_path(
         project: str, location: str, key_ring: str, crypto_key: str,
     ) -> str:
-        """Return a fully-qualified crypto_key string."""
+        """Returns a fully-qualified crypto_key string."""
         return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
             project=project,
             location=location,
@@ -200,7 +200,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     @staticmethod
     def parse_crypto_key_path(path: str) -> Dict[str, str]:
-        """Parse a crypto_key path into its component segments."""
+        """Parses a crypto_key path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
             path,
@@ -215,7 +215,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         crypto_key: str,
         crypto_key_version: str,
     ) -> str:
-        """Return a fully-qualified crypto_key_version string."""
+        """Returns a fully-qualified crypto_key_version string."""
         return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
             project=project,
             location=location,
@@ -226,7 +226,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     @staticmethod
     def parse_crypto_key_version_path(path: str) -> Dict[str, str]:
-        """Parse a crypto_key_version path into its component segments."""
+        """Parses a crypto_key_version path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)/cryptoKeyVersions/(?P<crypto_key_version>.+?)$",
             path,
@@ -235,14 +235,14 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     @staticmethod
     def database_path(project: str, instance: str, database: str,) -> str:
-        """Return a fully-qualified database string."""
+        """Returns a fully-qualified database string."""
         return "projects/{project}/instances/{instance}/databases/{database}".format(
             project=project, instance=instance, database=database,
         )
 
     @staticmethod
     def parse_database_path(path: str) -> Dict[str, str]:
-        """Parse a database path into its component segments."""
+        """Parses a database path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)/databases/(?P<database>.+?)$",
             path,
@@ -251,20 +251,20 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     @staticmethod
     def instance_path(project: str, instance: str,) -> str:
-        """Return a fully-qualified instance string."""
+        """Returns a fully-qualified instance string."""
         return "projects/{project}/instances/{instance}".format(
             project=project, instance=instance,
         )
 
     @staticmethod
     def parse_instance_path(path: str) -> Dict[str, str]:
-        """Parse a instance path into its component segments."""
+        """Parses a instance path into its component segments."""
         m = re.match(r"^projects/(?P<project>.+?)/instances/(?P<instance>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
-        """Return a fully-qualified billing_account string."""
+        """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
         )
@@ -277,7 +277,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     @staticmethod
     def common_folder_path(folder: str,) -> str:
-        """Return a fully-qualified folder string."""
+        """Returns a fully-qualified folder string."""
         return "folders/{folder}".format(folder=folder,)
 
     @staticmethod
@@ -288,7 +288,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     @staticmethod
     def common_organization_path(organization: str,) -> str:
-        """Return a fully-qualified organization string."""
+        """Returns a fully-qualified organization string."""
         return "organizations/{organization}".format(organization=organization,)
 
     @staticmethod
@@ -299,7 +299,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     @staticmethod
     def common_project_path(project: str,) -> str:
-        """Return a fully-qualified project string."""
+        """Returns a fully-qualified project string."""
         return "projects/{project}".format(project=project,)
 
     @staticmethod
@@ -310,7 +310,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     @staticmethod
     def common_location_path(project: str, location: str,) -> str:
-        """Return a fully-qualified location string."""
+        """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
             project=project, location=location,
         )
@@ -324,12 +324,12 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
     def __init__(
         self,
         *,
-        credentials: Optional[credentials.Credentials] = None,
+        credentials: Optional[ga_credentials.Credentials] = None,
         transport: Union[str, DatabaseAdminTransport, None] = None,
         client_options: Optional[client_options_lib.ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the database admin client.
+        """Instantiates the database admin client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -384,9 +384,10 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 client_cert_source_func = client_options.client_cert_source
             else:
                 is_mtls = mtls.has_default_client_cert_source()
-                client_cert_source_func = (
-                    mtls.default_client_cert_source() if is_mtls else None
-                )
+                if is_mtls:
+                    client_cert_source_func = mtls.default_client_cert_source()
+                else:
+                    client_cert_source_func = None
 
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
@@ -398,12 +399,14 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
             elif use_mtls_env == "always":
                 api_endpoint = self.DEFAULT_MTLS_ENDPOINT
             elif use_mtls_env == "auto":
-                api_endpoint = (
-                    self.DEFAULT_MTLS_ENDPOINT if is_mtls else self.DEFAULT_ENDPOINT
-                )
+                if is_mtls:
+                    api_endpoint = self.DEFAULT_MTLS_ENDPOINT
+                else:
+                    api_endpoint = self.DEFAULT_ENDPOINT
             else:
                 raise MutualTLSChannelError(
-                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted values: never, auto, always"
+                    "Unsupported GOOGLE_API_USE_MTLS_ENDPOINT value. Accepted "
+                    "values: never, auto, always"
                 )
 
         # Save or instantiate the transport.
@@ -418,8 +421,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 )
             if client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its scopes directly."
+                    "When providing a transport instance, provide its scopes "
+                    "directly."
                 )
             self._transport = transport
         else:
@@ -457,7 +460,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -467,7 +469,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         Returns:
             google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListDatabasesPager:
                 The response for
-                   [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].
+                [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -489,10 +491,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, spanner_database_admin.ListDatabasesRequest):
             request = spanner_database_admin.ListDatabasesRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -563,7 +563,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``create_statement`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -595,10 +594,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, spanner_database_admin.CreateDatabaseRequest):
             request = spanner_database_admin.CreateDatabaseRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if create_statement is not None:
@@ -651,7 +648,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -678,10 +674,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, spanner_database_admin.GetDatabaseRequest):
             request = spanner_database_admin.GetDatabaseRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -754,7 +748,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``statements`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -796,10 +789,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, spanner_database_admin.UpdateDatabaseDdlRequest):
             request = spanner_database_admin.UpdateDatabaseDdlRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if database is not None:
                 request.database = database
             if statements is not None:
@@ -822,7 +813,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         response = operation.from_gapic(
             response,
             self._transport.operations_client,
-            empty.Empty,
+            empty_pb2.Empty,
             metadata_type=spanner_database_admin.UpdateDatabaseDdlMetadata,
         )
 
@@ -851,7 +842,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``database`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -874,10 +864,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, spanner_database_admin.DropDatabaseRequest):
             request = spanner_database_admin.DropDatabaseRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if database is not None:
                 request.database = database
 
@@ -922,7 +910,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``database`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -932,7 +919,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         Returns:
             google.cloud.spanner_admin_database_v1.types.GetDatabaseDdlResponse:
                 The response for
-                   [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
+                [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].
 
         """
         # Create or coerce a protobuf request object.
@@ -951,10 +938,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, spanner_database_admin.GetDatabaseDdlRequest):
             request = spanner_database_admin.GetDatabaseDdlRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if database is not None:
                 request.database = database
 
@@ -976,13 +961,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def set_iam_policy(
         self,
-        request: iam_policy.SetIamPolicyRequest = None,
+        request: iam_policy_pb2.SetIamPolicyRequest = None,
         *,
         resource: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Sets the access control policy on a database or backup resource.
         Replaces any existing policy.
 
@@ -1006,7 +991,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1085,11 +1069,10 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.SetIamPolicyRequest(**request)
+            request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.SetIamPolicyRequest()
-
+            request = iam_policy_pb2.SetIamPolicyRequest()
             if resource is not None:
                 request.resource = resource
 
@@ -1111,13 +1094,13 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def get_iam_policy(
         self,
-        request: iam_policy.GetIamPolicyRequest = None,
+        request: iam_policy_pb2.GetIamPolicyRequest = None,
         *,
         resource: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Gets the access control policy for a database or backup
         resource. Returns an empty policy if a database or backup exists
         but does not have a policy set.
@@ -1142,7 +1125,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1221,11 +1203,10 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.GetIamPolicyRequest(**request)
+            request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.GetIamPolicyRequest()
-
+            request = iam_policy_pb2.GetIamPolicyRequest()
             if resource is not None:
                 request.resource = resource
 
@@ -1247,14 +1228,14 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
     def test_iam_permissions(
         self,
-        request: iam_policy.TestIamPermissionsRequest = None,
+        request: iam_policy_pb2.TestIamPermissionsRequest = None,
         *,
         resource: str = None,
         permissions: Sequence[str] = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> iam_policy.TestIamPermissionsResponse:
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Returns permissions that the caller has on the specified
         database or backup resource.
 
@@ -1288,7 +1269,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``permissions`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1312,14 +1292,12 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         if isinstance(request, dict):
             # The request isn't a proto-plus wrapped type,
             # so it must be constructed via keyword expansion.
-            request = iam_policy.TestIamPermissionsRequest(**request)
+            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             # Null request, just make one.
-            request = iam_policy.TestIamPermissionsRequest()
-
+            request = iam_policy_pb2.TestIamPermissionsRequest()
             if resource is not None:
                 request.resource = resource
-
             if permissions:
                 request.permissions.extend(permissions)
 
@@ -1394,7 +1372,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``backup_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1426,10 +1403,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, gsad_backup.CreateBackupRequest):
             request = gsad_backup.CreateBackupRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if backup is not None:
@@ -1484,7 +1459,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1511,10 +1485,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, backup.GetBackupRequest):
             request = backup.GetBackupRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1539,7 +1511,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         request: gsad_backup.UpdateBackupRequest = None,
         *,
         backup: gsad_backup.Backup = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1559,7 +1531,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
                 -  ``backup.expire_time``.
 
-
                 This corresponds to the ``backup`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1575,7 +1546,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1602,10 +1572,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, gsad_backup.UpdateBackupRequest):
             request = gsad_backup.UpdateBackupRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if backup is not None:
                 request.backup = backup
             if update_mask is not None:
@@ -1653,7 +1621,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1676,10 +1643,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, backup.DeleteBackupRequest):
             request = backup.DeleteBackupRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if name is not None:
                 request.name = name
 
@@ -1722,7 +1687,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1732,7 +1696,7 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         Returns:
             google.cloud.spanner_admin_database_v1.services.database_admin.pagers.ListBackupsPager:
                 The response for
-                   [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].
+                [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1754,10 +1718,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, backup.ListBackupsRequest):
             request = backup.ListBackupsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -1846,7 +1808,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``backup`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1878,10 +1839,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, spanner_database_admin.RestoreDatabaseRequest):
             request = spanner_database_admin.RestoreDatabaseRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
             if database_id is not None:
@@ -1945,7 +1904,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1979,10 +1937,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
             request, spanner_database_admin.ListDatabaseOperationsRequest
         ):
             request = spanner_database_admin.ListDatabaseOperationsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 
@@ -2042,7 +1998,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -2074,10 +2029,8 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         # there are no flattened fields.
         if not isinstance(request, backup.ListBackupOperationsRequest):
             request = backup.ListBackupOperationsRequest(request)
-
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
-
             if parent is not None:
                 request.parent = parent
 

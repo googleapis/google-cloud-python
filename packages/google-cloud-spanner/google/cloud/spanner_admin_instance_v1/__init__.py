@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,8 @@
 #
 
 from .services.instance_admin import InstanceAdminClient
+from .services.instance_admin import InstanceAdminAsyncClient
+
 from .types.spanner_instance_admin import CreateInstanceMetadata
 from .types.spanner_instance_admin import CreateInstanceRequest
 from .types.spanner_instance_admin import DeleteInstanceRequest
@@ -31,14 +32,15 @@ from .types.spanner_instance_admin import ReplicaInfo
 from .types.spanner_instance_admin import UpdateInstanceMetadata
 from .types.spanner_instance_admin import UpdateInstanceRequest
 
-
 __all__ = (
+    "InstanceAdminAsyncClient",
     "CreateInstanceMetadata",
     "CreateInstanceRequest",
     "DeleteInstanceRequest",
     "GetInstanceConfigRequest",
     "GetInstanceRequest",
     "Instance",
+    "InstanceAdminClient",
     "InstanceConfig",
     "ListInstanceConfigsRequest",
     "ListInstanceConfigsResponse",
@@ -47,5 +49,4 @@ __all__ = (
     "ReplicaInfo",
     "UpdateInstanceMetadata",
     "UpdateInstanceRequest",
-    "InstanceAdminClient",
 )

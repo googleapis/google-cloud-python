@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,24 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+import packaging.version
 
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
+from google.cloud.spanner_v1.types import commit_response
 from google.cloud.spanner_v1.types import result_set
 from google.cloud.spanner_v1.types import spanner
 from google.cloud.spanner_v1.types import transaction
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
 from .base import SpannerTransport, DEFAULT_CLIENT_INFO
 from .grpc import SpannerGrpcTransport
 
@@ -58,7 +56,7 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
     def create_channel(
         cls,
         host: str = "spanner.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -85,13 +83,15 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         Returns:
             aio.Channel: A gRPC AsyncIO channel object.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers_async.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -99,7 +99,7 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         self,
         *,
         host: str = "spanner.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         channel: aio.Channel = None,
@@ -113,7 +113,8 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -171,7 +172,6 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -365,7 +365,7 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
     @property
     def delete_session(
         self,
-    ) -> Callable[[spanner.DeleteSessionRequest], Awaitable[empty.Empty]]:
+    ) -> Callable[[spanner.DeleteSessionRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete session method over gRPC.
 
         Ends a session, releasing server resources associated
@@ -386,7 +386,7 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
             self._stubs["delete_session"] = self.grpc_channel.unary_unary(
                 "/google.spanner.v1.Spanner/DeleteSession",
                 request_serializer=spanner.DeleteSessionRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_session"]
 
@@ -605,7 +605,7 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
     @property
     def commit(
         self,
-    ) -> Callable[[spanner.CommitRequest], Awaitable[spanner.CommitResponse]]:
+    ) -> Callable[[spanner.CommitRequest], Awaitable[commit_response.CommitResponse]]:
         r"""Return a callable for the commit method over gRPC.
 
         Commits a transaction. The request includes the mutations to be
@@ -639,12 +639,14 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
             self._stubs["commit"] = self.grpc_channel.unary_unary(
                 "/google.spanner.v1.Spanner/Commit",
                 request_serializer=spanner.CommitRequest.serialize,
-                response_deserializer=spanner.CommitResponse.deserialize,
+                response_deserializer=commit_response.CommitResponse.deserialize,
             )
         return self._stubs["commit"]
 
     @property
-    def rollback(self) -> Callable[[spanner.RollbackRequest], Awaitable[empty.Empty]]:
+    def rollback(
+        self,
+    ) -> Callable[[spanner.RollbackRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the rollback method over gRPC.
 
         Rolls back a transaction, releasing any locks it holds. It is a
@@ -672,7 +674,7 @@ class SpannerGrpcAsyncIOTransport(SpannerTransport):
             self._stubs["rollback"] = self.grpc_channel.unary_unary(
                 "/google.spanner.v1.Spanner/Rollback",
                 request_serializer=spanner.RollbackRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["rollback"]
 
