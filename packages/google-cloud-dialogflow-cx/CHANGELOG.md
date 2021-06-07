@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.5.0...v0.6.0) (2021-06-07)
+
+
+### Features
+
+* support sentiment analysis in bot testing ([#98](https://www.github.com/googleapis/python-dialogflow-cx/issues/98)) ([db258bc](https://www.github.com/googleapis/python-dialogflow-cx/commit/db258bcc9971542e347b50f396bd51ec88520fde))
+
 ## [0.5.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.4.1...v0.5.0) (2021-05-28)
 
 
