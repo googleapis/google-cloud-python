@@ -37,9 +37,6 @@ from google.cloud.compute_v1.services.accelerator_types import AcceleratorTypesC
 from google.cloud.compute_v1.services.accelerator_types import pagers
 from google.cloud.compute_v1.services.accelerator_types import transports
 from google.cloud.compute_v1.services.accelerator_types.transports.base import (
-    _API_CORE_VERSION,
-)
-from google.cloud.compute_v1.services.accelerator_types.transports.base import (
     _GOOGLE_AUTH_VERSION,
 )
 from google.cloud.compute_v1.types import compute
@@ -47,8 +44,9 @@ from google.oauth2 import service_account
 import google.auth
 
 
-# TODO(busunkim): Once google-api-core >= 1.26.0 is required:
-# - Delete all the api-core and auth "less than" test cases
+# TODO(busunkim): Once google-auth >= 1.25.0 is required transitively
+# through google-api-core:
+# - Delete the auth "less than" test cases
 # - Delete these pytest markers (Make the "greater than or equal to" tests the default).
 requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
     packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
@@ -57,16 +55,6 @@ requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
 requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
     packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
     reason="This test requires google-auth >= 1.25.0",
-)
-
-requires_api_core_lt_1_26_0 = pytest.mark.skipif(
-    packaging.version.parse(_API_CORE_VERSION) >= packaging.version.parse("1.26.0"),
-    reason="This test requires google-api-core < 1.26.0",
-)
-
-requires_api_core_gte_1_26_0 = pytest.mark.skipif(
-    packaging.version.parse(_API_CORE_VERSION) < packaging.version.parse("1.26.0"),
-    reason="This test requires google-api-core >= 1.26.0",
 )
 
 

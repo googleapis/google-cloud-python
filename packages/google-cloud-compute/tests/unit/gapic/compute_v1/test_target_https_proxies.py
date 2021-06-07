@@ -39,9 +39,6 @@ from google.cloud.compute_v1.services.target_https_proxies import (
 from google.cloud.compute_v1.services.target_https_proxies import pagers
 from google.cloud.compute_v1.services.target_https_proxies import transports
 from google.cloud.compute_v1.services.target_https_proxies.transports.base import (
-    _API_CORE_VERSION,
-)
-from google.cloud.compute_v1.services.target_https_proxies.transports.base import (
     _GOOGLE_AUTH_VERSION,
 )
 from google.cloud.compute_v1.types import compute
@@ -49,8 +46,9 @@ from google.oauth2 import service_account
 import google.auth
 
 
-# TODO(busunkim): Once google-api-core >= 1.26.0 is required:
-# - Delete all the api-core and auth "less than" test cases
+# TODO(busunkim): Once google-auth >= 1.25.0 is required transitively
+# through google-api-core:
+# - Delete the auth "less than" test cases
 # - Delete these pytest markers (Make the "greater than or equal to" tests the default).
 requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
     packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
@@ -59,16 +57,6 @@ requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
 requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
     packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
     reason="This test requires google-auth >= 1.25.0",
-)
-
-requires_api_core_lt_1_26_0 = pytest.mark.skipif(
-    packaging.version.parse(_API_CORE_VERSION) >= packaging.version.parse("1.26.0"),
-    reason="This test requires google-api-core < 1.26.0",
-)
-
-requires_api_core_gte_1_26_0 = pytest.mark.skipif(
-    packaging.version.parse(_API_CORE_VERSION) < packaging.version.parse("1.26.0"),
-    reason="This test requires google-api-core >= 1.26.0",
 )
 
 
@@ -619,6 +607,7 @@ def test_delete_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -654,6 +643,7 @@ def test_delete_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -739,6 +729,7 @@ def test_get_rest(
             authorization_policy="authorization_policy_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
+            fingerprint="fingerprint_value",
             id="id_value",
             kind="kind_value",
             name="name_value",
@@ -765,6 +756,7 @@ def test_get_rest(
     assert response.authorization_policy == "authorization_policy_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
+    assert response.fingerprint == "fingerprint_value"
     assert response.id == "id_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
@@ -855,6 +847,7 @@ def test_insert_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -890,6 +883,7 @@ def test_insert_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1110,6 +1104,149 @@ def test_list_pager():
             assert page_.raw_page.next_page_token == token
 
 
+def test_patch_rest(
+    transport: str = "rest", request_type=compute.PatchTargetHttpsProxyRequest
+):
+    client = TargetHttpsProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            error=compute.Error(errors=[compute.Errors(code="code_value")]),
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id="id_value",
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id="target_id_value",
+            target_link="target_link_value",
+            user="user_value",
+            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        json_return_value = compute.Operation.to_json(return_value)
+        response_value = Response()
+        response_value.status_code = 200
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.patch(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Operation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == "id_value"
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == "target_id_value"
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.warnings == [
+        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
+    ]
+    assert response.zone == "zone_value"
+
+
+def test_patch_rest_from_dict():
+    test_patch_rest(request_type=dict)
+
+
+def test_patch_rest_flattened():
+    client = TargetHttpsProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # Wrap the value into a proper Response obj
+        json_return_value = compute.Operation.to_json(return_value)
+        response_value = Response()
+        response_value.status_code = 200
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        target_https_proxy_resource = compute.TargetHttpsProxy(
+            authorization_policy="authorization_policy_value"
+        )
+        client.patch(
+            project="project_value",
+            target_https_proxy="target_https_proxy_value",
+            target_https_proxy_resource=target_https_proxy_resource,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, http_call, http_params = req.mock_calls[0]
+        body = http_params.get("data")
+        assert "project_value" in http_call[1] + str(body)
+        assert "target_https_proxy_value" in http_call[1] + str(body)
+        assert compute.TargetHttpsProxy.to_json(
+            target_https_proxy_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        ) in http_call[1] + str(body)
+
+
+def test_patch_rest_flattened_error():
+    client = TargetHttpsProxiesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.patch(
+            compute.PatchTargetHttpsProxyRequest(),
+            project="project_value",
+            target_https_proxy="target_https_proxy_value",
+            target_https_proxy_resource=compute.TargetHttpsProxy(
+                authorization_policy="authorization_policy_value"
+            ),
+        )
+
+
 def test_set_quic_override_rest(
     transport: str = "rest", request_type=compute.SetQuicOverrideTargetHttpsProxyRequest
 ):
@@ -1136,6 +1273,7 @@ def test_set_quic_override_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1171,6 +1309,7 @@ def test_set_quic_override_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1278,6 +1417,7 @@ def test_set_ssl_certificates_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1313,6 +1453,7 @@ def test_set_ssl_certificates_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1419,6 +1560,7 @@ def test_set_ssl_policy_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1454,6 +1596,7 @@ def test_set_ssl_policy_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1560,6 +1703,7 @@ def test_set_url_map_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1595,6 +1739,7 @@ def test_set_url_map_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1748,6 +1893,7 @@ def test_target_https_proxies_base_transport():
         "get",
         "insert",
         "list",
+        "patch",
         "set_quic_override",
         "set_ssl_certificates",
         "set_ssl_policy",

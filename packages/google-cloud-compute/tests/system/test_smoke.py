@@ -13,9 +13,8 @@
 # limitations under the License.
 
 
-import requests
 import time
-
+import google.api_core.exceptions
 
 from google.cloud.compute_v1.services.instances.client import InstancesClient
 from google.cloud.compute_v1.types import (
@@ -84,18 +83,18 @@ class TestComputeSmoke(TestBase):
         self.assertTrue(presented)
 
     def test_client_error(self):
-        with self.assertRaises(expected_exception=requests.exceptions.HTTPError) as ex:
+        with self.assertRaises(
+            expected_exception=google.api_core.exceptions.BadRequest
+        ):
             self.client.get(instance=self.name, zone=self.DEFAULT_ZONE)
-        self.assertIn("Bad Request", str(ex.exception.args))
 
     def test_api_error(self):
-        with self.assertRaises(expected_exception=requests.exceptions.HTTPError) as ex:
+        with self.assertRaises(expected_exception=google.api_core.exceptions.NotFound):
             self.client.get(
                 project=self.DEFAULT_PROJECT,
                 zone=self.DEFAULT_ZONE,
                 instance="nonexistent9999123412314",
             )
-        self.assertIn("Not Found", str(ex.exception.args))
 
     def test_zero_values(self):
         with self.assertRaises(expected_exception=TypeError) as ex:

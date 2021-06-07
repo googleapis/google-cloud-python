@@ -17,6 +17,7 @@ import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 import packaging.version
 import pkg_resources
+from requests import __version__ as requests_version
 
 import google.auth  # type: ignore
 import google.api_core  # type: ignore
@@ -30,6 +31,8 @@ from google.cloud.compute_v1.types import compute
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution("google-cloud-compute",).version,
+        grpc_version=None,
+        rest_version=requests_version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -42,8 +45,6 @@ except AttributeError:
         _GOOGLE_AUTH_VERSION = pkg_resources.get_distribution("google-auth").version
     except pkg_resources.DistributionNotFound:  # pragma: NO COVER
         _GOOGLE_AUTH_VERSION = None
-
-_API_CORE_VERSION = google.api_core.__version__
 
 
 class RoutesTransport(abc.ABC):
@@ -119,10 +120,9 @@ class RoutesTransport(abc.ABC):
         # Save the credentials.
         self._credentials = credentials
 
-    # TODO(busunkim): These two class methods are in the base transport
+    # TODO(busunkim): This method is in the base transport
     # to avoid duplicating code across the transport classes. These functions
-    # should be deleted once the minimum required versions of google-api-core
-    # and google-auth are increased.
+    # should be deleted once the minimum required versions of google-auth is increased.
 
     # TODO: Remove this function once google-auth >= 1.25.0 is required
     @classmethod
@@ -142,27 +142,6 @@ class RoutesTransport(abc.ABC):
             scopes_kwargs = {"scopes": scopes or cls.AUTH_SCOPES}
 
         return scopes_kwargs
-
-    # TODO: Remove this function once google-api-core >= 1.26.0 is required
-    @classmethod
-    def _get_self_signed_jwt_kwargs(
-        cls, host: str, scopes: Optional[Sequence[str]]
-    ) -> Dict[str, Union[Optional[Sequence[str]], str]]:
-        """Returns kwargs to pass to grpc_helpers.create_channel depending on the google-api-core version"""
-
-        self_signed_jwt_kwargs: Dict[str, Union[Optional[Sequence[str]], str]] = {}
-
-        if _API_CORE_VERSION and (
-            packaging.version.parse(_API_CORE_VERSION)
-            >= packaging.version.parse("1.26.0")
-        ):
-            self_signed_jwt_kwargs["default_scopes"] = cls.AUTH_SCOPES
-            self_signed_jwt_kwargs["scopes"] = scopes
-            self_signed_jwt_kwargs["default_host"] = cls.DEFAULT_HOST
-        else:
-            self_signed_jwt_kwargs["scopes"] = scopes or cls.AUTH_SCOPES
-
-        return self_signed_jwt_kwargs
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.

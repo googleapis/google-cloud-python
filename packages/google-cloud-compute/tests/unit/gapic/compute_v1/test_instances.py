@@ -36,7 +36,6 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.instances import InstancesClient
 from google.cloud.compute_v1.services.instances import pagers
 from google.cloud.compute_v1.services.instances import transports
-from google.cloud.compute_v1.services.instances.transports.base import _API_CORE_VERSION
 from google.cloud.compute_v1.services.instances.transports.base import (
     _GOOGLE_AUTH_VERSION,
 )
@@ -45,8 +44,9 @@ from google.oauth2 import service_account
 import google.auth
 
 
-# TODO(busunkim): Once google-api-core >= 1.26.0 is required:
-# - Delete all the api-core and auth "less than" test cases
+# TODO(busunkim): Once google-auth >= 1.25.0 is required transitively
+# through google-api-core:
+# - Delete the auth "less than" test cases
 # - Delete these pytest markers (Make the "greater than or equal to" tests the default).
 requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
     packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
@@ -55,16 +55,6 @@ requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
 requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
     packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
     reason="This test requires google-auth >= 1.25.0",
-)
-
-requires_api_core_lt_1_26_0 = pytest.mark.skipif(
-    packaging.version.parse(_API_CORE_VERSION) >= packaging.version.parse("1.26.0"),
-    reason="This test requires google-api-core < 1.26.0",
-)
-
-requires_api_core_gte_1_26_0 = pytest.mark.skipif(
-    packaging.version.parse(_API_CORE_VERSION) < packaging.version.parse("1.26.0"),
-    reason="This test requires google-api-core >= 1.26.0",
 )
 
 
@@ -419,6 +409,7 @@ def test_add_access_config_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -454,6 +445,7 @@ def test_add_access_config_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -558,6 +550,7 @@ def test_add_resource_policies_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -593,6 +586,7 @@ def test_add_resource_policies_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -690,7 +684,13 @@ def test_aggregated_list_rest(
             id="id_value",
             items={
                 "key_value": compute.InstancesScopedList(
-                    instances=[compute.Instance(can_ip_forward=True)]
+                    instances=[
+                        compute.Instance(
+                            advanced_machine_features=compute.AdvancedMachineFeatures(
+                                enable_nested_virtualization=True
+                            )
+                        )
+                    ]
                 )
             },
             kind="kind_value",
@@ -713,7 +713,13 @@ def test_aggregated_list_rest(
     assert response.id == "id_value"
     assert response.items == {
         "key_value": compute.InstancesScopedList(
-            instances=[compute.Instance(can_ip_forward=True)]
+            instances=[
+                compute.Instance(
+                    advanced_machine_features=compute.AdvancedMachineFeatures(
+                        enable_nested_virtualization=True
+                    )
+                )
+            ]
         )
     }
     assert response.kind == "kind_value"
@@ -851,6 +857,7 @@ def test_attach_disk_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -886,6 +893,7 @@ def test_attach_disk_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -961,6 +969,145 @@ def test_attach_disk_rest_flattened_error():
         )
 
 
+def test_bulk_insert_rest(
+    transport: str = "rest", request_type=compute.BulkInsertInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            error=compute.Error(errors=[compute.Errors(code="code_value")]),
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id="id_value",
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id="target_id_value",
+            target_link="target_link_value",
+            user="user_value",
+            warnings=[compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)],
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        json_return_value = compute.Operation.to_json(return_value)
+        response_value = Response()
+        response_value.status_code = 200
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.bulk_insert(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.Operation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.error == compute.Error(errors=[compute.Errors(code="code_value")])
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == "id_value"
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == "target_id_value"
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.warnings == [
+        compute.Warnings(code=compute.Warnings.Code.CLEANUP_FAILED)
+    ]
+    assert response.zone == "zone_value"
+
+
+def test_bulk_insert_rest_from_dict():
+    test_bulk_insert_rest(request_type=dict)
+
+
+def test_bulk_insert_rest_flattened():
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # Wrap the value into a proper Response obj
+        json_return_value = compute.Operation.to_json(return_value)
+        response_value = Response()
+        response_value.status_code = 200
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        bulk_insert_instance_resource_resource = compute.BulkInsertInstanceResource(
+            count="count_value"
+        )
+        client.bulk_insert(
+            project="project_value",
+            zone="zone_value",
+            bulk_insert_instance_resource_resource=bulk_insert_instance_resource_resource,
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, http_call, http_params = req.mock_calls[0]
+        body = http_params.get("data")
+        assert "project_value" in http_call[1] + str(body)
+        assert "zone_value" in http_call[1] + str(body)
+        assert compute.BulkInsertInstanceResource.to_json(
+            bulk_insert_instance_resource_resource,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        ) in http_call[1] + str(body)
+
+
+def test_bulk_insert_rest_flattened_error():
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.bulk_insert(
+            compute.BulkInsertInstanceRequest(),
+            project="project_value",
+            zone="zone_value",
+            bulk_insert_instance_resource_resource=compute.BulkInsertInstanceResource(
+                count="count_value"
+            ),
+        )
+
+
 def test_delete_rest(
     transport: str = "rest", request_type=compute.DeleteInstanceRequest
 ):
@@ -987,6 +1134,7 @@ def test_delete_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1022,6 +1170,7 @@ def test_delete_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1113,6 +1262,7 @@ def test_delete_access_config_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1148,6 +1298,7 @@ def test_delete_access_config_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1247,6 +1398,7 @@ def test_detach_disk_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1282,6 +1434,7 @@ def test_detach_disk_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1365,6 +1518,9 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInstanceReque
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Instance(
+            advanced_machine_features=compute.AdvancedMachineFeatures(
+                enable_nested_virtualization=True
+            ),
             can_ip_forward=True,
             confidential_instance_config=compute.ConfidentialInstanceConfig(
                 enable_confidential_compute=True
@@ -1399,6 +1555,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInstanceReque
                 consume_reservation_type=compute.ReservationAffinity.ConsumeReservationType.ANY_RESERVATION
             ),
             resource_policies=["resource_policies_value"],
+            satisfies_pzs=True,
             scheduling=compute.Scheduling(automatic_restart=True),
             self_link="self_link_value",
             service_accounts=[compute.ServiceAccount(email="email_value")],
@@ -1425,6 +1582,9 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInstanceReque
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Instance)
+    assert response.advanced_machine_features == compute.AdvancedMachineFeatures(
+        enable_nested_virtualization=True
+    )
     assert response.can_ip_forward is True
     assert response.confidential_instance_config == compute.ConfidentialInstanceConfig(
         enable_confidential_compute=True
@@ -1464,6 +1624,7 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetInstanceReque
         consume_reservation_type=compute.ReservationAffinity.ConsumeReservationType.ANY_RESERVATION
     )
     assert response.resource_policies == ["resource_policies_value"]
+    assert response.satisfies_pzs is True
     assert response.scheduling == compute.Scheduling(automatic_restart=True)
     assert response.self_link == "self_link_value"
     assert response.service_accounts == [compute.ServiceAccount(email="email_value")]
@@ -1527,6 +1688,111 @@ def test_get_rest_flattened_error():
             project="project_value",
             zone="zone_value",
             instance="instance_value",
+        )
+
+
+def test_get_effective_firewalls_rest(
+    transport: str = "rest", request_type=compute.GetEffectiveFirewallsInstanceRequest
+):
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.InstancesGetEffectiveFirewallsResponse(
+            firewall_policys=[
+                compute.InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy(
+                    display_name="display_name_value"
+                )
+            ],
+            firewalls=[
+                compute.Firewall(
+                    allowed=[compute.Allowed(I_p_protocol="I_p_protocol_value")]
+                )
+            ],
+        )
+
+        # Wrap the value into a proper Response obj
+        json_return_value = compute.InstancesGetEffectiveFirewallsResponse.to_json(
+            return_value
+        )
+        response_value = Response()
+        response_value.status_code = 200
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_effective_firewalls(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.InstancesGetEffectiveFirewallsResponse)
+    assert response.firewall_policys == [
+        compute.InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy(
+            display_name="display_name_value"
+        )
+    ]
+    assert response.firewalls == [
+        compute.Firewall(allowed=[compute.Allowed(I_p_protocol="I_p_protocol_value")])
+    ]
+
+
+def test_get_effective_firewalls_rest_from_dict():
+    test_get_effective_firewalls_rest(request_type=dict)
+
+
+def test_get_effective_firewalls_rest_flattened():
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.InstancesGetEffectiveFirewallsResponse()
+
+        # Wrap the value into a proper Response obj
+        json_return_value = compute.InstancesGetEffectiveFirewallsResponse.to_json(
+            return_value
+        )
+        response_value = Response()
+        response_value.status_code = 200
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_effective_firewalls(
+            project="project_value",
+            zone="zone_value",
+            instance="instance_value",
+            network_interface="network_interface_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, http_call, http_params = req.mock_calls[0]
+        body = http_params.get("data")
+        assert "project_value" in http_call[1] + str(body)
+        assert "zone_value" in http_call[1] + str(body)
+        assert "instance_value" in http_call[1] + str(body)
+        assert "network_interface_value" in http_call[1] + str(body)
+
+
+def test_get_effective_firewalls_rest_flattened_error():
+    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_effective_firewalls(
+            compute.GetEffectiveFirewallsInstanceRequest(),
+            project="project_value",
+            zone="zone_value",
+            instance="instance_value",
+            network_interface="network_interface_value",
         )
 
 
@@ -2012,6 +2278,7 @@ def test_insert_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -2047,6 +2314,7 @@ def test_insert_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -2084,7 +2352,11 @@ def test_insert_rest_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        instance_resource = compute.Instance(can_ip_forward=True)
+        instance_resource = compute.Instance(
+            advanced_machine_features=compute.AdvancedMachineFeatures(
+                enable_nested_virtualization=True
+            )
+        )
         client.insert(
             project="project_value",
             zone="zone_value",
@@ -2115,7 +2387,11 @@ def test_insert_rest_flattened_error():
             compute.InsertInstanceRequest(),
             project="project_value",
             zone="zone_value",
-            instance_resource=compute.Instance(can_ip_forward=True),
+            instance_resource=compute.Instance(
+                advanced_machine_features=compute.AdvancedMachineFeatures(
+                    enable_nested_virtualization=True
+                )
+            ),
         )
 
 
@@ -2133,7 +2409,13 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListInstancesRe
         # Designate an appropriate value for the returned response.
         return_value = compute.InstanceList(
             id="id_value",
-            items=[compute.Instance(can_ip_forward=True)],
+            items=[
+                compute.Instance(
+                    advanced_machine_features=compute.AdvancedMachineFeatures(
+                        enable_nested_virtualization=True
+                    )
+                )
+            ],
             kind="kind_value",
             next_page_token="next_page_token_value",
             self_link="self_link_value",
@@ -2151,7 +2433,13 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListInstancesRe
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
-    assert response.items == [compute.Instance(can_ip_forward=True)]
+    assert response.items == [
+        compute.Instance(
+            advanced_machine_features=compute.AdvancedMachineFeatures(
+                enable_nested_virtualization=True
+            )
+        )
+    ]
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.self_link == "self_link_value"
@@ -2403,6 +2691,7 @@ def test_remove_resource_policies_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -2438,6 +2727,7 @@ def test_remove_resource_policies_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -2541,6 +2831,7 @@ def test_reset_rest(transport: str = "rest", request_type=compute.ResetInstanceR
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -2576,6 +2867,7 @@ def test_reset_rest(transport: str = "rest", request_type=compute.ResetInstanceR
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -2667,6 +2959,7 @@ def test_set_deletion_protection_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -2702,6 +2995,7 @@ def test_set_deletion_protection_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -2793,6 +3087,7 @@ def test_set_disk_auto_delete_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -2828,6 +3123,7 @@ def test_set_disk_auto_delete_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -3045,6 +3341,7 @@ def test_set_labels_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -3080,6 +3377,7 @@ def test_set_labels_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -3185,6 +3483,7 @@ def test_set_machine_resources_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -3220,6 +3519,7 @@ def test_set_machine_resources_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -3325,6 +3625,7 @@ def test_set_machine_type_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -3360,6 +3661,7 @@ def test_set_machine_type_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -3465,6 +3767,7 @@ def test_set_metadata_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -3500,6 +3803,7 @@ def test_set_metadata_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -3601,6 +3905,7 @@ def test_set_min_cpu_platform_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -3636,6 +3941,7 @@ def test_set_min_cpu_platform_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -3741,6 +4047,7 @@ def test_set_scheduling_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -3776,6 +4083,7 @@ def test_set_scheduling_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -3877,6 +4185,7 @@ def test_set_service_account_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -3912,6 +4221,7 @@ def test_set_service_account_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -4018,6 +4328,7 @@ def test_set_shielded_instance_integrity_policy_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -4053,6 +4364,7 @@ def test_set_shielded_instance_integrity_policy_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -4158,6 +4470,7 @@ def test_set_tags_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -4193,6 +4506,7 @@ def test_set_tags_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -4295,6 +4609,7 @@ def test_simulate_maintenance_event_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -4330,6 +4645,7 @@ def test_simulate_maintenance_event_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -4419,6 +4735,7 @@ def test_start_rest(transport: str = "rest", request_type=compute.StartInstanceR
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -4454,6 +4771,7 @@ def test_start_rest(transport: str = "rest", request_type=compute.StartInstanceR
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -4545,6 +4863,7 @@ def test_start_with_encryption_key_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -4580,6 +4899,7 @@ def test_start_with_encryption_key_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -4695,6 +5015,7 @@ def test_stop_rest(transport: str = "rest", request_type=compute.StopInstanceReq
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -4730,6 +5051,7 @@ def test_stop_rest(transport: str = "rest", request_type=compute.StopInstanceReq
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -4915,6 +5237,7 @@ def test_update_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -4950,6 +5273,7 @@ def test_update_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -4987,7 +5311,11 @@ def test_update_rest_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        instance_resource = compute.Instance(can_ip_forward=True)
+        instance_resource = compute.Instance(
+            advanced_machine_features=compute.AdvancedMachineFeatures(
+                enable_nested_virtualization=True
+            )
+        )
         client.update(
             project="project_value",
             zone="zone_value",
@@ -5021,7 +5349,11 @@ def test_update_rest_flattened_error():
             project="project_value",
             zone="zone_value",
             instance="instance_value",
-            instance_resource=compute.Instance(can_ip_forward=True),
+            instance_resource=compute.Instance(
+                advanced_machine_features=compute.AdvancedMachineFeatures(
+                    enable_nested_virtualization=True
+                )
+            ),
         )
 
 
@@ -5051,6 +5383,7 @@ def test_update_access_config_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -5086,6 +5419,7 @@ def test_update_access_config_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -5190,6 +5524,7 @@ def test_update_display_device_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -5225,6 +5560,7 @@ def test_update_display_device_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -5326,6 +5662,7 @@ def test_update_network_interface_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -5361,6 +5698,7 @@ def test_update_network_interface_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -5470,6 +5808,7 @@ def test_update_shielded_instance_config_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -5505,6 +5844,7 @@ def test_update_shielded_instance_config_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -5658,10 +5998,12 @@ def test_instances_base_transport():
         "add_resource_policies",
         "aggregated_list",
         "attach_disk",
+        "bulk_insert",
         "delete",
         "delete_access_config",
         "detach_disk",
         "get",
+        "get_effective_firewalls",
         "get_guest_attributes",
         "get_iam_policy",
         "get_screenshot",

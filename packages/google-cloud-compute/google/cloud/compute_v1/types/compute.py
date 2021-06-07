@@ -32,6 +32,7 @@ __protobuf__ = proto.module(
         "AddressesScopedList",
         "AddressAggregatedList",
         "AddressList",
+        "AdvancedMachineFeatures",
         "AliasIpRange",
         "AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk",
         "AllocationSpecificSKUAllocationReservedInstanceProperties",
@@ -45,6 +46,7 @@ __protobuf__ = proto.module(
         "AuditConfig",
         "AuthorizationLoggingOptions",
         "AutoscalingPolicy",
+        "ScalingScheduleStatus",
         "AutoscalerStatusDetails",
         "Autoscaler",
         "AutoscalersScopedList",
@@ -54,10 +56,13 @@ __protobuf__ = proto.module(
         "AutoscalingPolicyCustomMetricUtilization",
         "AutoscalingPolicyLoadBalancingUtilization",
         "AutoscalingPolicyScaleInControl",
+        "AutoscalingPolicyScalingSchedule",
         "FixedOrPercent",
         "Backend",
         "BackendBucketCdnPolicy",
         "BackendBucket",
+        "BackendBucketCdnPolicyBypassCacheOnRequestHeader",
+        "BackendBucketCdnPolicyNegativeCachingPolicy",
         "BackendBucketList",
         "BackendServiceCdnPolicy",
         "CircuitBreakers",
@@ -66,18 +71,25 @@ __protobuf__ = proto.module(
         "BackendServiceFailoverPolicy",
         "BackendServiceIAP",
         "BackendServiceLogConfig",
+        "Duration",
         "OutlierDetection",
         "SecuritySettings",
         "BackendService",
         "BackendServicesScopedList",
         "BackendServiceAggregatedList",
+        "BackendServiceCdnPolicyBypassCacheOnRequestHeader",
         "CacheKeyPolicy",
+        "BackendServiceCdnPolicyNegativeCachingPolicy",
         "HealthStatus",
         "BackendServiceGroupHealth",
         "BackendServiceList",
         "BackendServiceReference",
         "Expr",
         "Binding",
+        "InstanceProperties",
+        "LocationPolicy",
+        "BulkInsertInstanceResourcePerInstanceProperties",
+        "BulkInsertInstanceResource",
         "CacheInvalidationRule",
         "LicenseResourceCommitment",
         "Reservation",
@@ -89,7 +101,6 @@ __protobuf__ = proto.module(
         "Condition",
         "ConfidentialInstanceConfig",
         "ConsistentHashLoadBalancerSettingsHttpCookie",
-        "Duration",
         "CorsPolicy",
         "CustomerEncryptionKeyProtectedDisk",
         "Disk",
@@ -119,7 +130,15 @@ __protobuf__ = proto.module(
         "FirewallLogConfig",
         "Firewall",
         "FirewallList",
+        "FirewallPolicyAssociation",
+        "FirewallPoliciesListAssociationsResponse",
+        "FirewallPolicyRule",
+        "FirewallPolicy",
+        "FirewallPolicyList",
+        "FirewallPolicyRuleMatcher",
+        "FirewallPolicyRuleMatcherLayer4Config",
         "MetadataFilter",
+        "ForwardingRuleServiceDirectoryRegistration",
         "ForwardingRule",
         "ForwardingRulesScopedList",
         "ForwardingRuleAggregatedList",
@@ -129,8 +148,9 @@ __protobuf__ = proto.module(
         "NetworkEndpoint",
         "GlobalNetworkEndpointGroupsAttachEndpointsRequest",
         "GlobalNetworkEndpointGroupsDetachEndpointsRequest",
-        "GlobalSetLabelsRequest",
         "Policy",
+        "GlobalOrganizationSetPolicyRequest",
+        "GlobalSetLabelsRequest",
         "GlobalSetPolicyRequest",
         "GuestAttributesValue",
         "GuestAttributes",
@@ -229,11 +249,12 @@ __protobuf__ = proto.module(
         "InstanceManagedByIgmErrorInstanceActionDetails",
         "ManagedInstanceVersion",
         "InstanceMoveRequest",
-        "InstanceProperties",
         "SourceInstanceParams",
         "InstanceTemplate",
         "InstanceTemplateList",
         "InstancesAddResourcePoliciesRequest",
+        "InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy",
+        "InstancesGetEffectiveFirewallsResponse",
         "InstancesRemoveResourcePoliciesRequest",
         "InstancesSetLabelsRequest",
         "InstancesSetMachineResourcesRequest",
@@ -266,6 +287,7 @@ __protobuf__ = proto.module(
         "LicenseCode",
         "LicensesListResponse",
         "LocalDisk",
+        "LocationPolicyLocation",
         "LogConfigCloudAuditOptions",
         "LogConfigCounterOptions",
         "LogConfigDataAccessOptions",
@@ -300,6 +322,8 @@ __protobuf__ = proto.module(
         "NetworkEndpointGroupsListNetworkEndpoints",
         "NetworkList",
         "NetworksAddPeeringRequest",
+        "NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy",
+        "NetworksGetEffectiveFirewallsResponse",
         "NetworksRemovePeeringRequest",
         "NetworksUpdatePeeringRequest",
         "NodeGroupAutoscalingPolicy",
@@ -357,6 +381,14 @@ __protobuf__ = proto.module(
         "ProjectsGetXpnResources",
         "ProjectsListXpnHostsRequest",
         "ProjectsSetDefaultNetworkTierRequest",
+        "PublicAdvertisedPrefixPublicDelegatedPrefix",
+        "PublicAdvertisedPrefix",
+        "PublicAdvertisedPrefixList",
+        "PublicDelegatedPrefixPublicDelegatedSubPrefix",
+        "PublicDelegatedPrefix",
+        "PublicDelegatedPrefixesScopedList",
+        "PublicDelegatedPrefixAggregatedList",
+        "PublicDelegatedPrefixList",
         "Region",
         "RegionAutoscalerList",
         "RegionDiskTypeList",
@@ -395,11 +427,15 @@ __protobuf__ = proto.module(
         "ResourcePolicy",
         "ResourcePoliciesScopedList",
         "ResourcePolicyGroupPlacementPolicy",
+        "ResourcePolicyInstanceSchedulePolicy",
+        "ResourcePolicyResourceStatus",
         "ResourcePolicySnapshotSchedulePolicy",
         "ResourcePolicyAggregatedList",
         "ResourcePolicyDailyCycle",
         "ResourcePolicyHourlyCycle",
+        "ResourcePolicyInstanceSchedulePolicySchedule",
         "ResourcePolicyList",
+        "ResourcePolicyResourceStatusInstanceSchedulePolicyStatus",
         "ResourcePolicySnapshotSchedulePolicyRetentionPolicy",
         "ResourcePolicySnapshotSchedulePolicySchedule",
         "ResourcePolicySnapshotSchedulePolicySnapshotProperties",
@@ -498,6 +534,7 @@ __protobuf__ = proto.module(
         "TargetVpnGatewaysScopedList",
         "TargetVpnGatewayAggregatedList",
         "TargetVpnGatewayList",
+        "UrlMapTestHeader",
         "TestFailure",
         "TestPermissionsRequest",
         "TestPermissionsResponse",
@@ -591,6 +628,24 @@ __protobuf__ = proto.module(
         "ListExternalVpnGatewaysRequest",
         "SetLabelsExternalVpnGatewayRequest",
         "TestIamPermissionsExternalVpnGatewayRequest",
+        "AddAssociationFirewallPolicyRequest",
+        "AddRuleFirewallPolicyRequest",
+        "CloneRulesFirewallPolicyRequest",
+        "DeleteFirewallPolicyRequest",
+        "GetFirewallPolicyRequest",
+        "GetAssociationFirewallPolicyRequest",
+        "GetIamPolicyFirewallPolicyRequest",
+        "GetRuleFirewallPolicyRequest",
+        "InsertFirewallPolicyRequest",
+        "ListFirewallPoliciesRequest",
+        "ListAssociationsFirewallPolicyRequest",
+        "MoveFirewallPolicyRequest",
+        "PatchFirewallPolicyRequest",
+        "PatchRuleFirewallPolicyRequest",
+        "RemoveAssociationFirewallPolicyRequest",
+        "RemoveRuleFirewallPolicyRequest",
+        "SetIamPolicyFirewallPolicyRequest",
+        "TestIamPermissionsFirewallPolicyRequest",
         "DeleteFirewallRequest",
         "GetFirewallRequest",
         "InsertFirewallRequest",
@@ -603,6 +658,7 @@ __protobuf__ = proto.module(
         "InsertForwardingRuleRequest",
         "ListForwardingRulesRequest",
         "PatchForwardingRuleRequest",
+        "SetLabelsForwardingRuleRequest",
         "SetTargetForwardingRuleRequest",
         "DeleteGlobalAddressRequest",
         "GetGlobalAddressRequest",
@@ -613,6 +669,7 @@ __protobuf__ = proto.module(
         "InsertGlobalForwardingRuleRequest",
         "ListGlobalForwardingRulesRequest",
         "PatchGlobalForwardingRuleRequest",
+        "SetLabelsGlobalForwardingRuleRequest",
         "SetTargetGlobalForwardingRuleRequest",
         "AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest",
         "DeleteGlobalNetworkEndpointGroupRequest",
@@ -631,6 +688,11 @@ __protobuf__ = proto.module(
         "DeleteGlobalOrganizationOperationResponse",
         "GetGlobalOrganizationOperationRequest",
         "ListGlobalOrganizationOperationsRequest",
+        "DeleteGlobalPublicDelegatedPrefixeRequest",
+        "GetGlobalPublicDelegatedPrefixeRequest",
+        "InsertGlobalPublicDelegatedPrefixeRequest",
+        "ListGlobalPublicDelegatedPrefixesRequest",
+        "PatchGlobalPublicDelegatedPrefixeRequest",
         "AggregatedListHealthChecksRequest",
         "DeleteHealthCheckRequest",
         "GetHealthCheckRequest",
@@ -689,10 +751,12 @@ __protobuf__ = proto.module(
         "AddResourcePoliciesInstanceRequest",
         "AggregatedListInstancesRequest",
         "AttachDiskInstanceRequest",
+        "BulkInsertInstanceRequest",
         "DeleteInstanceRequest",
         "DeleteAccessConfigInstanceRequest",
         "DetachDiskInstanceRequest",
         "GetInstanceRequest",
+        "GetEffectiveFirewallsInstanceRequest",
         "GetGuestAttributesInstanceRequest",
         "GetIamPolicyInstanceRequest",
         "GetScreenshotInstanceRequest",
@@ -763,6 +827,7 @@ __protobuf__ = proto.module(
         "AddPeeringNetworkRequest",
         "DeleteNetworkRequest",
         "GetNetworkRequest",
+        "GetEffectiveFirewallsNetworkRequest",
         "InsertNetworkRequest",
         "ListNetworksRequest",
         "ListPeeringRoutesNetworksRequest",
@@ -814,6 +879,17 @@ __protobuf__ = proto.module(
         "SetCommonInstanceMetadataProjectRequest",
         "SetDefaultNetworkTierProjectRequest",
         "SetUsageExportBucketProjectRequest",
+        "DeletePublicAdvertisedPrefixeRequest",
+        "GetPublicAdvertisedPrefixeRequest",
+        "InsertPublicAdvertisedPrefixeRequest",
+        "ListPublicAdvertisedPrefixesRequest",
+        "PatchPublicAdvertisedPrefixeRequest",
+        "AggregatedListPublicDelegatedPrefixesRequest",
+        "DeletePublicDelegatedPrefixeRequest",
+        "GetPublicDelegatedPrefixeRequest",
+        "InsertPublicDelegatedPrefixeRequest",
+        "ListPublicDelegatedPrefixesRequest",
+        "PatchPublicDelegatedPrefixeRequest",
         "DeleteRegionAutoscalerRequest",
         "GetRegionAutoscalerRequest",
         "InsertRegionAutoscalerRequest",
@@ -879,6 +955,7 @@ __protobuf__ = proto.module(
         "ListRegionInstanceGroupsRequest",
         "ListInstancesRegionInstanceGroupsRequest",
         "SetNamedPortsRegionInstanceGroupRequest",
+        "BulkInsertRegionInstanceRequest",
         "DeleteRegionNetworkEndpointGroupRequest",
         "GetRegionNetworkEndpointGroupRequest",
         "InsertRegionNetworkEndpointGroupRequest",
@@ -1004,6 +1081,7 @@ __protobuf__ = proto.module(
         "GetTargetHttpsProxyRequest",
         "InsertTargetHttpsProxyRequest",
         "ListTargetHttpsProxiesRequest",
+        "PatchTargetHttpsProxyRequest",
         "SetQuicOverrideTargetHttpsProxyRequest",
         "SetSslCertificatesTargetHttpsProxyRequest",
         "SetSslPolicyTargetHttpsProxyRequest",
@@ -1550,7 +1628,7 @@ class Address(proto.Message):
             field is not specified, it is assumed to be
             PREMIUM.
         prefix_length (int):
-            The prefix length if the resource reprensents
+            The prefix length if the resource represents
             an IP range.
         purpose (google.cloud.compute_v1.types.Address.Purpose):
             The purpose of this resource, which can be one of the
@@ -1567,13 +1645,13 @@ class Address(proto.Message):
                automatically reserved for Cloud NAT.
             -  ``IPSEC_INTERCONNECT`` for addresses created from a
                private IP range that are reserved for a VLAN attachment
-               in an IPsec encrypted Interconnect configuration. These
-               addresses are regional resources.
+               in an IPsec-encrypted Cloud Interconnect configuration.
+               These addresses are regional resources.
         region (str):
-            [Output Only] The URL of the region where the regional
-            address resides. This field is not applicable to global
-            addresses. You must specify this field as part of the HTTP
-            request URL.
+            [Output Only] The URL of the region where a regional address
+            resides. For regional addresses, you must specify the region
+            as a path parameter in the HTTP request URL. This field is
+            not applicable to global addresses.
         self_link (str):
             [Output Only] Server-defined URL for the resource.
         status (google.cloud.compute_v1.types.Address.Status):
@@ -1639,14 +1717,16 @@ class Address(proto.Message):
         -  ``NAT_AUTO`` for addresses that are external IP addresses
            automatically reserved for Cloud NAT.
         -  ``IPSEC_INTERCONNECT`` for addresses created from a private IP
-           range that are reserved for a VLAN attachment in an IPsec
-           encrypted Interconnect configuration. These addresses are
-           regional resources.
+           range that are reserved for a VLAN attachment in an
+           IPsec-encrypted Cloud Interconnect configuration. These addresses
+           are regional resources.
         """
         UNDEFINED_PURPOSE = 0
         DNS_RESOLVER = 476114556
         GCE_ENDPOINT = 230515243
+        IPSEC_INTERCONNECT = 340437251
         NAT_AUTO = 163666477
+        PRIVATE_SERVICE_CONNECT = 48134724
         SHARED_LOADBALANCER_VIP = 294447572
         VPC_PEERING = 400800170
 
@@ -1785,6 +1865,32 @@ class AddressList(proto.Message):
     )
 
 
+class AdvancedMachineFeatures(proto.Message):
+    r"""Specifies options for controlling advanced machine features.
+    Options that would traditionally be configured in a BIOS belong
+    here. Features that require operating system support may have
+    corresponding entries in the GuestOsFeatures of an Image (e.g.,
+    whether or not the OS in the Image supports nested
+    virtualization being enabled or disabled).
+
+    Attributes:
+        enable_nested_virtualization (bool):
+            Whether to enable nested virtualization or
+            not (default is false).
+        threads_per_core (int):
+            The number of threads per physical core. To
+            disable simultaneous multithreading (SMT) set
+            this to 1. If unset, the maximum number of
+            threads supported per core by the underlying
+            processor is assumed.
+    """
+
+    enable_nested_virtualization = proto.Field(
+        proto.BOOL, number=16639365, optional=True,
+    )
+    threads_per_core = proto.Field(proto.INT32, number=352611671, optional=True,)
+
+
 class AliasIpRange(proto.Message):
     r"""An alias IP range attached to an instance's network
     interface.
@@ -1849,6 +1955,11 @@ class AllocationSpecificSKUAllocationReservedInstanceProperties(proto.Message):
         local_ssds (Sequence[google.cloud.compute_v1.types.AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk]):
             Specifies amount of local ssd to reserve with
             each instance. The type of disk is local-ssd.
+        location_hint (str):
+            An opaque location hint used to place the
+            allocation close to other resources. This field
+            is for use by internal tools that use the public
+            API.
         machine_type (str):
             Specifies type of machine (name only) which has fixed number
             of vCPUs and fixed amount of memory. This also includes
@@ -1866,6 +1977,7 @@ class AllocationSpecificSKUAllocationReservedInstanceProperties(proto.Message):
         number=229951299,
         message="AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk",
     )
+    location_hint = proto.Field(proto.STRING, number=350519505, optional=True,)
     machine_type = proto.Field(proto.STRING, number=227711026, optional=True,)
     min_cpu_platform = proto.Field(proto.STRING, number=242912759, optional=True,)
 
@@ -2001,6 +2113,9 @@ class AttachedDiskInitializeParams(proto.Message):
             Specifies which action to take on instance
             update with this disk. Default is to use the
             existing disk.
+        provisioned_iops (str):
+            Indicates how many IOPS must be provisioned
+            for the disk.
         resource_policies (Sequence[str]):
             Resource policies applied to this disk for
             automatic snapshot creations. Specified using
@@ -2077,6 +2192,7 @@ class AttachedDiskInitializeParams(proto.Message):
     on_update_action = proto.Field(
         proto.ENUM, number=202451980, optional=True, enum=OnUpdateAction,
     )
+    provisioned_iops = proto.Field(proto.STRING, number=186769108, optional=True,)
     resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
     source_image = proto.Field(proto.STRING, number=50443319, optional=True,)
     source_image_encryption_key = proto.Field(
@@ -2424,6 +2540,12 @@ class AutoscalingPolicy(proto.Message):
             Defines operating mode for this policy.
         scale_in_control (google.cloud.compute_v1.types.AutoscalingPolicyScaleInControl):
 
+        scaling_schedules (Sequence[google.cloud.compute_v1.types.AutoscalingPolicy.ScalingSchedulesEntry]):
+            Scaling schedules defined for an autoscaler. Multiple
+            schedules can be set on an autoscaler, and they can overlap.
+            During overlapping periods the greatest
+            min_required_replicas of all scaling schedules is applied.
+            Up to 128 scaling schedules are allowed.
     """
 
     class Mode(proto.Enum):
@@ -2461,6 +2583,42 @@ class AutoscalingPolicy(proto.Message):
         optional=True,
         message="AutoscalingPolicyScaleInControl",
     )
+    scaling_schedules = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=355416580,
+        message="AutoscalingPolicyScalingSchedule",
+    )
+
+
+class ScalingScheduleStatus(proto.Message):
+    r"""
+    Attributes:
+        last_start_time (str):
+            [Output Only] The last time the scaling schedule became
+            active. Note: this is a timestamp when a schedule actually
+            became active, not when it was planned to do so. The
+            timestamp is in RFC3339 text format.
+        next_start_time (str):
+            [Output Only] The next time the scaling schedule is to
+            become active. Note: this is a timestamp when a schedule is
+            planned to run, but the actual time might be slightly
+            different. The timestamp is in RFC3339 text format.
+        state (google.cloud.compute_v1.types.ScalingScheduleStatus.State):
+            [Output Only] The current state of a scaling schedule.
+    """
+
+    class State(proto.Enum):
+        r"""[Output Only] The current state of a scaling schedule."""
+        UNDEFINED_STATE = 0
+        ACTIVE = 314733318
+        DISABLED = 516696700
+        OBSOLETE = 66532761
+        READY = 77848963
+
+    last_start_time = proto.Field(proto.STRING, number=34545107, optional=True,)
+    next_start_time = proto.Field(proto.STRING, number=97270102, optional=True,)
+    state = proto.Field(proto.ENUM, number=109757585, optional=True, enum=State,)
 
 
 class AutoscalerStatusDetails(proto.Message):
@@ -2586,6 +2744,8 @@ class AutoscalerStatusDetails(proto.Message):
         NOT_ENOUGH_QUOTA_AVAILABLE = 403101631
         REGION_RESOURCE_STOCKOUT = 528622846
         SCALING_TARGET_DOES_NOT_EXIST = 122636699
+        SCHEDULED_INSTANCES_GREATER_THAN_AUTOSCALER_MAX = 29275586
+        SCHEDULED_INSTANCES_LESS_THAN_AUTOSCALER_MIN = 398287669
         UNKNOWN = 433141802
         UNSUPPORTED_MAX_RATE_LOAD_BALANCING_CONFIGURATION = 330845009
         ZONE_RESOURCE_STOCKOUT = 210200502
@@ -2618,8 +2778,8 @@ class Autoscaler(proto.Message):
         autoscaling_policy (google.cloud.compute_v1.types.AutoscalingPolicy):
             The configuration parameters for the
             autoscaling algorithm. You can define one or
-            more of the policies for an autoscaler:
-            cpuUtilization, customMetricUtilizations, and
+            more signals for an autoscaler: cpuUtilization,
+            customMetricUtilizations, and
             loadBalancingUtilization.  If none of these are
             specified, the default will be to autoscale
             based on cpuUtilization to 0.6 or 60%.
@@ -2654,6 +2814,9 @@ class Autoscaler(proto.Message):
         region (str):
             [Output Only] URL of the region where the instance group
             resides (for autoscalers living in regional scope).
+        scaling_schedule_status (Sequence[google.cloud.compute_v1.types.Autoscaler.ScalingScheduleStatusEntry]):
+            [Output Only] Status information of existing scaling
+            schedules.
         self_link (str):
             [Output Only] Server-defined URL for the resource.
         status (google.cloud.compute_v1.types.Autoscaler.Status):
@@ -2712,6 +2875,9 @@ class Autoscaler(proto.Message):
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     recommended_size = proto.Field(proto.INT32, number=257915749, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    scaling_schedule_status = proto.MapField(
+        proto.STRING, proto.MESSAGE, number=465950178, message="ScalingScheduleStatus",
+    )
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
     status_details = proto.RepeatedField(
@@ -2824,6 +2990,16 @@ class AutoscalerList(proto.Message):
 class AutoscalingPolicyCpuUtilization(proto.Message):
     r"""CPU utilization policy.
     Attributes:
+        predictive_method (google.cloud.compute_v1.types.AutoscalingPolicyCpuUtilization.PredictiveMethod):
+            Indicates whether predictive autoscaling based on CPU metric
+            is enabled. Valid values are:
+
+            -  NONE (default). No predictive method is used. The
+               autoscaler scales the group to meet current demand based
+               on real-time metrics. \* OPTIMIZE_AVAILABILITY.
+               Predictive autoscaling improves availability by
+               monitoring daily and weekly load patterns and scaling out
+               ahead of anticipated demand.
         utilization_target (float):
             The target CPU utilization that the autoscaler maintains.
             Must be a float value in the range (0, 1]. If not specified,
@@ -2841,6 +3017,23 @@ class AutoscalingPolicyCpuUtilization(proto.Message):
             reaches the target utilization.
     """
 
+    class PredictiveMethod(proto.Enum):
+        r"""Indicates whether predictive autoscaling based on CPU metric is
+        enabled. Valid values are:
+
+        -  NONE (default). No predictive method is used. The autoscaler
+           scales the group to meet current demand based on real-time
+           metrics. \* OPTIMIZE_AVAILABILITY. Predictive autoscaling
+           improves availability by monitoring daily and weekly load
+           patterns and scaling out ahead of anticipated demand.
+        """
+        UNDEFINED_PREDICTIVE_METHOD = 0
+        NONE = 2402104
+        OPTIMIZE_AVAILABILITY = 11629437
+
+    predictive_method = proto.Field(
+        proto.ENUM, number=390220737, optional=True, enum=PredictiveMethod,
+    )
     utilization_target = proto.Field(proto.DOUBLE, number=215905870, optional=True,)
 
 
@@ -2983,6 +3176,56 @@ class AutoscalingPolicyScaleInControl(proto.Message):
     time_window_sec = proto.Field(proto.INT32, number=36405300, optional=True,)
 
 
+class AutoscalingPolicyScalingSchedule(proto.Message):
+    r"""Scaling based on user-defined schedule. The message describes
+    a single scaling schedule. A scaling schedule changes the
+    minimum number of VM instances an autoscaler can recommend,
+    which can trigger scaling out.
+
+    Attributes:
+        description (str):
+            A description of a scaling schedule.
+        disabled (bool):
+            A boolean value that specifies whether a
+            scaling schedule can influence autoscaler
+            recommendations. If set to true, then a scaling
+            schedule has no effect. This field is optional,
+            and its value is false by default.
+        duration_sec (int):
+            The duration of time intervals, in seconds,
+            for which this scaling schedule is to run. The
+            minimum allowed value is 300. This field is
+            required.
+        min_required_replicas (int):
+            The minimum number of VM instances that the
+            autoscaler will recommend in time intervals
+            starting according to schedule. This field is
+            required.
+        schedule (str):
+            The start timestamps of time intervals when this scaling
+            schedule is to provide a scaling signal. This field uses the
+            extended cron format (with an optional year field). The
+            expression can describe a single timestamp if the optional
+            year is set, in which case the scaling schedule runs once.
+            The schedule is interpreted with respect to time_zone. This
+            field is required. Note: These timestamps only describe when
+            autoscaler starts providing the scaling signal. The VMs need
+            additional time to become serving.
+        time_zone (str):
+            The time zone to use when interpreting the schedule. The
+            value of this field must be a time zone name from the tz
+            database: http://en.wikipedia.org/wiki/Tz_database. This
+            field is assigned a default value of ?UTC? if left empty.
+    """
+
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    disabled = proto.Field(proto.BOOL, number=270940796, optional=True,)
+    duration_sec = proto.Field(proto.INT32, number=212356902, optional=True,)
+    min_required_replicas = proto.Field(proto.INT32, number=365514414, optional=True,)
+    schedule = proto.Field(proto.STRING, number=375820951, optional=True,)
+    time_zone = proto.Field(proto.STRING, number=36848094, optional=True,)
+
+
 class FixedOrPercent(proto.Message):
     r"""Encapsulates numeric value that can be either absolute or
     relative.
@@ -3017,59 +3260,24 @@ class Backend(proto.Message):
     r"""Message containing information of one individual backend.
     Attributes:
         balancing_mode (google.cloud.compute_v1.types.Backend.BalancingMode):
-            Specifies the balancing mode for the backend.
-
-            When choosing a balancing mode, you need to consider the
-            loadBalancingScheme, and protocol for the backend service,
-            as well as the type of backend (instance group or NEG).
-
-            -  If the load balancing mode is CONNECTION, then the load
-               is spread based on how many concurrent connections the
-               backend can handle. You can use the CONNECTION balancing
-               mode if the protocol for the backend service is SSL, TCP,
-               or UDP.
-
-            If the loadBalancingScheme for the backend service is
-            EXTERNAL (SSL Proxy and TCP Proxy load balancers), you must
-            also specify exactly one of the following parameters:
-            maxConnections (except for regional managed instance
-            groups), maxConnectionsPerInstance, or
-            maxConnectionsPerEndpoint.
-
-            If the loadBalancingScheme for the backend service is
-            INTERNAL (internal TCP/UDP Load Balancers) or EXTERNAL
-            (Network Load Balancing), you cannot specify any additional
-            parameters.
-
-            -  If the load balancing mode is RATE, the load is spread
-               based on the rate of HTTP requests per second (RPS). You
-               can use the RATE balancing mode if the protocol for the
-               backend service is HTTP, HTTP2, or HTTPS. You must
-               specify exactly one of the following parameters: maxRate
-               (except for regional managed instance groups),
-               maxRatePerInstance, or maxRatePerEndpoint.
-
-            -  If the load balancing mode is UTILIZATION, the load is
-               spread based on the backend utilization of instances in
-               an instance group. You can use the UTILIZATION balancing
-               mode if the loadBalancingScheme of the backend service is
-               EXTERNAL (except Network Load Balancing),
-               INTERNAL_SELF_MANAGED, or INTERNAL_MANAGED and the
-               backends are instance groups. There are no restrictions
-               on the backend service protocol.
+            Specifies how to determine whether the
+            backend of a load balancer can handle additional
+            traffic or is fully loaded. For usage
+            guidelines, see  Connection balancing mode.
         capacity_scaler (float):
-            A multiplier applied to the group's maximum servicing
-            capacity (based on UTILIZATION, RATE or CONNECTION). Default
-            value is 1, which means the group will serve up to 100% of
-            its configured capacity (depending on balancingMode). A
-            setting of 0 means the group is completely drained, offering
-            0% of its available capacity. Valid range is 0.0 and
-            [0.1,1.0]. You cannot configure a setting larger than 0 and
-            smaller than 0.1. You cannot configure a setting of 0 when
-            there is only one backend attached to the backend service.
+            A multiplier applied to the backend's target capacity of its
+            balancing mode. The default value is 1, which means the
+            group serves up to 100% of its configured capacity
+            (depending on balancingMode). A setting of 0 means the group
+            is completely drained, offering 0% of its available
+            capacity. The valid ranges are 0.0 and [0.1,1.0]. You cannot
+            configure a setting larger than 0 and smaller than 0.1. You
+            cannot configure a setting of 0 when there is only one
+            backend attached to the backend service.
 
-            This cannot be used for Internal TCP/UDP Load Balancing and
-            Network Load Balancing.
+            Not supported by:
+
+            -  Internal TCP/UDP Load Balancing - Network Load Balancing
         description (str):
             An optional description of this resource.
             Provide this property when you create the
@@ -3105,147 +3313,54 @@ class Backend(proto.Message):
             or NEG. Partial URLs are not supported.
         max_connections (int):
             Defines a target maximum number of
-            simultaneous connections that the backend can
-            handle. Valid for network endpoint group and
-            instance group backends (except for regional
-            managed instance groups). If the backend's
-            balancingMode is UTILIZATION, this is an
-            optional parameter. If the backend's
-            balancingMode is CONNECTION, and backend is
-            attached to a backend service whose
-            loadBalancingScheme is EXTERNAL (except Network
-            Load Balancing), you must specify either this
-            parameter, maxConnectionsPerInstance, or
-            maxConnectionsPerEndpoint.  Not available if the
-            backend's balancingMode is RATE. Cannot be
-            specified for Network Load Balancing or Internal
-            TCP/UDP Load Balancing, even though those load
-            balancers require a balancing mode of
-            CONNECTION.
+            simultaneous connections. For usage guidelines,
+            see Connection balancing mode and Utilization
+            balancing mode. Not available if the backend's
+            balancingMode is RATE. Not supported by:  -
+            Internal TCP/UDP Load Balancing - Network Load
+            Balancing
         max_connections_per_endpoint (int):
             Defines a target maximum number of
-            simultaneous connections for an endpoint of a
-            NEG. This is multiplied by the number of
-            endpoints in the NEG to implicitly calculate a
-            maximum number of target maximum simultaneous
-            connections for the NEG. If the backend's
-            balancingMode is CONNECTION, and backend is
-            attached to a backend service whose
-            loadBalancingScheme is EXTERNAL (except Network
-            Load Balancing), you must specify either this
-            parameter, maxConnections, or
-            maxConnectionsPerInstance.  Not available if the
-            backend's balancingMode is RATE. Cannot be
-            specified for Network Load Balancing or Internal
-            TCP/UDP Load Balancing, even though those load
-            balancers require a balancing mode of
-            CONNECTION.
+            simultaneous connections. For usage guidelines,
+            see Connection balancing mode and Utilization
+            balancing mode.  Not available if the backend's
+            balancingMode is RATE. Not supported by:
+            - Internal TCP/UDP Load Balancing - Network Load
+            Balancing.
         max_connections_per_instance (int):
             Defines a target maximum number of
-            simultaneous connections for a single VM in a
-            backend instance group. This is multiplied by
-            the number of instances in the instance group to
-            implicitly calculate a target maximum number of
-            simultaneous connections for the whole instance
-            group. If the backend's balancingMode is
-            UTILIZATION, this is an optional parameter. If
-            the backend's balancingMode is CONNECTION, and
-            backend is attached to a backend service whose
-            loadBalancingScheme is EXTERNAL (except Network
-            Load Balancing), you must specify either this
-            parameter,  maxConnections, or
-            maxConnectionsPerEndpoint.  Not available if the
-            backend's balancingMode is RATE. Cannot be
-            specified for Network Load Balancing or Internal
-            TCP/UDP Load Balancing, even though those load
-            balancers require a balancing mode of
-            CONNECTION.
+            simultaneous connections. For usage guidelines,
+            see Connection balancing mode and Utilization
+            balancing mode.  Not available if the backend's
+            balancingMode is RATE. Not supported by:
+            - Internal TCP/UDP Load Balancing - Network Load
+            Balancing.
         max_rate (int):
             Defines a maximum number of HTTP requests per
-            second (RPS) that the backend can handle. Valid
-            for network endpoint group and instance group
-            backends (except for regional managed instance
-            groups). Must not be defined if the backend is a
-            managed instance group that uses autoscaling
-            based on load balancing.  If the backend's
-            balancingMode is UTILIZATION, this is an
-            optional parameter. If the backend's
-            balancingMode is RATE, you must specify maxRate,
-            maxRatePerInstance, or maxRatePerEndpoint.
+            second (RPS). For usage guidelines, see Rate
+            balancing mode and Utilization balancing mode.
             Not available if the backend's balancingMode is
             CONNECTION.
         max_rate_per_endpoint (float):
             Defines a maximum target for requests per
-            second (RPS) for an endpoint of a NEG. This is
-            multiplied by the number of endpoints in the NEG
-            to implicitly calculate a target maximum rate
-            for the NEG.  If the backend's balancingMode is
-            RATE, you must specify either this parameter,
-            maxRate (except for regional managed instance
-            groups), or maxRatePerInstance.
+            second (RPS). For usage guidelines, see Rate
+            balancing mode and Utilization balancing mode.
             Not available if the backend's balancingMode is
             CONNECTION.
         max_rate_per_instance (float):
             Defines a maximum target for requests per
-            second (RPS) for a single VM in a backend
-            instance group. This is multiplied by the number
-            of instances in the instance group to implicitly
-            calculate a target maximum rate for the whole
-            instance group.  If the backend's balancingMode
-            is UTILIZATION, this is an optional parameter.
-            If the backend's balancingMode is RATE, you must
-            specify either this parameter, maxRate (except
-            for regional managed instance groups), or
-            maxRatePerEndpoint.
+            second (RPS). For usage guidelines, see Rate
+            balancing mode and Utilization balancing mode.
             Not available if the backend's balancingMode is
             CONNECTION.
         max_utilization (float):
-            Defines the maximum average backend utilization of a backend
-            VM in an instance group. The valid range is [0.0, 1.0]. This
-            is an optional parameter if the backend's balancingMode is
-            UTILIZATION.
 
-            This parameter can be used in conjunction with maxRate,
-            maxRatePerInstance, maxConnections (except for regional
-            managed instance groups), or maxConnectionsPerInstance.
     """
 
     class BalancingMode(proto.Enum):
-        r"""Specifies the balancing mode for the backend.
-
-        When choosing a balancing mode, you need to consider the
-        loadBalancingScheme, and protocol for the backend service, as well
-        as the type of backend (instance group or NEG).
-
-        -  If the load balancing mode is CONNECTION, then the load is spread
-           based on how many concurrent connections the backend can handle.
-           You can use the CONNECTION balancing mode if the protocol for the
-           backend service is SSL, TCP, or UDP.
-
-        If the loadBalancingScheme for the backend service is EXTERNAL (SSL
-        Proxy and TCP Proxy load balancers), you must also specify exactly
-        one of the following parameters: maxConnections (except for regional
-        managed instance groups), maxConnectionsPerInstance, or
-        maxConnectionsPerEndpoint.
-
-        If the loadBalancingScheme for the backend service is INTERNAL
-        (internal TCP/UDP Load Balancers) or EXTERNAL (Network Load
-        Balancing), you cannot specify any additional parameters.
-
-        -  If the load balancing mode is RATE, the load is spread based on
-           the rate of HTTP requests per second (RPS). You can use the RATE
-           balancing mode if the protocol for the backend service is HTTP,
-           HTTP2, or HTTPS. You must specify exactly one of the following
-           parameters: maxRate (except for regional managed instance
-           groups), maxRatePerInstance, or maxRatePerEndpoint.
-
-        -  If the load balancing mode is UTILIZATION, the load is spread
-           based on the backend utilization of instances in an instance
-           group. You can use the UTILIZATION balancing mode if the
-           loadBalancingScheme of the backend service is EXTERNAL (except
-           Network Load Balancing), INTERNAL_SELF_MANAGED, or
-           INTERNAL_MANAGED and the backends are instance groups. There are
-           no restrictions on the backend service protocol.
+        r"""Specifies how to determine whether the backend of a load
+        balancer can handle additional traffic or is fully loaded. For
+        usage guidelines, see  Connection balancing mode.
         """
         UNDEFINED_BALANCING_MODE = 0
         CONNECTION = 246311646
@@ -3277,6 +3392,12 @@ class BackendBucketCdnPolicy(proto.Message):
     bucket.
 
     Attributes:
+        bypass_cache_on_request_headers (Sequence[google.cloud.compute_v1.types.BackendBucketCdnPolicyBypassCacheOnRequestHeader]):
+            Bypass the cache when the specified request
+            headers are matched - e.g. Pragma or
+            Authorization headers. Up to 5 headers can be
+            specified. The cache is bypassed for all
+            cdnPolicy.cacheMode settings.
         cache_mode (google.cloud.compute_v1.types.BackendBucketCdnPolicy.CacheMode):
             Specifies the cache setting for all responses from this
             backend. The possible values are:
@@ -3298,11 +3419,17 @@ class BackendBucketCdnPolicy(proto.Message):
             are marked as uncacheable, as well as dynamic content
             (including HTML), will not be cached.
         client_ttl (int):
-            Specifies a separate client (e.g. browser
-            client) TTL, separate from the TTL for Cloud
-            CDN's edge caches. Leaving this empty will use
-            the same cache TTL for both Cloud CDN and the
-            client-facing response. The maximum allowed
+            Specifies a separate client (e.g. browser client) maximum
+            TTL. This is used to clamp the max-age (or Expires) value
+            sent to the client. With FORCE_CACHE_ALL, the lesser of
+            client_ttl and default_ttl is used for the response max-age
+            directive, along with a "public" directive. For cacheable
+            content in CACHE_ALL_STATIC mode, client_ttl clamps the
+            max-age from the origin (if specified), or else sets the
+            response max-age directive to the lesser of the client_ttl
+            and default_ttl, and also ensures a "public" cache-control
+            directive is present. If a client TTL is not specified, a
+            default value (1 hour) will be used. The maximum allowed
             value is 86400s (1 day).
         default_ttl (int):
             Specifies the default TTL for cached content served by this
@@ -3328,6 +3455,53 @@ class BackendBucketCdnPolicy(proto.Message):
             maximum allowed value is 31,622,400s (1 year),
             noting that infrequently accessed objects may be
             evicted from the cache before the defined TTL.
+        negative_caching (bool):
+            Negative caching allows per-status code TTLs to be set, in
+            order to apply fine-grained caching for common errors or
+            redirects. This can reduce the load on your origin and
+            improve end-user experience by reducing response latency.
+            When the cache mode is set to CACHE_ALL_STATIC or
+            USE_ORIGIN_HEADERS, negative caching applies to responses
+            with the specified response code that lack any
+            Cache-Control, Expires, or Pragma: no-cache directives. When
+            the cache mode is set to FORCE_CACHE_ALL, negative caching
+            applies to all responses with the specified response code,
+            and override any caching headers. By default, Cloud CDN will
+            apply the following default TTLs to these status codes: HTTP
+            300 (Multiple Choice), 301, 308 (Permanent Redirects): 10m
+            HTTP 404 (Not Found), 410 (Gone), 451 (Unavailable For Legal
+            Reasons): 120s HTTP 405 (Method Not Found), 421 (Misdirected
+            Request), 501 (Not Implemented): 60s. These defaults can be
+            overridden in negative_caching_policy.
+        negative_caching_policy (Sequence[google.cloud.compute_v1.types.BackendBucketCdnPolicyNegativeCachingPolicy]):
+            Sets a cache TTL for the specified HTTP status code.
+            negative_caching must be enabled to configure
+            negative_caching_policy. Omitting the policy and leaving
+            negative_caching enabled will use Cloud CDN's default cache
+            TTLs. Note that when specifying an explicit
+            negative_caching_policy, you should take care to specify a
+            cache TTL for all response codes that you wish to cache.
+            Cloud CDN will not apply any default negative caching when a
+            policy exists.
+        request_coalescing (bool):
+            If true then Cloud CDN will combine multiple
+            concurrent cache fill requests into a small
+            number of requests to the origin.
+        serve_while_stale (int):
+            Serve existing content from the cache (if
+            available) when revalidating content with the
+            origin, or when an error is encountered when
+            refreshing the cache. This setting defines the
+            default "max-stale" duration for any cached
+            responses that do not specify a max-stale
+            directive. Stale responses that exceed the TTL
+            configured here will not be served. The default
+            limit (max-stale) is 86400s (1 day), which will
+            allow stale content to be served up to this
+            limit beyond the max-age (or s-max-age) of a
+            cached response. The maximum allowed value is
+            604800 (1 week). Set this to zero (0) to disable
+            serve-while-stale.
         signed_url_cache_max_age_sec (str):
             Maximum number of seconds the response to a signed URL
             request will be considered fresh. After this time period,
@@ -3369,12 +3543,25 @@ class BackendBucketCdnPolicy(proto.Message):
         INVALID_CACHE_MODE = 381295560
         USE_ORIGIN_HEADERS = 55380261
 
+    bypass_cache_on_request_headers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=486203082,
+        message="BackendBucketCdnPolicyBypassCacheOnRequestHeader",
+    )
     cache_mode = proto.Field(
         proto.ENUM, number=28877888, optional=True, enum=CacheMode,
     )
     client_ttl = proto.Field(proto.INT32, number=29034360, optional=True,)
     default_ttl = proto.Field(proto.INT32, number=100253422, optional=True,)
     max_ttl = proto.Field(proto.INT32, number=307578001, optional=True,)
+    negative_caching = proto.Field(proto.BOOL, number=336110005, optional=True,)
+    negative_caching_policy = proto.RepeatedField(
+        proto.MESSAGE,
+        number=155359996,
+        message="BackendBucketCdnPolicyNegativeCachingPolicy",
+    )
+    request_coalescing = proto.Field(proto.BOOL, number=532808276, optional=True,)
+    serve_while_stale = proto.Field(proto.INT32, number=236682203, optional=True,)
     signed_url_cache_max_age_sec = proto.Field(
         proto.STRING, number=269374534, optional=True,
     )
@@ -3439,6 +3626,41 @@ class BackendBucket(proto.Message):
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
 
 
+class BackendBucketCdnPolicyBypassCacheOnRequestHeader(proto.Message):
+    r"""Bypass the cache when the specified request headers are present,
+    e.g. Pragma or Authorization headers. Values are case insensitive.
+    The presence of such a header overrides the cache_mode setting.
+
+    Attributes:
+        header_name (str):
+            The header field name to match on when
+            bypassing cache. Values are case-insensitive.
+    """
+
+    header_name = proto.Field(proto.STRING, number=110223613, optional=True,)
+
+
+class BackendBucketCdnPolicyNegativeCachingPolicy(proto.Message):
+    r"""Specify CDN TTLs for response error codes.
+    Attributes:
+        code (int):
+            The HTTP status code to define a TTL against.
+            Only HTTP status codes 300, 301, 302, 307, 308,
+            404, 405, 410, 421, 451 and 501 are can be
+            specified as values, and you cannot specify a
+            status code more than once.
+        ttl (int):
+            The TTL (in seconds) for which to cache
+            responses with the corresponding status code.
+            The maximum allowed value is 1800s (30 minutes),
+            noting that infrequently accessed objects may be
+            evicted from the cache before the defined TTL.
+    """
+
+    code = proto.Field(proto.INT32, number=3059181, optional=True,)
+    ttl = proto.Field(proto.INT32, number=115180, optional=True,)
+
+
 class BackendBucketList(proto.Message):
     r"""Contains a list of BackendBucket resources.
     Attributes:
@@ -3483,6 +3705,12 @@ class BackendServiceCdnPolicy(proto.Message):
     service.
 
     Attributes:
+        bypass_cache_on_request_headers (Sequence[google.cloud.compute_v1.types.BackendServiceCdnPolicyBypassCacheOnRequestHeader]):
+            Bypass the cache when the specified request
+            headers are matched - e.g. Pragma or
+            Authorization headers. Up to 5 headers can be
+            specified. The cache is bypassed for all
+            cdnPolicy.cacheMode settings.
         cache_key_policy (google.cloud.compute_v1.types.CacheKeyPolicy):
             The CacheKeyPolicy for this CdnPolicy.
         cache_mode (google.cloud.compute_v1.types.BackendServiceCdnPolicy.CacheMode):
@@ -3506,11 +3734,17 @@ class BackendServiceCdnPolicy(proto.Message):
             are marked as uncacheable, as well as dynamic content
             (including HTML), will not be cached.
         client_ttl (int):
-            Specifies a separate client (e.g. browser
-            client) TTL, separate from the TTL for Cloud
-            CDN's edge caches. Leaving this empty will use
-            the same cache TTL for both Cloud CDN and the
-            client-facing response. The maximum allowed
+            Specifies a separate client (e.g. browser client) maximum
+            TTL. This is used to clamp the max-age (or Expires) value
+            sent to the client. With FORCE_CACHE_ALL, the lesser of
+            client_ttl and default_ttl is used for the response max-age
+            directive, along with a "public" directive. For cacheable
+            content in CACHE_ALL_STATIC mode, client_ttl clamps the
+            max-age from the origin (if specified), or else sets the
+            response max-age directive to the lesser of the client_ttl
+            and default_ttl, and also ensures a "public" cache-control
+            directive is present. If a client TTL is not specified, a
+            default value (1 hour) will be used. The maximum allowed
             value is 86400s (1 day).
         default_ttl (int):
             Specifies the default TTL for cached content served by this
@@ -3536,6 +3770,53 @@ class BackendServiceCdnPolicy(proto.Message):
             maximum allowed value is 31,622,400s (1 year),
             noting that infrequently accessed objects may be
             evicted from the cache before the defined TTL.
+        negative_caching (bool):
+            Negative caching allows per-status code TTLs to be set, in
+            order to apply fine-grained caching for common errors or
+            redirects. This can reduce the load on your origin and
+            improve end-user experience by reducing response latency.
+            When the cache mode is set to CACHE_ALL_STATIC or
+            USE_ORIGIN_HEADERS, negative caching applies to responses
+            with the specified response code that lack any
+            Cache-Control, Expires, or Pragma: no-cache directives. When
+            the cache mode is set to FORCE_CACHE_ALL, negative caching
+            applies to all responses with the specified response code,
+            and override any caching headers. By default, Cloud CDN will
+            apply the following default TTLs to these status codes: HTTP
+            300 (Multiple Choice), 301, 308 (Permanent Redirects): 10m
+            HTTP 404 (Not Found), 410 (Gone), 451 (Unavailable For Legal
+            Reasons): 120s HTTP 405 (Method Not Found), 421 (Misdirected
+            Request), 501 (Not Implemented): 60s. These defaults can be
+            overridden in negative_caching_policy.
+        negative_caching_policy (Sequence[google.cloud.compute_v1.types.BackendServiceCdnPolicyNegativeCachingPolicy]):
+            Sets a cache TTL for the specified HTTP status code.
+            negative_caching must be enabled to configure
+            negative_caching_policy. Omitting the policy and leaving
+            negative_caching enabled will use Cloud CDN's default cache
+            TTLs. Note that when specifying an explicit
+            negative_caching_policy, you should take care to specify a
+            cache TTL for all response codes that you wish to cache.
+            Cloud CDN will not apply any default negative caching when a
+            policy exists.
+        request_coalescing (bool):
+            If true then Cloud CDN will combine multiple
+            concurrent cache fill requests into a small
+            number of requests to the origin.
+        serve_while_stale (int):
+            Serve existing content from the cache (if
+            available) when revalidating content with the
+            origin, or when an error is encountered when
+            refreshing the cache. This setting defines the
+            default "max-stale" duration for any cached
+            responses that do not specify a max-stale
+            directive. Stale responses that exceed the TTL
+            configured here will not be served. The default
+            limit (max-stale) is 86400s (1 day), which will
+            allow stale content to be served up to this
+            limit beyond the max-age (or s-max-age) of a
+            cached response. The maximum allowed value is
+            604800 (1 week). Set this to zero (0) to disable
+            serve-while-stale.
         signed_url_cache_max_age_sec (str):
             Maximum number of seconds the response to a signed URL
             request will be considered fresh. After this time period,
@@ -3577,6 +3858,11 @@ class BackendServiceCdnPolicy(proto.Message):
         INVALID_CACHE_MODE = 381295560
         USE_ORIGIN_HEADERS = 55380261
 
+    bypass_cache_on_request_headers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=486203082,
+        message="BackendServiceCdnPolicyBypassCacheOnRequestHeader",
+    )
     cache_key_policy = proto.Field(
         proto.MESSAGE, number=159263727, optional=True, message="CacheKeyPolicy",
     )
@@ -3586,6 +3872,14 @@ class BackendServiceCdnPolicy(proto.Message):
     client_ttl = proto.Field(proto.INT32, number=29034360, optional=True,)
     default_ttl = proto.Field(proto.INT32, number=100253422, optional=True,)
     max_ttl = proto.Field(proto.INT32, number=307578001, optional=True,)
+    negative_caching = proto.Field(proto.BOOL, number=336110005, optional=True,)
+    negative_caching_policy = proto.RepeatedField(
+        proto.MESSAGE,
+        number=155359996,
+        message="BackendServiceCdnPolicyNegativeCachingPolicy",
+    )
+    request_coalescing = proto.Field(proto.BOOL, number=532808276, optional=True,)
+    serve_while_stale = proto.Field(proto.INT32, number=236682203, optional=True,)
     signed_url_cache_max_age_sec = proto.Field(
         proto.STRING, number=269374534, optional=True,
     )
@@ -3635,9 +3929,10 @@ class ConnectionDraining(proto.Message):
     r"""Message containing connection draining configuration.
     Attributes:
         draining_timeout_sec (int):
-            The amount of time in seconds to allow existing connections
-            to persist while on unhealthy backend VMs. Only applicable
-            if the protocol is not UDP. The valid range is [0, 3600].
+            Configures a duration timeout for existing
+            requests on a removed backend instance. For
+            supported load balancers and protocols, as
+            described in Enabling connection draining.
     """
 
     draining_timeout_sec = proto.Field(proto.INT32, number=225127070, optional=True,)
@@ -3773,6 +4068,29 @@ class BackendServiceLogConfig(proto.Message):
 
     enable = proto.Field(proto.BOOL, number=311764355, optional=True,)
     sample_rate = proto.Field(proto.FLOAT, number=153193045, optional=True,)
+
+
+class Duration(proto.Message):
+    r"""A Duration represents a fixed-length span of time represented
+    as a count of seconds and fractions of seconds at nanosecond
+    resolution. It is independent of any calendar and concepts like
+    "day" or "month". Range is approximately 10,000 years.
+
+    Attributes:
+        nanos (int):
+            Span of time that's a fraction of a second at nanosecond
+            resolution. Durations less than one second are represented
+            with a 0 ``seconds`` field and a positive ``nanos`` field.
+            Must be from 0 to 999,999,999 inclusive.
+        seconds (str):
+            Span of time at a resolution of a second. Must be from 0 to
+            315,576,000,000 inclusive. Note: these bounds are computed
+            from: 60 sec/min \* 60 min/hr \* 24 hr/day \* 365.25
+            days/year \* 10000 years
+    """
+
+    nanos = proto.Field(proto.INT32, number=104586303, optional=True,)
+    seconds = proto.Field(proto.STRING, number=359484031, optional=True,)
 
 
 class OutlierDetection(proto.Message):
@@ -3955,9 +4273,8 @@ class BackendService(proto.Message):
             BackendService.
         cdn_policy (google.cloud.compute_v1.types.BackendServiceCdnPolicy):
             Cloud CDN configuration for this
-            BackendService. Not available for Internal
-            TCP/UDP Load Balancing and Network Load
-            Balancing.
+            BackendService. Only available for  external
+            HTTP(S) Load Balancing.
         circuit_breakers (google.cloud.compute_v1.types.CircuitBreakers):
             Settings controlling the volume of connections to a backend
             service. If not set, this feature is considered disabled.
@@ -4109,6 +4426,15 @@ class BackendService(proto.Message):
             the load balancer traffic served by this backend
             service. If logging is enabled, logs will be
             exported to Stackdriver.
+        max_stream_duration (google.cloud.compute_v1.types.Duration):
+            Specifies the default maximum duration (timeout) for streams
+            to this service. Duration is computed from the beginning of
+            the stream until the response has been completely processed,
+            including all retries. A stream that does not complete in
+            this duration is closed. If not specified, there will be no
+            timeout limit, i.e. the maximum duration is infinite. This
+            field is only allowed when the loadBalancingScheme of the
+            backend service is INTERNAL_SELF_MANAGED.
         name (str):
             Name of the resource. Provided by the client when the
             resource is created. The name must be 1-63 characters long,
@@ -4142,9 +4468,9 @@ class BackendService(proto.Message):
         port (int):
             Deprecated in favor of portName. The TCP port
             to connect on the backend. The default value is
-            80.  This cannot be used if the
-            loadBalancingScheme is INTERNAL (Internal
-            TCP/UDP Load Balancing).
+            80.  Backend services for Internal TCP/UDP Load
+            Balancing and Network Load Balancing require you
+            omit port.
         port_name (str):
             A named port on a backend instance group representing the
             port for communication to the backend VMs in that group.
@@ -4214,7 +4540,9 @@ class BackendService(proto.Message):
             The backend service timeout has a different
             meaning depending on the type of load balancer.
             For more information see,  Backend service
-            settings The default is 30 seconds.
+            settings The default is 30 seconds. The full
+            range of timeout values allowed is 1 -
+            2,147,483,647 seconds.
     """
 
     class LoadBalancingScheme(proto.Enum):
@@ -4323,6 +4651,7 @@ class BackendService(proto.Message):
         """
         UNDEFINED_SESSION_AFFINITY = 0
         CLIENT_IP = 345665051
+        CLIENT_IP_NO_DESTINATION = 106122516
         CLIENT_IP_PORT_PROTO = 221722926
         CLIENT_IP_PROTO = 25322148
         GENERATED_COOKIE = 370321204
@@ -4379,6 +4708,9 @@ class BackendService(proto.Message):
         number=351299741,
         optional=True,
         message="BackendServiceLogConfig",
+    )
+    max_stream_duration = proto.Field(
+        proto.MESSAGE, number=61428376, optional=True, message="Duration",
     )
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     network = proto.Field(proto.STRING, number=232872494, optional=True,)
@@ -4465,6 +4797,20 @@ class BackendServiceAggregatedList(proto.Message):
     )
 
 
+class BackendServiceCdnPolicyBypassCacheOnRequestHeader(proto.Message):
+    r"""Bypass the cache when the specified request headers are present,
+    e.g. Pragma or Authorization headers. Values are case insensitive.
+    The presence of such a header overrides the cache_mode setting.
+
+    Attributes:
+        header_name (str):
+            The header field name to match on when
+            bypassing cache. Values are case-insensitive.
+    """
+
+    header_name = proto.Field(proto.STRING, number=110223613, optional=True,)
+
+
 class CacheKeyPolicy(proto.Message):
     r"""Message containing what to include in the cache key for a
     request for Cloud CDN.
@@ -4503,19 +4849,49 @@ class CacheKeyPolicy(proto.Message):
     query_string_whitelist = proto.RepeatedField(proto.STRING, number=52456496,)
 
 
+class BackendServiceCdnPolicyNegativeCachingPolicy(proto.Message):
+    r"""Specify CDN TTLs for response error codes.
+    Attributes:
+        code (int):
+            The HTTP status code to define a TTL against.
+            Only HTTP status codes 300, 301, 302, 307, 308,
+            404, 405, 410, 421, 451 and 501 are can be
+            specified as values, and you cannot specify a
+            status code more than once.
+        ttl (int):
+            The TTL (in seconds) for which to cache
+            responses with the corresponding status code.
+            The maximum allowed value is 1800s (30 minutes),
+            noting that infrequently accessed objects may be
+            evicted from the cache before the defined TTL.
+    """
+
+    code = proto.Field(proto.INT32, number=3059181, optional=True,)
+    ttl = proto.Field(proto.INT32, number=115180, optional=True,)
+
+
 class HealthStatus(proto.Message):
     r"""
     Attributes:
         annotations (Sequence[google.cloud.compute_v1.types.HealthStatus.AnnotationsEntry]):
             Metadata defined as annotations for network
             endpoint.
+        forwarding_rule (str):
+            URL of the forwarding rule associated with
+            the health status of the instance.
+        forwarding_rule_ip (str):
+            A forwarding rule IP address assigned to this
+            instance.
         health_state (google.cloud.compute_v1.types.HealthStatus.HealthState):
             Health state of the instance.
         instance (str):
             URL of the instance resource.
         ip_address (str):
-            A forwarding rule IP address assigned to this
-            instance.
+            For target pool based Network Load Balancing,
+            it indicates the forwarding rule's IP address
+            assigned to this instance. For other types of
+            load balancing, the field indicates VM internal
+            ip.
         port (int):
             The named port of the instance group, not
             necessarily the port that is health-checked.
@@ -4540,6 +4916,8 @@ class HealthStatus(proto.Message):
         WEIGHT_NONE = 502428831
 
     annotations = proto.MapField(proto.STRING, proto.STRING, number=112032548,)
+    forwarding_rule = proto.Field(proto.STRING, number=269964030, optional=True,)
+    forwarding_rule_ip = proto.Field(proto.STRING, number=172250632, optional=True,)
     health_state = proto.Field(
         proto.ENUM, number=324007150, optional=True, enum=HealthState,
     )
@@ -4767,6 +5145,250 @@ class Binding(proto.Message):
     role = proto.Field(proto.STRING, number=3506294, optional=True,)
 
 
+class InstanceProperties(proto.Message):
+    r"""
+    Attributes:
+        advanced_machine_features (google.cloud.compute_v1.types.AdvancedMachineFeatures):
+            Controls for advanced machine-related
+            behavior features.
+        can_ip_forward (bool):
+            Enables instances created based on these
+            properties to send packets with source IP
+            addresses other than their own and receive
+            packets with destination IP addresses other than
+            their own. If these instances will be used as an
+            IP gateway or it will be set as the next-hop in
+            a Route resource, specify true. If unsure, leave
+            this set to false. See the Enable IP forwarding
+            documentation for more information.
+        confidential_instance_config (google.cloud.compute_v1.types.ConfidentialInstanceConfig):
+            Specifies the Confidential Instance options.
+        description (str):
+            An optional text description for the
+            instances that are created from these
+            properties.
+        disks (Sequence[google.cloud.compute_v1.types.AttachedDisk]):
+            An array of disks that are associated with
+            the instances that are created from these
+            properties.
+        guest_accelerators (Sequence[google.cloud.compute_v1.types.AcceleratorConfig]):
+            A list of guest accelerator cards' type and
+            count to use for instances created from these
+            properties.
+        labels (Sequence[google.cloud.compute_v1.types.InstanceProperties.LabelsEntry]):
+            Labels to apply to instances that are created
+            from these properties.
+        machine_type (str):
+            The machine type to use for instances that
+            are created from these properties.
+        metadata (google.cloud.compute_v1.types.Metadata):
+            The metadata key/value pairs to assign to
+            instances that are created from these
+            properties. These pairs can consist of custom
+            metadata or predefined keys. See Project and
+            instance metadata for more information.
+        min_cpu_platform (str):
+            Minimum cpu/platform to be used by instances.
+            The instance may be scheduled on the specified
+            or newer cpu/platform. Applicable values are the
+            friendly names of CPU platforms, such as
+            minCpuPlatform: "Intel Haswell" or
+            minCpuPlatform: "Intel Sandy Bridge". For more
+            information, read Specifying a Minimum CPU
+            Platform.
+        network_interfaces (Sequence[google.cloud.compute_v1.types.NetworkInterface]):
+            An array of network access configurations for
+            this interface.
+        private_ipv6_google_access (google.cloud.compute_v1.types.InstanceProperties.PrivateIpv6GoogleAccess):
+            The private IPv6 google access type for VMs. If not
+            specified, use INHERIT_FROM_SUBNETWORK as default.
+        reservation_affinity (google.cloud.compute_v1.types.ReservationAffinity):
+            Specifies the reservations that instances can
+            consume from.
+        resource_policies (Sequence[str]):
+            Resource policies (names, not ULRs) applied
+            to instances created from these properties.
+        scheduling (google.cloud.compute_v1.types.Scheduling):
+            Specifies the scheduling options for the
+            instances that are created from these
+            properties.
+        service_accounts (Sequence[google.cloud.compute_v1.types.ServiceAccount]):
+            A list of service accounts with specified
+            scopes. Access tokens for these service accounts
+            are available to the instances that are created
+            from these properties. Use metadata queries to
+            obtain the access tokens for these instances.
+        shielded_instance_config (google.cloud.compute_v1.types.ShieldedInstanceConfig):
+
+        tags (google.cloud.compute_v1.types.Tags):
+            A list of tags to apply to the instances that
+            are created from these properties. The tags
+            identify valid sources or targets for network
+            firewalls. The setTags method can modify this
+            list of tags. Each tag within the list must
+            comply with RFC1035.
+    """
+
+    class PrivateIpv6GoogleAccess(proto.Enum):
+        r"""The private IPv6 google access type for VMs. If not specified, use
+        INHERIT_FROM_SUBNETWORK as default.
+        """
+        UNDEFINED_PRIVATE_IPV6_GOOGLE_ACCESS = 0
+        ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE = 427975994
+        ENABLE_OUTBOUND_VM_ACCESS_TO_GOOGLE = 288210263
+        INHERIT_FROM_SUBNETWORK = 530256959
+
+    advanced_machine_features = proto.Field(
+        proto.MESSAGE,
+        number=409646002,
+        optional=True,
+        message="AdvancedMachineFeatures",
+    )
+    can_ip_forward = proto.Field(proto.BOOL, number=467731324, optional=True,)
+    confidential_instance_config = proto.Field(
+        proto.MESSAGE,
+        number=490637685,
+        optional=True,
+        message="ConfidentialInstanceConfig",
+    )
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    disks = proto.RepeatedField(proto.MESSAGE, number=95594102, message="AttachedDisk",)
+    guest_accelerators = proto.RepeatedField(
+        proto.MESSAGE, number=463595119, message="AcceleratorConfig",
+    )
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
+    machine_type = proto.Field(proto.STRING, number=227711026, optional=True,)
+    metadata = proto.Field(
+        proto.MESSAGE, number=86866735, optional=True, message="Metadata",
+    )
+    min_cpu_platform = proto.Field(proto.STRING, number=242912759, optional=True,)
+    network_interfaces = proto.RepeatedField(
+        proto.MESSAGE, number=52735243, message="NetworkInterface",
+    )
+    private_ipv6_google_access = proto.Field(
+        proto.ENUM, number=48277006, optional=True, enum=PrivateIpv6GoogleAccess,
+    )
+    reservation_affinity = proto.Field(
+        proto.MESSAGE, number=157850683, optional=True, message="ReservationAffinity",
+    )
+    resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
+    scheduling = proto.Field(
+        proto.MESSAGE, number=386688404, optional=True, message="Scheduling",
+    )
+    service_accounts = proto.RepeatedField(
+        proto.MESSAGE, number=277537328, message="ServiceAccount",
+    )
+    shielded_instance_config = proto.Field(
+        proto.MESSAGE, number=12862901, optional=True, message="ShieldedInstanceConfig",
+    )
+    tags = proto.Field(proto.MESSAGE, number=3552281, optional=True, message="Tags",)
+
+
+class LocationPolicy(proto.Message):
+    r"""Configuration for location policy among multiple possible
+    locations (e.g. preferences for zone selection among zones in a
+    single region).
+
+    Attributes:
+        locations (Sequence[google.cloud.compute_v1.types.LocationPolicy.LocationsEntry]):
+            Location configurations mapped by location
+            name. Currently only zone names are supported
+            and must be represented as valid internal URLs,
+            such as zones/us-central1-a.
+    """
+
+    locations = proto.MapField(
+        proto.STRING, proto.MESSAGE, number=413423454, message="LocationPolicyLocation",
+    )
+
+
+class BulkInsertInstanceResourcePerInstanceProperties(proto.Message):
+    r"""Per-instance properties to be set on individual instances. To
+    be extended in the future.
+
+    Attributes:
+        name (str):
+            This field is only temporary. It will be
+            removed. Do not use it.
+    """
+
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+
+
+class BulkInsertInstanceResource(proto.Message):
+    r"""
+    Attributes:
+        count (str):
+            The maximum number of instances to create.
+        instance_properties (google.cloud.compute_v1.types.InstanceProperties):
+            The instance properties defining the VM
+            instances to be created. Required if
+            sourceInstanceTemplate is not provided.
+        location_policy (google.cloud.compute_v1.types.LocationPolicy):
+            Policy for chosing target zone.
+        min_count (str):
+            The minimum number of instances to create. If no min_count
+            is specified then count is used as the default value. If
+            min_count instances cannot be created, then no instances
+            will be created and instances already created will be
+            deleted.
+        name_pattern (str):
+            The string pattern used for the names of the VMs. Either
+            name_pattern or per_instance_properties must be set. The
+            pattern should contain one continuous sequence of
+            placeholder hash characters (#) with each character
+            corresponding to one digit of the generated instance name.
+            Example: name_pattern of inst-#### will generate instance
+            names such as inst-0001, inst-0002, ... . If there already
+            exist instance(s) whose names match the name pattern in the
+            same project and zone, then the generated instance numbers
+            will start after the biggest existing number. For example,
+            if there exists an instance with name inst-0050, then
+            instance names generated using the pattern inst-#### will be
+            inst-0051, inst-0052, etc. The name pattern placeholder
+            #...# can contain up to 18 characters.
+        per_instance_properties (Sequence[google.cloud.compute_v1.types.BulkInsertInstanceResource.PerInstancePropertiesEntry]):
+            Per-instance properties to be set on individual instances.
+            Keys of this map specify requested instance names. Can be
+            empty if name_pattern is used.
+        source_instance_template (str):
+            Specifies the instance template from which to
+            create instances. You may combine
+            sourceInstanceTemplate with instanceProperties
+            to override specific values from an existing
+            instance template. Bulk API follows the
+            semantics of JSON Merge Patch described by RFC
+            7396.  It can be a full or partial URL. For
+            example, the following are all valid URLs to an
+            instance template: -
+            https://www.googleapis.com/compute/v1/projects/project/global/instanceTemplates/instanceTemplate
+            -
+            projects/project/global/instanceTemplates/instanceTemplate
+            - global/instanceTemplates/instanceTemplate
+
+            This field is optional.
+    """
+
+    count = proto.Field(proto.STRING, number=94851343, optional=True,)
+    instance_properties = proto.Field(
+        proto.MESSAGE, number=215355165, optional=True, message="InstanceProperties",
+    )
+    location_policy = proto.Field(
+        proto.MESSAGE, number=465689852, optional=True, message="LocationPolicy",
+    )
+    min_count = proto.Field(proto.STRING, number=523228386, optional=True,)
+    name_pattern = proto.Field(proto.STRING, number=413815260, optional=True,)
+    per_instance_properties = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=108502267,
+        message="BulkInsertInstanceResourcePerInstanceProperties",
+    )
+    source_instance_template = proto.Field(
+        proto.STRING, number=332423616, optional=True,
+    )
+
+
 class CacheInvalidationRule(proto.Message):
     r"""
     Attributes:
@@ -4831,6 +5453,8 @@ class Reservation(proto.Message):
             first character must be a lowercase letter, and all
             following characters must be a dash, lowercase letter, or
             digit, except the last character, which cannot be a dash.
+        satisfies_pzs (bool):
+            [Output Only] Reserved for future use.
         self_link (str):
             [Output Only] Server-defined fully-qualified URL for this
             resource.
@@ -4866,6 +5490,7 @@ class Reservation(proto.Message):
     id = proto.Field(proto.STRING, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    satisfies_pzs = proto.Field(proto.BOOL, number=480964267, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     specific_reservation = proto.Field(
         proto.MESSAGE,
@@ -5206,29 +5831,6 @@ class ConsistentHashLoadBalancerSettingsHttpCookie(proto.Message):
     ttl = proto.Field(proto.MESSAGE, number=115180, optional=True, message="Duration",)
 
 
-class Duration(proto.Message):
-    r"""A Duration represents a fixed-length span of time represented
-    as a count of seconds and fractions of seconds at nanosecond
-    resolution. It is independent of any calendar and concepts like
-    "day" or "month". Range is approximately 10,000 years.
-
-    Attributes:
-        nanos (int):
-            Span of time that's a fraction of a second at nanosecond
-            resolution. Durations less than one second are represented
-            with a 0 ``seconds`` field and a positive ``nanos`` field.
-            Must be from 0 to 999,999,999 inclusive.
-        seconds (str):
-            Span of time at a resolution of a second. Must be from 0 to
-            315,576,000,000 inclusive. Note: these bounds are computed
-            from: 60 sec/min \* 60 min/hr \* 24 hr/day \* 365.25
-            days/year \* 10000 years
-    """
-
-    nanos = proto.Field(proto.INT32, number=104586303, optional=True,)
-    seconds = proto.Field(proto.STRING, number=359484031, optional=True,)
-
-
 class CorsPolicy(proto.Message):
     r"""The specification for allowing client side cross-origin
     requests. Please see W3C Recommendation for Cross Origin
@@ -5251,10 +5853,9 @@ class CorsPolicy(proto.Message):
             Specifies the regualar expression patterns
             that match allowed origins. For regular
             expression grammar please see
-            en.cppreference.com/w/cpp/regex/ecmascript An
-            origin is allowed if it matches either an item
-            in allowOrigins or an item in
-            allowOriginRegexes.
+            github.com/google/re2/wiki/Syntax An origin is
+            allowed if it matches either an item in
+            allowOrigins or an item in allowOriginRegexes.
         allow_origins (Sequence[str]):
             Specifies the list of origins that will be
             allowed to do CORS requests. An origin is
@@ -5381,6 +5982,10 @@ class Disk(proto.Message):
         licenses (Sequence[str]):
             A list of publicly visible licenses. Reserved
             for Google's use.
+        location_hint (str):
+            An opaque location hint used to place the
+            disk close to other resources. This field is for
+            use by internal tools that use the public API.
         name (str):
             Name of the resource. Provided by the client when the
             resource is created. The name must be 1-63 characters long,
@@ -5400,6 +6005,9 @@ class Disk(proto.Message):
             an unsupported value is requested, the error
             message will list the supported values for the
             caller's project.
+        provisioned_iops (str):
+            Indicates how many IOPS must be provisioned
+            for the disk.
         region (str):
             [Output Only] URL of the region where the disk resides. Only
             applicable for regional resources. You must specify this
@@ -5412,6 +6020,8 @@ class Disk(proto.Message):
         resource_policies (Sequence[str]):
             Resource policies applied to this disk for
             automatic snapshot creations.
+        satisfies_pzs (bool):
+            [Output Only] Reserved for future use.
         self_link (str):
             [Output Only] Server-defined fully-qualified URL for this
             resource.
@@ -5431,8 +6041,12 @@ class Disk(proto.Message):
             resource. For example, the following are valid
             values: -
             https://www.googleapis.com/compute/v1/projects/project/zones/zone/disks/disk
+            -
+            https://www.googleapis.com/compute/v1/projects/project/regions/region/disks/disk
             - projects/project/zones/zone/disks/disk
+            - projects/project/regions/region/disks/disk
             - zones/zone/disks/disk
+            - regions/region/disks/disk
         source_disk_id (str):
             [Output Only] The unique ID of the disk used to create this
             disk. This value identifies the exact disk that was used to
@@ -5495,11 +6109,25 @@ class Disk(proto.Message):
             deleted and recreated under the same name, the source
             snapshot ID would identify the exact version of the snapshot
             that was used.
+        source_storage_object (str):
+            The full Google Cloud Storage URI where the
+            disk image is stored. This file must be a gzip-
+            compressed tarball whose name ends in .tar.gz or
+            virtual machine disk whose name ends in vmdk.
+            Valid URIs may start with gs:// or
+            https://storage.googleapis.com/. This flag is
+            not optimized for creating multiple disks from a
+            source storage object. To create many disks from
+            a source storage object, use gcloud compute
+            images import instead.
         status (google.cloud.compute_v1.types.Disk.Status):
-            [Output Only] The status of disk creation. CREATING: Disk is
-            provisioning. RESTORING: Source data is being copied into
-            the disk. FAILED: Disk creation failed. READY: Disk is ready
-            for use. DELETING: Disk is deleting.
+            [Output Only] The status of disk creation.
+
+            -  CREATING: Disk is provisioning.
+            -  RESTORING: Source data is being copied into the disk.
+            -  FAILED: Disk creation failed.
+            -  READY: Disk is ready for use.
+            -  DELETING: Disk is deleting.
         type_ (str):
             URL of the disk type resource describing
             which disk type to use to create the disk.
@@ -5518,10 +6146,13 @@ class Disk(proto.Message):
     """
 
     class Status(proto.Enum):
-        r"""[Output Only] The status of disk creation. CREATING: Disk is
-        provisioning. RESTORING: Source data is being copied into the disk.
-        FAILED: Disk creation failed. READY: Disk is ready for use.
-        DELETING: Disk is deleting.
+        r"""[Output Only] The status of disk creation.
+
+        -  CREATING: Disk is provisioning.
+        -  RESTORING: Source data is being copied into the disk.
+        -  FAILED: Disk creation failed.
+        -  READY: Disk is ready for use.
+        -  DELETING: Disk is deleting.
         """
         UNDEFINED_STATUS = 0
         CREATING = 455564985
@@ -5546,14 +6177,17 @@ class Disk(proto.Message):
     last_detach_timestamp = proto.Field(proto.STRING, number=56471027, optional=True,)
     license_codes = proto.RepeatedField(proto.STRING, number=45482664,)
     licenses = proto.RepeatedField(proto.STRING, number=337642578,)
+    location_hint = proto.Field(proto.STRING, number=350519505, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     options = proto.Field(proto.STRING, number=361137822, optional=True,)
     physical_block_size_bytes = proto.Field(
         proto.STRING, number=420007943, optional=True,
     )
+    provisioned_iops = proto.Field(proto.STRING, number=186769108, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     replica_zones = proto.RepeatedField(proto.STRING, number=48438272,)
     resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
+    satisfies_pzs = proto.Field(proto.BOOL, number=480964267, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     size_gb = proto.Field(proto.STRING, number=494929369, optional=True,)
     source_disk = proto.Field(proto.STRING, number=451753793, optional=True,)
@@ -5568,6 +6202,7 @@ class Disk(proto.Message):
         proto.MESSAGE, number=303679322, optional=True, message="CustomerEncryptionKey",
     )
     source_snapshot_id = proto.Field(proto.STRING, number=98962258, optional=True,)
+    source_storage_object = proto.Field(proto.STRING, number=233052711, optional=True,)
     status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
     type_ = proto.Field(proto.STRING, number=3575610, optional=True,)
     users = proto.RepeatedField(proto.STRING, number=111578632,)
@@ -5992,11 +6627,29 @@ class DistributionPolicyZoneConfiguration(proto.Message):
 class DistributionPolicy(proto.Message):
     r"""
     Attributes:
+        target_shape (google.cloud.compute_v1.types.DistributionPolicy.TargetShape):
+            The distribution shape to which the group
+            converges either proactively or on resize events
+            (depending on the value set in
+            updatePolicy.instanceRedistributionType).
         zones (Sequence[google.cloud.compute_v1.types.DistributionPolicyZoneConfiguration]):
             Zones where the regional managed instance
             group will create and manage its instances.
     """
 
+    class TargetShape(proto.Enum):
+        r"""The distribution shape to which the group converges either
+        proactively or on resize events (depending on the value set in
+        updatePolicy.instanceRedistributionType).
+        """
+        UNDEFINED_TARGET_SHAPE = 0
+        ANY = 64972
+        BALANCED = 468409608
+        EVEN = 2140442
+
+    target_shape = proto.Field(
+        proto.ENUM, number=338621299, optional=True, enum=TargetShape,
+    )
     zones = proto.RepeatedField(
         proto.MESSAGE, number=116085319, message="DistributionPolicyZoneConfiguration",
     )
@@ -6260,7 +6913,7 @@ class FileContentBuffer(proto.Message):
 class Allowed(proto.Message):
     r"""
     Attributes:
-        i_p_protocol (str):
+        I_p_protocol (str):
             The IP protocol to which this rule applies.
             The protocol type is required when creating a
             firewall rule. This value can either be one of
@@ -6278,14 +6931,14 @@ class Allowed(proto.Message):
             ["12345-12349"].
     """
 
-    i_p_protocol = proto.Field(proto.STRING, number=323774237, optional=True,)
+    I_p_protocol = proto.Field(proto.STRING, number=488094525, optional=True,)
     ports = proto.RepeatedField(proto.STRING, number=106854418,)
 
 
 class Denied(proto.Message):
     r"""
     Attributes:
-        i_p_protocol (str):
+        I_p_protocol (str):
             The IP protocol to which this rule applies.
             The protocol type is required when creating a
             firewall rule. This value can either be one of
@@ -6303,7 +6956,7 @@ class Denied(proto.Message):
             ["12345-12349"].
     """
 
-    i_p_protocol = proto.Field(proto.STRING, number=323774237, optional=True,)
+    I_p_protocol = proto.Field(proto.STRING, number=488094525, optional=True,)
     ports = proto.RepeatedField(proto.STRING, number=106854418,)
 
 
@@ -6557,6 +7210,312 @@ class FirewallList(proto.Message):
     )
 
 
+class FirewallPolicyAssociation(proto.Message):
+    r"""
+    Attributes:
+        attachment_target (str):
+            The target that the firewall policy is
+            attached to.
+        display_name (str):
+            [Output Only] Deprecated, please use short name instead. The
+            display name of the firewall policy of the association.
+        firewall_policy_id (str):
+            [Output Only] The firewall policy ID of the association.
+        name (str):
+            The name for an association.
+        short_name (str):
+            [Output Only] The short name of the firewall policy of the
+            association.
+    """
+
+    attachment_target = proto.Field(proto.STRING, number=175773741, optional=True,)
+    display_name = proto.Field(proto.STRING, number=4473832, optional=True,)
+    firewall_policy_id = proto.Field(proto.STRING, number=357211849, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    short_name = proto.Field(proto.STRING, number=492051566, optional=True,)
+
+
+class FirewallPoliciesListAssociationsResponse(proto.Message):
+    r"""
+    Attributes:
+        associations (Sequence[google.cloud.compute_v1.types.FirewallPolicyAssociation]):
+            A list of associations.
+        kind (str):
+            [Output Only] Type of firewallPolicy associations. Always
+            compute#FirewallPoliciesListAssociations for lists of
+            firewallPolicy associations.
+    """
+
+    associations = proto.RepeatedField(
+        proto.MESSAGE, number=508736530, message="FirewallPolicyAssociation",
+    )
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+
+
+class FirewallPolicyRule(proto.Message):
+    r"""Represents a rule that describes one or more match conditions
+    along with the action to be taken when traffic matches this
+    condition (allow or deny).
+
+    Attributes:
+        action (str):
+            The Action to perform when the client
+            connection triggers the rule. Can currently be
+            either "allow" or "deny()" where valid values
+            for status are 403, 404, and 502.
+        description (str):
+            An optional description for this resource.
+        direction (google.cloud.compute_v1.types.FirewallPolicyRule.Direction):
+            The direction in which this rule applies.
+        disabled (bool):
+            Denotes whether the firewall policy rule is
+            disabled. When set to true, the firewall policy
+            rule is not enforced and traffic behaves as if
+            it did not exist. If this is unspecified, the
+            firewall policy rule will be enabled.
+        enable_logging (bool):
+            Denotes whether to enable logging for a particular rule. If
+            logging is enabled, logs will be exported to the configured
+            export destination in Stackdriver. Logs may be exported to
+            BigQuery or Pub/Sub. Note: you cannot enable logging on
+            "goto_next" rules.
+        kind (str):
+            [Output only] Type of the resource. Always
+            compute#firewallPolicyRule for firewall policy rules
+        match (google.cloud.compute_v1.types.FirewallPolicyRuleMatcher):
+            A match condition that incoming traffic is
+            evaluated against. If it evaluates to true, the
+            corresponding 'action' is enforced.
+        priority (int):
+            An integer indicating the priority of a rule
+            in the list. The priority must be a positive
+            value between 0 and 2147483647. Rules are
+            evaluated from highest to lowest priority where
+            0 is the highest priority and 2147483647 is the
+            lowest prority.
+        rule_tuple_count (int):
+            [Output Only] Calculation of the complexity of a single
+            firewall policy rule.
+        target_resources (Sequence[str]):
+            A list of network resource URLs to which this
+            rule applies. This field allows you to control
+            which network's VMs get this rule. If this field
+            is left blank, all VMs within the organization
+            will receive the rule.
+        target_service_accounts (Sequence[str]):
+            A list of service accounts indicating the
+            sets of instances that are applied with this
+            rule.
+    """
+
+    class Direction(proto.Enum):
+        r"""The direction in which this rule applies."""
+        UNDEFINED_DIRECTION = 0
+        EGRESS = 432880501
+        INGRESS = 516931221
+
+    action = proto.Field(proto.STRING, number=187661878, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    direction = proto.Field(
+        proto.ENUM, number=111150975, optional=True, enum=Direction,
+    )
+    disabled = proto.Field(proto.BOOL, number=270940796, optional=True,)
+    enable_logging = proto.Field(proto.BOOL, number=295396515, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    match = proto.Field(
+        proto.MESSAGE,
+        number=103668165,
+        optional=True,
+        message="FirewallPolicyRuleMatcher",
+    )
+    priority = proto.Field(proto.INT32, number=445151652, optional=True,)
+    rule_tuple_count = proto.Field(proto.INT32, number=388342037, optional=True,)
+    target_resources = proto.RepeatedField(proto.STRING, number=528230647,)
+    target_service_accounts = proto.RepeatedField(proto.STRING, number=457639710,)
+
+
+class FirewallPolicy(proto.Message):
+    r"""Represents a Firewall Policy resource. (== resource_for
+    {$api_version}.firewallPolicies ==)
+
+    Attributes:
+        associations (Sequence[google.cloud.compute_v1.types.FirewallPolicyAssociation]):
+            A list of associations that belong to this
+            firewall policy.
+        creation_timestamp (str):
+            [Output Only] Creation timestamp in RFC3339 text format.
+        description (str):
+            An optional description of this resource.
+            Provide this property when you create the
+            resource.
+        display_name (str):
+            Depreacted, please use short name instead. User-provided
+            name of the Organization firewall plicy. The name should be
+            unique in the organization in which the firewall policy is
+            created. The name must be 1-63 characters long, and comply
+            with RFC1035. Specifically, the name must be 1-63 characters
+            long and match the regular expression
+            ``[a-z]([-a-z0-9]*[a-z0-9])?`` which means the first
+            character must be a lowercase letter, and all following
+            characters must be a dash, lowercase letter, or digit,
+            except the last character, which cannot be a dash.
+        fingerprint (str):
+            Specifies a fingerprint for this resource,
+            which is essentially a hash of the metadata's
+            contents and used for optimistic locking. The
+            fingerprint is initially generated by Compute
+            Engine and changes after every request to modify
+            or update metadata. You must always provide an
+            up-to-date fingerprint hash in order to update
+            or change metadata, otherwise the request will
+            fail with error 412 conditionNotMet.  To see the
+            latest fingerprint, make get() request to the
+            firewall policy.
+        id (str):
+            [Output Only] The unique identifier for the resource. This
+            identifier is defined by the server.
+        kind (str):
+            [Output only] Type of the resource. Always
+            compute#firewallPolicyfor firewall policies
+        name (str):
+            [Output Only] Name of the resource. It is a numeric ID
+            allocated by GCP which uniquely identifies the Firewall
+            Policy.
+        parent (str):
+            [Output Only] The parent of the firewall policy.
+        rule_tuple_count (int):
+            [Output Only] Total count of all firewall policy rule
+            tuples. A firewall policy can not exceed a set number of
+            tuples.
+        rules (Sequence[google.cloud.compute_v1.types.FirewallPolicyRule]):
+            A list of rules that belong to this policy. There must
+            always be a default rule (rule with priority 2147483647 and
+            match "*"). If no rules are provided when creating a
+            firewall policy, a default rule with action "allow" will be
+            added.
+        self_link (str):
+            [Output Only] Server-defined URL for the resource.
+        self_link_with_id (str):
+            [Output Only] Server-defined URL for this resource with the
+            resource id.
+        short_name (str):
+            User-provided name of the Organization firewall plicy. The
+            name should be unique in the organization in which the
+            firewall policy is created. The name must be 1-63 characters
+            long, and comply with RFC1035. Specifically, the name must
+            be 1-63 characters long and match the regular expression
+            ``[a-z]([-a-z0-9]*[a-z0-9])?`` which means the first
+            character must be a lowercase letter, and all following
+            characters must be a dash, lowercase letter, or digit,
+            except the last character, which cannot be a dash.
+    """
+
+    associations = proto.RepeatedField(
+        proto.MESSAGE, number=508736530, message="FirewallPolicyAssociation",
+    )
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    display_name = proto.Field(proto.STRING, number=4473832, optional=True,)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    parent = proto.Field(proto.STRING, number=78317738, optional=True,)
+    rule_tuple_count = proto.Field(proto.INT32, number=388342037, optional=True,)
+    rules = proto.RepeatedField(
+        proto.MESSAGE, number=108873975, message="FirewallPolicyRule",
+    )
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    self_link_with_id = proto.Field(proto.STRING, number=44520962, optional=True,)
+    short_name = proto.Field(proto.STRING, number=492051566, optional=True,)
+
+
+class FirewallPolicyList(proto.Message):
+    r"""
+    Attributes:
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+        items (Sequence[google.cloud.compute_v1.types.FirewallPolicy]):
+            A list of FirewallPolicy resources.
+        kind (str):
+            [Output Only] Type of resource. Always
+            compute#firewallPolicyList for listsof FirewallPolicies
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    items = proto.RepeatedField(
+        proto.MESSAGE, number=100526016, message="FirewallPolicy",
+    )
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
+
+
+class FirewallPolicyRuleMatcher(proto.Message):
+    r"""Represents a match condition that incoming traffic is
+    evaluated against. Exactly one field must be specified.
+
+    Attributes:
+        dest_ip_ranges (Sequence[str]):
+            CIDR IP address range. Maximum number of
+            destination CIDR IP ranges allowed is 256.
+        layer4_configs (Sequence[google.cloud.compute_v1.types.FirewallPolicyRuleMatcherLayer4Config]):
+            Pairs of IP protocols and ports that the rule
+            should match.
+        src_ip_ranges (Sequence[str]):
+            CIDR IP address range. Maximum number of
+            source CIDR IP ranges allowed is 256.
+    """
+
+    dest_ip_ranges = proto.RepeatedField(proto.STRING, number=337357713,)
+    layer4_configs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=373534261,
+        message="FirewallPolicyRuleMatcherLayer4Config",
+    )
+    src_ip_ranges = proto.RepeatedField(proto.STRING, number=432128083,)
+
+
+class FirewallPolicyRuleMatcherLayer4Config(proto.Message):
+    r"""
+    Attributes:
+        ip_protocol (str):
+            The IP protocol to which this rule applies.
+            The protocol type is required when creating a
+            firewall rule. This value can either be one of
+            the following well known protocol strings (tcp,
+            udp, icmp, esp, ah, ipip, sctp), or the IP
+            protocol number.
+        ports (Sequence[str]):
+            An optional list of ports to which this rule applies. This
+            field is only applicable for UDP or TCP protocol. Each entry
+            must be either an integer or a range. If not specified, this
+            rule applies to connections through any port.
+
+            Example inputs include: ["22"], ["80","443"], and
+            ["12345-12349"].
+    """
+
+    ip_protocol = proto.Field(proto.STRING, number=475958960, optional=True,)
+    ports = proto.RepeatedField(proto.STRING, number=106854418,)
+
+
 class MetadataFilter(proto.Message):
     r"""Opaque filter criteria used by loadbalancers to restrict routing
     configuration to a limited set of loadbalancing proxies. Proxies and
@@ -6615,6 +7574,34 @@ class MetadataFilter(proto.Message):
     )
 
 
+class ForwardingRuleServiceDirectoryRegistration(proto.Message):
+    r"""Describes the auto-registration of the Forwarding Rule to
+    Service Directory. The region and project of the Service
+    Directory resource generated from this registration will be the
+    same as this Forwarding Rule.
+
+    Attributes:
+        namespace (str):
+            Service Directory namespace to register the
+            forwarding rule under.
+        service (str):
+            Service Directory service to register the
+            forwarding rule under.
+        service_directory_region (str):
+            [Optional] Service Directory region to register this global
+            forwarding rule under. Default to "us-central1". Only used
+            for PSC for Google APIs. All PSC for Google APIs Forwarding
+            Rules on the same network should use the same Service
+            Directory region.
+    """
+
+    namespace = proto.Field(proto.STRING, number=178476379, optional=True,)
+    service = proto.Field(proto.STRING, number=373540533, optional=True,)
+    service_directory_region = proto.Field(
+        proto.STRING, number=74030416, optional=True,
+    )
+
+
 class ForwardingRule(proto.Message):
     r"""Represents a Forwarding Rule resource.
 
@@ -6638,6 +7625,55 @@ class ForwardingRule(proto.Message):
     {$api_version}.regionForwardingRules ==)
 
     Attributes:
+        I_p_address (str):
+            IP address that this forwarding rule serves. When a client
+            sends traffic to this IP address, the forwarding rule
+            directs the traffic to the target that you specify in the
+            forwarding rule.
+
+            If you don't specify a reserved IP address, an ephemeral IP
+            address is assigned. Methods for specifying an IP address:
+
+            -  IPv4 dotted decimal, as in ``100.1.2.3`` \* Full URL, as
+               in
+               https://www.googleapis.com/compute/v1/projects/project_id/regions/region/addresses/address-name
+               \* Partial URL or by name, as in:
+
+            -  projects/project_id/regions/region/addresses/address-name
+            -  regions/region/addresses/address-name
+            -  global/addresses/address-name
+            -  address-name
+
+            The loadBalancingScheme and the forwarding rule's target
+            determine the type of IP address that you can use. For
+            detailed information, refer to `IP address
+            specifications </load-balancing/docs/forwarding-rule-concepts#ip_address_specifications>`__.
+
+            Must be set to ``0.0.0.0`` when the target is
+            targetGrpcProxy that has validateForProxyless field set to
+            true.
+
+            For Private Service Connect forwarding rules that forward
+            traffic to Google APIs, IP address must be provided.
+        I_p_protocol (google.cloud.compute_v1.types.ForwardingRule.IPProtocol):
+            The IP protocol to which this rule applies.
+
+            For protocol forwarding, valid options are TCP, UDP, ESP,
+            AH, SCTP and ICMP.
+
+            The valid IP protocols are different for different load
+            balancing products:
+
+            -  Internal TCP/UDP Load Balancing: The load balancing
+               scheme is INTERNAL, and one of TCP, UDP or ALL is valid.
+            -  Traffic Director: The load balancing scheme is
+               INTERNAL_SELF_MANAGED, and only TCP is valid.
+            -  Internal HTTP(S) Load Balancing: The load balancing
+               scheme is INTERNAL_MANAGED, and only TCP is valid.
+            -  HTTP(S), SSL Proxy, and TCP Proxy Load Balancing: The
+               load balancing scheme is EXTERNAL and only TCP is valid.
+            -  Network Load Balancing: The load balancing scheme is
+               EXTERNAL, and one of TCP or UDP is valid.
         all_ports (bool):
             This field is used along with the backend_service field for
             internal load balancing or with the target field for
@@ -6677,55 +7713,6 @@ class ForwardingRule(proto.Message):
             from another concurrent request.  To see the
             latest fingerprint, make a get() request to
             retrieve a ForwardingRule.
-        i_p_address (str):
-            IP address that this forwarding rule serves. When a client
-            sends traffic to this IP address, the forwarding rule
-            directs the traffic to the target that you specify in the
-            forwarding rule.
-
-            If you don't specify a reserved IP address, an ephemeral IP
-            address is assigned. Methods for specifying an IP address:
-
-            -  IPv4 dotted decimal, as in ``100.1.2.3`` \* Full URL, as
-               in
-               https://www.googleapis.com/compute/v1/projects/project_id/regions/region/addresses/address-name
-               \* Partial URL or by name, as in:
-
-            -  projects/project_id/regions/region/addresses/address-name
-            -  regions/region/addresses/address-name
-            -  global/addresses/address-name
-            -  address-name
-
-            The loadBalancingScheme and the forwarding rule's target
-            determine the type of IP address that you can use. For
-            detailed information, refer to `IP address
-            specifications </load-balancing/docs/forwarding-rule-concepts#ip_address_specifications>`__.
-
-            Must be set to ``0.0.0.0`` when the target is
-            targetGrpcProxy that has validateForProxyless field set to
-            true.
-
-            For Private Service Connect forwarding rules that forward
-            traffic to Google APIs, IP address must be provided.
-        i_p_protocol (google.cloud.compute_v1.types.ForwardingRule.IPProtocol):
-            The IP protocol to which this rule applies.
-
-            For protocol forwarding, valid options are TCP, UDP, ESP,
-            AH, SCTP and ICMP.
-
-            The valid IP protocols are different for different load
-            balancing products:
-
-            -  Internal TCP/UDP Load Balancing: The load balancing
-               scheme is INTERNAL, and one of TCP, UDP or ALL is valid.
-            -  Traffic Director: The load balancing scheme is
-               INTERNAL_SELF_MANAGED, and only TCP is valid.
-            -  Internal HTTP(S) Load Balancing: The load balancing
-               scheme is INTERNAL_MANAGED, and only TCP is valid.
-            -  HTTP(S), SSL Proxy, and TCP Proxy Load Balancing: The
-               load balancing scheme is EXTERNAL and only TCP is valid.
-            -  Network Load Balancing: The load balancing scheme is
-               EXTERNAL, and one of TCP or UDP is valid.
         id (str):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
@@ -6746,6 +7733,23 @@ class ForwardingRule(proto.Message):
         kind (str):
             [Output Only] Type of the resource. Always
             compute#forwardingRule for Forwarding Rule resources.
+        label_fingerprint (str):
+            A fingerprint for the labels being applied to
+            this resource, which is essentially a hash of
+            the labels set used for optimistic locking. The
+            fingerprint is initially generated by Compute
+            Engine and changes after every request to modify
+            or update labels. You must always provide an up-
+            to-date fingerprint hash in order to update or
+            change labels, otherwise the request will fail
+            with error 412 conditionNotMet.  To see the
+            latest fingerprint, make a get() request to
+            retrieve a ForwardingRule.
+        labels (Sequence[google.cloud.compute_v1.types.ForwardingRule.LabelsEntry]):
+            Labels for this resource. These can only be
+            added or modified by the setLabels method. Each
+            label key/value pair must comply with RFC1035.
+            Label values may be empty.
         load_balancing_scheme (google.cloud.compute_v1.types.ForwardingRule.LoadBalancingScheme):
             Specifies the forwarding rule type.
 
@@ -6854,6 +7858,9 @@ class ForwardingRule(proto.Message):
 
             For more information, see `Port
             specifications </load-balancing/docs/forwarding-rule-concepts#port_specifications>`__.
+        psc_connection_id (str):
+            [Output Only] The PSC connection id of the PSC Forwarding
+            Rule.
         region (str):
             [Output Only] URL of the region where the regional
             forwarding rule resides. This field is not applicable to
@@ -6862,6 +7869,12 @@ class ForwardingRule(proto.Message):
             the request body.
         self_link (str):
             [Output Only] Server-defined URL for the resource.
+        service_directory_registrations (Sequence[google.cloud.compute_v1.types.ForwardingRuleServiceDirectoryRegistration]):
+            Service Directory resources to register this
+            forwarding rule with. Currently, only supports a
+            single Service Directory resource.  It is only
+            supported for Internal TCP/UDP Load Balancing
+            and Internal HTTP(S) Load Balancing.
         service_label (str):
             An optional prefix to the service name for this Forwarding
             Rule. If specified, the prefix is the first label of the
@@ -6892,27 +7905,7 @@ class ForwardingRule(proto.Message):
             is in custom subnet mode, a subnetwork must be
             specified.
         target (str):
-            The URL of the target resource to receive the matched
-            traffic. For regional forwarding rules, this target must be
-            in the same region as the forwarding rule. For global
-            forwarding rules, this target must be a global load
-            balancing resource. The forwarded traffic must be of a type
-            appropriate to the target object. For more information, see
-            the "Target" column in `Port
-            specifications </load-balancing/docs/forwarding-rule-concepts#ip_address_specifications>`__.
 
-            For Private Service Connect forwarding rules that forward
-            traffic to Google APIs, provide the name of a supported
-            Google API bundle. Currently, the supported Google API
-            bundles include:
-
-            -  vpc-sc - GCP APIs that support VPC Service Controls. For
-               more information about which APIs support VPC Service
-               Controls, refer to VPC-SC supported products and
-               limitations.
-            -  all-apis - All GCP APIs. For more information about which
-               APIs are supported with this bundle, refer to Private
-               Google Access-specific domains and VIPs.
     """
 
     class IPProtocol(proto.Enum):
@@ -6992,22 +7985,24 @@ class ForwardingRule(proto.Message):
         PREMIUM = 399530551
         STANDARD = 484642493
 
+    I_p_address = proto.Field(proto.STRING, number=42976943, optional=True,)
+    I_p_protocol = proto.Field(
+        proto.ENUM, number=488094525, optional=True, enum=IPProtocol,
+    )
     all_ports = proto.Field(proto.BOOL, number=445175796, optional=True,)
     allow_global_access = proto.Field(proto.BOOL, number=499409674, optional=True,)
     backend_service = proto.Field(proto.STRING, number=306946058, optional=True,)
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
-    i_p_address = proto.Field(proto.STRING, number=522591951, optional=True,)
-    i_p_protocol = proto.Field(
-        proto.ENUM, number=323774237, optional=True, enum=IPProtocol,
-    )
     id = proto.Field(proto.STRING, number=3355, optional=True,)
     ip_version = proto.Field(
         proto.ENUM, number=294959552, optional=True, enum=IpVersion,
     )
     is_mirroring_collector = proto.Field(proto.BOOL, number=119255164, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
     load_balancing_scheme = proto.Field(
         proto.ENUM, number=363890244, optional=True, enum=LoadBalancingScheme,
     )
@@ -7021,8 +8016,14 @@ class ForwardingRule(proto.Message):
     )
     port_range = proto.Field(proto.STRING, number=217518079, optional=True,)
     ports = proto.RepeatedField(proto.STRING, number=106854418,)
+    psc_connection_id = proto.Field(proto.STRING, number=292082397, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    service_directory_registrations = proto.RepeatedField(
+        proto.MESSAGE,
+        number=223549694,
+        message="ForwardingRuleServiceDirectoryRegistration",
+    )
     service_label = proto.Field(proto.STRING, number=417008874, optional=True,)
     service_name = proto.Field(proto.STRING, number=359880149, optional=True,)
     subnetwork = proto.Field(proto.STRING, number=307827694, optional=True,)
@@ -7234,10 +8235,9 @@ class NetworkEndpoint(proto.Message):
             VM instance in the network that the network
             endpoint group belongs to will be used.
         port (int):
-            Optional port number of network endpoint. If not specified
-            and the NetworkEndpointGroup.network_endpoint_type is
-            GCE_IP_PORT, the defaultPort for the network endpoint group
-            will be used.
+            Optional port number of network endpoint. If
+            not specified, the defaultPort for the network
+            endpoint group will be used.
     """
 
     annotations = proto.MapField(proto.STRING, proto.STRING, number=112032548,)
@@ -7269,36 +8269,6 @@ class GlobalNetworkEndpointGroupsDetachEndpointsRequest(proto.Message):
     network_endpoints = proto.RepeatedField(
         proto.MESSAGE, number=149850285, message="NetworkEndpoint",
     )
-
-
-class GlobalSetLabelsRequest(proto.Message):
-    r"""
-    Attributes:
-        label_fingerprint (str):
-            The fingerprint of the previous set of labels
-            for this resource, used to detect conflicts. The
-            fingerprint is initially generated by Compute
-            Engine and changes after every request to modify
-            or update labels. You must always provide an up-
-            to-date fingerprint hash when updating or
-            changing labels, otherwise the request will fail
-            with error 412 conditionNotMet. Make a get()
-            request to the resource to get the latest
-            fingerprint.
-        labels (Sequence[google.cloud.compute_v1.types.GlobalSetLabelsRequest.LabelsEntry]):
-            A list of labels to apply for this resource. Each label key
-            & value must comply with RFC1035. Specifically, the name
-            must be 1-63 characters long and match the regular
-            expression ``[a-z]([-a-z0-9]*[a-z0-9])?`` which means the
-            first character must be a lowercase letter, and all
-            following characters must be a dash, lowercase letter, or
-            digit, except the last character, which cannot be a dash.
-            For example, "webserver-frontend": "images". A label value
-            can also be empty (e.g. "my-label": "").
-    """
-
-    label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
 
 
 class Policy(proto.Message):
@@ -7423,6 +8393,62 @@ class Policy(proto.Message):
     iam_owned = proto.Field(proto.BOOL, number=450566203, optional=True,)
     rules = proto.RepeatedField(proto.MESSAGE, number=108873975, message="Rule",)
     version = proto.Field(proto.INT32, number=351608024, optional=True,)
+
+
+class GlobalOrganizationSetPolicyRequest(proto.Message):
+    r"""
+    Attributes:
+        bindings (Sequence[google.cloud.compute_v1.types.Binding]):
+            Flatten Policy to create a backward
+            compatible wire-format. Deprecated. Use 'policy'
+            to specify bindings.
+        etag (str):
+            Flatten Policy to create a backward
+            compatible wire-format. Deprecated. Use 'policy'
+            to specify the etag.
+        policy (google.cloud.compute_v1.types.Policy):
+            REQUIRED: The complete policy to be applied
+            to the 'resource'. The size of the policy is
+            limited to a few 10s of KB. An empty policy is
+            in general a valid policy but certain services
+            (like Projects) might reject them.
+    """
+
+    bindings = proto.RepeatedField(proto.MESSAGE, number=403251854, message="Binding",)
+    etag = proto.Field(proto.STRING, number=3123477, optional=True,)
+    policy = proto.Field(
+        proto.MESSAGE, number=91071794, optional=True, message="Policy",
+    )
+
+
+class GlobalSetLabelsRequest(proto.Message):
+    r"""
+    Attributes:
+        label_fingerprint (str):
+            The fingerprint of the previous set of labels
+            for this resource, used to detect conflicts. The
+            fingerprint is initially generated by Compute
+            Engine and changes after every request to modify
+            or update labels. You must always provide an up-
+            to-date fingerprint hash when updating or
+            changing labels, otherwise the request will fail
+            with error 412 conditionNotMet. Make a get()
+            request to the resource to get the latest
+            fingerprint.
+        labels (Sequence[google.cloud.compute_v1.types.GlobalSetLabelsRequest.LabelsEntry]):
+            A list of labels to apply for this resource. Each label key
+            & value must comply with RFC1035. Specifically, the name
+            must be 1-63 characters long and match the regular
+            expression ``[a-z]([-a-z0-9]*[a-z0-9])?`` which means the
+            first character must be a lowercase letter, and all
+            following characters must be a dash, lowercase letter, or
+            digit, except the last character, which cannot be a dash.
+            For example, "webserver-frontend": "images". A label value
+            can also be empty (e.g. "my-label": "").
+    """
+
+    label_fingerprint = proto.Field(proto.STRING, number=178124825, optional=True,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
 
 
 class GlobalSetPolicyRequest(proto.Message):
@@ -7974,12 +9000,13 @@ class HealthCheck(proto.Message):
         name (str):
             Name of the resource. Provided by the client when the
             resource is created. The name must be 1-63 characters long,
-            and comply with RFC1035. Specifically, the name must be 1-63
-            characters long and match the regular expression
-            ``[a-z]([-a-z0-9]*[a-z0-9])?`` which means the first
-            character must be a lowercase letter, and all following
-            characters must be a dash, lowercase letter, or digit,
-            except the last character, which cannot be a dash.
+            and comply with RFC1035. For example, a name that is 1-63
+            characters long, matches the regular expression
+            ``[a-z]([-a-z0-9]*[a-z0-9])?``, and otherwise complies with
+            RFC1035. This regular expression describes a name where the
+            first character is a lowercase letter, and all following
+            characters are a dash, lowercase letter, or digit, except
+            the last character, which isn't a dash.
         region (str):
             [Output Only] Region where the health check resides. Not
             applicable to global health checks.
@@ -8628,8 +9655,8 @@ class HttpHeaderMatch(proto.Message):
         regex_match (str):
             The value of the header must match the regular expression
             specified in regexMatch. For regular expression grammar,
-            please see: en.cppreference.com/w/cpp/regex/ecmascript For
-            matching against a port specified in the HTTP request, use a
+            please see: github.com/google/re2/wiki/Syntax For matching
+            against a port specified in the HTTP request, use a
             headerMatch with headerName set to PORT and a regular
             expression that satisfies the RFC2616 Host header's port
             specifier. Only one of exactMatch, prefixMatch, suffixMatch,
@@ -8677,10 +9704,10 @@ class HttpQueryParameterMatch(proto.Message):
             The queryParameterMatch matches if the value of the
             parameter matches the regular expression specified by
             regexMatch. For the regular expression grammar, please see
-            en.cppreference.com/w/cpp/regex/ecmascript Only one of
-            presentMatch, exactMatch or regexMatch must be set. Note
-            that regexMatch only applies when the loadBalancingScheme is
-            set to INTERNAL_SELF_MANAGED.
+            github.com/google/re2/wiki/Syntax Only one of presentMatch,
+            exactMatch or regexMatch must be set. Note that regexMatch
+            only applies when the loadBalancingScheme is set to
+            INTERNAL_SELF_MANAGED.
     """
 
     exact_match = proto.Field(proto.STRING, number=457641093, optional=True,)
@@ -8936,6 +9963,19 @@ class HttpRouteAction(proto.Message):
             fault_injection_policy. Not supported when the URL map is
             bound to target gRPC proxy that has validateForProxyless
             field set to true.
+        max_stream_duration (google.cloud.compute_v1.types.Duration):
+            Specifies the maximum duration (timeout) for streams on the
+            selected route. Unlike the timeout field where the timeout
+            duration starts from the time the request has been fully
+            processed (i.e. end-of-stream), the duration in this field
+            is computed from the beginning of the stream until the
+            response has been completely processed, including all
+            retries. A stream that does not complete in this duration is
+            closed. If not specified, will use the largest
+            maxStreamDuration among all backend services associated with
+            the route. This field is only allowed if the Url map is used
+            with backend services with loadBalancingScheme set to
+            INTERNAL_SELF_MANAGED.
         request_mirror_policy (google.cloud.compute_v1.types.RequestMirrorPolicy):
             Specifies the policy on how requests intended
             for the route's backends are shadowed to a
@@ -8991,6 +10031,9 @@ class HttpRouteAction(proto.Message):
     )
     fault_injection_policy = proto.Field(
         proto.MESSAGE, number=412781079, optional=True, message="HttpFaultInjection",
+    )
+    max_stream_duration = proto.Field(
+        proto.MESSAGE, number=61428376, optional=True, message="Duration",
     )
     request_mirror_policy = proto.Field(
         proto.MESSAGE, number=220196866, optional=True, message="RequestMirrorPolicy",
@@ -9072,11 +10115,11 @@ class HttpRouteRuleMatch(proto.Message):
             request must satisfy the regular expression specified in
             regexMatch after removing any query parameters and anchor
             supplied with the original URL. For regular expression
-            grammar please see
-            en.cppreference.com/w/cpp/regex/ecmascript Only one of
-            prefixMatch, fullPathMatch or regexMatch must be specified.
-            Note that regexMatch only applies to Loadbalancers that have
-            their loadBalancingScheme set to INTERNAL_SELF_MANAGED.
+            grammar please see github.com/google/re2/wiki/Syntax Only
+            one of prefixMatch, fullPathMatch or regexMatch must be
+            specified. Note that regexMatch only applies to
+            Loadbalancers that have their loadBalancingScheme set to
+            INTERNAL_SELF_MANAGED.
     """
 
     full_path_match = proto.Field(proto.STRING, number=214598875, optional=True,)
@@ -9315,6 +10358,8 @@ class Image(proto.Message):
             except the last character, which cannot be a dash.
         raw_disk (google.cloud.compute_v1.types.RawDisk):
             The parameters of the raw disk image.
+        satisfies_pzs (bool):
+            [Output Only] Reserved for future use.
         self_link (str):
             [Output Only] Server-defined URL for the resource.
         shielded_instance_initial_state (google.cloud.compute_v1.types.InitialStateConfig):
@@ -9433,6 +10478,7 @@ class Image(proto.Message):
     raw_disk = proto.Field(
         proto.MESSAGE, number=503113556, optional=True, message="RawDisk",
     )
+    satisfies_pzs = proto.Field(proto.BOOL, number=480964267, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     shielded_instance_initial_state = proto.Field(
         proto.MESSAGE, number=192356867, optional=True, message="InitialStateConfig",
@@ -9542,8 +10588,10 @@ class NetworkInterface(proto.Message):
             when inserting an Instance or adding a
             NetworkInterface. An up-to-date fingerprint must
             be provided in order to update the
-            NetworkInterface, otherwise the request will
-            fail with error 412 conditionNotMet.
+            NetworkInterface. The request will fail with
+            error 400 Bad Request if the fingerprint is not
+            provided, or 412 Precondition Failed if the
+            fingerprint is out of date.
         ipv6_address (str):
             [Output Only] An IPv6 internal network address for this
             network interface.
@@ -9653,7 +10701,7 @@ class ReservationAffinity(proto.Message):
 
 
 class Scheduling(proto.Message):
-    r"""Sets the scheduling options for an Instance. NextID: 13
+    r"""Sets the scheduling options for an Instance. NextID: 20
     Attributes:
         automatic_restart (bool):
             Specifies whether the instance should be
@@ -9795,6 +10843,9 @@ class Instance(proto.Message):
     resource_for {$api_version}.instances ==)
 
     Attributes:
+        advanced_machine_features (google.cloud.compute_v1.types.AdvancedMachineFeatures):
+            Controls for advanced machine-related
+            behavior features.
         can_ip_forward (bool):
             Allows this instance to send and receive
             packets with non-matching destination or source
@@ -9922,6 +10973,8 @@ class Instance(proto.Message):
             can consume from.
         resource_policies (Sequence[str]):
             Resource policies applied to this instance.
+        satisfies_pzs (bool):
+            [Output Only] Reserved for future use.
         scheduling (google.cloud.compute_v1.types.Scheduling):
             Sets the scheduling options for this
             instance.
@@ -9993,6 +11046,12 @@ class Instance(proto.Message):
         SUSPENDING = 514206246
         TERMINATED = 250018339
 
+    advanced_machine_features = proto.Field(
+        proto.MESSAGE,
+        number=409646002,
+        optional=True,
+        message="AdvancedMachineFeatures",
+    )
     can_ip_forward = proto.Field(proto.BOOL, number=467731324, optional=True,)
     confidential_instance_config = proto.Field(
         proto.MESSAGE,
@@ -10038,6 +11097,7 @@ class Instance(proto.Message):
         proto.MESSAGE, number=157850683, optional=True, message="ReservationAffinity",
     )
     resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
+    satisfies_pzs = proto.Field(proto.BOOL, number=480964267, optional=True,)
     scheduling = proto.Field(
         proto.MESSAGE, number=386688404, optional=True, message="Scheduling",
     )
@@ -10497,14 +11557,16 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
         max_surge (google.cloud.compute_v1.types.FixedOrPercent):
             The maximum number of instances that can be
             created above the specified targetSize during
-            the update process. By default, a fixed value of
-            1 is used. This value can be either a fixed
-            number or a percentage if the instance group has
-            10 or more instances. If you set a percentage,
-            the number of instances will be rounded up if
-            necessary.  At least one of either maxSurge or
-            maxUnavailable must be greater than 0. Learn
-            more about maxSurge.
+            the update process. This value can be either a
+            fixed number or, if the group has 10 or more
+            instances, a percentage. If you set a
+            percentage, the number of instances is rounded
+            up if necessary. The default value for maxSurge
+            is a fixed value equal to the number of zones in
+            which the managed instance group operates.  At
+            least one of either maxSurge or maxUnavailable
+            must be greater than 0. Learn more about
+            maxSurge.
         max_unavailable (google.cloud.compute_v1.types.FixedOrPercent):
             The maximum number of instances that can be
             unavailable during the update process. An
@@ -10512,16 +11574,18 @@ class InstanceGroupManagerUpdatePolicy(proto.Message):
             following conditions are satisfied:
             - The instance's status is RUNNING.
             - If there is a health check on the instance
-            group, the instance's liveness health check
-            result must be HEALTHY at least once. If there
-            is no health check on the group, then the
-            instance only needs to have a status of RUNNING
-            to be considered available.  By default, a fixed
-            value of 1 is used. This value can be either a
-            fixed number or a percentage if the instance
-            group has 10 or more instances. If you set a
-            percentage, the number of instances will be
-            rounded up if necessary.
+            group, the instance's health check status must
+            be HEALTHY at least once. If there is no health
+            check on the group, then the instance only needs
+            to have a status of RUNNING to be considered
+            available.  This value can be either a fixed
+            number or, if the group has 10 or more
+            instances, a percentage. If you set a
+            percentage, the number of instances is rounded
+            up if necessary. The default value for
+            maxUnavailable is a fixed value equal to the
+            number of zones in which the managed instance
+            group operates.
             At least one of either maxSurge or
             maxUnavailable must be greater than 0. Learn
             more about maxUnavailable.
@@ -11768,136 +12832,6 @@ class InstanceMoveRequest(proto.Message):
     target_instance = proto.Field(proto.STRING, number=289769347, optional=True,)
 
 
-class InstanceProperties(proto.Message):
-    r"""
-    Attributes:
-        can_ip_forward (bool):
-            Enables instances created based on these
-            properties to send packets with source IP
-            addresses other than their own and receive
-            packets with destination IP addresses other than
-            their own. If these instances will be used as an
-            IP gateway or it will be set as the next-hop in
-            a Route resource, specify true. If unsure, leave
-            this set to false. See the Enable IP forwarding
-            documentation for more information.
-        confidential_instance_config (google.cloud.compute_v1.types.ConfidentialInstanceConfig):
-            Specifies the Confidential Instance options.
-        description (str):
-            An optional text description for the
-            instances that are created from these
-            properties.
-        disks (Sequence[google.cloud.compute_v1.types.AttachedDisk]):
-            An array of disks that are associated with
-            the instances that are created from these
-            properties.
-        guest_accelerators (Sequence[google.cloud.compute_v1.types.AcceleratorConfig]):
-            A list of guest accelerator cards' type and
-            count to use for instances created from these
-            properties.
-        labels (Sequence[google.cloud.compute_v1.types.InstanceProperties.LabelsEntry]):
-            Labels to apply to instances that are created
-            from these properties.
-        machine_type (str):
-            The machine type to use for instances that
-            are created from these properties.
-        metadata (google.cloud.compute_v1.types.Metadata):
-            The metadata key/value pairs to assign to
-            instances that are created from these
-            properties. These pairs can consist of custom
-            metadata or predefined keys. See Project and
-            instance metadata for more information.
-        min_cpu_platform (str):
-            Minimum cpu/platform to be used by instances.
-            The instance may be scheduled on the specified
-            or newer cpu/platform. Applicable values are the
-            friendly names of CPU platforms, such as
-            minCpuPlatform: "Intel Haswell" or
-            minCpuPlatform: "Intel Sandy Bridge". For more
-            information, read Specifying a Minimum CPU
-            Platform.
-        network_interfaces (Sequence[google.cloud.compute_v1.types.NetworkInterface]):
-            An array of network access configurations for
-            this interface.
-        private_ipv6_google_access (google.cloud.compute_v1.types.InstanceProperties.PrivateIpv6GoogleAccess):
-            The private IPv6 google access type for VMs. If not
-            specified, use INHERIT_FROM_SUBNETWORK as default.
-        reservation_affinity (google.cloud.compute_v1.types.ReservationAffinity):
-            Specifies the reservations that instances can
-            consume from.
-        resource_policies (Sequence[str]):
-            Resource policies (names, not ULRs) applied
-            to instances created from these properties.
-        scheduling (google.cloud.compute_v1.types.Scheduling):
-            Specifies the scheduling options for the
-            instances that are created from these
-            properties.
-        service_accounts (Sequence[google.cloud.compute_v1.types.ServiceAccount]):
-            A list of service accounts with specified
-            scopes. Access tokens for these service accounts
-            are available to the instances that are created
-            from these properties. Use metadata queries to
-            obtain the access tokens for these instances.
-        shielded_instance_config (google.cloud.compute_v1.types.ShieldedInstanceConfig):
-
-        tags (google.cloud.compute_v1.types.Tags):
-            A list of tags to apply to the instances that
-            are created from these properties. The tags
-            identify valid sources or targets for network
-            firewalls. The setTags method can modify this
-            list of tags. Each tag within the list must
-            comply with RFC1035.
-    """
-
-    class PrivateIpv6GoogleAccess(proto.Enum):
-        r"""The private IPv6 google access type for VMs. If not specified, use
-        INHERIT_FROM_SUBNETWORK as default.
-        """
-        UNDEFINED_PRIVATE_IPV6_GOOGLE_ACCESS = 0
-        ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE = 427975994
-        ENABLE_OUTBOUND_VM_ACCESS_TO_GOOGLE = 288210263
-        INHERIT_FROM_SUBNETWORK = 530256959
-
-    can_ip_forward = proto.Field(proto.BOOL, number=467731324, optional=True,)
-    confidential_instance_config = proto.Field(
-        proto.MESSAGE,
-        number=490637685,
-        optional=True,
-        message="ConfidentialInstanceConfig",
-    )
-    description = proto.Field(proto.STRING, number=422937596, optional=True,)
-    disks = proto.RepeatedField(proto.MESSAGE, number=95594102, message="AttachedDisk",)
-    guest_accelerators = proto.RepeatedField(
-        proto.MESSAGE, number=463595119, message="AcceleratorConfig",
-    )
-    labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
-    machine_type = proto.Field(proto.STRING, number=227711026, optional=True,)
-    metadata = proto.Field(
-        proto.MESSAGE, number=86866735, optional=True, message="Metadata",
-    )
-    min_cpu_platform = proto.Field(proto.STRING, number=242912759, optional=True,)
-    network_interfaces = proto.RepeatedField(
-        proto.MESSAGE, number=52735243, message="NetworkInterface",
-    )
-    private_ipv6_google_access = proto.Field(
-        proto.ENUM, number=48277006, optional=True, enum=PrivateIpv6GoogleAccess,
-    )
-    reservation_affinity = proto.Field(
-        proto.MESSAGE, number=157850683, optional=True, message="ReservationAffinity",
-    )
-    resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
-    scheduling = proto.Field(
-        proto.MESSAGE, number=386688404, optional=True, message="Scheduling",
-    )
-    service_accounts = proto.RepeatedField(
-        proto.MESSAGE, number=277537328, message="ServiceAccount",
-    )
-    shielded_instance_config = proto.Field(
-        proto.MESSAGE, number=12862901, optional=True, message="ShieldedInstanceConfig",
-    )
-    tags = proto.Field(proto.MESSAGE, number=3552281, optional=True, message="Tags",)
-
-
 class SourceInstanceParams(proto.Message):
     r"""A specification of the parameters to use when creating the
     instance template from a source instance.
@@ -12030,6 +12964,56 @@ class InstancesAddResourcePoliciesRequest(proto.Message):
     """
 
     resource_policies = proto.RepeatedField(proto.STRING, number=22220385,)
+
+
+class InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy(proto.Message):
+    r"""
+    Attributes:
+        display_name (str):
+            [Output Only] Deprecated, please use short name instead. The
+            display name of the firewall policy.
+        name (str):
+            [Output Only] The name of the firewall policy.
+        rules (Sequence[google.cloud.compute_v1.types.FirewallPolicyRule]):
+            The rules that apply to the network.
+        short_name (str):
+            [Output Only] The short name of the firewall policy.
+        type_ (google.cloud.compute_v1.types.InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy.Type):
+            [Output Only] The type of the firewall policy.
+    """
+
+    class Type(proto.Enum):
+        r"""[Output Only] The type of the firewall policy."""
+        UNDEFINED_TYPE = 0
+        HIERARCHY = 69902869
+        UNSPECIFIED = 526786327
+
+    display_name = proto.Field(proto.STRING, number=4473832, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    rules = proto.RepeatedField(
+        proto.MESSAGE, number=108873975, message="FirewallPolicyRule",
+    )
+    short_name = proto.Field(proto.STRING, number=492051566, optional=True,)
+    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+
+
+class InstancesGetEffectiveFirewallsResponse(proto.Message):
+    r"""
+    Attributes:
+        firewall_policys (Sequence[google.cloud.compute_v1.types.InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy]):
+            Effective firewalls from firewall policies.
+        firewalls (Sequence[google.cloud.compute_v1.types.Firewall]):
+            Effective firewalls on the instance.
+    """
+
+    firewall_policys = proto.RepeatedField(
+        proto.MESSAGE,
+        number=410985794,
+        message="InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy",
+    )
+    firewalls = proto.RepeatedField(
+        proto.MESSAGE, number=272245619, message="Firewall",
+    )
 
 
 class InstancesRemoveResourcePoliciesRequest(proto.Message):
@@ -12591,6 +13575,20 @@ class InterconnectAttachment(proto.Message):
                that the provisioned circuit will lie in the specified
                domain. If not specified, the value will default to
                AVAILABILITY_DOMAIN_ANY.
+        encryption (google.cloud.compute_v1.types.InterconnectAttachment.Encryption):
+            Indicates the user-supplied encryption option
+            of this interconnect attachment: - NONE is the
+            default value, which means that the attachment
+            carries unencrypted traffic. VMs can send
+            traffic to, or receive traffic from, this type
+            of attachment. - IPSEC indicates that the
+            attachment carries only traffic encrypted by an
+            IPsec device such as an HA VPN gateway. VMs
+            cannot directly send traffic to, or receive
+            traffic from, such an attachment. To use IPsec-
+            encrypted Cloud Interconnect, create the
+            attachment using this option. Not currently
+            available in all Interconnect locations.
         google_reference_id (str):
             [Output Only] Google reference ID, to be used when raising
             support tickets with Google or otherwise to debug backend
@@ -12602,6 +13600,28 @@ class InterconnectAttachment(proto.Message):
             URL of the underlying Interconnect object
             that this attachment's traffic will traverse
             through.
+        ipsec_internal_addresses (Sequence[str]):
+            URL of addresses that have been reserved for
+            the interconnect attachment, Used only for
+            interconnect attachment that has the encryption
+            option as IPSEC. The addresses must be RFC 1918
+            IP address ranges. When creating HA VPN gateway
+            over the interconnect attachment, if the
+            attachment is configured to use an RFC 1918 IP
+            address, then the VPN gateway's IP address will
+            be allocated from the IP address range specified
+            here. For example, if the HA VPN gateway's
+            interface 0 is paired to this interconnect
+            attachment, then an RFC 1918 IP address for the
+            VPN gateway interface 0 will be allocated from
+            the IP address specified for this interconnect
+            attachment. If this field is not specified for
+            interconnect attachment that has encryption
+            option as IPSEC, later on when creating HA VPN
+            gateway on this interconnect attachment, the HA
+            VPN gateway's IP address will be allocated from
+            regional external IP address pool. Not currently
+            available in all Interconnect locations.
         kind (str):
             [Output Only] Type of the resource. Always
             compute#interconnectAttachment for interconnect attachments.
@@ -12755,6 +13775,22 @@ class InterconnectAttachment(proto.Message):
         AVAILABILITY_DOMAIN_2 = 349552091
         AVAILABILITY_DOMAIN_ANY = 375256373
 
+    class Encryption(proto.Enum):
+        r"""Indicates the user-supplied encryption option of this
+        interconnect attachment: - NONE is the default value, which
+        means that the attachment carries unencrypted traffic. VMs can
+        send traffic to, or receive traffic from, this type of
+        attachment. - IPSEC indicates that the attachment carries only
+        traffic encrypted by an IPsec device such as an HA VPN gateway.
+        VMs cannot directly send traffic to, or receive traffic from,
+        such an attachment. To use IPsec-encrypted Cloud Interconnect,
+        create the attachment using this option. Not currently available
+        in all Interconnect locations.
+        """
+        UNDEFINED_ENCRYPTION = 0
+        IPSEC = 69882282
+        NONE = 2402104
+
     class OperationalStatus(proto.Enum):
         r"""[Output Only] The current status of whether or not this interconnect
         attachment is functional, which can take one of the following
@@ -12833,9 +13869,13 @@ class InterconnectAttachment(proto.Message):
     edge_availability_domain = proto.Field(
         proto.ENUM, number=71289510, optional=True, enum=EdgeAvailabilityDomain,
     )
+    encryption = proto.Field(
+        proto.ENUM, number=97980291, optional=True, enum=Encryption,
+    )
     google_reference_id = proto.Field(proto.STRING, number=534944469, optional=True,)
     id = proto.Field(proto.STRING, number=3355, optional=True,)
     interconnect = proto.Field(proto.STRING, number=224601230, optional=True,)
+    ipsec_internal_addresses = proto.RepeatedField(proto.STRING, number=407648565,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     mtu = proto.Field(proto.INT32, number=108462, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
@@ -13609,6 +14649,26 @@ class LocalDisk(proto.Message):
     disk_type = proto.Field(proto.STRING, number=93009052, optional=True,)
 
 
+class LocationPolicyLocation(proto.Message):
+    r"""
+    Attributes:
+        preference (google.cloud.compute_v1.types.LocationPolicyLocation.Preference):
+            Preference for a given locaction: ALLOW or
+            DENY.
+    """
+
+    class Preference(proto.Enum):
+        r"""Preference for a given locaction: ALLOW or DENY."""
+        UNDEFINED_PREFERENCE = 0
+        ALLOW = 62368553
+        DENY = 2094604
+        PREFERENCE_UNSPECIFIED = 496219571
+
+    preference = proto.Field(
+        proto.ENUM, number=150781147, optional=True, enum=Preference,
+    )
+
+
 class LogConfigCloudAuditOptions(proto.Message):
     r"""Write a Cloud Audit log
     Attributes:
@@ -14203,6 +15263,13 @@ class Network(proto.Message):
     resource_for {$api_version}.networks ==)
 
     Attributes:
+        I_pv4_range (str):
+            Deprecated in favor of subnet mode networks.
+            The range of internal addresses that are legal
+            on this network. This range is a CIDR
+            specification, for example: 192.168.0.0/16.
+            Provided by the client when the network is
+            created.
         auto_create_subnetworks (bool):
             Must be set to create a VPC network. If not
             set, a legacy network is created.
@@ -14223,13 +15290,6 @@ class Network(proto.Message):
         gateway_i_pv4 (str):
             [Output Only] The gateway address for default routing out of
             the network, selected by GCP.
-        i_pv4_range (str):
-            Deprecated in favor of subnet mode networks.
-            The range of internal addresses that are legal
-            on this network. This range is a CIDR
-            specification, for example: 192.168.0.0/16.
-            Provided by the client when the network is
-            created.
         id (str):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
@@ -14264,11 +15324,11 @@ class Network(proto.Message):
             subnetworks in this VPC network.
     """
 
+    I_pv4_range = proto.Field(proto.STRING, number=59234358, optional=True,)
     auto_create_subnetworks = proto.Field(proto.BOOL, number=256156690, optional=True,)
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
     gateway_i_pv4 = proto.Field(proto.STRING, number=178678877, optional=True,)
-    i_pv4_range = proto.Field(proto.STRING, number=1978454, optional=True,)
     id = proto.Field(proto.STRING, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     mtu = proto.Field(proto.INT32, number=108462, optional=True,)
@@ -14472,6 +15532,7 @@ class NetworkEndpointGroup(proto.Message):
         INTERNET_IP_PORT, or SERVERLESS.
         """
         UNDEFINED_NETWORK_ENDPOINT_TYPE = 0
+        GCE_VM_IP = 401880793
         GCE_VM_IP_PORT = 501838375
         INTERNET_FQDN_PORT = 404154477
         INTERNET_IP_PORT = 477719963
@@ -14805,6 +15866,57 @@ class NetworksAddPeeringRequest(proto.Message):
     peer_network = proto.Field(proto.STRING, number=500625489, optional=True,)
 
 
+class NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy(proto.Message):
+    r"""
+    Attributes:
+        display_name (str):
+            [Output Only] Deprecated, please use short name instead. The
+            display name of the firewall policy.
+        name (str):
+            [Output Only] The name of the firewall policy.
+        rules (Sequence[google.cloud.compute_v1.types.FirewallPolicyRule]):
+            The rules that apply to the network.
+        short_name (str):
+            [Output Only] The short name of the firewall policy.
+        type_ (google.cloud.compute_v1.types.NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy.Type):
+            [Output Only] The type of the firewall policy.
+    """
+
+    class Type(proto.Enum):
+        r"""[Output Only] The type of the firewall policy."""
+        UNDEFINED_TYPE = 0
+        HIERARCHY = 69902869
+        NETWORK = 413984270
+        UNSPECIFIED = 526786327
+
+    display_name = proto.Field(proto.STRING, number=4473832, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    rules = proto.RepeatedField(
+        proto.MESSAGE, number=108873975, message="FirewallPolicyRule",
+    )
+    short_name = proto.Field(proto.STRING, number=492051566, optional=True,)
+    type_ = proto.Field(proto.ENUM, number=3575610, optional=True, enum=Type,)
+
+
+class NetworksGetEffectiveFirewallsResponse(proto.Message):
+    r"""
+    Attributes:
+        firewall_policys (Sequence[google.cloud.compute_v1.types.NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy]):
+            Effective firewalls from firewall policy.
+        firewalls (Sequence[google.cloud.compute_v1.types.Firewall]):
+            Effective firewalls on the network.
+    """
+
+    firewall_policys = proto.RepeatedField(
+        proto.MESSAGE,
+        number=410985794,
+        message="NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy",
+    )
+    firewalls = proto.RepeatedField(
+        proto.MESSAGE, number=272245619, message="Firewall",
+    )
+
+
 class NetworksRemovePeeringRequest(proto.Message):
     r"""
     Attributes:
@@ -14907,6 +16019,12 @@ class NodeGroup(proto.Message):
         kind (str):
             [Output Only] The type of the resource. Always
             compute#nodeGroup for node group.
+        location_hint (str):
+            An opaque location hint used to place the Node close to
+            other resources. This field is for use by internal tools
+            that use the public API. The location hint here on the
+            NodeGroup overrides any location_hint present in the
+            NodeTemplate.
         maintenance_policy (google.cloud.compute_v1.types.NodeGroup.MaintenancePolicy):
             Specifies how to handle instances when a node in the group
             undergoes maintenance. Set to one of: DEFAULT,
@@ -14969,6 +16087,7 @@ class NodeGroup(proto.Message):
     fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
     id = proto.Field(proto.STRING, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    location_hint = proto.Field(proto.STRING, number=350519505, optional=True,)
     maintenance_policy = proto.Field(
         proto.ENUM, number=528327646, optional=True, enum=MaintenancePolicy,
     )
@@ -15118,6 +16237,8 @@ class NodeGroupNode(proto.Message):
             The name of the node.
         node_type (str):
             The type of this node.
+        satisfies_pzs (bool):
+            [Output Only] Reserved for future use.
         server_binding (google.cloud.compute_v1.types.ServerBinding):
             Binding properties for the physical server.
         server_id (str):
@@ -15152,6 +16273,7 @@ class NodeGroupNode(proto.Message):
     instances = proto.RepeatedField(proto.STRING, number=29097598,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     node_type = proto.Field(proto.STRING, number=465832791, optional=True,)
+    satisfies_pzs = proto.Field(proto.BOOL, number=480964267, optional=True,)
     server_binding = proto.Field(
         proto.MESSAGE, number=208179593, optional=True, message="ServerBinding",
     )
@@ -15900,6 +17022,10 @@ class Operation(proto.Message):
             ``compute#operation`` for Operation resources.
         name (str):
             [Output Only] Name of the operation.
+        operation_group_id (str):
+            [Output Only] An ID that represents a group of operations,
+            such as when a group of operations results from a
+            ``bulkInsert`` API request.
         operation_type (str):
             [Output Only] The type of operation, such as ``insert``,
             ``update``, or ``delete``, and so on.
@@ -15965,6 +17091,7 @@ class Operation(proto.Message):
     insert_time = proto.Field(proto.STRING, number=433722515, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    operation_group_id = proto.Field(proto.STRING, number=40171187, optional=True,)
     operation_type = proto.Field(proto.STRING, number=177650450, optional=True,)
     progress = proto.Field(proto.INT32, number=72663597, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
@@ -16098,6 +17225,13 @@ class PacketMirroringForwardingRuleInfo(proto.Message):
 class PacketMirroringFilter(proto.Message):
     r"""
     Attributes:
+        I_p_protocols (Sequence[str]):
+            Protocols that apply as filter on mirrored
+            traffic. If no protocols are specified, all
+            traffic that matches the specified CIDR ranges
+            is mirrored. If neither cidrRanges nor
+            IPProtocols is specified, all traffic is
+            mirrored.
         cidr_ranges (Sequence[str]):
             IP CIDR ranges that apply as filter on the
             source (ingress) or destination (egress) IP in
@@ -16109,13 +17243,6 @@ class PacketMirroringFilter(proto.Message):
         direction (google.cloud.compute_v1.types.PacketMirroringFilter.Direction):
             Direction of traffic to mirror, either
             INGRESS, EGRESS, or BOTH. The default is BOTH.
-        i_p_protocols (Sequence[str]):
-            Protocols that apply as filter on mirrored
-            traffic. If no protocols are specified, all
-            traffic that matches the specified CIDR ranges
-            is mirrored. If neither cidrRanges nor
-            IPProtocols is specified, all traffic is
-            mirrored.
     """
 
     class Direction(proto.Enum):
@@ -16127,11 +17254,11 @@ class PacketMirroringFilter(proto.Message):
         EGRESS = 432880501
         INGRESS = 516931221
 
+    I_p_protocols = proto.RepeatedField(proto.STRING, number=98544854,)
     cidr_ranges = proto.RepeatedField(proto.STRING, number=487901697,)
     direction = proto.Field(
         proto.ENUM, number=111150975, optional=True, enum=Direction,
     )
-    i_p_protocols = proto.RepeatedField(proto.STRING, number=373325046,)
 
 
 class PacketMirroringMirroredResourceInfo(proto.Message):
@@ -16758,14 +17885,18 @@ class Quota(proto.Message):
         AUTOSCALERS = 471248988
         BACKEND_BUCKETS = 137626846
         BACKEND_SERVICES = 269623753
+        C2D_CPUS = 508182517
         C2_CPUS = 317601211
         COMMITMENTS = 456141790
         COMMITTED_A2_CPUS = 59330902
+        COMMITTED_C2D_CPUS = 282390904
         COMMITTED_C2_CPUS = 223725528
         COMMITTED_CPUS = 292394702
+        COMMITTED_E2_CPUS = 388120154
         COMMITTED_LICENSES = 357606869
         COMMITTED_LOCAL_SSD_TOTAL_GB = 308393480
         COMMITTED_MEMORY_OPTIMIZED_CPUS = 489057886
+        COMMITTED_N2A_CPUS = 40064304
         COMMITTED_N2D_CPUS = 125951757
         COMMITTED_N2_CPUS = 322589603
         COMMITTED_NVIDIA_A100_GPUS = 375799445
@@ -16777,6 +17908,7 @@ class Quota(proto.Message):
         CPUS = 2075595
         CPUS_ALL_REGIONS = 470911149
         DISKS_TOTAL_GB = 353520543
+        E2_CPUS = 481995837
         EXTERNAL_NETWORK_LB_FORWARDING_RULES = 374298265
         EXTERNAL_PROTOCOL_FORWARDING_RULES = 63478888
         EXTERNAL_VPN_GATEWAYS = 272457134
@@ -16804,6 +17936,7 @@ class Quota(proto.Message):
         M1_CPUS = 37203366
         M2_CPUS = 65832517
         MACHINE_IMAGES = 446986640
+        N2A_CPUS = 265855917
         N2D_CPUS = 351743370
         N2_CPUS = 416465286
         NETWORKS = 485481477
@@ -16821,6 +17954,7 @@ class Quota(proto.Message):
         NVIDIA_T4_VWS_GPUS = 319813039
         NVIDIA_V100_GPUS = 129293095
         PACKET_MIRRORINGS = 15578407
+        PD_EXTREME_TOTAL_PROVISIONED_IOPS = 69593965
         PREEMPTIBLE_CPUS = 251184841
         PREEMPTIBLE_LOCAL_SSD_GB = 260819336
         PREEMPTIBLE_NVIDIA_A100_GPUS = 68832784
@@ -17103,6 +18237,404 @@ class ProjectsSetDefaultNetworkTierRequest(proto.Message):
     )
 
 
+class PublicAdvertisedPrefixPublicDelegatedPrefix(proto.Message):
+    r"""Represents a CIDR range which can be used to assign
+    addresses.
+
+    Attributes:
+        ip_range (str):
+            The IP address range of the public delegated
+            prefix
+        name (str):
+            The name of the public delegated prefix
+        project (str):
+            The project number of the public delegated
+            prefix
+        region (str):
+            The region of the public delegated prefix if
+            it is regional. If absent, the prefix is global.
+        status (str):
+            The status of the public delegated prefix.
+            Possible values are: INITIALIZING: The public
+            delegated prefix is being initialized and
+            addresses cannot be created yet. ANNOUNCED: The
+            public delegated prefix is active.
+    """
+
+    ip_range = proto.Field(proto.STRING, number=145092645, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    status = proto.Field(proto.STRING, number=181260274, optional=True,)
+
+
+class PublicAdvertisedPrefix(proto.Message):
+    r"""A public advertised prefix represents an aggregated IP prefix
+    or netblock which customers bring to cloud. The IP prefix is a
+    single unit of route advertisement and is announced globally to
+    the internet.
+
+    Attributes:
+        creation_timestamp (str):
+            [Output Only] Creation timestamp in RFC3339 text format.
+        description (str):
+            An optional description of this resource.
+            Provide this property when you create the
+            resource.
+        dns_verification_ip (str):
+            The IPv4 address to be used for reverse DNS
+            verification.
+        fingerprint (str):
+            Fingerprint of this resource. A hash of the
+            contents stored in this object. This field is
+            used in optimistic locking. This field will be
+            ignored when inserting a new
+            PublicAdvertisedPrefix. An up-to-date
+            fingerprint must be provided in order to update
+            the PublicAdvertisedPrefix, otherwise the
+            request will fail with error 412
+            conditionNotMet.  To see the latest fingerprint,
+            make a get() request to retrieve a
+            PublicAdvertisedPrefix.
+        id (str):
+            [Output Only] The unique identifier for the resource type.
+            The server generates this identifier.
+        ip_cidr_range (str):
+            The IPv4 address range, in CIDR format,
+            represented by this public advertised prefix.
+        kind (str):
+            [Output Only] Type of the resource. Always
+            compute#publicAdvertisedPrefix for public advertised
+            prefixes.
+        name (str):
+            Name of the resource. Provided by the client when the
+            resource is created. The name must be 1-63 characters long,
+            and comply with RFC1035. Specifically, the name must be 1-63
+            characters long and match the regular expression
+            ``[a-z]([-a-z0-9]*[a-z0-9])?`` which means the first
+            character must be a lowercase letter, and all following
+            characters must be a dash, lowercase letter, or digit,
+            except the last character, which cannot be a dash.
+        public_delegated_prefixs (Sequence[google.cloud.compute_v1.types.PublicAdvertisedPrefixPublicDelegatedPrefix]):
+            [Output Only] The list of public delegated prefixes that
+            exist for this public advertised prefix.
+        self_link (str):
+            [Output Only] Server-defined URL for the resource.
+        shared_secret (str):
+            [Output Only] The shared secret to be used for reverse DNS
+            verification.
+        status (google.cloud.compute_v1.types.PublicAdvertisedPrefix.Status):
+            The status of the public advertised prefix.
+    """
+
+    class Status(proto.Enum):
+        r"""The status of the public advertised prefix."""
+        UNDEFINED_STATUS = 0
+        INITIAL = 518841124
+        PREFIX_CONFIGURATION_COMPLETE = 480889551
+        PREFIX_CONFIGURATION_IN_PROGRESS = 378550961
+        PREFIX_REMOVAL_IN_PROGRESS = 284375783
+        PTR_CONFIGURED = 513497167
+        REVERSE_DNS_LOOKUP_FAILED = 295755183
+        VALIDATED = 66197998
+
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    dns_verification_ip = proto.Field(proto.STRING, number=241011381, optional=True,)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    ip_cidr_range = proto.Field(proto.STRING, number=98117322, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    public_delegated_prefixs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=425811723,
+        message="PublicAdvertisedPrefixPublicDelegatedPrefix",
+    )
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    shared_secret = proto.Field(proto.STRING, number=381932490, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+
+
+class PublicAdvertisedPrefixList(proto.Message):
+    r"""
+    Attributes:
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+        items (Sequence[google.cloud.compute_v1.types.PublicAdvertisedPrefix]):
+            A list of PublicAdvertisedPrefix resources.
+        kind (str):
+            [Output Only] Type of the resource. Always
+            compute#publicAdvertisedPrefix for public advertised
+            prefixes.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+        self_link (str):
+            [Output Only] Server-defined URL for this resource.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    items = proto.RepeatedField(
+        proto.MESSAGE, number=100526016, message="PublicAdvertisedPrefix",
+    )
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
+
+
+class PublicDelegatedPrefixPublicDelegatedSubPrefix(proto.Message):
+    r"""Represents a sub PublicDelegatedPrefix.
+    Attributes:
+        delegatee_project (str):
+            Name of the project scoping this
+            PublicDelegatedSubPrefix.
+        description (str):
+            An optional description of this resource.
+            Provide this property when you create the
+            resource.
+        ip_cidr_range (str):
+            The IPv4 address range, in CIDR format,
+            represented by this sub public delegated prefix.
+        is_address (bool):
+            Whether the sub prefix is delegated to create
+            Address resources in the delegatee project.
+        name (str):
+            The name of the sub public delegated prefix.
+        region (str):
+            [Output Only] The region of the sub public delegated prefix
+            if it is regional. If absent, the sub prefix is global.
+        status (google.cloud.compute_v1.types.PublicDelegatedPrefixPublicDelegatedSubPrefix.Status):
+            [Output Only] The status of the sub public delegated prefix.
+    """
+
+    class Status(proto.Enum):
+        r"""[Output Only] The status of the sub public delegated prefix."""
+        UNDEFINED_STATUS = 0
+        ACTIVE = 314733318
+        INACTIVE = 270421099
+
+    delegatee_project = proto.Field(proto.STRING, number=414860634, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    ip_cidr_range = proto.Field(proto.STRING, number=98117322, optional=True,)
+    is_address = proto.Field(proto.BOOL, number=352617951, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+
+
+class PublicDelegatedPrefix(proto.Message):
+    r"""A PublicDelegatedPrefix resource represents an IP block
+    within a PublicAdvertisedPrefix that is configured within a
+    single cloud scope (global or region). IPs in the block can be
+    allocated to resources within that scope. Public delegated
+    prefixes may be further broken up into smaller IP blocks in the
+    same scope as the parent block.
+
+    Attributes:
+        creation_timestamp (str):
+            [Output Only] Creation timestamp in RFC3339 text format.
+        description (str):
+            An optional description of this resource.
+            Provide this property when you create the
+            resource.
+        fingerprint (str):
+            Fingerprint of this resource. A hash of the
+            contents stored in this object. This field is
+            used in optimistic locking. This field will be
+            ignored when inserting a new
+            PublicDelegatedPrefix. An up-to-date fingerprint
+            must be provided in order to update the
+            PublicDelegatedPrefix, otherwise the request
+            will fail with error 412 conditionNotMet.  To
+            see the latest fingerprint, make a get() request
+            to retrieve a PublicDelegatedPrefix.
+        id (str):
+            [Output Only] The unique identifier for the resource type.
+            The server generates this identifier.
+        ip_cidr_range (str):
+            The IPv4 address range, in CIDR format,
+            represented by this public delegated prefix.
+        is_live_migration (bool):
+            If true, the prefix will be live migrated.
+        kind (str):
+            [Output Only] Type of the resource. Always
+            compute#publicDelegatedPrefix for public delegated prefixes.
+        name (str):
+            Name of the resource. Provided by the client when the
+            resource is created. The name must be 1-63 characters long,
+            and comply with RFC1035. Specifically, the name must be 1-63
+            characters long and match the regular expression
+            ``[a-z]([-a-z0-9]*[a-z0-9])?`` which means the first
+            character must be a lowercase letter, and all following
+            characters must be a dash, lowercase letter, or digit,
+            except the last character, which cannot be a dash.
+        parent_prefix (str):
+            The URL of parent prefix. Either
+            PublicAdvertisedPrefix or PublicDelegatedPrefix.
+        public_delegated_sub_prefixs (Sequence[google.cloud.compute_v1.types.PublicDelegatedPrefixPublicDelegatedSubPrefix]):
+            The list of sub public delegated prefixes
+            that exist for this public delegated prefix.
+        region (str):
+            [Output Only] URL of the region where the public delegated
+            prefix resides. This field applies only to the region
+            resource. You must specify this field as part of the HTTP
+            request URL. It is not settable as a field in the request
+            body.
+        self_link (str):
+            [Output Only] Server-defined URL for the resource.
+        status (google.cloud.compute_v1.types.PublicDelegatedPrefix.Status):
+            [Output Only] The status of the public delegated prefix.
+    """
+
+    class Status(proto.Enum):
+        r"""[Output Only] The status of the public delegated prefix."""
+        UNDEFINED_STATUS = 0
+        ANNOUNCED = 365103355
+        DELETING = 528602024
+        INITIALIZING = 306588749
+
+    creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
+    description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    ip_cidr_range = proto.Field(proto.STRING, number=98117322, optional=True,)
+    is_live_migration = proto.Field(proto.BOOL, number=511823856, optional=True,)
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    parent_prefix = proto.Field(proto.STRING, number=15233991, optional=True,)
+    public_delegated_sub_prefixs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=188940044,
+        message="PublicDelegatedPrefixPublicDelegatedSubPrefix",
+    )
+    region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+
+
+class PublicDelegatedPrefixesScopedList(proto.Message):
+    r"""
+    Attributes:
+        public_delegated_prefixes (Sequence[google.cloud.compute_v1.types.PublicDelegatedPrefix]):
+            [Output Only] A list of PublicDelegatedPrefixes contained in
+            this scope.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning which replaces the list
+            of public delegated prefixes when the list is empty.
+    """
+
+    public_delegated_prefixes = proto.RepeatedField(
+        proto.MESSAGE, number=315261206, message="PublicDelegatedPrefix",
+    )
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
+
+
+class PublicDelegatedPrefixAggregatedList(proto.Message):
+    r"""
+    Attributes:
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+        items (Sequence[google.cloud.compute_v1.types.PublicDelegatedPrefixAggregatedList.ItemsEntry]):
+            A list of PublicDelegatedPrefixesScopedList
+            resources.
+        kind (str):
+            [Output Only] Type of the resource. Always
+            compute#publicDelegatedPrefixAggregatedList for aggregated
+            lists of public delegated prefixes.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+        self_link (str):
+            [Output Only] Server-defined URL for this resource.
+        unreachables (Sequence[str]):
+            [Output Only] Unreachable resources.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    items = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=100526016,
+        message="PublicDelegatedPrefixesScopedList",
+    )
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    unreachables = proto.RepeatedField(proto.STRING, number=243372063,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
+
+
+class PublicDelegatedPrefixList(proto.Message):
+    r"""
+    Attributes:
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+        items (Sequence[google.cloud.compute_v1.types.PublicDelegatedPrefix]):
+            A list of PublicDelegatedPrefix resources.
+        kind (str):
+            [Output Only] Type of the resource. Always
+            compute#publicDelegatedPrefixList for public delegated
+            prefixes.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+        self_link (str):
+            [Output Only] Server-defined URL for this resource.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    id = proto.Field(proto.STRING, number=3355, optional=True,)
+    items = proto.RepeatedField(
+        proto.MESSAGE, number=100526016, message="PublicDelegatedPrefix",
+    )
+    kind = proto.Field(proto.STRING, number=3292052, optional=True,)
+    next_page_token = proto.Field(proto.STRING, number=79797525, optional=True,)
+    self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
+    warning = proto.Field(
+        proto.MESSAGE, number=50704284, optional=True, message="Warning",
+    )
+
+
 class Region(proto.Message):
     r"""Represents a Region resource.
 
@@ -17132,6 +18664,8 @@ class Region(proto.Message):
             [Output Only] Server-defined URL for the resource.
         status (google.cloud.compute_v1.types.Region.Status):
             [Output Only] Status of the region, either UP or DOWN.
+        supports_pzs (bool):
+            [Output Only] Reserved for future use.
         zones (Sequence[str]):
             [Output Only] A list of zones available in this region, in
             the form of resource URLs.
@@ -17154,6 +18688,7 @@ class Region(proto.Message):
     quotas = proto.RepeatedField(proto.MESSAGE, number=125341947, message="Quota",)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    supports_pzs = proto.Field(proto.BOOL, number=83983214, optional=True,)
     zones = proto.RepeatedField(proto.STRING, number=116085319,)
 
 
@@ -18087,6 +19622,9 @@ class ResourcePolicy(proto.Message):
         id (str):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
+        instance_schedule_policy (google.cloud.compute_v1.types.ResourcePolicyInstanceSchedulePolicy):
+            Resource policy for scheduling instance
+            operations.
         kind (str):
             [Output Only] Type of the resource. Always
             compute#resource_policies for resource policies.
@@ -18101,6 +19639,8 @@ class ResourcePolicy(proto.Message):
             digit, except the last character, which cannot be a dash.
         region (str):
 
+        resource_status (google.cloud.compute_v1.types.ResourcePolicyResourceStatus):
+            [Output Only] The system status of the resource policy.
         self_link (str):
             [Output Only] Server-defined fully-qualified URL for this
             resource.
@@ -18116,6 +19656,7 @@ class ResourcePolicy(proto.Message):
         UNDEFINED_STATUS = 0
         CREATING = 455564985
         DELETING = 528602024
+        EXPIRED = 482489093
         INVALID = 530283991
         READY = 77848963
 
@@ -18128,9 +19669,21 @@ class ResourcePolicy(proto.Message):
         message="ResourcePolicyGroupPlacementPolicy",
     )
     id = proto.Field(proto.STRING, number=3355, optional=True,)
+    instance_schedule_policy = proto.Field(
+        proto.MESSAGE,
+        number=344877104,
+        optional=True,
+        message="ResourcePolicyInstanceSchedulePolicy",
+    )
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
+    resource_status = proto.Field(
+        proto.MESSAGE,
+        number=249429315,
+        optional=True,
+        message="ResourcePolicyResourceStatus",
+    )
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     snapshot_schedule_policy = proto.Field(
         proto.MESSAGE,
@@ -18190,6 +19743,68 @@ class ResourcePolicyGroupPlacementPolicy(proto.Message):
         proto.ENUM, number=511156533, optional=True, enum=Collocation,
     )
     vm_count = proto.Field(proto.INT32, number=261463431, optional=True,)
+
+
+class ResourcePolicyInstanceSchedulePolicy(proto.Message):
+    r"""An InstanceSchedulePolicy specifies when and how frequent
+    certain operations are performed on the instance.
+
+    Attributes:
+        expiration_time (str):
+            The expiration time of the schedule. The
+            timestamp is an RFC3339 string.
+        start_time (str):
+            The start time of the schedule. The timestamp
+            is an RFC3339 string.
+        time_zone (str):
+            Specifies the time zone to be used in interpreting
+            Schedule.schedule. The value of this field must be a time
+            zone name from the tz database:
+            http://en.wikipedia.org/wiki/Tz_database.
+        vm_start_schedule (google.cloud.compute_v1.types.ResourcePolicyInstanceSchedulePolicySchedule):
+            Specifies the schedule for starting
+            instances.
+        vm_stop_schedule (google.cloud.compute_v1.types.ResourcePolicyInstanceSchedulePolicySchedule):
+            Specifies the schedule for stopping
+            instances.
+    """
+
+    expiration_time = proto.Field(proto.STRING, number=230299229, optional=True,)
+    start_time = proto.Field(proto.STRING, number=37467274, optional=True,)
+    time_zone = proto.Field(proto.STRING, number=36848094, optional=True,)
+    vm_start_schedule = proto.Field(
+        proto.MESSAGE,
+        number=17762396,
+        optional=True,
+        message="ResourcePolicyInstanceSchedulePolicySchedule",
+    )
+    vm_stop_schedule = proto.Field(
+        proto.MESSAGE,
+        number=426242732,
+        optional=True,
+        message="ResourcePolicyInstanceSchedulePolicySchedule",
+    )
+
+
+class ResourcePolicyResourceStatus(proto.Message):
+    r"""Contains output only fields. Use this sub-message for all
+    output fields set on ResourcePolicy. The internal structure of
+    this "status" field should mimic the structure of ResourcePolicy
+    proto specification.
+
+    Attributes:
+        instance_schedule_policy (google.cloud.compute_v1.types.ResourcePolicyResourceStatusInstanceSchedulePolicyStatus):
+            [Output Only] Specifies a set of output values reffering to
+            the instance_schedule_policy system status. This field
+            should have the same name as corresponding policy field.
+    """
+
+    instance_schedule_policy = proto.Field(
+        proto.MESSAGE,
+        number=344877104,
+        optional=True,
+        message="ResourcePolicyResourceStatusInstanceSchedulePolicyStatus",
+    )
 
 
 class ResourcePolicySnapshotSchedulePolicy(proto.Message):
@@ -18323,6 +19938,17 @@ class ResourcePolicyHourlyCycle(proto.Message):
     start_time = proto.Field(proto.STRING, number=37467274, optional=True,)
 
 
+class ResourcePolicyInstanceSchedulePolicySchedule(proto.Message):
+    r"""Schedule for an instance operation.
+    Attributes:
+        schedule (str):
+            Specifies the frequency for the operation,
+            using the unix-cron format.
+    """
+
+    schedule = proto.Field(proto.STRING, number=375820951, optional=True,)
+
+
 class ResourcePolicyList(proto.Message):
     r"""
     Attributes:
@@ -18364,6 +19990,22 @@ class ResourcePolicyList(proto.Message):
     warning = proto.Field(
         proto.MESSAGE, number=50704284, optional=True, message="Warning",
     )
+
+
+class ResourcePolicyResourceStatusInstanceSchedulePolicyStatus(proto.Message):
+    r"""
+    Attributes:
+        last_run_start_time (str):
+            [Output Only] The last time the schedule successfully ran.
+            The timestamp is an RFC3339 string.
+        next_run_start_time (str):
+            [Output Only] The next time the schedule is planned to run.
+            The actual time might be slightly different. The timestamp
+            is an RFC3339 string.
+    """
+
+    last_run_start_time = proto.Field(proto.STRING, number=303069063, optional=True,)
+    next_run_start_time = proto.Field(proto.STRING, number=318642570, optional=True,)
 
 
 class ResourcePolicySnapshotSchedulePolicyRetentionPolicy(proto.Message):
@@ -18712,13 +20354,11 @@ class RouterBgpPeer(proto.Message):
             -  ALL_SUBNETS: Advertises all available subnets, including
                peer VPC subnets.
             -  ALL_VPC_SUBNETS: Advertises the router's own VPC subnets.
-            -  ALL_PEER_VPC_SUBNETS: Advertises peer subnets of the
-               router's VPC network. Note that this field can only be
-               populated if advertise_mode is CUSTOM and overrides the
-               list defined for the router (in the "bgp" message). These
-               groups are advertised in addition to any specified
-               prefixes. Leave this field blank to advertise no custom
-               groups.
+               Note that this field can only be populated if
+               advertise_mode is CUSTOM and overrides the list defined
+               for the router (in the "bgp" message). These groups are
+               advertised in addition to any specified prefixes. Leave
+               this field blank to advertise no custom groups.
         advertised_ip_ranges (Sequence[google.cloud.compute_v1.types.RouterAdvertisedIpRange]):
             User-specified list of individual IP ranges to advertise in
             custom mode. This field can only be populated if
@@ -19050,6 +20690,12 @@ class Router(proto.Message):
             An optional description of this resource.
             Provide this property when you create the
             resource.
+        encrypted_interconnect_router (bool):
+            Field to indicate if a router is dedicated to
+            use with encrypted Interconnect Attachment
+            (IPsec-encrypted Cloud Interconnect feature).
+            Not currently available in all Interconnect
+            locations.
         id (str):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
@@ -19090,6 +20736,9 @@ class Router(proto.Message):
     )
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    encrypted_interconnect_router = proto.Field(
+        proto.BOOL, number=297996575, optional=True,
+    )
     id = proto.Field(proto.STRING, number=3355, optional=True,)
     interfaces = proto.RepeatedField(
         proto.MESSAGE, number=12073562, message="RouterInterface",
@@ -19516,7 +21165,7 @@ class SecurityPolicyRule(proto.Message):
 
     Attributes:
         action (str):
-            The Action to preform when the client
+            The Action to perform when the client
             connection triggers the rule. Can currently be
             either "allow" or "deny()" where valid values
             for status are 403, 404, and 502.
@@ -19883,6 +21532,11 @@ class Snapshot(proto.Message):
             [Output Only] A list of public visible licenses that apply
             to this snapshot. This can be because the original image had
             licenses attached (such as a Windows image).
+        location_hint (str):
+            An opaque location hint used to place the
+            snapshot close to other resources. This field is
+            for use by internal tools that use the public
+            API.
         name (str):
             Name of the resource; provided by the client when the
             resource is created. The name must be 1-63 characters long,
@@ -19892,6 +21546,8 @@ class Snapshot(proto.Message):
             character must be a lowercase letter, and all following
             characters must be a dash, lowercase letter, or digit,
             except the last character, which cannot be a dash.
+        satisfies_pzs (bool):
+            [Output Only] Reserved for future use.
         self_link (str):
             [Output Only] Server-defined URL for the resource.
         snapshot_encryption_key (google.cloud.compute_v1.types.CustomerEncryptionKey):
@@ -19973,7 +21629,9 @@ class Snapshot(proto.Message):
     labels = proto.MapField(proto.STRING, proto.STRING, number=500195327,)
     license_codes = proto.RepeatedField(proto.STRING, number=45482664,)
     licenses = proto.RepeatedField(proto.STRING, number=337642578,)
+    location_hint = proto.Field(proto.STRING, number=350519505, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    satisfies_pzs = proto.Field(proto.BOOL, number=480964267, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     snapshot_encryption_key = proto.Field(
         proto.MESSAGE, number=43334526, optional=True, message="CustomerEncryptionKey",
@@ -20035,9 +21693,10 @@ class SslCertificateManagedSslCertificate(proto.Message):
             [Output only] Detailed statuses of the domains specified for
             managed certificate resource.
         domains (Sequence[str]):
-            The domains for which a managed SSL
-            certificate will be generated. Currently only
-            single-domain certs are supported.
+            The domains for which a managed SSL certificate will be
+            generated. Each Google-managed SSL certificate supports up
+            to the `maximum number of domains per Google-managed SSL
+            certificate </load-balancing/docs/quotas#ssl_certificates>`__.
         status (google.cloud.compute_v1.types.SslCertificateManagedSslCertificate.Status):
             [Output only] Status of the managed certificate resource.
     """
@@ -20541,7 +22200,7 @@ class SubnetworkLogConfig(proto.Message):
             Can only be specified if VPC flow logs for this subnetwork
             is enabled. Configures whether all, none or a subset of
             metadata fields should be added to the reported VPC flow
-            logs. Default is INCLUDE_ALL_METADATA.
+            logs. Default is EXCLUDE_ALL_METADATA.
         metadata_fields (Sequence[str]):
             Can only be specified if VPC flow logs for this subnetwork
             is enabled and "metadata" was set to CUSTOM_METADATA.
@@ -20566,7 +22225,7 @@ class SubnetworkLogConfig(proto.Message):
         r"""Can only be specified if VPC flow logs for this subnetwork is
         enabled. Configures whether all, none or a subset of metadata fields
         should be added to the reported VPC flow logs. Default is
-        INCLUDE_ALL_METADATA.
+        EXCLUDE_ALL_METADATA.
         """
         UNDEFINED_METADATA = 0
         CUSTOM_METADATA = 62450749
@@ -20592,9 +22251,8 @@ class SubnetworkSecondaryRange(proto.Message):
             property when you create the subnetwork. Ranges
             must be unique and non-overlapping with all
             primary and secondary IP ranges within a
-            network. Only IPv4 is supported. This may be a
-            RFC 1918 IP range, or a privately, non-RFC 1918
-            IP range, not belonging to Google.
+            network. Only IPv4 is supported. The range can
+            be any range listed in the Valid ranges list.
         range_name (str):
             The name associated with this subnetwork
             secondary range, used when adding an alias IP
@@ -20652,10 +22310,10 @@ class Subnetwork(proto.Message):
             10.0.0.0/8 or 100.64.0.0/10. Ranges must be
             unique and non-overlapping within a network.
             Only IPv4 is supported. This field is set at
-            resource creation time. This may be a RFC 1918
-            IP range, or a privately routed, non-RFC 1918 IP
-            range, not belonging to Google. The range can be
-            expanded after creation using expandIpCidrRange.
+            resource creation time. The range can be any
+            range listed in the Valid ranges list. The range
+            can be expanded after creation using
+            expandIpCidrRange.
         ipv6_cidr_range (str):
             [Output Only] The range of internal IPv6 addresses that are
             owned by this subnetwork.
@@ -20733,9 +22391,7 @@ class Subnetwork(proto.Message):
             have the purpose set to INTERNAL_HTTPS_LOAD_BALANCER and
             indicates that connections to the load balancer are being
             drained. A subnetwork that is draining cannot be used or
-            modified until it reaches a status of READY CREATING:
-            Subnetwork is provisioning DELETING: Subnetwork is being
-            deleted UPDATING: Subnetwork is being updated
+            modified until it reaches a status of READY
     """
 
     class PrivateIpv6GoogleAccess(proto.Enum):
@@ -20783,8 +22439,6 @@ class Subnetwork(proto.Message):
         to INTERNAL_HTTPS_LOAD_BALANCER and indicates that connections to
         the load balancer are being drained. A subnetwork that is draining
         cannot be used or modified until it reaches a status of READY
-        CREATING: Subnetwork is provisioning DELETING: Subnetwork is being
-        deleted UPDATING: Subnetwork is being updated
         """
         UNDEFINED_STATE = 0
         DRAINING = 480455402
@@ -20949,10 +22603,11 @@ class TargetGrpcProxy(proto.Message):
     r"""Represents a Target gRPC Proxy resource.
 
     A target gRPC proxy is a component of load balancers intended for
-    load balancing gRPC traffic. Global forwarding rules reference a
-    target gRPC proxy. The Target gRPC Proxy references a URL map which
-    specifies how traffic routes to gRPC backend services. (==
-    resource_for {$api_version}.targetGrpcProxies ==)
+    load balancing gRPC traffic. Only global forwarding rules with load
+    balancing scheme INTERNAL_SELF_MANAGED can reference a target gRPC
+    proxy. The target gRPC Proxy references a URL map that specifies how
+    traffic is routed to gRPC backend services. (== resource_for
+    {$api_version}.targetGrpcProxies ==)
 
     Attributes:
         creation_timestamp (str):
@@ -21296,6 +22951,17 @@ class TargetHttpsProxy(proto.Message):
             An optional description of this resource.
             Provide this property when you create the
             resource.
+        fingerprint (str):
+            Fingerprint of this resource. A hash of the
+            contents stored in this object. This field is
+            used in optimistic locking. This field will be
+            ignored when inserting a TargetHttpsProxy. An
+            up-to-date fingerprint must be provided in order
+            to patch the TargetHttpsProxy; otherwise, the
+            request will fail with error 412
+            conditionNotMet. To see the latest fingerprint,
+            make a get() request to retrieve the
+            TargetHttpsProxy.
         id (str):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
@@ -21337,7 +23003,6 @@ class TargetHttpsProxy(proto.Message):
             quic-override is set to DISABLE, the load
             balancer doesn't use QUIC. - If the quic-
             override flag is not specified, NONE is implied.
-            -
         region (str):
             [Output Only] URL of the region where the regional
             TargetHttpsProxy resides. This field is not applicable to
@@ -21383,7 +23048,7 @@ class TargetHttpsProxy(proto.Message):
         manages whether QUIC is used. - When quic-override is set to
         ENABLE, the load balancer uses QUIC when possible. - When quic-
         override is set to DISABLE, the load balancer doesn't use QUIC.
-        - If the quic-override flag is not specified, NONE is implied. -
+        - If the quic-override flag is not specified, NONE is implied.
         """
         UNDEFINED_QUIC_OVERRIDE = 0
         DISABLE = 241807048
@@ -21393,6 +23058,7 @@ class TargetHttpsProxy(proto.Message):
     authorization_policy = proto.Field(proto.STRING, number=33945528, optional=True,)
     creation_timestamp = proto.Field(proto.STRING, number=30525366, optional=True,)
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    fingerprint = proto.Field(proto.STRING, number=234678500, optional=True,)
     id = proto.Field(proto.STRING, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
@@ -21781,10 +23447,8 @@ class TargetPool(proto.Message):
             The URL of the HttpHealthCheck resource. A
             member instance in this pool is considered
             healthy if and only if the health checks pass.
-            An empty list means all member instances will be
-            considered healthy at all times. Only legacy
-            HttpHealthChecks are supported. Only one health
-            check may be specified.
+            Only legacy HttpHealthChecks are supported. Only
+            one health check may be specified.
         id (str):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
@@ -21832,6 +23496,7 @@ class TargetPool(proto.Message):
         """
         UNDEFINED_SESSION_AFFINITY = 0
         CLIENT_IP = 345665051
+        CLIENT_IP_NO_DESTINATION = 106122516
         CLIENT_IP_PORT_PROTO = 221722926
         CLIENT_IP_PROTO = 25322148
         GENERATED_COOKIE = 370321204
@@ -22267,6 +23932,20 @@ class TargetTcpProxy(proto.Message):
             character must be a lowercase letter, and all following
             characters must be a dash, lowercase letter, or digit,
             except the last character, which cannot be a dash.
+        proxy_bind (bool):
+            This field only applies when the forwarding rule that
+            references this target proxy has a loadBalancingScheme set
+            to INTERNAL_SELF_MANAGED.
+
+            When this field is set to true, Envoy proxies set up inbound
+            traffic interception and bind to the IP address and port
+            specified in the forwarding rule. This is generally useful
+            when using Traffic Director to configure Envoy as a gateway
+            or middle proxy (in other words, not a sidecar proxy). The
+            Envoy proxy listens for inbound requests and handles
+            requests when it receives them.
+
+            The default is false.
         proxy_header (google.cloud.compute_v1.types.TargetTcpProxy.ProxyHeader):
             Specifies the type of proxy header to append before sending
             data to the backend, either NONE or PROXY_V1. The default is
@@ -22290,6 +23969,7 @@ class TargetTcpProxy(proto.Message):
     id = proto.Field(proto.STRING, number=3355, optional=True,)
     kind = proto.Field(proto.STRING, number=3292052, optional=True,)
     name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    proxy_bind = proto.Field(proto.BOOL, number=286025582, optional=True,)
     proxy_header = proto.Field(
         proto.ENUM, number=160374142, optional=True, enum=ProxyHeader,
     )
@@ -22518,15 +24198,44 @@ class TargetVpnGatewayList(proto.Message):
     )
 
 
+class UrlMapTestHeader(proto.Message):
+    r"""HTTP headers used in UrlMapTests.
+    Attributes:
+        name (str):
+            Header name.
+        value (str):
+            Header value.
+    """
+
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    value = proto.Field(proto.STRING, number=111972721, optional=True,)
+
+
 class TestFailure(proto.Message):
     r"""
     Attributes:
+        actual_output_url (str):
+            The actual output URL evaluated by load
+            balancer containing the scheme, host, path and
+            query parameters.
+        actual_redirect_response_code (int):
+            Actual HTTP status code for rule with ``urlRedirect``
+            calculated by load balancer
         actual_service (str):
             BackendService or BackendBucket returned by
             load balancer.
+        expected_output_url (str):
+            The expected output URL evaluated by load
+            balancer containing the scheme, host, path and
+            query parameters.
+        expected_redirect_response_code (int):
+            Expected HTTP status code for rule with ``urlRedirect``
+            calculated by load balancer
         expected_service (str):
             Expected BackendService or BackendBucket
             resource the given URL should be mapped to.
+        headers (Sequence[google.cloud.compute_v1.types.UrlMapTestHeader]):
+            HTTP headers of the request.
         host (str):
             Host portion of the URL.
         path (str):
@@ -22534,8 +24243,19 @@ class TestFailure(proto.Message):
             the URL.
     """
 
+    actual_output_url = proto.Field(proto.STRING, number=287075458, optional=True,)
+    actual_redirect_response_code = proto.Field(
+        proto.INT32, number=42926553, optional=True,
+    )
     actual_service = proto.Field(proto.STRING, number=440379652, optional=True,)
+    expected_output_url = proto.Field(proto.STRING, number=433967384, optional=True,)
+    expected_redirect_response_code = proto.Field(
+        proto.INT32, number=18888047, optional=True,
+    )
     expected_service = proto.Field(proto.STRING, number=133987374, optional=True,)
+    headers = proto.RepeatedField(
+        proto.MESSAGE, number=258436998, message="UrlMapTestHeader",
+    )
     host = proto.Field(proto.STRING, number=3208616, optional=True,)
     path = proto.Field(proto.STRING, number=3433509, optional=True,)
 
@@ -22568,6 +24288,33 @@ class UrlMapTest(proto.Message):
     Attributes:
         description (str):
             Description of this test case.
+        expected_output_url (str):
+            The expected output URL evaluated by load balancer
+            containing the scheme, host, path and query parameters. For
+            rules that forward requests to backends, the test passes
+            only when expectedOutputUrl matches the request forwarded by
+            load balancer to backends. For rules with urlRewrite, the
+            test verifies that the forwarded request matches hostRewrite
+            and pathPrefixRewrite in the urlRewrite action. When service
+            is specified, expectedOutputUrl`s scheme is ignored. For
+            rules with urlRedirect, the test passes only if
+            expectedOutputUrl matches the URL in the load balancer's
+            redirect response. If urlRedirect specifies https_redirect,
+            the test passes only if the scheme in expectedOutputUrl is
+            also set to https. If urlRedirect specifies strip_query, the
+            test passes only if expectedOutputUrl does not contain any
+            query parameters. expectedOutputUrl is optional when service
+            is specified.
+        expected_redirect_response_code (int):
+            For rules with urlRedirect, the test passes
+            only if expectedRedirectResponseCode matches the
+            HTTP status code in load balancer's redirect
+            response. expectedRedirectResponseCode cannot be
+            set when service is set.
+        headers (Sequence[google.cloud.compute_v1.types.UrlMapTestHeader]):
+            HTTP headers for this request. If headers
+            contains a host header, then host must also
+            match the header value.
         host (str):
             Host portion of the URL. If headers contains
             a host header, then host must also match the
@@ -22582,6 +24329,13 @@ class UrlMapTest(proto.Message):
     """
 
     description = proto.Field(proto.STRING, number=422937596, optional=True,)
+    expected_output_url = proto.Field(proto.STRING, number=433967384, optional=True,)
+    expected_redirect_response_code = proto.Field(
+        proto.INT32, number=18888047, optional=True,
+    )
+    headers = proto.RepeatedField(
+        proto.MESSAGE, number=258436998, message="UrlMapTestHeader",
+    )
     host = proto.Field(proto.STRING, number=3208616, optional=True,)
     path = proto.Field(proto.STRING, number=3433509, optional=True,)
     service = proto.Field(proto.STRING, number=373540533, optional=True,)
@@ -22935,12 +24689,24 @@ class VpnGatewayVpnGatewayInterface(proto.Message):
     Attributes:
         id (int):
             The numeric ID of this VPN gateway interface.
+        interconnect_attachment (str):
+            URL of the interconnect attachment resource.
+            When the value of this field is present, the VPN
+            Gateway will be used for IPsec-encrypted Cloud
+            Interconnect; all Egress or Ingress traffic for
+            this VPN Gateway interface will go through the
+            specified interconnect attachment resource. Not
+            currently available in all Interconnect
+            locations.
         ip_address (str):
             [Output Only] The external IP address for this VPN gateway
             interface.
     """
 
     id = proto.Field(proto.UINT32, number=3355, optional=True,)
+    interconnect_attachment = proto.Field(
+        proto.STRING, number=308135284, optional=True,
+    )
     ip_address = proto.Field(proto.STRING, number=406272220, optional=True,)
 
 
@@ -23350,7 +25116,7 @@ class VpnTunnel(proto.Message):
                ready to be used.
             -  NO_INCOMING_PACKETS: No incoming packets from peer.
             -  REJECTED: Tunnel configuration was rejected, can be
-               result of being blacklisted.
+               result of being denied access.
             -  ALLOCATING_RESOURCES: Cloud VPN is in the process of
                allocating all required resources.
             -  STOPPED: Tunnel is stopped due to its Forwarding Rules
@@ -23395,7 +25161,7 @@ class VpnTunnel(proto.Message):
            be used.
         -  NO_INCOMING_PACKETS: No incoming packets from peer.
         -  REJECTED: Tunnel configuration was rejected, can be result of
-           being blacklisted.
+           being denied access.
         -  ALLOCATING_RESOURCES: Cloud VPN is in the process of allocating
            all required resources.
         -  STOPPED: Tunnel is stopped due to its Forwarding Rules being
@@ -23636,6 +25402,8 @@ class Zone(proto.Message):
             [Output Only] Server-defined URL for the resource.
         status (google.cloud.compute_v1.types.Zone.Status):
             [Output Only] Status of the zone, either UP or DOWN.
+        supports_pzs (bool):
+            [Output Only] Reserved for future use.
     """
 
     class Status(proto.Enum):
@@ -23656,6 +25424,7 @@ class Zone(proto.Message):
     region = proto.Field(proto.STRING, number=138946292, optional=True,)
     self_link = proto.Field(proto.STRING, number=456214797, optional=True,)
     status = proto.Field(proto.ENUM, number=181260274, optional=True, enum=Status,)
+    supports_pzs = proto.Field(proto.BOOL, number=83983214, optional=True,)
 
 
 class ZoneList(proto.Message):
@@ -23813,8 +25582,7 @@ class AggregatedListAcceleratorTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -23905,8 +25673,7 @@ class ListAcceleratorTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone for this request.
     """
@@ -23992,8 +25759,7 @@ class AggregatedListAddressesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -24156,8 +25922,7 @@ class ListAddressesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -24241,8 +26006,7 @@ class AggregatedListAutoscalersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -24405,8 +26169,7 @@ class ListAutoscalersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             Name of the zone for this request.
     """
@@ -24718,8 +26481,7 @@ class ListBackendBucketsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -24915,8 +26677,7 @@ class AggregatedListBackendServicesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -25130,8 +26891,7 @@ class ListBackendServicesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -25328,8 +27088,7 @@ class AggregatedListDiskTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -25420,8 +27179,7 @@ class ListDiskTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone for this request.
     """
@@ -25547,8 +27305,7 @@ class AggregatedListDisksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -25708,8 +27465,8 @@ class InsertDiskRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         source_image (str):
-            Optional. Source image to restore onto a
-            disk.
+            Source image to restore onto a disk. This
+            field is optional.
         zone (str):
             The name of the zone for this request.
     """
@@ -25782,8 +27539,7 @@ class ListDisksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone for this request.
     """
@@ -26105,8 +27861,7 @@ class ListExternalVpnGatewaysRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -26151,6 +27906,531 @@ class TestIamPermissionsExternalVpnGatewayRequest(proto.Message):
     """
 
     project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
+    test_permissions_request_resource = proto.Field(
+        proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
+    )
+
+
+class AddAssociationFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.AddAssociation. See
+    the method description for details.
+
+    Attributes:
+        firewall_policy (str):
+            Name of the firewall policy to update.
+        firewall_policy_association_resource (google.cloud.compute_v1.types.FirewallPolicyAssociation):
+            The body resource for this request
+        replace_existing_association (bool):
+            Indicates whether or not to replace it if an
+            association of the attachment already exists.
+            This is false by default, in which case an error
+            will be returned if an association already
+            exists.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    firewall_policy = proto.Field(proto.STRING, number=498173265,)
+    firewall_policy_association_resource = proto.Field(
+        proto.MESSAGE, number=259546170, message="FirewallPolicyAssociation",
+    )
+    replace_existing_association = proto.Field(
+        proto.BOOL, number=209541240, optional=True,
+    )
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class AddRuleFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.AddRule. See the
+    method description for details.
+
+    Attributes:
+        firewall_policy (str):
+            Name of the firewall policy to update.
+        firewall_policy_rule_resource (google.cloud.compute_v1.types.FirewallPolicyRule):
+            The body resource for this request
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    firewall_policy = proto.Field(proto.STRING, number=498173265,)
+    firewall_policy_rule_resource = proto.Field(
+        proto.MESSAGE, number=250523523, message="FirewallPolicyRule",
+    )
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class CloneRulesFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.CloneRules. See the
+    method description for details.
+
+    Attributes:
+        firewall_policy (str):
+            Name of the firewall policy to update.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        source_firewall_policy (str):
+            The firewall policy from which to copy rules.
+    """
+
+    firewall_policy = proto.Field(proto.STRING, number=498173265,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    source_firewall_policy = proto.Field(proto.STRING, number=25013549, optional=True,)
+
+
+class DeleteFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.Delete. See the method
+    description for details.
+
+    Attributes:
+        firewall_policy (str):
+            Name of the firewall policy to delete.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    firewall_policy = proto.Field(proto.STRING, number=498173265,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class GetFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.Get. See the method
+    description for details.
+
+    Attributes:
+        firewall_policy (str):
+            Name of the firewall policy to get.
+    """
+
+    firewall_policy = proto.Field(proto.STRING, number=498173265,)
+
+
+class GetAssociationFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.GetAssociation. See
+    the method description for details.
+
+    Attributes:
+        firewall_policy (str):
+            Name of the firewall policy to which the
+            queried rule belongs.
+        name (str):
+            The name of the association to get from the
+            firewall policy.
+    """
+
+    firewall_policy = proto.Field(proto.STRING, number=498173265,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+
+
+class GetIamPolicyFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.GetIamPolicy. See the
+    method description for details.
+
+    Attributes:
+        options_requested_policy_version (int):
+            Requested IAM Policy version.
+        resource (str):
+            Name or id of the resource for this request.
+    """
+
+    options_requested_policy_version = proto.Field(
+        proto.INT32, number=499220029, optional=True,
+    )
+    resource = proto.Field(proto.STRING, number=195806222,)
+
+
+class GetRuleFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.GetRule. See the
+    method description for details.
+
+    Attributes:
+        firewall_policy (str):
+            Name of the firewall policy to which the
+            queried rule belongs.
+        priority (int):
+            The priority of the rule to get from the
+            firewall policy.
+    """
+
+    firewall_policy = proto.Field(proto.STRING, number=498173265,)
+    priority = proto.Field(proto.INT32, number=445151652, optional=True,)
+
+
+class InsertFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.Insert. See the method
+    description for details.
+
+    Attributes:
+        firewall_policy_resource (google.cloud.compute_v1.types.FirewallPolicy):
+            The body resource for this request
+        parent_id (str):
+            Parent ID for this request. The ID can be either be
+            "folders/[FOLDER_ID]" if the parent is a folder or
+            "organizations/[ORGANIZATION_ID]" if the parent is an
+            organization.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    firewall_policy_resource = proto.Field(
+        proto.MESSAGE, number=495049532, message="FirewallPolicy",
+    )
+    parent_id = proto.Field(proto.STRING, number=459714768, optional=True,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class ListFirewallPoliciesRequest(proto.Message):
+    r"""A request message for FirewallPolicies.List. See the method
+    description for details.
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. The expression must specify the field name, a
+            comparison operator, and the value that you want to use for
+            filtering. The value must be a string, a number, or a
+            boolean. The comparison operator must be either ``=``,
+            ``!=``, ``>``, or ``<``.
+
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``.
+
+            You can also filter nested fields. For example, you could
+            specify ``scheduling.automaticRestart = false`` to include
+            instances only if they are not scheduled for automatic
+            restarts. You can use filtering on nested fields to filter
+            based on resource labels.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name.
+
+            You can also sort results in descending order based on the
+            creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first.
+
+            Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+        parent_id (str):
+            Parent ID for this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false.
+    """
+
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    parent_id = proto.Field(proto.STRING, number=459714768, optional=True,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+
+
+class ListAssociationsFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.ListAssociations. See
+    the method description for details.
+
+    Attributes:
+        target_resource (str):
+            The target resource to list associations. It
+            is an organization, or a folder.
+    """
+
+    target_resource = proto.Field(proto.STRING, number=467318524, optional=True,)
+
+
+class MoveFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.Move. See the method
+    description for details.
+
+    Attributes:
+        firewall_policy (str):
+            Name of the firewall policy to update.
+        parent_id (str):
+            The new parent of the firewall policy.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    firewall_policy = proto.Field(proto.STRING, number=498173265,)
+    parent_id = proto.Field(proto.STRING, number=459714768, optional=True,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class PatchFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.Patch. See the method
+    description for details.
+
+    Attributes:
+        firewall_policy (str):
+            Name of the firewall policy to update.
+        firewall_policy_resource (google.cloud.compute_v1.types.FirewallPolicy):
+            The body resource for this request
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    firewall_policy = proto.Field(proto.STRING, number=498173265,)
+    firewall_policy_resource = proto.Field(
+        proto.MESSAGE, number=495049532, message="FirewallPolicy",
+    )
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class PatchRuleFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.PatchRule. See the
+    method description for details.
+
+    Attributes:
+        firewall_policy (str):
+            Name of the firewall policy to update.
+        firewall_policy_rule_resource (google.cloud.compute_v1.types.FirewallPolicyRule):
+            The body resource for this request
+        priority (int):
+            The priority of the rule to patch.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    firewall_policy = proto.Field(proto.STRING, number=498173265,)
+    firewall_policy_rule_resource = proto.Field(
+        proto.MESSAGE, number=250523523, message="FirewallPolicyRule",
+    )
+    priority = proto.Field(proto.INT32, number=445151652, optional=True,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class RemoveAssociationFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.RemoveAssociation. See
+    the method description for details.
+
+    Attributes:
+        firewall_policy (str):
+            Name of the firewall policy to update.
+        name (str):
+            Name for the attachment that will be removed.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    firewall_policy = proto.Field(proto.STRING, number=498173265,)
+    name = proto.Field(proto.STRING, number=3373707, optional=True,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class RemoveRuleFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.RemoveRule. See the
+    method description for details.
+
+    Attributes:
+        firewall_policy (str):
+            Name of the firewall policy to update.
+        priority (int):
+            The priority of the rule to remove from the
+            firewall policy.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    firewall_policy = proto.Field(proto.STRING, number=498173265,)
+    priority = proto.Field(proto.INT32, number=445151652, optional=True,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class SetIamPolicyFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.SetIamPolicy. See the
+    method description for details.
+
+    Attributes:
+        global_organization_set_policy_request_resource (google.cloud.compute_v1.types.GlobalOrganizationSetPolicyRequest):
+            The body resource for this request
+        resource (str):
+            Name or id of the resource for this request.
+    """
+
+    global_organization_set_policy_request_resource = proto.Field(
+        proto.MESSAGE, number=177408606, message="GlobalOrganizationSetPolicyRequest",
+    )
+    resource = proto.Field(proto.STRING, number=195806222,)
+
+
+class TestIamPermissionsFirewallPolicyRequest(proto.Message):
+    r"""A request message for FirewallPolicies.TestIamPermissions.
+    See the method description for details.
+
+    Attributes:
+        resource (str):
+            Name or id of the resource for this request.
+        test_permissions_request_resource (google.cloud.compute_v1.types.TestPermissionsRequest):
+            The body resource for this request
+    """
+
     resource = proto.Field(proto.STRING, number=195806222,)
     test_permissions_request_resource = proto.Field(
         proto.MESSAGE, number=439214758, message="TestPermissionsRequest",
@@ -26297,8 +28577,7 @@ class ListFirewallsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -26451,8 +28730,7 @@ class AggregatedListForwardingRulesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -26619,8 +28897,7 @@ class ListForwardingRulesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -26670,6 +28947,46 @@ class PatchForwardingRuleRequest(proto.Message):
     project = proto.Field(proto.STRING, number=227560217,)
     region = proto.Field(proto.STRING, number=138946292,)
     request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class SetLabelsForwardingRuleRequest(proto.Message):
+    r"""A request message for ForwardingRules.SetLabels. See the
+    method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        region (str):
+            The region for this request.
+        region_set_labels_request_resource (google.cloud.compute_v1.types.RegionSetLabelsRequest):
+            The body resource for this request
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        resource (str):
+            Name or id of the resource for this request.
+    """
+
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    region_set_labels_request_resource = proto.Field(
+        proto.MESSAGE, number=259357782, message="RegionSetLabelsRequest",
+    )
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class SetTargetForwardingRuleRequest(proto.Message):
@@ -26853,8 +29170,7 @@ class ListGlobalAddressesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -27009,8 +29325,7 @@ class ListGlobalForwardingRulesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -27056,6 +29371,26 @@ class PatchGlobalForwardingRuleRequest(proto.Message):
     )
     project = proto.Field(proto.STRING, number=227560217,)
     request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class SetLabelsGlobalForwardingRuleRequest(proto.Message):
+    r"""A request message for GlobalForwardingRules.SetLabels. See
+    the method description for details.
+
+    Attributes:
+        global_set_labels_request_resource (google.cloud.compute_v1.types.GlobalSetLabelsRequest):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        resource (str):
+            Name or id of the resource for this request.
+    """
+
+    global_set_labels_request_resource = proto.Field(
+        proto.MESSAGE, number=319917189, message="GlobalSetLabelsRequest",
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    resource = proto.Field(proto.STRING, number=195806222,)
 
 
 class SetTargetGlobalForwardingRuleRequest(proto.Message):
@@ -27324,8 +29659,7 @@ class ListGlobalNetworkEndpointGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -27403,8 +29737,7 @@ class ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -27488,8 +29821,7 @@ class AggregatedListGlobalOperationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -27598,8 +29930,7 @@ class ListGlobalOperationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -27722,8 +30053,7 @@ class ListGlobalOrganizationOperationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -27732,6 +30062,199 @@ class ListGlobalOrganizationOperationsRequest(proto.Message):
     page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
     parent_id = proto.Field(proto.STRING, number=459714768, optional=True,)
     return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+
+
+class DeleteGlobalPublicDelegatedPrefixeRequest(proto.Message):
+    r"""A request message for GlobalPublicDelegatedPrefixes.Delete.
+    See the method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        public_delegated_prefix (str):
+            Name of the PublicDelegatedPrefix resource to
+            delete.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    project = proto.Field(proto.STRING, number=227560217,)
+    public_delegated_prefix = proto.Field(proto.STRING, number=204238440,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class GetGlobalPublicDelegatedPrefixeRequest(proto.Message):
+    r"""A request message for GlobalPublicDelegatedPrefixes.Get. See
+    the method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        public_delegated_prefix (str):
+            Name of the PublicDelegatedPrefix resource to
+            return.
+    """
+
+    project = proto.Field(proto.STRING, number=227560217,)
+    public_delegated_prefix = proto.Field(proto.STRING, number=204238440,)
+
+
+class InsertGlobalPublicDelegatedPrefixeRequest(proto.Message):
+    r"""A request message for GlobalPublicDelegatedPrefixes.Insert.
+    See the method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        public_delegated_prefix_resource (google.cloud.compute_v1.types.PublicDelegatedPrefix):
+            The body resource for this request
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    project = proto.Field(proto.STRING, number=227560217,)
+    public_delegated_prefix_resource = proto.Field(
+        proto.MESSAGE, number=47594501, message="PublicDelegatedPrefix",
+    )
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class ListGlobalPublicDelegatedPrefixesRequest(proto.Message):
+    r"""A request message for GlobalPublicDelegatedPrefixes.List. See
+    the method description for details.
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. The expression must specify the field name, a
+            comparison operator, and the value that you want to use for
+            filtering. The value must be a string, a number, or a
+            boolean. The comparison operator must be either ``=``,
+            ``!=``, ``>``, or ``<``.
+
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``.
+
+            You can also filter nested fields. For example, you could
+            specify ``scheduling.automaticRestart = false`` to include
+            instances only if they are not scheduled for automatic
+            restarts. You can use filtering on nested fields to filter
+            based on resource labels.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name.
+
+            You can also sort results in descending order based on the
+            creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first.
+
+            Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+        project (str):
+            Project ID for this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false.
+    """
+
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+
+
+class PatchGlobalPublicDelegatedPrefixeRequest(proto.Message):
+    r"""A request message for GlobalPublicDelegatedPrefixes.Patch.
+    See the method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        public_delegated_prefix (str):
+            Name of the PublicDelegatedPrefix resource to
+            patch.
+        public_delegated_prefix_resource (google.cloud.compute_v1.types.PublicDelegatedPrefix):
+            The body resource for this request
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    project = proto.Field(proto.STRING, number=227560217,)
+    public_delegated_prefix = proto.Field(proto.STRING, number=204238440,)
+    public_delegated_prefix_resource = proto.Field(
+        proto.MESSAGE, number=47594501, message="PublicDelegatedPrefix",
+    )
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
 class AggregatedListHealthChecksRequest(proto.Message):
@@ -27806,8 +30329,7 @@ class AggregatedListHealthChecksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -27961,8 +30483,7 @@ class ListHealthChecksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -28262,8 +30783,7 @@ class ListImagesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -28484,8 +31004,7 @@ class AggregatedListInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -28797,8 +31316,7 @@ class ListInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone where the managed
             instance group is located.
@@ -28879,8 +31397,7 @@ class ListErrorsInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone where the managed
             instance group is located. It should conform to
@@ -28961,8 +31478,7 @@ class ListManagedInstancesInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone where the managed
             instance group is located.
@@ -29043,8 +31559,7 @@ class ListPerInstanceConfigsInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone where the managed
             instance group is located. It should conform to
@@ -29482,8 +31997,7 @@ class AggregatedListInstanceGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -29649,8 +32163,7 @@ class ListInstanceGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone where the instance group
             is located.
@@ -29731,8 +32244,7 @@ class ListInstancesInstanceGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone where the instance group
             is located.
@@ -29997,8 +32509,7 @@ class ListInstanceTemplatesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -30205,8 +32716,7 @@ class AggregatedListInstancesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -30259,6 +32769,43 @@ class AttachDiskInstanceRequest(proto.Message):
     )
     force_attach = proto.Field(proto.BOOL, number=142758425, optional=True,)
     instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    zone = proto.Field(proto.STRING, number=3744684,)
+
+
+class BulkInsertInstanceRequest(proto.Message):
+    r"""A request message for Instances.BulkInsert. See the method
+    description for details.
+
+    Attributes:
+        bulk_insert_instance_resource_resource (google.cloud.compute_v1.types.BulkInsertInstanceResource):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    bulk_insert_instance_resource_resource = proto.Field(
+        proto.MESSAGE, number=41427278, message="BulkInsertInstanceResource",
+    )
     project = proto.Field(proto.STRING, number=227560217,)
     request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
     zone = proto.Field(proto.STRING, number=3744684,)
@@ -30394,6 +32941,28 @@ class GetInstanceRequest(proto.Message):
     """
 
     instance = proto.Field(proto.STRING, number=18257045,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    zone = proto.Field(proto.STRING, number=3744684,)
+
+
+class GetEffectiveFirewallsInstanceRequest(proto.Message):
+    r"""A request message for Instances.GetEffectiveFirewalls. See
+    the method description for details.
+
+    Attributes:
+        instance (str):
+            Name of the instance scoping this request.
+        network_interface (str):
+            The name of the network interface to get the
+            effective firewalls.
+        project (str):
+            Project ID for this request.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    instance = proto.Field(proto.STRING, number=18257045,)
+    network_interface = proto.Field(proto.STRING, number=365387880,)
     project = proto.Field(proto.STRING, number=227560217,)
     zone = proto.Field(proto.STRING, number=3744684,)
 
@@ -30636,8 +33205,7 @@ class ListInstancesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone for this request.
     """
@@ -30716,8 +33284,7 @@ class ListReferrersInstancesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone for this request.
     """
@@ -31725,8 +34292,7 @@ class AggregatedListInterconnectAttachmentsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -31896,8 +34462,7 @@ class ListInterconnectAttachmentsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -32025,8 +34590,7 @@ class ListInterconnectLocationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -32194,8 +34758,7 @@ class ListInterconnectsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -32439,8 +35002,7 @@ class ListLicensesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -32563,8 +35125,7 @@ class AggregatedListMachineTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -32655,8 +35216,7 @@ class ListMachineTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone for this request.
     """
@@ -32742,8 +35302,7 @@ class AggregatedListNetworkEndpointGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -33008,8 +35567,7 @@ class ListNetworkEndpointGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone where the network
             endpoint group is located. It should comply with
@@ -33094,8 +35652,7 @@ class ListNetworkEndpointsNetworkEndpointGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone where the network
             endpoint group is located. It should comply with
@@ -33226,6 +35783,21 @@ class GetNetworkRequest(proto.Message):
     project = proto.Field(proto.STRING, number=227560217,)
 
 
+class GetEffectiveFirewallsNetworkRequest(proto.Message):
+    r"""A request message for Networks.GetEffectiveFirewalls. See the
+    method description for details.
+
+    Attributes:
+        network (str):
+            Name of the network for this request.
+        project (str):
+            Project ID for this request.
+    """
+
+    network = proto.Field(proto.STRING, number=232872494,)
+    project = proto.Field(proto.STRING, number=227560217,)
+
+
 class InsertNetworkRequest(proto.Message):
     r"""A request message for Networks.Insert. See the method
     description for details.
@@ -33319,8 +35891,7 @@ class ListNetworksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -33403,8 +35974,7 @@ class ListPeeringRoutesNetworksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     class Direction(proto.Enum):
@@ -33682,8 +36252,7 @@ class AggregatedListNodeGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -33913,8 +36482,7 @@ class ListNodeGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone for this request.
     """
@@ -33992,8 +36560,7 @@ class ListNodesNodeGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone for this request.
     """
@@ -34206,8 +36773,7 @@ class AggregatedListNodeTemplatesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -34395,8 +36961,7 @@ class ListNodeTemplatesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -34526,8 +37091,7 @@ class AggregatedListNodeTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -34618,8 +37182,7 @@ class ListNodeTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             The name of the zone for this request.
     """
@@ -34705,8 +37268,7 @@ class AggregatedListPacketMirroringsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -34873,8 +37435,7 @@ class ListPacketMirroringsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -35161,8 +37722,7 @@ class GetXpnResourcesProjectsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -35236,8 +37796,7 @@ class ListXpnHostsProjectsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -35421,6 +37980,491 @@ class SetUsageExportBucketProjectRequest(proto.Message):
     )
 
 
+class DeletePublicAdvertisedPrefixeRequest(proto.Message):
+    r"""A request message for PublicAdvertisedPrefixes.Delete. See
+    the method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        public_advertised_prefix (str):
+            Name of the PublicAdvertisedPrefix resource
+            to delete.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    project = proto.Field(proto.STRING, number=227560217,)
+    public_advertised_prefix = proto.Field(proto.STRING, number=101874590,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class GetPublicAdvertisedPrefixeRequest(proto.Message):
+    r"""A request message for PublicAdvertisedPrefixes.Get. See the
+    method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        public_advertised_prefix (str):
+            Name of the PublicAdvertisedPrefix resource
+            to return.
+    """
+
+    project = proto.Field(proto.STRING, number=227560217,)
+    public_advertised_prefix = proto.Field(proto.STRING, number=101874590,)
+
+
+class InsertPublicAdvertisedPrefixeRequest(proto.Message):
+    r"""A request message for PublicAdvertisedPrefixes.Insert. See
+    the method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        public_advertised_prefix_resource (google.cloud.compute_v1.types.PublicAdvertisedPrefix):
+            The body resource for this request
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    project = proto.Field(proto.STRING, number=227560217,)
+    public_advertised_prefix_resource = proto.Field(
+        proto.MESSAGE, number=233614223, message="PublicAdvertisedPrefix",
+    )
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class ListPublicAdvertisedPrefixesRequest(proto.Message):
+    r"""A request message for PublicAdvertisedPrefixes.List. See the
+    method description for details.
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. The expression must specify the field name, a
+            comparison operator, and the value that you want to use for
+            filtering. The value must be a string, a number, or a
+            boolean. The comparison operator must be either ``=``,
+            ``!=``, ``>``, or ``<``.
+
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``.
+
+            You can also filter nested fields. For example, you could
+            specify ``scheduling.automaticRestart = false`` to include
+            instances only if they are not scheduled for automatic
+            restarts. You can use filtering on nested fields to filter
+            based on resource labels.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name.
+
+            You can also sort results in descending order based on the
+            creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first.
+
+            Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+        project (str):
+            Project ID for this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false.
+    """
+
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+
+
+class PatchPublicAdvertisedPrefixeRequest(proto.Message):
+    r"""A request message for PublicAdvertisedPrefixes.Patch. See the
+    method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        public_advertised_prefix (str):
+            Name of the PublicAdvertisedPrefix resource
+            to patch.
+        public_advertised_prefix_resource (google.cloud.compute_v1.types.PublicAdvertisedPrefix):
+            The body resource for this request
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    project = proto.Field(proto.STRING, number=227560217,)
+    public_advertised_prefix = proto.Field(proto.STRING, number=101874590,)
+    public_advertised_prefix_resource = proto.Field(
+        proto.MESSAGE, number=233614223, message="PublicAdvertisedPrefix",
+    )
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class AggregatedListPublicDelegatedPrefixesRequest(proto.Message):
+    r"""A request message for PublicDelegatedPrefixes.AggregatedList.
+    See the method description for details.
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. The expression must specify the field name, a
+            comparison operator, and the value that you want to use for
+            filtering. The value must be a string, a number, or a
+            boolean. The comparison operator must be either ``=``,
+            ``!=``, ``>``, or ``<``.
+
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``.
+
+            You can also filter nested fields. For example, you could
+            specify ``scheduling.automaticRestart = false`` to include
+            instances only if they are not scheduled for automatic
+            restarts. You can use filtering on nested fields to filter
+            based on resource labels.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+        include_all_scopes (bool):
+            Indicates whether every visible scope for
+            each scope type (zone, region, global) should be
+            included in the response. For new resource types
+            added after this field, the flag has no effect
+            as new resource types will always include every
+            visible scope for each scope type in response.
+            For resource types which predate this field, if
+            this flag is omitted or false, only scopes of
+            the scope types where the resource type is
+            expected to be found will be included.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name.
+
+            You can also sort results in descending order based on the
+            creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first.
+
+            Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+        project (str):
+            Name of the project scoping this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false.
+    """
+
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    include_all_scopes = proto.Field(proto.BOOL, number=391327988, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+
+
+class DeletePublicDelegatedPrefixeRequest(proto.Message):
+    r"""A request message for PublicDelegatedPrefixes.Delete. See the
+    method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        public_delegated_prefix (str):
+            Name of the PublicDelegatedPrefix resource to
+            delete.
+        region (str):
+            Name of the region of this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    project = proto.Field(proto.STRING, number=227560217,)
+    public_delegated_prefix = proto.Field(proto.STRING, number=204238440,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class GetPublicDelegatedPrefixeRequest(proto.Message):
+    r"""A request message for PublicDelegatedPrefixes.Get. See the
+    method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        public_delegated_prefix (str):
+            Name of the PublicDelegatedPrefix resource to
+            return.
+        region (str):
+            Name of the region of this request.
+    """
+
+    project = proto.Field(proto.STRING, number=227560217,)
+    public_delegated_prefix = proto.Field(proto.STRING, number=204238440,)
+    region = proto.Field(proto.STRING, number=138946292,)
+
+
+class InsertPublicDelegatedPrefixeRequest(proto.Message):
+    r"""A request message for PublicDelegatedPrefixes.Insert. See the
+    method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        public_delegated_prefix_resource (google.cloud.compute_v1.types.PublicDelegatedPrefix):
+            The body resource for this request
+        region (str):
+            Name of the region of this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    project = proto.Field(proto.STRING, number=227560217,)
+    public_delegated_prefix_resource = proto.Field(
+        proto.MESSAGE, number=47594501, message="PublicDelegatedPrefix",
+    )
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class ListPublicDelegatedPrefixesRequest(proto.Message):
+    r"""A request message for PublicDelegatedPrefixes.List. See the
+    method description for details.
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. The expression must specify the field name, a
+            comparison operator, and the value that you want to use for
+            filtering. The value must be a string, a number, or a
+            boolean. The comparison operator must be either ``=``,
+            ``!=``, ``>``, or ``<``.
+
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``.
+
+            You can also filter nested fields. For example, you could
+            specify ``scheduling.automaticRestart = false`` to include
+            instances only if they are not scheduled for automatic
+            restarts. You can use filtering on nested fields to filter
+            based on resource labels.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name.
+
+            You can also sort results in descending order based on the
+            creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first.
+
+            Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region of this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false.
+    """
+
+    filter = proto.Field(proto.STRING, number=336120696, optional=True,)
+    max_results = proto.Field(proto.UINT32, number=54715419, optional=True,)
+    order_by = proto.Field(proto.STRING, number=160562920, optional=True,)
+    page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
+    return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+
+
+class PatchPublicDelegatedPrefixeRequest(proto.Message):
+    r"""A request message for PublicDelegatedPrefixes.Patch. See the
+    method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        public_delegated_prefix (str):
+            Name of the PublicDelegatedPrefix resource to
+            patch.
+        public_delegated_prefix_resource (google.cloud.compute_v1.types.PublicDelegatedPrefix):
+            The body resource for this request
+        region (str):
+            Name of the region for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    project = proto.Field(proto.STRING, number=227560217,)
+    public_delegated_prefix = proto.Field(proto.STRING, number=204238440,)
+    public_delegated_prefix_resource = proto.Field(
+        proto.MESSAGE, number=47594501, message="PublicDelegatedPrefix",
+    )
+    region = proto.Field(proto.STRING, number=138946292,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
 class DeleteRegionAutoscalerRequest(proto.Message):
     r"""A request message for RegionAutoscalers.Delete. See the
     method description for details.
@@ -35574,8 +38618,7 @@ class ListRegionAutoscalersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -35846,8 +38889,7 @@ class ListRegionBackendServicesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -36012,8 +39054,7 @@ class AggregatedListRegionCommitmentsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -36143,8 +39184,7 @@ class ListRegionCommitmentsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -36237,8 +39277,7 @@ class ListRegionDiskTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -36439,8 +39478,8 @@ class InsertRegionDiskRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         source_image (str):
-            Optional. Source image to restore onto a
-            disk.
+            Source image to restore onto a disk. This
+            field is optional.
     """
 
     disk_resource = proto.Field(proto.MESSAGE, number=25880688, message="Disk",)
@@ -36513,8 +39552,7 @@ class ListRegionDisksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -36851,8 +39889,7 @@ class ListRegionHealthCheckServicesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -37059,8 +40096,7 @@ class ListRegionHealthChecksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -37492,8 +40528,7 @@ class ListRegionInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -37574,8 +40609,7 @@ class ListErrorsRegionInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -37654,8 +40688,7 @@ class ListManagedInstancesRegionInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -37736,8 +40769,7 @@ class ListPerInstanceConfigsRegionInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -38130,8 +41162,7 @@ class ListRegionInstanceGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -38211,8 +41242,7 @@ class ListInstancesRegionInstanceGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -38270,6 +41300,43 @@ class SetNamedPortsRegionInstanceGroupRequest(proto.Message):
         number=1574938,
         message="RegionInstanceGroupsSetNamedPortsRequest",
     )
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+
+
+class BulkInsertRegionInstanceRequest(proto.Message):
+    r"""A request message for RegionInstances.BulkInsert. See the
+    method description for details.
+
+    Attributes:
+        bulk_insert_instance_resource_resource (google.cloud.compute_v1.types.BulkInsertInstanceResource):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        region (str):
+            The name of the region for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    bulk_insert_instance_resource_resource = proto.Field(
+        proto.MESSAGE, number=41427278, message="BulkInsertInstanceResource",
+    )
+    project = proto.Field(proto.STRING, number=227560217,)
+    region = proto.Field(proto.STRING, number=138946292,)
     request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
 
 
@@ -38436,8 +41503,7 @@ class ListRegionNetworkEndpointGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -38604,8 +41670,7 @@ class ListRegionNotificationEndpointsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -38722,8 +41787,7 @@ class ListRegionOperationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -38908,8 +41972,7 @@ class ListRegionSslCertificatesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -39076,8 +42139,7 @@ class ListRegionTargetHttpProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -39285,8 +42347,7 @@ class ListRegionTargetHttpsProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -39508,8 +42569,7 @@ class ListRegionUrlMapsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -39671,8 +42731,7 @@ class ListRegionsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -39755,8 +42814,7 @@ class AggregatedListReservationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -39942,8 +43000,7 @@ class ListReservationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             Name of the zone for this request.
     """
@@ -40115,8 +43172,7 @@ class AggregatedListResourcePoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -40304,8 +43360,7 @@ class ListResourcePoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -40435,8 +43490,7 @@ class AggregatedListRoutersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -40564,8 +43618,7 @@ class GetNatMappingInfoRoutersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         router (str):
             Name of the Router resource to query for Nat
             Mapping information of VM endpoints.
@@ -40697,8 +43750,7 @@ class ListRoutersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -40947,8 +43999,7 @@ class ListRoutesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -41141,8 +44192,7 @@ class ListSecurityPoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -41215,8 +44265,7 @@ class ListPreconfiguredExpressionSetsSecurityPoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -41434,8 +44483,7 @@ class ListSnapshotsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -41578,8 +44626,7 @@ class AggregatedListSslCertificatesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -41735,8 +44782,7 @@ class ListSslCertificatesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -41893,8 +44939,7 @@ class ListSslPoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -41966,8 +45011,7 @@ class ListAvailableFeaturesSslPoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -42089,8 +45133,7 @@ class AggregatedListSubnetworksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -42318,8 +45361,7 @@ class ListSubnetworksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -42392,8 +45434,7 @@ class ListUsableSubnetworksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -42688,8 +45729,7 @@ class ListTargetGrpcProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -42810,8 +45850,7 @@ class AggregatedListTargetHttpProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -42967,8 +46006,7 @@ class ListTargetHttpProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -43127,8 +46165,7 @@ class AggregatedListTargetHttpsProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -43284,8 +46321,7 @@ class ListTargetHttpsProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -43294,6 +46330,44 @@ class ListTargetHttpsProxiesRequest(proto.Message):
     page_token = proto.Field(proto.STRING, number=19994697, optional=True,)
     project = proto.Field(proto.STRING, number=227560217,)
     return_partial_success = proto.Field(proto.BOOL, number=517198390, optional=True,)
+
+
+class PatchTargetHttpsProxyRequest(proto.Message):
+    r"""A request message for TargetHttpsProxies.Patch. See the
+    method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed.  For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments.
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+        target_https_proxy (str):
+            Name of the TargetHttpsProxy resource to
+            patch.
+        target_https_proxy_resource (google.cloud.compute_v1.types.TargetHttpsProxy):
+            The body resource for this request
+    """
+
+    project = proto.Field(proto.STRING, number=227560217,)
+    request_id = proto.Field(proto.STRING, number=37109963, optional=True,)
+    target_https_proxy = proto.Field(proto.STRING, number=52336748,)
+    target_https_proxy_resource = proto.Field(
+        proto.MESSAGE, number=433657473, message="TargetHttpsProxy",
+    )
 
 
 class SetQuicOverrideTargetHttpsProxyRequest(proto.Message):
@@ -43526,8 +46600,7 @@ class AggregatedListTargetInstancesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -43692,8 +46765,7 @@ class ListTargetInstancesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             Name of the zone scoping this request.
     """
@@ -43861,8 +46933,7 @@ class AggregatedListTargetPoolsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -44051,8 +47122,7 @@ class ListTargetPoolsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -44334,8 +47404,7 @@ class ListTargetSslProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -44649,8 +47718,7 @@ class ListTargetTcpProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -44813,8 +47881,7 @@ class AggregatedListTargetVpnGatewaysRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -44979,8 +48046,7 @@ class ListTargetVpnGatewaysRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -45064,8 +48130,7 @@ class AggregatedListUrlMapsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -45254,8 +48319,7 @@ class ListUrlMapsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -45429,8 +48493,7 @@ class AggregatedListVpnGatewaysRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -45613,8 +48676,7 @@ class ListVpnGatewaysRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -45761,8 +48823,7 @@ class AggregatedListVpnTunnelsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -45927,8 +48988,7 @@ class ListVpnTunnelsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)
@@ -46043,8 +49103,7 @@ class ListZoneOperationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
         zone (str):
             Name of the zone for request.
     """
@@ -46152,8 +49211,7 @@ class ListZonesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false and the logic is the same
-            as today.
+            default value is false.
     """
 
     filter = proto.Field(proto.STRING, number=336120696, optional=True,)

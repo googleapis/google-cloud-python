@@ -11,6 +11,7 @@ Services for Google Cloud Compute v1 API
     disks
     disk_types
     external_vpn_gateways
+    firewall_policies
     firewalls
     forwarding_rules
     global_addresses
@@ -18,6 +19,7 @@ Services for Google Cloud Compute v1 API
     global_network_endpoint_groups
     global_operations
     global_organization_operations
+    global_public_delegated_prefixes
     health_checks
     images
     instance_group_managers
@@ -37,6 +39,8 @@ Services for Google Cloud Compute v1 API
     node_types
     packet_mirrorings
     projects
+    public_advertised_prefixes
+    public_delegated_prefixes
     region_autoscalers
     region_backend_services
     region_commitments
@@ -46,6 +50,7 @@ Services for Google Cloud Compute v1 API
     region_health_check_services
     region_instance_group_managers
     region_instance_groups
+    region_instances
     region_network_endpoint_groups
     region_notification_endpoints
     region_operations

@@ -17,6 +17,7 @@ import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple
 
 from google.api_core import gapic_v1  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
@@ -136,10 +137,14 @@ class RegionsRestTransport(RegionsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.get(url,)
+        headers = dict(metadata)
+        headers["Content-Type"] = "application/json"
+        response = self._session.get(url, headers=headers,)
 
-        # Raise requests.exceptions.HTTPError if the status code is >= 400
-        response.raise_for_status()
+        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+        # subclass.
+        if response.status_code >= 400:
+            raise core_exceptions.from_http_response(response)
 
         # Return the response
         return compute.Region.from_json(response.content, ignore_unknown_fields=True)
@@ -192,10 +197,14 @@ class RegionsRestTransport(RegionsTransport):
         url += "?{}".format("&".join(query_params)).replace(" ", "+")
 
         # Send the request
-        response = self._session.get(url,)
+        headers = dict(metadata)
+        headers["Content-Type"] = "application/json"
+        response = self._session.get(url, headers=headers,)
 
-        # Raise requests.exceptions.HTTPError if the status code is >= 400
-        response.raise_for_status()
+        # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+        # subclass.
+        if response.status_code >= 400:
+            raise core_exceptions.from_http_response(response)
 
         # Return the response
         return compute.RegionList.from_json(

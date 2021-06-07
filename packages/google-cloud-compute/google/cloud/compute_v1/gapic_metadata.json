@@ -357,6 +357,105 @@
         }
       }
     },
+    "FirewallPolicies": {
+      "clients": {
+        "rest": {
+          "libraryClient": "FirewallPoliciesClient",
+          "rpcs": {
+            "AddAssociation": {
+              "methods": [
+                "add_association"
+              ]
+            },
+            "AddRule": {
+              "methods": [
+                "add_rule"
+              ]
+            },
+            "CloneRules": {
+              "methods": [
+                "clone_rules"
+              ]
+            },
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "GetAssociation": {
+              "methods": [
+                "get_association"
+              ]
+            },
+            "GetIamPolicy": {
+              "methods": [
+                "get_iam_policy"
+              ]
+            },
+            "GetRule": {
+              "methods": [
+                "get_rule"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "ListAssociations": {
+              "methods": [
+                "list_associations"
+              ]
+            },
+            "Move": {
+              "methods": [
+                "move"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
+              ]
+            },
+            "PatchRule": {
+              "methods": [
+                "patch_rule"
+              ]
+            },
+            "RemoveAssociation": {
+              "methods": [
+                "remove_association"
+              ]
+            },
+            "RemoveRule": {
+              "methods": [
+                "remove_rule"
+              ]
+            },
+            "SetIamPolicy": {
+              "methods": [
+                "set_iam_policy"
+              ]
+            },
+            "TestIamPermissions": {
+              "methods": [
+                "test_iam_permissions"
+              ]
+            }
+          }
+        }
+      }
+    },
     "Firewalls": {
       "clients": {
         "rest": {
@@ -431,6 +530,11 @@
                 "patch"
               ]
             },
+            "SetLabels": {
+              "methods": [
+                "set_labels"
+              ]
+            },
             "SetTarget": {
               "methods": [
                 "set_target"
@@ -497,6 +601,11 @@
             "Patch": {
               "methods": [
                 "patch"
+              ]
+            },
+            "SetLabels": {
+              "methods": [
+                "set_labels"
               ]
             },
             "SetTarget": {
@@ -604,6 +713,40 @@
             "List": {
               "methods": [
                 "list"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "GlobalPublicDelegatedPrefixes": {
+      "clients": {
+        "rest": {
+          "libraryClient": "GlobalPublicDelegatedPrefixesClient",
+          "rpcs": {
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
               ]
             }
           }
@@ -950,6 +1093,11 @@
                 "attach_disk"
               ]
             },
+            "BulkInsert": {
+              "methods": [
+                "bulk_insert"
+              ]
+            },
             "Delete": {
               "methods": [
                 "delete"
@@ -968,6 +1116,11 @@
             "Get": {
               "methods": [
                 "get"
+              ]
+            },
+            "GetEffectiveFirewalls": {
+              "methods": [
+                "get_effective_firewalls"
               ]
             },
             "GetGuestAttributes": {
@@ -1392,6 +1545,11 @@
                 "get"
               ]
             },
+            "GetEffectiveFirewalls": {
+              "methods": [
+                "get_effective_firewalls"
+              ]
+            },
             "Insert": {
               "methods": [
                 "insert"
@@ -1690,6 +1848,79 @@
             "SetUsageExportBucket": {
               "methods": [
                 "set_usage_export_bucket"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "PublicAdvertisedPrefixes": {
+      "clients": {
+        "rest": {
+          "libraryClient": "PublicAdvertisedPrefixesClient",
+          "rpcs": {
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "PublicDelegatedPrefixes": {
+      "clients": {
+        "rest": {
+          "libraryClient": "PublicDelegatedPrefixesClient",
+          "rpcs": {
+            "AggregatedList": {
+              "methods": [
+                "aggregated_list"
+              ]
+            },
+            "Delete": {
+              "methods": [
+                "delete"
+              ]
+            },
+            "Get": {
+              "methods": [
+                "get"
+              ]
+            },
+            "Insert": {
+              "methods": [
+                "insert"
+              ]
+            },
+            "List": {
+              "methods": [
+                "list"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
               ]
             }
           }
@@ -2096,6 +2327,20 @@
             "SetNamedPorts": {
               "methods": [
                 "set_named_ports"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "RegionInstances": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RegionInstancesClient",
+          "rpcs": {
+            "BulkInsert": {
+              "methods": [
+                "bulk_insert"
               ]
             }
           }
@@ -2896,6 +3141,11 @@
             "List": {
               "methods": [
                 "list"
+              ]
+            },
+            "Patch": {
+              "methods": [
+                "patch"
               ]
             },
             "SetQuicOverride": {

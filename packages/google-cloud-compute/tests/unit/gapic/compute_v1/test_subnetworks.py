@@ -37,9 +37,6 @@ from google.cloud.compute_v1.services.subnetworks import SubnetworksClient
 from google.cloud.compute_v1.services.subnetworks import pagers
 from google.cloud.compute_v1.services.subnetworks import transports
 from google.cloud.compute_v1.services.subnetworks.transports.base import (
-    _API_CORE_VERSION,
-)
-from google.cloud.compute_v1.services.subnetworks.transports.base import (
     _GOOGLE_AUTH_VERSION,
 )
 from google.cloud.compute_v1.types import compute
@@ -47,8 +44,9 @@ from google.oauth2 import service_account
 import google.auth
 
 
-# TODO(busunkim): Once google-api-core >= 1.26.0 is required:
-# - Delete all the api-core and auth "less than" test cases
+# TODO(busunkim): Once google-auth >= 1.25.0 is required transitively
+# through google-api-core:
+# - Delete the auth "less than" test cases
 # - Delete these pytest markers (Make the "greater than or equal to" tests the default).
 requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
     packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
@@ -57,16 +55,6 @@ requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
 requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
     packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
     reason="This test requires google-auth >= 1.25.0",
-)
-
-requires_api_core_lt_1_26_0 = pytest.mark.skipif(
-    packaging.version.parse(_API_CORE_VERSION) >= packaging.version.parse("1.26.0"),
-    reason="This test requires google-api-core < 1.26.0",
-)
-
-requires_api_core_gte_1_26_0 = pytest.mark.skipif(
-    packaging.version.parse(_API_CORE_VERSION) < packaging.version.parse("1.26.0"),
-    reason="This test requires google-api-core >= 1.26.0",
 )
 
 
@@ -587,6 +575,7 @@ def test_delete_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -622,6 +611,7 @@ def test_delete_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -715,6 +705,7 @@ def test_expand_ip_cidr_range_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -750,6 +741,7 @@ def test_expand_ip_cidr_range_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1088,6 +1080,7 @@ def test_insert_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1123,6 +1116,7 @@ def test_insert_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1502,6 +1496,7 @@ def test_patch_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1537,6 +1532,7 @@ def test_patch_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1761,6 +1757,7 @@ def test_set_private_ip_google_access_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1796,6 +1793,7 @@ def test_set_private_ip_google_access_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"

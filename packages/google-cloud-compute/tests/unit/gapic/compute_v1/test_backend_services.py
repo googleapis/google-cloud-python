@@ -37,9 +37,6 @@ from google.cloud.compute_v1.services.backend_services import BackendServicesCli
 from google.cloud.compute_v1.services.backend_services import pagers
 from google.cloud.compute_v1.services.backend_services import transports
 from google.cloud.compute_v1.services.backend_services.transports.base import (
-    _API_CORE_VERSION,
-)
-from google.cloud.compute_v1.services.backend_services.transports.base import (
     _GOOGLE_AUTH_VERSION,
 )
 from google.cloud.compute_v1.types import compute
@@ -47,8 +44,9 @@ from google.oauth2 import service_account
 import google.auth
 
 
-# TODO(busunkim): Once google-api-core >= 1.26.0 is required:
-# - Delete all the api-core and auth "less than" test cases
+# TODO(busunkim): Once google-auth >= 1.25.0 is required transitively
+# through google-api-core:
+# - Delete the auth "less than" test cases
 # - Delete these pytest markers (Make the "greater than or equal to" tests the default).
 requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
     packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
@@ -57,16 +55,6 @@ requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
 requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
     packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
     reason="This test requires google-auth >= 1.25.0",
-)
-
-requires_api_core_lt_1_26_0 = pytest.mark.skipif(
-    packaging.version.parse(_API_CORE_VERSION) >= packaging.version.parse("1.26.0"),
-    reason="This test requires google-api-core < 1.26.0",
-)
-
-requires_api_core_gte_1_26_0 = pytest.mark.skipif(
-    packaging.version.parse(_API_CORE_VERSION) < packaging.version.parse("1.26.0"),
-    reason="This test requires google-api-core >= 1.26.0",
 )
 
 
@@ -442,6 +430,7 @@ def test_add_signed_url_key_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -477,6 +466,7 @@ def test_add_signed_url_key_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -736,6 +726,7 @@ def test_delete_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -771,6 +762,7 @@ def test_delete_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -861,6 +853,7 @@ def test_delete_signed_url_key_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -896,6 +889,7 @@ def test_delete_signed_url_key_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -983,7 +977,11 @@ def test_get_rest(
                 compute.Backend(balancing_mode=compute.Backend.BalancingMode.CONNECTION)
             ],
             cdn_policy=compute.BackendServiceCdnPolicy(
-                cache_key_policy=compute.CacheKeyPolicy(include_host=True)
+                bypass_cache_on_request_headers=[
+                    compute.BackendServiceCdnPolicyBypassCacheOnRequestHeader(
+                        header_name="header_name_value"
+                    )
+                ]
             ),
             circuit_breakers=compute.CircuitBreakers(max_connections=1608),
             connection_draining=compute.ConnectionDraining(draining_timeout_sec=2124),
@@ -1008,6 +1006,7 @@ def test_get_rest(
             load_balancing_scheme=compute.BackendService.LoadBalancingScheme.EXTERNAL,
             locality_lb_policy=compute.BackendService.LocalityLbPolicy.INVALID_LB_POLICY,
             log_config=compute.BackendServiceLogConfig(enable=True),
+            max_stream_duration=compute.Duration(nanos=543),
             name="name_value",
             network="network_value",
             outlier_detection=compute.OutlierDetection(
@@ -1041,7 +1040,11 @@ def test_get_rest(
         compute.Backend(balancing_mode=compute.Backend.BalancingMode.CONNECTION)
     ]
     assert response.cdn_policy == compute.BackendServiceCdnPolicy(
-        cache_key_policy=compute.CacheKeyPolicy(include_host=True)
+        bypass_cache_on_request_headers=[
+            compute.BackendServiceCdnPolicyBypassCacheOnRequestHeader(
+                header_name="header_name_value"
+            )
+        ]
     )
     assert response.circuit_breakers == compute.CircuitBreakers(max_connections=1608)
     assert response.connection_draining == compute.ConnectionDraining(
@@ -1074,6 +1077,7 @@ def test_get_rest(
         == compute.BackendService.LocalityLbPolicy.INVALID_LB_POLICY
     )
     assert response.log_config == compute.BackendServiceLogConfig(enable=True)
+    assert response.max_stream_duration == compute.Duration(nanos=543)
     assert response.name == "name_value"
     assert response.network == "network_value"
     assert response.outlier_detection == compute.OutlierDetection(
@@ -1264,6 +1268,7 @@ def test_insert_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1299,6 +1304,7 @@ def test_insert_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1526,6 +1532,7 @@ def test_patch_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1561,6 +1568,7 @@ def test_patch_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1661,6 +1669,7 @@ def test_set_security_policy_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1696,6 +1705,7 @@ def test_set_security_policy_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1798,6 +1808,7 @@ def test_update_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1833,6 +1844,7 @@ def test_update_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"

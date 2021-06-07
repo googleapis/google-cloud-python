@@ -22,6 +22,7 @@ from .services.backend_services import BackendServicesClient
 from .services.disks import DisksClient
 from .services.disk_types import DiskTypesClient
 from .services.external_vpn_gateways import ExternalVpnGatewaysClient
+from .services.firewall_policies import FirewallPoliciesClient
 from .services.firewalls import FirewallsClient
 from .services.forwarding_rules import ForwardingRulesClient
 from .services.global_addresses import GlobalAddressesClient
@@ -29,6 +30,9 @@ from .services.global_forwarding_rules import GlobalForwardingRulesClient
 from .services.global_network_endpoint_groups import GlobalNetworkEndpointGroupsClient
 from .services.global_operations import GlobalOperationsClient
 from .services.global_organization_operations import GlobalOrganizationOperationsClient
+from .services.global_public_delegated_prefixes import (
+    GlobalPublicDelegatedPrefixesClient,
+)
 from .services.health_checks import HealthChecksClient
 from .services.images import ImagesClient
 from .services.instance_group_managers import InstanceGroupManagersClient
@@ -48,6 +52,8 @@ from .services.node_templates import NodeTemplatesClient
 from .services.node_types import NodeTypesClient
 from .services.packet_mirrorings import PacketMirroringsClient
 from .services.projects import ProjectsClient
+from .services.public_advertised_prefixes import PublicAdvertisedPrefixesClient
+from .services.public_delegated_prefixes import PublicDelegatedPrefixesClient
 from .services.region_autoscalers import RegionAutoscalersClient
 from .services.region_backend_services import RegionBackendServicesClient
 from .services.region_commitments import RegionCommitmentsClient
@@ -57,6 +63,7 @@ from .services.region_health_checks import RegionHealthChecksClient
 from .services.region_health_check_services import RegionHealthCheckServicesClient
 from .services.region_instance_group_managers import RegionInstanceGroupManagersClient
 from .services.region_instance_groups import RegionInstanceGroupsClient
+from .services.region_instances import RegionInstancesClient
 from .services.region_network_endpoint_groups import RegionNetworkEndpointGroupsClient
 from .services.region_notification_endpoints import RegionNotificationEndpointsClient
 from .services.region_operations import RegionOperationsClient
@@ -98,6 +105,7 @@ from .types.compute import AcceleratorTypeList
 from .types.compute import AcceleratorTypesScopedList
 from .types.compute import AccessConfig
 from .types.compute import AddAccessConfigInstanceRequest
+from .types.compute import AddAssociationFirewallPolicyRequest
 from .types.compute import AddHealthCheckTargetPoolRequest
 from .types.compute import AddInstancesInstanceGroupRequest
 from .types.compute import AddInstanceTargetPoolRequest
@@ -110,9 +118,11 @@ from .types.compute import Address
 from .types.compute import AddressAggregatedList
 from .types.compute import AddressesScopedList
 from .types.compute import AddressList
+from .types.compute import AddRuleFirewallPolicyRequest
 from .types.compute import AddRuleSecurityPolicyRequest
 from .types.compute import AddSignedUrlKeyBackendBucketRequest
 from .types.compute import AddSignedUrlKeyBackendServiceRequest
+from .types.compute import AdvancedMachineFeatures
 from .types.compute import AggregatedListAcceleratorTypesRequest
 from .types.compute import AggregatedListAddressesRequest
 from .types.compute import AggregatedListAutoscalersRequest
@@ -132,6 +142,7 @@ from .types.compute import AggregatedListNodeGroupsRequest
 from .types.compute import AggregatedListNodeTemplatesRequest
 from .types.compute import AggregatedListNodeTypesRequest
 from .types.compute import AggregatedListPacketMirroringsRequest
+from .types.compute import AggregatedListPublicDelegatedPrefixesRequest
 from .types.compute import AggregatedListRegionCommitmentsRequest
 from .types.compute import AggregatedListReservationsRequest
 from .types.compute import AggregatedListResourcePoliciesRequest
@@ -173,13 +184,18 @@ from .types.compute import AutoscalingPolicyCpuUtilization
 from .types.compute import AutoscalingPolicyCustomMetricUtilization
 from .types.compute import AutoscalingPolicyLoadBalancingUtilization
 from .types.compute import AutoscalingPolicyScaleInControl
+from .types.compute import AutoscalingPolicyScalingSchedule
 from .types.compute import Backend
 from .types.compute import BackendBucket
 from .types.compute import BackendBucketCdnPolicy
+from .types.compute import BackendBucketCdnPolicyBypassCacheOnRequestHeader
+from .types.compute import BackendBucketCdnPolicyNegativeCachingPolicy
 from .types.compute import BackendBucketList
 from .types.compute import BackendService
 from .types.compute import BackendServiceAggregatedList
 from .types.compute import BackendServiceCdnPolicy
+from .types.compute import BackendServiceCdnPolicyBypassCacheOnRequestHeader
+from .types.compute import BackendServiceCdnPolicyNegativeCachingPolicy
 from .types.compute import BackendServiceFailoverPolicy
 from .types.compute import BackendServiceGroupHealth
 from .types.compute import BackendServiceIAP
@@ -188,9 +204,14 @@ from .types.compute import BackendServiceLogConfig
 from .types.compute import BackendServiceReference
 from .types.compute import BackendServicesScopedList
 from .types.compute import Binding
+from .types.compute import BulkInsertInstanceRequest
+from .types.compute import BulkInsertInstanceResource
+from .types.compute import BulkInsertInstanceResourcePerInstanceProperties
+from .types.compute import BulkInsertRegionInstanceRequest
 from .types.compute import CacheInvalidationRule
 from .types.compute import CacheKeyPolicy
 from .types.compute import CircuitBreakers
+from .types.compute import CloneRulesFirewallPolicyRequest
 from .types.compute import Commitment
 from .types.compute import CommitmentAggregatedList
 from .types.compute import CommitmentList
@@ -215,6 +236,7 @@ from .types.compute import DeleteBackendBucketRequest
 from .types.compute import DeleteBackendServiceRequest
 from .types.compute import DeleteDiskRequest
 from .types.compute import DeleteExternalVpnGatewayRequest
+from .types.compute import DeleteFirewallPolicyRequest
 from .types.compute import DeleteFirewallRequest
 from .types.compute import DeleteForwardingRuleRequest
 from .types.compute import DeleteGlobalAddressRequest
@@ -224,6 +246,7 @@ from .types.compute import DeleteGlobalOperationRequest
 from .types.compute import DeleteGlobalOperationResponse
 from .types.compute import DeleteGlobalOrganizationOperationRequest
 from .types.compute import DeleteGlobalOrganizationOperationResponse
+from .types.compute import DeleteGlobalPublicDelegatedPrefixeRequest
 from .types.compute import DeleteHealthCheckRequest
 from .types.compute import DeleteImageRequest
 from .types.compute import DeleteInstanceGroupManagerRequest
@@ -243,6 +266,8 @@ from .types.compute import DeleteNodeTemplateRequest
 from .types.compute import DeletePacketMirroringRequest
 from .types.compute import DeletePerInstanceConfigsInstanceGroupManagerRequest
 from .types.compute import DeletePerInstanceConfigsRegionInstanceGroupManagerRequest
+from .types.compute import DeletePublicAdvertisedPrefixeRequest
+from .types.compute import DeletePublicDelegatedPrefixeRequest
 from .types.compute import DeleteRegionAutoscalerRequest
 from .types.compute import DeleteRegionBackendServiceRequest
 from .types.compute import DeleteRegionDiskRequest
@@ -321,21 +346,33 @@ from .types.compute import FileContentBuffer
 from .types.compute import Firewall
 from .types.compute import FirewallList
 from .types.compute import FirewallLogConfig
+from .types.compute import FirewallPoliciesListAssociationsResponse
+from .types.compute import FirewallPolicy
+from .types.compute import FirewallPolicyAssociation
+from .types.compute import FirewallPolicyList
+from .types.compute import FirewallPolicyRule
+from .types.compute import FirewallPolicyRuleMatcher
+from .types.compute import FirewallPolicyRuleMatcherLayer4Config
 from .types.compute import FixedOrPercent
 from .types.compute import ForwardingRule
 from .types.compute import ForwardingRuleAggregatedList
 from .types.compute import ForwardingRuleList
 from .types.compute import ForwardingRuleReference
+from .types.compute import ForwardingRuleServiceDirectoryRegistration
 from .types.compute import ForwardingRulesScopedList
 from .types.compute import GetAcceleratorTypeRequest
 from .types.compute import GetAddressRequest
+from .types.compute import GetAssociationFirewallPolicyRequest
 from .types.compute import GetAutoscalerRequest
 from .types.compute import GetBackendBucketRequest
 from .types.compute import GetBackendServiceRequest
 from .types.compute import GetDiagnosticsInterconnectRequest
 from .types.compute import GetDiskRequest
 from .types.compute import GetDiskTypeRequest
+from .types.compute import GetEffectiveFirewallsInstanceRequest
+from .types.compute import GetEffectiveFirewallsNetworkRequest
 from .types.compute import GetExternalVpnGatewayRequest
+from .types.compute import GetFirewallPolicyRequest
 from .types.compute import GetFirewallRequest
 from .types.compute import GetForwardingRuleRequest
 from .types.compute import GetFromFamilyImageRequest
@@ -344,12 +381,14 @@ from .types.compute import GetGlobalForwardingRuleRequest
 from .types.compute import GetGlobalNetworkEndpointGroupRequest
 from .types.compute import GetGlobalOperationRequest
 from .types.compute import GetGlobalOrganizationOperationRequest
+from .types.compute import GetGlobalPublicDelegatedPrefixeRequest
 from .types.compute import GetGuestAttributesInstanceRequest
 from .types.compute import GetHealthBackendServiceRequest
 from .types.compute import GetHealthCheckRequest
 from .types.compute import GetHealthRegionBackendServiceRequest
 from .types.compute import GetHealthTargetPoolRequest
 from .types.compute import GetIamPolicyDiskRequest
+from .types.compute import GetIamPolicyFirewallPolicyRequest
 from .types.compute import GetIamPolicyImageRequest
 from .types.compute import GetIamPolicyInstanceRequest
 from .types.compute import GetIamPolicyInstanceTemplateRequest
@@ -380,6 +419,8 @@ from .types.compute import GetNodeTemplateRequest
 from .types.compute import GetNodeTypeRequest
 from .types.compute import GetPacketMirroringRequest
 from .types.compute import GetProjectRequest
+from .types.compute import GetPublicAdvertisedPrefixeRequest
+from .types.compute import GetPublicDelegatedPrefixeRequest
 from .types.compute import GetRegionAutoscalerRequest
 from .types.compute import GetRegionBackendServiceRequest
 from .types.compute import GetRegionCommitmentRequest
@@ -402,6 +443,7 @@ from .types.compute import GetResourcePolicyRequest
 from .types.compute import GetRouteRequest
 from .types.compute import GetRouterRequest
 from .types.compute import GetRouterStatusRouterRequest
+from .types.compute import GetRuleFirewallPolicyRequest
 from .types.compute import GetRuleSecurityPolicyRequest
 from .types.compute import GetScreenshotInstanceRequest
 from .types.compute import GetSecurityPolicyRequest
@@ -429,6 +471,7 @@ from .types.compute import GetZoneOperationRequest
 from .types.compute import GetZoneRequest
 from .types.compute import GlobalNetworkEndpointGroupsAttachEndpointsRequest
 from .types.compute import GlobalNetworkEndpointGroupsDetachEndpointsRequest
+from .types.compute import GlobalOrganizationSetPolicyRequest
 from .types.compute import GlobalSetLabelsRequest
 from .types.compute import GlobalSetPolicyRequest
 from .types.compute import GRPCHealthCheck
@@ -472,11 +515,13 @@ from .types.compute import InsertBackendBucketRequest
 from .types.compute import InsertBackendServiceRequest
 from .types.compute import InsertDiskRequest
 from .types.compute import InsertExternalVpnGatewayRequest
+from .types.compute import InsertFirewallPolicyRequest
 from .types.compute import InsertFirewallRequest
 from .types.compute import InsertForwardingRuleRequest
 from .types.compute import InsertGlobalAddressRequest
 from .types.compute import InsertGlobalForwardingRuleRequest
 from .types.compute import InsertGlobalNetworkEndpointGroupRequest
+from .types.compute import InsertGlobalPublicDelegatedPrefixeRequest
 from .types.compute import InsertHealthCheckRequest
 from .types.compute import InsertImageRequest
 from .types.compute import InsertInstanceGroupManagerRequest
@@ -491,6 +536,8 @@ from .types.compute import InsertNetworkRequest
 from .types.compute import InsertNodeGroupRequest
 from .types.compute import InsertNodeTemplateRequest
 from .types.compute import InsertPacketMirroringRequest
+from .types.compute import InsertPublicAdvertisedPrefixeRequest
+from .types.compute import InsertPublicDelegatedPrefixeRequest
 from .types.compute import InsertRegionAutoscalerRequest
 from .types.compute import InsertRegionBackendServiceRequest
 from .types.compute import InsertRegionCommitmentRequest
@@ -568,6 +615,8 @@ from .types.compute import InstanceMoveRequest
 from .types.compute import InstanceProperties
 from .types.compute import InstanceReference
 from .types.compute import InstancesAddResourcePoliciesRequest
+from .types.compute import InstancesGetEffectiveFirewallsResponse
+from .types.compute import InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy
 from .types.compute import InstancesRemoveResourcePoliciesRequest
 from .types.compute import InstancesScopedList
 from .types.compute import InstancesSetLabelsRequest
@@ -609,6 +658,7 @@ from .types.compute import LicenseResourceRequirements
 from .types.compute import LicensesListResponse
 from .types.compute import ListAcceleratorTypesRequest
 from .types.compute import ListAddressesRequest
+from .types.compute import ListAssociationsFirewallPolicyRequest
 from .types.compute import ListAutoscalersRequest
 from .types.compute import ListAvailableFeaturesSslPoliciesRequest
 from .types.compute import ListBackendBucketsRequest
@@ -618,6 +668,7 @@ from .types.compute import ListDiskTypesRequest
 from .types.compute import ListErrorsInstanceGroupManagersRequest
 from .types.compute import ListErrorsRegionInstanceGroupManagersRequest
 from .types.compute import ListExternalVpnGatewaysRequest
+from .types.compute import ListFirewallPoliciesRequest
 from .types.compute import ListFirewallsRequest
 from .types.compute import ListForwardingRulesRequest
 from .types.compute import ListGlobalAddressesRequest
@@ -625,6 +676,7 @@ from .types.compute import ListGlobalForwardingRulesRequest
 from .types.compute import ListGlobalNetworkEndpointGroupsRequest
 from .types.compute import ListGlobalOperationsRequest
 from .types.compute import ListGlobalOrganizationOperationsRequest
+from .types.compute import ListGlobalPublicDelegatedPrefixesRequest
 from .types.compute import ListHealthChecksRequest
 from .types.compute import ListImagesRequest
 from .types.compute import ListInstanceGroupManagersRequest
@@ -653,6 +705,8 @@ from .types.compute import ListPeeringRoutesNetworksRequest
 from .types.compute import ListPerInstanceConfigsInstanceGroupManagersRequest
 from .types.compute import ListPerInstanceConfigsRegionInstanceGroupManagersRequest
 from .types.compute import ListPreconfiguredExpressionSetsSecurityPoliciesRequest
+from .types.compute import ListPublicAdvertisedPrefixesRequest
+from .types.compute import ListPublicDelegatedPrefixesRequest
 from .types.compute import ListReferrersInstancesRequest
 from .types.compute import ListRegionAutoscalersRequest
 from .types.compute import ListRegionBackendServicesRequest
@@ -696,6 +750,8 @@ from .types.compute import ListXpnHostsProjectsRequest
 from .types.compute import ListZoneOperationsRequest
 from .types.compute import ListZonesRequest
 from .types.compute import LocalDisk
+from .types.compute import LocationPolicy
+from .types.compute import LocationPolicyLocation
 from .types.compute import LogConfig
 from .types.compute import LogConfigCloudAuditOptions
 from .types.compute import LogConfigCounterOptions
@@ -713,6 +769,7 @@ from .types.compute import Metadata
 from .types.compute import MetadataFilter
 from .types.compute import MetadataFilterLabelMatch
 from .types.compute import MoveDiskProjectRequest
+from .types.compute import MoveFirewallPolicyRequest
 from .types.compute import MoveInstanceProjectRequest
 from .types.compute import NamedPort
 from .types.compute import Network
@@ -734,6 +791,8 @@ from .types.compute import NetworkList
 from .types.compute import NetworkPeering
 from .types.compute import NetworkRoutingConfig
 from .types.compute import NetworksAddPeeringRequest
+from .types.compute import NetworksGetEffectiveFirewallsResponse
+from .types.compute import NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy
 from .types.compute import NetworksRemovePeeringRequest
 from .types.compute import NetworksUpdatePeeringRequest
 from .types.compute import NodeGroup
@@ -777,9 +836,11 @@ from .types.compute import PacketMirroringsScopedList
 from .types.compute import PatchAutoscalerRequest
 from .types.compute import PatchBackendBucketRequest
 from .types.compute import PatchBackendServiceRequest
+from .types.compute import PatchFirewallPolicyRequest
 from .types.compute import PatchFirewallRequest
 from .types.compute import PatchForwardingRuleRequest
 from .types.compute import PatchGlobalForwardingRuleRequest
+from .types.compute import PatchGlobalPublicDelegatedPrefixeRequest
 from .types.compute import PatchHealthCheckRequest
 from .types.compute import PatchImageRequest
 from .types.compute import PatchInstanceGroupManagerRequest
@@ -790,6 +851,8 @@ from .types.compute import PatchNodeGroupRequest
 from .types.compute import PatchPacketMirroringRequest
 from .types.compute import PatchPerInstanceConfigsInstanceGroupManagerRequest
 from .types.compute import PatchPerInstanceConfigsRegionInstanceGroupManagerRequest
+from .types.compute import PatchPublicAdvertisedPrefixeRequest
+from .types.compute import PatchPublicDelegatedPrefixeRequest
 from .types.compute import PatchRegionAutoscalerRequest
 from .types.compute import PatchRegionBackendServiceRequest
 from .types.compute import PatchRegionHealthCheckRequest
@@ -797,12 +860,14 @@ from .types.compute import PatchRegionHealthCheckServiceRequest
 from .types.compute import PatchRegionInstanceGroupManagerRequest
 from .types.compute import PatchRegionUrlMapRequest
 from .types.compute import PatchRouterRequest
+from .types.compute import PatchRuleFirewallPolicyRequest
 from .types.compute import PatchRuleSecurityPolicyRequest
 from .types.compute import PatchSecurityPolicyRequest
 from .types.compute import PatchSslPolicyRequest
 from .types.compute import PatchSubnetworkRequest
 from .types.compute import PatchTargetGrpcProxyRequest
 from .types.compute import PatchTargetHttpProxyRequest
+from .types.compute import PatchTargetHttpsProxyRequest
 from .types.compute import PatchUrlMapRequest
 from .types.compute import PathMatcher
 from .types.compute import PathRule
@@ -818,6 +883,14 @@ from .types.compute import ProjectsEnableXpnResourceRequest
 from .types.compute import ProjectsGetXpnResources
 from .types.compute import ProjectsListXpnHostsRequest
 from .types.compute import ProjectsSetDefaultNetworkTierRequest
+from .types.compute import PublicAdvertisedPrefix
+from .types.compute import PublicAdvertisedPrefixList
+from .types.compute import PublicAdvertisedPrefixPublicDelegatedPrefix
+from .types.compute import PublicDelegatedPrefix
+from .types.compute import PublicDelegatedPrefixAggregatedList
+from .types.compute import PublicDelegatedPrefixesScopedList
+from .types.compute import PublicDelegatedPrefixList
+from .types.compute import PublicDelegatedPrefixPublicDelegatedSubPrefix
 from .types.compute import Quota
 from .types.compute import RawDisk
 from .types.compute import RecreateInstancesInstanceGroupManagerRequest
@@ -852,6 +925,7 @@ from .types.compute import RegionSetLabelsRequest
 from .types.compute import RegionSetPolicyRequest
 from .types.compute import RegionTargetHttpsProxiesSetSslCertificatesRequest
 from .types.compute import RegionUrlMapsValidateRequest
+from .types.compute import RemoveAssociationFirewallPolicyRequest
 from .types.compute import RemoveHealthCheckTargetPoolRequest
 from .types.compute import RemoveInstancesInstanceGroupRequest
 from .types.compute import RemoveInstanceTargetPoolRequest
@@ -859,6 +933,7 @@ from .types.compute import RemovePeeringNetworkRequest
 from .types.compute import RemoveResourcePoliciesDiskRequest
 from .types.compute import RemoveResourcePoliciesInstanceRequest
 from .types.compute import RemoveResourcePoliciesRegionDiskRequest
+from .types.compute import RemoveRuleFirewallPolicyRequest
 from .types.compute import RemoveRuleSecurityPolicyRequest
 from .types.compute import RequestMirrorPolicy
 from .types.compute import Reservation
@@ -881,7 +956,11 @@ from .types.compute import ResourcePolicyAggregatedList
 from .types.compute import ResourcePolicyDailyCycle
 from .types.compute import ResourcePolicyGroupPlacementPolicy
 from .types.compute import ResourcePolicyHourlyCycle
+from .types.compute import ResourcePolicyInstanceSchedulePolicy
+from .types.compute import ResourcePolicyInstanceSchedulePolicySchedule
 from .types.compute import ResourcePolicyList
+from .types.compute import ResourcePolicyResourceStatus
+from .types.compute import ResourcePolicyResourceStatusInstanceSchedulePolicyStatus
 from .types.compute import ResourcePolicySnapshotSchedulePolicy
 from .types.compute import ResourcePolicySnapshotSchedulePolicyRetentionPolicy
 from .types.compute import ResourcePolicySnapshotSchedulePolicySchedule
@@ -907,6 +986,7 @@ from .types.compute import RouterStatusBgpPeerStatus
 from .types.compute import RouterStatusNatStatus
 from .types.compute import RouterStatusResponse
 from .types.compute import Rule
+from .types.compute import ScalingScheduleStatus
 from .types.compute import Scheduling
 from .types.compute import SchedulingNodeAffinity
 from .types.compute import ScratchDisks
@@ -931,6 +1011,7 @@ from .types.compute import SetDefaultNetworkTierProjectRequest
 from .types.compute import SetDeletionProtectionInstanceRequest
 from .types.compute import SetDiskAutoDeleteInstanceRequest
 from .types.compute import SetIamPolicyDiskRequest
+from .types.compute import SetIamPolicyFirewallPolicyRequest
 from .types.compute import SetIamPolicyImageRequest
 from .types.compute import SetIamPolicyInstanceRequest
 from .types.compute import SetIamPolicyInstanceTemplateRequest
@@ -946,6 +1027,8 @@ from .types.compute import SetInstanceTemplateInstanceGroupManagerRequest
 from .types.compute import SetInstanceTemplateRegionInstanceGroupManagerRequest
 from .types.compute import SetLabelsDiskRequest
 from .types.compute import SetLabelsExternalVpnGatewayRequest
+from .types.compute import SetLabelsForwardingRuleRequest
+from .types.compute import SetLabelsGlobalForwardingRuleRequest
 from .types.compute import SetLabelsImageRequest
 from .types.compute import SetLabelsInstanceRequest
 from .types.compute import SetLabelsRegionDiskRequest
@@ -1060,6 +1143,7 @@ from .types.compute import TCPHealthCheck
 from .types.compute import TestFailure
 from .types.compute import TestIamPermissionsDiskRequest
 from .types.compute import TestIamPermissionsExternalVpnGatewayRequest
+from .types.compute import TestIamPermissionsFirewallPolicyRequest
 from .types.compute import TestIamPermissionsImageRequest
 from .types.compute import TestIamPermissionsInstanceRequest
 from .types.compute import TestIamPermissionsInstanceTemplateRequest
@@ -1104,6 +1188,7 @@ from .types.compute import UrlMapsScopedList
 from .types.compute import UrlMapsValidateRequest
 from .types.compute import UrlMapsValidateResponse
 from .types.compute import UrlMapTest
+from .types.compute import UrlMapTestHeader
 from .types.compute import UrlMapValidationResult
 from .types.compute import UrlRewrite
 from .types.compute import UsableSubnetwork
@@ -1156,6 +1241,7 @@ __all__ = (
     "Accelerators",
     "AccessConfig",
     "AddAccessConfigInstanceRequest",
+    "AddAssociationFirewallPolicyRequest",
     "AddHealthCheckTargetPoolRequest",
     "AddInstanceTargetPoolRequest",
     "AddInstancesInstanceGroupRequest",
@@ -1164,6 +1250,7 @@ __all__ = (
     "AddResourcePoliciesDiskRequest",
     "AddResourcePoliciesInstanceRequest",
     "AddResourcePoliciesRegionDiskRequest",
+    "AddRuleFirewallPolicyRequest",
     "AddRuleSecurityPolicyRequest",
     "AddSignedUrlKeyBackendBucketRequest",
     "AddSignedUrlKeyBackendServiceRequest",
@@ -1172,6 +1259,7 @@ __all__ = (
     "AddressList",
     "AddressesClient",
     "AddressesScopedList",
+    "AdvancedMachineFeatures",
     "AggregatedListAcceleratorTypesRequest",
     "AggregatedListAddressesRequest",
     "AggregatedListAutoscalersRequest",
@@ -1191,6 +1279,7 @@ __all__ = (
     "AggregatedListNodeTemplatesRequest",
     "AggregatedListNodeTypesRequest",
     "AggregatedListPacketMirroringsRequest",
+    "AggregatedListPublicDelegatedPrefixesRequest",
     "AggregatedListRegionCommitmentsRequest",
     "AggregatedListReservationsRequest",
     "AggregatedListResourcePoliciesRequest",
@@ -1231,14 +1320,19 @@ __all__ = (
     "AutoscalingPolicyCustomMetricUtilization",
     "AutoscalingPolicyLoadBalancingUtilization",
     "AutoscalingPolicyScaleInControl",
+    "AutoscalingPolicyScalingSchedule",
     "Backend",
     "BackendBucket",
     "BackendBucketCdnPolicy",
+    "BackendBucketCdnPolicyBypassCacheOnRequestHeader",
+    "BackendBucketCdnPolicyNegativeCachingPolicy",
     "BackendBucketList",
     "BackendBucketsClient",
     "BackendService",
     "BackendServiceAggregatedList",
     "BackendServiceCdnPolicy",
+    "BackendServiceCdnPolicyBypassCacheOnRequestHeader",
+    "BackendServiceCdnPolicyNegativeCachingPolicy",
     "BackendServiceFailoverPolicy",
     "BackendServiceGroupHealth",
     "BackendServiceIAP",
@@ -1248,9 +1342,14 @@ __all__ = (
     "BackendServicesClient",
     "BackendServicesScopedList",
     "Binding",
+    "BulkInsertInstanceRequest",
+    "BulkInsertInstanceResource",
+    "BulkInsertInstanceResourcePerInstanceProperties",
+    "BulkInsertRegionInstanceRequest",
     "CacheInvalidationRule",
     "CacheKeyPolicy",
     "CircuitBreakers",
+    "CloneRulesFirewallPolicyRequest",
     "Commitment",
     "CommitmentAggregatedList",
     "CommitmentList",
@@ -1275,6 +1374,7 @@ __all__ = (
     "DeleteBackendServiceRequest",
     "DeleteDiskRequest",
     "DeleteExternalVpnGatewayRequest",
+    "DeleteFirewallPolicyRequest",
     "DeleteFirewallRequest",
     "DeleteForwardingRuleRequest",
     "DeleteGlobalAddressRequest",
@@ -1284,6 +1384,7 @@ __all__ = (
     "DeleteGlobalOperationResponse",
     "DeleteGlobalOrganizationOperationRequest",
     "DeleteGlobalOrganizationOperationResponse",
+    "DeleteGlobalPublicDelegatedPrefixeRequest",
     "DeleteHealthCheckRequest",
     "DeleteImageRequest",
     "DeleteInstanceGroupManagerRequest",
@@ -1303,6 +1404,8 @@ __all__ = (
     "DeletePacketMirroringRequest",
     "DeletePerInstanceConfigsInstanceGroupManagerRequest",
     "DeletePerInstanceConfigsRegionInstanceGroupManagerRequest",
+    "DeletePublicAdvertisedPrefixeRequest",
+    "DeletePublicDelegatedPrefixeRequest",
     "DeleteRegionAutoscalerRequest",
     "DeleteRegionBackendServiceRequest",
     "DeleteRegionDiskRequest",
@@ -1384,24 +1487,37 @@ __all__ = (
     "Firewall",
     "FirewallList",
     "FirewallLogConfig",
+    "FirewallPoliciesClient",
+    "FirewallPoliciesListAssociationsResponse",
+    "FirewallPolicy",
+    "FirewallPolicyAssociation",
+    "FirewallPolicyList",
+    "FirewallPolicyRule",
+    "FirewallPolicyRuleMatcher",
+    "FirewallPolicyRuleMatcherLayer4Config",
     "FirewallsClient",
     "FixedOrPercent",
     "ForwardingRule",
     "ForwardingRuleAggregatedList",
     "ForwardingRuleList",
     "ForwardingRuleReference",
+    "ForwardingRuleServiceDirectoryRegistration",
     "ForwardingRulesClient",
     "ForwardingRulesScopedList",
     "GRPCHealthCheck",
     "GetAcceleratorTypeRequest",
     "GetAddressRequest",
+    "GetAssociationFirewallPolicyRequest",
     "GetAutoscalerRequest",
     "GetBackendBucketRequest",
     "GetBackendServiceRequest",
     "GetDiagnosticsInterconnectRequest",
     "GetDiskRequest",
     "GetDiskTypeRequest",
+    "GetEffectiveFirewallsInstanceRequest",
+    "GetEffectiveFirewallsNetworkRequest",
     "GetExternalVpnGatewayRequest",
+    "GetFirewallPolicyRequest",
     "GetFirewallRequest",
     "GetForwardingRuleRequest",
     "GetFromFamilyImageRequest",
@@ -1410,12 +1526,14 @@ __all__ = (
     "GetGlobalNetworkEndpointGroupRequest",
     "GetGlobalOperationRequest",
     "GetGlobalOrganizationOperationRequest",
+    "GetGlobalPublicDelegatedPrefixeRequest",
     "GetGuestAttributesInstanceRequest",
     "GetHealthBackendServiceRequest",
     "GetHealthCheckRequest",
     "GetHealthRegionBackendServiceRequest",
     "GetHealthTargetPoolRequest",
     "GetIamPolicyDiskRequest",
+    "GetIamPolicyFirewallPolicyRequest",
     "GetIamPolicyImageRequest",
     "GetIamPolicyInstanceRequest",
     "GetIamPolicyInstanceTemplateRequest",
@@ -1446,6 +1564,8 @@ __all__ = (
     "GetNodeTypeRequest",
     "GetPacketMirroringRequest",
     "GetProjectRequest",
+    "GetPublicAdvertisedPrefixeRequest",
+    "GetPublicDelegatedPrefixeRequest",
     "GetRegionAutoscalerRequest",
     "GetRegionBackendServiceRequest",
     "GetRegionCommitmentRequest",
@@ -1468,6 +1588,7 @@ __all__ = (
     "GetRouteRequest",
     "GetRouterRequest",
     "GetRouterStatusRouterRequest",
+    "GetRuleFirewallPolicyRequest",
     "GetRuleSecurityPolicyRequest",
     "GetScreenshotInstanceRequest",
     "GetSecurityPolicyRequest",
@@ -1500,6 +1621,8 @@ __all__ = (
     "GlobalNetworkEndpointGroupsDetachEndpointsRequest",
     "GlobalOperationsClient",
     "GlobalOrganizationOperationsClient",
+    "GlobalOrganizationSetPolicyRequest",
+    "GlobalPublicDelegatedPrefixesClient",
     "GlobalSetLabelsRequest",
     "GlobalSetPolicyRequest",
     "GuestAttributes",
@@ -1544,11 +1667,13 @@ __all__ = (
     "InsertBackendServiceRequest",
     "InsertDiskRequest",
     "InsertExternalVpnGatewayRequest",
+    "InsertFirewallPolicyRequest",
     "InsertFirewallRequest",
     "InsertForwardingRuleRequest",
     "InsertGlobalAddressRequest",
     "InsertGlobalForwardingRuleRequest",
     "InsertGlobalNetworkEndpointGroupRequest",
+    "InsertGlobalPublicDelegatedPrefixeRequest",
     "InsertHealthCheckRequest",
     "InsertImageRequest",
     "InsertInstanceGroupManagerRequest",
@@ -1563,6 +1688,8 @@ __all__ = (
     "InsertNodeGroupRequest",
     "InsertNodeTemplateRequest",
     "InsertPacketMirroringRequest",
+    "InsertPublicAdvertisedPrefixeRequest",
+    "InsertPublicDelegatedPrefixeRequest",
     "InsertRegionAutoscalerRequest",
     "InsertRegionBackendServiceRequest",
     "InsertRegionCommitmentRequest",
@@ -1647,6 +1774,8 @@ __all__ = (
     "InstanceWithNamedPorts",
     "InstancesAddResourcePoliciesRequest",
     "InstancesClient",
+    "InstancesGetEffectiveFirewallsResponse",
+    "InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy",
     "InstancesRemoveResourcePoliciesRequest",
     "InstancesScopedList",
     "InstancesSetLabelsRequest",
@@ -1690,6 +1819,7 @@ __all__ = (
     "LicensesListResponse",
     "ListAcceleratorTypesRequest",
     "ListAddressesRequest",
+    "ListAssociationsFirewallPolicyRequest",
     "ListAutoscalersRequest",
     "ListAvailableFeaturesSslPoliciesRequest",
     "ListBackendBucketsRequest",
@@ -1699,6 +1829,7 @@ __all__ = (
     "ListErrorsInstanceGroupManagersRequest",
     "ListErrorsRegionInstanceGroupManagersRequest",
     "ListExternalVpnGatewaysRequest",
+    "ListFirewallPoliciesRequest",
     "ListFirewallsRequest",
     "ListForwardingRulesRequest",
     "ListGlobalAddressesRequest",
@@ -1706,6 +1837,7 @@ __all__ = (
     "ListGlobalNetworkEndpointGroupsRequest",
     "ListGlobalOperationsRequest",
     "ListGlobalOrganizationOperationsRequest",
+    "ListGlobalPublicDelegatedPrefixesRequest",
     "ListHealthChecksRequest",
     "ListImagesRequest",
     "ListInstanceGroupManagersRequest",
@@ -1734,6 +1866,8 @@ __all__ = (
     "ListPerInstanceConfigsInstanceGroupManagersRequest",
     "ListPerInstanceConfigsRegionInstanceGroupManagersRequest",
     "ListPreconfiguredExpressionSetsSecurityPoliciesRequest",
+    "ListPublicAdvertisedPrefixesRequest",
+    "ListPublicDelegatedPrefixesRequest",
     "ListReferrersInstancesRequest",
     "ListRegionAutoscalersRequest",
     "ListRegionBackendServicesRequest",
@@ -1777,6 +1911,8 @@ __all__ = (
     "ListZoneOperationsRequest",
     "ListZonesRequest",
     "LocalDisk",
+    "LocationPolicy",
+    "LocationPolicyLocation",
     "LogConfig",
     "LogConfigCloudAuditOptions",
     "LogConfigCounterOptions",
@@ -1795,6 +1931,7 @@ __all__ = (
     "MetadataFilter",
     "MetadataFilterLabelMatch",
     "MoveDiskProjectRequest",
+    "MoveFirewallPolicyRequest",
     "MoveInstanceProjectRequest",
     "NamedPort",
     "Network",
@@ -1818,6 +1955,8 @@ __all__ = (
     "NetworkRoutingConfig",
     "NetworksAddPeeringRequest",
     "NetworksClient",
+    "NetworksGetEffectiveFirewallsResponse",
+    "NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy",
     "NetworksRemovePeeringRequest",
     "NetworksUpdatePeeringRequest",
     "NodeGroup",
@@ -1865,9 +2004,11 @@ __all__ = (
     "PatchAutoscalerRequest",
     "PatchBackendBucketRequest",
     "PatchBackendServiceRequest",
+    "PatchFirewallPolicyRequest",
     "PatchFirewallRequest",
     "PatchForwardingRuleRequest",
     "PatchGlobalForwardingRuleRequest",
+    "PatchGlobalPublicDelegatedPrefixeRequest",
     "PatchHealthCheckRequest",
     "PatchImageRequest",
     "PatchInstanceGroupManagerRequest",
@@ -1878,6 +2019,8 @@ __all__ = (
     "PatchPacketMirroringRequest",
     "PatchPerInstanceConfigsInstanceGroupManagerRequest",
     "PatchPerInstanceConfigsRegionInstanceGroupManagerRequest",
+    "PatchPublicAdvertisedPrefixeRequest",
+    "PatchPublicDelegatedPrefixeRequest",
     "PatchRegionAutoscalerRequest",
     "PatchRegionBackendServiceRequest",
     "PatchRegionHealthCheckRequest",
@@ -1885,12 +2028,14 @@ __all__ = (
     "PatchRegionInstanceGroupManagerRequest",
     "PatchRegionUrlMapRequest",
     "PatchRouterRequest",
+    "PatchRuleFirewallPolicyRequest",
     "PatchRuleSecurityPolicyRequest",
     "PatchSecurityPolicyRequest",
     "PatchSslPolicyRequest",
     "PatchSubnetworkRequest",
     "PatchTargetGrpcProxyRequest",
     "PatchTargetHttpProxyRequest",
+    "PatchTargetHttpsProxyRequest",
     "PatchUrlMapRequest",
     "PathMatcher",
     "PathRule",
@@ -1907,6 +2052,16 @@ __all__ = (
     "ProjectsGetXpnResources",
     "ProjectsListXpnHostsRequest",
     "ProjectsSetDefaultNetworkTierRequest",
+    "PublicAdvertisedPrefix",
+    "PublicAdvertisedPrefixList",
+    "PublicAdvertisedPrefixPublicDelegatedPrefix",
+    "PublicAdvertisedPrefixesClient",
+    "PublicDelegatedPrefix",
+    "PublicDelegatedPrefixAggregatedList",
+    "PublicDelegatedPrefixList",
+    "PublicDelegatedPrefixPublicDelegatedSubPrefix",
+    "PublicDelegatedPrefixesClient",
+    "PublicDelegatedPrefixesScopedList",
     "Quota",
     "RawDisk",
     "RecreateInstancesInstanceGroupManagerRequest",
@@ -1945,6 +2100,7 @@ __all__ = (
     "RegionInstanceGroupsListInstances",
     "RegionInstanceGroupsListInstancesRequest",
     "RegionInstanceGroupsSetNamedPortsRequest",
+    "RegionInstancesClient",
     "RegionList",
     "RegionNetworkEndpointGroupsClient",
     "RegionNotificationEndpointsClient",
@@ -1958,6 +2114,7 @@ __all__ = (
     "RegionUrlMapsClient",
     "RegionUrlMapsValidateRequest",
     "RegionsClient",
+    "RemoveAssociationFirewallPolicyRequest",
     "RemoveHealthCheckTargetPoolRequest",
     "RemoveInstanceTargetPoolRequest",
     "RemoveInstancesInstanceGroupRequest",
@@ -1965,6 +2122,7 @@ __all__ = (
     "RemoveResourcePoliciesDiskRequest",
     "RemoveResourcePoliciesInstanceRequest",
     "RemoveResourcePoliciesRegionDiskRequest",
+    "RemoveRuleFirewallPolicyRequest",
     "RemoveRuleSecurityPolicyRequest",
     "RequestMirrorPolicy",
     "Reservation",
@@ -1989,7 +2147,11 @@ __all__ = (
     "ResourcePolicyDailyCycle",
     "ResourcePolicyGroupPlacementPolicy",
     "ResourcePolicyHourlyCycle",
+    "ResourcePolicyInstanceSchedulePolicy",
+    "ResourcePolicyInstanceSchedulePolicySchedule",
     "ResourcePolicyList",
+    "ResourcePolicyResourceStatus",
+    "ResourcePolicyResourceStatusInstanceSchedulePolicyStatus",
     "ResourcePolicySnapshotSchedulePolicy",
     "ResourcePolicySnapshotSchedulePolicyRetentionPolicy",
     "ResourcePolicySnapshotSchedulePolicySchedule",
@@ -2018,6 +2180,7 @@ __all__ = (
     "RoutesClient",
     "Rule",
     "SSLHealthCheck",
+    "ScalingScheduleStatus",
     "Scheduling",
     "SchedulingNodeAffinity",
     "ScratchDisks",
@@ -2043,6 +2206,7 @@ __all__ = (
     "SetDeletionProtectionInstanceRequest",
     "SetDiskAutoDeleteInstanceRequest",
     "SetIamPolicyDiskRequest",
+    "SetIamPolicyFirewallPolicyRequest",
     "SetIamPolicyImageRequest",
     "SetIamPolicyInstanceRequest",
     "SetIamPolicyInstanceTemplateRequest",
@@ -2058,6 +2222,8 @@ __all__ = (
     "SetInstanceTemplateRegionInstanceGroupManagerRequest",
     "SetLabelsDiskRequest",
     "SetLabelsExternalVpnGatewayRequest",
+    "SetLabelsForwardingRuleRequest",
+    "SetLabelsGlobalForwardingRuleRequest",
     "SetLabelsImageRequest",
     "SetLabelsInstanceRequest",
     "SetLabelsRegionDiskRequest",
@@ -2183,6 +2349,7 @@ __all__ = (
     "TestFailure",
     "TestIamPermissionsDiskRequest",
     "TestIamPermissionsExternalVpnGatewayRequest",
+    "TestIamPermissionsFirewallPolicyRequest",
     "TestIamPermissionsImageRequest",
     "TestIamPermissionsInstanceRequest",
     "TestIamPermissionsInstanceTemplateRequest",
@@ -2223,6 +2390,7 @@ __all__ = (
     "UrlMapList",
     "UrlMapReference",
     "UrlMapTest",
+    "UrlMapTestHeader",
     "UrlMapValidationResult",
     "UrlMapsAggregatedList",
     "UrlMapsClient",

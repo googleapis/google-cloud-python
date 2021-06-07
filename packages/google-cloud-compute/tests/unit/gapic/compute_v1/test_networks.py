@@ -36,7 +36,6 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.compute_v1.services.networks import NetworksClient
 from google.cloud.compute_v1.services.networks import pagers
 from google.cloud.compute_v1.services.networks import transports
-from google.cloud.compute_v1.services.networks.transports.base import _API_CORE_VERSION
 from google.cloud.compute_v1.services.networks.transports.base import (
     _GOOGLE_AUTH_VERSION,
 )
@@ -45,8 +44,9 @@ from google.oauth2 import service_account
 import google.auth
 
 
-# TODO(busunkim): Once google-api-core >= 1.26.0 is required:
-# - Delete all the api-core and auth "less than" test cases
+# TODO(busunkim): Once google-auth >= 1.25.0 is required transitively
+# through google-api-core:
+# - Delete the auth "less than" test cases
 # - Delete these pytest markers (Make the "greater than or equal to" tests the default).
 requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
     packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
@@ -55,16 +55,6 @@ requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
 requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
     packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
     reason="This test requires google-auth >= 1.25.0",
-)
-
-requires_api_core_lt_1_26_0 = pytest.mark.skipif(
-    packaging.version.parse(_API_CORE_VERSION) >= packaging.version.parse("1.26.0"),
-    reason="This test requires google-api-core < 1.26.0",
-)
-
-requires_api_core_gte_1_26_0 = pytest.mark.skipif(
-    packaging.version.parse(_API_CORE_VERSION) < packaging.version.parse("1.26.0"),
-    reason="This test requires google-api-core >= 1.26.0",
 )
 
 
@@ -419,6 +409,7 @@ def test_add_peering_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -454,6 +445,7 @@ def test_add_peering_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -556,6 +548,7 @@ def test_delete_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -591,6 +584,7 @@ def test_delete_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -667,11 +661,11 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetNetworkReques
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Network(
+            I_pv4_range="I_pv4_range_value",
             auto_create_subnetworks=True,
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             gateway_i_pv4="gateway_i_pv4_value",
-            i_pv4_range="i_pv4_range_value",
             id="id_value",
             kind="kind_value",
             mtu=342,
@@ -694,11 +688,11 @@ def test_get_rest(transport: str = "rest", request_type=compute.GetNetworkReques
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Network)
+    assert response.I_pv4_range == "I_pv4_range_value"
     assert response.auto_create_subnetworks is True
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.gateway_i_pv4 == "gateway_i_pv4_value"
-    assert response.i_pv4_range == "i_pv4_range_value"
     assert response.id == "id_value"
     assert response.kind == "kind_value"
     assert response.mtu == 342
@@ -758,6 +752,104 @@ def test_get_rest_flattened_error():
         )
 
 
+def test_get_effective_firewalls_rest(
+    transport: str = "rest", request_type=compute.GetEffectiveFirewallsNetworkRequest
+):
+    client = NetworksClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.NetworksGetEffectiveFirewallsResponse(
+            firewall_policys=[
+                compute.NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy(
+                    display_name="display_name_value"
+                )
+            ],
+            firewalls=[
+                compute.Firewall(
+                    allowed=[compute.Allowed(I_p_protocol="I_p_protocol_value")]
+                )
+            ],
+        )
+
+        # Wrap the value into a proper Response obj
+        json_return_value = compute.NetworksGetEffectiveFirewallsResponse.to_json(
+            return_value
+        )
+        response_value = Response()
+        response_value.status_code = 200
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_effective_firewalls(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, compute.NetworksGetEffectiveFirewallsResponse)
+    assert response.firewall_policys == [
+        compute.NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy(
+            display_name="display_name_value"
+        )
+    ]
+    assert response.firewalls == [
+        compute.Firewall(allowed=[compute.Allowed(I_p_protocol="I_p_protocol_value")])
+    ]
+
+
+def test_get_effective_firewalls_rest_from_dict():
+    test_get_effective_firewalls_rest(request_type=dict)
+
+
+def test_get_effective_firewalls_rest_flattened():
+    client = NetworksClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.NetworksGetEffectiveFirewallsResponse()
+
+        # Wrap the value into a proper Response obj
+        json_return_value = compute.NetworksGetEffectiveFirewallsResponse.to_json(
+            return_value
+        )
+        response_value = Response()
+        response_value.status_code = 200
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_effective_firewalls(
+            project="project_value", network="network_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, http_call, http_params = req.mock_calls[0]
+        body = http_params.get("data")
+        assert "project_value" in http_call[1] + str(body)
+        assert "network_value" in http_call[1] + str(body)
+
+
+def test_get_effective_firewalls_rest_flattened_error():
+    client = NetworksClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_effective_firewalls(
+            compute.GetEffectiveFirewallsNetworkRequest(),
+            project="project_value",
+            network="network_value",
+        )
+
+
 def test_insert_rest(
     transport: str = "rest", request_type=compute.InsertNetworkRequest
 ):
@@ -784,6 +876,7 @@ def test_insert_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -819,6 +912,7 @@ def test_insert_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -856,7 +950,7 @@ def test_insert_rest_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        network_resource = compute.Network(auto_create_subnetworks=True)
+        network_resource = compute.Network(I_pv4_range="I_pv4_range_value")
         client.insert(
             project="project_value", network_resource=network_resource,
         )
@@ -883,7 +977,7 @@ def test_insert_rest_flattened_error():
         client.insert(
             compute.InsertNetworkRequest(),
             project="project_value",
-            network_resource=compute.Network(auto_create_subnetworks=True),
+            network_resource=compute.Network(I_pv4_range="I_pv4_range_value"),
         )
 
 
@@ -901,7 +995,7 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListNetworksReq
         # Designate an appropriate value for the returned response.
         return_value = compute.NetworkList(
             id="id_value",
-            items=[compute.Network(auto_create_subnetworks=True)],
+            items=[compute.Network(I_pv4_range="I_pv4_range_value")],
             kind="kind_value",
             next_page_token="next_page_token_value",
             self_link="self_link_value",
@@ -919,7 +1013,7 @@ def test_list_rest(transport: str = "rest", request_type=compute.ListNetworksReq
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPager)
     assert response.id == "id_value"
-    assert response.items == [compute.Network(auto_create_subnetworks=True)]
+    assert response.items == [compute.Network(I_pv4_range="I_pv4_range_value")]
     assert response.kind == "kind_value"
     assert response.next_page_token == "next_page_token_value"
     assert response.self_link == "self_link_value"
@@ -1175,6 +1269,7 @@ def test_patch_rest(transport: str = "rest", request_type=compute.PatchNetworkRe
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1210,6 +1305,7 @@ def test_patch_rest(transport: str = "rest", request_type=compute.PatchNetworkRe
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1247,7 +1343,7 @@ def test_patch_rest_flattened():
 
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        network_resource = compute.Network(auto_create_subnetworks=True)
+        network_resource = compute.Network(I_pv4_range="I_pv4_range_value")
         client.patch(
             project="project_value",
             network="network_value",
@@ -1278,7 +1374,7 @@ def test_patch_rest_flattened_error():
             compute.PatchNetworkRequest(),
             project="project_value",
             network="network_value",
-            network_resource=compute.Network(auto_create_subnetworks=True),
+            network_resource=compute.Network(I_pv4_range="I_pv4_range_value"),
         )
 
 
@@ -1308,6 +1404,7 @@ def test_remove_peering_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1343,6 +1440,7 @@ def test_remove_peering_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1445,6 +1543,7 @@ def test_switch_to_custom_mode_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1480,6 +1579,7 @@ def test_switch_to_custom_mode_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1569,6 +1669,7 @@ def test_update_peering_rest(
             insert_time="insert_time_value",
             kind="kind_value",
             name="name_value",
+            operation_group_id="operation_group_id_value",
             operation_type="operation_type_value",
             progress=885,
             region="region_value",
@@ -1604,6 +1705,7 @@ def test_update_peering_rest(
     assert response.insert_time == "insert_time_value"
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
     assert response.operation_type == "operation_type_value"
     assert response.progress == 885
     assert response.region == "region_value"
@@ -1753,6 +1855,7 @@ def test_networks_base_transport():
         "add_peering",
         "delete",
         "get",
+        "get_effective_firewalls",
         "insert",
         "list",
         "list_peering_routes",
