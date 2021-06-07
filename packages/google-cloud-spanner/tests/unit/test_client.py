@@ -179,30 +179,42 @@ class TestClient(unittest.TestCase):
 
         expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
         creds = _make_credentials()
+        query_options = expected_query_options = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="1",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
         self._constructor_test_helper(
             expected_scopes,
             creds,
-            query_options=ExecuteSqlRequest.QueryOptions(optimizer_version="1"),
-            expected_query_options=ExecuteSqlRequest.QueryOptions(
-                optimizer_version="1"
-            ),
+            query_options=query_options,
+            expected_query_options=expected_query_options,
         )
 
+    @mock.patch(
+        "google.cloud.spanner_v1.client._get_spanner_optimizer_statistics_package"
+    )
     @mock.patch("google.cloud.spanner_v1.client._get_spanner_optimizer_version")
-    def test_constructor_custom_query_options_env_config(self, mock_ver):
+    def test_constructor_custom_query_options_env_config(self, mock_ver, mock_stats):
         from google.cloud.spanner_v1 import ExecuteSqlRequest
         from google.cloud.spanner_v1 import client as MUT
 
         expected_scopes = (MUT.SPANNER_ADMIN_SCOPE,)
         creds = _make_credentials()
         mock_ver.return_value = "2"
+        mock_stats.return_value = "auto_20191128_14_47_22UTC"
+        query_options = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="1",
+            optimizer_statistics_package="auto_20191128_10_47_22UTC",
+        )
+        expected_query_options = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="2",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
         self._constructor_test_helper(
             expected_scopes,
             creds,
-            query_options=ExecuteSqlRequest.QueryOptions(optimizer_version="1"),
-            expected_query_options=ExecuteSqlRequest.QueryOptions(
-                optimizer_version="2"
-            ),
+            query_options=query_options,
+            expected_query_options=expected_query_options,
         )
 
     @mock.patch("google.cloud.spanner_v1.client._get_spanner_emulator_host")

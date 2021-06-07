@@ -30,9 +30,15 @@ class Test_merge_query_options(unittest.TestCase):
     def test_base_dict_and_merge_none(self):
         from google.cloud.spanner_v1 import ExecuteSqlRequest
 
-        base = {"optimizer_version": "2"}
+        base = {
+            "optimizer_version": "2",
+            "optimizer_statistics_package": "auto_20191128_14_47_22UTC",
+        }
         merge = None
-        expected = ExecuteSqlRequest.QueryOptions(optimizer_version="2")
+        expected = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="2",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
         result = self._callFUT(base, merge)
         self.assertEqual(result, expected)
 
@@ -48,7 +54,10 @@ class Test_merge_query_options(unittest.TestCase):
         from google.cloud.spanner_v1 import ExecuteSqlRequest
 
         base = None
-        merge = ExecuteSqlRequest.QueryOptions(optimizer_version="3")
+        merge = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="3",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
         result = self._callFUT(base, merge)
         self.assertEqual(result, merge)
 
@@ -64,9 +73,15 @@ class Test_merge_query_options(unittest.TestCase):
     def test_base_object_merge_dict(self):
         from google.cloud.spanner_v1 import ExecuteSqlRequest
 
-        base = ExecuteSqlRequest.QueryOptions(optimizer_version="1")
+        base = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="1",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
         merge = {"optimizer_version": "3"}
-        expected = ExecuteSqlRequest.QueryOptions(optimizer_version="3")
+        expected = ExecuteSqlRequest.QueryOptions(
+            optimizer_version="3",
+            optimizer_statistics_package="auto_20191128_14_47_22UTC",
+        )
         result = self._callFUT(base, merge)
         self.assertEqual(result, expected)
 

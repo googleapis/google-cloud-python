@@ -84,15 +84,19 @@ def _merge_query_options(base, merge):
     combined = base or ExecuteSqlRequest.QueryOptions()
     if type(combined) == dict:
         combined = ExecuteSqlRequest.QueryOptions(
-            optimizer_version=combined.get("optimizer_version", "")
+            optimizer_version=combined.get("optimizer_version", ""),
+            optimizer_statistics_package=combined.get(
+                "optimizer_statistics_package", ""
+            ),
         )
     merge = merge or ExecuteSqlRequest.QueryOptions()
     if type(merge) == dict:
         merge = ExecuteSqlRequest.QueryOptions(
-            optimizer_version=merge.get("optimizer_version", "")
+            optimizer_version=merge.get("optimizer_version", ""),
+            optimizer_statistics_package=merge.get("optimizer_statistics_package", ""),
         )
     type(combined).pb(combined).MergeFrom(type(merge).pb(merge))
-    if not combined.optimizer_version:
+    if not combined.optimizer_version and not combined.optimizer_statistics_package:
         return None
     return combined
 
