@@ -711,6 +711,27 @@ class Test_put_WithGlobalCache:
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_api._NonTransactionalCommitBatch")
+    def test_w_transaction(Batch, global_cache):
+        class SomeKind(model.Model):
+            pass
+
+        context = context_module.get_context()
+        with context.new(transaction=b"abc123").use() as in_context:
+            in_context.global_cache_flush_keys = set()
+            key = key_module.Key("SomeKind", 1)
+            cache_key = _cache.global_cache_key(key._key)
+
+            entity = SomeKind(key=key)
+            batch = Batch.return_value
+            batch.put.return_value = future_result(None)
+
+            future = _api.put(model._entity_to_ds_entity(entity), _options.Options())
+            assert future.result() is None
+
+            assert in_context.global_cache_flush_keys == {cache_key}
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api._NonTransactionalCommitBatch")
     def test_no_datastore(Batch, global_cache):
         class SomeKind(model.Model):
             pass
@@ -817,6 +838,23 @@ class Test_delete_WithGlobalCache:
         assert future.result() is None
 
         assert global_cache.get([cache_key]) == [None]
+
+    @staticmethod
+    @mock.patch("google.cloud.ndb._datastore_api._NonTransactionalCommitBatch")
+    def test_w_transaction(Batch, global_cache):
+        context = context_module.get_context()
+        with context.new(transaction=b"abc123").use() as in_context:
+            in_context.global_cache_flush_keys = set()
+            key = key_module.Key("SomeKind", 1)
+            cache_key = _cache.global_cache_key(key._key)
+
+            batch = Batch.return_value
+            batch.delete.return_value = future_result(None)
+
+            future = _api.delete(key._key, _options.Options())
+            assert future.result() is None
+
+            assert in_context.global_cache_flush_keys == {cache_key}
 
     @staticmethod
     @mock.patch("google.cloud.ndb._datastore_api._NonTransactionalCommitBatch")

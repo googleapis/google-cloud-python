@@ -250,6 +250,7 @@ def transaction_async_(
 @tasklets.tasklet
 def _transaction_async(context, callback, read_only=False):
     # Avoid circular import in Python 2.7
+    from google.cloud.ndb import _cache
     from google.cloud.ndb import _datastore_api
 
     # Start the transaction
@@ -281,6 +282,7 @@ def _transaction_async(context, callback, read_only=False):
 
     context.eventloop.add_idle(run_inner_loop, tx_context)
 
+    tx_context.global_cache_flush_keys = flush_keys = set()
     with tx_context.use():
         try:
             # Run the callback
@@ -301,7 +303,10 @@ def _transaction_async(context, callback, read_only=False):
             yield _datastore_api.rollback(transaction_id)
             raise e
 
-        tx_context._clear_global_cache()
+        # Flush keys of entities written during the transaction from the global cache
+        if flush_keys:
+            yield [_cache.global_delete(key) for key in flush_keys]
+
         for callback in on_commit_callbacks:
             callback()
 

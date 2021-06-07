@@ -19,11 +19,9 @@ try:
 except ImportError:  # pragma: NO PY3 COVER
     import mock
 
-from google.cloud.ndb import _cache
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import _eventloop
 from google.cloud.ndb import exceptions
-from google.cloud.ndb import global_cache
 from google.cloud.ndb import key as key_module
 from google.cloud.ndb import model
 from google.cloud.ndb import _options
@@ -95,6 +93,11 @@ class TestContext:
         assert new_context.transaction == "tx123"
         assert context.transaction is None
 
+    def test_new_global_cache_flush_keys(self):
+        context = self._make_one(global_cache_flush_keys={"hi", "mom!"})
+        new_context = context.new()
+        assert new_context.global_cache_flush_keys == {"hi", "mom!"}
+
     def test_new_with_cache(self):
         context = self._make_one()
         context.cache["foo"] = "bar"
@@ -127,26 +130,6 @@ class TestContext:
         context.cache["testkey"] = "testdata"
         context.clear_cache()
         assert not context.cache
-
-    def test__clear_global_cache(self):
-        context = self._make_one(global_cache=global_cache._InProcessGlobalCache())
-        with context.use():
-            key = key_module.Key("SomeKind", 1)
-            cache_key = _cache.global_cache_key(key._key)
-            context.cache[key] = "testdata"
-            context.global_cache.cache[cache_key] = "testdata"
-            context.global_cache.cache["anotherkey"] = "otherdata"
-            context._clear_global_cache().result()
-
-        assert context.global_cache.cache == {"anotherkey": "otherdata"}
-
-    def test__clear_global_cache_nothing_to_do(self):
-        context = self._make_one(global_cache=global_cache._InProcessGlobalCache())
-        with context.use():
-            context.global_cache.cache["anotherkey"] = "otherdata"
-            context._clear_global_cache().result()
-
-        assert context.global_cache.cache == {"anotherkey": "otherdata"}
 
     def test_flush(self):
         eventloop = mock.Mock(spec=("run",))

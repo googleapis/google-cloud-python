@@ -383,7 +383,10 @@ def put(entity, options):
             key = None
 
         if use_global_cache:
-            yield _cache.global_delete(cache_key)
+            if transaction:
+                context.global_cache_flush_keys.add(cache_key)
+            else:
+                yield _cache.global_delete(cache_key)
 
         raise tasklets.Return(key)
 
@@ -406,6 +409,7 @@ def delete(key, options):
     context = context_module.get_context()
     use_global_cache = context._use_global_cache(key, options)
     use_datastore = context._use_datastore(key, options)
+    transaction = context.transaction
 
     if use_global_cache:
         cache_key = _cache.global_cache_key(key)
@@ -414,7 +418,6 @@ def delete(key, options):
         if use_global_cache:
             yield _cache.global_lock(cache_key)
 
-        transaction = context.transaction
         if transaction:
             batch = _get_commit_batch(transaction, options)
         else:
@@ -423,7 +426,10 @@ def delete(key, options):
         yield batch.delete(key)
 
     if use_global_cache:
-        yield _cache.global_delete(cache_key)
+        if transaction:
+            context.global_cache_flush_keys.add(cache_key)
+        else:
+            yield _cache.global_delete(cache_key)
 
 
 class _NonTransactionalCommitBatch(object):
