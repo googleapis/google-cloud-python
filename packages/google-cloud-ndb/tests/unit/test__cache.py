@@ -345,8 +345,16 @@ class Test_global_set:
 
 class Test_GlobalCacheSetBatch:
     @staticmethod
+    def test_add_duplicate_key_and_value():
+        batch = _cache._GlobalCacheSetBatch({})
+        future1 = batch.add(b"foo", b"one")
+        future2 = batch.add(b"foo", b"one")
+        assert future1 is future2
+
+    @staticmethod
     def test_add_and_idle_and_done_callbacks(in_context):
-        cache = mock.Mock()
+        cache = mock.Mock(spec=("set",))
+        cache.set.return_value = []
 
         batch = _cache._GlobalCacheSetBatch({})
         future1 = batch.add(b"foo", b"one")
@@ -364,8 +372,28 @@ class Test_GlobalCacheSetBatch:
         assert future2.result() is None
 
     @staticmethod
+    def test_add_and_idle_and_done_callbacks_with_duplicate_keys(in_context):
+        cache = mock.Mock(spec=("set",))
+        cache.set.return_value = []
+
+        batch = _cache._GlobalCacheSetBatch({})
+        future1 = batch.add(b"foo", b"one")
+        future2 = batch.add(b"foo", b"two")
+
+        assert batch.expires is None
+
+        with in_context.new(global_cache=cache).use():
+            batch.idle_callback()
+
+        cache.set.assert_called_once_with({b"foo": b"one"}, expires=None)
+        assert future1.result() is None
+        with pytest.raises(RuntimeError):
+            future2.result()
+
+    @staticmethod
     def test_add_and_idle_and_done_callbacks_with_expires(in_context):
-        cache = mock.Mock()
+        cache = mock.Mock(spec=("set",))
+        cache.set.return_value = []
 
         batch = _cache._GlobalCacheSetBatch({"expires": 5})
         future1 = batch.add(b"foo", b"one")
@@ -383,7 +411,8 @@ class Test_GlobalCacheSetBatch:
     @staticmethod
     def test_add_and_idle_and_done_callbacks_w_error(in_context):
         error = Exception("spurious error")
-        cache = mock.Mock()
+        cache = mock.Mock(spec=("set",))
+        cache.set.return_value = []
         cache.set.return_value = tasklets.Future()
         cache.set.return_value.set_exception(error)
 
@@ -399,6 +428,28 @@ class Test_GlobalCacheSetBatch:
         )
         assert future1.exception() is error
         assert future2.exception() is error
+
+    @staticmethod
+    def test_done_callbacks_with_results(in_context):
+        class SpeciousError(Exception):
+            pass
+
+        cache_call = _future_result(
+            {
+                b"foo": "this is a result",
+                b"bar": SpeciousError("this is also a kind of result"),
+            }
+        )
+
+        batch = _cache._GlobalCacheSetBatch({})
+        future1 = batch.add(b"foo", b"one")
+        future2 = batch.add(b"bar", b"two")
+
+        batch.done_callback(cache_call)
+
+        assert future1.result() == "this is a result"
+        with pytest.raises(SpeciousError):
+            assert future2.result()
 
 
 @pytest.mark.usefixtures("in_context")
@@ -552,7 +603,8 @@ class Test_global_compare_and_swap:
 class Test_GlobalCacheCompareAndSwapBatch:
     @staticmethod
     def test_add_and_idle_and_done_callbacks(in_context):
-        cache = mock.Mock()
+        cache = mock.Mock(spec=("compare_and_swap",))
+        cache.compare_and_swap.return_value = None
 
         batch = _cache._GlobalCacheCompareAndSwapBatch({})
         future1 = batch.add(b"foo", b"one")
@@ -571,7 +623,8 @@ class Test_GlobalCacheCompareAndSwapBatch:
 
     @staticmethod
     def test_add_and_idle_and_done_callbacks_with_expires(in_context):
-        cache = mock.Mock()
+        cache = mock.Mock(spec=("compare_and_swap",))
+        cache.compare_and_swap.return_value = None
 
         batch = _cache._GlobalCacheCompareAndSwapBatch({"expires": 5})
         future1 = batch.add(b"foo", b"one")

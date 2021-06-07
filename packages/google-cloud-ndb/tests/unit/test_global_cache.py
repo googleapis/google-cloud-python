@@ -449,6 +449,7 @@ class TestMemcacheCache:
     @staticmethod
     def test_set():
         client = mock.Mock(spec=("set_many",))
+        client.set_many.return_value = []
         cache = global_cache.MemcacheCache(client)
         key1 = cache._key(b"one")
         key2 = cache._key(b"two")
@@ -464,11 +465,13 @@ class TestMemcacheCache:
                 key2: "shoe",
             },
             expire=0,
+            noreply=False,
         )
 
     @staticmethod
     def test_set_w_expires():
         client = mock.Mock(spec=("set_many",))
+        client.set_many.return_value = []
         cache = global_cache.MemcacheCache(client)
         key1 = cache._key(b"one")
         key2 = cache._key(b"two")
@@ -485,7 +488,40 @@ class TestMemcacheCache:
                 key2: "shoe",
             },
             expire=5,
+            noreply=False,
         )
+
+    @staticmethod
+    def test_set_failed_key():
+        client = mock.Mock(spec=("set_many",))
+        cache = global_cache.MemcacheCache(client)
+        key1 = cache._key(b"one")
+        key2 = cache._key(b"two")
+        client.set_many.return_value = [key2]
+
+        unset = cache.set(
+            {
+                b"one": "bun",
+                b"two": "shoe",
+            }
+        )
+        assert unset == {b"two": global_cache.MemcacheCache.KeyNotSet(b"two")}
+
+        client.set_many.assert_called_once_with(
+            {
+                key1: "bun",
+                key2: "shoe",
+            },
+            expire=0,
+            noreply=False,
+        )
+
+    @staticmethod
+    def test_KeyNotSet():
+        unset = global_cache.MemcacheCache.KeyNotSet(b"foo")
+        assert unset == global_cache.MemcacheCache.KeyNotSet(b"foo")
+        assert not unset == global_cache.MemcacheCache.KeyNotSet(b"goo")
+        assert not unset == "hamburger"
 
     @staticmethod
     def test_delete():
