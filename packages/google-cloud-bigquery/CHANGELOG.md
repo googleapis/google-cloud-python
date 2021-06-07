@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [2.20.0](https://www.github.com/googleapis/python-bigquery/compare/v2.19.0...v2.20.0) (2021-06-07)
+
+
+### Features
+
+* support script options in query job config ([#690](https://www.github.com/googleapis/python-bigquery/issues/690)) ([1259e16](https://www.github.com/googleapis/python-bigquery/commit/1259e16394784315368e8be959c1ac097782b62e))
+
 ## [2.19.0](https://www.github.com/googleapis/python-bigquery/compare/v2.18.0...v2.19.0) (2021-06-06)
 
 
