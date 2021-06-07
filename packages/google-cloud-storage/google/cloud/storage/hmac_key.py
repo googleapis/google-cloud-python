@@ -298,13 +298,8 @@ class HMACKeyMetadata(object):
             qs_params["userProject"] = self.user_project
 
         payload = {"state": self.state}
-        self._properties = self._client._connection.api_request(
-            method="PUT",
-            path=self.path,
-            data=payload,
-            query_params=qs_params,
-            timeout=timeout,
-            retry=retry,
+        self._properties = self._client._put_resource(
+            self.path, payload, query_params=qs_params, timeout=timeout, retry=retry,
         )
 
     def delete(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):

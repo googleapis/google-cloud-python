@@ -2943,17 +2943,19 @@ class Bucket(_PropertyMixin):
         if self.user_project is not None:
             query_params["userProject"] = self.user_project
 
+        path = "{}/iam".format(self.path)
         resource = policy.to_api_repr()
         resource["resourceId"] = self.path
-        info = client._connection.api_request(
-            method="PUT",
-            path="%s/iam" % (self.path,),
+
+        info = client._put_resource(
+            path,
+            resource,
             query_params=query_params,
-            data=resource,
-            _target_object=None,
             timeout=timeout,
             retry=retry,
+            _target_object=None,
         )
+
         return Policy.from_api_repr(info)
 
     def test_iam_permissions(

@@ -27,6 +27,7 @@ import six
 from six.moves import http_client
 
 from google.cloud.storage.retry import DEFAULT_RETRY
+from google.cloud.storage.retry import DEFAULT_RETRY_IF_ETAG_IN_JSON
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
 
 
@@ -3269,84 +3270,100 @@ class Test_Blob(unittest.TestCase):
         from google.cloud.storage.iam import STORAGE_VIEWER_ROLE
         from google.api_core.iam import Policy
 
-        BLOB_NAME = "blob-name"
-        PATH = "/b/name/o/%s" % (BLOB_NAME,)
-        ETAG = "DEADBEEF"
-        VERSION = 1
-        OWNER1 = "user:phred@example.com"
-        OWNER2 = "group:cloud-logs@google.com"
-        EDITOR1 = "domain:google.com"
-        EDITOR2 = "user:phred@example.com"
-        VIEWER1 = "serviceAccount:1234-abcdef@service.example.com"
-        VIEWER2 = "user:phred@example.com"
-        BINDINGS = [
-            {"role": STORAGE_OWNER_ROLE, "members": [OWNER1, OWNER2]},
-            {"role": STORAGE_EDITOR_ROLE, "members": [EDITOR1, EDITOR2]},
-            {"role": STORAGE_VIEWER_ROLE, "members": [VIEWER1, VIEWER2]},
+        blob_name = "blob-name"
+        path = "/b/name/o/%s" % (blob_name,)
+        etag = "DEADBEEF"
+        version = 1
+        owner1 = "user:phred@example.com"
+        owner2 = "group:cloud-logs@google.com"
+        editor1 = "domain:google.com"
+        editor2 = "user:phred@example.com"
+        viewer1 = "serviceAccount:1234-abcdef@service.example.com"
+        viewer2 = "user:phred@example.com"
+        bindings = [
+            {"role": STORAGE_OWNER_ROLE, "members": [owner1, owner2]},
+            {"role": STORAGE_EDITOR_ROLE, "members": [editor1, editor2]},
+            {"role": STORAGE_VIEWER_ROLE, "members": [viewer1, viewer2]},
         ]
-        RETURNED = {"etag": ETAG, "version": VERSION, "bindings": BINDINGS}
-        after = ({"status": http_client.OK}, RETURNED)
+        api_response = {"etag": etag, "version": version, "bindings": bindings}
         policy = Policy()
-        for binding in BINDINGS:
+        for binding in bindings:
             policy[binding["role"]] = binding["members"]
 
-        connection = _Connection(after)
-        client = _Client(connection)
+        client = mock.Mock(spec=["_put_resource"])
+        client._put_resource.return_value = api_response
         bucket = _Bucket(client=client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        blob = self._make_one(blob_name, bucket=bucket)
 
-        returned = blob.set_iam_policy(policy, timeout=42)
+        returned = blob.set_iam_policy(policy)
 
-        self.assertEqual(returned.etag, ETAG)
-        self.assertEqual(returned.version, VERSION)
+        self.assertEqual(returned.etag, etag)
+        self.assertEqual(returned.version, version)
         self.assertEqual(dict(returned), dict(policy))
 
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]["method"], "PUT")
-        self.assertEqual(kw[0]["path"], "%s/iam" % (PATH,))
-        self.assertEqual(kw[0]["query_params"], {})
-        self.assertEqual(kw[0]["timeout"], 42)
-        sent = kw[0]["data"]
-        self.assertEqual(sent["resourceId"], PATH)
-        self.assertEqual(len(sent["bindings"]), len(BINDINGS))
+        expected_path = "%s/iam" % (path,)
+        expected_data = {
+            "resourceId": path,
+            "bindings": mock.ANY,
+        }
+        expected_query_params = {}
+        client._put_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_ETAG_IN_JSON,
+            _target_object=None,
+        )
+
+        sent_bindings = client._put_resource.call_args.args[1]["bindings"]
         key = operator.itemgetter("role")
         for found, expected in zip(
-            sorted(sent["bindings"], key=key), sorted(BINDINGS, key=key)
+            sorted(sent_bindings, key=key), sorted(bindings, key=key)
         ):
             self.assertEqual(found["role"], expected["role"])
             self.assertEqual(sorted(found["members"]), sorted(expected["members"]))
 
-    def test_set_iam_policy_w_user_project(self):
+    def test_set_iam_policy_w_user_project_w_explicit_client_w_timeout_retry(self):
         from google.api_core.iam import Policy
 
-        BLOB_NAME = "blob-name"
-        USER_PROJECT = "user-project-123"
-        PATH = "/b/name/o/%s" % (BLOB_NAME,)
-        ETAG = "DEADBEEF"
-        VERSION = 1
-        BINDINGS = []
-        RETURNED = {"etag": ETAG, "version": VERSION, "bindings": BINDINGS}
-        after = ({"status": http_client.OK}, RETURNED)
+        blob_name = "blob-name"
+        user_project = "user-project-123"
+        path = "/b/name/o/%s" % (blob_name,)
+        etag = "DEADBEEF"
+        version = 1
+        bindings = []
         policy = Policy()
 
-        connection = _Connection(after)
-        client = _Client(connection)
-        bucket = _Bucket(client=client, user_project=USER_PROJECT)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        api_response = {"etag": etag, "version": version, "bindings": bindings}
+        client = mock.Mock(spec=["_put_resource"])
+        client._put_resource.return_value = api_response
+        bucket = _Bucket(client=None, user_project=user_project)
+        blob = self._make_one(blob_name, bucket=bucket)
+        timeout = 42
+        retry = mock.Mock(spec=[])
 
-        returned = blob.set_iam_policy(policy)
+        returned = blob.set_iam_policy(
+            policy, client=client, timeout=timeout, retry=retry,
+        )
 
-        self.assertEqual(returned.etag, ETAG)
-        self.assertEqual(returned.version, VERSION)
+        self.assertEqual(returned.etag, etag)
+        self.assertEqual(returned.version, version)
         self.assertEqual(dict(returned), dict(policy))
 
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]["method"], "PUT")
-        self.assertEqual(kw[0]["path"], "%s/iam" % (PATH,))
-        self.assertEqual(kw[0]["query_params"], {"userProject": USER_PROJECT})
-        self.assertEqual(kw[0]["data"], {"resourceId": PATH})
+        expected_path = "%s/iam" % (path,)
+        expected_data = {  # bindings omitted
+            "resourceId": path,
+        }
+        expected_query_params = {"userProject": user_project}
+        client._put_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=timeout,
+            retry=retry,
+            _target_object=None,
+        )
 
     def test_test_iam_permissions_defaults(self):
         from google.cloud.storage.iam import STORAGE_OBJECTS_LIST

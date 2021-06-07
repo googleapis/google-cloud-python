@@ -349,81 +349,99 @@ class Test_PropertyMixin(unittest.TestCase):
             _target_object=derived,
         )
 
-    def test_update(self):
-        connection = _Connection({"foo": "Foo"})
-        client = _Client(connection)
-        derived = self._derivedClass("/path")()
+    def test_update_w_defaults(self):
+        path = "/path"
+        api_response = {"foo": "Foo"}
+        derived = self._derivedClass(path)()
         # Make sure changes is non-empty, so we can observe a change.
-        BAR = object()
-        BAZ = object()
-        derived._properties = {"bar": BAR, "baz": BAZ}
+        bar = object()
+        baz = object()
+        expected_data = derived._properties = {"bar": bar, "baz": baz}
         derived._changes = set(["bar"])  # Update sends 'baz' anyway.
-        derived.update(client=client, timeout=42)
-        self.assertEqual(derived._properties, {"foo": "Foo"})
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]["method"], "PUT")
-        self.assertEqual(kw[0]["path"], "/path")
-        self.assertEqual(kw[0]["query_params"], {"projection": "full"})
-        self.assertEqual(kw[0]["data"], {"bar": BAR, "baz": BAZ})
-        self.assertEqual(kw[0]["timeout"], 42)
-        self.assertEqual(kw[0]["retry"], DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED)
-        # Make sure changes get reset by patch().
+        client = derived.client = mock.Mock(spec=["_put_resource"])
+        client._put_resource.return_value = api_response
+
+        derived.update()
+
+        self.assertEqual(derived._properties, api_response)
+        # Make sure changes get reset by update().
         self.assertEqual(derived._changes, set())
 
-    def test_update_with_metageneration_not_match(self):
-        GENERATION_NUMBER = 6
+        expected_query_params = {"projection": "full"}
+        client._put_resource.assert_called_once_with(
+            path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+            _target_object=derived,
+        )
 
-        connection = _Connection({"foo": "Foo"})
-        client = _Client(connection)
-        derived = self._derivedClass("/path")()
+    def test_update_with_metageneration_not_match_w_timeout_w_retry(self):
+        path = "/path"
+        generation_number = 6
+        api_response = {"foo": "Foo"}
+        derived = self._derivedClass(path)()
         # Make sure changes is non-empty, so we can observe a change.
-        BAR = object()
-        BAZ = object()
-        derived._properties = {"bar": BAR, "baz": BAZ}
+        bar = object()
+        baz = object()
+        expected_data = derived._properties = {"bar": bar, "baz": baz}
         derived._changes = set(["bar"])  # Update sends 'baz' anyway.
+        client = derived.client = mock.Mock(spec=["_put_resource"])
+        client._put_resource.return_value = api_response
+        timeout = 42
+
         derived.update(
-            client=client, timeout=42, if_metageneration_not_match=GENERATION_NUMBER
+            if_metageneration_not_match=generation_number, timeout=timeout,
         )
+
         self.assertEqual(derived._properties, {"foo": "Foo"})
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]["method"], "PUT")
-        self.assertEqual(kw[0]["path"], "/path")
-        self.assertEqual(
-            kw[0]["query_params"],
-            {"projection": "full", "ifMetagenerationNotMatch": GENERATION_NUMBER},
-        )
-        self.assertEqual(kw[0]["data"], {"bar": BAR, "baz": BAZ})
-        self.assertEqual(kw[0]["timeout"], 42)
-        self.assertEqual(kw[0]["retry"], DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED)
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 
-    def test_update_w_user_project(self):
-        user_project = "user-project-123"
-        connection = _Connection({"foo": "Foo"})
-        client = _Client(connection)
-        derived = self._derivedClass("/path", user_project)()
-        # Make sure changes is non-empty, so we can observe a change.
-        BAR = object()
-        BAZ = object()
-        derived._properties = {"bar": BAR, "baz": BAZ}
-        derived._changes = set(["bar"])  # Update sends 'baz' anyway.
-        derived.update(client=client)
-        self.assertEqual(derived._properties, {"foo": "Foo"})
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]["method"], "PUT")
-        self.assertEqual(kw[0]["path"], "/path")
-        self.assertEqual(
-            kw[0]["query_params"], {"projection": "full", "userProject": user_project}
+        expected_query_params = {
+            "projection": "full",
+            "ifMetagenerationNotMatch": generation_number,
+        }
+        client._put_resource.assert_called_once_with(
+            path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=timeout,
+            retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+            _target_object=derived,
         )
-        self.assertEqual(kw[0]["data"], {"bar": BAR, "baz": BAZ})
-        self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
-        self.assertEqual(kw[0]["retry"], DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED)
+
+    def test_update_w_user_project_w_retry_w_explicit_client(self):
+        user_project = "user-project-123"
+        path = "/path"
+        api_response = {"foo": "Foo"}
+        derived = self._derivedClass(path, user_project)()
+        # Make sure changes is non-empty, so we can observe a change.
+        bar = object()
+        baz = object()
+        expected_data = derived._properties = {"bar": bar, "baz": baz}
+        derived._changes = set(["bar"])  # Update sends 'baz' anyway.
+        client = mock.Mock(spec=["_put_resource"])
+        client._put_resource.return_value = api_response
+        retry = mock.Mock(spec=[])
+
+        derived.update(client=client, retry=retry)
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
+
+        expected_query_params = {
+            "projection": "full",
+            "userProject": user_project,
+        }
+        client._put_resource.assert_called_once_with(
+            path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=retry,
+            _target_object=derived,
+        )
 
 
 class Test__scalar_property(unittest.TestCase):
@@ -575,17 +593,6 @@ class Test__bucket_bound_hostname_url(unittest.TestCase):
         self.assertEqual(self._call_fut(host=HOST, scheme=SCHEME), EXPECTED_URL)
 
 
-class _Connection(object):
-    def __init__(self, *responses):
-        self._responses = responses
-        self._requested = []
-
-    def api_request(self, **kw):
-        self._requested.append(kw)
-        response, self._responses = self._responses[0], self._responses[1:]
-        return response
-
-
 class _MD5Hash(object):
     def __init__(self, digest_val):
         self.digest_val = digest_val
@@ -617,8 +624,3 @@ class _Base64(object):
     def b64encode(self, value):
         self._called_b64encode.append(value)
         return value
-
-
-class _Client(object):
-    def __init__(self, connection):
-        self._connection = connection
