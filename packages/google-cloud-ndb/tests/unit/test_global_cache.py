@@ -355,6 +355,12 @@ class TestRedisCache:
 
 class TestMemcacheCache:
     @staticmethod
+    def test__key_long_key():
+        key = b"ou812" * 100
+        encoded = global_cache.MemcacheCache._key(key)
+        assert len(encoded) == 40  # sha1 hashes are 40 bytes
+
+    @staticmethod
     @mock.patch("google.cloud.ndb.global_cache.pymemcache")
     def test_from_environment_not_configured(pymemcache):
         with mock.patch.dict("os.environ", {"MEMCACHED_HOSTS": None}):

@@ -17,6 +17,7 @@
 import abc
 import base64
 import collections
+import hashlib
 import os
 import pymemcache.exceptions
 import redis.exceptions
@@ -470,7 +471,10 @@ class MemcacheCache(GlobalCache):
 
     @staticmethod
     def _key(key):
-        return base64.b64encode(key)
+        encoded = base64.b64encode(key)
+        if len(encoded) > 250:
+            encoded = hashlib.sha1(encoded).hexdigest()
+        return encoded
 
     @classmethod
     def from_environment(cls, max_pool_size=4, strict_read=False, strict_write=True):
