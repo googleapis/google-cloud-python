@@ -37,6 +37,7 @@ from google.cloud.bigquery.dataset import AccessEntry
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery import enums
+from google.cloud.bigquery.enums import KeyResultStatementKind
 from google.cloud.bigquery.enums import SqlTypeNames
 from google.cloud.bigquery.enums import StandardSqlDataTypes
 from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
@@ -62,6 +63,7 @@ from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.job import QueryJobConfig
 from google.cloud.bigquery.job import QueryPriority
 from google.cloud.bigquery.job import SchemaUpdateOption
+from google.cloud.bigquery.job import ScriptOptions
 from google.cloud.bigquery.job import SourceFormat
 from google.cloud.bigquery.job import UnknownJob
 from google.cloud.bigquery.job import WriteDisposition
@@ -138,6 +140,7 @@ __all__ = [
     "CSVOptions",
     "GoogleSheetsOptions",
     "ParquetOptions",
+    "ScriptOptions",
     "DEFAULT_RETRY",
     # Enum Constants
     "enums",
@@ -147,6 +150,7 @@ __all__ = [
     "DeterminismLevel",
     "ExternalSourceFormat",
     "Encoding",
+    "KeyResultStatementKind",
     "QueryPriority",
     "SchemaUpdateOption",
     "SourceFormat",

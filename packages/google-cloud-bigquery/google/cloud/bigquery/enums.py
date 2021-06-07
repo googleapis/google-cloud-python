@@ -142,6 +142,19 @@ class SourceFormat(object):
     """Specifies Orc format."""
 
 
+class KeyResultStatementKind:
+    """Determines which statement in the script represents the "key result".
+
+    The "key result" is used to populate the schema and query results of the script job.
+
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#keyresultstatementkind
+    """
+
+    KEY_RESULT_STATEMENT_KIND_UNSPECIFIED = "KEY_RESULT_STATEMENT_KIND_UNSPECIFIED"
+    LAST = "LAST"
+    FIRST_SELECT = "FIRST_SELECT"
+
+
 _SQL_SCALAR_TYPES = frozenset(
     (
         "INT64",

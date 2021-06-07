@@ -253,3 +253,59 @@ class TestQueryJobConfig(_Base):
         self.assertEqual(
             config.destination_encryption_configuration.kms_key_name, self.KMS_KEY_NAME
         )
+
+    def test_to_api_repr_with_script_options_none(self):
+        config = self._make_one()
+        config.script_options = None
+
+        resource = config.to_api_repr()
+
+        self.assertEqual(resource, {"query": {"scriptOptions": None}})
+        self.assertIsNone(config.script_options)
+
+    def test_to_api_repr_with_script_options(self):
+        from google.cloud.bigquery import KeyResultStatementKind
+        from google.cloud.bigquery import ScriptOptions
+
+        config = self._make_one()
+        config.script_options = ScriptOptions(
+            statement_timeout_ms=60,
+            statement_byte_budget=999,
+            key_result_statement=KeyResultStatementKind.FIRST_SELECT,
+        )
+
+        resource = config.to_api_repr()
+
+        expected_script_options_repr = {
+            "statementTimeoutMs": "60",
+            "statementByteBudget": "999",
+            "keyResultStatement": KeyResultStatementKind.FIRST_SELECT,
+        }
+        self.assertEqual(
+            resource, {"query": {"scriptOptions": expected_script_options_repr}}
+        )
+
+    def test_from_api_repr_with_script_options(self):
+        from google.cloud.bigquery import KeyResultStatementKind
+        from google.cloud.bigquery import ScriptOptions
+
+        resource = {
+            "query": {
+                "scriptOptions": {
+                    "statementTimeoutMs": "42",
+                    "statementByteBudget": "123",
+                    "keyResultStatement": KeyResultStatementKind.LAST,
+                },
+            },
+        }
+        klass = self._get_target_class()
+
+        config = klass.from_api_repr(resource)
+
+        script_options = config.script_options
+        self.assertIsInstance(script_options, ScriptOptions)
+        self.assertEqual(script_options.statement_timeout_ms, 42)
+        self.assertEqual(script_options.statement_byte_budget, 123)
+        self.assertEqual(
+            script_options.key_result_statement, KeyResultStatementKind.LAST
+        )

@@ -34,6 +34,7 @@ from google.cloud.bigquery.job.query import QueryJob
 from google.cloud.bigquery.job.query import QueryJobConfig
 from google.cloud.bigquery.job.query import QueryPlanEntry
 from google.cloud.bigquery.job.query import QueryPlanEntryStep
+from google.cloud.bigquery.job.query import ScriptOptions
 from google.cloud.bigquery.job.query import TimelineEntry
 from google.cloud.bigquery.enums import Compression
 from google.cloud.bigquery.enums import CreateDisposition
@@ -67,6 +68,7 @@ __all__ = [
     "QueryJobConfig",
     "QueryPlanEntry",
     "QueryPlanEntryStep",
+    "ScriptOptions",
     "TimelineEntry",
     "Compression",
     "CreateDisposition",

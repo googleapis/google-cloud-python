@@ -18,7 +18,7 @@ import concurrent.futures
 import copy
 import re
 import typing
-from typing import Any, Dict, Union
+from typing import Any, Dict, Optional, Union
 
 from google.api_core import exceptions
 from google.api_core.future import polling as polling_future
@@ -28,6 +28,7 @@ from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
+from google.cloud.bigquery.enums import KeyResultStatementKind
 from google.cloud.bigquery.external_config import ExternalConfig
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.query import _query_param_from_api_repr
@@ -111,6 +112,82 @@ def _from_api_repr_table_defs(resource):
 
 def _to_api_repr_table_defs(value):
     return {k: ExternalConfig.to_api_repr(v) for k, v in value.items()}
+
+
+class ScriptOptions:
+    """Options controlling the execution of scripts.
+
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#ScriptOptions
+    """
+
+    def __init__(
+        self,
+        statement_timeout_ms: Optional[int] = None,
+        statement_byte_budget: Optional[int] = None,
+        key_result_statement: Optional[KeyResultStatementKind] = None,
+    ):
+        self._properties = {}
+        self.statement_timeout_ms = statement_timeout_ms
+        self.statement_byte_budget = statement_byte_budget
+        self.key_result_statement = key_result_statement
+
+    @classmethod
+    def from_api_repr(cls, resource: Dict[str, Any]) -> "ScriptOptions":
+        """Factory: construct instance from the JSON repr.
+
+        Args:
+            resource(Dict[str: Any]):
+                ScriptOptions representation returned from API.
+
+        Returns:
+            google.cloud.bigquery.ScriptOptions:
+                ScriptOptions sample parsed from ``resource``.
+        """
+        entry = cls()
+        entry._properties = copy.deepcopy(resource)
+        return entry
+
+    def to_api_repr(self) -> Dict[str, Any]:
+        """Construct the API resource representation."""
+        return copy.deepcopy(self._properties)
+
+    @property
+    def statement_timeout_ms(self) -> Union[int, None]:
+        """Timeout period for each statement in a script."""
+        return _helpers._int_or_none(self._properties.get("statementTimeoutMs"))
+
+    @statement_timeout_ms.setter
+    def statement_timeout_ms(self, value: Union[int, None]):
+        if value is not None:
+            value = str(value)
+        self._properties["statementTimeoutMs"] = value
+
+    @property
+    def statement_byte_budget(self) -> Union[int, None]:
+        """Limit on the number of bytes billed per statement.
+
+        Exceeding this budget results in an error.
+        """
+        return _helpers._int_or_none(self._properties.get("statementByteBudget"))
+
+    @statement_byte_budget.setter
+    def statement_byte_budget(self, value: Union[int, None]):
+        if value is not None:
+            value = str(value)
+        self._properties["statementByteBudget"] = value
+
+    @property
+    def key_result_statement(self) -> Union[KeyResultStatementKind, None]:
+        """Determines which statement in the script represents the "key result".
+
+        This is used to populate the schema and query results of the script job.
+        Default is ``KeyResultStatementKind.LAST``.
+        """
+        return self._properties.get("keyResultStatement")
+
+    @key_result_statement.setter
+    def key_result_statement(self, value: Union[KeyResultStatementKind, None]):
+        self._properties["keyResultStatement"] = value
 
 
 class QueryJobConfig(_JobConfig):
@@ -501,6 +578,23 @@ class QueryJobConfig(_JobConfig):
     @schema_update_options.setter
     def schema_update_options(self, values):
         self._set_sub_prop("schemaUpdateOptions", values)
+
+    @property
+    def script_options(self) -> ScriptOptions:
+        """Connection properties which can modify the query behavior.
+
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#scriptoptions
+        """
+        prop = self._get_sub_prop("scriptOptions")
+        if prop is not None:
+            prop = ScriptOptions.from_api_repr(prop)
+        return prop
+
+    @script_options.setter
+    def script_options(self, value: Union[ScriptOptions, None]):
+        if value is not None:
+            value = value.to_api_repr()
+        self._set_sub_prop("scriptOptions", value)
 
     def to_api_repr(self) -> dict:
         """Build an API representation of the query job config.
