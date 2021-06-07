@@ -20,6 +20,13 @@ export PYTHONUNBUFFERED=1
 
 export PATH="${HOME}/.local/bin:${PATH}"
 
+# If running locally, copy a service account file to
+# /dev/shm/73713_docuploader_service_account before calling ci/trampoline_v2.sh.
+export GOOGLE_APPLICATION_CREDENTIALS=$KOKORO_KEYSTORE_DIR/73713_docuploader_service_account
+
+# Configure Google Cloud SDK to use service account details for gsutil commands.
+gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS}
+
 # Install dependencies.
 python3 -m pip install --user --quiet --upgrade nox
 python3 -m pip install --user gcp-docuploader
@@ -28,32 +35,45 @@ python3 -m pip install --user gcp-docuploader
 for bucket_item in $(gsutil ls 'gs://docs-staging-v2/docfx-python*' | sort -u -t- -k5,5); do
 
   # Retrieve the GitHub Repository info.
-  gsutil cp ${bucket_item} .
   tarball=$(echo ${bucket_item} | cut -d "/" -f 4)
-  tar -xf ${tarball} docs.metadata
+
+  # Make temporary directory to extract tarball content.
+  mkdir ${tarball}
+  cd ${tarball}
+
+  gsutil cp ${bucket_item} .
+  tar -zxvf ${tarball}
   repo=$(cat docs.metadata | grep "github_repository:" | cut -d "\"" -f 2 | cut -d "/" -f 2)
 
-  echo "cloning ${repo}..."
-  git clone https://github.com/googleapis/${repo}.git
+  # Clean up the tarball content.
+  cd ..
+  rm -rf ${tarball}
 
-  # Clean up resources we don't need anymore.
-  rm ${tarball}
-  rm docs.metadata
+  # Clone the repository.
+  git clone "https://github.com/googleapis/${repo}.git"
 
   # For each repo, process docs and docfx jobs to regenerate the YAML.
   cd ${repo}
 
-  if [ ${FORCE_GENERATE_ALL_TAGS} = "true" ]; then
-    # Grabs all tags from the repository
+  # Save the noxfile for usage throughout different releases. 
+  cp "noxfile.py" ../
+
+  if [[ ${FORCE_GENERATE_ALL_TAGS} == "true" ]]; then
+    # Grabs all tags from the repository.
     GITHUB_TAGS=$(git tag --sort=-v:refname)
+
+    # Turn off exit on failures, continue execution.
+    set +eo pipefail
   else
-    # Grab the latest released tag
+    # Grab the latest released tag.
     GITHUB_TAGS=$(git describe --tags `git rev-list --tags --max-count=1`)
   fi
 
-  # TODO: allow skipping failing docs builds and continue with the rest of the generation.
   for tag in ${GITHUB_TAGS}; do
     git checkout ${tag}
+
+    # Use the latest noxfile for all tags.
+    cp ../"noxfile.py" .
 
     # TODO: support building all googleapis.dev docs through an environmental variable option passed.
     ## Build HTML docs for googleapis.dev.
@@ -95,4 +115,5 @@ for bucket_item in $(gsutil ls 'gs://docs-staging-v2/docfx-python*' | sort -u -t
   # Clean up the repository to make room.
   cd ../
   rm -rf ${repo} 
+  rm "noxfile.py"
 done
