@@ -222,12 +222,8 @@ class HMACKeyMetadata(object):
             if self.user_project is not None:
                 qs_params["userProject"] = self.user_project
 
-            self._client._connection.api_request(
-                method="GET",
-                path=self.path,
-                query_params=qs_params,
-                timeout=timeout,
-                retry=retry,
+            self._client._get_resource(
+                self.path, query_params=qs_params, timeout=timeout, retry=retry,
             )
         except NotFound:
             return False
@@ -266,12 +262,8 @@ class HMACKeyMetadata(object):
         if self.user_project is not None:
             qs_params["userProject"] = self.user_project
 
-        self._properties = self._client._connection.api_request(
-            method="GET",
-            path=self.path,
-            query_params=qs_params,
-            timeout=timeout,
-            retry=retry,
+        self._properties = self._client._get_resource(
+            self.path, query_params=qs_params, timeout=timeout, retry=retry,
         )
 
     def update(self, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY_IF_ETAG_IN_JSON):

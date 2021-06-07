@@ -215,14 +215,13 @@ class _PropertyMixin(object):
             if_metageneration_match=if_metageneration_match,
             if_metageneration_not_match=if_metageneration_not_match,
         )
-        api_response = client._connection.api_request(
-            method="GET",
-            path=self.path,
+        api_response = client._get_resource(
+            self.path,
             query_params=query_params,
             headers=self._encryption_headers(),
-            _target_object=self,
             timeout=timeout,
             retry=retry,
+            _target_object=self,
         )
         self._set_properties(api_response)
 

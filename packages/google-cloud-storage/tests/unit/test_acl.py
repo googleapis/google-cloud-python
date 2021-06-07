@@ -14,6 +14,10 @@
 
 import unittest
 
+import mock
+
+from google.cloud.storage.retry import DEFAULT_RETRY
+
 
 class Test_ACLEntity(unittest.TestCase):
     @staticmethod
@@ -530,78 +534,82 @@ class Test_ACL(unittest.TestCase):
         entity = acl.entity(TYPE, ID)
         self.assertEqual(acl.get_entities(), [entity])
 
-    def test_reload_missing(self):
+    def test_reload_missing_w_defaults(self):
         # https://github.com/GoogleCloudPlatform/google-cloud-python/issues/652
-        ROLE = "role"
-        connection = _Connection({})
-        client = _Client(connection)
-        acl = self._make_one()
-        acl.reload_path = "/testing/acl"
+        class Derived(self._get_target_class()):
+            client = None
+
+        role = "role"
+        reload_path = "/testing/acl"
+        api_response = {}
+        acl = Derived()
+        acl.reload_path = reload_path
         acl.loaded = True
-        acl.entity("allUsers", ROLE)
-        acl.reload(client=client, timeout=42)
+        acl.entity("allUsers", role)
+        client = acl.client = mock.Mock(spec=["_get_resource"])
+        client._get_resource.return_value = api_response
+
+        acl.reload()
+
         self.assertEqual(list(acl), [])
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(
-            kw[0],
-            {
-                "method": "GET",
-                "path": "/testing/acl",
-                "query_params": {},
-                "timeout": 42,
-            },
+
+        expected_query_params = {}
+        client._get_resource.assert_called_once_with(
+            reload_path,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
         )
 
-    def test_reload_empty_result_clears_local(self):
-        ROLE = "role"
-        connection = _Connection({"items": []})
-        client = _Client(connection)
+    def test_reload_w_empty_result_w_timeout_w_retry_w_explicit_client(self):
+        role = "role"
+        reload_path = "/testing/acl"
+        timeout = 42
+        retry = mock.Mock(spec=[])
+        api_response = {"items": []}
         acl = self._make_one()
-        acl.reload_path = "/testing/acl"
+        acl.reload_path = reload_path
         acl.loaded = True
-        acl.entity("allUsers", ROLE)
+        acl.entity("allUsers", role)
+        client = mock.Mock(spec=["_get_resource"])
+        client._get_resource.return_value = api_response
+
+        acl.reload(client=client, timeout=timeout, retry=retry)
+
+        self.assertTrue(acl.loaded)
+        self.assertEqual(list(acl), [])
+
+        expected_query_params = {}
+        client._get_resource.assert_called_once_with(
+            reload_path,
+            query_params=expected_query_params,
+            timeout=timeout,
+            retry=retry,
+        )
+
+    def test_reload_w_nonempty_result_w_user_project(self):
+        role = "role"
+        reload_path = "/testing/acl"
+        user_project = "user-project-123"
+        api_response = {"items": [{"entity": "allUsers", "role": role}]}
+        acl = self._make_one()
+        acl.reload_path = reload_path
+        acl.loaded = True
+        acl.user_project = user_project
+        client = mock.Mock(spec=["_get_resource"])
+        client._get_resource.return_value = api_response
 
         acl.reload(client=client)
 
         self.assertTrue(acl.loaded)
-        self.assertEqual(list(acl), [])
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(
-            kw[0],
-            {
-                "method": "GET",
-                "path": "/testing/acl",
-                "query_params": {},
-                "timeout": self._get_default_timeout(),
-            },
-        )
+        self.assertEqual(list(acl), [{"entity": "allUsers", "role": role}])
 
-    def test_reload_nonempty_result_w_user_project(self):
-        ROLE = "role"
-        USER_PROJECT = "user-project-123"
-        connection = _Connection({"items": [{"entity": "allUsers", "role": ROLE}]})
-        client = _Client(connection)
-        acl = self._make_one()
-        acl.reload_path = "/testing/acl"
-        acl.loaded = True
-        acl.user_project = USER_PROJECT
-
-        acl.reload(client=client)
-
-        self.assertTrue(acl.loaded)
-        self.assertEqual(list(acl), [{"entity": "allUsers", "role": ROLE}])
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(
-            kw[0],
-            {
-                "method": "GET",
-                "path": "/testing/acl",
-                "query_params": {"userProject": USER_PROJECT},
-                "timeout": self._get_default_timeout(),
-            },
+        expected_query_params = {"userProject": user_project}
+        client._get_resource.assert_called_once_with(
+            reload_path,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
         )
 
     def test_save_none_set_none_passed(self):

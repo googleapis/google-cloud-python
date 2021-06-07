@@ -409,339 +409,360 @@ class TestClient(unittest.TestCase):
         self.assertIsInstance(batch, Batch)
         self.assertIs(batch._client, client)
 
-    def test_get_bucket_with_string_miss(self):
+    def test__get_resource_miss_w_defaults(self):
         from google.cloud.exceptions import NotFound
 
         PROJECT = "PROJECT"
+        PATH = "/path/to/something"
         CREDENTIALS = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
 
-        NONESUCH = "nonesuch"
-        http = _make_requests_session(
-            [_make_json_response({}, status=http_client.NOT_FOUND)]
-        )
-        client._http_internal = http
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+        connection = client._base_connection = _make_connection()
 
         with self.assertRaises(NotFound):
-            client.get_bucket(NONESUCH, timeout=42)
+            client._get_resource(PATH)
 
-        http.request.assert_called_once_with(
-            method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY, timeout=42
+        connection.api_request.assert_called_once_with(
+            method="GET",
+            path=PATH,
+            query_params=None,
+            headers=None,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=None,
         )
-        _, kwargs = http.request.call_args
-        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
-        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
-        self.assertEqual(
-            path,
-            "/".join(["", "storage", client._connection.API_VERSION, "b", NONESUCH]),
-        )
-        parms = dict(urlparse.parse_qsl(qs))
-        self.assertEqual(parms["projection"], "noAcl")
 
-    def test_get_bucket_with_string_hit(self):
+    def test__get_resource_hit_w_explicit(self):
+        PROJECT = "PROJECT"
+        PATH = "/path/to/something"
+        QUERY_PARAMS = {"foo": "Foo"}
+        HEADERS = {"bar": "Bar"}
+        TIMEOUT = 100
+        RETRY = mock.Mock(spec=[])
+        CREDENTIALS = _make_credentials()
+
+        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+        expected = mock.Mock(spec={})
+        connection = client._base_connection = _make_connection(expected)
+        target = mock.Mock(spec={})
+
+        found = client._get_resource(
+            PATH,
+            query_params=QUERY_PARAMS,
+            headers=HEADERS,
+            timeout=TIMEOUT,
+            retry=RETRY,
+            _target_object=target,
+        )
+
+        self.assertIs(found, expected)
+
+        connection.api_request.assert_called_once_with(
+            method="GET",
+            path=PATH,
+            query_params=QUERY_PARAMS,
+            headers=HEADERS,
+            timeout=TIMEOUT,
+            retry=RETRY,
+            _target_object=target,
+        )
+
+    def test_get_bucket_miss_w_string_w_defaults(self):
+        from google.cloud.exceptions import NotFound
         from google.cloud.storage.bucket import Bucket
 
-        PROJECT = "PROJECT"
-        CREDENTIALS = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+        project = "PROJECT"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        client._get_resource = mock.Mock()
+        client._get_resource.side_effect = NotFound("testing")
+        bucket_name = "nonesuch"
 
-        BUCKET_NAME = "bucket-name"
-        data = {"name": BUCKET_NAME}
-        http = _make_requests_session([_make_json_response(data)])
-        client._http_internal = http
+        with self.assertRaises(NotFound):
+            client.get_bucket(bucket_name)
 
-        bucket = client.get_bucket(BUCKET_NAME)
+        expected_path = "/b/%s" % (bucket_name,)
+        expected_query_params = {"projection": "noAcl"}
+        expected_headers = {}
+        client._get_resource.assert_called_once_with(
+            expected_path,
+            query_params=expected_query_params,
+            headers=expected_headers,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=mock.ANY,
+        )
+
+        target = client._get_resource.call_args[1]["_target_object"]
+        self.assertIsInstance(target, Bucket)
+        self.assertEqual(target.name, bucket_name)
+
+    def test_get_bucket_hit_w_string_w_timeout(self):
+        from google.cloud.storage.bucket import Bucket
+
+        project = "PROJECT"
+        bucket_name = "bucket-name"
+        timeout = 42
+        api_response = {"name": bucket_name}
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        client._get_resource = mock.Mock(return_value=api_response)
+
+        bucket = client.get_bucket(bucket_name, timeout=timeout)
 
         self.assertIsInstance(bucket, Bucket)
-        self.assertEqual(bucket.name, BUCKET_NAME)
-        http.request.assert_called_once_with(
-            method="GET",
-            url=mock.ANY,
-            data=mock.ANY,
-            headers=mock.ANY,
-            timeout=self._get_default_timeout(),
-        )
-        _, kwargs = http.request.call_args
-        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
-        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
-        self.assertEqual(
-            path,
-            "/".join(["", "storage", client._connection.API_VERSION, "b", BUCKET_NAME]),
-        )
-        parms = dict(urlparse.parse_qsl(qs))
-        self.assertEqual(parms["projection"], "noAcl")
+        self.assertEqual(bucket.name, bucket_name)
 
-    def test_get_bucket_with_metageneration_match(self):
+        expected_path = "/b/%s" % (bucket_name,)
+        expected_query_params = {"projection": "noAcl"}
+        expected_headers = {}
+        client._get_resource.assert_called_once_with(
+            expected_path,
+            query_params=expected_query_params,
+            headers=expected_headers,
+            timeout=timeout,
+            retry=DEFAULT_RETRY,
+            _target_object=bucket,
+        )
+
+    def test_get_bucket_hit_w_string_w_metageneration_match(self):
         from google.cloud.storage.bucket import Bucket
 
-        PROJECT = "PROJECT"
-        CREDENTIALS = _make_credentials()
-        METAGENERATION_NUMBER = 6
-        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
-
-        BUCKET_NAME = "bucket-name"
-        data = {"name": BUCKET_NAME}
-        http = _make_requests_session([_make_json_response(data)])
-        client._http_internal = http
+        project = "PROJECT"
+        bucket_name = "bucket-name"
+        metageneration_number = 6
+        api_response = {"name": bucket_name}
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        client._get_resource = mock.Mock(return_value=api_response)
 
         bucket = client.get_bucket(
-            BUCKET_NAME, if_metageneration_match=METAGENERATION_NUMBER
+            bucket_name, if_metageneration_match=metageneration_number
         )
-        self.assertIsInstance(bucket, Bucket)
-        self.assertEqual(bucket.name, BUCKET_NAME)
-        http.request.assert_called_once_with(
-            method="GET",
-            url=mock.ANY,
-            data=mock.ANY,
-            headers=mock.ANY,
-            timeout=self._get_default_timeout(),
-        )
-        _, kwargs = http.request.call_args
-        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
-        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
-        self.assertEqual(
-            path,
-            "/".join(["", "storage", client._connection.API_VERSION, "b", BUCKET_NAME]),
-        )
-        parms = dict(urlparse.parse_qsl(qs))
-        self.assertEqual(parms["ifMetagenerationMatch"], str(METAGENERATION_NUMBER))
-        self.assertEqual(parms["projection"], "noAcl")
 
-    def test_get_bucket_with_object_miss(self):
+        self.assertIsInstance(bucket, Bucket)
+        self.assertEqual(bucket.name, bucket_name)
+
+        expected_path = "/b/%s" % (bucket_name,)
+        expected_query_params = {
+            "projection": "noAcl",
+            "ifMetagenerationMatch": metageneration_number,
+        }
+        expected_headers = {}
+        client._get_resource.assert_called_once_with(
+            expected_path,
+            query_params=expected_query_params,
+            headers=expected_headers,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=bucket,
+        )
+
+    def test_get_bucket_miss_w_object_w_retry(self):
         from google.cloud.exceptions import NotFound
         from google.cloud.storage.bucket import Bucket
 
         project = "PROJECT"
+        bucket_name = "nonesuch"
+        retry = mock.Mock(spec=[])
         credentials = _make_credentials()
         client = self._make_one(project=project, credentials=credentials)
-
-        nonesuch = "nonesuch"
-        bucket_obj = Bucket(client, nonesuch)
-        http = _make_requests_session(
-            [_make_json_response({}, status=http_client.NOT_FOUND)]
-        )
-        client._http_internal = http
+        client._get_resource = mock.Mock(side_effect=NotFound("testing"))
+        bucket_obj = Bucket(client, bucket_name)
 
         with self.assertRaises(NotFound):
-            client.get_bucket(bucket_obj)
+            client.get_bucket(bucket_obj, retry=retry)
 
-        http.request.assert_called_once_with(
-            method="GET",
-            url=mock.ANY,
-            data=mock.ANY,
-            headers=mock.ANY,
+        expected_path = "/b/%s" % (bucket_name,)
+        expected_query_params = {"projection": "noAcl"}
+        expected_headers = {}
+        client._get_resource.assert_called_once_with(
+            expected_path,
+            query_params=expected_query_params,
+            headers=expected_headers,
             timeout=self._get_default_timeout(),
+            retry=retry,
+            _target_object=mock.ANY,
         )
-        _, kwargs = http.request.call_args
-        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
-        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
-        self.assertEqual(
-            path,
-            "/".join(["", "storage", client._connection.API_VERSION, "b", nonesuch]),
-        )
-        parms = dict(urlparse.parse_qsl(qs))
-        self.assertEqual(parms["projection"], "noAcl")
 
-    def test_get_bucket_with_object_hit(self):
+        target = client._get_resource.call_args[1]["_target_object"]
+        self.assertIsInstance(target, Bucket)
+        self.assertEqual(target.name, bucket_name)
+
+    def test_get_bucket_hit_w_object_defaults(self):
         from google.cloud.storage.bucket import Bucket
 
         project = "PROJECT"
+        bucket_name = "bucket-name"
+        api_response = {"name": bucket_name}
         credentials = _make_credentials()
         client = self._make_one(project=project, credentials=credentials)
-
-        bucket_name = "bucket-name"
+        client._get_resource = mock.Mock(return_value=api_response)
         bucket_obj = Bucket(client, bucket_name)
-        data = {"name": bucket_name}
-        http = _make_requests_session([_make_json_response(data)])
-        client._http_internal = http
 
         bucket = client.get_bucket(bucket_obj)
 
         self.assertIsInstance(bucket, Bucket)
         self.assertEqual(bucket.name, bucket_name)
-        http.request.assert_called_once_with(
-            method="GET",
-            url=mock.ANY,
-            data=mock.ANY,
-            headers=mock.ANY,
+
+        expected_path = "/b/%s" % (bucket_name,)
+        expected_query_params = {"projection": "noAcl"}
+        expected_headers = {}
+        client._get_resource.assert_called_once_with(
+            expected_path,
+            query_params=expected_query_params,
+            headers=expected_headers,
             timeout=self._get_default_timeout(),
-        )
-        _, kwargs = http.request.call_args
-        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
-        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
-        self.assertEqual(
-            path,
-            "/".join(["", "storage", client._connection.API_VERSION, "b", bucket_name]),
-        )
-        parms = dict(urlparse.parse_qsl(qs))
-        self.assertEqual(parms["projection"], "noAcl")
-
-    def test_get_bucket_default_retry(self):
-        from google.cloud.storage.bucket import Bucket
-        from google.cloud.storage._http import Connection
-
-        PROJECT = "PROJECT"
-        CREDENTIALS = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
-
-        bucket_name = "bucket-name"
-        bucket_obj = Bucket(client, bucket_name)
-
-        with mock.patch.object(Connection, "api_request") as req:
-            client.get_bucket(bucket_obj)
-
-        req.assert_called_once_with(
-            method="GET",
-            path=mock.ANY,
-            query_params=mock.ANY,
-            headers=mock.ANY,
-            _target_object=bucket_obj,
-            timeout=mock.ANY,
             retry=DEFAULT_RETRY,
+            _target_object=bucket,
         )
 
-    def test_get_bucket_respects_retry_override(self):
+    def test_get_bucket_hit_w_object_w_retry_none(self):
         from google.cloud.storage.bucket import Bucket
-        from google.cloud.storage._http import Connection
 
-        PROJECT = "PROJECT"
-        CREDENTIALS = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
-
+        project = "PROJECT"
         bucket_name = "bucket-name"
+        api_response = {"name": bucket_name}
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        client._get_resource = mock.Mock(return_value=api_response)
         bucket_obj = Bucket(client, bucket_name)
 
-        with mock.patch.object(Connection, "api_request") as req:
-            client.get_bucket(bucket_obj, retry=None)
+        bucket = client.get_bucket(bucket_obj, retry=None)
 
-        req.assert_called_once_with(
-            method="GET",
-            path=mock.ANY,
-            query_params=mock.ANY,
-            headers=mock.ANY,
-            _target_object=bucket_obj,
-            timeout=mock.ANY,
+        self.assertIsInstance(bucket, Bucket)
+        self.assertEqual(bucket.name, bucket_name)
+
+        expected_path = "/b/%s" % (bucket_name,)
+        expected_query_params = {"projection": "noAcl"}
+        expected_headers = {}
+        client._get_resource.assert_called_once_with(
+            expected_path,
+            query_params=expected_query_params,
+            headers=expected_headers,
+            timeout=self._get_default_timeout(),
             retry=None,
+            _target_object=bucket,
         )
 
-    def test_lookup_bucket_miss(self):
-        PROJECT = "PROJECT"
-        CREDENTIALS = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+    def test_lookup_bucket_miss_w_defaults(self):
+        from google.cloud.exceptions import NotFound
+        from google.cloud.storage.bucket import Bucket
 
-        NONESUCH = "nonesuch"
-        http = _make_requests_session(
-            [_make_json_response({}, status=http_client.NOT_FOUND)]
-        )
-        client._http_internal = http
+        project = "PROJECT"
+        bucket_name = "nonesuch"
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        client._get_resource = mock.Mock(side_effect=NotFound("testing"))
 
-        bucket = client.lookup_bucket(NONESUCH, timeout=42)
+        bucket = client.lookup_bucket(bucket_name)
 
         self.assertIsNone(bucket)
-        http.request.assert_called_once_with(
-            method="GET", url=mock.ANY, data=mock.ANY, headers=mock.ANY, timeout=42
-        )
-        _, kwargs = http.request.call_args
-        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
-        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
-        self.assertEqual(
-            path,
-            "/".join(["", "storage", client._connection.API_VERSION, "b", NONESUCH]),
-        )
-        parms = dict(urlparse.parse_qsl(qs))
-        self.assertEqual(parms["projection"], "noAcl")
 
-    def test_lookup_bucket_hit(self):
+        expected_path = "/b/%s" % (bucket_name,)
+        expected_query_params = {"projection": "noAcl"}
+        expected_headers = {}
+        client._get_resource.assert_called_once_with(
+            expected_path,
+            query_params=expected_query_params,
+            headers=expected_headers,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=mock.ANY,
+        )
+
+        target = client._get_resource.call_args[1]["_target_object"]
+        self.assertIsInstance(target, Bucket)
+        self.assertEqual(target.name, bucket_name)
+
+    def test_lookup_bucket_hit_w_timeout(self):
         from google.cloud.storage.bucket import Bucket
 
-        PROJECT = "PROJECT"
-        CREDENTIALS = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+        project = "PROJECT"
+        bucket_name = "bucket-name"
+        timeout = 42
+        api_response = {"name": bucket_name}
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        client._get_resource = mock.Mock(return_value=api_response)
 
-        BUCKET_NAME = "bucket-name"
-        data = {"name": BUCKET_NAME}
-        http = _make_requests_session([_make_json_response(data)])
-        client._http_internal = http
-
-        bucket = client.lookup_bucket(BUCKET_NAME)
+        bucket = client.lookup_bucket(bucket_name, timeout=timeout)
 
         self.assertIsInstance(bucket, Bucket)
-        self.assertEqual(bucket.name, BUCKET_NAME)
-        http.request.assert_called_once_with(
-            method="GET",
-            url=mock.ANY,
-            data=mock.ANY,
-            headers=mock.ANY,
-            timeout=self._get_default_timeout(),
-        )
-        _, kwargs = http.request.call_args
-        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
-        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
-        self.assertEqual(
-            path,
-            "/".join(["", "storage", client._connection.API_VERSION, "b", BUCKET_NAME]),
-        )
-        parms = dict(urlparse.parse_qsl(qs))
-        self.assertEqual(parms["projection"], "noAcl")
+        self.assertEqual(bucket.name, bucket_name)
 
-    def test_lookup_bucket_with_metageneration_match(self):
+        expected_path = "/b/%s" % (bucket_name,)
+        expected_query_params = {"projection": "noAcl"}
+        expected_headers = {}
+        client._get_resource.assert_called_once_with(
+            expected_path,
+            query_params=expected_query_params,
+            headers=expected_headers,
+            timeout=timeout,
+            retry=DEFAULT_RETRY,
+            _target_object=bucket,
+        )
+
+    def test_lookup_bucket_hit_w_metageneration_match(self):
         from google.cloud.storage.bucket import Bucket
 
-        PROJECT = "PROJECT"
-        CREDENTIALS = _make_credentials()
-        METAGENERATION_NUMBER = 6
-        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
-
-        BUCKET_NAME = "bucket-name"
-        data = {"name": BUCKET_NAME}
-        http = _make_requests_session([_make_json_response(data)])
-        client._http_internal = http
+        project = "PROJECT"
+        bucket_name = "bucket-name"
+        api_response = {"name": bucket_name}
+        credentials = _make_credentials()
+        metageneration_number = 6
+        client = self._make_one(project=project, credentials=credentials)
+        client._get_resource = mock.Mock(return_value=api_response)
 
         bucket = client.lookup_bucket(
-            BUCKET_NAME, if_metageneration_match=METAGENERATION_NUMBER
+            bucket_name, if_metageneration_match=metageneration_number
         )
+
         self.assertIsInstance(bucket, Bucket)
-        self.assertEqual(bucket.name, BUCKET_NAME)
-        http.request.assert_called_once_with(
-            method="GET",
-            url=mock.ANY,
-            data=mock.ANY,
-            headers=mock.ANY,
+        self.assertEqual(bucket.name, bucket_name)
+
+        expected_path = "/b/%s" % (bucket_name,)
+        expected_query_params = {
+            "projection": "noAcl",
+            "ifMetagenerationMatch": metageneration_number,
+        }
+        expected_headers = {}
+        client._get_resource.assert_called_once_with(
+            expected_path,
+            query_params=expected_query_params,
+            headers=expected_headers,
             timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=bucket,
         )
-        _, kwargs = http.request.call_args
-        scheme, netloc, path, qs, _ = urlparse.urlsplit(kwargs.get("url"))
-        self.assertEqual("%s://%s" % (scheme, netloc), client._connection.API_BASE_URL)
-        self.assertEqual(
-            path,
-            "/".join(["", "storage", client._connection.API_VERSION, "b", BUCKET_NAME]),
-        )
-        parms = dict(urlparse.parse_qsl(qs))
-        self.assertEqual(parms["projection"], "noAcl")
-        self.assertEqual(parms["ifMetagenerationMatch"], str(METAGENERATION_NUMBER))
 
-    def test_lookup_bucket_default_retry(self):
+    def test_lookup_bucket_hit_w_retry(self):
         from google.cloud.storage.bucket import Bucket
-        from google.cloud.storage._http import Connection
 
-        PROJECT = "PROJECT"
-        CREDENTIALS = _make_credentials()
-        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
-
+        project = "PROJECT"
         bucket_name = "bucket-name"
+        api_response = {"name": bucket_name}
+        credentials = _make_credentials()
+        client = self._make_one(project=project, credentials=credentials)
+        client._get_resource = mock.Mock(return_value=api_response)
         bucket_obj = Bucket(client, bucket_name)
 
-        with mock.patch.object(Connection, "api_request") as req:
-            client.lookup_bucket(bucket_obj)
-            req.assert_called_once_with(
-                method="GET",
-                path=mock.ANY,
-                query_params=mock.ANY,
-                headers=mock.ANY,
-                _target_object=bucket_obj,
-                timeout=mock.ANY,
-                retry=DEFAULT_RETRY,
-            )
+        bucket = client.lookup_bucket(bucket_obj, retry=None)
+
+        self.assertIsInstance(bucket, Bucket)
+        self.assertEqual(bucket.name, bucket_name)
+
+        expected_path = "/b/%s" % (bucket_name,)
+        expected_query_params = {"projection": "noAcl"}
+        expected_headers = {}
+        client._get_resource.assert_called_once_with(
+            expected_path,
+            query_params=expected_query_params,
+            headers=expected_headers,
+            timeout=self._get_default_timeout(),
+            retry=None,
+            _target_object=bucket,
+        )
 
     def test_create_bucket_w_missing_client_project(self):
         credentials = _make_credentials()

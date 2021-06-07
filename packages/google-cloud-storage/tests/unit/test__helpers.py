@@ -66,6 +66,7 @@ class Test_PropertyMixin(unittest.TestCase):
         class Derived(self._get_target_class()):
 
             client = None
+            _actual_encryption_headers = None
 
             @property
             def path(self):
@@ -74,6 +75,9 @@ class Test_PropertyMixin(unittest.TestCase):
             @property
             def user_project(self):
                 return user_project
+
+            def _encryption_headers(self):
+                return self._actual_encryption_headers or {}
 
         return Derived
 
@@ -105,118 +109,129 @@ class Test_PropertyMixin(unittest.TestCase):
         derived = self._derivedClass("/path", user_project)()
         self.assertEqual(derived._query_params, {"userProject": user_project})
 
-    def test_reload(self):
-        connection = _Connection({"foo": "Foo"})
-        client = _Client(connection)
-        derived = self._derivedClass("/path")()
+    def test_reload_w_defaults(self):
+        path = "/path"
+        response = {"foo": "Foo"}
+        client = mock.Mock(spec=["_get_resource"])
+        client._get_resource.return_value = response
+        derived = self._derivedClass(path)()
         # Make sure changes is not a set instance before calling reload
         # (which will clear / replace it with an empty set), checked below.
         derived._changes = object()
-        derived.reload(client=client, timeout=42)
-        self.assertEqual(derived._properties, {"foo": "Foo"})
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(
-            kw[0],
-            {
-                "method": "GET",
-                "path": "/path",
-                "query_params": {"projection": "noAcl"},
-                "headers": {},
-                "_target_object": derived,
-                "timeout": 42,
-                "retry": DEFAULT_RETRY,
-            },
-        )
+        derived.client = client
+
+        derived.reload()
+
+        self.assertEqual(derived._properties, response)
         self.assertEqual(derived._changes, set())
 
-    def test_reload_with_generation_match(self):
-        GENERATION_NUMBER = 9
-        METAGENERATION_NUMBER = 6
+        expected_query_params = {"projection": "noAcl"}
+        expected_headers = {}  # no encryption headers by default
+        client._get_resource.assert_called_once_with(
+            path,
+            query_params=expected_query_params,
+            headers=expected_headers,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=derived,
+        )
 
-        connection = _Connection({"foo": "Foo"})
-        client = _Client(connection)
-        derived = self._derivedClass("/path")()
+    def test_reload_w_generation_match_w_timeout(self):
+        generation_number = 9
+        metageneration_number = 6
+        path = "/path"
+        timeout = 42
+        response = {"foo": "Foo"}
+        client = mock.Mock(spec=["_get_resource"])
+        client._get_resource.return_value = response
+        derived = self._derivedClass(path)()
         # Make sure changes is not a set instance before calling reload
         # (which will clear / replace it with an empty set), checked below.
         derived._changes = object()
+        derived.client = client
+
         derived.reload(
-            client=client,
-            timeout=42,
-            if_generation_match=GENERATION_NUMBER,
-            if_metageneration_match=METAGENERATION_NUMBER,
+            if_generation_match=generation_number,
+            if_metageneration_match=metageneration_number,
+            timeout=timeout,
         )
-        self.assertEqual(derived._properties, {"foo": "Foo"})
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(
-            kw[0],
-            {
-                "method": "GET",
-                "path": "/path",
-                "query_params": {
-                    "projection": "noAcl",
-                    "ifGenerationMatch": GENERATION_NUMBER,
-                    "ifMetagenerationMatch": METAGENERATION_NUMBER,
-                },
-                "headers": {},
-                "_target_object": derived,
-                "timeout": 42,
-                "retry": DEFAULT_RETRY,
-            },
-        )
+
+        self.assertEqual(derived._properties, response)
         self.assertEqual(derived._changes, set())
 
-    def test_reload_w_user_project(self):
+        expected_query_params = {
+            "projection": "noAcl",
+            "ifGenerationMatch": generation_number,
+            "ifMetagenerationMatch": metageneration_number,
+        }
+        expected_headers = {}  # no encryption headers by default
+        client._get_resource.assert_called_once_with(
+            path,
+            query_params=expected_query_params,
+            headers=expected_headers,
+            timeout=timeout,
+            retry=DEFAULT_RETRY,
+            _target_object=derived,
+        )
+
+    def test_reload_w_user_project_w_retry(self):
         user_project = "user-project-123"
-        connection = _Connection({"foo": "Foo"})
-        client = _Client(connection)
-        derived = self._derivedClass("/path", user_project)()
+        path = "/path"
+        retry = mock.Mock(spec=[])
+        response = {"foo": "Foo"}
+        client = mock.Mock(spec=["_get_resource"])
+        client._get_resource.return_value = response
+        derived = self._derivedClass(path, user_project)()
         # Make sure changes is not a set instance before calling reload
         # (which will clear / replace it with an empty set), checked below.
         derived._changes = object()
-        derived.reload(client=client)
-        self.assertEqual(derived._properties, {"foo": "Foo"})
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(
-            kw[0],
-            {
-                "method": "GET",
-                "path": "/path",
-                "query_params": {"projection": "noAcl", "userProject": user_project},
-                "headers": {},
-                "_target_object": derived,
-                "timeout": self._get_default_timeout(),
-                "retry": DEFAULT_RETRY,
-            },
-        )
+        derived.client = client
+
+        derived.reload(retry=retry)
+
+        self.assertEqual(derived._properties, response)
         self.assertEqual(derived._changes, set())
 
-    def test_reload_w_projection(self):
-        connection = _Connection({"foo": "Foo"})
-        client = _Client(connection)
-        derived = self._derivedClass("/path")()
+        expected_query_params = {
+            "projection": "noAcl",
+            "userProject": user_project,
+        }
+        expected_headers = {}  # no encryption headers by default
+        client._get_resource.assert_called_once_with(
+            path,
+            query_params=expected_query_params,
+            headers=expected_headers,
+            timeout=self._get_default_timeout(),
+            retry=retry,
+            _target_object=derived,
+        )
+
+    def test_reload_w_projection_w_explicit_client_w_enc_header(self):
+        path = "/path"
+        response = {"foo": "Foo"}
+        encryption_headers = {"bar": "Bar"}
+        client = mock.Mock(spec=["_get_resource"])
+        client._get_resource.return_value = response
+        derived = self._derivedClass(path)()
         # Make sure changes is not a set instance before calling reload
         # (which will clear / replace it with an empty set), checked below.
         derived._changes = object()
-        derived.reload(projection="full", client=client, timeout=42)
-        self.assertEqual(derived._properties, {"foo": "Foo"})
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(
-            kw[0],
-            {
-                "method": "GET",
-                "path": "/path",
-                "query_params": {"projection": "full"},
-                "headers": {},
-                "_target_object": derived,
-                "timeout": 42,
-                "retry": DEFAULT_RETRY,
-            },
-        )
+        derived._actual_encryption_headers = encryption_headers
+
+        derived.reload(projection="full", client=client)
+
+        self.assertEqual(derived._properties, response)
         self.assertEqual(derived._changes, set())
+
+        expected_query_params = {"projection": "full"}
+        client._get_resource.assert_called_once_with(
+            path,
+            query_params=expected_query_params,
+            headers=encryption_headers,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=derived,
+        )
 
     def test__set_properties(self):
         mixin = self._make_one()

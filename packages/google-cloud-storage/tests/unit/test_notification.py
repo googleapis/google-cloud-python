@@ -327,104 +327,118 @@ class TestBucketNotification(unittest.TestCase):
         )
 
     def test_exists_wo_notification_id(self):
-        client = self._make_client()
+        client = mock.Mock(spec=["_get_resource", "project"])
+        client.project = self.BUCKET_PROJECT
         bucket = self._make_bucket(client)
         notification = self._make_one(bucket, self.TOPIC_NAME)
 
         with self.assertRaises(ValueError):
             notification.exists()
 
-    def test_exists_miss(self):
+        client._get_resource.assert_not_called()
+
+    def test_exists_miss_w_defaults(self):
         from google.cloud.exceptions import NotFound
 
-        client = self._make_client()
+        client = mock.Mock(spec=["_get_resource", "project"])
+        client._get_resource.side_effect = NotFound("testing")
+        client.project = self.BUCKET_PROJECT
         bucket = self._make_bucket(client)
         notification = self._make_one(bucket, self.TOPIC_NAME)
         notification._properties["id"] = self.NOTIFICATION_ID
-        api_request = client._connection.api_request
-        api_request.side_effect = NotFound("testing")
 
-        self.assertFalse(notification.exists(timeout=42))
+        self.assertFalse(notification.exists())
 
-        api_request.assert_called_once_with(
-            method="GET",
-            path=self.NOTIFICATION_PATH,
-            query_params={},
-            timeout=42,
+        expected_query_params = {}
+        client._get_resource.assert_called_once_with(
+            self.NOTIFICATION_PATH,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
         )
 
-    def test_exists_hit(self):
-        USER_PROJECT = "user-project-123"
-        client = self._make_client()
-        bucket = self._make_bucket(client, user_project=USER_PROJECT)
-        notification = self._make_one(bucket, self.TOPIC_NAME)
-        notification._properties["id"] = self.NOTIFICATION_ID
-        api_request = client._connection.api_request
-        api_request.return_value = {
+    def test_exists_hit_w_explicit_w_user_project(self):
+        user_project = "user-project-123"
+        api_response = {
             "topic": self.TOPIC_REF,
             "id": self.NOTIFICATION_ID,
             "etag": self.ETAG,
             "selfLink": self.SELF_LINK,
         }
+        client = mock.Mock(spec=["_get_resource", "project"])
+        client._get_resource.return_vale = api_response
+        client.project = self.BUCKET_PROJECT
+        bucket = self._make_bucket(client, user_project=user_project)
+        notification = self._make_one(bucket, self.TOPIC_NAME)
+        notification._properties["id"] = self.NOTIFICATION_ID
+        timeout = 42
+        retry = mock.Mock(spec=[])
 
-        self.assertTrue(notification.exists(client=client))
+        self.assertTrue(
+            notification.exists(client=client, timeout=timeout, retry=retry)
+        )
 
-        api_request.assert_called_once_with(
-            method="GET",
-            path=self.NOTIFICATION_PATH,
-            query_params={"userProject": USER_PROJECT},
-            timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY,
+        expected_query_params = {"userProject": user_project}
+        client._get_resource.assert_called_once_with(
+            self.NOTIFICATION_PATH,
+            query_params=expected_query_params,
+            timeout=timeout,
+            retry=retry,
         )
 
     def test_reload_wo_notification_id(self):
-        client = self._make_client()
+        client = mock.Mock(spec=["_get_resource", "project"])
+        client.project = self.BUCKET_PROJECT
         bucket = self._make_bucket(client)
         notification = self._make_one(bucket, self.TOPIC_NAME)
 
         with self.assertRaises(ValueError):
             notification.reload()
 
-    def test_reload_miss(self):
+        client._get_resource.assert_not_called()
+
+    def test_reload_miss_w_defaults(self):
         from google.cloud.exceptions import NotFound
 
-        client = self._make_client()
+        client = mock.Mock(spec=["_get_resource", "project"])
+        client._get_resource.side_effect = NotFound("testing")
+        client.project = self.BUCKET_PROJECT
         bucket = self._make_bucket(client)
         notification = self._make_one(bucket, self.TOPIC_NAME)
         notification._properties["id"] = self.NOTIFICATION_ID
-        api_request = client._connection.api_request
-        api_request.side_effect = NotFound("testing")
 
         with self.assertRaises(NotFound):
-            notification.reload(timeout=42)
+            notification.reload()
 
-        api_request.assert_called_once_with(
-            method="GET",
-            path=self.NOTIFICATION_PATH,
-            query_params={},
-            timeout=42,
+        expected_query_params = {}
+        client._get_resource.assert_called_once_with(
+            self.NOTIFICATION_PATH,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
         )
 
-    def test_reload_hit(self):
+    def test_reload_hit_w_explicit_w_user_project(self):
         from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 
-        USER_PROJECT = "user-project-123"
-        client = self._make_client()
-        bucket = self._make_bucket(client, user_project=USER_PROJECT)
-        notification = self._make_one(bucket, self.TOPIC_NAME)
-        notification._properties["id"] = self.NOTIFICATION_ID
-        api_request = client._connection.api_request
-        api_request.return_value = {
+        user_project = "user-project-123"
+        api_response = {
             "topic": self.TOPIC_REF,
             "id": self.NOTIFICATION_ID,
             "etag": self.ETAG,
             "selfLink": self.SELF_LINK,
             "payload_format": NONE_PAYLOAD_FORMAT,
         }
+        client = mock.Mock(spec=["_get_resource", "project"])
+        client._get_resource.return_value = api_response
+        client.project = self.BUCKET_PROJECT
+        bucket = self._make_bucket(client, user_project=user_project)
+        notification = self._make_one(bucket, self.TOPIC_NAME)
+        notification._properties["id"] = self.NOTIFICATION_ID
+        timeout = 42
+        retry = mock.Mock(spec=[])
 
-        notification.reload(client=client)
+        notification.reload(client=client, timeout=timeout, retry=retry)
 
         self.assertEqual(notification.etag, self.ETAG)
         self.assertEqual(notification.self_link, self.SELF_LINK)
@@ -433,12 +447,12 @@ class TestBucketNotification(unittest.TestCase):
         self.assertIsNone(notification.blob_name_prefix)
         self.assertEqual(notification.payload_format, NONE_PAYLOAD_FORMAT)
 
-        api_request.assert_called_once_with(
-            method="GET",
-            path=self.NOTIFICATION_PATH,
-            query_params={"userProject": USER_PROJECT},
-            timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY,
+        expected_query_params = {"userProject": user_project}
+        client._get_resource.assert_called_once_with(
+            self.NOTIFICATION_PATH,
+            query_params=expected_query_params,
+            timeout=timeout,
+            retry=retry,
         )
 
     def test_delete_wo_notification_id(self):

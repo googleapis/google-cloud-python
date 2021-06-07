@@ -786,20 +786,19 @@ class Bucket(_PropertyMixin):
         try:
             # We intentionally pass `_target_object=None` since fields=name
             # would limit the local properties.
-            client._connection.api_request(
-                method="GET",
-                path=self.path,
+            client._get_resource(
+                self.path,
                 query_params=query_params,
-                _target_object=None,
                 timeout=timeout,
                 retry=retry,
+                _target_object=None,
             )
+        except NotFound:
             # NOTE: This will not fail immediately in a batch. However, when
             #       Batch.finish() is called, the resulting `NotFound` will be
             #       raised.
-            return True
-        except NotFound:
             return False
+        return True
 
     def create(
         self,
@@ -2882,13 +2881,12 @@ class Bucket(_PropertyMixin):
         if requested_policy_version is not None:
             query_params["optionsRequestedPolicyVersion"] = requested_policy_version
 
-        info = client._connection.api_request(
-            method="GET",
-            path="%s/iam" % (self.path,),
+        info = client._get_resource(
+            "%s/iam" % (self.path,),
             query_params=query_params,
-            _target_object=None,
             timeout=timeout,
             retry=retry,
+            _target_object=None,
         )
         return Policy.from_api_repr(info)
 
@@ -3008,12 +3006,12 @@ class Bucket(_PropertyMixin):
             query_params["userProject"] = self.user_project
 
         path = "%s/iam/testPermissions" % (self.path,)
-        resp = client._connection.api_request(
-            method="GET",
-            path=path,
+        resp = client._get_resource(
+            path,
             query_params=query_params,
             timeout=timeout,
             retry=retry,
+            _target_object=None,
         )
         return resp.get("permissions", [])
 
