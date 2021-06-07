@@ -336,10 +336,6 @@ class HMACKeyMetadata(object):
         if self.user_project is not None:
             qs_params["userProject"] = self.user_project
 
-        self._client._connection.api_request(
-            method="DELETE",
-            path=self.path,
-            query_params=qs_params,
-            timeout=timeout,
-            retry=retry,
+        self._client._delete_resource(
+            self.path, query_params=qs_params, timeout=timeout, retry=retry,
         )

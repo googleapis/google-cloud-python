@@ -593,6 +593,64 @@ class TestClient(unittest.TestCase):
             _target_object=target,
         )
 
+    def test__delete_resource_miss_w_defaults(self):
+        from google.cloud.exceptions import NotFound
+
+        project = "PROJECT"
+        path = "/path/to/something"
+        credentials = _make_credentials()
+
+        client = self._make_one(project=project, credentials=credentials)
+        connection = client._base_connection = _make_connection()
+
+        with self.assertRaises(NotFound):
+            client._delete_resource(path)
+
+        connection.api_request.assert_called_once_with(
+            method="DELETE",
+            path=path,
+            query_params=None,
+            headers=None,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=None,
+        )
+
+    def test__delete_resource_hit_w_explicit(self):
+        project = "PROJECT"
+        path = "/path/to/something"
+        query_params = {"foo": "Foo"}
+        headers = {"bar": "Bar"}
+        timeout = 100
+        retry = mock.Mock(spec=[])
+        credentials = _make_credentials()
+
+        client = self._make_one(project=project, credentials=credentials)
+        expected = mock.Mock(spec={})
+        connection = client._base_connection = _make_connection(expected)
+        target = mock.Mock(spec={})
+
+        found = client._delete_resource(
+            path,
+            query_params=query_params,
+            headers=headers,
+            timeout=timeout,
+            retry=retry,
+            _target_object=target,
+        )
+
+        self.assertIs(found, expected)
+
+        connection.api_request.assert_called_once_with(
+            method="DELETE",
+            path=path,
+            query_params=query_params,
+            headers=headers,
+            timeout=timeout,
+            retry=retry,
+            _target_object=target,
+        )
+
     def test_get_bucket_miss_w_string_w_defaults(self):
         from google.cloud.exceptions import NotFound
         from google.cloud.storage.bucket import Bucket

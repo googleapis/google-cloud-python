@@ -429,12 +429,8 @@ class BucketNotification(object):
         if self.bucket.user_project is not None:
             query_params["userProject"] = self.bucket.user_project
 
-        client._connection.api_request(
-            method="DELETE",
-            path=self.path,
-            query_params=query_params,
-            timeout=timeout,
-            retry=retry,
+        client._delete_resource(
+            self.path, query_params=query_params, timeout=timeout, retry=retry,
         )
 
 

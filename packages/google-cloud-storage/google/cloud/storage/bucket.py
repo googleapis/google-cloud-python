@@ -1466,9 +1466,9 @@ class Bucket(_PropertyMixin):
         self,
         force=False,
         client=None,
-        timeout=_DEFAULT_TIMEOUT,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
+        timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
     ):
         """Delete this bucket.
@@ -1496,13 +1496,6 @@ class Bucket(_PropertyMixin):
         :param client: (Optional) The client to use. If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response on each request.
-
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
-
         :type if_metageneration_match: long
         :param if_metageneration_match: (Optional) Make the operation conditional on whether the
                                         blob's current metageneration matches the given value.
@@ -1510,6 +1503,13 @@ class Bucket(_PropertyMixin):
         :type if_metageneration_not_match: long
         :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
                                             blob's current metageneration does not match the given value.
+
+        :type timeout: float or tuple
+        :param timeout: (Optional) The amount of time, in seconds, to wait
+            for the server response on each request.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry: (Optional) How to retry the RPC. A None value will disable retries.
@@ -1545,6 +1545,7 @@ class Bucket(_PropertyMixin):
                     max_results=self._MAX_OBJECTS_FOR_ITERATION + 1,
                     client=client,
                     timeout=timeout,
+                    retry=retry,
                 )
             )
             if len(blobs) > self._MAX_OBJECTS_FOR_ITERATION:
@@ -1558,19 +1559,22 @@ class Bucket(_PropertyMixin):
 
             # Ignore 404 errors on delete.
             self.delete_blobs(
-                blobs, on_error=lambda blob: None, client=client, timeout=timeout
+                blobs,
+                on_error=lambda blob: None,
+                client=client,
+                timeout=timeout,
+                retry=retry,
             )
 
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
         # in a batch request).
-        client._connection.api_request(
-            method="DELETE",
-            path=self.path,
+        client._delete_resource(
+            self.path,
             query_params=query_params,
-            _target_object=None,
             timeout=timeout,
             retry=retry,
+            _target_object=None,
         )
 
     def delete_blob(
@@ -1677,13 +1681,12 @@ class Bucket(_PropertyMixin):
         # We intentionally pass `_target_object=None` since a DELETE
         # request has no response value (whether in a standard request or
         # in a batch request).
-        client._connection.api_request(
-            method="DELETE",
-            path=blob.path,
+        client._delete_resource(
+            blob.path,
             query_params=query_params,
-            _target_object=None,
             timeout=timeout,
             retry=retry,
+            _target_object=None,
         )
 
     def delete_blobs(
@@ -1802,11 +1805,11 @@ class Bucket(_PropertyMixin):
                 self.delete_blob(
                     blob_name,
                     client=client,
-                    timeout=timeout,
                     if_generation_match=next(if_generation_match, None),
                     if_generation_not_match=next(if_generation_not_match, None),
                     if_metageneration_match=next(if_metageneration_match, None),
                     if_metageneration_not_match=next(if_metageneration_not_match, None),
+                    timeout=timeout,
                     retry=retry,
                 )
             except NotFound:

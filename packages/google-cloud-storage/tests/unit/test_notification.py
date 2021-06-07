@@ -456,51 +456,55 @@ class TestBucketNotification(unittest.TestCase):
         )
 
     def test_delete_wo_notification_id(self):
-        client = self._make_client()
+        client = mock.Mock(spec=["_delete_resource", "project"])
+        client.project = self.BUCKET_PROJECT
         bucket = self._make_bucket(client)
         notification = self._make_one(bucket, self.TOPIC_NAME)
 
         with self.assertRaises(ValueError):
             notification.delete()
 
-    def test_delete_miss(self):
+        client._delete_resource.assert_not_called()
+
+    def test_delete_miss_w_defaults(self):
         from google.cloud.exceptions import NotFound
 
-        client = self._make_client()
+        client = mock.Mock(spec=["_delete_resource", "project"])
+        client._delete_resource.side_effect = NotFound("testing")
+        client.project = self.BUCKET_PROJECT
         bucket = self._make_bucket(client)
         notification = self._make_one(bucket, self.TOPIC_NAME)
         notification._properties["id"] = self.NOTIFICATION_ID
-        api_request = client._connection.api_request
-        api_request.side_effect = NotFound("testing")
 
         with self.assertRaises(NotFound):
-            notification.delete(timeout=42)
+            notification.delete()
 
-        api_request.assert_called_once_with(
-            method="DELETE",
-            path=self.NOTIFICATION_PATH,
+        client._delete_resource.assert_called_once_with(
+            self.NOTIFICATION_PATH,
             query_params={},
-            timeout=42,
+            timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
         )
 
-    def test_delete_hit(self):
-        USER_PROJECT = "user-project-123"
-        client = self._make_client()
-        bucket = self._make_bucket(client, user_project=USER_PROJECT)
+    def test_delete_hit_w_explicit_client_timeout_retry(self):
+        user_project = "user-project-123"
+        client = mock.Mock(spec=["_delete_resource"])
+        client._delete_resource.return_value = None
+        bucket_client = mock.Mock(spec=["project"])
+        bucket_client.project = self.BUCKET_PROJECT
+        bucket = self._make_bucket(bucket_client, user_project=user_project)
         notification = self._make_one(bucket, self.TOPIC_NAME)
         notification._properties["id"] = self.NOTIFICATION_ID
-        api_request = client._connection.api_request
-        api_request.return_value = None
+        timeout = 42
+        retry = mock.Mock(spec=[])
 
-        notification.delete(client=client)
+        notification.delete(client=client, timeout=timeout, retry=retry)
 
-        api_request.assert_called_once_with(
-            method="DELETE",
-            path=self.NOTIFICATION_PATH,
-            query_params={"userProject": USER_PROJECT},
-            timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY,
+        client._delete_resource.assert_called_once_with(
+            self.NOTIFICATION_PATH,
+            query_params={"userProject": user_project},
+            timeout=timeout,
+            retry=retry,
         )
 
 
