@@ -412,19 +412,19 @@ class TestClient(unittest.TestCase):
     def test__get_resource_miss_w_defaults(self):
         from google.cloud.exceptions import NotFound
 
-        PROJECT = "PROJECT"
-        PATH = "/path/to/something"
-        CREDENTIALS = _make_credentials()
+        project = "PROJECT"
+        path = "/path/to/something"
+        credentials = _make_credentials()
 
-        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=project, credentials=credentials)
         connection = client._base_connection = _make_connection()
 
         with self.assertRaises(NotFound):
-            client._get_resource(PATH)
+            client._get_resource(path)
 
         connection.api_request.assert_called_once_with(
             method="GET",
-            path=PATH,
+            path=path,
             query_params=None,
             headers=None,
             timeout=self._get_default_timeout(),
@@ -433,25 +433,25 @@ class TestClient(unittest.TestCase):
         )
 
     def test__get_resource_hit_w_explicit(self):
-        PROJECT = "PROJECT"
-        PATH = "/path/to/something"
-        QUERY_PARAMS = {"foo": "Foo"}
-        HEADERS = {"bar": "Bar"}
-        TIMEOUT = 100
-        RETRY = mock.Mock(spec=[])
-        CREDENTIALS = _make_credentials()
+        project = "PROJECT"
+        path = "/path/to/something"
+        query_params = {"foo": "Foo"}
+        headers = {"bar": "Bar"}
+        timeout = 100
+        retry = mock.Mock(spec=[])
+        credentials = _make_credentials()
 
-        client = self._make_one(project=PROJECT, credentials=CREDENTIALS)
+        client = self._make_one(project=project, credentials=credentials)
         expected = mock.Mock(spec={})
         connection = client._base_connection = _make_connection(expected)
         target = mock.Mock(spec={})
 
         found = client._get_resource(
-            PATH,
-            query_params=QUERY_PARAMS,
-            headers=HEADERS,
-            timeout=TIMEOUT,
-            retry=RETRY,
+            path,
+            query_params=query_params,
+            headers=headers,
+            timeout=timeout,
+            retry=retry,
             _target_object=target,
         )
 
@@ -459,11 +459,74 @@ class TestClient(unittest.TestCase):
 
         connection.api_request.assert_called_once_with(
             method="GET",
-            path=PATH,
-            query_params=QUERY_PARAMS,
-            headers=HEADERS,
-            timeout=TIMEOUT,
-            retry=RETRY,
+            path=path,
+            query_params=query_params,
+            headers=headers,
+            timeout=timeout,
+            retry=retry,
+            _target_object=target,
+        )
+
+    def test__patch_resource_miss_w_defaults(self):
+        from google.cloud.exceptions import NotFound
+
+        project = "PROJECT"
+        path = "/path/to/something"
+        credentials = _make_credentials()
+        patched = {"baz": "Baz"}
+
+        client = self._make_one(project=project, credentials=credentials)
+        connection = client._base_connection = _make_connection()
+
+        with self.assertRaises(NotFound):
+            client._patch_resource(path, patched)
+
+        connection.api_request.assert_called_once_with(
+            method="PATCH",
+            path=path,
+            data=patched,
+            query_params=None,
+            headers=None,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=None,
+        )
+
+    def test__patch_resource_hit_w_explicit(self):
+        project = "PROJECT"
+        path = "/path/to/something"
+        patched = {"baz": "Baz"}
+        query_params = {"foo": "Foo"}
+        headers = {"bar": "Bar"}
+        timeout = 100
+        retry = mock.Mock(spec=[])
+        credentials = _make_credentials()
+
+        client = self._make_one(project=project, credentials=credentials)
+        expected = mock.Mock(spec={})
+        connection = client._base_connection = _make_connection(expected)
+        target = mock.Mock(spec={})
+
+        found = client._patch_resource(
+            path,
+            patched,
+            query_params=query_params,
+            headers=headers,
+            timeout=timeout,
+            retry=retry,
+            _target_object=target,
+        )
+
+        self.assertIs(found, expected)
+
+        connection.api_request.assert_called_once_with(
+            method="PATCH",
+            path=path,
+            data=patched,
+            query_params=query_params,
+            headers=headers,
+            timeout=timeout,
+            retry=retry,
             _target_object=target,
         )
 

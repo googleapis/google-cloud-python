@@ -613,195 +613,269 @@ class Test_ACL(unittest.TestCase):
         )
 
     def test_save_none_set_none_passed(self):
-        connection = _Connection()
-        client = _Client(connection)
+        save_path = "/testing"
+        client = mock.Mock(spec=["_patch_resource"])
         acl = self._make_one()
-        acl.save_path = "/testing"
-        acl.save(client=client)
-        kw = connection._requested
-        self.assertEqual(len(kw), 0)
+        acl.save_path = save_path
 
-    def test_save_existing_missing_none_passed(self):
-        connection = _Connection({})
-        client = _Client(connection)
-        acl = self._make_one()
-        acl.save_path = "/testing"
+        acl.save(client=client)
+
+        client._patch_resource.assert_not_called()
+
+    def test_save_w_empty_response_w_defaults(self):
+        class Derived(self._get_target_class()):
+            client = None
+
+        save_path = "/testing"
+        api_response = {}
+        client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
+        acl = Derived()
+        acl.client = client
+        acl.save_path = save_path
         acl.loaded = True
-        acl.save(client=client, timeout=42)
+
+        acl.save()
+
         self.assertEqual(list(acl), [])
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]["method"], "PATCH")
-        self.assertEqual(kw[0]["path"], "/testing")
-        self.assertEqual(kw[0]["data"], {"acl": []})
-        self.assertEqual(kw[0]["query_params"], {"projection": "full"})
-        self.assertEqual(kw[0]["timeout"], 42)
 
-    def test_save_no_acl(self):
-        ROLE = "role"
-        AFTER = [{"entity": "allUsers", "role": ROLE}]
-        connection = _Connection({"acl": AFTER})
-        client = _Client(connection)
-        acl = self._make_one()
-        acl.save_path = "/testing"
-        acl.loaded = True
-        acl.entity("allUsers").grant(ROLE)
-        acl.save(client=client)
-        self.assertEqual(list(acl), AFTER)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]["method"], "PATCH")
-        self.assertEqual(kw[0]["path"], "/testing")
-        self.assertEqual(
-            kw[0],
-            {
-                "method": "PATCH",
-                "path": "/testing",
-                "query_params": {"projection": "full"},
-                "data": {"acl": AFTER},
-                "timeout": self._get_default_timeout(),
-            },
+        expected_data = {"acl": []}
+        expected_query_params = {"projection": "full"}
+        client._patch_resource.assert_called_once_with(
+            save_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
         )
 
-    def test_save_w_acl_w_user_project(self):
-        ROLE1 = "role1"
-        ROLE2 = "role2"
-        STICKY = {"entity": "allUsers", "role": ROLE2}
-        USER_PROJECT = "user-project-123"
-        new_acl = [{"entity": "allUsers", "role": ROLE1}]
-        connection = _Connection({"acl": [STICKY] + new_acl})
-        client = _Client(connection)
+    def test_save_no_acl_w_timeout(self):
+        save_path = "/testing"
+        role = "role"
+        expected_acl = [{"entity": "allUsers", "role": role}]
+        api_response = {"acl": expected_acl}
+        client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
         acl = self._make_one()
-        acl.save_path = "/testing"
+        acl.save_path = save_path
         acl.loaded = True
-        acl.user_project = USER_PROJECT
+        acl.entity("allUsers").grant(role)
+        timeout = 42
 
-        acl.save(new_acl, client=client)
+        acl.save(client=client, timeout=timeout)
+
+        self.assertEqual(list(acl), expected_acl)
+
+        expected_data = api_response
+        expected_query_params = {"projection": "full"}
+        client._patch_resource.assert_called_once_with(
+            save_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=timeout,
+            retry=DEFAULT_RETRY,
+        )
+
+    def test_save_w_acl_w_user_project_w_retry(self):
+        save_path = "/testing"
+        user_project = "user-project-123"
+        role1 = "role1"
+        role2 = "role2"
+        sticky = {"entity": "allUsers", "role": role2}
+        new_acl = [{"entity": "allUsers", "role": role1}]
+        api_response = {"acl": [sticky] + new_acl}
+        client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
+        acl = self._make_one()
+        acl.save_path = save_path
+        acl.loaded = True
+        acl.user_project = user_project
+        retry = mock.Mock(spec=[])
+
+        acl.save(new_acl, client=client, retry=retry)
 
         entries = list(acl)
         self.assertEqual(len(entries), 2)
-        self.assertTrue(STICKY in entries)
+        self.assertTrue(sticky in entries)
         self.assertTrue(new_acl[0] in entries)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(
-            kw[0],
-            {
-                "method": "PATCH",
-                "path": "/testing",
-                "query_params": {"projection": "full", "userProject": USER_PROJECT},
-                "data": {"acl": new_acl},
-                "timeout": self._get_default_timeout(),
-            },
+
+        expected_data = {"acl": new_acl}
+        expected_query_params = {"projection": "full", "userProject": user_project}
+        client._patch_resource.assert_called_once_with(
+            save_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=retry,
         )
 
     def test_save_prefefined_invalid(self):
-        connection = _Connection()
-        client = _Client(connection)
+        save_path = "/testing"
+        client = mock.Mock(spec=["_patch_resource"])
         acl = self._make_one()
-        acl.save_path = "/testing"
+        acl.save_path = save_path
         acl.loaded = True
+
         with self.assertRaises(ValueError):
             acl.save_predefined("bogus", client=client)
 
-    def test_save_predefined_valid(self):
-        PREDEFINED = "private"
-        connection = _Connection({"acl": []})
-        client = _Client(connection)
-        acl = self._make_one()
-        acl.save_path = "/testing"
+        client._patch_resource.assert_not_called()
+
+    def test_save_predefined_w_defaults(self):
+        class Derived(self._get_target_class()):
+            client = None
+
+        save_path = "/testing"
+        predefined = "private"
+        api_response = {"acl": []}
+        client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
+        acl = Derived()
+        acl.save_path = save_path
         acl.loaded = True
-        acl.save_predefined(PREDEFINED, client=client, timeout=42)
+        acl.client = client
+
+        acl.save_predefined(predefined)
+
         entries = list(acl)
         self.assertEqual(len(entries), 0)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(
-            kw[0],
-            {
-                "method": "PATCH",
-                "path": "/testing",
-                "query_params": {"projection": "full", "predefinedAcl": PREDEFINED},
-                "data": {"acl": []},
-                "timeout": 42,
-            },
+
+        expected_data = {"acl": []}
+        expected_query_params = {
+            "projection": "full",
+            "predefinedAcl": predefined,
+        }
+        client._patch_resource.assert_called_once_with(
+            save_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
         )
 
-    def test_save_predefined_w_XML_alias(self):
-        PREDEFINED_XML = "project-private"
-        PREDEFINED_JSON = "projectPrivate"
-        connection = _Connection({"acl": []})
-        client = _Client(connection)
+    def test_save_predefined_w_XML_alias_w_timeout(self):
+        save_path = "/testing"
+        predefined_xml = "project-private"
+        predefined_json = "projectPrivate"
+        api_response = {"acl": []}
+        client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
         acl = self._make_one()
-        acl.save_path = "/testing"
+        acl.save_path = save_path
         acl.loaded = True
-        acl.save_predefined(PREDEFINED_XML, client=client)
+        timeout = 42
+
+        acl.save_predefined(predefined_xml, client=client, timeout=timeout)
+
         entries = list(acl)
         self.assertEqual(len(entries), 0)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(
-            kw[0],
-            {
-                "method": "PATCH",
-                "path": "/testing",
-                "query_params": {
-                    "projection": "full",
-                    "predefinedAcl": PREDEFINED_JSON,
-                },
-                "data": {"acl": []},
-                "timeout": self._get_default_timeout(),
-            },
+
+        expected_data = {"acl": []}
+        expected_query_params = {
+            "projection": "full",
+            "predefinedAcl": predefined_json,
+        }
+        client._patch_resource.assert_called_once_with(
+            save_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=timeout,
+            retry=DEFAULT_RETRY,
         )
 
-    def test_save_predefined_valid_w_alternate_query_param(self):
+    def test_save_predefined_w_alternate_query_param_w_retry(self):
         # Cover case where subclass overrides _PREDEFINED_QUERY_PARAM
-        PREDEFINED = "publicRead"
-        connection = _Connection({"acl": []})
-        client = _Client(connection)
+        save_path = "/testing"
+        predefined = "publicRead"
+        api_response = {"acl": []}
+        client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
         acl = self._make_one()
-        acl.save_path = "/testing"
+        acl.save_path = save_path
         acl.loaded = True
         acl._PREDEFINED_QUERY_PARAM = "alternate"
-        acl.save_predefined(PREDEFINED, client=client)
+        retry = mock.Mock(spec=[])
+
+        acl.save_predefined(predefined, client=client, retry=retry)
+
         entries = list(acl)
         self.assertEqual(len(entries), 0)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(
-            kw[0],
-            {
-                "method": "PATCH",
-                "path": "/testing",
-                "query_params": {"projection": "full", "alternate": PREDEFINED},
-                "data": {"acl": []},
-                "timeout": self._get_default_timeout(),
-            },
+
+        expected_data = {"acl": []}
+        expected_query_params = {
+            "projection": "full",
+            "alternate": predefined,
+        }
+        client._patch_resource.assert_called_once_with(
+            save_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=retry,
         )
 
-    def test_clear(self):
-        ROLE1 = "role1"
-        ROLE2 = "role2"
-        STICKY = {"entity": "allUsers", "role": ROLE2}
-        connection = _Connection({"acl": [STICKY]})
-        client = _Client(connection)
-        acl = self._make_one()
-        acl.save_path = "/testing"
+    def test_clear_w_defaults(self):
+        class Derived(self._get_target_class()):
+            client = None
+
+        save_path = "/testing"
+        role1 = "role1"
+        role2 = "role2"
+        sticky = {"entity": "allUsers", "role": role2}
+        api_response = {"acl": [sticky]}
+        client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
+        acl = Derived()
+        acl.client = client
+        acl.save_path = save_path
         acl.loaded = True
-        acl.entity("allUsers", ROLE1)
-        acl.clear(client=client, timeout=42)
-        self.assertEqual(list(acl), [STICKY])
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(
-            kw[0],
-            {
-                "method": "PATCH",
-                "path": "/testing",
-                "query_params": {"projection": "full"},
-                "data": {"acl": []},
-                "timeout": 42,
-            },
+        acl.entity("allUsers", role1)
+
+        acl.clear()
+
+        self.assertEqual(list(acl), [sticky])
+
+        expected_data = {"acl": []}
+        expected_query_params = {
+            "projection": "full",
+        }
+        client._patch_resource.assert_called_once_with(
+            save_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+        )
+
+    def test_clear_w_explicit_client_w_timeout_w_retry(self):
+        save_path = "/testing"
+        role1 = "role1"
+        role2 = "role2"
+        sticky = {"entity": "allUsers", "role": role2}
+        api_response = {"acl": [sticky]}
+        client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
+        acl = self._make_one()
+        acl.save_path = save_path
+        acl.loaded = True
+        acl.entity("allUsers", role1)
+        timeout = 42
+        retry = mock.Mock(spec=[])
+
+        acl.clear(client=client, timeout=timeout, retry=retry)
+
+        self.assertEqual(list(acl), [sticky])
+
+        expected_data = {"acl": []}
+        expected_query_params = {
+            "projection": "full",
+        }
+        client._patch_resource.assert_called_once_with(
+            save_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=timeout,
+            retry=retry,
         )
 
 
@@ -913,22 +987,3 @@ class _Bucket(object):
     @property
     def path(self):
         return "/b/%s" % self.name
-
-
-class _Connection(object):
-    _delete_ok = False
-
-    def __init__(self, *responses):
-        self._responses = responses
-        self._requested = []
-        self._deleted = []
-
-    def api_request(self, **kw):
-        self._requested.append(kw)
-        response, self._responses = self._responses[0], self._responses[1:]
-        return response
-
-
-class _Client(object):
-    def __init__(self, connection):
-        self._connection = connection

@@ -1065,9 +1065,9 @@ class Bucket(_PropertyMixin):
         # Call the superclass method.
         super(Bucket, self).patch(
             client=client,
-            timeout=timeout,
             if_metageneration_match=if_metageneration_match,
             if_metageneration_not_match=if_metageneration_not_match,
+            timeout=timeout,
             retry=retry,
         )
 
@@ -1993,7 +1993,7 @@ class Bucket(_PropertyMixin):
         )
 
         if not preserve_acl:
-            new_blob.acl.save(acl={}, client=client, timeout=timeout)
+            new_blob.acl.save(acl={}, client=client, timeout=timeout, retry=retry)
 
         new_blob._set_properties(copy_result)
         return new_blob
@@ -3068,7 +3068,7 @@ class Bucket(_PropertyMixin):
             for each blob.
         """
         self.acl.all().grant_read()
-        self.acl.save(client=client, timeout=timeout)
+        self.acl.save(client=client, timeout=timeout, retry=retry)
 
         if future:
             doa = self.default_object_acl
@@ -3099,7 +3099,7 @@ class Bucket(_PropertyMixin):
 
             for blob in blobs:
                 blob.acl.all().grant_read()
-                blob.acl.save(client=client, timeout=timeout)
+                blob.acl.save(client=client, timeout=timeout, retry=retry)
 
     def make_private(
         self,
@@ -3155,7 +3155,7 @@ class Bucket(_PropertyMixin):
             for each blob.
         """
         self.acl.all().revoke_read()
-        self.acl.save(client=client, timeout=timeout)
+        self.acl.save(client=client, timeout=timeout, retry=retry)
 
         if future:
             doa = self.default_object_acl
@@ -3186,7 +3186,7 @@ class Bucket(_PropertyMixin):
 
             for blob in blobs:
                 blob.acl.all().revoke_read()
-                blob.acl.save(client=client, timeout=timeout)
+                blob.acl.save(client=client, timeout=timeout, retry=retry)
 
     def generate_upload_policy(self, conditions, expiration=None, client=None):
         """Create a signed upload policy for uploading objects.

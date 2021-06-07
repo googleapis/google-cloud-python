@@ -245,105 +245,109 @@ class Test_PropertyMixin(unittest.TestCase):
         derived._patch_property("foo", "Foo")
         self.assertEqual(derived._properties, {"foo": "Foo"})
 
-    def test_patch(self):
-        connection = _Connection({"foo": "Foo"})
-        client = _Client(connection)
-        derived = self._derivedClass("/path")()
+    def test_patch_w_defaults(self):
+        path = "/path"
+        api_response = {"foo": "Foo"}
+        derived = self._derivedClass(path)()
         # Make sure changes is non-empty, so we can observe a change.
-        BAR = object()
-        BAZ = object()
-        derived._properties = {"bar": BAR, "baz": BAZ}
+        bar = object()
+        baz = object()
+        derived._properties = {"bar": bar, "baz": baz}
         derived._changes = set(["bar"])  # Ignore baz.
-        derived.patch(client=client, timeout=42)
-        self.assertEqual(derived._properties, {"foo": "Foo"})
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(
-            kw[0],
-            {
-                "method": "PATCH",
-                "path": "/path",
-                "query_params": {"projection": "full"},
-                # Since changes does not include `baz`, we don't see it sent.
-                "data": {"bar": BAR},
-                "_target_object": derived,
-                "timeout": 42,
-                "retry": DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
-            },
-        )
+        client = derived.client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
+
+        derived.patch()
+
+        self.assertEqual(derived._properties, api_response)
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 
-    def test_patch_with_metageneration_match(self):
-        GENERATION_NUMBER = 9
-        METAGENERATION_NUMBER = 6
+        expected_data = {"bar": bar}
+        expected_query_params = {"projection": "full"}
+        client._patch_resource.assert_called_once_with(
+            path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+            _target_object=derived,
+        )
 
-        connection = _Connection({"foo": "Foo"})
-        client = _Client(connection)
-        derived = self._derivedClass("/path")()
+    def test_patch_w_metageneration_match_w_timeout_w_retry(self):
+        path = "/path"
+        api_response = {"foo": "Foo"}
+        derived = self._derivedClass(path)()
         # Make sure changes is non-empty, so we can observe a change.
-        BAR = object()
-        BAZ = object()
-        derived._properties = {"bar": BAR, "baz": BAZ}
+        bar = object()
+        baz = object()
+        derived._properties = {"bar": bar, "baz": baz}
         derived._changes = set(["bar"])  # Ignore baz.
+        client = derived.client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
+        timeout = 42
+        retry = mock.Mock(spec=[])
+        generation_number = 9
+        metageneration_number = 6
+
         derived.patch(
-            client=client,
-            timeout=42,
-            if_generation_match=GENERATION_NUMBER,
-            if_metageneration_match=METAGENERATION_NUMBER,
+            if_generation_match=generation_number,
+            if_metageneration_match=metageneration_number,
+            timeout=timeout,
+            retry=retry,
         )
+
         self.assertEqual(derived._properties, {"foo": "Foo"})
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(
-            kw[0],
-            {
-                "method": "PATCH",
-                "path": "/path",
-                "query_params": {
-                    "projection": "full",
-                    "ifGenerationMatch": GENERATION_NUMBER,
-                    "ifMetagenerationMatch": METAGENERATION_NUMBER,
-                },
-                # Since changes does not include `baz`, we don't see it sent.
-                "data": {"bar": BAR},
-                "_target_object": derived,
-                "timeout": 42,
-                "retry": DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
-            },
-        )
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
 
-    def test_patch_w_user_project(self):
-        user_project = "user-project-123"
-        connection = _Connection({"foo": "Foo"})
-        client = _Client(connection)
-        derived = self._derivedClass("/path", user_project)()
-        # Make sure changes is non-empty, so we can observe a change.
-        BAR = object()
-        BAZ = object()
-        derived._properties = {"bar": BAR, "baz": BAZ}
-        derived._changes = set(["bar"])  # Ignore baz.
-        derived.patch(client=client)
-        self.assertEqual(derived._properties, {"foo": "Foo"})
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(
-            kw[0],
-            {
-                "method": "PATCH",
-                "path": "/path",
-                "query_params": {"projection": "full", "userProject": user_project},
-                # Since changes does not include `baz`, we don't see it sent.
-                "data": {"bar": BAR},
-                "_target_object": derived,
-                "timeout": self._get_default_timeout(),
-                "retry": DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
-            },
+        expected_data = {"bar": bar}
+        expected_query_params = {
+            "projection": "full",
+            "ifGenerationMatch": generation_number,
+            "ifMetagenerationMatch": metageneration_number,
+        }
+        client._patch_resource.assert_called_once_with(
+            path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=timeout,
+            retry=retry,
+            _target_object=derived,
         )
+
+    def test_patch_w_user_project_w_explicit_client(self):
+        path = "/path"
+        user_project = "user-project-123"
+        api_response = {"foo": "Foo"}
+        derived = self._derivedClass(path, user_project)()
+        # Make sure changes is non-empty, so we can observe a change.
+        bar = object()
+        baz = object()
+        derived._properties = {"bar": bar, "baz": baz}
+        derived._changes = set(["bar"])  # Ignore baz.
+        client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
+
+        derived.patch(client=client)
+
+        self.assertEqual(derived._properties, {"foo": "Foo"})
         # Make sure changes get reset by patch().
         self.assertEqual(derived._changes, set())
+
+        expected_data = {"bar": bar}
+        expected_query_params = {
+            "projection": "full",
+            "userProject": user_project,
+        }
+        client._patch_resource.assert_called_once_with(
+            path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+            _target_object=derived,
+        )
 
     def test_update(self):
         connection = _Connection({"foo": "Foo"})

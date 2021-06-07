@@ -1623,41 +1623,49 @@ class Test_Bucket(unittest.TestCase):
     def test_copy_blobs_preserve_acl(self):
         from google.cloud.storage.acl import ObjectACL
 
-        SOURCE = "source"
-        DEST = "dest"
-        BLOB_NAME = "blob-name"
-        NEW_NAME = "new_name"
+        source_name = "source"
+        dest_name = "dest"
+        blob_name = "blob-name"
+        new_name = "new_name"
 
         connection = _Connection({}, {})
         client = _Client(connection)
-        source = self._make_one(client=client, name=SOURCE)
-        dest = self._make_one(client=client, name=DEST)
-        blob = self._make_blob(SOURCE, BLOB_NAME)
+
+        # Temporary, until we get a real client in place.
+        client._patch_resource = mock.Mock(return_value={})
+
+        source = self._make_one(client=client, name=source_name)
+        dest = self._make_one(client=client, name=dest_name)
+        blob = self._make_blob(source_name, blob_name)
 
         new_blob = source.copy_blob(
-            blob, dest, NEW_NAME, client=client, preserve_acl=False
+            blob, dest, new_name, client=client, preserve_acl=False
         )
 
         self.assertIs(new_blob.bucket, dest)
-        self.assertEqual(new_blob.name, NEW_NAME)
+        self.assertEqual(new_blob.name, new_name)
         self.assertIsInstance(new_blob.acl, ObjectACL)
 
-        kw1, kw2 = connection._requested
-        COPY_PATH = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
-            SOURCE, BLOB_NAME, DEST, NEW_NAME
+        (kw1,) = connection._requested
+        copy_path = "/b/{}/o/{}/copyTo/b/{}/o/{}".format(
+            source_name, blob_name, dest_name, new_name
         )
-        NEW_BLOB_PATH = "/b/{}/o/{}".format(DEST, NEW_NAME)
-
         self.assertEqual(kw1["method"], "POST")
-        self.assertEqual(kw1["path"], COPY_PATH)
+        self.assertEqual(kw1["path"], copy_path)
         self.assertEqual(kw1["query_params"], {})
         self.assertEqual(kw1["timeout"], self._get_default_timeout())
         self.assertEqual(kw1["retry"], DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
-        self.assertEqual(kw2["method"], "PATCH")
-        self.assertEqual(kw2["path"], NEW_BLOB_PATH)
-        self.assertEqual(kw2["query_params"], {"projection": "full"})
-        self.assertEqual(kw2["timeout"], self._get_default_timeout())
+        expected_patch_path = "/b/{}/o/{}".format(dest_name, new_name)
+        expected_data = {"acl": []}
+        expected_query_params = {"projection": "full"}
+        client._patch_resource.assert_called_once_with(
+            expected_patch_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+        )
 
     def test_copy_blobs_w_name_and_user_project(self):
         SOURCE = "source"
@@ -2102,23 +2110,39 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(bucket.labels, {"color": "red"})
 
         # Make sure that a patch call correctly removes the flavor label.
-        client = mock.NonCallableMock(spec=("_connection",))
-        client._connection = mock.NonCallableMock(spec=("api_request",))
+        client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = {}
+
         bucket.patch(client=client)
-        client._connection.api_request.assert_called()
-        _, _, kwargs = client._connection.api_request.mock_calls[0]
-        self.assertEqual(len(kwargs["data"]["labels"]), 2)
-        self.assertEqual(kwargs["data"]["labels"]["color"], "red")
-        self.assertIsNone(kwargs["data"]["labels"]["flavor"])
-        self.assertEqual(kwargs["timeout"], self._get_default_timeout())
+
+        expected_patch_data = {
+            "labels": {"color": "red", "flavor": None},
+        }
+        expected_query_params = {"projection": "full"}
+        client._patch_resource.assert_called_once_with(
+            bucket.path,
+            expected_patch_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+            _target_object=bucket,
+        )
 
         # A second patch call should be a no-op for labels.
-        client._connection.api_request.reset_mock()
+        client._patch_resource.reset_mock()
+
         bucket.patch(client=client, timeout=42)
-        client._connection.api_request.assert_called()
-        _, _, kwargs = client._connection.api_request.mock_calls[0]
-        self.assertNotIn("labels", kwargs["data"])
-        self.assertEqual(kwargs["timeout"], 42)
+
+        expected_patch_data = {}
+        expected_query_params = {"projection": "full"}
+        client._patch_resource.assert_called_once_with(
+            bucket.path,
+            expected_patch_data,
+            query_params=expected_query_params,
+            timeout=42,
+            retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+            _target_object=bucket,
+        )
 
     def test_location_type_getter_unset(self):
         bucket = self._make_one()
@@ -2808,59 +2832,72 @@ class Test_Bucket(unittest.TestCase):
     def test_make_public_defaults(self):
         from google.cloud.storage.acl import _ACLEntity
 
-        NAME = "name"
+        name = "name"
         permissive = [{"entity": "allUsers", "role": _ACLEntity.READER_ROLE}]
-        after = {"acl": permissive, "defaultObjectAcl": []}
-        connection = _Connection(after)
-        client = _Client(connection)
-        bucket = self._make_one(client=client, name=NAME)
+        api_response = {"acl": permissive, "defaultObjectAcl": []}
+        client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
+        bucket = self._make_one(client=client, name=name)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
+
         bucket.make_public()
+
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), [])
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]["method"], "PATCH")
-        self.assertEqual(kw[0]["path"], "/b/%s" % NAME)
-        self.assertEqual(kw[0]["data"], {"acl": after["acl"]})
-        self.assertEqual(kw[0]["query_params"], {"projection": "full"})
-        self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
+
+        expected_path = bucket.path
+        expected_data = {"acl": permissive}
+        expected_query_params = {"projection": "full"}
+        client._patch_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+        )
 
     def _make_public_w_future_helper(self, default_object_acl_loaded=True):
         from google.cloud.storage.acl import _ACLEntity
 
-        NAME = "name"
+        name = "name"
+        get_api_response = {"items": []}
         permissive = [{"entity": "allUsers", "role": _ACLEntity.READER_ROLE}]
-        after1 = {"acl": permissive, "defaultObjectAcl": []}
-        after2 = {"acl": permissive, "defaultObjectAcl": permissive}
-        connection = _Connection(after1, after2)
-        client = _Client(connection)
+        acl_patched_response = {"acl": permissive, "defaultObjectAcl": []}
+        dac_patched_response = {"acl": permissive, "defaultObjectAcl": permissive}
+        client = mock.Mock(spec=["_get_resource", "_patch_resource"])
+        client._get_resource.return_value = get_api_response
+        client._patch_resource.side_effect = [
+            acl_patched_response,
+            dac_patched_response,
+        ]
 
-        # Temporary workaround until we use real mock client
-        client._get_resource = mock.Mock(return_value={"items": []})
-
-        bucket = self._make_one(client=client, name=NAME)
+        bucket = self._make_one(client=client, name=name)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = default_object_acl_loaded
+
         bucket.make_public(future=True)
+
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), permissive)
-        kw = connection._requested
-        self.assertEqual(len(kw), 2)
-        self.assertEqual(kw[0]["method"], "PATCH")
-        self.assertEqual(kw[0]["path"], "/b/%s" % NAME)
-        self.assertEqual(kw[0]["data"], {"acl": permissive})
-        self.assertEqual(kw[0]["query_params"], {"projection": "full"})
-        self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
-        self.assertEqual(kw[1]["method"], "PATCH")
-        self.assertEqual(kw[1]["path"], "/b/%s" % NAME)
-        self.assertEqual(kw[1]["data"], {"defaultObjectAcl": permissive})
-        self.assertEqual(kw[1]["query_params"], {"projection": "full"})
-        self.assertEqual(kw[1]["timeout"], self._get_default_timeout())
+
+        self.assertEqual(len(client._patch_resource.call_args_list), 2)
+        expected_acl_data = {"acl": permissive}
+        expected_dac_data = {"defaultObjectAcl": permissive}
+        expected_kw = {
+            "query_params": {"projection": "full"},
+            "timeout": self._get_default_timeout(),
+            "retry": DEFAULT_RETRY,
+        }
+        client._patch_resource.assert_has_calls(
+            [
+                ((bucket.path, expected_acl_data), expected_kw),
+                ((bucket.path, expected_dac_data), expected_kw),
+            ]
+        )
 
         if not default_object_acl_loaded:
-            expected_path = "/b/%s/defaultObjectAcl" % (NAME,)
+            expected_path = "/b/%s/defaultObjectAcl" % (name,)
             expected_query_params = {}
             client._get_resource.assert_called_once_with(
                 expected_path,
@@ -2868,6 +2905,8 @@ class Test_Bucket(unittest.TestCase):
                 timeout=self._get_default_timeout(),
                 retry=DEFAULT_RETRY,
             )
+        else:
+            client._get_resource.assert_not_called()
 
     def test_make_public_w_future(self):
         self._make_public_w_future_helper(default_object_acl_loaded=True)
@@ -2898,120 +2937,150 @@ class Test_Bucket(unittest.TestCase):
             def grant_read(self):
                 self._granted = True
 
-            def save(self, client=None, timeout=None):
+            def save(self, client=None, timeout=None, retry=None):
                 _saved.append(
-                    (self._bucket, self._name, self._granted, client, timeout)
+                    (self._bucket, self._name, self._granted, client, timeout, retry)
                 )
 
-        def item_to_blob(self, item):
-            return _Blob(self.bucket, item["name"])
-
-        NAME = "name"
-        BLOB_NAME = "blob-name"
+        name = "name"
+        blob_name = "blob-name"
         permissive = [{"entity": "allUsers", "role": _ACLEntity.READER_ROLE}]
-        after = {"acl": permissive, "defaultObjectAcl": []}
-        connection = _Connection(after, {"items": [{"name": BLOB_NAME}]})
-        client = self._make_client()
-        client._base_connection = connection
-        bucket = self._make_one(client=client, name=NAME)
+
+        patch_acl_response = {"acl": permissive, "defaultObjectAcl": []}
+        client = mock.Mock(spec=["list_blobs", "_patch_resource"])
+        client._patch_resource.return_value = patch_acl_response
+
+        bucket = self._make_one(client=client, name=name)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
 
-        with mock.patch("google.cloud.storage.client._item_to_blob", new=item_to_blob):
-            bucket.make_public(recursive=True, timeout=42, retry=DEFAULT_RETRY)
+        list_blobs_response = iter([_Blob(bucket, blob_name)])
+        client.list_blobs.return_value = list_blobs_response
+
+        timeout = 42
+        retry = mock.Mock(spec=[])
+
+        bucket.make_public(recursive=True, timeout=timeout, retry=retry)
 
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), [])
-        self.assertEqual(_saved, [(bucket, BLOB_NAME, True, None, 42)])
-        kw = connection._requested
-        self.assertEqual(len(kw), 2)
-        self.assertEqual(kw[0]["method"], "PATCH")
-        self.assertEqual(kw[0]["path"], "/b/%s" % NAME)
-        self.assertEqual(kw[0]["data"], {"acl": permissive})
-        self.assertEqual(kw[0]["query_params"], {"projection": "full"})
-        self.assertEqual(kw[0]["timeout"], 42)
-        self.assertEqual(kw[1]["method"], "GET")
-        self.assertEqual(kw[1]["path"], "/b/%s/o" % NAME)
-        self.assertEqual(kw[1]["retry"], DEFAULT_RETRY)
-        max_results = bucket._MAX_OBJECTS_FOR_ITERATION + 1
-        self.assertEqual(
-            kw[1]["query_params"], {"maxResults": max_results, "projection": "full"}
+        self.assertEqual(_saved, [(bucket, blob_name, True, None, timeout, retry)])
+
+        expected_patch_data = {"acl": permissive}
+        expected_patch_query_params = {"projection": "full"}
+        client._patch_resource.assert_called_once_with(
+            bucket.path,
+            expected_patch_data,
+            query_params=expected_patch_query_params,
+            timeout=timeout,
+            retry=retry,
         )
-        self.assertEqual(kw[1]["timeout"], 42)
+        client.list_blobs.assert_called_once()
 
     def test_make_public_recursive_too_many(self):
         from google.cloud.storage.acl import _ACLEntity
 
-        PERMISSIVE = [{"entity": "allUsers", "role": _ACLEntity.READER_ROLE}]
-        AFTER = {"acl": PERMISSIVE, "defaultObjectAcl": []}
+        permissive = [{"entity": "allUsers", "role": _ACLEntity.READER_ROLE}]
 
-        NAME = "name"
-        BLOB_NAME1 = "blob-name1"
-        BLOB_NAME2 = "blob-name2"
-        GET_BLOBS_RESP = {"items": [{"name": BLOB_NAME1}, {"name": BLOB_NAME2}]}
-        connection = _Connection(AFTER, GET_BLOBS_RESP)
-        client = self._make_client()
-        client._base_connection = connection
-        bucket = self._make_one(client=client, name=NAME)
+        name = "name"
+        blob1 = mock.Mock(spec=[])
+        blob2 = mock.Mock(spec=[])
+        patch_acl_response = {"acl": permissive, "defaultObjectAcl": []}
+        list_blobs_response = iter([blob1, blob2])
+        client = mock.Mock(spec=["list_blobs", "_patch_resource"])
+        client.list_blobs.return_value = list_blobs_response
+        client._patch_resource.return_value = patch_acl_response
+        bucket = self._make_one(client=client, name=name)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
 
         # Make the Bucket refuse to make_public with 2 objects.
         bucket._MAX_OBJECTS_FOR_ITERATION = 1
-        self.assertRaises(ValueError, bucket.make_public, recursive=True)
+
+        with self.assertRaises(ValueError):
+            bucket.make_public(recursive=True)
+
+        expected_path = bucket.path
+        expected_data = {"acl": permissive}
+        expected_query_params = {"projection": "full"}
+        client._patch_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+        )
+
+        client.list_blobs.assert_called_once()
 
     def test_make_private_defaults(self):
-        NAME = "name"
+        name = "name"
         no_permissions = []
-        after = {"acl": no_permissions, "defaultObjectAcl": []}
-        connection = _Connection(after)
-        client = _Client(connection)
-        bucket = self._make_one(client=client, name=NAME)
+        api_response = {"acl": no_permissions, "defaultObjectAcl": []}
+        client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
+        bucket = self._make_one(client=client, name=name)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
+
         bucket.make_private()
+
         self.assertEqual(list(bucket.acl), no_permissions)
         self.assertEqual(list(bucket.default_object_acl), [])
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]["method"], "PATCH")
-        self.assertEqual(kw[0]["path"], "/b/%s" % NAME)
-        self.assertEqual(kw[0]["data"], {"acl": after["acl"]})
-        self.assertEqual(kw[0]["query_params"], {"projection": "full"})
-        self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
+
+        expected_path = bucket.path
+        expected_data = {"acl": no_permissions}
+        expected_query_params = {"projection": "full"}
+        client._patch_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+        )
 
     def _make_private_w_future_helper(self, default_object_acl_loaded=True):
-        NAME = "name"
+        name = "name"
         no_permissions = []
-        after1 = {"acl": no_permissions, "defaultObjectAcl": []}
-        after2 = {"acl": no_permissions, "defaultObjectAcl": no_permissions}
-        connection = _Connection(after1, after2)
-        client = _Client(connection)
-        bucket = self._make_one(client=client, name=NAME)
+        get_api_response = {"items": []}
+        acl_patched_response = {"acl": no_permissions, "defaultObjectAcl": []}
+        dac_patched_response = {
+            "acl": no_permissions,
+            "defaultObjectAcl": no_permissions,
+        }
+        client = mock.Mock(spec=["_get_resource", "_patch_resource"])
+        client._get_resource.return_value = get_api_response
+        client._patch_resource.side_effect = [
+            acl_patched_response,
+            dac_patched_response,
+        ]
+
+        bucket = self._make_one(client=client, name=name)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = default_object_acl_loaded
 
-        # Temporary workaround until we use real mock client
-        client._get_resource = mock.Mock(return_value={"items": []})
-
         bucket.make_private(future=True)
+
         self.assertEqual(list(bucket.acl), no_permissions)
         self.assertEqual(list(bucket.default_object_acl), no_permissions)
-        kw = connection._requested
-        self.assertEqual(len(kw), 2)
-        self.assertEqual(kw[0]["method"], "PATCH")
-        self.assertEqual(kw[0]["path"], "/b/%s" % NAME)
-        self.assertEqual(kw[0]["data"], {"acl": no_permissions})
-        self.assertEqual(kw[0]["query_params"], {"projection": "full"})
-        self.assertEqual(kw[0]["timeout"], self._get_default_timeout())
-        self.assertEqual(kw[1]["method"], "PATCH")
-        self.assertEqual(kw[1]["path"], "/b/%s" % NAME)
-        self.assertEqual(kw[1]["data"], {"defaultObjectAcl": no_permissions})
-        self.assertEqual(kw[1]["query_params"], {"projection": "full"})
-        self.assertEqual(kw[1]["timeout"], self._get_default_timeout())
+
+        self.assertEqual(len(client._patch_resource.call_args_list), 2)
+        expected_acl_data = {"acl": no_permissions}
+        expected_dac_data = {"defaultObjectAcl": no_permissions}
+        expected_kw = {
+            "query_params": {"projection": "full"},
+            "timeout": self._get_default_timeout(),
+            "retry": DEFAULT_RETRY,
+        }
+        client._patch_resource.assert_has_calls(
+            [
+                ((bucket.path, expected_acl_data), expected_kw),
+                ((bucket.path, expected_dac_data), expected_kw),
+            ]
+        )
 
         if not default_object_acl_loaded:
-            expected_path = "/b/%s/defaultObjectAcl" % (NAME,)
+            expected_path = "/b/%s/defaultObjectAcl" % (name,)
             expected_query_params = {}
             client._get_resource.assert_called_once_with(
                 expected_path,
@@ -3019,6 +3088,8 @@ class Test_Bucket(unittest.TestCase):
                 timeout=self._get_default_timeout(),
                 retry=DEFAULT_RETRY,
             )
+        else:
+            client._get_resource.assert_not_called()
 
     def test_make_private_w_future(self):
         self._make_private_w_future_helper(default_object_acl_loaded=True)
@@ -3047,64 +3118,80 @@ class Test_Bucket(unittest.TestCase):
             def revoke_read(self):
                 self._granted = False
 
-            def save(self, client=None, timeout=None):
+            def save(self, client=None, timeout=None, retry=None):
                 _saved.append(
-                    (self._bucket, self._name, self._granted, client, timeout)
+                    (self._bucket, self._name, self._granted, client, timeout, retry)
                 )
 
-        def item_to_blob(self, item):
-            return _Blob(self.bucket, item["name"])
-
-        NAME = "name"
-        BLOB_NAME = "blob-name"
+        name = "name"
+        blob_name = "blob-name"
         no_permissions = []
-        after = {"acl": no_permissions, "defaultObjectAcl": []}
-        connection = _Connection(after, {"items": [{"name": BLOB_NAME}]})
-        client = self._make_client()
-        client._base_connection = connection
-        bucket = self._make_one(client=client, name=NAME)
+
+        patch_acl_response = {"acl": no_permissions, "defaultObjectAcl": []}
+        client = mock.Mock(spec=["list_blobs", "_patch_resource"])
+        client._patch_resource.return_value = patch_acl_response
+
+        bucket = self._make_one(client=client, name=name)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
 
-        with mock.patch("google.cloud.storage.client._item_to_blob", new=item_to_blob):
-            bucket.make_private(recursive=True, timeout=42, retry=DEFAULT_RETRY)
+        list_blobs_response = iter([_Blob(bucket, blob_name)])
+        client.list_blobs.return_value = list_blobs_response
+
+        timeout = 42
+        retry = mock.Mock(spec=[])
+
+        bucket.make_private(recursive=True, timeout=42, retry=retry)
+
         self.assertEqual(list(bucket.acl), no_permissions)
         self.assertEqual(list(bucket.default_object_acl), [])
-        self.assertEqual(_saved, [(bucket, BLOB_NAME, False, None, 42)])
-        kw = connection._requested
-        self.assertEqual(len(kw), 2)
-        self.assertEqual(kw[0]["method"], "PATCH")
-        self.assertEqual(kw[0]["path"], "/b/%s" % NAME)
-        self.assertEqual(kw[0]["data"], {"acl": no_permissions})
-        self.assertEqual(kw[0]["query_params"], {"projection": "full"})
-        self.assertEqual(kw[0]["timeout"], 42)
-        self.assertEqual(kw[1]["method"], "GET")
-        self.assertEqual(kw[1]["path"], "/b/%s/o" % NAME)
-        self.assertEqual(kw[1]["retry"], DEFAULT_RETRY)
-        max_results = bucket._MAX_OBJECTS_FOR_ITERATION + 1
-        self.assertEqual(
-            kw[1]["query_params"], {"maxResults": max_results, "projection": "full"}
+        self.assertEqual(_saved, [(bucket, blob_name, False, None, timeout, retry)])
+
+        expected_patch_data = {"acl": no_permissions}
+        expected_patch_query_params = {"projection": "full"}
+        client._patch_resource.assert_called_once_with(
+            bucket.path,
+            expected_patch_data,
+            query_params=expected_patch_query_params,
+            timeout=timeout,
+            retry=retry,
         )
-        self.assertEqual(kw[1]["timeout"], 42)
+
+        client.list_blobs.assert_called_once()
 
     def test_make_private_recursive_too_many(self):
-        NO_PERMISSIONS = []
-        AFTER = {"acl": NO_PERMISSIONS, "defaultObjectAcl": []}
+        no_permissions = []
 
-        NAME = "name"
-        BLOB_NAME1 = "blob-name1"
-        BLOB_NAME2 = "blob-name2"
-        GET_BLOBS_RESP = {"items": [{"name": BLOB_NAME1}, {"name": BLOB_NAME2}]}
-        connection = _Connection(AFTER, GET_BLOBS_RESP)
-        client = self._make_client()
-        client._base_connection = connection
-        bucket = self._make_one(client=client, name=NAME)
+        name = "name"
+        blob1 = mock.Mock(spec=[])
+        blob2 = mock.Mock(spec=[])
+        patch_acl_response = {"acl": no_permissions, "defaultObjectAcl": []}
+        list_blobs_response = iter([blob1, blob2])
+        client = mock.Mock(spec=["list_blobs", "_patch_resource"])
+        client.list_blobs.return_value = list_blobs_response
+        client._patch_resource.return_value = patch_acl_response
+        bucket = self._make_one(client=client, name=name)
         bucket.acl.loaded = True
         bucket.default_object_acl.loaded = True
 
         # Make the Bucket refuse to make_private with 2 objects.
         bucket._MAX_OBJECTS_FOR_ITERATION = 1
-        self.assertRaises(ValueError, bucket.make_private, recursive=True)
+
+        with self.assertRaises(ValueError):
+            bucket.make_private(recursive=True)
+
+        expected_path = bucket.path
+        expected_data = {"acl": no_permissions}
+        expected_query_params = {"projection": "full"}
+        client._patch_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+        )
+
+        client.list_blobs.assert_called_once()
 
     def test_page_empty_response(self):
         from google.api_core import page_iterator

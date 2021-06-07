@@ -331,10 +331,9 @@ class _PropertyMixin(object):
         update_properties = {key: self._properties[key] for key in self._changes}
 
         # Make the API call.
-        api_response = client._connection.api_request(
-            method="PATCH",
-            path=self.path,
-            data=update_properties,
+        api_response = client._patch_resource(
+            self.path,
+            update_properties,
             query_params=query_params,
             _target_object=self,
             timeout=timeout,

@@ -3418,43 +3418,109 @@ class Test_Blob(unittest.TestCase):
             _target_object=None,
         )
 
-    def test_make_public(self):
+    def test_make_public_w_defaults(self):
         from google.cloud.storage.acl import _ACLEntity
 
-        BLOB_NAME = "blob-name"
+        blob_name = "blob-name"
         permissive = [{"entity": "allUsers", "role": _ACLEntity.READER_ROLE}]
-        after = ({"status": http_client.OK}, {"acl": permissive})
-        connection = _Connection(after)
-        client = _Client(connection)
+        api_response = {"acl": permissive}
+        client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
         bucket = _Bucket(client=client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        blob = self._make_one(blob_name, bucket=bucket)
         blob.acl.loaded = True
-        blob.make_public()
-        self.assertEqual(list(blob.acl), permissive)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]["method"], "PATCH")
-        self.assertEqual(kw[0]["path"], "/b/name/o/%s" % BLOB_NAME)
-        self.assertEqual(kw[0]["data"], {"acl": permissive})
-        self.assertEqual(kw[0]["query_params"], {"projection": "full"})
 
-    def test_make_private(self):
-        BLOB_NAME = "blob-name"
-        no_permissions = []
-        after = ({"status": http_client.OK}, {"acl": no_permissions})
-        connection = _Connection(after)
-        client = _Client(connection)
+        blob.make_public()
+
+        self.assertEqual(list(blob.acl), permissive)
+
+        expected_patch_data = {"acl": permissive}
+        expected_query_params = {"projection": "full"}
+        client._patch_resource.assert_called_once_with(
+            blob.path,
+            expected_patch_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+        )
+
+    def test_make_public_w_timeout_w_retry(self):
+        from google.cloud.storage.acl import _ACLEntity
+
+        blob_name = "blob-name"
+        permissive = [{"entity": "allUsers", "role": _ACLEntity.READER_ROLE}]
+        api_response = {"acl": permissive}
+        client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
         bucket = _Bucket(client=client)
-        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        blob = self._make_one(blob_name, bucket=bucket)
         blob.acl.loaded = True
+        timeout = 42
+        retry = mock.Mock(spec=[])
+
+        blob.make_public(timeout=timeout, retry=retry)
+
+        self.assertEqual(list(blob.acl), permissive)
+
+        expected_patch_data = {"acl": permissive}
+        expected_query_params = {"projection": "full"}
+        client._patch_resource.assert_called_once_with(
+            blob.path,
+            expected_patch_data,
+            query_params=expected_query_params,
+            timeout=timeout,
+            retry=retry,
+        )
+
+    def test_make_private_w_defaults(self):
+        blob_name = "blob-name"
+        no_permissions = []
+        api_response = {"acl": no_permissions}
+        client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
+        bucket = _Bucket(client=client)
+        blob = self._make_one(blob_name, bucket=bucket)
+        blob.acl.loaded = True
+
         blob.make_private()
+
         self.assertEqual(list(blob.acl), no_permissions)
-        kw = connection._requested
-        self.assertEqual(len(kw), 1)
-        self.assertEqual(kw[0]["method"], "PATCH")
-        self.assertEqual(kw[0]["path"], "/b/name/o/%s" % BLOB_NAME)
-        self.assertEqual(kw[0]["data"], {"acl": no_permissions})
-        self.assertEqual(kw[0]["query_params"], {"projection": "full"})
+
+        expected_patch_data = {"acl": no_permissions}
+        expected_query_params = {"projection": "full"}
+        client._patch_resource.assert_called_once_with(
+            blob.path,
+            expected_patch_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+        )
+
+    def test_make_private_w_timeout_w_retry(self):
+        blob_name = "blob-name"
+        no_permissions = []
+        api_response = {"acl": no_permissions}
+        client = mock.Mock(spec=["_patch_resource"])
+        client._patch_resource.return_value = api_response
+        bucket = _Bucket(client=client)
+        blob = self._make_one(blob_name, bucket=bucket)
+        blob.acl.loaded = True
+        timeout = 42
+        retry = mock.Mock(spec=[])
+
+        blob.make_private(timeout=timeout, retry=retry)
+
+        self.assertEqual(list(blob.acl), no_permissions)
+
+        expected_patch_data = {"acl": no_permissions}
+        expected_query_params = {"projection": "full"}
+        client._patch_resource.assert_called_once_with(
+            blob.path,
+            expected_patch_data,
+            query_params=expected_query_params,
+            timeout=timeout,
+            retry=retry,
+        )
 
     def test_compose_wo_content_type_set(self):
         SOURCE_1 = "source-1"
