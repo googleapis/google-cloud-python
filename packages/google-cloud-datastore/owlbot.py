@@ -16,75 +16,48 @@
 import synthtool as s
 from synthtool import gcp
 
-gapic = gcp.GAPICBazel()
 common = gcp.CommonTemplates()
 
-# ----------------------------------------------------------------------------
-# Generate datastore GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="datastore",
-    version="v1",
-    bazel_target="//google/datastore/v1:datastore-v1-py",
-    include_protos=True,
-)
+# This library ships clients for two different APIs,
+# Datastore and Datastore Admin
+datastore_default_version = "v1"
+datastore_admin_default_version = "v1"
 
-s.move(library / "google/cloud/datastore_v1")
+for library in s.get_staging_dirs(datastore_default_version):
+    if library.parent.absolute() == 'datastore':
+        s.move(library / f"google/cloud/datastore_{library.name}")
+        s.move(library / f"tests/")
+        s.move(library / "scripts")
 
-s.move(
-    library / f"tests/",
-    f"tests",
-)
-s.move(library / "scripts")
+for library in s.get_staging_dirs(datastore_admin_default_version):
+    if library.parent.absolute() == 'datastore_admin':
+        s.replace(
+            library / "google/**/datastore_admin_client.py",
+            "google-cloud-datastore-admin",
+            "google-cloud-datstore"
+        )
 
-# ----------------------------------------------------------------------------
-# Generate datastore admin GAPIC layer
-# ----------------------------------------------------------------------------
-library = gapic.py_library(
-    service="datastore_admin",
-    version="v1",
-    bazel_target="//google/datastore/admin/v1:datastore-admin-v1-py",
-    include_protos=True,
-)
+        # Remove spurious markup
+        s.replace(
+            "google/**/datastore_admin/client.py",
+            "\s+---------------------------------(-)+",
+            ""
+        )
 
-s.move(
-    library / "google/cloud/datastore_admin_v1",
-    "google/cloud/datastore_admin_v1"
-)
+        s.move(library / f"google/cloud/datastore_admin_{library.name}")
+        s.move(library / f"tests")
+        s.move(library / "scripts")
 
-
-s.move(
-    library / f"tests/",
-    f"tests",
-)
-
-s.move(library / "scripts")
-s.replace(
-    "google/**/datastore_admin_client.py",
-    "google-cloud-datastore-admin",
-    "google-cloud-datstore"
-)
-
-# Remove spurious markup
-s.replace(
-    "google/**/datastore_admin/client.py",
-    "\s+---------------------------------(-)+",
-    ""
-)
+s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
 # Add templated files
 # ----------------------------------------------------------------------------
-# TODO: cov_level should be 99%, reduced due to regression in test coverage.
 templated_files = common.py_library(
-    unit_cov_level=97,
-    cov_level=97,
-    unit_test_python_versions=["3.6", "3.7", "3.8", "3.9"],
-    system_test_python_versions=["3.8"],
+    microgenerator=True,
 )
 s.move(templated_files, excludes=["docs/multiprocessing.rst", ".coveragerc"])
 
-s.replace("noxfile.py", """["']sphinx['"]""", '''"sphinx<3.0.0"''')
 
 # Preserve system tests w/ GOOGLE_DISABLE_GRPC set (#133, PR #136)
 s.replace(
@@ -116,22 +89,40 @@ s.replace(
 
 s.replace(
     "noxfile.py",
-    """\
-        session.run\("py.test", "--quiet", system_test_path, \*session.posargs\)
-""",
-    """\
-        session.run("py.test", "--quiet", system_test_path, env=env, *session.posargs)
+    """session\.run\(
+            "py\.test",
+            "--quiet",
+            f"--junitxml=system_\{session\.python\}_sponge_log\.xml",
+            system_test_path,
+            \*session\.posargs
+        \)""",
+    """session.run(
+            "py.test",
+            "--quiet",
+            f"--junitxml=system_{session.python}_sponge_log.xml",
+            system_test_path,
+            env=env,
+            *session.posargs
+        )
 """,
 )
 
 s.replace(
     "noxfile.py",
-    """\
-        session.run\("py.test", "--quiet", system_test_folder_path, \*session.posargs\)
-""",
-    """\
-        session.run(
-            "py.test", "--quiet", system_test_folder_path, env=env, *session.posargs
+    """session\.run\(
+            "py\.test",
+            "--quiet",
+            f"--junitxml=system_\{session\.python\}_sponge_log\.xml",
+            system_test_folder_path,
+            \*session\.posargs
+        \)""",
+    """session.run(
+            "py.test",
+            "--quiet",
+            f"--junitxml=system_{session.python}_sponge_log.xml",
+            system_test_folder_path,
+            env=env,
+            *session.posargs
         )
 """,
 )
