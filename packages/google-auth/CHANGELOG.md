@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [1.30.2](https://www.github.com/googleapis/google-auth-library-python/compare/v1.30.1...v1.30.2) (2021-06-03)
+
+
+### Bug Fixes
+
+* **dependencies:** add urllib3 and requests to aiohttp extra ([#755](https://www.github.com/googleapis/google-auth-library-python/issues/755)) ([a923442](https://www.github.com/googleapis/google-auth-library-python/commit/a9234423cb2b69068fc0d30a5a0ee86a599ab8b7))
+* enforce constraints during unit tests ([#760](https://www.github.com/googleapis/google-auth-library-python/issues/760)) ([1a6496a](https://www.github.com/googleapis/google-auth-library-python/commit/1a6496abfc17ab781bfa485dc74d0f7dbbe0c44b)), closes [#759](https://www.github.com/googleapis/google-auth-library-python/issues/759)
+* session object was never used in aiohttp request ([#700](https://www.github.com/googleapis/google-auth-library-python/issues/700)) ([#701](https://www.github.com/googleapis/google-auth-library-python/issues/701)) ([09e0389](https://www.github.com/googleapis/google-auth-library-python/commit/09e0389db72cc9d6c5dde34864cb54d717dc0b92))
+
 ### [1.30.1](https://www.github.com/googleapis/google-auth-library-python/compare/v1.30.0...v1.30.1) (2021-05-20)
 
 
