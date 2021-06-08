@@ -38,9 +38,6 @@ from google.cloud.documentai_v1.types.document_processor_service import (
     BatchProcessResponse,
 )
 from google.cloud.documentai_v1.types.document_processor_service import (
-    CommonOperationMetadata,
-)
-from google.cloud.documentai_v1.types.document_processor_service import (
     HumanReviewStatus,
 )
 from google.cloud.documentai_v1.types.document_processor_service import ProcessRequest
@@ -57,6 +54,7 @@ from google.cloud.documentai_v1.types.document_processor_service import (
 from google.cloud.documentai_v1.types.geometry import BoundingPoly
 from google.cloud.documentai_v1.types.geometry import NormalizedVertex
 from google.cloud.documentai_v1.types.geometry import Vertex
+from google.cloud.documentai_v1.types.operation_metadata import CommonOperationMetadata
 
 __all__ = (
     "DocumentProcessorServiceClient",
@@ -71,7 +69,6 @@ __all__ = (
     "BatchProcessMetadata",
     "BatchProcessRequest",
     "BatchProcessResponse",
-    "CommonOperationMetadata",
     "HumanReviewStatus",
     "ProcessRequest",
     "ProcessResponse",
@@ -81,4 +78,5 @@ __all__ = (
     "BoundingPoly",
     "NormalizedVertex",
     "Vertex",
+    "CommonOperationMetadata",
 )
