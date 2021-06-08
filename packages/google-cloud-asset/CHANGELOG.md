@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.1.0](https://www.github.com/googleapis/python-asset/compare/v3.0.0...v3.1.0) (2021-06-07)
+
+
+### Features
+
+* add `from_service_account_info` ([34278bf](https://www.github.com/googleapis/python-asset/commit/34278bf526384296e95196f755ab983c4efeca62))
+* add Cloud Asset List API, add access time as condition context in request and evaluation value in response for Cloud Asset AnalyzeIamPolicy API, add more info (folders, organizations, kms_key, create_time, update_time, state, parent_full_resource_name, parent_asset_type) in response for Cloud Asset SearchAllResources API ([#196](https://www.github.com/googleapis/python-asset/issues/196)) ([69ecd23](https://www.github.com/googleapis/python-asset/commit/69ecd237ade97257c92ba8bbe6dd7a5eca83288f))
+* support self-signed JWT flow for service accounts ([d0b9b21](https://www.github.com/googleapis/python-asset/commit/d0b9b21300eb9ad233cd8f7e0c73941bebc5fe46))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([d0b9b21](https://www.github.com/googleapis/python-asset/commit/d0b9b21300eb9ad233cd8f7e0c73941bebc5fe46))
+* remove v1beta1 ([#127](https://www.github.com/googleapis/python-asset/issues/127)) ([dab2d53](https://www.github.com/googleapis/python-asset/commit/dab2d539a1c89c0a5f09df4c4cab4d86f1a4ab08))
+* use correct retry deadlines ([#164](https://www.github.com/googleapis/python-asset/issues/164)) ([34278bf](https://www.github.com/googleapis/python-asset/commit/34278bf526384296e95196f755ab983c4efeca62))
+
+
+### Documentation
+
+* **python:** fix intersphinx link for google-auth ([#119](https://www.github.com/googleapis/python-asset/issues/119)) ([e455c9e](https://www.github.com/googleapis/python-asset/commit/e455c9e52641cd9f13440d342c9eeb931135889c))
+
 ## [2.2.0](https://www.github.com/googleapis/python-asset/compare/v2.1.0...v2.2.0) (2020-11-19)
 
 
