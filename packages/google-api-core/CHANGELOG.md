@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [1.30.0](https://www.github.com/googleapis/python-api-core/compare/v1.29.0...v1.30.0) (2021-06-08)
+
+
+### Features
+
+* add iterator capability to paged iterators ([#200](https://www.github.com/googleapis/python-api-core/issues/200)) ([3487d68](https://www.github.com/googleapis/python-api-core/commit/3487d68bdab6f20e2ab931c8283f63c94862cf31))
+
 ## [1.29.0](https://www.github.com/googleapis/python-api-core/compare/v1.28.0...v1.29.0) (2021-06-02)
 
 
