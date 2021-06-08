@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-compute/compare/v0.3.0...v0.4.0) (2021-06-07)
+
+
+### Features
+
+* Adding code samples and tests for them ([#55](https://www.github.com/googleapis/python-compute/issues/55)) ([14cd352](https://www.github.com/googleapis/python-compute/commit/14cd352079281ddde3602597334e3c88c942ed30))
+* Raise GoogleAPICallError on REST response errors ([01db23b](https://www.github.com/googleapis/python-compute/commit/01db23bc0af3ab30bfb5ad8205446ae49417f0f1))
+* Re-generated to pick up changes from googleapis-discovery with latest fixes ([#60](https://www.github.com/googleapis/python-compute/issues/60)) ([01db23b](https://www.github.com/googleapis/python-compute/commit/01db23bc0af3ab30bfb5ad8205446ae49417f0f1))
+* remove support for google-api-core < 1.28.0 ([01db23b](https://www.github.com/googleapis/python-compute/commit/01db23bc0af3ab30bfb5ad8205446ae49417f0f1))
+
 ## [0.3.0](https://www.github.com/googleapis/python-compute/compare/v0.2.1...v0.3.0) (2021-05-10)
 
 
