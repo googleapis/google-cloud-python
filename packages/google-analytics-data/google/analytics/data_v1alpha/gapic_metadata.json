@@ -1,0 +1,83 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.analytics.data_v1alpha",
+  "protoPackage": "google.analytics.data.v1alpha",
+  "schema": "1.0",
+  "services": {
+    "AlphaAnalyticsData": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AlphaAnalyticsDataClient",
+          "rpcs": {
+            "BatchRunPivotReports": {
+              "methods": [
+                "batch_run_pivot_reports"
+              ]
+            },
+            "BatchRunReports": {
+              "methods": [
+                "batch_run_reports"
+              ]
+            },
+            "GetMetadata": {
+              "methods": [
+                "get_metadata"
+              ]
+            },
+            "RunPivotReport": {
+              "methods": [
+                "run_pivot_report"
+              ]
+            },
+            "RunRealtimeReport": {
+              "methods": [
+                "run_realtime_report"
+              ]
+            },
+            "RunReport": {
+              "methods": [
+                "run_report"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AlphaAnalyticsDataAsyncClient",
+          "rpcs": {
+            "BatchRunPivotReports": {
+              "methods": [
+                "batch_run_pivot_reports"
+              ]
+            },
+            "BatchRunReports": {
+              "methods": [
+                "batch_run_reports"
+              ]
+            },
+            "GetMetadata": {
+              "methods": [
+                "get_metadata"
+              ]
+            },
+            "RunPivotReport": {
+              "methods": [
+                "run_pivot_report"
+              ]
+            },
+            "RunRealtimeReport": {
+              "methods": [
+                "run_realtime_report"
+              ]
+            },
+            "RunReport": {
+              "methods": [
+                "run_report"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +15,8 @@
 #
 
 from .services.beta_analytics_data import BetaAnalyticsDataClient
+from .services.beta_analytics_data import BetaAnalyticsDataAsyncClient
+
 from .types.analytics_data_api import BatchRunPivotReportsRequest
 from .types.analytics_data_api import BatchRunPivotReportsResponse
 from .types.analytics_data_api import BatchRunReportsRequest
@@ -42,10 +43,8 @@ from .types.data import Filter
 from .types.data import FilterExpression
 from .types.data import FilterExpressionList
 from .types.data import Metric
-from .types.data import MetricAggregation
 from .types.data import MetricHeader
 from .types.data import MetricMetadata
-from .types.data import MetricType
 from .types.data import MetricValue
 from .types.data import NumericValue
 from .types.data import OrderBy
@@ -56,13 +55,16 @@ from .types.data import PropertyQuota
 from .types.data import QuotaStatus
 from .types.data import ResponseMetaData
 from .types.data import Row
-
+from .types.data import MetricAggregation
+from .types.data import MetricType
 
 __all__ = (
+    "BetaAnalyticsDataAsyncClient",
     "BatchRunPivotReportsRequest",
     "BatchRunPivotReportsResponse",
     "BatchRunReportsRequest",
     "BatchRunReportsResponse",
+    "BetaAnalyticsDataClient",
     "Cohort",
     "CohortReportSettings",
     "CohortSpec",
@@ -99,5 +101,4 @@ __all__ = (
     "RunRealtimeReportResponse",
     "RunReportRequest",
     "RunReportResponse",
-    "BetaAnalyticsDataClient",
 )

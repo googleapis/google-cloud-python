@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import os
 import mock
+import packaging.version
 
 import grpc
 from grpc.experimental import aio
@@ -24,7 +23,7 @@ import math
 import pytest
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 
-from google import auth
+
 from google.analytics.data_v1beta.services.beta_analytics_data import (
     BetaAnalyticsDataAsyncClient,
 )
@@ -32,16 +31,46 @@ from google.analytics.data_v1beta.services.beta_analytics_data import (
     BetaAnalyticsDataClient,
 )
 from google.analytics.data_v1beta.services.beta_analytics_data import transports
+from google.analytics.data_v1beta.services.beta_analytics_data.transports.base import (
+    _API_CORE_VERSION,
+)
+from google.analytics.data_v1beta.services.beta_analytics_data.transports.base import (
+    _GOOGLE_AUTH_VERSION,
+)
 from google.analytics.data_v1beta.types import analytics_data_api
 from google.analytics.data_v1beta.types import data
 from google.api_core import client_options
-from google.api_core import exceptions
+from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
-from google.auth import credentials
+from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
+import google.auth
+
+
+# TODO(busunkim): Once google-api-core >= 1.26.0 is required:
+# - Delete all the api-core and auth "less than" test cases
+# - Delete these pytest markers (Make the "greater than or equal to" tests the default).
+requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
+    packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
+    reason="This test requires google-auth < 1.25.0",
+)
+requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
+    packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
+    reason="This test requires google-auth >= 1.25.0",
+)
+
+requires_api_core_lt_1_26_0 = pytest.mark.skipif(
+    packaging.version.parse(_API_CORE_VERSION) >= packaging.version.parse("1.26.0"),
+    reason="This test requires google-api-core < 1.26.0",
+)
+
+requires_api_core_gte_1_26_0 = pytest.mark.skipif(
+    packaging.version.parse(_API_CORE_VERSION) < packaging.version.parse("1.26.0"),
+    reason="This test requires google-api-core >= 1.26.0",
+)
 
 
 def client_cert_source_callback():
@@ -93,7 +122,7 @@ def test__get_default_mtls_endpoint():
     "client_class", [BetaAnalyticsDataClient, BetaAnalyticsDataAsyncClient,]
 )
 def test_beta_analytics_data_client_from_service_account_info(client_class):
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -110,7 +139,7 @@ def test_beta_analytics_data_client_from_service_account_info(client_class):
     "client_class", [BetaAnalyticsDataClient, BetaAnalyticsDataAsyncClient,]
 )
 def test_beta_analytics_data_client_from_service_account_file(client_class):
-    creds = credentials.AnonymousCredentials()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -163,7 +192,7 @@ def test_beta_analytics_data_client_client_options(
 ):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(BetaAnalyticsDataClient, "get_transport_class") as gtc:
-        transport = transport_class(credentials=credentials.AnonymousCredentials())
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -461,7 +490,7 @@ def test_run_report(
     transport: str = "grpc", request_type=analytics_data_api.RunReportRequest
 ):
     client = BetaAnalyticsDataClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -474,21 +503,16 @@ def test_run_report(
         call.return_value = analytics_data_api.RunReportResponse(
             row_count=992, kind="kind_value",
         )
-
         response = client.run_report(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.RunReportRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, analytics_data_api.RunReportResponse)
-
     assert response.row_count == 992
-
     assert response.kind == "kind_value"
 
 
@@ -500,7 +524,7 @@ def test_run_report_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BetaAnalyticsDataClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -508,7 +532,6 @@ def test_run_report_empty_call():
         client.run_report()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.RunReportRequest()
 
 
@@ -517,7 +540,7 @@ async def test_run_report_async(
     transport: str = "grpc_asyncio", request_type=analytics_data_api.RunReportRequest
 ):
     client = BetaAnalyticsDataAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -530,20 +553,16 @@ async def test_run_report_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             analytics_data_api.RunReportResponse(row_count=992, kind="kind_value",)
         )
-
         response = await client.run_report(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.RunReportRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.RunReportResponse)
-
     assert response.row_count == 992
-
     assert response.kind == "kind_value"
 
 
@@ -553,17 +572,17 @@ async def test_run_report_async_from_dict():
 
 
 def test_run_report_field_headers():
-    client = BetaAnalyticsDataClient(credentials=credentials.AnonymousCredentials(),)
+    client = BetaAnalyticsDataClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.RunReportRequest()
+
     request.property = "property/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_report), "__call__") as call:
         call.return_value = analytics_data_api.RunReportResponse()
-
         client.run_report(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -579,12 +598,13 @@ def test_run_report_field_headers():
 @pytest.mark.asyncio
 async def test_run_report_field_headers_async():
     client = BetaAnalyticsDataAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.RunReportRequest()
+
     request.property = "property/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -592,7 +612,6 @@ async def test_run_report_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             analytics_data_api.RunReportResponse()
         )
-
         await client.run_report(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -609,7 +628,7 @@ def test_run_pivot_report(
     transport: str = "grpc", request_type=analytics_data_api.RunPivotReportRequest
 ):
     client = BetaAnalyticsDataClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -622,19 +641,15 @@ def test_run_pivot_report(
         call.return_value = analytics_data_api.RunPivotReportResponse(
             kind="kind_value",
         )
-
         response = client.run_pivot_report(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.RunPivotReportRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, analytics_data_api.RunPivotReportResponse)
-
     assert response.kind == "kind_value"
 
 
@@ -646,7 +661,7 @@ def test_run_pivot_report_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BetaAnalyticsDataClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -654,7 +669,6 @@ def test_run_pivot_report_empty_call():
         client.run_pivot_report()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.RunPivotReportRequest()
 
 
@@ -664,7 +678,7 @@ async def test_run_pivot_report_async(
     request_type=analytics_data_api.RunPivotReportRequest,
 ):
     client = BetaAnalyticsDataAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -677,18 +691,15 @@ async def test_run_pivot_report_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             analytics_data_api.RunPivotReportResponse(kind="kind_value",)
         )
-
         response = await client.run_pivot_report(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.RunPivotReportRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.RunPivotReportResponse)
-
     assert response.kind == "kind_value"
 
 
@@ -698,17 +709,17 @@ async def test_run_pivot_report_async_from_dict():
 
 
 def test_run_pivot_report_field_headers():
-    client = BetaAnalyticsDataClient(credentials=credentials.AnonymousCredentials(),)
+    client = BetaAnalyticsDataClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.RunPivotReportRequest()
+
     request.property = "property/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_pivot_report), "__call__") as call:
         call.return_value = analytics_data_api.RunPivotReportResponse()
-
         client.run_pivot_report(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -724,12 +735,13 @@ def test_run_pivot_report_field_headers():
 @pytest.mark.asyncio
 async def test_run_pivot_report_field_headers_async():
     client = BetaAnalyticsDataAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.RunPivotReportRequest()
+
     request.property = "property/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -737,7 +749,6 @@ async def test_run_pivot_report_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             analytics_data_api.RunPivotReportResponse()
         )
-
         await client.run_pivot_report(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -754,7 +765,7 @@ def test_batch_run_reports(
     transport: str = "grpc", request_type=analytics_data_api.BatchRunReportsRequest
 ):
     client = BetaAnalyticsDataClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -769,19 +780,15 @@ def test_batch_run_reports(
         call.return_value = analytics_data_api.BatchRunReportsResponse(
             kind="kind_value",
         )
-
         response = client.batch_run_reports(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.BatchRunReportsRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, analytics_data_api.BatchRunReportsResponse)
-
     assert response.kind == "kind_value"
 
 
@@ -793,7 +800,7 @@ def test_batch_run_reports_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BetaAnalyticsDataClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -803,7 +810,6 @@ def test_batch_run_reports_empty_call():
         client.batch_run_reports()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.BatchRunReportsRequest()
 
 
@@ -813,7 +819,7 @@ async def test_batch_run_reports_async(
     request_type=analytics_data_api.BatchRunReportsRequest,
 ):
     client = BetaAnalyticsDataAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -828,18 +834,15 @@ async def test_batch_run_reports_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             analytics_data_api.BatchRunReportsResponse(kind="kind_value",)
         )
-
         response = await client.batch_run_reports(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.BatchRunReportsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.BatchRunReportsResponse)
-
     assert response.kind == "kind_value"
 
 
@@ -849,11 +852,12 @@ async def test_batch_run_reports_async_from_dict():
 
 
 def test_batch_run_reports_field_headers():
-    client = BetaAnalyticsDataClient(credentials=credentials.AnonymousCredentials(),)
+    client = BetaAnalyticsDataClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.BatchRunReportsRequest()
+
     request.property = "property/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -861,7 +865,6 @@ def test_batch_run_reports_field_headers():
         type(client.transport.batch_run_reports), "__call__"
     ) as call:
         call.return_value = analytics_data_api.BatchRunReportsResponse()
-
         client.batch_run_reports(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -877,12 +880,13 @@ def test_batch_run_reports_field_headers():
 @pytest.mark.asyncio
 async def test_batch_run_reports_field_headers_async():
     client = BetaAnalyticsDataAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.BatchRunReportsRequest()
+
     request.property = "property/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -892,7 +896,6 @@ async def test_batch_run_reports_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             analytics_data_api.BatchRunReportsResponse()
         )
-
         await client.batch_run_reports(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -909,7 +912,7 @@ def test_batch_run_pivot_reports(
     transport: str = "grpc", request_type=analytics_data_api.BatchRunPivotReportsRequest
 ):
     client = BetaAnalyticsDataClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -924,19 +927,15 @@ def test_batch_run_pivot_reports(
         call.return_value = analytics_data_api.BatchRunPivotReportsResponse(
             kind="kind_value",
         )
-
         response = client.batch_run_pivot_reports(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.BatchRunPivotReportsRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, analytics_data_api.BatchRunPivotReportsResponse)
-
     assert response.kind == "kind_value"
 
 
@@ -948,7 +947,7 @@ def test_batch_run_pivot_reports_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BetaAnalyticsDataClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -958,7 +957,6 @@ def test_batch_run_pivot_reports_empty_call():
         client.batch_run_pivot_reports()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.BatchRunPivotReportsRequest()
 
 
@@ -968,7 +966,7 @@ async def test_batch_run_pivot_reports_async(
     request_type=analytics_data_api.BatchRunPivotReportsRequest,
 ):
     client = BetaAnalyticsDataAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -983,18 +981,15 @@ async def test_batch_run_pivot_reports_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             analytics_data_api.BatchRunPivotReportsResponse(kind="kind_value",)
         )
-
         response = await client.batch_run_pivot_reports(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.BatchRunPivotReportsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.BatchRunPivotReportsResponse)
-
     assert response.kind == "kind_value"
 
 
@@ -1004,11 +999,12 @@ async def test_batch_run_pivot_reports_async_from_dict():
 
 
 def test_batch_run_pivot_reports_field_headers():
-    client = BetaAnalyticsDataClient(credentials=credentials.AnonymousCredentials(),)
+    client = BetaAnalyticsDataClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.BatchRunPivotReportsRequest()
+
     request.property = "property/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1016,7 +1012,6 @@ def test_batch_run_pivot_reports_field_headers():
         type(client.transport.batch_run_pivot_reports), "__call__"
     ) as call:
         call.return_value = analytics_data_api.BatchRunPivotReportsResponse()
-
         client.batch_run_pivot_reports(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1032,12 +1027,13 @@ def test_batch_run_pivot_reports_field_headers():
 @pytest.mark.asyncio
 async def test_batch_run_pivot_reports_field_headers_async():
     client = BetaAnalyticsDataAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.BatchRunPivotReportsRequest()
+
     request.property = "property/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1047,7 +1043,6 @@ async def test_batch_run_pivot_reports_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             analytics_data_api.BatchRunPivotReportsResponse()
         )
-
         await client.batch_run_pivot_reports(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1064,7 +1059,7 @@ def test_get_metadata(
     transport: str = "grpc", request_type=analytics_data_api.GetMetadataRequest
 ):
     client = BetaAnalyticsDataClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1075,19 +1070,15 @@ def test_get_metadata(
     with mock.patch.object(type(client.transport.get_metadata), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = analytics_data_api.Metadata(name="name_value",)
-
         response = client.get_metadata(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.GetMetadataRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, analytics_data_api.Metadata)
-
     assert response.name == "name_value"
 
 
@@ -1099,7 +1090,7 @@ def test_get_metadata_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BetaAnalyticsDataClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1107,7 +1098,6 @@ def test_get_metadata_empty_call():
         client.get_metadata()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.GetMetadataRequest()
 
 
@@ -1116,7 +1106,7 @@ async def test_get_metadata_async(
     transport: str = "grpc_asyncio", request_type=analytics_data_api.GetMetadataRequest
 ):
     client = BetaAnalyticsDataAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1129,18 +1119,15 @@ async def test_get_metadata_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             analytics_data_api.Metadata(name="name_value",)
         )
-
         response = await client.get_metadata(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.GetMetadataRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.Metadata)
-
     assert response.name == "name_value"
 
 
@@ -1150,17 +1137,17 @@ async def test_get_metadata_async_from_dict():
 
 
 def test_get_metadata_field_headers():
-    client = BetaAnalyticsDataClient(credentials=credentials.AnonymousCredentials(),)
+    client = BetaAnalyticsDataClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.GetMetadataRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_metadata), "__call__") as call:
         call.return_value = analytics_data_api.Metadata()
-
         client.get_metadata(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1176,12 +1163,13 @@ def test_get_metadata_field_headers():
 @pytest.mark.asyncio
 async def test_get_metadata_field_headers_async():
     client = BetaAnalyticsDataAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.GetMetadataRequest()
+
     request.name = "name/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1189,7 +1177,6 @@ async def test_get_metadata_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             analytics_data_api.Metadata()
         )
-
         await client.get_metadata(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1203,13 +1190,12 @@ async def test_get_metadata_field_headers_async():
 
 
 def test_get_metadata_flattened():
-    client = BetaAnalyticsDataClient(credentials=credentials.AnonymousCredentials(),)
+    client = BetaAnalyticsDataClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_metadata), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = analytics_data_api.Metadata()
-
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.get_metadata(name="name_value",)
@@ -1218,12 +1204,11 @@ def test_get_metadata_flattened():
         # request object values.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 def test_get_metadata_flattened_error():
-    client = BetaAnalyticsDataClient(credentials=credentials.AnonymousCredentials(),)
+    client = BetaAnalyticsDataClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1236,7 +1221,7 @@ def test_get_metadata_flattened_error():
 @pytest.mark.asyncio
 async def test_get_metadata_flattened_async():
     client = BetaAnalyticsDataAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1255,14 +1240,13 @@ async def test_get_metadata_flattened_async():
         # request object values.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0].name == "name_value"
 
 
 @pytest.mark.asyncio
 async def test_get_metadata_flattened_error_async():
     client = BetaAnalyticsDataAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1277,7 +1261,7 @@ def test_run_realtime_report(
     transport: str = "grpc", request_type=analytics_data_api.RunRealtimeReportRequest
 ):
     client = BetaAnalyticsDataClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1292,21 +1276,16 @@ def test_run_realtime_report(
         call.return_value = analytics_data_api.RunRealtimeReportResponse(
             row_count=992, kind="kind_value",
         )
-
         response = client.run_realtime_report(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.RunRealtimeReportRequest()
 
     # Establish that the response is the type that we expect.
-
     assert isinstance(response, analytics_data_api.RunRealtimeReportResponse)
-
     assert response.row_count == 992
-
     assert response.kind == "kind_value"
 
 
@@ -1318,7 +1297,7 @@ def test_run_realtime_report_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BetaAnalyticsDataClient(
-        credentials=credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1328,7 +1307,6 @@ def test_run_realtime_report_empty_call():
         client.run_realtime_report()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.RunRealtimeReportRequest()
 
 
@@ -1338,7 +1316,7 @@ async def test_run_realtime_report_async(
     request_type=analytics_data_api.RunRealtimeReportRequest,
 ):
     client = BetaAnalyticsDataAsyncClient(
-        credentials=credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1355,20 +1333,16 @@ async def test_run_realtime_report_async(
                 row_count=992, kind="kind_value",
             )
         )
-
         response = await client.run_realtime_report(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-
         assert args[0] == analytics_data_api.RunRealtimeReportRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, analytics_data_api.RunRealtimeReportResponse)
-
     assert response.row_count == 992
-
     assert response.kind == "kind_value"
 
 
@@ -1378,11 +1352,12 @@ async def test_run_realtime_report_async_from_dict():
 
 
 def test_run_realtime_report_field_headers():
-    client = BetaAnalyticsDataClient(credentials=credentials.AnonymousCredentials(),)
+    client = BetaAnalyticsDataClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.RunRealtimeReportRequest()
+
     request.property = "property/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1390,7 +1365,6 @@ def test_run_realtime_report_field_headers():
         type(client.transport.run_realtime_report), "__call__"
     ) as call:
         call.return_value = analytics_data_api.RunRealtimeReportResponse()
-
         client.run_realtime_report(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1406,12 +1380,13 @@ def test_run_realtime_report_field_headers():
 @pytest.mark.asyncio
 async def test_run_realtime_report_field_headers_async():
     client = BetaAnalyticsDataAsyncClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.RunRealtimeReportRequest()
+
     request.property = "property/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1421,7 +1396,6 @@ async def test_run_realtime_report_field_headers_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             analytics_data_api.RunRealtimeReportResponse()
         )
-
         await client.run_realtime_report(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1437,16 +1411,16 @@ async def test_run_realtime_report_field_headers_async():
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.BetaAnalyticsDataGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = BetaAnalyticsDataClient(
-            credentials=credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.BetaAnalyticsDataGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = BetaAnalyticsDataClient(
@@ -1456,7 +1430,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.BetaAnalyticsDataGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = BetaAnalyticsDataClient(
@@ -1467,7 +1441,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.BetaAnalyticsDataGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = BetaAnalyticsDataClient(transport=transport)
     assert client.transport is transport
@@ -1476,13 +1450,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.BetaAnalyticsDataGrpcTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.BetaAnalyticsDataGrpcAsyncIOTransport(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -1497,23 +1471,23 @@ def test_transport_get_channel():
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, "default") as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = BetaAnalyticsDataClient(credentials=credentials.AnonymousCredentials(),)
+    client = BetaAnalyticsDataClient(credentials=ga_credentials.AnonymousCredentials(),)
     assert isinstance(client.transport, transports.BetaAnalyticsDataGrpcTransport,)
 
 
 def test_beta_analytics_data_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
-    with pytest.raises(exceptions.DuplicateCredentialArgs):
+    with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.BetaAnalyticsDataTransport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -1525,7 +1499,7 @@ def test_beta_analytics_data_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.BetaAnalyticsDataTransport(
-            credentials=credentials.AnonymousCredentials(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -1543,15 +1517,40 @@ def test_beta_analytics_data_base_transport():
             getattr(transport, method)(request=object())
 
 
+@requires_google_auth_gte_1_25_0
 def test_beta_analytics_data_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
-        auth, "load_credentials_from_file"
+        google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
         "google.analytics.data_v1beta.services.beta_analytics_data.transports.BetaAnalyticsDataTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (credentials.AnonymousCredentials(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport = transports.BetaAnalyticsDataTransport(
+            credentials_file="credentials.json", quota_project_id="octopus",
+        )
+        load_creds.assert_called_once_with(
+            "credentials.json",
+            scopes=None,
+            default_scopes=(
+                "https://www.googleapis.com/auth/analytics",
+                "https://www.googleapis.com/auth/analytics.readonly",
+            ),
+            quota_project_id="octopus",
+        )
+
+
+@requires_google_auth_lt_1_25_0
+def test_beta_analytics_data_base_transport_with_credentials_file_old_google_auth():
+    # Instantiate the base transport with a credentials file
+    with mock.patch.object(
+        google.auth, "load_credentials_from_file", autospec=True
+    ) as load_creds, mock.patch(
+        "google.analytics.data_v1beta.services.beta_analytics_data.transports.BetaAnalyticsDataTransport._prep_wrapped_messages"
+    ) as Transport:
+        Transport.return_value = None
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.BetaAnalyticsDataTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
         )
@@ -1567,19 +1566,36 @@ def test_beta_analytics_data_base_transport_with_credentials_file():
 
 def test_beta_analytics_data_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(auth, "default") as adc, mock.patch(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
         "google.analytics.data_v1beta.services.beta_analytics_data.transports.BetaAnalyticsDataTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.BetaAnalyticsDataTransport()
         adc.assert_called_once()
 
 
+@requires_google_auth_gte_1_25_0
 def test_beta_analytics_data_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        BetaAnalyticsDataClient()
+        adc.assert_called_once_with(
+            scopes=None,
+            default_scopes=(
+                "https://www.googleapis.com/auth/analytics",
+                "https://www.googleapis.com/auth/analytics.readonly",
+            ),
+            quota_project_id=None,
+        )
+
+
+@requires_google_auth_lt_1_25_0
+def test_beta_analytics_data_auth_adc_old_google_auth():
+    # If no credentials are provided, we should use ADC credentials.
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         BetaAnalyticsDataClient()
         adc.assert_called_once_with(
             scopes=(
@@ -1590,16 +1606,23 @@ def test_beta_analytics_data_auth_adc():
         )
 
 
-def test_beta_analytics_data_transport_auth_adc():
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.BetaAnalyticsDataGrpcTransport,
+        transports.BetaAnalyticsDataGrpcAsyncIOTransport,
+    ],
+)
+@requires_google_auth_gte_1_25_0
+def test_beta_analytics_data_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(auth, "default") as adc:
-        adc.return_value = (credentials.AnonymousCredentials(), None)
-        transports.BetaAnalyticsDataGrpcTransport(
-            host="squid.clam.whelk", quota_project_id="octopus"
-        )
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
-            scopes=(
+            scopes=["1", "2"],
+            default_scopes=(
                 "https://www.googleapis.com/auth/analytics",
                 "https://www.googleapis.com/auth/analytics.readonly",
             ),
@@ -1614,10 +1637,148 @@ def test_beta_analytics_data_transport_auth_adc():
         transports.BetaAnalyticsDataGrpcAsyncIOTransport,
     ],
 )
+@requires_google_auth_lt_1_25_0
+def test_beta_analytics_data_transport_auth_adc_old_google_auth(transport_class):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(google.auth, "default", autospec=True) as adc:
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        transport_class(quota_project_id="octopus")
+        adc.assert_called_once_with(
+            scopes=(
+                "https://www.googleapis.com/auth/analytics",
+                "https://www.googleapis.com/auth/analytics.readonly",
+            ),
+            quota_project_id="octopus",
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.BetaAnalyticsDataGrpcTransport, grpc_helpers),
+        (transports.BetaAnalyticsDataGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+@requires_api_core_gte_1_26_0
+def test_beta_analytics_data_transport_create_channel(transport_class, grpc_helpers):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+
+        create_channel.assert_called_with(
+            "analyticsdata.googleapis.com:443",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            default_scopes=(
+                "https://www.googleapis.com/auth/analytics",
+                "https://www.googleapis.com/auth/analytics.readonly",
+            ),
+            scopes=["1", "2"],
+            default_host="analyticsdata.googleapis.com",
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.BetaAnalyticsDataGrpcTransport, grpc_helpers),
+        (transports.BetaAnalyticsDataGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+@requires_api_core_lt_1_26_0
+def test_beta_analytics_data_transport_create_channel_old_api_core(
+    transport_class, grpc_helpers
+):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+        transport_class(quota_project_id="octopus")
+
+        create_channel.assert_called_with(
+            "analyticsdata.googleapis.com:443",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            scopes=(
+                "https://www.googleapis.com/auth/analytics",
+                "https://www.googleapis.com/auth/analytics.readonly",
+            ),
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class,grpc_helpers",
+    [
+        (transports.BetaAnalyticsDataGrpcTransport, grpc_helpers),
+        (transports.BetaAnalyticsDataGrpcAsyncIOTransport, grpc_helpers_async),
+    ],
+)
+@requires_api_core_lt_1_26_0
+def test_beta_analytics_data_transport_create_channel_user_scopes(
+    transport_class, grpc_helpers
+):
+    # If credentials and host are not provided, the transport class should use
+    # ADC credentials.
+    with mock.patch.object(
+        google.auth, "default", autospec=True
+    ) as adc, mock.patch.object(
+        grpc_helpers, "create_channel", autospec=True
+    ) as create_channel:
+        creds = ga_credentials.AnonymousCredentials()
+        adc.return_value = (creds, None)
+
+        transport_class(quota_project_id="octopus", scopes=["1", "2"])
+
+        create_channel.assert_called_with(
+            "analyticsdata.googleapis.com:443",
+            credentials=creds,
+            credentials_file=None,
+            quota_project_id="octopus",
+            scopes=["1", "2"],
+            ssl_credentials=None,
+            options=[
+                ("grpc.max_send_message_length", -1),
+                ("grpc.max_receive_message_length", -1),
+            ],
+        )
+
+
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.BetaAnalyticsDataGrpcTransport,
+        transports.BetaAnalyticsDataGrpcAsyncIOTransport,
+    ],
+)
 def test_beta_analytics_data_grpc_transport_client_cert_source_for_mtls(
     transport_class,
 ):
-    cred = credentials.AnonymousCredentials()
+    cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -1659,7 +1820,7 @@ def test_beta_analytics_data_grpc_transport_client_cert_source_for_mtls(
 
 def test_beta_analytics_data_host_no_port():
     client = BetaAnalyticsDataClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="analyticsdata.googleapis.com"
         ),
@@ -1669,7 +1830,7 @@ def test_beta_analytics_data_host_no_port():
 
 def test_beta_analytics_data_host_with_port():
     client = BetaAnalyticsDataClient(
-        credentials=credentials.AnonymousCredentials(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="analyticsdata.googleapis.com:8000"
         ),
@@ -1725,9 +1886,9 @@ def test_beta_analytics_data_transport_channel_mtls_with_client_cert_source(
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = credentials.AnonymousCredentials()
+            cred = ga_credentials.AnonymousCredentials()
             with pytest.warns(DeprecationWarning):
-                with mock.patch.object(auth, "default") as adc:
+                with mock.patch.object(google.auth, "default") as adc:
                     adc.return_value = (cred, None)
                     transport = transport_class(
                         host="squid.clam.whelk",
@@ -1809,7 +1970,6 @@ def test_beta_analytics_data_transport_channel_mtls_with_adc(transport_class):
 
 def test_metadata_path():
     property = "squid"
-
     expected = "properties/{property}/metadata".format(property=property,)
     actual = BetaAnalyticsDataClient.metadata_path(property)
     assert expected == actual
@@ -1828,7 +1988,6 @@ def test_parse_metadata_path():
 
 def test_common_billing_account_path():
     billing_account = "whelk"
-
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -1849,7 +2008,6 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "oyster"
-
     expected = "folders/{folder}".format(folder=folder,)
     actual = BetaAnalyticsDataClient.common_folder_path(folder)
     assert expected == actual
@@ -1868,7 +2026,6 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "cuttlefish"
-
     expected = "organizations/{organization}".format(organization=organization,)
     actual = BetaAnalyticsDataClient.common_organization_path(organization)
     assert expected == actual
@@ -1887,7 +2044,6 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "winkle"
-
     expected = "projects/{project}".format(project=project,)
     actual = BetaAnalyticsDataClient.common_project_path(project)
     assert expected == actual
@@ -1907,7 +2063,6 @@ def test_parse_common_project_path():
 def test_common_location_path():
     project = "scallop"
     location = "abalone"
-
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -1934,7 +2089,7 @@ def test_client_withDEFAULT_CLIENT_INFO():
         transports.BetaAnalyticsDataTransport, "_prep_wrapped_messages"
     ) as prep:
         client = BetaAnalyticsDataClient(
-            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1943,6 +2098,6 @@ def test_client_withDEFAULT_CLIENT_INFO():
     ) as prep:
         transport_class = BetaAnalyticsDataClient.get_transport_class()
         transport = transport_class(
-            credentials=credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
