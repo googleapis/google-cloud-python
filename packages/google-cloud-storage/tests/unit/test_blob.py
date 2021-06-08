@@ -3458,10 +3458,10 @@ class Test_Blob(unittest.TestCase):
             expected_patch_data,
             query_params=expected_query_params,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY,
+            retry=None,
         )
 
-    def test_make_public_w_timeout_w_retry(self):
+    def test_make_public_w_timeout(self):
         from google.cloud.storage.acl import _ACLEntity
 
         blob_name = "blob-name"
@@ -3473,9 +3473,8 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(blob_name, bucket=bucket)
         blob.acl.loaded = True
         timeout = 42
-        retry = mock.Mock(spec=[])
 
-        blob.make_public(timeout=timeout, retry=retry)
+        blob.make_public(timeout=timeout)
 
         self.assertEqual(list(blob.acl), permissive)
 
@@ -3486,7 +3485,7 @@ class Test_Blob(unittest.TestCase):
             expected_patch_data,
             query_params=expected_query_params,
             timeout=timeout,
-            retry=retry,
+            retry=None,
         )
 
     def test_make_private_w_defaults(self):
@@ -3510,10 +3509,10 @@ class Test_Blob(unittest.TestCase):
             expected_patch_data,
             query_params=expected_query_params,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY,
+            retry=None,
         )
 
-    def test_make_private_w_timeout_w_retry(self):
+    def test_make_private_w_timeout(self):
         blob_name = "blob-name"
         no_permissions = []
         api_response = {"acl": no_permissions}
@@ -3523,9 +3522,8 @@ class Test_Blob(unittest.TestCase):
         blob = self._make_one(blob_name, bucket=bucket)
         blob.acl.loaded = True
         timeout = 42
-        retry = mock.Mock(spec=[])
 
-        blob.make_private(timeout=timeout, retry=retry)
+        blob.make_private(timeout=timeout)
 
         self.assertEqual(list(blob.acl), no_permissions)
 
@@ -3536,7 +3534,7 @@ class Test_Blob(unittest.TestCase):
             expected_patch_data,
             query_params=expected_query_params,
             timeout=timeout,
-            retry=retry,
+            retry=None,
         )
 
     def test_compose_wo_content_type_set(self):

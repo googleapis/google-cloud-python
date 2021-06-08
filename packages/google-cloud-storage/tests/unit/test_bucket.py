@@ -1792,7 +1792,7 @@ class Test_Bucket(unittest.TestCase):
             expected_patch_data,
             query_params=expected_patch_query_params,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            retry=None,
         )
 
     def test_copy_blob_w_name_and_user_project(self):
@@ -2996,7 +2996,7 @@ class Test_Bucket(unittest.TestCase):
             expected_data,
             query_params=expected_query_params,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY,
+            retry=None,
         )
 
     def _make_public_w_future_helper(self, default_object_acl_loaded=True):
@@ -3029,7 +3029,7 @@ class Test_Bucket(unittest.TestCase):
         expected_kw = {
             "query_params": {"projection": "full"},
             "timeout": self._get_default_timeout(),
-            "retry": DEFAULT_RETRY,
+            "retry": None,
         }
         client._patch_resource.assert_has_calls(
             [
@@ -3079,9 +3079,9 @@ class Test_Bucket(unittest.TestCase):
             def grant_read(self):
                 self._granted = True
 
-            def save(self, client=None, timeout=None, retry=None):
+            def save(self, client=None, timeout=None):
                 _saved.append(
-                    (self._bucket, self._name, self._granted, client, timeout, retry)
+                    (self._bucket, self._name, self._granted, client, timeout)
                 )
 
         name = "name"
@@ -3100,13 +3100,12 @@ class Test_Bucket(unittest.TestCase):
         client.list_blobs.return_value = list_blobs_response
 
         timeout = 42
-        retry = mock.Mock(spec=[])
 
-        bucket.make_public(recursive=True, timeout=timeout, retry=retry)
+        bucket.make_public(recursive=True, timeout=timeout)
 
         self.assertEqual(list(bucket.acl), permissive)
         self.assertEqual(list(bucket.default_object_acl), [])
-        self.assertEqual(_saved, [(bucket, blob_name, True, None, timeout, retry)])
+        self.assertEqual(_saved, [(bucket, blob_name, True, None, timeout)])
 
         expected_patch_data = {"acl": permissive}
         expected_patch_query_params = {"projection": "full"}
@@ -3115,7 +3114,7 @@ class Test_Bucket(unittest.TestCase):
             expected_patch_data,
             query_params=expected_patch_query_params,
             timeout=timeout,
-            retry=retry,
+            retry=None,
         )
         client.list_blobs.assert_called_once()
 
@@ -3150,7 +3149,7 @@ class Test_Bucket(unittest.TestCase):
             expected_data,
             query_params=expected_query_params,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY,
+            retry=None,
         )
 
         client.list_blobs.assert_called_once()
@@ -3178,7 +3177,7 @@ class Test_Bucket(unittest.TestCase):
             expected_data,
             query_params=expected_query_params,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY,
+            retry=None,
         )
 
     def _make_private_w_future_helper(self, default_object_acl_loaded=True):
@@ -3212,7 +3211,7 @@ class Test_Bucket(unittest.TestCase):
         expected_kw = {
             "query_params": {"projection": "full"},
             "timeout": self._get_default_timeout(),
-            "retry": DEFAULT_RETRY,
+            "retry": None,
         }
         client._patch_resource.assert_has_calls(
             [
@@ -3260,9 +3259,9 @@ class Test_Bucket(unittest.TestCase):
             def revoke_read(self):
                 self._granted = False
 
-            def save(self, client=None, timeout=None, retry=None):
+            def save(self, client=None, timeout=None):
                 _saved.append(
-                    (self._bucket, self._name, self._granted, client, timeout, retry)
+                    (self._bucket, self._name, self._granted, client, timeout)
                 )
 
         name = "name"
@@ -3281,13 +3280,12 @@ class Test_Bucket(unittest.TestCase):
         client.list_blobs.return_value = list_blobs_response
 
         timeout = 42
-        retry = mock.Mock(spec=[])
 
-        bucket.make_private(recursive=True, timeout=42, retry=retry)
+        bucket.make_private(recursive=True, timeout=42)
 
         self.assertEqual(list(bucket.acl), no_permissions)
         self.assertEqual(list(bucket.default_object_acl), [])
-        self.assertEqual(_saved, [(bucket, blob_name, False, None, timeout, retry)])
+        self.assertEqual(_saved, [(bucket, blob_name, False, None, timeout)])
 
         expected_patch_data = {"acl": no_permissions}
         expected_patch_query_params = {"projection": "full"}
@@ -3296,7 +3294,7 @@ class Test_Bucket(unittest.TestCase):
             expected_patch_data,
             query_params=expected_patch_query_params,
             timeout=timeout,
-            retry=retry,
+            retry=None,
         )
 
         client.list_blobs.assert_called_once()
@@ -3330,7 +3328,7 @@ class Test_Bucket(unittest.TestCase):
             expected_data,
             query_params=expected_query_params,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY,
+            retry=None,
         )
 
         client.list_blobs.assert_called_once()

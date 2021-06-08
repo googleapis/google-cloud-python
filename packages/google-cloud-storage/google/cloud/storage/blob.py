@@ -2978,9 +2978,7 @@ class Blob(_PropertyMixin):
 
         return resp.get("permissions", [])
 
-    def make_public(
-        self, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY,
-    ):
+    def make_public(self, client=None, timeout=_DEFAULT_TIMEOUT):
         """Update blob's ACL, granting read access to anonymous users.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -2995,27 +2993,11 @@ class Blob(_PropertyMixin):
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
-
-        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
-        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
-            A google.api_core.retry.Retry value will enable retries, and the object will
-            define retriable response codes and errors and configure backoff and timeout options.
-
-            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
-            activates it only if certain conditions are met. This class exists to provide safe defaults
-            for RPC calls that are not technically safe to retry normally (due to potential data
-            duplication or other side-effects) but become safe to retry if a condition such as
-            if_metageneration_match is set.
-
-            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
-            information on retry types and how to configure them.
         """
         self.acl.all().grant_read()
-        self.acl.save(client=client, timeout=timeout, retry=retry)
+        self.acl.save(client=client, timeout=timeout)
 
-    def make_private(
-        self, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY,
-    ):
+    def make_private(self, client=None, timeout=_DEFAULT_TIMEOUT):
         """Update blob's ACL, revoking read access for anonymous users.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
@@ -3030,23 +3012,9 @@ class Blob(_PropertyMixin):
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
-
-        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
-        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
-            A google.api_core.retry.Retry value will enable retries, and the object will
-            define retriable response codes and errors and configure backoff and timeout options.
-
-            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
-            activates it only if certain conditions are met. This class exists to provide safe defaults
-            for RPC calls that are not technically safe to retry normally (due to potential data
-            duplication or other side-effects) but become safe to retry if a condition such as
-            if_metageneration_match is set.
-
-            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
-            information on retry types and how to configure them.
         """
         self.acl.all().revoke_read()
-        self.acl.save(client=client, timeout=timeout, retry=retry)
+        self.acl.save(client=client, timeout=timeout)
 
     def compose(
         self,

@@ -646,7 +646,7 @@ class Test_ACL(unittest.TestCase):
             expected_data,
             query_params=expected_query_params,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY,
+            retry=None,
         )
 
     def test_save_no_acl_w_timeout(self):
@@ -673,10 +673,10 @@ class Test_ACL(unittest.TestCase):
             expected_data,
             query_params=expected_query_params,
             timeout=timeout,
-            retry=DEFAULT_RETRY,
+            retry=None,
         )
 
-    def test_save_w_acl_w_user_project_w_retry(self):
+    def test_save_w_acl_w_user_project(self):
         save_path = "/testing"
         user_project = "user-project-123"
         role1 = "role1"
@@ -690,9 +690,8 @@ class Test_ACL(unittest.TestCase):
         acl.save_path = save_path
         acl.loaded = True
         acl.user_project = user_project
-        retry = mock.Mock(spec=[])
 
-        acl.save(new_acl, client=client, retry=retry)
+        acl.save(new_acl, client=client)
 
         entries = list(acl)
         self.assertEqual(len(entries), 2)
@@ -706,7 +705,7 @@ class Test_ACL(unittest.TestCase):
             expected_data,
             query_params=expected_query_params,
             timeout=self._get_default_timeout(),
-            retry=retry,
+            retry=None,
         )
 
     def test_save_prefefined_invalid(self):
@@ -750,7 +749,7 @@ class Test_ACL(unittest.TestCase):
             expected_data,
             query_params=expected_query_params,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY,
+            retry=None,
         )
 
     def test_save_predefined_w_XML_alias_w_timeout(self):
@@ -780,10 +779,10 @@ class Test_ACL(unittest.TestCase):
             expected_data,
             query_params=expected_query_params,
             timeout=timeout,
-            retry=DEFAULT_RETRY,
+            retry=None,
         )
 
-    def test_save_predefined_w_alternate_query_param_w_retry(self):
+    def test_save_predefined_w_alternate_query_param(self):
         # Cover case where subclass overrides _PREDEFINED_QUERY_PARAM
         save_path = "/testing"
         predefined = "publicRead"
@@ -794,9 +793,8 @@ class Test_ACL(unittest.TestCase):
         acl.save_path = save_path
         acl.loaded = True
         acl._PREDEFINED_QUERY_PARAM = "alternate"
-        retry = mock.Mock(spec=[])
 
-        acl.save_predefined(predefined, client=client, retry=retry)
+        acl.save_predefined(predefined, client=client)
 
         entries = list(acl)
         self.assertEqual(len(entries), 0)
@@ -811,7 +809,7 @@ class Test_ACL(unittest.TestCase):
             expected_data,
             query_params=expected_query_params,
             timeout=self._get_default_timeout(),
-            retry=retry,
+            retry=None,
         )
 
     def test_clear_w_defaults(self):
@@ -844,10 +842,10 @@ class Test_ACL(unittest.TestCase):
             expected_data,
             query_params=expected_query_params,
             timeout=self._get_default_timeout(),
-            retry=DEFAULT_RETRY,
+            retry=None,
         )
 
-    def test_clear_w_explicit_client_w_timeout_w_retry(self):
+    def test_clear_w_explicit_client_w_timeout(self):
         save_path = "/testing"
         role1 = "role1"
         role2 = "role2"
@@ -860,9 +858,8 @@ class Test_ACL(unittest.TestCase):
         acl.loaded = True
         acl.entity("allUsers", role1)
         timeout = 42
-        retry = mock.Mock(spec=[])
 
-        acl.clear(client=client, timeout=timeout, retry=retry)
+        acl.clear(client=client, timeout=timeout)
 
         self.assertEqual(list(acl), [sticky])
 
@@ -875,7 +872,7 @@ class Test_ACL(unittest.TestCase):
             expected_data,
             query_params=expected_query_params,
             timeout=timeout,
-            retry=retry,
+            retry=None,
         )
 
 

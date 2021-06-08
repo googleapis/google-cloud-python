@@ -393,7 +393,7 @@ class Client(ClientWithProject):
         query_params=None,
         headers=None,
         timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
+        retry=None,
         _target_object=None,
     ):
         """Helper for bucket / blob methods making API 'PATCH' calls.
@@ -464,7 +464,7 @@ class Client(ClientWithProject):
         query_params=None,
         headers=None,
         timeout=_DEFAULT_TIMEOUT,
-        retry=DEFAULT_RETRY,
+        retry=None,
         _target_object=None,
     ):
         """Helper for bucket / blob methods making API 'PUT' calls.
