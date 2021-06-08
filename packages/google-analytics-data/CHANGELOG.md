@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0](https://www.github.com/googleapis/python-analytics-data/compare/v0.5.1...v0.6.0) (2021-06-08)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([ff2beb8](https://www.github.com/googleapis/python-analytics-data/commit/ff2beb8f923570a78772712dc140fc7ba99148d6))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([ff2beb8](https://www.github.com/googleapis/python-analytics-data/commit/ff2beb8f923570a78772712dc140fc7ba99148d6))
+
 ### [0.5.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.5.0...v0.5.1) (2021-05-28)
 
 
