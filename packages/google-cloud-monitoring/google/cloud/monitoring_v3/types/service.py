@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.type import calendar_period_pb2 as gt_calendar_period  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.type import calendar_period_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -79,7 +76,7 @@ class Service(proto.Message):
     class Custom(proto.Message):
         r"""Custom view of service telemetry. Currently a place-holder
         pending final design.
-        """
+            """
 
     class AppEngine(proto.Message):
         r"""App Engine service. Learn more at
@@ -93,7 +90,7 @@ class Service(proto.Message):
                 https://cloud.google.com/monitoring/api/resources#tag_gae_app
         """
 
-        module_id = proto.Field(proto.STRING, number=1)
+        module_id = proto.Field(proto.STRING, number=1,)
 
     class CloudEndpoints(proto.Message):
         r"""Cloud Endpoints service. Learn more at
@@ -107,7 +104,7 @@ class Service(proto.Message):
                 https://cloud.google.com/monitoring/api/resources#tag_api
         """
 
-        service = proto.Field(proto.STRING, number=1)
+        service = proto.Field(proto.STRING, number=1,)
 
     class ClusterIstio(proto.Message):
         r"""Istio service scoped to a single Kubernetes cluster. Learn
@@ -133,13 +130,10 @@ class Service(proto.Message):
                 in Istio metrics.
         """
 
-        location = proto.Field(proto.STRING, number=1)
-
-        cluster_name = proto.Field(proto.STRING, number=2)
-
-        service_namespace = proto.Field(proto.STRING, number=3)
-
-        service_name = proto.Field(proto.STRING, number=4)
+        location = proto.Field(proto.STRING, number=1,)
+        cluster_name = proto.Field(proto.STRING, number=2,)
+        service_namespace = proto.Field(proto.STRING, number=3,)
+        service_name = proto.Field(proto.STRING, number=4,)
 
     class MeshIstio(proto.Message):
         r"""Istio service scoped to an Istio mesh. Anthos clusters
@@ -161,11 +155,9 @@ class Service(proto.Message):
                 in Istio metrics.
         """
 
-        mesh_uid = proto.Field(proto.STRING, number=1)
-
-        service_namespace = proto.Field(proto.STRING, number=3)
-
-        service_name = proto.Field(proto.STRING, number=4)
+        mesh_uid = proto.Field(proto.STRING, number=1,)
+        service_namespace = proto.Field(proto.STRING, number=3,)
+        service_name = proto.Field(proto.STRING, number=4,)
 
     class IstioCanonicalService(proto.Message):
         r"""Canonical service scoped to an Istio mesh. Anthos clusters
@@ -191,15 +183,12 @@ class Service(proto.Message):
                 metrics <https://cloud.google.com/monitoring/api/metrics_istio>`__.
         """
 
-        mesh_uid = proto.Field(proto.STRING, number=1)
-
-        canonical_service_namespace = proto.Field(proto.STRING, number=3)
-
-        canonical_service = proto.Field(proto.STRING, number=4)
+        mesh_uid = proto.Field(proto.STRING, number=1,)
+        canonical_service_namespace = proto.Field(proto.STRING, number=3,)
+        canonical_service = proto.Field(proto.STRING, number=4,)
 
     class Telemetry(proto.Message):
         r"""Configuration for how to query telemetry on a Service.
-
         Attributes:
             resource_name (str):
                 The full name of the resource that defines this service.
@@ -207,34 +196,26 @@ class Service(proto.Message):
                 https://cloud.google.com/apis/design/resource_names.
         """
 
-        resource_name = proto.Field(proto.STRING, number=1)
+        resource_name = proto.Field(proto.STRING, number=1,)
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=2,)
     custom = proto.Field(proto.MESSAGE, number=6, oneof="identifier", message=Custom,)
-
     app_engine = proto.Field(
         proto.MESSAGE, number=7, oneof="identifier", message=AppEngine,
     )
-
     cloud_endpoints = proto.Field(
         proto.MESSAGE, number=8, oneof="identifier", message=CloudEndpoints,
     )
-
     cluster_istio = proto.Field(
         proto.MESSAGE, number=9, oneof="identifier", message=ClusterIstio,
     )
-
     mesh_istio = proto.Field(
         proto.MESSAGE, number=10, oneof="identifier", message=MeshIstio,
     )
-
     istio_canonical_service = proto.Field(
         proto.MESSAGE, number=11, oneof="identifier", message=IstioCanonicalService,
     )
-
     telemetry = proto.Field(proto.MESSAGE, number=13, message=Telemetry,)
 
 
@@ -285,22 +266,17 @@ class ServiceLevelObjective(proto.Message):
         FULL = 2
         EXPLICIT = 1
 
-    name = proto.Field(proto.STRING, number=1)
-
-    display_name = proto.Field(proto.STRING, number=11)
-
+    name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(proto.STRING, number=11,)
     service_level_indicator = proto.Field(
         proto.MESSAGE, number=3, message="ServiceLevelIndicator",
     )
-
-    goal = proto.Field(proto.DOUBLE, number=4)
-
+    goal = proto.Field(proto.DOUBLE, number=4,)
     rolling_period = proto.Field(
-        proto.MESSAGE, number=5, oneof="period", message=duration.Duration,
+        proto.MESSAGE, number=5, oneof="period", message=duration_pb2.Duration,
     )
-
     calendar_period = proto.Field(
-        proto.ENUM, number=6, oneof="period", enum=gt_calendar_period.CalendarPeriod,
+        proto.ENUM, number=6, oneof="period", enum=calendar_period_pb2.CalendarPeriod,
     )
 
 
@@ -331,11 +307,9 @@ class ServiceLevelIndicator(proto.Message):
     """
 
     basic_sli = proto.Field(proto.MESSAGE, number=4, oneof="type", message="BasicSli",)
-
     request_based = proto.Field(
         proto.MESSAGE, number=1, oneof="type", message="RequestBasedSli",
     )
-
     windows_based = proto.Field(
         proto.MESSAGE, number=2, oneof="type", message="WindowsBasedSli",
     )
@@ -386,29 +360,24 @@ class BasicSli(proto.Message):
     """
 
     class AvailabilityCriteria(proto.Message):
-        r"""Future parameters for the availability SLI."""
+        r"""Future parameters for the availability SLI.    """
 
     class LatencyCriteria(proto.Message):
         r"""Parameters for a latency threshold SLI.
-
         Attributes:
             threshold (google.protobuf.duration_pb2.Duration):
                 Good service is defined to be the count of requests made to
                 this service that return in no more than ``threshold``.
         """
 
-        threshold = proto.Field(proto.MESSAGE, number=3, message=duration.Duration,)
+        threshold = proto.Field(proto.MESSAGE, number=3, message=duration_pb2.Duration,)
 
-    method = proto.RepeatedField(proto.STRING, number=7)
-
-    location = proto.RepeatedField(proto.STRING, number=8)
-
-    version = proto.RepeatedField(proto.STRING, number=9)
-
+    method = proto.RepeatedField(proto.STRING, number=7,)
+    location = proto.RepeatedField(proto.STRING, number=8,)
+    version = proto.RepeatedField(proto.STRING, number=9,)
     availability = proto.Field(
         proto.MESSAGE, number=2, oneof="sli_criteria", message=AvailabilityCriteria,
     )
-
     latency = proto.Field(
         proto.MESSAGE, number=3, oneof="sli_criteria", message=LatencyCriteria,
     )
@@ -427,9 +396,8 @@ class Range(proto.Message):
             Range maximum.
     """
 
-    min_ = proto.Field(proto.DOUBLE, number=1)
-
-    max_ = proto.Field(proto.DOUBLE, number=2)
+    min_ = proto.Field(proto.DOUBLE, number=1,)
+    max_ = proto.Field(proto.DOUBLE, number=2,)
 
 
 class RequestBasedSli(proto.Message):
@@ -451,7 +419,6 @@ class RequestBasedSli(proto.Message):
     good_total_ratio = proto.Field(
         proto.MESSAGE, number=1, oneof="method", message="TimeSeriesRatio",
     )
-
     distribution_cut = proto.Field(
         proto.MESSAGE, number=3, oneof="method", message="DistributionCut",
     )
@@ -491,11 +458,9 @@ class TimeSeriesRatio(proto.Message):
             or ``MetricKind = CUMULATIVE``.
     """
 
-    good_service_filter = proto.Field(proto.STRING, number=4)
-
-    bad_service_filter = proto.Field(proto.STRING, number=5)
-
-    total_service_filter = proto.Field(proto.STRING, number=6)
+    good_service_filter = proto.Field(proto.STRING, number=4,)
+    bad_service_filter = proto.Field(proto.STRING, number=5,)
+    total_service_filter = proto.Field(proto.STRING, number=6,)
 
 
 class DistributionCut(proto.Message):
@@ -518,8 +483,7 @@ class DistributionCut(proto.Message):
             ided range, set one bound to an infinite value.
     """
 
-    distribution_filter = proto.Field(proto.STRING, number=4)
-
+    distribution_filter = proto.Field(proto.STRING, number=4,)
     range_ = proto.Field(proto.MESSAGE, number=5, message="Range",)
 
 
@@ -565,12 +529,10 @@ class WindowsBasedSli(proto.Message):
         performance = proto.Field(
             proto.MESSAGE, number=1, oneof="type", message="RequestBasedSli",
         )
-
         basic_sli_performance = proto.Field(
             proto.MESSAGE, number=3, oneof="type", message="BasicSli",
         )
-
-        threshold = proto.Field(proto.DOUBLE, number=2)
+        threshold = proto.Field(proto.DOUBLE, number=2,)
 
     class MetricRange(proto.Message):
         r"""A ``MetricRange`` is used when each window is good when the value x
@@ -589,27 +551,22 @@ class WindowsBasedSli(proto.Message):
                 ided range, set one bound to an infinite value.
         """
 
-        time_series = proto.Field(proto.STRING, number=1)
-
+        time_series = proto.Field(proto.STRING, number=1,)
         range_ = proto.Field(proto.MESSAGE, number=4, message="Range",)
 
     good_bad_metric_filter = proto.Field(
-        proto.STRING, number=5, oneof="window_criterion"
+        proto.STRING, number=5, oneof="window_criterion",
     )
-
     good_total_ratio_threshold = proto.Field(
         proto.MESSAGE, number=2, oneof="window_criterion", message=PerformanceThreshold,
     )
-
     metric_mean_in_range = proto.Field(
         proto.MESSAGE, number=6, oneof="window_criterion", message=MetricRange,
     )
-
     metric_sum_in_range = proto.Field(
         proto.MESSAGE, number=7, oneof="window_criterion", message=MetricRange,
     )
-
-    window_period = proto.Field(proto.MESSAGE, number=4, message=duration.Duration,)
+    window_period = proto.Field(proto.MESSAGE, number=4, message=duration_pb2.Duration,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

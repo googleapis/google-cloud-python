@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,24 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
+from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+import packaging.version
 
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.api import metric_pb2 as ga_metric  # type: ignore
-from google.api import monitored_resource_pb2 as monitored_resource  # type: ignore
+from google.api import metric_pb2  # type: ignore
+from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.monitoring_v3.types import metric_service
-from google.protobuf import empty_pb2 as empty  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
 from .base import MetricServiceTransport, DEFAULT_CLIENT_INFO
 from .grpc import MetricServiceGrpcTransport
 
@@ -57,7 +54,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
     def create_channel(
         cls,
         host: str = "monitoring.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -84,13 +81,15 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         Returns:
             aio.Channel: A gRPC AsyncIO channel object.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
+        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
+
         return grpc_helpers_async.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
+            **self_signed_jwt_kwargs,
             **kwargs,
         )
 
@@ -98,7 +97,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         self,
         *,
         host: str = "monitoring.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         channel: aio.Channel = None,
@@ -112,7 +111,8 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -170,7 +170,6 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
-
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -267,7 +266,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         self,
     ) -> Callable[
         [metric_service.GetMonitoredResourceDescriptorRequest],
-        Awaitable[monitored_resource.MonitoredResourceDescriptor],
+        Awaitable[monitored_resource_pb2.MonitoredResourceDescriptor],
     ]:
         r"""Return a callable for the get monitored resource
         descriptor method over gRPC.
@@ -291,7 +290,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
             ] = self.grpc_channel.unary_unary(
                 "/google.monitoring.v3.MetricService/GetMonitoredResourceDescriptor",
                 request_serializer=metric_service.GetMonitoredResourceDescriptorRequest.serialize,
-                response_deserializer=monitored_resource.MonitoredResourceDescriptor.FromString,
+                response_deserializer=monitored_resource_pb2.MonitoredResourceDescriptor.FromString,
             )
         return self._stubs["get_monitored_resource_descriptor"]
 
@@ -330,7 +329,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         self,
     ) -> Callable[
         [metric_service.GetMetricDescriptorRequest],
-        Awaitable[ga_metric.MetricDescriptor],
+        Awaitable[metric_pb2.MetricDescriptor],
     ]:
         r"""Return a callable for the get metric descriptor method over gRPC.
 
@@ -351,7 +350,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
             self._stubs["get_metric_descriptor"] = self.grpc_channel.unary_unary(
                 "/google.monitoring.v3.MetricService/GetMetricDescriptor",
                 request_serializer=metric_service.GetMetricDescriptorRequest.serialize,
-                response_deserializer=ga_metric.MetricDescriptor.FromString,
+                response_deserializer=metric_pb2.MetricDescriptor.FromString,
             )
         return self._stubs["get_metric_descriptor"]
 
@@ -360,7 +359,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
         self,
     ) -> Callable[
         [metric_service.CreateMetricDescriptorRequest],
-        Awaitable[ga_metric.MetricDescriptor],
+        Awaitable[metric_pb2.MetricDescriptor],
     ]:
         r"""Return a callable for the create metric descriptor method over gRPC.
 
@@ -382,7 +381,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
             self._stubs["create_metric_descriptor"] = self.grpc_channel.unary_unary(
                 "/google.monitoring.v3.MetricService/CreateMetricDescriptor",
                 request_serializer=metric_service.CreateMetricDescriptorRequest.serialize,
-                response_deserializer=ga_metric.MetricDescriptor.FromString,
+                response_deserializer=metric_pb2.MetricDescriptor.FromString,
             )
         return self._stubs["create_metric_descriptor"]
 
@@ -390,7 +389,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
     def delete_metric_descriptor(
         self,
     ) -> Callable[
-        [metric_service.DeleteMetricDescriptorRequest], Awaitable[empty.Empty]
+        [metric_service.DeleteMetricDescriptorRequest], Awaitable[empty_pb2.Empty]
     ]:
         r"""Return a callable for the delete metric descriptor method over gRPC.
 
@@ -412,7 +411,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
             self._stubs["delete_metric_descriptor"] = self.grpc_channel.unary_unary(
                 "/google.monitoring.v3.MetricService/DeleteMetricDescriptor",
                 request_serializer=metric_service.DeleteMetricDescriptorRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_metric_descriptor"]
 
@@ -449,7 +448,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
     @property
     def create_time_series(
         self,
-    ) -> Callable[[metric_service.CreateTimeSeriesRequest], Awaitable[empty.Empty]]:
+    ) -> Callable[[metric_service.CreateTimeSeriesRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the create time series method over gRPC.
 
         Creates or adds data to one or more time series.
@@ -472,7 +471,7 @@ class MetricServiceGrpcAsyncIOTransport(MetricServiceTransport):
             self._stubs["create_time_series"] = self.grpc_channel.unary_unary(
                 "/google.monitoring.v3.MetricService/CreateTimeSeries",
                 request_serializer=metric_service.CreateTimeSeriesRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["create_time_series"]
 

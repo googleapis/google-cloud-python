@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.api import monitored_resource_pb2 as monitored_resource  # type: ignore
+from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.monitoring_v3.types import common
 from google.cloud.monitoring_v3.types import group as gm_group
 
@@ -40,7 +37,6 @@ __protobuf__ = proto.module(
 
 class ListGroupsRequest(proto.Message):
     r"""The ``ListGroup`` request.
-
     Attributes:
         name (str):
             Required. The project whose groups are to be listed. The
@@ -92,22 +88,16 @@ class ListGroupsRequest(proto.Message):
             additional results from the previous method call.
     """
 
-    name = proto.Field(proto.STRING, number=7)
-
-    children_of_group = proto.Field(proto.STRING, number=2, oneof="filter")
-
-    ancestors_of_group = proto.Field(proto.STRING, number=3, oneof="filter")
-
-    descendants_of_group = proto.Field(proto.STRING, number=4, oneof="filter")
-
-    page_size = proto.Field(proto.INT32, number=5)
-
-    page_token = proto.Field(proto.STRING, number=6)
+    name = proto.Field(proto.STRING, number=7,)
+    children_of_group = proto.Field(proto.STRING, number=2, oneof="filter",)
+    ancestors_of_group = proto.Field(proto.STRING, number=3, oneof="filter",)
+    descendants_of_group = proto.Field(proto.STRING, number=4, oneof="filter",)
+    page_size = proto.Field(proto.INT32, number=5,)
+    page_token = proto.Field(proto.STRING, number=6,)
 
 
 class ListGroupsResponse(proto.Message):
     r"""The ``ListGroups`` response.
-
     Attributes:
         group (Sequence[google.cloud.monitoring_v3.types.Group]):
             The groups that match the specified filters.
@@ -123,13 +113,11 @@ class ListGroupsResponse(proto.Message):
         return self
 
     group = proto.RepeatedField(proto.MESSAGE, number=1, message=gm_group.Group,)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class GetGroupRequest(proto.Message):
     r"""The ``GetGroup`` request.
-
     Attributes:
         name (str):
             Required. The group to retrieve. The format is:
@@ -139,12 +127,11 @@ class GetGroupRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/groups/[GROUP_ID]
     """
 
-    name = proto.Field(proto.STRING, number=3)
+    name = proto.Field(proto.STRING, number=3,)
 
 
 class CreateGroupRequest(proto.Message):
     r"""The ``CreateGroup`` request.
-
     Attributes:
         name (str):
             Required. The project in which to create the group. The
@@ -161,16 +148,13 @@ class CreateGroupRequest(proto.Message):
             create the group.
     """
 
-    name = proto.Field(proto.STRING, number=4)
-
+    name = proto.Field(proto.STRING, number=4,)
     group = proto.Field(proto.MESSAGE, number=2, message=gm_group.Group,)
-
-    validate_only = proto.Field(proto.BOOL, number=3)
+    validate_only = proto.Field(proto.BOOL, number=3,)
 
 
 class UpdateGroupRequest(proto.Message):
     r"""The ``UpdateGroup`` request.
-
     Attributes:
         group (google.cloud.monitoring_v3.types.Group):
             Required. The new definition of the group. All fields of the
@@ -182,8 +166,7 @@ class UpdateGroupRequest(proto.Message):
     """
 
     group = proto.Field(proto.MESSAGE, number=2, message=gm_group.Group,)
-
-    validate_only = proto.Field(proto.BOOL, number=3)
+    validate_only = proto.Field(proto.BOOL, number=3,)
 
 
 class DeleteGroupRequest(proto.Message):
@@ -205,14 +188,12 @@ class DeleteGroupRequest(proto.Message):
             value is false.
     """
 
-    name = proto.Field(proto.STRING, number=3)
-
-    recursive = proto.Field(proto.BOOL, number=4)
+    name = proto.Field(proto.STRING, number=3,)
+    recursive = proto.Field(proto.BOOL, number=4,)
 
 
 class ListGroupMembersRequest(proto.Message):
     r"""The ``ListGroupMembers`` request.
-
     Attributes:
         name (str):
             Required. The group whose members are listed. The format is:
@@ -249,20 +230,15 @@ class ListGroupMembersRequest(proto.Message):
             minute is returned.
     """
 
-    name = proto.Field(proto.STRING, number=7)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
-
-    filter = proto.Field(proto.STRING, number=5)
-
+    name = proto.Field(proto.STRING, number=7,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
+    filter = proto.Field(proto.STRING, number=5,)
     interval = proto.Field(proto.MESSAGE, number=6, message=common.TimeInterval,)
 
 
 class ListGroupMembersResponse(proto.Message):
     r"""The ``ListGroupMembers`` response.
-
     Attributes:
         members (Sequence[google.api.monitored_resource_pb2.MonitoredResource]):
             A set of monitored resources in the group.
@@ -281,12 +257,10 @@ class ListGroupMembersResponse(proto.Message):
         return self
 
     members = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=monitored_resource.MonitoredResource,
+        proto.MESSAGE, number=1, message=monitored_resource_pb2.MonitoredResource,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
-
-    total_size = proto.Field(proto.INT32, number=3)
+    next_page_token = proto.Field(proto.STRING, number=2,)
+    total_size = proto.Field(proto.INT32, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

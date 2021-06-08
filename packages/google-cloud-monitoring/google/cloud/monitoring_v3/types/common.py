@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.api import distribution_pb2 as distribution  # type: ignore
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.api import distribution_pb2  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -61,7 +58,6 @@ class ServiceTier(proto.Enum):
 
 class TypedValue(proto.Message):
     r"""A single strongly-typed value.
-
     Attributes:
         bool_value (bool):
             A Boolean value: ``true`` or ``false``.
@@ -79,16 +75,12 @@ class TypedValue(proto.Message):
             A distribution value.
     """
 
-    bool_value = proto.Field(proto.BOOL, number=1, oneof="value")
-
-    int64_value = proto.Field(proto.INT64, number=2, oneof="value")
-
-    double_value = proto.Field(proto.DOUBLE, number=3, oneof="value")
-
-    string_value = proto.Field(proto.STRING, number=4, oneof="value")
-
+    bool_value = proto.Field(proto.BOOL, number=1, oneof="value",)
+    int64_value = proto.Field(proto.INT64, number=2, oneof="value",)
+    double_value = proto.Field(proto.DOUBLE, number=3, oneof="value",)
+    string_value = proto.Field(proto.STRING, number=4, oneof="value",)
     distribution_value = proto.Field(
-        proto.MESSAGE, number=5, oneof="value", message=distribution.Distribution,
+        proto.MESSAGE, number=5, oneof="value", message=distribution_pb2.Distribution,
     )
 
 
@@ -140,9 +132,8 @@ class TimeInterval(proto.Message):
             end time.
     """
 
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
-    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
 
 
 class Aggregation(proto.Message):
@@ -304,13 +295,12 @@ class Aggregation(proto.Message):
         REDUCE_PERCENTILE_50 = 11
         REDUCE_PERCENTILE_05 = 12
 
-    alignment_period = proto.Field(proto.MESSAGE, number=1, message=duration.Duration,)
-
+    alignment_period = proto.Field(
+        proto.MESSAGE, number=1, message=duration_pb2.Duration,
+    )
     per_series_aligner = proto.Field(proto.ENUM, number=2, enum=Aligner,)
-
     cross_series_reducer = proto.Field(proto.ENUM, number=4, enum=Reducer,)
-
-    group_by_fields = proto.RepeatedField(proto.STRING, number=5)
+    group_by_fields = proto.RepeatedField(proto.STRING, number=5,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

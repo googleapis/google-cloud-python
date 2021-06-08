@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,53 +39,52 @@ def partition(
 class monitoringCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'create_alert_policy': ('name', 'alert_policy', ),
-    'create_group': ('name', 'group', 'validate_only', ),
-    'create_metric_descriptor': ('name', 'metric_descriptor', ),
-    'create_notification_channel': ('name', 'notification_channel', ),
-    'create_service': ('parent', 'service', 'service_id', ),
-    'create_service_level_objective': ('parent', 'service_level_objective', 'service_level_objective_id', ),
-    'create_time_series': ('name', 'time_series', ),
-    'create_uptime_check_config': ('parent', 'uptime_check_config', ),
-    'delete_alert_policy': ('name', ),
-    'delete_group': ('name', 'recursive', ),
-    'delete_metric_descriptor': ('name', ),
-    'delete_notification_channel': ('name', 'force', ),
-    'delete_service': ('name', ),
-    'delete_service_level_objective': ('name', ),
-    'delete_uptime_check_config': ('name', ),
-    'get_alert_policy': ('name', ),
-    'get_group': ('name', ),
-    'get_metric_descriptor': ('name', ),
-    'get_monitored_resource_descriptor': ('name', ),
-    'get_notification_channel': ('name', ),
-    'get_notification_channel_descriptor': ('name', ),
-    'get_notification_channel_verification_code': ('name', 'expire_time', ),
-    'get_service': ('name', ),
-    'get_service_level_objective': ('name', 'view', ),
-    'get_uptime_check_config': ('name', ),
-    'list_alert_policies': ('name', 'filter', 'order_by', 'page_size', 'page_token', ),
-    'list_group_members': ('name', 'page_size', 'page_token', 'filter', 'interval', ),
-    'list_groups': ('name', 'children_of_group', 'ancestors_of_group', 'descendants_of_group', 'page_size', 'page_token', ),
-    'list_metric_descriptors': ('name', 'filter', 'page_size', 'page_token', ),
-    'list_monitored_resource_descriptors': ('name', 'filter', 'page_size', 'page_token', ),
-    'list_notification_channel_descriptors': ('name', 'page_size', 'page_token', ),
-    'list_notification_channels': ('name', 'filter', 'order_by', 'page_size', 'page_token', ),
-    'list_service_level_objectives': ('parent', 'filter', 'page_size', 'page_token', 'view', ),
-    'list_services': ('parent', 'filter', 'page_size', 'page_token', ),
-    'list_time_series': ('name', 'filter', 'interval', 'view', 'aggregation', 'secondary_aggregation', 'order_by', 'page_size', 'page_token', ),
-    'list_uptime_check_configs': ('parent', 'page_size', 'page_token', ),
-    'list_uptime_check_ips': ('page_size', 'page_token', ),
-    'query_time_series': ('name', 'query', 'page_size', 'page_token', ),
-    'send_notification_channel_verification_code': ('name', ),
-    'update_alert_policy': ('alert_policy', 'update_mask', ),
-    'update_group': ('group', 'validate_only', ),
-    'update_notification_channel': ('notification_channel', 'update_mask', ),
-    'update_service': ('service', 'update_mask', ),
-    'update_service_level_objective': ('service_level_objective', 'update_mask', ),
-    'update_uptime_check_config': ('uptime_check_config', 'update_mask', ),
-    'verify_notification_channel': ('name', 'code', ),
-
+          'create_alert_policy': ('name', 'alert_policy', ),
+          'create_group': ('name', 'group', 'validate_only', ),
+          'create_metric_descriptor': ('name', 'metric_descriptor', ),
+          'create_notification_channel': ('name', 'notification_channel', ),
+          'create_service': ('parent', 'service', 'service_id', ),
+          'create_service_level_objective': ('parent', 'service_level_objective', 'service_level_objective_id', ),
+          'create_time_series': ('name', 'time_series', ),
+          'create_uptime_check_config': ('parent', 'uptime_check_config', ),
+          'delete_alert_policy': ('name', ),
+          'delete_group': ('name', 'recursive', ),
+          'delete_metric_descriptor': ('name', ),
+          'delete_notification_channel': ('name', 'force', ),
+          'delete_service': ('name', ),
+          'delete_service_level_objective': ('name', ),
+          'delete_uptime_check_config': ('name', ),
+          'get_alert_policy': ('name', ),
+          'get_group': ('name', ),
+          'get_metric_descriptor': ('name', ),
+          'get_monitored_resource_descriptor': ('name', ),
+          'get_notification_channel': ('name', ),
+          'get_notification_channel_descriptor': ('name', ),
+          'get_notification_channel_verification_code': ('name', 'expire_time', ),
+          'get_service': ('name', ),
+          'get_service_level_objective': ('name', 'view', ),
+          'get_uptime_check_config': ('name', ),
+          'list_alert_policies': ('name', 'filter', 'order_by', 'page_size', 'page_token', ),
+          'list_group_members': ('name', 'page_size', 'page_token', 'filter', 'interval', ),
+          'list_groups': ('name', 'children_of_group', 'ancestors_of_group', 'descendants_of_group', 'page_size', 'page_token', ),
+          'list_metric_descriptors': ('name', 'filter', 'page_size', 'page_token', ),
+          'list_monitored_resource_descriptors': ('name', 'filter', 'page_size', 'page_token', ),
+          'list_notification_channel_descriptors': ('name', 'page_size', 'page_token', ),
+          'list_notification_channels': ('name', 'filter', 'order_by', 'page_size', 'page_token', ),
+          'list_service_level_objectives': ('parent', 'filter', 'page_size', 'page_token', 'view', ),
+          'list_services': ('parent', 'filter', 'page_size', 'page_token', ),
+          'list_time_series': ('name', 'filter', 'interval', 'view', 'aggregation', 'secondary_aggregation', 'order_by', 'page_size', 'page_token', ),
+          'list_uptime_check_configs': ('parent', 'page_size', 'page_token', ),
+          'list_uptime_check_ips': ('page_size', 'page_token', ),
+          'query_time_series': ('name', 'query', 'page_size', 'page_token', ),
+          'send_notification_channel_verification_code': ('name', ),
+          'update_alert_policy': ('alert_policy', 'update_mask', ),
+          'update_group': ('group', 'validate_only', ),
+          'update_notification_channel': ('notification_channel', 'update_mask', ),
+          'update_service': ('service', 'update_mask', ),
+          'update_service_level_objective': ('service_level_objective', 'update_mask', ),
+          'update_uptime_check_config': ('uptime_check_config', 'update_mask', ),
+          'verify_notification_channel': ('name', 'code', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -118,7 +115,7 @@ class monitoringCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

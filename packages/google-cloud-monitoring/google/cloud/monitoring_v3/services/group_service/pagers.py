@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from typing import (
     Any,
     AsyncIterable,
@@ -26,7 +24,7 @@ from typing import (
     Optional,
 )
 
-from google.api import monitored_resource_pb2 as monitored_resource  # type: ignore
+from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.monitoring_v3.types import group
 from google.cloud.monitoring_v3.types import group_service
 
@@ -119,7 +117,7 @@ class ListGroupsAsyncPager:
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
-        """Instantiate the pager.
+        """Instantiates the pager.
 
         Args:
             method (Callable): The method that was originally called, and
@@ -213,7 +211,7 @@ class ListGroupMembersPager:
             self._response = self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __iter__(self) -> Iterable[monitored_resource.MonitoredResource]:
+    def __iter__(self) -> Iterable[monitored_resource_pb2.MonitoredResource]:
         for page in self.pages:
             yield from page.members
 
@@ -247,7 +245,7 @@ class ListGroupMembersAsyncPager:
         *,
         metadata: Sequence[Tuple[str, str]] = ()
     ):
-        """Instantiate the pager.
+        """Instantiates the pager.
 
         Args:
             method (Callable): The method that was originally called, and
@@ -275,7 +273,7 @@ class ListGroupMembersAsyncPager:
             self._response = await self._method(self._request, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(self) -> AsyncIterable[monitored_resource.MonitoredResource]:
+    def __aiter__(self) -> AsyncIterable[monitored_resource_pb2.MonitoredResource]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.members:

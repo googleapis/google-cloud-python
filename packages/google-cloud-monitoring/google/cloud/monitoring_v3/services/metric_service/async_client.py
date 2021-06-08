@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -22,21 +20,20 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.api import label_pb2 as label  # type: ignore
-from google.api import launch_stage_pb2 as launch_stage  # type: ignore
-from google.api import metric_pb2 as ga_metric  # type: ignore
-from google.api import monitored_resource_pb2 as monitored_resource  # type: ignore
+from google.api import label_pb2  # type: ignore
+from google.api import launch_stage_pb2  # type: ignore
+from google.api import metric_pb2  # type: ignore
+from google.api import monitored_resource_pb2  # type: ignore
 from google.cloud.monitoring_v3.services.metric_service import pagers
 from google.cloud.monitoring_v3.types import common
 from google.cloud.monitoring_v3.types import metric as gm_metric
 from google.cloud.monitoring_v3.types import metric_service
-
 from .transports.base import MetricServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import MetricServiceGrpcAsyncIOTransport
 from .client import MetricServiceClient
@@ -62,31 +59,26 @@ class MetricServiceAsyncClient:
     )
     time_series_path = staticmethod(MetricServiceClient.time_series_path)
     parse_time_series_path = staticmethod(MetricServiceClient.parse_time_series_path)
-
     common_billing_account_path = staticmethod(
         MetricServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         MetricServiceClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(MetricServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(
         MetricServiceClient.parse_common_folder_path
     )
-
     common_organization_path = staticmethod(
         MetricServiceClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
         MetricServiceClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(MetricServiceClient.common_project_path)
     parse_common_project_path = staticmethod(
         MetricServiceClient.parse_common_project_path
     )
-
     common_location_path = staticmethod(MetricServiceClient.common_location_path)
     parse_common_location_path = staticmethod(
         MetricServiceClient.parse_common_location_path
@@ -94,7 +86,8 @@ class MetricServiceAsyncClient:
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -109,7 +102,7 @@ class MetricServiceAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -126,7 +119,7 @@ class MetricServiceAsyncClient:
 
     @property
     def transport(self) -> MetricServiceTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             MetricServiceTransport: The transport used by the client instance.
@@ -140,12 +133,12 @@ class MetricServiceAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, MetricServiceTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the metric service client.
+        """Instantiates the metric service client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -177,7 +170,6 @@ class MetricServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = MetricServiceClient(
             credentials=credentials,
             transport=transport,
@@ -212,7 +204,6 @@ class MetricServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -241,7 +232,6 @@ class MetricServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -254,7 +244,8 @@ class MetricServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -288,7 +279,7 @@ class MetricServiceAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> monitored_resource.MonitoredResourceDescriptor:
+    ) -> monitored_resource_pb2.MonitoredResourceDescriptor:
         r"""Gets a single monitored resource descriptor. This
         method does not require a Workspace.
 
@@ -310,7 +301,6 @@ class MetricServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -346,7 +336,6 @@ class MetricServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -359,7 +348,8 @@ class MetricServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -405,7 +395,6 @@ class MetricServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -434,7 +423,6 @@ class MetricServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -447,7 +435,8 @@ class MetricServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -481,7 +470,7 @@ class MetricServiceAsyncClient:
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> ga_metric.MetricDescriptor:
+    ) -> metric_pb2.MetricDescriptor:
         r"""Gets a single metric descriptor. This method does not
         require a Workspace.
 
@@ -502,7 +491,6 @@ class MetricServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -532,7 +520,6 @@ class MetricServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -545,7 +532,8 @@ class MetricServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -570,11 +558,11 @@ class MetricServiceAsyncClient:
         request: metric_service.CreateMetricDescriptorRequest = None,
         *,
         name: str = None,
-        metric_descriptor: ga_metric.MetricDescriptor = None,
+        metric_descriptor: metric_pb2.MetricDescriptor = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> ga_metric.MetricDescriptor:
+    ) -> metric_pb2.MetricDescriptor:
         r"""Creates a new metric descriptor. User-created metric descriptors
         define `custom
         metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
@@ -602,7 +590,6 @@ class MetricServiceAsyncClient:
                 This corresponds to the ``metric_descriptor`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -632,7 +619,6 @@ class MetricServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
         if metric_descriptor is not None:
@@ -689,7 +675,6 @@ class MetricServiceAsyncClient:
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -710,7 +695,6 @@ class MetricServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -723,7 +707,8 @@ class MetricServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -806,7 +791,6 @@ class MetricServiceAsyncClient:
                 This corresponds to the ``view`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -835,7 +819,6 @@ class MetricServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
         if filter is not None:
@@ -854,7 +837,8 @@ class MetricServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -925,7 +909,6 @@ class MetricServiceAsyncClient:
                 This corresponds to the ``time_series`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -946,10 +929,8 @@ class MetricServiceAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
-
         if time_series:
             request.time_series.extend(time_series)
 

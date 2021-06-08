@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
 from google.cloud.monitoring_v3.types import alert
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -37,7 +34,6 @@ __protobuf__ = proto.module(
 
 class CreateAlertPolicyRequest(proto.Message):
     r"""The protocol for the ``CreateAlertPolicy`` request.
-
     Attributes:
         name (str):
             Required. The project in which to create the alerting
@@ -61,14 +57,12 @@ class CreateAlertPolicyRequest(proto.Message):
             the new policy, including a new ``[ALERT_POLICY_ID]`` value.
     """
 
-    name = proto.Field(proto.STRING, number=3)
-
+    name = proto.Field(proto.STRING, number=3,)
     alert_policy = proto.Field(proto.MESSAGE, number=2, message=alert.AlertPolicy,)
 
 
 class GetAlertPolicyRequest(proto.Message):
     r"""The protocol for the ``GetAlertPolicy`` request.
-
     Attributes:
         name (str):
             Required. The alerting policy to retrieve. The format is:
@@ -78,12 +72,11 @@ class GetAlertPolicyRequest(proto.Message):
                 projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
     """
 
-    name = proto.Field(proto.STRING, number=3)
+    name = proto.Field(proto.STRING, number=3,)
 
 
 class ListAlertPoliciesRequest(proto.Message):
     r"""The protocol for the ``ListAlertPolicies`` request.
-
     Attributes:
         name (str):
             Required. The project whose alert policies are to be listed.
@@ -122,20 +115,15 @@ class ListAlertPoliciesRequest(proto.Message):
             results from the previous method call.
     """
 
-    name = proto.Field(proto.STRING, number=4)
-
-    filter = proto.Field(proto.STRING, number=5)
-
-    order_by = proto.Field(proto.STRING, number=6)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
+    name = proto.Field(proto.STRING, number=4,)
+    filter = proto.Field(proto.STRING, number=5,)
+    order_by = proto.Field(proto.STRING, number=6,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
 
 
 class ListAlertPoliciesResponse(proto.Message):
     r"""The protocol for the ``ListAlertPolicies`` response.
-
     Attributes:
         alert_policies (Sequence[google.cloud.monitoring_v3.types.AlertPolicy]):
             The returned alert policies.
@@ -157,15 +145,12 @@ class ListAlertPoliciesResponse(proto.Message):
     alert_policies = proto.RepeatedField(
         proto.MESSAGE, number=3, message=alert.AlertPolicy,
     )
-
-    next_page_token = proto.Field(proto.STRING, number=2)
-
-    total_size = proto.Field(proto.INT32, number=4)
+    next_page_token = proto.Field(proto.STRING, number=2,)
+    total_size = proto.Field(proto.INT32, number=4,)
 
 
 class UpdateAlertPolicyRequest(proto.Message):
     r"""The protocol for the ``UpdateAlertPolicy`` request.
-
     Attributes:
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. A list of alerting policy field names. If this
@@ -202,14 +187,14 @@ class UpdateAlertPolicyRequest(proto.Message):
             ``update_mask`` are ignored.
     """
 
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
-
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
     alert_policy = proto.Field(proto.MESSAGE, number=3, message=alert.AlertPolicy,)
 
 
 class DeleteAlertPolicyRequest(proto.Message):
     r"""The protocol for the ``DeleteAlertPolicy`` request.
-
     Attributes:
         name (str):
             Required. The alerting policy to delete. The format is:
@@ -222,7 +207,7 @@ class DeleteAlertPolicyRequest(proto.Message):
             [AlertPolicy][google.monitoring.v3.AlertPolicy].
     """
 
-    name = proto.Field(proto.STRING, number=3)
+    name = proto.Field(proto.STRING, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

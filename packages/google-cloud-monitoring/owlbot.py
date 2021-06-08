@@ -33,8 +33,8 @@ for library in s.get_staging_dirs(default_version):
     for pattern in [
         "monitored_resource_types=\['monitored_resource_types_value'\],",
         "assert response.monitored_resource_types == \['monitored_resource_types_value'\]",
-        "launch_stage=launch_stage.LaunchStage.UNIMPLEMENTED,",
-        "assert response.launch_stage == launch_stage.LaunchStage.UNIMPLEMENTED",
+        "launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,",
+        "assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED",
     ]:
         s.replace(library / "tests/unit/gapic/monitoring_v3/test_*.py",
             pattern,
