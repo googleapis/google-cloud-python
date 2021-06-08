@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/python-video-transcoder/compare/v0.3.0...v0.3.1) (2021-05-28)
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#52](https://www.github.com/googleapis/python-video-transcoder/issues/52)) ([7ffa13c](https://www.github.com/googleapis/python-video-transcoder/commit/7ffa13c999260f47fbeb9dcce04110a7db9fd172))
+
 ## [0.3.0](https://www.github.com/googleapis/python-video-transcoder/compare/v0.2.1...v0.3.0) (2021-03-31)
 
 
