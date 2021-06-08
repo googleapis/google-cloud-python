@@ -17,14 +17,12 @@
 import base64
 import copy
 import datetime
-import functools
 import json
 import warnings
 
 import six
 from six.moves.urllib.parse import urlsplit
 
-from google.api_core import page_iterator
 from google.api_core import datetime_helpers
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _NOW
@@ -1392,14 +1390,8 @@ class Bucket(_PropertyMixin):
         """
         client = self._require_client(client)
         path = self.path + "/notificationConfigs"
-        api_request = functools.partial(
-            client._connection.api_request, timeout=timeout, retry=retry
-        )
-        iterator = page_iterator.HTTPIterator(
-            client=client,
-            api_request=api_request,
-            path=path,
-            item_to_value=_item_to_notification,
+        iterator = client._list_resource(
+            path, _item_to_notification, timeout=timeout, retry=retry,
         )
         iterator.bucket = self
         return iterator

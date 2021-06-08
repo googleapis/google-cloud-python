@@ -902,130 +902,148 @@ class Test_Bucket(unittest.TestCase):
             _target_object=blob,
         )
 
-    def test_list_blobs_defaults(self):
-        NAME = "name"
-        connection = _Connection({"items": []})
+    def test_list_blobs_w_defaults(self):
+        name = "name"
         client = self._make_client()
-        client._base_connection = connection
-        bucket = self._make_one(client=client, name=NAME)
+        client.list_blobs = mock.Mock(spec=[])
+        bucket = self._make_one(client=client, name=name)
+
         iterator = bucket.list_blobs()
-        blobs = list(iterator)
-        self.assertEqual(blobs, [])
-        (kw,) = connection._requested
-        self.assertEqual(kw["method"], "GET")
-        self.assertEqual(kw["path"], "/b/%s/o" % NAME)
-        self.assertEqual(kw["query_params"], {"projection": "noAcl"})
-        self.assertEqual(kw["timeout"], self._get_default_timeout())
 
-    def test_list_blobs_w_all_arguments_and_user_project(self):
-        NAME = "name"
-        USER_PROJECT = "user-project-123"
-        MAX_RESULTS = 10
-        PAGE_TOKEN = "ABCD"
-        PREFIX = "subfolder"
-        DELIMITER = "/"
-        START_OFFSET = "c"
-        END_OFFSET = "g"
-        INCLUDE_TRAILING_DELIMITER = True
-        VERSIONS = True
-        PROJECTION = "full"
-        FIELDS = "items/contentLanguage,nextPageToken"
-        EXPECTED = {
-            "maxResults": 10,
-            "pageToken": PAGE_TOKEN,
-            "prefix": PREFIX,
-            "delimiter": DELIMITER,
-            "startOffset": START_OFFSET,
-            "endOffset": END_OFFSET,
-            "includeTrailingDelimiter": INCLUDE_TRAILING_DELIMITER,
-            "versions": VERSIONS,
-            "projection": PROJECTION,
-            "fields": FIELDS,
-            "userProject": USER_PROJECT,
-        }
-        connection = _Connection({"items": []})
-        client = self._make_client()
-        client._base_connection = connection
-        bucket = self._make_one(name=NAME, user_project=USER_PROJECT)
+        self.assertIs(iterator, client.list_blobs.return_value)
+
+        expected_page_token = None
+        expected_max_results = None
+        expected_prefix = None
+        expected_delimiter = None
+        expected_start_offset = None
+        expected_end_offset = None
+        expected_include_trailing_delimiter = None
+        expected_versions = None
+        expected_projection = "noAcl"
+        expected_fields = None
+        client.list_blobs.assert_called_once_with(
+            bucket,
+            max_results=expected_max_results,
+            page_token=expected_page_token,
+            prefix=expected_prefix,
+            delimiter=expected_delimiter,
+            start_offset=expected_start_offset,
+            end_offset=expected_end_offset,
+            include_trailing_delimiter=expected_include_trailing_delimiter,
+            versions=expected_versions,
+            projection=expected_projection,
+            fields=expected_fields,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+        )
+
+    def test_list_blobs_w_explicit(self):
+        name = "name"
+        max_results = 10
+        page_token = "ABCD"
+        prefix = "subfolder"
+        delimiter = "/"
+        start_offset = "c"
+        end_offset = "g"
+        include_trailing_delimiter = True
+        versions = True
+        projection = "full"
+        fields = "items/contentLanguage,nextPageToken"
+        bucket = self._make_one(client=None, name=name)
+        other_client = self._make_client()
+        other_client.list_blobs = mock.Mock(spec=[])
+        timeout = 42
+        retry = mock.Mock(spec=[])
+
         iterator = bucket.list_blobs(
-            max_results=MAX_RESULTS,
-            page_token=PAGE_TOKEN,
-            prefix=PREFIX,
-            delimiter=DELIMITER,
-            start_offset=START_OFFSET,
-            end_offset=END_OFFSET,
-            include_trailing_delimiter=INCLUDE_TRAILING_DELIMITER,
-            versions=VERSIONS,
-            projection=PROJECTION,
-            fields=FIELDS,
-            client=client,
-            timeout=42,
-        )
-        blobs = list(iterator)
-        self.assertEqual(blobs, [])
-        (kw,) = connection._requested
-        self.assertEqual(kw["method"], "GET")
-        self.assertEqual(kw["path"], "/b/%s/o" % NAME)
-        self.assertEqual(kw["query_params"], EXPECTED)
-        self.assertEqual(kw["timeout"], 42)
-
-    def test_list_notifications(self):
-        from google.cloud.storage.notification import BucketNotification
-        from google.cloud.storage.notification import _TOPIC_REF_FMT
-        from google.cloud.storage.notification import (
-            JSON_API_V1_PAYLOAD_FORMAT,
-            NONE_PAYLOAD_FORMAT,
+            max_results=max_results,
+            page_token=page_token,
+            prefix=prefix,
+            delimiter=delimiter,
+            start_offset=start_offset,
+            end_offset=end_offset,
+            include_trailing_delimiter=include_trailing_delimiter,
+            versions=versions,
+            projection=projection,
+            fields=fields,
+            client=other_client,
+            timeout=timeout,
+            retry=retry,
         )
 
-        NAME = "name"
+        self.assertIs(iterator, other_client.list_blobs.return_value)
 
-        topic_refs = [("my-project-123", "topic-1"), ("other-project-456", "topic-2")]
+        expected_page_token = page_token
+        expected_max_results = max_results
+        expected_prefix = prefix
+        expected_delimiter = delimiter
+        expected_start_offset = start_offset
+        expected_end_offset = end_offset
+        expected_include_trailing_delimiter = include_trailing_delimiter
+        expected_versions = versions
+        expected_projection = projection
+        expected_fields = fields
+        other_client.list_blobs.assert_called_once_with(
+            bucket,
+            max_results=expected_max_results,
+            page_token=expected_page_token,
+            prefix=expected_prefix,
+            delimiter=expected_delimiter,
+            start_offset=expected_start_offset,
+            end_offset=expected_end_offset,
+            include_trailing_delimiter=expected_include_trailing_delimiter,
+            versions=expected_versions,
+            projection=expected_projection,
+            fields=expected_fields,
+            timeout=timeout,
+            retry=retry,
+        )
 
-        resources = [
-            {
-                "topic": _TOPIC_REF_FMT.format(*topic_refs[0]),
-                "id": "1",
-                "etag": "DEADBEEF",
-                "selfLink": "https://example.com/notification/1",
-                "payload_format": NONE_PAYLOAD_FORMAT,
-            },
-            {
-                "topic": _TOPIC_REF_FMT.format(*topic_refs[1]),
-                "id": "2",
-                "etag": "FACECABB",
-                "selfLink": "https://example.com/notification/2",
-                "payload_format": JSON_API_V1_PAYLOAD_FORMAT,
-            },
-        ]
-        connection = _Connection({"items": resources})
-        client = _Client(connection)
-        bucket = self._make_one(client=client, name=NAME)
+    def test_list_notifications_w_defaults(self):
+        from google.cloud.storage.bucket import _item_to_notification
 
-        notifications = list(bucket.list_notifications(timeout=42))
+        bucket_name = "name"
+        client = self._make_client()
+        client._list_resource = mock.Mock(spec=[])
+        bucket = self._make_one(client=client, name=bucket_name)
 
-        req_args = client._connection._requested[0]
-        self.assertEqual(req_args.get("timeout"), 42)
+        iterator = bucket.list_notifications()
 
-        self.assertEqual(len(notifications), len(resources))
-        for notification, resource, topic_ref in zip(
-            notifications, resources, topic_refs
-        ):
-            self.assertIsInstance(notification, BucketNotification)
-            self.assertEqual(notification.topic_project, topic_ref[0])
-            self.assertEqual(notification.topic_name, topic_ref[1])
-            self.assertEqual(notification.notification_id, resource["id"])
-            self.assertEqual(notification.etag, resource["etag"])
-            self.assertEqual(notification.self_link, resource["selfLink"])
-            self.assertEqual(
-                notification.custom_attributes, resource.get("custom_attributes")
-            )
-            self.assertEqual(notification.event_types, resource.get("event_types"))
-            self.assertEqual(
-                notification.blob_name_prefix, resource.get("blob_name_prefix")
-            )
-            self.assertEqual(
-                notification.payload_format, resource.get("payload_format")
-            )
+        self.assertIs(iterator, client._list_resource.return_value)
+        self.assertIs(iterator.bucket, bucket)
+
+        expected_path = "/b/{}/notificationConfigs".format(bucket_name)
+        expected_item_to_value = _item_to_notification
+        client._list_resource.assert_called_once_with(
+            expected_path,
+            expected_item_to_value,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+        )
+
+    def test_list_notifications_w_explicit(self):
+        from google.cloud.storage.bucket import _item_to_notification
+
+        bucket_name = "name"
+        other_client = self._make_client()
+        other_client._list_resource = mock.Mock(spec=[])
+        bucket = self._make_one(client=None, name=bucket_name)
+        timeout = 42
+        retry = mock.Mock(spec=[])
+
+        iterator = bucket.list_notifications(
+            client=other_client, timeout=timeout, retry=retry,
+        )
+
+        self.assertIs(iterator, other_client._list_resource.return_value)
+        self.assertIs(iterator.bucket, bucket)
+
+        expected_path = "/b/{}/notificationConfigs".format(bucket_name)
+        expected_item_to_value = _item_to_notification
+        other_client._list_resource.assert_called_once_with(
+            expected_path, expected_item_to_value, timeout=timeout, retry=retry,
+        )
 
     def test_get_notification_miss_w_defaults(self):
         from google.cloud.exceptions import NotFound
@@ -1591,7 +1609,7 @@ class Test_Bucket(unittest.TestCase):
         )
 
     def test_reload_w_generation_match(self):
-        connection = _Connection({})
+        connection = _Connection()
         client = _Client(connection)
         bucket = self._make_one(client=client, name="name")
 
@@ -3839,29 +3857,51 @@ class Test_Bucket(unittest.TestCase):
         self._generate_signed_url_v4_helper(bucket_bound_hostname="cdn.example.com")
 
 
+class Test__item_to_notification(unittest.TestCase):
+    def _call_fut(self, iterator, item):
+        from google.cloud.storage.bucket import _item_to_notification
+
+        return _item_to_notification(iterator, item)
+
+    def test_it(self):
+        from google.cloud.storage.notification import BucketNotification
+        from google.cloud.storage.notification import _TOPIC_REF_FMT
+        from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
+
+        iterator = mock.Mock(spec=["bucket"])
+        project = "my-project-123"
+        topic = "topic-1"
+        item = {
+            "topic": _TOPIC_REF_FMT.format(project, topic),
+            "id": "1",
+            "etag": "DEADBEEF",
+            "selfLink": "https://example.com/notification/1",
+            "payload_format": NONE_PAYLOAD_FORMAT,
+        }
+
+        notification = self._call_fut(iterator, item)
+
+        self.assertIsInstance(notification, BucketNotification)
+        self.assertIs(notification._bucket, iterator.bucket)
+        self.assertEqual(notification._topic_name, topic)
+        self.assertEqual(notification._topic_project, project)
+        self.assertEqual(notification._properties, item)
+
+
 class _Connection(object):
-    _delete_bucket = False
+    credentials = None
 
-    def __init__(self, *responses):
-        self._responses = responses
-        self._requested = []
-        self._deleted_buckets = []
-        self.credentials = None
+    def __init__(self):
+        pass
 
-    def api_request(self, **kw):
-        self._requested.append(kw)
-        response, self._responses = self._responses[0], self._responses[1:]
-        return response
+    def api_request(self, **kw):  # pragma: NO COVER
+        pass
 
 
 class _Client(object):
     def __init__(self, connection, project=None):
         self._base_connection = connection
         self.project = project
-
-    @property
-    def _connection(self):
-        return self._base_connection
 
     @property
     def _credentials(self):

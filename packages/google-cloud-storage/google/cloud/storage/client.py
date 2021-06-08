@@ -386,6 +386,31 @@ class Client(ClientWithProject):
             _target_object=_target_object,
         )
 
+    def _list_resource(
+        self,
+        path,
+        item_to_value,
+        page_token=None,
+        max_results=None,
+        extra_params=None,
+        page_start=page_iterator._do_nothing_page_start,
+        timeout=_DEFAULT_TIMEOUT,
+        retry=DEFAULT_RETRY,
+    ):
+        api_request = functools.partial(
+            self._connection.api_request, timeout=timeout, retry=retry
+        )
+        return page_iterator.HTTPIterator(
+            client=self,
+            api_request=api_request,
+            path=path,
+            item_to_value=item_to_value,
+            page_token=page_token,
+            max_results=max_results,
+            extra_params=extra_params,
+            page_start=page_start,
+        )
+
     def _patch_resource(
         self,
         path,
@@ -1214,14 +1239,9 @@ class Client(ClientWithProject):
             extra_params["userProject"] = bucket.user_project
 
         path = bucket.path + "/o"
-        api_request = functools.partial(
-            self._connection.api_request, timeout=timeout, retry=retry
-        )
-        iterator = page_iterator.HTTPIterator(
-            client=self,
-            api_request=api_request,
-            path=path,
-            item_to_value=_item_to_blob,
+        iterator = self._list_resource(
+            path,
+            _item_to_blob,
             page_token=page_token,
             max_results=max_results,
             extra_params=extra_params,
@@ -1328,18 +1348,14 @@ class Client(ClientWithProject):
         if fields is not None:
             extra_params["fields"] = fields
 
-        api_request = functools.partial(
-            self._connection.api_request, retry=retry, timeout=timeout
-        )
-
-        return page_iterator.HTTPIterator(
-            client=self,
-            api_request=api_request,
-            path="/b",
-            item_to_value=_item_to_bucket,
+        return self._list_resource(
+            "/b",
+            _item_to_bucket,
             page_token=page_token,
             max_results=max_results,
             extra_params=extra_params,
+            timeout=timeout,
+            retry=retry,
         )
 
     def create_hmac_key(
@@ -1476,17 +1492,13 @@ class Client(ClientWithProject):
         if user_project is not None:
             extra_params["userProject"] = user_project
 
-        api_request = functools.partial(
-            self._connection.api_request, timeout=timeout, retry=retry
-        )
-
-        return page_iterator.HTTPIterator(
-            client=self,
-            api_request=api_request,
-            path=path,
-            item_to_value=_item_to_hmac_key_metadata,
+        return self._list_resource(
+            path,
+            _item_to_hmac_key_metadata,
             max_results=max_results,
             extra_params=extra_params,
+            timeout=timeout,
+            retry=retry,
         )
 
     def get_hmac_key_metadata(
