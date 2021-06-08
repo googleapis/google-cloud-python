@@ -47,6 +47,33 @@ class TestAsyncIterator:
         assert iterator.next_page_token == token
         assert iterator.num_results == 0
 
+    @pytest.mark.asyncio
+    async def test_anext(self):
+        parent = mock.sentinel.parent
+        page_1 = page_iterator_async.Page(
+            parent, ("item 1.1", "item 1.2"), page_iterator_async._item_to_value_identity
+        )
+        page_2 = page_iterator_async.Page(
+            parent, ("item 2.1",), page_iterator_async._item_to_value_identity
+        )
+
+        async_iterator = PageAsyncIteratorImpl(None, None)
+        async_iterator._next_page = mock.AsyncMock(side_effect=[page_1, page_2, None])
+
+        # Consume items and check the state of the async_iterator.
+        assert async_iterator.num_results == 0
+        assert await async_iterator.__anext__() == "item 1.1"
+        assert async_iterator.num_results == 1
+
+        assert await async_iterator.__anext__() == "item 1.2"
+        assert async_iterator.num_results == 2
+
+        assert await async_iterator.__anext__() == "item 2.1"
+        assert async_iterator.num_results == 3
+
+        with pytest.raises(StopAsyncIteration):
+            await async_iterator.__anext__()
+
     def test_pages_property_starts(self):
         iterator = PageAsyncIteratorImpl(None, None)
 

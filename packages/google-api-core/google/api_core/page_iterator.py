@@ -170,6 +170,8 @@ class Iterator(object):
         max_results=None,
     ):
         self._started = False
+        self.__active_iterator = None
+
         self.client = client
         """Optional[Any]: The client that created this iterator."""
         self.item_to_value = item_to_value
@@ -227,6 +229,14 @@ class Iterator(object):
             raise ValueError("Iterator has already started", self)
         self._started = True
         return self._items_iter()
+
+    def __next__(self):
+        if self.__active_iterator is None:
+            self.__active_iterator = iter(self)
+        return next(self.__active_iterator)
+
+    # Preserve Python 2 compatibility.
+    next = __next__
 
     def _page_iter(self, increment):
         """Generator of pages of API responses.

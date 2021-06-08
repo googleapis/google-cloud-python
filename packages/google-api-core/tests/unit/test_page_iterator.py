@@ -109,6 +109,26 @@ class TestIterator(object):
         assert iterator.next_page_token == token
         assert iterator.num_results == 0
 
+    def test_next(self):
+        iterator = PageIteratorImpl(None, None)
+        page_1 = page_iterator.Page(
+            iterator, ("item 1.1", "item 1.2"), page_iterator._item_to_value_identity
+        )
+        page_2 = page_iterator.Page(
+            iterator, ("item 2.1",), page_iterator._item_to_value_identity
+        )
+        iterator._next_page = mock.Mock(side_effect=[page_1, page_2, None])
+
+        result = next(iterator)
+        assert result == "item 1.1"
+        result = next(iterator)
+        assert result == "item 1.2"
+        result = next(iterator)
+        assert result == "item 2.1"
+
+        with pytest.raises(StopIteration):
+            next(iterator)
+
     def test_pages_property_starts(self):
         iterator = PageIteratorImpl(None, None)
 

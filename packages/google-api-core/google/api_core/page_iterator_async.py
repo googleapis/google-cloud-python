@@ -101,6 +101,8 @@ class AsyncIterator(abc.ABC):
         max_results=None,
     ):
         self._started = False
+        self.__active_aiterator = None
+
         self.client = client
         """Optional[Any]: The client that created this iterator."""
         self.item_to_value = item_to_value
@@ -158,6 +160,11 @@ class AsyncIterator(abc.ABC):
             raise ValueError("Iterator has already started", self)
         self._started = True
         return self._items_aiter()
+
+    async def __anext__(self):
+        if self.__active_aiterator is None:
+            self.__active_aiterator = self.__aiter__()
+        return await self.__active_aiterator.__anext__()
 
     async def _page_aiter(self, increment):
         """Generator of pages of API responses.
