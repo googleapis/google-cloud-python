@@ -231,7 +231,8 @@ class TestBucketNotification(unittest.TestCase):
         self.assertEqual(notification.self_link, self.SELF_LINK)
 
     def test_create_w_existing_notification_id(self):
-        client = self._make_client()
+        client = mock.Mock(spec=["_post_resource", "project"])
+        client.project = self.BUCKET_PROJECT
         bucket = self._make_bucket(client)
         notification = self._make_one(bucket, self.TOPIC_NAME)
         notification._properties["id"] = self.NOTIFICATION_ID
@@ -239,20 +240,23 @@ class TestBucketNotification(unittest.TestCase):
         with self.assertRaises(ValueError):
             notification.create()
 
+        client._post_resource.assert_not_called()
+
     def test_create_w_defaults(self):
         from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 
-        client = self._make_client()
-        bucket = self._make_bucket(client)
-        notification = self._make_one(bucket, self.TOPIC_NAME)
-        api_request = client._connection.api_request
-        api_request.return_value = {
+        api_response = {
             "topic": self.TOPIC_REF,
             "id": self.NOTIFICATION_ID,
             "etag": self.ETAG,
             "selfLink": self.SELF_LINK,
             "payload_format": NONE_PAYLOAD_FORMAT,
         }
+        client = mock.Mock(spec=["_post_resource", "project"])
+        client.project = self.BUCKET_PROJECT
+        client._post_resource.return_value = api_response
+        bucket = self._make_bucket(client)
+        notification = self._make_one(bucket, self.TOPIC_NAME)
 
         notification.create()
 
@@ -264,32 +268,22 @@ class TestBucketNotification(unittest.TestCase):
         self.assertIsNone(notification.blob_name_prefix)
         self.assertEqual(notification.payload_format, NONE_PAYLOAD_FORMAT)
 
-        data = {"topic": self.TOPIC_REF, "payload_format": NONE_PAYLOAD_FORMAT}
-        api_request.assert_called_once_with(
-            method="POST",
-            path=self.CREATE_PATH,
-            query_params={},
-            data=data,
+        expected_data = {
+            "topic": self.TOPIC_REF,
+            "payload_format": NONE_PAYLOAD_FORMAT,
+        }
+        expected_query_params = {}
+        client._post_resource.assert_called_once_with(
+            self.CREATE_PATH,
+            expected_data,
+            query_params=expected_query_params,
             timeout=self._get_default_timeout(),
             retry=None,
         )
 
-    def test_create_w_explicit_client(self):
-        USER_PROJECT = "user-project-123"
-        client = self._make_client()
-        alt_client = self._make_client()
-        bucket = self._make_bucket(client, user_project=USER_PROJECT)
-        notification = self._make_one(
-            bucket,
-            self.TOPIC_NAME,
-            topic_project=self.TOPIC_ALT_PROJECT,
-            custom_attributes=self.CUSTOM_ATTRIBUTES,
-            event_types=self.event_types(),
-            blob_name_prefix=self.BLOB_NAME_PREFIX,
-            payload_format=self.payload_format(),
-        )
-        api_request = alt_client._connection.api_request
-        api_request.return_value = {
+    def test_create_w_explicit_client_w_timeout_w_retry(self):
+        user_project = "user-project-123"
+        api_response = {
             "topic": self.TOPIC_ALT_REF,
             "custom_attributes": self.CUSTOM_ATTRIBUTES,
             "event_types": self.event_types(),
@@ -299,8 +293,23 @@ class TestBucketNotification(unittest.TestCase):
             "etag": self.ETAG,
             "selfLink": self.SELF_LINK,
         }
+        bucket = self._make_bucket(client=None, user_project=user_project)
+        notification = self._make_one(
+            bucket,
+            self.TOPIC_NAME,
+            topic_project=self.TOPIC_ALT_PROJECT,
+            custom_attributes=self.CUSTOM_ATTRIBUTES,
+            event_types=self.event_types(),
+            blob_name_prefix=self.BLOB_NAME_PREFIX,
+            payload_format=self.payload_format(),
+        )
+        client = mock.Mock(spec=["_post_resource", "project"])
+        client.project = self.BUCKET_PROJECT
+        client._post_resource.return_value = api_response
+        timeout = 42
+        retry = mock.Mock(spec=[])
 
-        notification.create(client=alt_client, timeout=42)
+        notification.create(client=client, timeout=timeout, retry=retry)
 
         self.assertEqual(notification.custom_attributes, self.CUSTOM_ATTRIBUTES)
         self.assertEqual(notification.event_types, self.event_types())
@@ -310,20 +319,20 @@ class TestBucketNotification(unittest.TestCase):
         self.assertEqual(notification.etag, self.ETAG)
         self.assertEqual(notification.self_link, self.SELF_LINK)
 
-        data = {
+        expected_data = {
             "topic": self.TOPIC_ALT_REF,
             "custom_attributes": self.CUSTOM_ATTRIBUTES,
             "event_types": self.event_types(),
             "object_name_prefix": self.BLOB_NAME_PREFIX,
             "payload_format": self.payload_format(),
         }
-        api_request.assert_called_once_with(
-            method="POST",
-            path=self.CREATE_PATH,
-            query_params={"userProject": USER_PROJECT},
-            data=data,
-            timeout=42,
-            retry=None,
+        expected_query_params = {"userProject": user_project}
+        client._post_resource.assert_called_once_with(
+            self.CREATE_PATH,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=timeout,
+            retry=retry,
         )
 
     def test_exists_wo_notification_id(self):

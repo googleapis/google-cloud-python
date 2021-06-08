@@ -233,7 +233,7 @@ class BucketNotification(object):
         self._properties.clear()
         self._properties.update(response)
 
-    def create(self, client=None, timeout=_DEFAULT_TIMEOUT):
+    def create(self, client=None, timeout=_DEFAULT_TIMEOUT, retry=None):
         """API wrapper: create the notification.
 
         See:
@@ -251,6 +251,20 @@ class BucketNotification(object):
 
             Can also be passed as a tuple (connect_timeout, read_timeout).
             See :meth:`requests.Session.request` documentation for details.
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
+            A google.api_core.retry.Retry value will enable retries, and the object will
+            define retriable response codes and errors and configure backoff and timeout options.
+
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
+            activates it only if certain conditions are met. This class exists to provide safe defaults
+            for RPC calls that are not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a condition such as
+            if_metageneration_match is set.
+
+            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
+            information on retry types and how to configure them.
         """
         if self.notification_id is not None:
             raise ValueError(
@@ -266,13 +280,8 @@ class BucketNotification(object):
         path = "/b/{}/notificationConfigs".format(self.bucket.name)
         properties = self._properties.copy()
         properties["topic"] = _TOPIC_REF_FMT.format(self.topic_project, self.topic_name)
-        self._properties = client._connection.api_request(
-            method="POST",
-            path=path,
-            query_params=query_params,
-            data=properties,
-            timeout=timeout,
-            retry=None,
+        self._properties = client._post_resource(
+            path, properties, query_params=query_params, timeout=timeout, retry=retry,
         )
 
     def exists(self, client=None, timeout=_DEFAULT_TIMEOUT, retry=DEFAULT_RETRY):

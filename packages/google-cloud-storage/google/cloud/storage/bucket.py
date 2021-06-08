@@ -1986,13 +1986,13 @@ class Bucket(_PropertyMixin):
 
         new_blob = Blob(bucket=destination_bucket, name=new_name)
         api_path = blob.path + "/copyTo" + new_blob.path
-        copy_result = client._connection.api_request(
-            method="POST",
-            path=api_path,
+        copy_result = client._post_resource(
+            api_path,
+            None,
             query_params=query_params,
-            _target_object=new_blob,
             timeout=timeout,
             retry=retry,
+            _target_object=new_blob,
         )
 
         if not preserve_acl:
@@ -2006,7 +2006,6 @@ class Bucket(_PropertyMixin):
         blob,
         new_name,
         client=None,
-        timeout=_DEFAULT_TIMEOUT,
         if_generation_match=None,
         if_generation_not_match=None,
         if_metageneration_match=None,
@@ -2015,6 +2014,7 @@ class Bucket(_PropertyMixin):
         if_source_generation_not_match=None,
         if_source_metageneration_match=None,
         if_source_metageneration_not_match=None,
+        timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
     ):
         """Rename the given blob using copy and delete operations.
@@ -2043,14 +2043,6 @@ class Bucket(_PropertyMixin):
                       ``NoneType``
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
-
-        :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response. The timeout applies to each individual
-            request.
-
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
 
         :type if_generation_match: long
         :param if_generation_match: (Optional) Makes the operation
@@ -2112,6 +2104,14 @@ class Bucket(_PropertyMixin):
                                                    object's current metageneration
                                                    does not match the given value.
                                                    Also used in the delete request.
+
+        :type timeout: float or tuple
+        :param timeout: (Optional) The amount of time, in seconds, to wait
+            for the server response. The timeout applies to each individual
+            request.
+
+            Can also be passed as a tuple (connect_timeout, read_timeout).
+            See :meth:`requests.Session.request` documentation for details.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry: (Optional) How to retry the RPC. A None value will disable retries.
@@ -3311,13 +3311,13 @@ class Bucket(_PropertyMixin):
             query_params["userProject"] = self.user_project
 
         path = "/b/{}/lockRetentionPolicy".format(self.name)
-        api_response = client._connection.api_request(
-            method="POST",
-            path=path,
+        api_response = client._post_resource(
+            path,
+            None,
             query_params=query_params,
-            _target_object=self,
             timeout=timeout,
             retry=retry,
+            _target_object=self,
         )
         self._set_properties(api_response)
 
