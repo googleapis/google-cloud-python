@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.3.0](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.2.0...v1.3.0) (2021-06-07)
+
+
+### Features
+
+* bump release level to production/stable ([#61](https://www.github.com/googleapis/python-websecurityscanner/issues/61)) ([7591adb](https://www.github.com/googleapis/python-websecurityscanner/commit/7591adb4cb17a0ef6fe5e5d6fc9ede96d9c6e479))
+
+
+### Bug Fixes
+
+* add default import for google.cloud.websecurityscanner ([#69](https://www.github.com/googleapis/python-websecurityscanner/issues/69)) ([a65c8e9](https://www.github.com/googleapis/python-websecurityscanner/commit/a65c8e9e946c7d233d9260701a2b9a641ebda3be))
+
+
+### Miscellaneous Chores
+
+* release as 1.3.0 ([#71](https://www.github.com/googleapis/python-websecurityscanner/issues/71)) ([bac6541](https://www.github.com/googleapis/python-websecurityscanner/commit/bac65415488c43a963d68d35ccd30cfe872f8cf9))
+
 ## [1.2.0](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.1.0...v1.2.0) (2021-05-28)
 
 
