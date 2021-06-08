@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-secret-manager"
 description = "Secret Manager API API client library"
-version = "2.4.0"
+version = "2.5.0"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",

@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.5.0](https://www.github.com/googleapis/python-secret-manager/compare/v2.4.0...v2.5.0) (2021-06-07)
+
+
+### Features
+
+* Etags in Secret Manager ([#116](https://www.github.com/googleapis/python-secret-manager/issues/116)) ([6ec898e](https://www.github.com/googleapis/python-secret-manager/commit/6ec898e4d671344a3f4a8322417d38c8cf606f1b))
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#119](https://www.github.com/googleapis/python-secret-manager/issues/119)) ([0937207](https://www.github.com/googleapis/python-secret-manager/commit/0937207c59753e0b6b595f2ff708826ee3a2c4bd))
+
 ## [2.4.0](https://www.github.com/googleapis/python-secret-manager/compare/v2.3.0...v2.4.0) (2021-03-31)
 
 
