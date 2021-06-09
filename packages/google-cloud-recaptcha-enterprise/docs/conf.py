@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# google-cloud-recpatchaenterprise documentation build configuration file
+# google-cloud-recaptchaenterprise documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -80,7 +80,7 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-recpatchaenterprise"
+project = u"google-cloud-recaptchaenterprise"
 copyright = u"2019, Google"
 author = u"Google APIs"
 
@@ -153,7 +153,7 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for google-cloud-recpatchaenterprise",
+    "description": "Google Cloud Client Libraries for google-cloud-recaptchaenterprise",
     "github_user": "googleapis",
     "github_repo": "python-recaptcha-enterprise",
     "github_banner": True,
@@ -247,7 +247,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-recpatchaenterprise-doc"
+htmlhelp_basename = "google-cloud-recaptchaenterprise-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -280,8 +280,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "google-cloud-recpatchaenterprise.tex",
-        u"google-cloud-recpatchaenterprise Documentation",
+        "google-cloud-recaptchaenterprise.tex",
+        u"google-cloud-recaptchaenterprise Documentation",
         author,
         "manual",
     )
@@ -315,8 +315,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "google-cloud-recpatchaenterprise",
-        u"google-cloud-recpatchaenterprise Documentation",
+        "google-cloud-recaptchaenterprise",
+        u"google-cloud-recaptchaenterprise Documentation",
         [author],
         1,
     )
@@ -334,11 +334,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "google-cloud-recpatchaenterprise",
-        u"google-cloud-recpatchaenterprise Documentation",
+        "google-cloud-recaptchaenterprise",
+        u"google-cloud-recaptchaenterprise Documentation",
         author,
-        "google-cloud-recpatchaenterprise",
-        "google-cloud-recpatchaenterprise Library",
+        "google-cloud-recaptchaenterprise",
+        "google-cloud-recaptchaenterprise Library",
         "APIs",
     )
 ]
