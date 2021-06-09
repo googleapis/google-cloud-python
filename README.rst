@@ -267,7 +267,7 @@ Libraries
      - |PyPI-google-cloud-workflows|
    * - `reCAPTCHA Enterprise <https://github.com/googleapis/python-recaptcha-enterprise>`_
      - |beta|
-     - |PyPI-google-cloud-recpatchaenterprise|
+     - |PyPI-google-cloud-recaptcha-enterprise|
    * - `Analytics Admin <https://github.com/googleapis/python-analytics-admin>`_
      - |alpha|
      - |PyPI-google-analytics-admin|
@@ -432,8 +432,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-video-transcoder
 .. |PyPI-google-cloud-workflows| image:: https://img.shields.io/pypi/v/google-cloud-workflows.svg
      :target: https://pypi.org/project/google-cloud-workflows
-.. |PyPI-google-cloud-recpatchaenterprise| image:: https://img.shields.io/pypi/v/google-cloud-recpatchaenterprise.svg
-     :target: https://pypi.org/project/google-cloud-recpatchaenterprise
+.. |PyPI-google-cloud-recaptcha-enterprise| image:: https://img.shields.io/pypi/v/google-cloud-recaptcha-enterprise.svg
+     :target: https://pypi.org/project/google-cloud-recaptcha-enterprise
 .. |PyPI-google-analytics-admin| image:: https://img.shields.io/pypi/v/google-analytics-admin.svg
      :target: https://pypi.org/project/google-analytics-admin
 .. |PyPI-google-analytics-data| image:: https://img.shields.io/pypi/v/google-analytics-data.svg
