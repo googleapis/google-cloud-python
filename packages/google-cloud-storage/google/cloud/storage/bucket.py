@@ -3181,7 +3181,7 @@ class Bucket(_PropertyMixin):
                   to attach the signature.
         """
         client = self._require_client(client)
-        credentials = client._base_connection.credentials
+        credentials = client._credentials
         _signing.ensure_signed_credentials(credentials)
 
         if expiration is None:

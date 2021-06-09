@@ -37,6 +37,79 @@ def _create_signing_credentials():
     return credentials
 
 
+class Test__blobs_page_start(unittest.TestCase):
+    @staticmethod
+    def _call_fut(iterator, page, response):
+        from google.cloud.storage.bucket import _blobs_page_start
+
+        return _blobs_page_start(iterator, page, response)
+
+    def test_wo_any_prefixes(self):
+        iterator = mock.Mock(spec=["prefixes"], prefixes=set())
+        page = mock.Mock(spec=["prefixes"])
+        response = {}
+
+        self._call_fut(iterator, page, response)
+
+        self.assertEqual(page.prefixes, ())
+        self.assertEqual(iterator.prefixes, set())
+
+    def test_w_prefixes(self):
+        iterator_prefixes = set(["foo/", "qux/"])
+        iterator = mock.Mock(spec=["prefixes"], prefixes=iterator_prefixes)
+        page = mock.Mock(spec=["prefixes"])
+        page_prefixes = ["foo/", "bar/", "baz/"]
+        response = {"prefixes": page_prefixes}
+
+        self._call_fut(iterator, page, response)
+
+        self.assertEqual(page.prefixes, tuple(page_prefixes))
+        self.assertEqual(iterator.prefixes, iterator_prefixes.union(page_prefixes))
+
+
+class Test__item_to_blob(unittest.TestCase):
+    @staticmethod
+    def _call_fut(iterator, item):
+        from google.cloud.storage.bucket import _item_to_blob
+
+        return _item_to_blob(iterator, item)
+
+    def test_wo_extra_properties(self):
+        from google.cloud.storage.blob import Blob
+
+        blob_name = "blob-name"
+        bucket = mock.Mock(spec=[])
+        iterator = mock.Mock(spec=["bucket"], bucket=bucket)
+        item = {"name": blob_name}
+
+        blob = self._call_fut(iterator, item)
+
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.bucket, bucket)
+        self.assertEqual(blob.name, blob_name)
+        self.assertEqual(blob._properties, item)
+
+    def test_w_extra_properties(self):
+        from google.cloud.storage.blob import Blob
+
+        blob_name = "blob-name"
+        bucket = mock.Mock(spec=[])
+        iterator = mock.Mock(spec=["bucket"], bucket=bucket)
+        item = {
+            "name": blob_name,
+            "generation": 123,
+            "contentType": "text/plain",
+            "contentLanguage": "en-US",
+        }
+
+        blob = self._call_fut(iterator, item)
+
+        self.assertIsInstance(blob, Blob)
+        self.assertIs(blob.bucket, bucket)
+        self.assertEqual(blob.name, blob_name)
+        self.assertEqual(blob._properties, item)
+
+
 class Test_LifecycleRuleConditions(unittest.TestCase):
     @staticmethod
     def _get_target_class():
@@ -442,15 +515,14 @@ class Test_Bucket(unittest.TestCase):
         return _DEFAULT_TIMEOUT
 
     @staticmethod
-    def _make_client(*args, **kw):
+    def _make_client(**kw):
         from google.cloud.storage.client import Client
 
-        return Client(*args, **kw)
+        return mock.create_autospec(Client, instance=True, **kw)
 
     def _make_one(self, client=None, name=None, properties=None, user_project=None):
         if client is None:
-            connection = _Connection()
-            client = _Client(connection)
+            client = self._make_client()
         if user_project is None:
             bucket = self._get_target_class()(client, name=name)
         else:
@@ -482,8 +554,7 @@ class Test_Bucket(unittest.TestCase):
     def test_ctor_w_user_project(self):
         NAME = "name"
         USER_PROJECT = "user-project-123"
-        connection = _Connection()
-        client = _Client(connection)
+        client = self._make_client()
         bucket = self._make_one(client, name=NAME, user_project=USER_PROJECT)
         self.assertEqual(bucket.name, NAME)
         self.assertEqual(bucket._properties, {})
@@ -575,7 +646,7 @@ class Test_Bucket(unittest.TestCase):
         PROJECT = "PROJECT"
         BUCKET_NAME = "BUCKET_NAME"
         TOPIC_NAME = "TOPIC_NAME"
-        client = _Client(_Connection(), project=PROJECT)
+        client = self._make_client(project=PROJECT)
         bucket = self._make_one(client, name=BUCKET_NAME)
 
         notification = bucket.notification(TOPIC_NAME)
@@ -603,7 +674,7 @@ class Test_Bucket(unittest.TestCase):
         CUSTOM_ATTRIBUTES = {"attr1": "value1", "attr2": "value2"}
         EVENT_TYPES = [OBJECT_FINALIZE_EVENT_TYPE, OBJECT_DELETE_EVENT_TYPE]
         BLOB_NAME_PREFIX = "blob-name-prefix/"
-        client = _Client(_Connection(), project=PROJECT)
+        client = self._make_client(project=PROJECT)
         bucket = self._make_one(client, name=BUCKET_NAME)
 
         notification = bucket.notification(
@@ -1609,8 +1680,7 @@ class Test_Bucket(unittest.TestCase):
         )
 
     def test_reload_w_generation_match(self):
-        connection = _Connection()
-        client = _Client(connection)
+        client = self._make_client()
         bucket = self._make_one(client=client, name="name")
 
         with self.assertRaises(TypeError):
@@ -3351,96 +3421,14 @@ class Test_Bucket(unittest.TestCase):
 
         client.list_blobs.assert_called_once()
 
-    def test_page_empty_response(self):
-        from google.api_core import page_iterator
-
-        connection = _Connection()
-        client = self._make_client()
-        client._base_connection = connection
-        name = "name"
-        bucket = self._make_one(client=client, name=name)
-        iterator = bucket.list_blobs()
-        page = page_iterator.Page(iterator, (), None)
-        iterator._page = page
-        blobs = list(page)
-        self.assertEqual(blobs, [])
-        self.assertEqual(iterator.prefixes, set())
-
-    def test_page_non_empty_response(self):
-        import six
-        from google.cloud.storage.blob import Blob
-
-        blob_name = "blob-name"
-        response = {"items": [{"name": blob_name}], "prefixes": ["foo"]}
-        connection = _Connection()
-        client = self._make_client()
-        client._base_connection = connection
-        name = "name"
-        bucket = self._make_one(client=client, name=name)
-
-        def fake_response():
-            return response
-
-        iterator = bucket.list_blobs()
-        iterator._get_next_page_response = fake_response
-
-        page = six.next(iterator.pages)
-        self.assertEqual(page.prefixes, ("foo",))
-        self.assertEqual(page.num_items, 1)
-        blob = six.next(page)
-        self.assertEqual(page.remaining, 0)
-        self.assertIsInstance(blob, Blob)
-        self.assertEqual(blob.name, blob_name)
-        self.assertEqual(iterator.prefixes, set(["foo"]))
-
-    def test_cumulative_prefixes(self):
-        import six
-        from google.cloud.storage.blob import Blob
-
-        BLOB_NAME = "blob-name1"
-        response1 = {
-            "items": [{"name": BLOB_NAME}],
-            "prefixes": ["foo"],
-            "nextPageToken": "s39rmf9",
-        }
-        response2 = {"items": [], "prefixes": ["bar"]}
-        client = self._make_client()
-        name = "name"
-        bucket = self._make_one(client=client, name=name)
-        responses = [response1, response2]
-
-        def fake_response():
-            return responses.pop(0)
-
-        iterator = bucket.list_blobs()
-        iterator._get_next_page_response = fake_response
-
-        # Parse first response.
-        pages_iter = iterator.pages
-        page1 = six.next(pages_iter)
-        self.assertEqual(page1.prefixes, ("foo",))
-        self.assertEqual(page1.num_items, 1)
-        blob = six.next(page1)
-        self.assertEqual(page1.remaining, 0)
-        self.assertIsInstance(blob, Blob)
-        self.assertEqual(blob.name, BLOB_NAME)
-        self.assertEqual(iterator.prefixes, set(["foo"]))
-        # Parse second response.
-        page2 = six.next(pages_iter)
-        self.assertEqual(page2.prefixes, ("bar",))
-        self.assertEqual(page2.num_items, 0)
-        self.assertEqual(iterator.prefixes, set(["foo", "bar"]))
-
-    def _test_generate_upload_policy_helper(self, **kwargs):
+    def _generate_upload_policy_helper(self, **kwargs):
         import base64
         import json
 
         credentials = _create_signing_credentials()
         credentials.signer_email = mock.sentinel.signer_email
         credentials.sign_bytes.return_value = b"DEADBEEF"
-        connection = _Connection()
-        connection.credentials = credentials
-        client = _Client(connection)
+        client = self._make_client(_credentials=credentials)
         name = "name"
         bucket = self._make_one(client=client, name=name)
 
@@ -3477,7 +3465,7 @@ class Test_Bucket(unittest.TestCase):
     def test_generate_upload_policy(self, now):
         from google.cloud._helpers import _datetime_to_rfc3339
 
-        _, policy = self._test_generate_upload_policy_helper()
+        _, policy = self._generate_upload_policy_helper()
 
         self.assertEqual(
             policy["expiration"],
@@ -3489,15 +3477,13 @@ class Test_Bucket(unittest.TestCase):
 
         expiration = datetime.datetime(1990, 5, 29)
 
-        _, policy = self._test_generate_upload_policy_helper(expiration=expiration)
+        _, policy = self._generate_upload_policy_helper(expiration=expiration)
 
         self.assertEqual(policy["expiration"], _datetime_to_rfc3339(expiration))
 
     def test_generate_upload_policy_bad_credentials(self):
         credentials = object()
-        connection = _Connection()
-        connection.credentials = credentials
-        client = _Client(connection)
+        client = self._make_client(_credentials=credentials)
         name = "name"
         bucket = self._make_one(client=client, name=name)
 
@@ -3628,8 +3614,7 @@ class Test_Bucket(unittest.TestCase):
 
     def test_generate_signed_url_w_invalid_version(self):
         expiration = "2014-10-16T20:34:37.000Z"
-        connection = _Connection()
-        client = _Client(connection)
+        client = self._make_client()
         bucket = self._make_one(name="bucket_name", client=client)
         with self.assertRaises(ValueError):
             bucket.generate_signed_url(expiration, version="nonesuch")
@@ -3665,8 +3650,7 @@ class Test_Bucket(unittest.TestCase):
         if expiration is None:
             expiration = datetime.datetime.utcnow().replace(tzinfo=UTC) + delta
 
-        connection = _Connection()
-        client = _Client(connection)
+        client = self._make_client(_credentials=credentials)
         bucket = self._make_one(name=bucket_name, client=client)
 
         if version is None:
@@ -3726,11 +3710,12 @@ class Test_Bucket(unittest.TestCase):
     def test_get_bucket_from_string_w_valid_uri(self):
         from google.cloud.storage.bucket import Bucket
 
-        connection = _Connection()
-        client = _Client(connection)
+        client = self._make_client()
         BUCKET_NAME = "BUCKET_NAME"
         uri = "gs://" + BUCKET_NAME
+
         bucket = Bucket.from_string(uri, client)
+
         self.assertIsInstance(bucket, Bucket)
         self.assertIs(bucket.client, client)
         self.assertEqual(bucket.name, BUCKET_NAME)
@@ -3738,8 +3723,7 @@ class Test_Bucket(unittest.TestCase):
     def test_get_bucket_from_string_w_invalid_uri(self):
         from google.cloud.storage.bucket import Bucket
 
-        connection = _Connection()
-        client = _Client(connection)
+        client = self._make_client()
 
         with pytest.raises(ValueError, match="URI scheme must be gs"):
             Bucket.from_string("http://bucket_name", client)
@@ -3747,11 +3731,12 @@ class Test_Bucket(unittest.TestCase):
     def test_get_bucket_from_string_w_domain_name_bucket(self):
         from google.cloud.storage.bucket import Bucket
 
-        connection = _Connection()
-        client = _Client(connection)
+        client = self._make_client()
         BUCKET_NAME = "buckets.example.com"
         uri = "gs://" + BUCKET_NAME
+
         bucket = Bucket.from_string(uri, client)
+
         self.assertIsInstance(bucket, Bucket)
         self.assertIs(bucket.client, client)
         self.assertEqual(bucket.name, BUCKET_NAME)
@@ -3886,23 +3871,3 @@ class Test__item_to_notification(unittest.TestCase):
         self.assertEqual(notification._topic_name, topic)
         self.assertEqual(notification._topic_project, project)
         self.assertEqual(notification._properties, item)
-
-
-class _Connection(object):
-    credentials = None
-
-    def __init__(self):
-        pass
-
-    def api_request(self, **kw):  # pragma: NO COVER
-        pass
-
-
-class _Client(object):
-    def __init__(self, connection, project=None):
-        self._base_connection = connection
-        self.project = project
-
-    @property
-    def _credentials(self):
-        return self._base_connection.credentials
