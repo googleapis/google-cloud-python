@@ -919,6 +919,19 @@ class TestCredentials(object):
 
         assert excinfo.match(r"aws version '3' is not supported in the current build.")
 
+    def test_info(self):
+        credentials = self.make_credentials(
+            credential_source=self.CREDENTIAL_SOURCE.copy()
+        )
+
+        assert credentials.info == {
+            "type": "external_account",
+            "audience": AUDIENCE,
+            "subject_token_type": SUBJECT_TOKEN_TYPE,
+            "token_url": TOKEN_URL,
+            "credential_source": self.CREDENTIAL_SOURCE,
+        }
+
     def test_retrieve_subject_token_missing_region_url(self):
         # When AWS_REGION envvar is not available, region_url is required for
         # determining the current AWS region.

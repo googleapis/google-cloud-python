@@ -31,6 +31,12 @@ CLIENT_SECRET = "password"
 # Base64 encoding of "username:password"
 BASIC_AUTH_ENCODING = "dXNlcm5hbWU6cGFzc3dvcmQ="
 SERVICE_ACCOUNT_EMAIL = "service-1234@service-name.iam.gserviceaccount.com"
+# List of valid workforce pool audiences.
+TEST_USER_AUDIENCES = [
+    "//iam.googleapis.com/locations/global/workforcePools/pool-id/providers/provider-id",
+    "//iam.googleapis.com/locations/eu/workforcePools/pool-id/providers/provider-id",
+    "//iam.googleapis.com/locations/eu/workforcePools/workloadIdentityPools/providers/provider-id",
+]
 
 
 class CredentialsImpl(external_account.Credentials):
@@ -341,6 +347,116 @@ class TestCredentials(object):
         assert excinfo.match(
             r"Unable to determine target principal from service account impersonation URL."
         )
+
+    def test_info(self):
+        credentials = self.make_credentials()
+
+        assert credentials.info == {
+            "type": "external_account",
+            "audience": self.AUDIENCE,
+            "subject_token_type": self.SUBJECT_TOKEN_TYPE,
+            "token_url": self.TOKEN_URL,
+            "credential_source": self.CREDENTIAL_SOURCE.copy(),
+        }
+
+    def test_info_with_full_options(self):
+        credentials = self.make_credentials(
+            client_id=CLIENT_ID,
+            client_secret=CLIENT_SECRET,
+            quota_project_id=self.QUOTA_PROJECT_ID,
+            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+        )
+
+        assert credentials.info == {
+            "type": "external_account",
+            "audience": self.AUDIENCE,
+            "subject_token_type": self.SUBJECT_TOKEN_TYPE,
+            "token_url": self.TOKEN_URL,
+            "service_account_impersonation_url": self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+            "credential_source": self.CREDENTIAL_SOURCE.copy(),
+            "quota_project_id": self.QUOTA_PROJECT_ID,
+            "client_id": CLIENT_ID,
+            "client_secret": CLIENT_SECRET,
+        }
+
+    def test_service_account_email_without_impersonation(self):
+        credentials = self.make_credentials()
+
+        assert credentials.service_account_email is None
+
+    def test_service_account_email_with_impersonation(self):
+        credentials = self.make_credentials(
+            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL
+        )
+
+        assert credentials.service_account_email == SERVICE_ACCOUNT_EMAIL
+
+    @pytest.mark.parametrize(
+        "audience",
+        # Workload identity pool audiences or invalid workforce pool audiences.
+        [
+            # Legacy K8s audience format.
+            "identitynamespace:1f12345:my_provider",
+            (
+                "//iam.googleapis.com/projects/123456/locations/"
+                "global/workloadIdentityPools/pool-id/providers/"
+                "provider-id"
+            ),
+            (
+                "//iam.googleapis.com/projects/123456/locations/"
+                "eu/workloadIdentityPools/pool-id/providers/"
+                "provider-id"
+            ),
+            # Pool ID with workforcePools string.
+            (
+                "//iam.googleapis.com/projects/123456/locations/"
+                "global/workloadIdentityPools/workforcePools/providers/"
+                "provider-id"
+            ),
+            # Unrealistic / incorrect workforce pool audiences.
+            "//iamgoogleapis.com/locations/eu/workforcePools/pool-id/providers/provider-id",
+            "//iam.googleapiscom/locations/eu/workforcePools/pool-id/providers/provider-id",
+            "//iam.googleapis.com/locations/workforcePools/pool-id/providers/provider-id",
+            "//iam.googleapis.com/locations/eu/workforcePool/pool-id/providers/provider-id",
+            "//iam.googleapis.com/locations//workforcePool/pool-id/providers/provider-id",
+        ],
+    )
+    def test_is_user_with_non_users(self, audience):
+        credentials = CredentialsImpl(
+            audience=audience,
+            subject_token_type=self.SUBJECT_TOKEN_TYPE,
+            token_url=self.TOKEN_URL,
+            credential_source=self.CREDENTIAL_SOURCE,
+        )
+
+        assert credentials.is_user is False
+
+    @pytest.mark.parametrize("audience", TEST_USER_AUDIENCES)
+    def test_is_user_with_users(self, audience):
+        credentials = CredentialsImpl(
+            audience=audience,
+            subject_token_type=self.SUBJECT_TOKEN_TYPE,
+            token_url=self.TOKEN_URL,
+            credential_source=self.CREDENTIAL_SOURCE,
+        )
+
+        assert credentials.is_user is True
+
+    @pytest.mark.parametrize("audience", TEST_USER_AUDIENCES)
+    def test_is_user_with_users_and_impersonation(self, audience):
+        # Initialize the credentials with service account impersonation.
+        credentials = CredentialsImpl(
+            audience=audience,
+            subject_token_type=self.SUBJECT_TOKEN_TYPE,
+            token_url=self.TOKEN_URL,
+            credential_source=self.CREDENTIAL_SOURCE,
+            service_account_impersonation_url=self.SERVICE_ACCOUNT_IMPERSONATION_URL,
+        )
+
+        # Even though the audience is for a workforce pool, since service account
+        # impersonation is used, the credentials will represent a service account and
+        # not a user.
+        assert credentials.is_user is False
 
     @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
     def test_refresh_without_client_auth_success(self, unused_utcnow):

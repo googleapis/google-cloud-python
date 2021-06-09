@@ -430,6 +430,32 @@ class TestCredentials(object):
             r"Missing subject_token_field_name for JSON credential_source format"
         )
 
+    def test_info_with_file_credential_source(self):
+        credentials = self.make_credentials(
+            credential_source=self.CREDENTIAL_SOURCE_TEXT_URL.copy()
+        )
+
+        assert credentials.info == {
+            "type": "external_account",
+            "audience": AUDIENCE,
+            "subject_token_type": SUBJECT_TOKEN_TYPE,
+            "token_url": TOKEN_URL,
+            "credential_source": self.CREDENTIAL_SOURCE_TEXT_URL,
+        }
+
+    def test_info_with_url_credential_source(self):
+        credentials = self.make_credentials(
+            credential_source=self.CREDENTIAL_SOURCE_JSON_URL.copy()
+        )
+
+        assert credentials.info == {
+            "type": "external_account",
+            "audience": AUDIENCE,
+            "subject_token_type": SUBJECT_TOKEN_TYPE,
+            "token_url": TOKEN_URL,
+            "credential_source": self.CREDENTIAL_SOURCE_JSON_URL,
+        }
+
     def test_retrieve_subject_token_missing_subject_token(self, tmpdir):
         # Provide empty text file.
         empty_file = tmpdir.join("empty.txt")
