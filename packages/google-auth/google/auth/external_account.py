@@ -142,12 +142,7 @@ class Credentials(credentials.Scoped, credentials.CredentialsWithQuotaProject):
             "client_id": self._client_id,
             "client_secret": self._client_secret,
         }
-        # Remove None fields in the info dictionary.
-        for k, v in dict(config_info).items():
-            if v is None:
-                del config_info[k]
-
-        return config_info
+        return {key: value for key, value in config_info.items() if value is not None}
 
     @property
     def service_account_email(self):
