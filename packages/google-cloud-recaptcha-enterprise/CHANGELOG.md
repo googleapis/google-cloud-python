@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.3.2](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.3.1...v0.3.2) (2021-06-09)
+
+
+### Documentation
+
+* fix package name ([#78](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/78)) ([6de2981](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/6de298111482e205d90895674fd19db401df70ea))
+* fix package name and package info in README ([#76](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/76)) ([0e719bb](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/0e719bb23c9680f46bf36ef2344a98eb73ac70dc))
+
 ### [0.3.1](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.3.0...v0.3.1) (2021-05-28)
 
 
