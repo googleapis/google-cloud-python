@@ -27,6 +27,9 @@ from google.cloud._helpers import _name_from_project_path
 from google.cloud._helpers import _rfc3339_nanos_to_datetime
 from google.cloud._helpers import _datetime_to_rfc3339
 
+# import officially supported proto definitions
+import google.cloud.audit.audit_log_pb2  # noqa: F401
+import google.cloud.appengine_logging  # noqa: F401
 
 _GLOBAL_RESOURCE = Resource(type="global", labels={})
 
@@ -316,13 +319,18 @@ class ProtobufEntry(LogEntry):
 
     @property
     def payload_json(self):
-        if not isinstance(self.payload, Any):
+        if isinstance(self.payload, collections.abc.Mapping):
             return self.payload
 
     def to_api_repr(self):
         """API repr (JSON format) for entry."""
         info = super(ProtobufEntry, self).to_api_repr()
-        info["protoPayload"] = MessageToDict(self.payload)
+        proto_payload = None
+        if self.payload_json:
+            proto_payload = dict(self.payload_json)
+        elif self.payload_pb:
+            proto_payload = MessageToDict(self.payload_pb)
+        info["protoPayload"] = proto_payload
         return info
 
     def parse_message(self, message):
