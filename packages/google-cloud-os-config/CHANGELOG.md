@@ -1,12 +1,13 @@
 # Changelog
 
-## [1.0.0](https://www.github.com/googleapis/python-os-config/compare/v1.1.0...v1.0.0) (2021-05-28)
+## [1.2.0](https://www.github.com/googleapis/python-os-config/compare/v1.1.0...v1.2.0) (2021-06-09)
 
 
 ### Features
 
 * release as GA ([#46](https://www.github.com/googleapis/python-os-config/issues/46)) ([d5aece9](https://www.github.com/googleapis/python-os-config/commit/d5aece996ff225dc747e7c59978576bfcb79a3d1))
 * support self-signed JWT flow for service accounts ([6fbaf4b](https://www.github.com/googleapis/python-os-config/commit/6fbaf4bb16b0bb381edf13957b85297c1659a206))
+* add v1alpha ([#80](https://www.github.com/googleapis/python-os-config/issues/80)) ([493ac75](https://www.github.com/googleapis/python-os-config/commit/493ac75a5fec0185fa15415fe4feffe0c36ca7e9))
 
 
 ### Bug Fixes
