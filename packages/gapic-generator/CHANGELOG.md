@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.48.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.48.0...v0.48.1) (2021-06-09)
+
+
+### Bug Fixes
+
+* samplegen always produces sample dicts with "response" ([#914](https://www.github.com/googleapis/gapic-generator-python/issues/914)) ([0b168f2](https://www.github.com/googleapis/gapic-generator-python/commit/0b168f20f4cbf419131fcc512141fccca8186681))
+
 ## [0.48.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.47.0...v0.48.0) (2021-05-27)
 
 
