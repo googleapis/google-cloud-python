@@ -220,10 +220,12 @@ client.{{ sample.rpc|snake_case }}({{ render_request_params_unary(sample.request
 {% if calling_form == calling_form_enum.Request %}
 response = {{ method_invocation_text|trim }}
 
+{% if response_statements %}
 # Handle response
 {% for statement in response_statements %}
 {{ dispatch_statement(statement)|trim }}
 {% endfor %}
+{% endif %}
 {% elif calling_form == calling_form_enum.RequestPagedAll %}
 page_result = {{ method_invocation_text|trim }}
 for response in page_result:

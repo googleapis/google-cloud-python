@@ -117,7 +117,6 @@ def test_preprocess_sample():
 
 
 def test_preprocess_sample_void_method():
-    # Verify no response is added for a void method
     sample = {"service": "Mollusc", "rpc": "Classify"}
     api_schema = DummyApiSchema(
         services={"Mollusc": DummyService(
@@ -131,7 +130,7 @@ def test_preprocess_sample_void_method():
 
     samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
 
-    assert "response" not in sample
+    assert sample["response"] == []
 
 
 def test_define_input_param():

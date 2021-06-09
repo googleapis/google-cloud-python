@@ -191,6 +191,72 @@ def test_generate_sample_basic_unflattenable():
     assert sample_str == golden_snippet("sample_basic_unflattenable.py")
 
 
+def test_generate_sample_void_method():
+    input_type = DummyMessage(
+        type="REQUEST TYPE",
+        fields={
+            "classify_target": DummyField(
+                message=DummyMessage(
+                    type="CLASSIFY TYPE",
+                    fields={
+                        "video": DummyField(
+                            message=DummyMessage(type="VIDEO TYPE"),
+                        ),
+                        "location_annotation": DummyField(
+                            message=DummyMessage(type="LOCATION TYPE"),
+                        )
+                    },
+                )
+            )
+        },
+        ident=DummyIdent(name="molluscs.v1.ClassifyRequest")
+    )
+
+    api_naming = naming.NewNaming(
+        name="MolluscClient", namespace=("molluscs", "v1"))
+    service = wrappers.Service(
+        service_pb=namedtuple('service_pb', ['name'])('MolluscService'),
+        methods={
+            "Classify": DummyMethod(
+                void=True,
+                input=input_type,
+                output=message_factory("$resp.taxonomy"),
+                flattened_fields={
+                    "classify_target": DummyField(name="classify_target")
+                }
+            )
+        },
+        visible_resources={},
+    )
+
+    schema = DummyApiSchema(
+        services={"animalia.mollusca.v1.Mollusc": service},
+        naming=api_naming,
+    )
+
+    sample = {"service": "animalia.mollusca.v1.Mollusc",
+              "rpc": "Classify",
+              "id": "mollusc_classify_sync",
+              "description": "Determine the full taxonomy of input mollusc",
+              "request": [
+                  {"field": "classify_target.video",
+                   "value": "path/to/mollusc/video.mkv",
+                   "input_parameter": "video",
+                   "value_is_file": True},
+                  {"field": "classify_target.location_annotation",
+                   "value": "New Zealand",
+                   "input_parameter": "location"}
+              ]}
+
+    sample_str = samplegen.generate_sample(
+        sample,
+        schema,
+        env.get_template('examples/sample.py.j2')
+    )
+
+    assert sample_str == golden_snippet("sample_basic_void_method.py")
+
+
 def test_generate_sample_service_not_found():
     schema = DummyApiSchema({}, DummyNaming("pkg_name"))
     sample = {"service": "Mollusc"}

@@ -35,7 +35,7 @@ config_setting(
 py_runtime(
     name = "pyenv3_runtime",
     interpreter = ":pyenv3wrapper.sh",
-    python_version="PY3",
+    python_version = "PY3",
 )
 
 py_runtime_pair(
@@ -52,7 +52,10 @@ toolchain(
 py_binary(
     name = "gapic_plugin",
     srcs = glob(["gapic/**/*.py"]),
-    data = [":pandoc_binary"] + glob(["gapic/**/*.j2", "gapic/**/.*.j2"]),
+    data = [":pandoc_binary"] + glob([
+        "gapic/**/*.j2",
+        "gapic/**/.*.j2",
+    ]),
     main = "gapic/cli/generate_with_pandoc.py",
     python_version = "PY3",
     visibility = ["//visibility:public"],
