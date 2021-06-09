@@ -193,7 +193,7 @@ instead of
 ``https://github.com/googleapis/python-recaptcha-enterprise/blob/master/CONTRIBUTING.rst``)
 may cause problems creating links or rendering the description.
 
-.. _description on PyPI: https://pypi.org/project/google-cloud-recaptchaenterprise
+.. _description on PyPI: https://pypi.org/project/google-cloud-recaptcha-enterprise
 
 
 *************************

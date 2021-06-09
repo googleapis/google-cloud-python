@@ -20,7 +20,7 @@ If you are still having issues, please be sure to include as much information as
   - OS type and version:
   - Python version: `python --version`
   - pip version: `pip --version`
-  - `google-cloud-recaptchaenterprise` version: `pip show google-cloud-recaptchaenterprise`
+  - `google-cloud-recaptcha-enterprise` version: `pip show google-cloud-recaptcha-enterprise`
 
 #### Steps to reproduce
 

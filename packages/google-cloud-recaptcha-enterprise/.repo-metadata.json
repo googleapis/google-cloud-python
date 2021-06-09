@@ -8,6 +8,6 @@
     "language": "python",
     "library_type": "GAPIC_AUTO",
     "repo": "googleapis/python-recaptcha-enterprise",
-    "distribution_name": "google-cloud-recaptchaenterprise",
+    "distribution_name": "google-cloud-recaptcha-enterprise",
     "api_id": "recaptchaenterprise.googleapis.com"
   }
