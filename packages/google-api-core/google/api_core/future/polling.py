@@ -34,6 +34,7 @@ RETRY_PREDICATE = retry.if_exception_type(
     exceptions.TooManyRequests,
     exceptions.InternalServerError,
     exceptions.BadGateway,
+    exceptions.ServiceUnavailable,
 )
 DEFAULT_RETRY = retry.Retry(predicate=RETRY_PREDICATE)
 
