@@ -503,6 +503,20 @@ class TestStructEntry(unittest.TestCase):
         }
         self.assertEqual(entry.to_api_repr(), expected)
 
+    def test_to_api_repr_struct(self):
+        from google.protobuf.struct_pb2 import Struct, Value
+        from google.cloud.logging_v2.logger import _GLOBAL_RESOURCE
+
+        LOG_NAME = "struct.log"
+        message = Struct(fields={"foo": Value(bool_value=True)})
+        entry = self._make_one(log_name=LOG_NAME, payload=message)
+        expected = {
+            "logName": LOG_NAME,
+            "jsonPayload": message,
+            "resource": _GLOBAL_RESOURCE._to_dict(),
+        }
+        self.assertEqual(entry.to_api_repr(), expected)
+
     def test_to_api_repr_explicit(self):
         import datetime
         from google.cloud.logging import Resource
