@@ -10,6 +10,6 @@
   "repo": "googleapis/python-container",
   "distribution_name": "google-cloud-container",
   "api_id": "container.googleapis.com",
-  "codeowner_team": "@googleapis/cicd",
+  "codeowner_team": "@googleapis/anthos-dpe",
   "requires_billing": true
 }
