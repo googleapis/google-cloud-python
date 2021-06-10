@@ -1,0 +1,13 @@
+{
+    "name": "cloudshell",
+    "name_pretty": "Cloud Shell",
+    "product_documentation": "https://cloud.google.com/shell/",
+    "client_documentation": "https://googleapis.dev/python/cloudshell/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-shell",
+    "distribution_name": "google-cloud-shell",
+    "api_id": "cloudshell.googleapis.com"
+}
