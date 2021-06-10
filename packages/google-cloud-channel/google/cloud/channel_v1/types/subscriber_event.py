@@ -71,6 +71,7 @@ class EntitlementEvent(proto.Message):
         RENEWAL_SETTING_CHANGED = 10
         PAID_SERVICE_STARTED = 11
         LICENSE_ASSIGNMENT_CHANGED = 12
+        LICENSE_CAP_CHANGED = 13
 
     entitlement = proto.Field(proto.STRING, number=1,)
     event_type = proto.Field(proto.ENUM, number=2, enum=Type,)

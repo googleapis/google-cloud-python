@@ -93,6 +93,7 @@ from .types.service import ListTransferableOffersRequest
 from .types.service import ListTransferableOffersResponse
 from .types.service import ListTransferableSkusRequest
 from .types.service import ListTransferableSkusResponse
+from .types.service import LookupOfferRequest
 from .types.service import ProvisionCloudIdentityRequest
 from .types.service import PurchasableOffer
 from .types.service import PurchasableSku
@@ -167,6 +168,7 @@ __all__ = (
     "ListTransferableOffersResponse",
     "ListTransferableSkusRequest",
     "ListTransferableSkusResponse",
+    "LookupOfferRequest",
     "MarketingInfo",
     "Media",
     "MediaType",

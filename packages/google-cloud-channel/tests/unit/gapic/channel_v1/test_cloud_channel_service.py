@@ -5211,6 +5211,138 @@ async def test_update_channel_partner_link_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
+def test_lookup_offer(transport: str = "grpc", request_type=service.LookupOfferRequest):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_offer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = offers.Offer(name="name_value",)
+        response = client.lookup_offer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.LookupOfferRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, offers.Offer)
+    assert response.name == "name_value"
+
+
+def test_lookup_offer_from_dict():
+    test_lookup_offer(request_type=dict)
+
+
+def test_lookup_offer_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_offer), "__call__") as call:
+        client.lookup_offer()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.LookupOfferRequest()
+
+
+@pytest.mark.asyncio
+async def test_lookup_offer_async(
+    transport: str = "grpc_asyncio", request_type=service.LookupOfferRequest
+):
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_offer), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            offers.Offer(name="name_value",)
+        )
+        response = await client.lookup_offer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.LookupOfferRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, offers.Offer)
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_lookup_offer_async_from_dict():
+    await test_lookup_offer_async(request_type=dict)
+
+
+def test_lookup_offer_field_headers():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.LookupOfferRequest()
+
+    request.entitlement = "entitlement/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_offer), "__call__") as call:
+        call.return_value = offers.Offer()
+        client.lookup_offer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "entitlement=entitlement/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_lookup_offer_field_headers_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.LookupOfferRequest()
+
+    request.entitlement = "entitlement/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_offer), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(offers.Offer())
+        await client.lookup_offer(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "entitlement=entitlement/value",) in kw["metadata"]
+
+
 def test_list_products(
     transport: str = "grpc", request_type=service.ListProductsRequest
 ):
@@ -7231,6 +7363,7 @@ def test_cloud_channel_service_base_transport():
         "get_channel_partner_link",
         "create_channel_partner_link",
         "update_channel_partner_link",
+        "lookup_offer",
         "list_products",
         "list_skus",
         "list_offers",

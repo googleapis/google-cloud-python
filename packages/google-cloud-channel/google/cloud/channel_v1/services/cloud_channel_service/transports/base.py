@@ -29,6 +29,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.cloud.channel_v1.types import channel_partner_links
 from google.cloud.channel_v1.types import customers
 from google.cloud.channel_v1.types import entitlements
+from google.cloud.channel_v1.types import offers
 from google.cloud.channel_v1.types import service
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
@@ -268,6 +269,9 @@ class CloudChannelServiceTransport(abc.ABC):
                 self.update_channel_partner_link,
                 default_timeout=None,
                 client_info=client_info,
+            ),
+            self.lookup_offer: gapic_v1.method.wrap_method(
+                self.lookup_offer, default_timeout=None, client_info=client_info,
             ),
             self.list_products: gapic_v1.method.wrap_method(
                 self.list_products, default_timeout=None, client_info=client_info,
@@ -552,6 +556,14 @@ class CloudChannelServiceTransport(abc.ABC):
             channel_partner_links.ChannelPartnerLink,
             Awaitable[channel_partner_links.ChannelPartnerLink],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def lookup_offer(
+        self,
+    ) -> Callable[
+        [service.LookupOfferRequest], Union[offers.Offer, Awaitable[offers.Offer]]
     ]:
         raise NotImplementedError()
 

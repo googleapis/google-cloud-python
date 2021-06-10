@@ -130,6 +130,11 @@
                 "list_transferable_skus"
               ]
             },
+            "LookupOffer": {
+              "methods": [
+                "lookup_offer"
+              ]
+            },
             "ProvisionCloudIdentity": {
               "methods": [
                 "provision_cloud_identity"
@@ -298,6 +303,11 @@
             "ListTransferableSkus": {
               "methods": [
                 "list_transferable_skus"
+              ]
+            },
+            "LookupOffer": {
+              "methods": [
+                "lookup_offer"
               ]
             },
             "ProvisionCloudIdentity": {

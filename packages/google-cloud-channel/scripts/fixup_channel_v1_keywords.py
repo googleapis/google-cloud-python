@@ -63,6 +63,7 @@ class channelCallTransformer(cst.CSTTransformer):
           'list_subscribers': ('account', 'page_size', 'page_token', ),
           'list_transferable_offers': ('parent', 'sku', 'cloud_identity_id', 'customer_name', 'page_size', 'page_token', 'language_code', ),
           'list_transferable_skus': ('parent', 'cloud_identity_id', 'customer_name', 'page_size', 'page_token', 'auth_token', 'language_code', ),
+          'lookup_offer': ('entitlement', ),
           'provision_cloud_identity': ('customer', 'cloud_identity_info', 'user', 'validate_only', ),
           'register_subscriber': ('account', 'service_account', ),
           'start_paid_service': ('name', 'request_id', ),

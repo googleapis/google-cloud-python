@@ -508,8 +508,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> customers.Customer:
-        r"""Returns a requested [Customer][google.cloud.channel.v1.Customer]
-        resource.
+        r"""Returns the requested
+        [Customer][google.cloud.channel.v1.Customer] resource.
 
         Possible error codes:
 
@@ -793,7 +793,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the given [Customer][google.cloud.channel.v1.Customer]
-        permanently and irreversibly.
+        permanently.
 
         Possible error codes:
 
@@ -1183,7 +1183,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> entitlements.Entitlement:
-        r"""Returns a requested
+        r"""Returns the requested
         [Entitlement][google.cloud.channel.v1.Entitlement] resource.
 
         Possible error codes:
@@ -2248,7 +2248,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> channel_partner_links.ChannelPartnerLink:
-        r"""Returns a requested
+        r"""Returns the requested
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
         resource. You must be a distributor to call this method.
 
@@ -2452,6 +2452,72 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def lookup_offer(
+        self,
+        request: service.LookupOfferRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> offers.Offer:
+        r"""Returns the requested [Offer][google.cloud.channel.v1.Offer]
+        resource.
+
+        Possible error codes:
+
+        -  PERMISSION_DENIED: The entitlement doesn't belong to the
+           reseller.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+        -  NOT_FOUND: Entitlement or offer was not found.
+
+        Return value: The [Offer][google.cloud.channel.v1.Offer]
+        resource.
+
+        Args:
+            request (google.cloud.channel_v1.types.LookupOfferRequest):
+                The request object. Request message for LookupOffer.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.channel_v1.types.Offer:
+                Represents an offer made to resellers for purchase.
+                   An offer is associated with a
+                   [Sku][google.cloud.channel.v1.Sku], has a plan for
+                   payment, a price, and defines the constraints for
+                   buying.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.LookupOfferRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.LookupOfferRequest):
+            request = service.LookupOfferRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.lookup_offer]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("entitlement", request.entitlement),)
+            ),
         )
 
         # Send the request.

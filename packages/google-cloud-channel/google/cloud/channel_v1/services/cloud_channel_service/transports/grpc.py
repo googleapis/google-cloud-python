@@ -28,6 +28,7 @@ import grpc  # type: ignore
 from google.cloud.channel_v1.types import channel_partner_links
 from google.cloud.channel_v1.types import customers
 from google.cloud.channel_v1.types import entitlements
+from google.cloud.channel_v1.types import offers
 from google.cloud.channel_v1.types import service
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
@@ -307,8 +308,8 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
     ) -> Callable[[service.GetCustomerRequest], customers.Customer]:
         r"""Return a callable for the get customer method over gRPC.
 
-        Returns a requested [Customer][google.cloud.channel.v1.Customer]
-        resource.
+        Returns the requested
+        [Customer][google.cloud.channel.v1.Customer] resource.
 
         Possible error codes:
 
@@ -476,7 +477,7 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
         r"""Return a callable for the delete customer method over gRPC.
 
         Deletes the given [Customer][google.cloud.channel.v1.Customer]
-        permanently and irreversibly.
+        permanently.
 
         Possible error codes:
 
@@ -699,7 +700,7 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
     ) -> Callable[[service.GetEntitlementRequest], entitlements.Entitlement]:
         r"""Return a callable for the get entitlement method over gRPC.
 
-        Returns a requested
+        Returns the requested
         [Entitlement][google.cloud.channel.v1.Entitlement] resource.
 
         Possible error codes:
@@ -1336,7 +1337,7 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
     ]:
         r"""Return a callable for the get channel partner link method over gRPC.
 
-        Returns a requested
+        Returns the requested
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
         resource. You must be a distributor to call this method.
 
@@ -1476,6 +1477,42 @@ class CloudChannelServiceGrpcTransport(CloudChannelServiceTransport):
                 response_deserializer=channel_partner_links.ChannelPartnerLink.deserialize,
             )
         return self._stubs["update_channel_partner_link"]
+
+    @property
+    def lookup_offer(self) -> Callable[[service.LookupOfferRequest], offers.Offer]:
+        r"""Return a callable for the lookup offer method over gRPC.
+
+        Returns the requested [Offer][google.cloud.channel.v1.Offer]
+        resource.
+
+        Possible error codes:
+
+        -  PERMISSION_DENIED: The entitlement doesn't belong to the
+           reseller.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+        -  NOT_FOUND: Entitlement or offer was not found.
+
+        Return value: The [Offer][google.cloud.channel.v1.Offer]
+        resource.
+
+        Returns:
+            Callable[[~.LookupOfferRequest],
+                    ~.Offer]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "lookup_offer" not in self._stubs:
+            self._stubs["lookup_offer"] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/LookupOffer",
+                request_serializer=service.LookupOfferRequest.serialize,
+                response_deserializer=offers.Offer.deserialize,
+            )
+        return self._stubs["lookup_offer"]
 
     @property
     def list_products(
