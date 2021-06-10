@@ -435,27 +435,39 @@ class GroupFindingsRequest(proto.Message):
 
             -  event_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
 
-            -  severity: ``=``, ``:``
-
                Usage: This should be milliseconds since epoch or an
                RFC3339 string. Examples:
                ``event_time = "2019-06-10T16:07:18-07:00"``
                ``event_time = 1560208038000``
+
+            -  severity: ``=``, ``:``
+
+            -  workflow_state: ``=``, ``:``
 
             -  security_marks.marks: ``=``, ``:``
 
             -  source_properties: ``=``, ``:``, ``>``, ``<``, ``>=``,
                ``<=``
 
-            For example, ``source_properties.size = 100`` is a valid
-            filter string.
+               For example, ``source_properties.size = 100`` is a valid
+               filter string.
 
-            Use a partial match on the empty string to filter based on a
-            property existing: ``source_properties.my_property : ""``
+               Use a partial match on the empty string to filter based
+               on a property existing:
+               ``source_properties.my_property : ""``
 
-            Use a negated partial match on the empty string to filter
-            based on a property not existing:
-            ``-source_properties.my_property : ""``
+               Use a negated partial match on the empty string to filter
+               based on a property not existing:
+               ``-source_properties.my_property : ""``
+
+            -  resource:
+
+               -  resource.name: ``=``, ``:``
+               -  resource.parent_name: ``=``, ``:``
+               -  resource.parent_display_name: ``=``, ``:``
+               -  resource.project_name: ``=``, ``:``
+               -  resource.project_display_name: ``=``, ``:``
+               -  resource.type: ``=``, ``:``
         group_by (str):
             Required. Expression that defines what assets fields to use
             for grouping (including ``state_change``). The string value
@@ -958,25 +970,40 @@ class ListFindingsRequest(proto.Message):
 
             -  event_time: ``=``, ``>``, ``<``, ``>=``, ``<=``
 
-            -  severity: ``=``, ``:``
-
                Usage: This should be milliseconds since epoch or an
                RFC3339 string. Examples:
                ``event_time = "2019-06-10T16:07:18-07:00"``
                ``event_time = 1560208038000``
 
-            security_marks.marks: ``=``, ``:`` source_properties: ``=``,
-            ``:``, ``>``, ``<``, ``>=``, ``<=``
+            -  severity: ``=``, ``:``
 
-            For example, ``source_properties.size = 100`` is a valid
-            filter string.
+            -  workflow_state: ``=``, ``:``
 
-            Use a partial match on the empty string to filter based on a
-            property existing: ``source_properties.my_property : ""``
+            -  security_marks.marks: ``=``, ``:``
 
-            Use a negated partial match on the empty string to filter
-            based on a property not existing:
-            ``-source_properties.my_property : ""``
+            -  source_properties: ``=``, ``:``, ``>``, ``<``, ``>=``,
+               ``<=``
+
+               For example, ``source_properties.size = 100`` is a valid
+               filter string.
+
+               Use a partial match on the empty string to filter based
+               on a property existing:
+               ``source_properties.my_property : ""``
+
+               Use a negated partial match on the empty string to filter
+               based on a property not existing:
+               ``-source_properties.my_property : ""``
+
+            -  resource:
+
+               -  resource.name: ``=``, ``:``
+               -  resource.parent_name: ``=``, ``:``
+               -  resource.parent_display_name: ``=``, ``:``
+               -  resource.project_name: ``=``, ``:``
+               -  resource.project_display_name: ``=``, ``:``
+               -  resource.type: ``=``, ``:``
+               -  resource.folders.resource_folder: ``=``, ``:``
         order_by (str):
             Expression that defines what fields and order to use for
             sorting. The string value should follow SQL syntax: comma
