@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-channel/compare/v1.0.0...v1.1.0) (2021-06-10)
+
+
+### Features
+
+* Add a new enum value LICENSE_CAP_CHANGED to enum EntitlementEvent.Type. ([164539d](https://www.github.com/googleapis/python-channel/commit/164539dc0892481a739bfe4372c35be8d74480d9))
+* Add a new LookupOffer RPC and LookupOfferRequest proto. ([164539d](https://www.github.com/googleapis/python-channel/commit/164539dc0892481a739bfe4372c35be8d74480d9))
+* Add additional_bindings to HTTP annotations of Customer related APIs (list/create/get/update/delete). ([164539d](https://www.github.com/googleapis/python-channel/commit/164539dc0892481a739bfe4372c35be8d74480d9))
+* Add/Update API definitions for Cloud Channel API ([#53](https://www.github.com/googleapis/python-channel/issues/53)) ([164539d](https://www.github.com/googleapis/python-channel/commit/164539dc0892481a739bfe4372c35be8d74480d9))
+* Update descriptions of APIs. ([164539d](https://www.github.com/googleapis/python-channel/commit/164539dc0892481a739bfe4372c35be8d74480d9))
+
 ## [1.0.0](https://www.github.com/googleapis/python-channel/compare/v0.3.0...v1.0.0) (2021-06-02)
 
 
