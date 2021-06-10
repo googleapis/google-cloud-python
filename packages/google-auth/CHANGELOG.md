@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.31.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.30.2...v1.31.0) (2021-06-09)
+
+
+### Features
+
+* define useful properties on `google.auth.external_account.Credentials` ([#770](https://www.github.com/googleapis/google-auth-library-python/issues/770)) ([f97499c](https://www.github.com/googleapis/google-auth-library-python/commit/f97499c718af70d17c17e0c58d6381273eceabcd))
+
+
+### Bug Fixes
+
+* avoid deleting items while iterating ([#772](https://www.github.com/googleapis/google-auth-library-python/issues/772)) ([a5e6b65](https://www.github.com/googleapis/google-auth-library-python/commit/a5e6b651aa8ad407ce087fe32f40b46925bae527))
+
 ### [1.30.2](https://www.github.com/googleapis/google-auth-library-python/compare/v1.30.1...v1.30.2) (2021-06-03)
 
 
