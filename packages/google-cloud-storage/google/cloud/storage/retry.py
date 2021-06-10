@@ -139,9 +139,29 @@ def is_etag_in_json(data):
 DEFAULT_RETRY_IF_GENERATION_SPECIFIED = ConditionalRetryPolicy(
     DEFAULT_RETRY, is_generation_specified, ["query_params"]
 )
+"""Conditional wrapper for the default retry object.
+
+This retry setting will retry all _RETRYABLE_TYPES and any status codes from
+_ADDITIONAL_RETRYABLE_STATUS_CODES, but only if the request included an
+``ifGenerationMatch`` header.
+"""
+
 DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED = ConditionalRetryPolicy(
     DEFAULT_RETRY, is_metageneration_specified, ["query_params"]
 )
+"""Conditional wrapper for the default retry object.
+
+This retry setting will retry all _RETRYABLE_TYPES and any status codes from
+_ADDITIONAL_RETRYABLE_STATUS_CODES, but only if the request included an
+``ifMetagenerationMatch`` header.
+"""
+
 DEFAULT_RETRY_IF_ETAG_IN_JSON = ConditionalRetryPolicy(
     DEFAULT_RETRY, is_etag_in_json, ["data"]
 )
+"""Conditional wrapper for the default retry object.
+
+This retry setting will retry all _RETRYABLE_TYPES and any status codes from
+_ADDITIONAL_RETRYABLE_STATUS_CODES, but only if the request included an
+``ETAG`` entry in its payload.
+"""

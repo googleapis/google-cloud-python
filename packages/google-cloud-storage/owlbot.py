@@ -32,6 +32,9 @@ templated_files = common.py_library(
         # See: https://github.com/googleapis/python-storage/issues/226
         "google-cloud-kms < 2.0dev",
     ],
+    intersphinx_dependencies = {
+        "requests": "https://docs.python-requests.org/en/master/"
+    },
 )
 
 s.move(

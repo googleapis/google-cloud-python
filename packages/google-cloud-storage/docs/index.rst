@@ -21,6 +21,7 @@ API Reference
   constants
   hmac_key
   notification
+  retry_timeout
 
 Changelog
 ---------

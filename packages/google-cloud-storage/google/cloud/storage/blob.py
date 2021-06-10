@@ -642,11 +642,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The amount of time, in seconds, to wait for the server
-            response.
-
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type if_generation_match: long
         :param if_generation_match:
@@ -672,18 +669,8 @@ class Blob(_PropertyMixin):
             current metageneration does not match the given value.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
-        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
-            A google.api_core.retry.Retry value will enable retries, and the object will
-            define retriable response codes and errors and configure backoff and timeout options.
-
-            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
-            activates it only if certain conditions are met. This class exists to provide safe defaults
-            for RPC calls that are not technically safe to retry normally (due to potential data
-            duplication or other side-effects) but become safe to retry if a condition such as
-            if_metageneration_match is set.
-
-            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
-            information on retry types and how to configure them.
+        :param retry:
+            (Optional) How to retry the RPC. See: :ref:`configuring_retries`
 
         :rtype: bool
         :returns: True if the blob exists in Cloud Storage.
@@ -740,11 +727,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The amount of time, in seconds, to wait for the server
-            response.
-
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type if_generation_match: long
         :param if_generation_match:
@@ -770,18 +754,8 @@ class Blob(_PropertyMixin):
             current metageneration does not match the given value.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
-        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
-            A google.api_core.retry.Retry value will enable retries, and the object will
-            define retriable response codes and errors and configure backoff and timeout options.
-
-            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
-            activates it only if certain conditions are met. This class exists to provide safe defaults
-            for RPC calls that are not technically safe to retry normally (due to potential data
-            duplication or other side-effects) but become safe to retry if a condition such as
-            if_metageneration_match is set.
-
-            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
-            information on retry types and how to configure them.
+        :param retry:
+            (Optional) How to retry the RPC. See: :ref:`configuring_retries`
 
         :raises: :class:`google.cloud.exceptions.NotFound`
                  (propagated from
@@ -951,11 +925,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The number of seconds the transport should wait for the
-            server response. Depending on the retry strategy, a request may be
-            repeated several times using the same timeout each time.
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type checksum: str
         :param checksum:
@@ -1092,11 +1063,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The number of seconds the transport should wait for the
-            server response. Depending on the retry strategy, a request may be
-            repeated several times using the same timeout each time.
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type checksum: str
         :param checksum:
@@ -1188,11 +1156,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The number of seconds the transport should wait for the
-            server response. Depending on the retry strategy, a request may be
-            repeated several times using the same timeout each time.
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type checksum: str
         :param checksum:
@@ -1293,11 +1258,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The number of seconds the transport should wait for the
-            server response. Depending on the retry strategy, a request may be
-            repeated several times using the same timeout each time.
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type checksum: str
         :param checksum:
@@ -1391,11 +1353,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The number of seconds the transport should wait for the
-            server response. Depending on the retry strategy, a request may be
-            repeated several times using the same timeout each time.
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :rtype: bytes
         :returns: The data stored in this blob.
@@ -1483,11 +1442,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The number of seconds the transport should wait for the
-            server response. Depending on the retry strategy, a request may be
-            repeated several times using the same timeout each time.
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :rtype: text
         :returns: The data stored in this blob, decoded to text.
@@ -1678,11 +1634,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The number of seconds the transport should wait for the
-            server response. Depending on the retry strategy, a request may be
-            repeated several times using the same timeout each time.
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type checksum: str
         :param checksum:
@@ -1857,11 +1810,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The number of seconds the transport should wait for the
-            server response. Depending on the retry strategy, a request may be
-            repeated several times using the same timeout each time.
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type checksum: str
         :param checksum:
@@ -2035,11 +1985,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The number of seconds the transport should wait for the
-            server response. Depending on the retry strategy, a request may be
-            repeated several times using the same timeout each time.
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type checksum: str
         :param checksum:
@@ -2162,11 +2109,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The number of seconds the transport should wait for the
-            server response. Depending on the retry strategy, a request may be
-            repeated several times using the same timeout each time.
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type checksum: str
         :param checksum:
@@ -2341,11 +2285,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The number of seconds the transport should wait for the
-            server response. Depending on the retry strategy, a request may be
-            repeated several times using the same timeout each time.
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type checksum: str
         :param checksum:
@@ -2478,11 +2419,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The number of seconds the transport should wait for the
-            server response. Depending on the retry strategy, a request may be
-            repeated several times using the same timeout each time.
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type checksum: str
         :param checksum:
@@ -2598,11 +2536,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The number of seconds the transport should wait for the
-            server response. Depending on the retry strategy, a request may be
-            repeated several times using the same timeout each time.
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type checksum: str
         :param checksum:
@@ -2704,11 +2639,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The number of seconds the transport should wait for the
-            server response. Depending on the retry strategy, a request may be
-            repeated several times using the same timeout each time.
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type checksum: str
         :param checksum:
@@ -2794,25 +2726,12 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The amount of time, in seconds, to wait for the server
-            response.
-
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
-        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
-            A google.api_core.retry.Retry value will enable retries, and the object will
-            define retriable response codes and errors and configure backoff and timeout options.
-
-            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
-            activates it only if certain conditions are met. This class exists to provide safe defaults
-            for RPC calls that are not technically safe to retry normally (due to potential data
-            duplication or other side-effects) but become safe to retry if a condition such as
-            if_metageneration_match is set.
-
-            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
-            information on retry types and how to configure them.
+        :param retry:
+            (Optional) How to retry the RPC. See: :ref:`configuring_retries`
 
         :rtype: :class:`google.api_core.iam.Policy`
         :returns: the policy instance, based on the resource returned from
@@ -2867,25 +2786,12 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The amount of time, in seconds, to wait for the server
-            response.
-
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
-        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
-            A google.api_core.retry.Retry value will enable retries, and the object will
-            define retriable response codes and errors and configure backoff and timeout options.
-
-            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
-            activates it only if certain conditions are met. This class exists to provide safe defaults
-            for RPC calls that are not technically safe to retry normally (due to potential data
-            duplication or other side-effects) but become safe to retry if a condition such as
-            if_metageneration_match is set.
-
-            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
-            information on retry types and how to configure them.
+        :param retry:
+            (Optional) How to retry the RPC. See: :ref:`configuring_retries`
 
         :rtype: :class:`google.api_core.iam.Policy`
         :returns: the policy instance, based on the resource returned from
@@ -2937,25 +2843,12 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The amount of time, in seconds, to wait for the server
-            response.
-
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
-        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
-            A google.api_core.retry.Retry value will enable retries, and the object will
-            define retriable response codes and errors and configure backoff and timeout options.
-
-            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
-            activates it only if certain conditions are met. This class exists to provide safe defaults
-            for RPC calls that are not technically safe to retry normally (due to potential data
-            duplication or other side-effects) but become safe to retry if a condition such as
-            if_metageneration_match is set.
-
-            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
-            information on retry types and how to configure them.
+        :param retry:
+            (Optional) How to retry the RPC. See: :ref:`configuring_retries`
 
         :rtype: list of string
         :returns: the permissions returned by the ``testIamPermissions`` API
@@ -2987,12 +2880,10 @@ class Blob(_PropertyMixin):
                        to the ``client`` stored on the blob's bucket.
 
         :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response. The timeout applies to each underlying
-            request.
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
         """
         self.acl.all().grant_read()
         self.acl.save(client=client, timeout=timeout)
@@ -3006,12 +2897,9 @@ class Blob(_PropertyMixin):
                        to the ``client`` stored on the blob's bucket.
 
         :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response. The timeout applies to each underlying
-            request.
-
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
         """
         self.acl.all().revoke_read()
         self.acl.save(client=client, timeout=timeout)
@@ -3039,11 +2927,9 @@ class Blob(_PropertyMixin):
             ``client`` stored on the blob's bucket.
 
         :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response.
-
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type if_generation_match: list of long
         :param if_generation_match:
@@ -3059,18 +2945,8 @@ class Blob(_PropertyMixin):
             ``sources`` item-to-item.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
-        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
-            A google.api_core.retry.Retry value will enable retries, and the object will
-            define retriable response codes and errors and configure backoff and timeout options.
-
-            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
-            activates it only if certain conditions are met. This class exists to provide safe defaults
-            for RPC calls that are not technically safe to retry normally (due to potential data
-            duplication or other side-effects) but become safe to retry if a condition such as
-            if_metageneration_match is set.
-
-            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
-            information on retry types and how to configure them.
+        :param retry:
+            (Optional) How to retry the RPC. See: :ref:`configuring_retries`
 
         Example:
             Compose blobs using generation match preconditions.
@@ -3179,11 +3055,8 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The amount of time, in seconds, to wait for the server
-            response.
-
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type if_generation_match: long
         :param if_generation_match:
@@ -3233,18 +3106,8 @@ class Blob(_PropertyMixin):
             object's current metageneration does not match the given value.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
-        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
-            A google.api_core.retry.Retry value will enable retries, and the object will
-            define retriable response codes and errors and configure backoff and timeout options.
-
-            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
-            activates it only if certain conditions are met. This class exists to provide safe defaults
-            for RPC calls that are not technically safe to retry normally (due to potential data
-            duplication or other side-effects) but become safe to retry if a condition such as
-            if_metageneration_match is set.
-
-            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
-            information on retry types and how to configure them.
+        :param retry:
+            (Optional) How to retry the RPC. See: :ref:`configuring_retries`
 
         :rtype: tuple
         :returns: ``(token, bytes_rewritten, total_bytes)``, where ``token``
@@ -3394,25 +3257,12 @@ class Blob(_PropertyMixin):
 
         :type timeout: float or tuple
         :param timeout:
-            (Optional) The number of seconds the transport should wait for the
-            server response. Depending on the retry strategy, a request may be
-            repeated several times using the same timeout each time.
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
-        :param retry: (Optional) How to retry the RPC. A None value will disable retries.
-            A google.api_core.retry.Retry value will enable retries, and the object will
-            define retriable response codes and errors and configure backoff and timeout options.
-
-            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a Retry object and
-            activates it only if certain conditions are met. This class exists to provide safe defaults
-            for RPC calls that are not technically safe to retry normally (due to potential data
-            duplication or other side-effects) but become safe to retry if a condition such as
-            if_metageneration_match is set.
-
-            See the retry.py source code and docstrings in this package (google.cloud.storage.retry) for
-            information on retry types and how to configure them.
+        :param retry:
+            (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
         if new_class not in self.STORAGE_CLASSES:
             raise ValueError("Invalid storage class: %s" % (new_class,))

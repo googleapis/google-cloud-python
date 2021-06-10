@@ -219,11 +219,9 @@ class ACL(object):
         """Load if not already loaded.
 
         :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response.
-
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
         """
         if not self.loaded:
             self.reload(timeout=timeout)
@@ -442,20 +440,13 @@ class ACL(object):
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
         :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response.
-
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type retry: :class:`~google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-            A None value will disable retries.
-
-            A google.api_core.retry.Retry value will enable retries,
-            and the object will define retriable response codes and errors
-            and configure backoff and timeout options.
+        :param retry:
+            (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
         path = self.reload_path
         client = self._require_client(client)
@@ -489,21 +480,15 @@ class ACL(object):
                       ``NoneType``
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
-        :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response.
 
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+        :type timeout: float or tuple
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :type retry: :class:`~google.api_core.retry.Retry`
-        :param retry: (Optional) How to retry the RPC.
-
-            A None value will disable retries.
-
-            A google.api_core.retry.Retry value will enable retries,
-            and the object will define retriable response codes and errors
-            and configure backoff and timeout options.
+        :param retry:
+            (Optional) How to retry the RPC. See: :ref:`configuring_retries`
         """
         client = self._require_client(client)
         query_params = {"projection": "full"}
@@ -545,12 +530,11 @@ class ACL(object):
                       ``NoneType``
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
-        :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response.
 
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+        :type timeout: float or tuple
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
         """
         if acl is None:
             acl = self
@@ -577,12 +561,11 @@ class ACL(object):
                       ``NoneType``
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
-        :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response.
 
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+        :type timeout: float or tuple
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
         """
         predefined = self.validate_predefined(predefined)
         self._save(None, predefined, client, timeout=timeout)
@@ -601,12 +584,11 @@ class ACL(object):
                       ``NoneType``
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the ACL's parent.
-        :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response.
 
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+        :type timeout: float or tuple
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
         """
         self.save([], client=client, timeout=timeout)
 

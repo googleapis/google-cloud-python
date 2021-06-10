@@ -181,11 +181,9 @@ class Batch(Connection):
             initialization of the object at a later time.
 
         :type timeout: float or tuple
-        :param timeout: (Optional) The amount of time, in seconds, to wait
-            for the server response.
-
-            Can also be passed as a tuple (connect_timeout, read_timeout).
-            See :meth:`requests.Session.request` documentation for details.
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
 
         :rtype: tuple of ``response`` (a dictionary of sorts)
                 and ``content`` (a string).
