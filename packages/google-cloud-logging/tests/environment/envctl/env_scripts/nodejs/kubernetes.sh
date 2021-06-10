@@ -17,9 +17,9 @@ set -e # exit on any failure
 set -o pipefail # any step in pipe caused failure
 set -u # undefined variables cause exit
 
-# Note: there is a max character count constraint
-SERVICE_NAME="log-go-gke-$(echo $ENVCTL_ID | head -c 8)x"
+SERVICE_NAME="log-node-gke-$(echo $ENVCTL_ID | head -c 8)"
 ZONE=us-central1-a
+LIBRARY_NAME="nodejs-logging"
 
 destroy() {
   set +e
@@ -64,18 +64,18 @@ attach_or_create_gke_cluster(){
   set -e
 }
 
-build_go_container(){
+build_node_container(){
   export GCR_PATH=gcr.io/$PROJECT_ID/logging:$SERVICE_NAME
   # copy super-repo into deployable dir
   _env_tests_relative_path=${REPO_ROOT#"$SUPERREPO_ROOT/"}
   _deployable_dir=$REPO_ROOT/deployable/$LANGUAGE
 
   # copy over local copy of library
-  pushd $SUPERREPO_ROOT/logging
-    tar -cvf $_deployable_dir/lib.tar --exclude internal/env-tests-logging --exclude .nox --exclude docs --exclude __pycache__ .
+  pushd $SUPERREPO_ROOT
+      tar -cvf $_deployable_dir/lib.tar --exclude node_modules --exclude env-tests-logging --exclude test --exclude system-test --exclude .nox --exclude samples --exclude docs .
   popd
-  mkdir -p $_deployable_dir/logging
-  tar -xvf $_deployable_dir/lib.tar --directory $_deployable_dir/logging
+  mkdir -p $_deployable_dir/$LIBRARY_NAME
+  tar -xvf $_deployable_dir/lib.tar --directory $_deployable_dir/$LIBRARY_NAME
   # build container
   docker build -t $GCR_PATH $_deployable_dir
   docker push $GCR_PATH
@@ -83,7 +83,7 @@ build_go_container(){
 
 deploy() {
   attach_or_create_gke_cluster
-  build_go_container
+  build_node_container
   cat <<EOF > $TMP_DIR/gke.yaml
     apiVersion: apps/v1
     kind: Deployment
@@ -130,4 +130,3 @@ EOF
 filter-string() {
   echo "resource.type=\"k8s_container\" AND resource.labels.cluster_name=\"$SERVICE_NAME\""
 }
-

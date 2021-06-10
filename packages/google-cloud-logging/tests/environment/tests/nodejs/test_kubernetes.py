@@ -14,6 +14,7 @@
 
 import logging
 import unittest
+import inspect
 
 import google.cloud.logging
 
@@ -23,7 +24,7 @@ from ..common.common import Common
 class TestKubernetesEngine(Common, unittest.TestCase):
 
     environment = "kubernetes"
-    language = "go"
+    language = "nodejs"
 
     monitored_resource_name = "k8s_container"
     monitored_resource_labels = ["project_id", "location", "cluster_name", "pod_name", "namespace_name"]

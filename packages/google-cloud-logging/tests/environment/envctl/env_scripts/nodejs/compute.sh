@@ -17,47 +17,26 @@ set -e # exit on any failure
 set -o pipefail # any step in pipe caused failure
 set -u # undefined variables cause exit
 
-SERVICE_NAME="log-node-run-$(echo $ENVCTL_ID | head -c 8)"
-SA_NAME=$SERVICE_NAME-invoker
+SERVICE_NAME="log-node-gce-$(echo $ENVCTL_ID | head -c 8)"
+ZONE="us-west2-a"
 LIBRARY_NAME="nodejs-logging"
-
-add_service_accounts() {
-  set +e
-  local PROJECT_ID=$(gcloud config list --format 'value(core.project)')
-  local PROJECT_NUMBER=$(gcloud projects list --filter=$PROJECT_ID --format="value(PROJECT_NUMBER)")
-  gcloud projects add-iam-policy-binding $PROJECT_ID \
-    --member=serviceAccount:service-$PROJECT_NUMBER@gcp-sa-pubsub.iam.gserviceaccount.com \
-     --role=roles/iam.serviceAccountTokenCreator
-  gcloud iam service-accounts create $SA_NAME \
-     --display-name "Pub/Sub Invoker"
-  gcloud run services add-iam-policy-binding  $SERVICE_NAME \
-     --member=serviceAccount:$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com \
-     --role=roles/run.invoker
-  RUN_URL=$(gcloud run services list --filter=$SERVICE_NAME --format="value(URL)")
-  gcloud pubsub subscriptions create $SERVICE_NAME-subscriber --topic $SERVICE_NAME \
-    --push-endpoint=$RUN_URL \
-    --push-auth-service-account=$SA_NAME@$PROJECT_ID.iam.gserviceaccount.com
-  set -e
-}
 
 destroy() {
   set +e
   # delete pubsub resources
   gcloud pubsub topics delete $SERVICE_NAME -q 2> /dev/null
   gcloud pubsub subscriptions delete $SERVICE_NAME-subscriber -q 2> /dev/null
-  # delete service account
-  gcloud iam service-accounts delete $SA_NAME@$PROJECT_ID.iam.gserviceaccount.com -q 2> /dev/null
   # delete container images
   export GCR_PATH=gcr.io/$PROJECT_ID/logging:$SERVICE_NAME
   gcloud container images delete $GCR_PATH -q --force-delete-tags 2> /dev/null
   # delete service
-  gcloud run services delete $SERVICE_NAME -q  2> /dev/null
+  gcloud compute instances delete $SERVICE_NAME -q
   set -e
 }
 
 verify() {
   set +e
-  gcloud run services describe $SERVICE_NAME > /dev/null 2> /dev/null
+  gcloud compute instances describe $SERVICE_NAME > /dev/null 2> /dev/null
   if [[ $? == 0 ]]; then
      echo "TRUE"
      exit 0
@@ -68,6 +47,7 @@ verify() {
   set -e
 }
 
+
 build_node_container() {
   export GCR_PATH=gcr.io/$PROJECT_ID/logging:$SERVICE_NAME
   # copy super-repo into deployable dir
@@ -76,11 +56,10 @@ build_node_container() {
 
   # copy over local copy of library
   pushd $SUPERREPO_ROOT
-    tar -cvf $_deployable_dir/lib.tar --exclude node_modules --exclude env-tests-logging --exclude test --exclude system-test --exclude .nox --exclude samples --exclude docs .
+      tar -cvf $_deployable_dir/lib.tar --exclude node_modules --exclude env-tests-logging --exclude test --exclude system-test --exclude .nox --exclude samples --exclude docs .
   popd
   mkdir -p $_deployable_dir/$LIBRARY_NAME
   tar -xvf $_deployable_dir/lib.tar --directory $_deployable_dir/$LIBRARY_NAME
-
   # build container
   docker build -t $GCR_PATH $_deployable_dir
   docker push $GCR_PATH
@@ -88,17 +67,25 @@ build_node_container() {
 
 deploy() {
   build_node_container
-  gcloud config set run/platform managed
-  gcloud config set run/region us-west1
-  gcloud run deploy  \
-    --image $GCR_PATH \
-    --update-env-vars ENABLE_FLASK=true \
-    --no-allow-unauthenticated \
-    $SERVICE_NAME
-  # create pubsub subscription
-  add_service_accounts
+  gcloud config set compute/zone $ZONE
+  gcloud compute instances create-with-container \
+    $SERVICE_NAME \
+    --container-image $GCR_PATH \
+    --container-env PUBSUB_TOPIC="$SERVICE_NAME",ENABLE_SUBSCRIBER="true"
+  # wait for the pub/sub subscriber to start
+  NUM_SUBSCRIBERS=0
+  TRIES=0
+  while [[ "${NUM_SUBSCRIBERS}" -lt 1 && "${TRIES}" -lt 10 ]]; do
+    sleep 30
+    NUM_SUBSCRIBERS=$(gcloud pubsub topics list-subscriptions $SERVICE_NAME 2> /dev/null | wc -l)
+    TRIES=$((TRIES + 1))
+  done
+
 }
 
 filter-string() {
+  #INSTANCE_ID=$(gcloud compute instances list --filter="name~^$SERVICE_NAME$" --format="value(ID)")
+  #echo "resource.type=\"gce_instance\" AND resource.labels.instance_id=\"$INSTANCE_ID\""
   echo "resource.type=\"global\""
 }
+

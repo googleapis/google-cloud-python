@@ -48,9 +48,6 @@ deploy() {
   gcloud pubsub topics create $SERVICE_NAME 2>/dev/null
   set -e
 
-  #  TODO remove print
-  set -x
-  # set up deployment directory
   # copy over local copy of library
   pushd $SUPERREPO_ROOT
     echo "in SUPERREPO_ROOT"
@@ -61,7 +58,7 @@ deploy() {
   mkdir $TMP_DIR/nodejs-logging
   tar -xvf $TMP_DIR/lib.tar --directory $TMP_DIR/nodejs-logging
 
-  # copy test code into temporary test file
+  # copy test code into deployment folder
   cp $REPO_ROOT/deployable/nodejs/app.js $TMP_DIR/app.js
   cp $REPO_ROOT/deployable/nodejs/tests.js $TMP_DIR/tests.js
   cp $REPO_ROOT/deployable/nodejs/package.json $TMP_DIR/

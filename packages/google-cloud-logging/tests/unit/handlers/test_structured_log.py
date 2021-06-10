@@ -109,7 +109,6 @@ class TestStructuredLogHandler(unittest.TestCase):
         When logging a message containing quotes, escape chars should be added
         """
         import logging
-        import json
 
         handler = self._make_one()
         message = '"test"'
@@ -117,9 +116,60 @@ class TestStructuredLogHandler(unittest.TestCase):
         record = logging.LogRecord(None, logging.INFO, None, None, message, None, None,)
         record.created = None
         handler.filter(record)
-        result = json.loads(handler.format(record))
-        result["message"] = expected_result
-        self.assertEqual(result["message"], expected_result)
+        result = handler.format(record)
+        self.assertIn(expected_result, result)
+
+    def test_format_with_line_break(self):
+        """
+        When logging a message containing \n, it should be properly escaped
+        """
+        import logging
+
+        handler = self._make_one()
+        message = "test\ntest"
+        expected_result = "test\\ntest"
+        record = logging.LogRecord(None, logging.INFO, None, None, message, None, None,)
+        record.created = None
+        handler.filter(record)
+        result = handler.format(record)
+        self.assertIn(expected_result, result)
+
+    def test_format_with_custom_formatter(self):
+        """
+        Handler should respect custom formatters attached
+        """
+        import logging
+
+        handler = self._make_one()
+        logFormatter = logging.Formatter(fmt="%(name)s :: %(levelname)s :: %(message)s")
+        handler.setFormatter(logFormatter)
+        message = "test"
+        expected_result = "logname :: INFO :: test"
+        record = logging.LogRecord(
+            "logname", logging.INFO, None, None, message, None, None,
+        )
+        record.created = None
+        handler.filter(record)
+        result = handler.format(record)
+        self.assertIn(expected_result, result)
+
+    def test_format_with_arguments(self):
+        """
+        Handler should support format string arguments
+        """
+        import logging
+
+        handler = self._make_one()
+        message = "name: %s"
+        name_arg = "Daniel"
+        expected_result = "name: Daniel"
+        record = logging.LogRecord(
+            None, logging.INFO, None, None, message, name_arg, None,
+        )
+        record.created = None
+        handler.filter(record)
+        result = handler.format(record)
+        self.assertIn(expected_result, result)
 
     def test_format_with_request(self):
         import logging

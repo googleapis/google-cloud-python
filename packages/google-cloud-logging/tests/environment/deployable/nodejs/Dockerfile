@@ -19,13 +19,14 @@ FROM node:12-slim
 # Create and change to the app directory.
 WORKDIR /usr/src/app
 
-# Copy test script and dependencies to the container image.
+# Copy test script and local dependencies to the container image.
 COPY package*.json ./
 COPY app.js ./
 COPY tests.js ./
+# Assumption: local file is already built
 COPY nodejs-logging ./nodejs-logging
 
-# Install dependencies.
+# Install test app's dependencies.
 RUN npm install --production
 
 # Environment variable denoting whether to run an app server

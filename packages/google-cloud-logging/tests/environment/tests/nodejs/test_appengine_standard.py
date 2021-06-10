@@ -20,10 +20,10 @@ import google.cloud.logging
 from ..common.common import Common
 
 
-class TestKubernetesEngine(Common, unittest.TestCase):
+class TestAppEngineStandard(Common, unittest.TestCase):
 
-    environment = "kubernetes"
-    language = "go"
+    environment = "appengine_standard"
+    language = "nodejs"
 
-    monitored_resource_name = "k8s_container"
-    monitored_resource_labels = ["project_id", "location", "cluster_name", "pod_name", "namespace_name"]
+    monitored_resource_name = "gae_app"
+    monitored_resource_labels = ["project_id", "module_id", "version_id", "zone"]
