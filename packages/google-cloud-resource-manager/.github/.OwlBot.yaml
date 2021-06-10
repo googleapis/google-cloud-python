@@ -15,3 +15,11 @@
 docker:
   image: gcr.io/repo-automation-bots/owlbot-python:latest
 
+deep-remove-regex:
+  - /owl-bot-staging
+
+deep-copy-regex:
+  - source: /google/cloud/resourcemanager/(v.*)/.*-py/(.*)
+    dest: /owl-bot-staging/$1/$2
+
+begin-after-commit-hash: 40278112d2922ec917140dcb5cc6d5ef2923aeb2

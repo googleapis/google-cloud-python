@@ -19,34 +19,33 @@ import setuptools
 
 
 # Package metadata.
-
 name = "google-cloud-resource-manager"
 description = "Google Cloud Resource Manager API client library"
-version = "0.30.3"
-# Should be one of:
-# 'Development Status :: 3 - Alpha'
-# 'Development Status :: 4 - Beta'
-# 'Development Status :: 5 - Production/Stable'
-release_status = "Development Status :: 3 - Alpha"
-dependencies = ["google-cloud-core >= 1.3.0, < 2.0dev"]
-extras = {}
+version = "1.0.0-rc1"
+release_status = "Development Status :: 4 - Beta"
+url = "https://github.com/googleapis/python-resource-manager"
+dependencies = [
+    "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
+    "proto-plus >= 1.15.0",
+    "packaging >= 14.3",
+    "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
+]
 
+extras = {"libcst": "libcst >= 0.2.5"}
 
 # Setup boilerplate below this line.
-
 package_root = os.path.abspath(os.path.dirname(__file__))
 
 readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
-# Only include packages under the 'google' namespace. Do not include tests,
-# benchmarks, etc.
 packages = [
-    package for package in setuptools.find_packages() if package.startswith("google")
+    package
+    for package in setuptools.PEP420PackageFinder.find()
+    if package.startswith("google")
 ]
 
-# Determine which namespaces are needed.
 namespaces = ["google"]
 if "google.cloud" in packages:
     namespaces.append("google.cloud")
@@ -60,27 +59,22 @@ setuptools.setup(
     author="Google LLC",
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
-    url="https://github.com/googleapis/python-resource-manager",
+    url=url,
+    packages=setuptools.PEP420PackageFinder.find(),
+    namespace_packages=("google", "google.cloud"),
+    platforms="Posix; MacOS X; Windows",
+    include_package_data=True,
+    install_requires=dependencies,
+    python_requires=">=3.6",
     classifiers=[
         release_status,
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: Apache Software License",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
+        "Operating System :: OS Independent",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
-        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3.8",
         "Topic :: Internet",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
-    platforms="Posix; MacOS X; Windows",
-    packages=packages,
-    namespace_packages=namespaces,
-    install_requires=dependencies,
-    extras_require=extras,
-    python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*",
-    include_package_data=True,
     zip_safe=False,
 )
