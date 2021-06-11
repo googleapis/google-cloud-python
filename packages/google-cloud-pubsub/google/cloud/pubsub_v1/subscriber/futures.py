@@ -46,6 +46,11 @@ class StreamingPullFuture(futures.Future):
     def cancel(self):
         """Stops pulling messages and shutdowns the background thread consuming
         messages.
+
+        .. versionchanged:: 2.4.1
+           The method does not block anymore, it just triggers the shutdown and returns
+           immediately. To block until the background stream is terminated, call
+           :meth:`result()` after cancelling the future.
         """
         # NOTE: We circumvent the base future's self._state to track the cancellation
         # state, as this state has different meaning with streaming pull futures.
