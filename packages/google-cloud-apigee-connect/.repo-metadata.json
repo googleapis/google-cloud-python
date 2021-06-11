@@ -1,0 +1,13 @@
+{
+    "name": "apigeeconnect",
+    "name_pretty": "Apigee Connect API",
+    "product_documentation": "https://cloud.google.com/apigee/docs/hybrid/v1.4/apigee-connect",
+    "client_documentation": "https://googleapis.dev/python/apigeeconnect/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-apigee-connect",
+    "distribution_name": "google-cloud-apigee-connect",
+    "api_id": "apigeeconnect.googleapis.com"
+}
