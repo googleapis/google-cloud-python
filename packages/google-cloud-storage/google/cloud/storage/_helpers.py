@@ -23,6 +23,7 @@ from datetime import datetime
 import os
 
 from six.moves.urllib.parse import urlsplit
+from google import resumable_media
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
@@ -43,6 +44,12 @@ _GENERATION_MATCH_PARAMETERS = (
     ("if_source_generation_not_match", "ifSourceGenerationNotMatch"),
     ("if_source_metageneration_match", "ifSourceMetagenerationMatch"),
     ("if_source_metageneration_not_match", "ifSourceMetagenerationNotMatch"),
+)
+
+_NUM_RETRIES_MESSAGE = (
+    "`num_retries` has been deprecated and will be removed in a future "
+    "release. Use the `retry` argument with a Retry or ConditionalRetryPolicy "
+    "object, or None, instead."
 )
 
 
@@ -524,3 +531,37 @@ def _bucket_bound_hostname_url(host, scheme=None):
         return host
 
     return "{scheme}://{host}/".format(scheme=scheme, host=host)
+
+
+def _api_core_retry_to_resumable_media_retry(retry, num_retries=None):
+    """Convert google.api.core.Retry to google.resumable_media.RetryStrategy.
+
+    Custom predicates are not translated.
+
+    :type retry: google.api_core.Retry
+    :param retry: (Optional) The google.api_core.Retry object to translate.
+
+    :type num_retries: int
+    :param num_retries: (Optional) The number of retries desired. This is
+        supported for backwards compatibility and is mutually exclusive with
+        `retry`.
+
+    :rtype: google.resumable_media.RetryStrategy
+    :returns: A RetryStrategy with all applicable attributes copied from input,
+              or a RetryStrategy with max_retries set to 0 if None was input.
+    """
+
+    if retry is not None and num_retries is not None:
+        raise ValueError("num_retries and retry arguments are mutually exclusive")
+
+    elif retry is not None:
+        return resumable_media.RetryStrategy(
+            max_sleep=retry._maximum,
+            max_cumulative_retry=retry._deadline,
+            initial_delay=retry._initial,
+            multiplier=retry._multiplier,
+        )
+    elif num_retries is not None:
+        return resumable_media.RetryStrategy(max_retries=num_retries)
+    else:
+        return resumable_media.RetryStrategy(max_retries=0)

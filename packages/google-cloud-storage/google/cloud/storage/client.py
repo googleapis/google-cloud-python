@@ -53,6 +53,7 @@ from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
 from google.cloud.storage.retry import DEFAULT_RETRY
+from google.cloud.storage.retry import ConditionalRetryPolicy
 
 
 _marker = object()
@@ -972,6 +973,7 @@ class Client(ClientWithProject):
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
         checksum="md5",
+        retry=DEFAULT_RETRY,
     ):
         """Download the contents of a blob object or blob URI into a file-like object.
 
@@ -1021,6 +1023,27 @@ class Client(ClientWithProject):
                 downloads where chunk_size is set) an INFO-level log will be
                 emitted. Supported values are "md5", "crc32c" and None. The default
                 is "md5".
+            retry (google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy)
+                (Optional) How to retry the RPC. A None value will disable
+                retries. A google.api_core.retry.Retry value will enable retries,
+                and the object will define retriable response codes and errors and
+                configure backoff and timeout options.
+
+                A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a
+                Retry object and activates it only if certain conditions are met.
+                This class exists to provide safe defaults for RPC calls that are
+                not technically safe to retry normally (due to potential data
+                duplication or other side-effects) but become safe to retry if a
+                condition such as if_metageneration_match is set.
+
+                See the retry.py source code and docstrings in this package
+                (google.cloud.storage.retry) for information on retry types and how
+                to configure them.
+
+                Media operations (downloads and uploads) do not support non-default
+                predicates in a Retry object. The default will always be used. Other
+                configuration changes for Retry objects such as delays and deadlines
+                are respected.
 
         Examples:
             Download a blob using a blob resource.
@@ -1046,6 +1069,19 @@ class Client(ClientWithProject):
 
 
         """
+
+        # Handle ConditionalRetryPolicy.
+        if isinstance(retry, ConditionalRetryPolicy):
+            # Conditional retries are designed for non-media calls, which change
+            # arguments into query_params dictionaries. Media operations work
+            # differently, so here we make a "fake" query_params to feed to the
+            # ConditionalRetryPolicy.
+            query_params = {
+                "ifGenerationMatch": if_generation_match,
+                "ifMetagenerationMatch": if_metageneration_match,
+            }
+            retry = retry.get_retry_policy_if_conditions_met(query_params=query_params)
+
         if not isinstance(blob_or_uri, Blob):
             blob_or_uri = Blob.from_string(blob_or_uri)
         download_url = blob_or_uri._get_download_url(
@@ -1070,6 +1106,7 @@ class Client(ClientWithProject):
                 raw_download,
                 timeout=timeout,
                 checksum=checksum,
+                retry=retry,
             )
         except resumable_media.InvalidResponse as exc:
             _raise_from_invalid_response(exc)
@@ -1222,6 +1259,8 @@ class Client(ClientWithProject):
             max_results=max_results,
             extra_params=extra_params,
             page_start=_blobs_page_start,
+            timeout=timeout,
+            retry=retry,
         )
         iterator.bucket = bucket
         iterator.prefixes = set()
