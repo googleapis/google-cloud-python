@@ -2993,6 +2993,8 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
             For more information about protecting resources with Cloud
             KMS Keys please see:
             https://cloud.google.com/compute/docs/disks/customer-managed-encryption
+        image_type (str):
+            The image type to use for NAP created node.
     """
 
     oauth_scopes = proto.RepeatedField(proto.STRING, number=1,)
@@ -3008,6 +3010,7 @@ class AutoprovisioningNodePoolDefaults(proto.Message):
         proto.MESSAGE, number=8, message="ShieldedInstanceConfig",
     )
     boot_disk_kms_key = proto.Field(proto.STRING, number=9,)
+    image_type = proto.Field(proto.STRING, number=10,)
 
 
 class ResourceLimit(proto.Message):
