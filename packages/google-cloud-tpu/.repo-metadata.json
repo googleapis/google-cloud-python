@@ -1,0 +1,13 @@
+{
+    "name": "tpu",
+    "name_pretty": "Cloud TPU",
+    "product_documentation": "https://cloud.google.com/tpu/",
+    "client_documentation": "https://googleapis.dev/python/tpu/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-tpu",
+    "distribution_name": "google-cloud-tpu",
+    "api_id": "tpu.googleapis.com"
+}
