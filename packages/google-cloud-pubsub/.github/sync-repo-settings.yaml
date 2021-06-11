@@ -6,6 +6,7 @@ branchProtectionRules:
 - pattern: master
   requiredStatusCheckContexts:
     - 'Kokoro'
+    - 'Kokoro - Against Pub/Sub Lite samples'
     - 'cla/google'
     - 'Samples - Lint'
     - 'Samples - Python 3.6'
