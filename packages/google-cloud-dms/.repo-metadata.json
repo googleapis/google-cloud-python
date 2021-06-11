@@ -1,0 +1,13 @@
+{
+    "name": "datamigration",
+    "name_pretty": "Cloud Database Migration Service",
+    "product_documentation": "https://cloud.google.com/database-migration/",
+    "client_documentation": "https://googleapis.dev/python/datamigration/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-dms",
+    "distribution_name": "google-cloud-dms",
+    "api_id": "datamigration.googleapis.com"
+}

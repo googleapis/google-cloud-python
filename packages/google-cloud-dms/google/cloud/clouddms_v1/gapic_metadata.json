@@ -1,0 +1,193 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.clouddms_v1",
+  "protoPackage": "google.cloud.clouddms.v1",
+  "schema": "1.0",
+  "services": {
+    "DataMigrationService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "DataMigrationServiceClient",
+          "rpcs": {
+            "CreateConnectionProfile": {
+              "methods": [
+                "create_connection_profile"
+              ]
+            },
+            "CreateMigrationJob": {
+              "methods": [
+                "create_migration_job"
+              ]
+            },
+            "DeleteConnectionProfile": {
+              "methods": [
+                "delete_connection_profile"
+              ]
+            },
+            "DeleteMigrationJob": {
+              "methods": [
+                "delete_migration_job"
+              ]
+            },
+            "GenerateSshScript": {
+              "methods": [
+                "generate_ssh_script"
+              ]
+            },
+            "GetConnectionProfile": {
+              "methods": [
+                "get_connection_profile"
+              ]
+            },
+            "GetMigrationJob": {
+              "methods": [
+                "get_migration_job"
+              ]
+            },
+            "ListConnectionProfiles": {
+              "methods": [
+                "list_connection_profiles"
+              ]
+            },
+            "ListMigrationJobs": {
+              "methods": [
+                "list_migration_jobs"
+              ]
+            },
+            "PromoteMigrationJob": {
+              "methods": [
+                "promote_migration_job"
+              ]
+            },
+            "RestartMigrationJob": {
+              "methods": [
+                "restart_migration_job"
+              ]
+            },
+            "ResumeMigrationJob": {
+              "methods": [
+                "resume_migration_job"
+              ]
+            },
+            "StartMigrationJob": {
+              "methods": [
+                "start_migration_job"
+              ]
+            },
+            "StopMigrationJob": {
+              "methods": [
+                "stop_migration_job"
+              ]
+            },
+            "UpdateConnectionProfile": {
+              "methods": [
+                "update_connection_profile"
+              ]
+            },
+            "UpdateMigrationJob": {
+              "methods": [
+                "update_migration_job"
+              ]
+            },
+            "VerifyMigrationJob": {
+              "methods": [
+                "verify_migration_job"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "DataMigrationServiceAsyncClient",
+          "rpcs": {
+            "CreateConnectionProfile": {
+              "methods": [
+                "create_connection_profile"
+              ]
+            },
+            "CreateMigrationJob": {
+              "methods": [
+                "create_migration_job"
+              ]
+            },
+            "DeleteConnectionProfile": {
+              "methods": [
+                "delete_connection_profile"
+              ]
+            },
+            "DeleteMigrationJob": {
+              "methods": [
+                "delete_migration_job"
+              ]
+            },
+            "GenerateSshScript": {
+              "methods": [
+                "generate_ssh_script"
+              ]
+            },
+            "GetConnectionProfile": {
+              "methods": [
+                "get_connection_profile"
+              ]
+            },
+            "GetMigrationJob": {
+              "methods": [
+                "get_migration_job"
+              ]
+            },
+            "ListConnectionProfiles": {
+              "methods": [
+                "list_connection_profiles"
+              ]
+            },
+            "ListMigrationJobs": {
+              "methods": [
+                "list_migration_jobs"
+              ]
+            },
+            "PromoteMigrationJob": {
+              "methods": [
+                "promote_migration_job"
+              ]
+            },
+            "RestartMigrationJob": {
+              "methods": [
+                "restart_migration_job"
+              ]
+            },
+            "ResumeMigrationJob": {
+              "methods": [
+                "resume_migration_job"
+              ]
+            },
+            "StartMigrationJob": {
+              "methods": [
+                "start_migration_job"
+              ]
+            },
+            "StopMigrationJob": {
+              "methods": [
+                "stop_migration_job"
+              ]
+            },
+            "UpdateConnectionProfile": {
+              "methods": [
+                "update_connection_profile"
+              ]
+            },
+            "UpdateMigrationJob": {
+              "methods": [
+                "update_migration_job"
+              ]
+            },
+            "VerifyMigrationJob": {
+              "methods": [
+                "verify_migration_job"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
