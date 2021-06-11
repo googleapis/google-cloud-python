@@ -1165,6 +1165,8 @@ class TestSessionAPI(OpenTelemetryBase, _TestData):
 
     @classmethod
     def setUpClass(cls):
+        # Call SetUpClass from parent (OpenTelemetryBase)
+        super(TestSessionAPI, cls).setUpClass()
         pool = BurstyPool(labels={"testcase": "session_api"})
         ddl_statements = EMULATOR_DDL_STATEMENTS if USE_EMULATOR else DDL_STATEMENTS
         cls._db = Config.INSTANCE.database(
@@ -1187,6 +1189,8 @@ class TestSessionAPI(OpenTelemetryBase, _TestData):
         super(TestSessionAPI, self).tearDown()
         for doomed in self.to_delete:
             doomed.delete()
+        if HAS_OPENTELEMETRY_INSTALLED:
+            self.ot_exporter.clear()  # Clear any ot spans from above step.
 
     def test_session_crud(self):
         retry_true = RetryResult(operator.truth)
@@ -1211,7 +1215,7 @@ class TestSessionAPI(OpenTelemetryBase, _TestData):
         self._check_rows_data(rows)
 
         if HAS_OPENTELEMETRY_INSTALLED:
-            span_list = self.memory_exporter.get_finished_spans()
+            span_list = self.ot_exporter.get_finished_spans()
             self.assertEqual(len(span_list), 4)
             self.assertSpanAttributes(
                 "CloudSpanner.GetSession",
@@ -1355,7 +1359,7 @@ class TestSessionAPI(OpenTelemetryBase, _TestData):
         self.assertEqual(rows, [])
 
         if HAS_OPENTELEMETRY_INSTALLED:
-            span_list = self.memory_exporter.get_finished_spans()
+            span_list = self.ot_exporter.get_finished_spans()
             self.assertEqual(len(span_list), 8)
             self.assertSpanAttributes(
                 "CloudSpanner.CreateSession",
@@ -1736,6 +1740,9 @@ class TestSessionAPI(OpenTelemetryBase, _TestData):
         retry = RetryInstanceState(_has_all_ddl)
         retry(self._db.reload)()
 
+        if HAS_OPENTELEMETRY_INSTALLED:
+            self.ot_exporter.clear()  # Clear any ot spans from above steps.
+
         session = self._db.session()
         session.create()
         self.to_delete.append(session)
@@ -1768,7 +1775,7 @@ class TestSessionAPI(OpenTelemetryBase, _TestData):
         with tracer.start_as_current_span("Test Span"):
             session.run_in_transaction(unit_of_work, self)
 
-        span_list = self.memory_exporter.get_finished_spans()
+        span_list = self.ot_exporter.get_finished_spans()
         self.assertEqual(len(span_list), 6)
         self.assertEqual(
             list(map(lambda span: span.name, span_list)),

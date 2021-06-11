@@ -14,7 +14,7 @@
 
 
 import mock
-from tests._helpers import OpenTelemetryBase, StatusCanonicalCode
+from tests._helpers import OpenTelemetryBase, StatusCode
 from google.cloud.spanner_v1 import Type
 from google.cloud.spanner_v1 import TypeCode
 from google.api_core.retry import Retry
@@ -161,7 +161,7 @@ class TestTransaction(OpenTelemetryBase):
 
         self.assertSpanAttributes(
             "CloudSpanner.BeginTransaction",
-            status=StatusCanonicalCode.UNKNOWN,
+            status=StatusCode.ERROR,
             attributes=TestTransaction.BASE_ATTRIBUTES,
         )
 
@@ -234,7 +234,7 @@ class TestTransaction(OpenTelemetryBase):
 
         self.assertSpanAttributes(
             "CloudSpanner.Rollback",
-            status=StatusCanonicalCode.UNKNOWN,
+            status=StatusCode.ERROR,
             attributes=TestTransaction.BASE_ATTRIBUTES,
         )
 
@@ -307,7 +307,7 @@ class TestTransaction(OpenTelemetryBase):
 
         self.assertSpanAttributes(
             "CloudSpanner.Commit",
-            status=StatusCanonicalCode.UNKNOWN,
+            status=StatusCode.ERROR,
             attributes=dict(TestTransaction.BASE_ATTRIBUTES, num_mutations=1),
         )
 

@@ -14,7 +14,7 @@
 
 
 import unittest
-from tests._helpers import OpenTelemetryBase, StatusCanonicalCode
+from tests._helpers import OpenTelemetryBase, StatusCode
 
 TABLE_NAME = "citizens"
 COLUMNS = ["email", "first_name", "last_name", "age"]
@@ -207,7 +207,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
 
         self.assertSpanAttributes(
             "CloudSpanner.Commit",
-            status=StatusCanonicalCode.UNKNOWN,
+            status=StatusCode.ERROR,
             attributes=dict(BASE_ATTRIBUTES, num_mutations=1),
         )
 
