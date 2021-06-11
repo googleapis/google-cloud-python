@@ -27,7 +27,7 @@ release_status = "Development Status :: 4 - Beta"
 url="https://github.com/googleapis/python-apigee-connect",
 dependencies = [
     "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
-    "proto-plus >= 1.4.0",
+    "proto-plus >= 1.15.0",
     "packaging >= 14.3",
 ]
 
