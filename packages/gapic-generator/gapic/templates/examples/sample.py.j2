@@ -31,13 +31,13 @@ from {{ sample.module_namespace|join(".") }} import {{ sample.module_name }}
 
 
 {# also need calling form #}
-def sample_{{ frags.render_method_name(sample.rpc)|trim }}({{ frags.print_input_params(sample.request)|trim }}):
+{% if sample.transport == "grpc-async" %}async {% endif %}def sample_{{ frags.render_method_name(sample.rpc)|trim }}({{ frags.print_input_params(sample.request)|trim }}):
     """{{ sample.description }}"""
 
     {{ frags.render_client_setup(sample.module_name, sample.client_name)|indent }}
     {{ frags.render_request_setup(sample.request, sample.module_name, sample.request_type)|indent }}
-    {% with method_call = frags.render_method_call(sample, calling_form, calling_form_enum) %}
-    {{ frags.render_calling_form(method_call, calling_form, calling_form_enum, sample.response)|indent -}}
+    {% with method_call = frags.render_method_call(sample, calling_form, calling_form_enum, sample.transport) %}
+    {{ frags.render_calling_form(method_call, calling_form, calling_form_enum, sample.transport, sample.response)|indent -}}
     {% endwith %}
 
 # [END {{ sample.id }}]

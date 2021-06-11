@@ -700,7 +700,7 @@ def test_print_input_params():
 CALLING_FORM_TEMPLATE_TEST_STR = '''
         {% import "feature_fragments.j2" as frags %}
         {{ frags.render_calling_form("TEST_INVOCATION_TXT", calling_form,
-                                   calling_form_enum,
+                                   calling_form_enum, transport,
                                    [{"print": ["Test print statement"]}]) }}
         '''
 
@@ -715,7 +715,8 @@ def test_render_calling_form_request():
                    print("Test print statement")
                    ''',
                    calling_form_enum=CallingForm,
-                   calling_form=CallingForm.Request)
+                   calling_form=CallingForm.Request,
+                   transport="grpc")
 
 
 def test_render_calling_form_paged_all():
@@ -727,7 +728,21 @@ def test_render_calling_form_paged_all():
                        print("Test print statement")
                    ''',
                    calling_form_enum=CallingForm,
-                   calling_form=CallingForm.RequestPagedAll)
+                   calling_form=CallingForm.RequestPagedAll,
+                   transport="grpc")
+
+
+def test_render_calling_form_paged_all_async():
+    check_template(CALLING_FORM_TEMPLATE_TEST_STR,
+                   '''
+                   # Make the request
+                   page_result = TEST_INVOCATION_TXT
+                   async for response in page_result:
+                       print("Test print statement")
+                   ''',
+                   calling_form_enum=CallingForm,
+                   calling_form=CallingForm.RequestPagedAll,
+                   transport="grpc-async")
 
 
 def test_render_calling_form_paged():
@@ -740,7 +755,22 @@ def test_render_calling_form_paged():
                             print("Test print statement")
                    ''',
                    calling_form_enum=CallingForm,
-                   calling_form=CallingForm.RequestPaged)
+                   calling_form=CallingForm.RequestPaged,
+                   transport="grpc")
+
+
+def test_render_calling_form_paged_async():
+    check_template(CALLING_FORM_TEMPLATE_TEST_STR,
+                   '''
+                    # Make the request
+                    page_result = TEST_INVOCATION_TXT
+                    async for page in page_result.pages():
+                        for response in page:
+                            print("Test print statement")
+                   ''',
+                   calling_form_enum=CallingForm,
+                   calling_form=CallingForm.RequestPaged,
+                   transport="grpc-async")
 
 
 def test_render_calling_form_streaming_server():
@@ -752,7 +782,21 @@ def test_render_calling_form_streaming_server():
                        print("Test print statement")
                    ''',
                    calling_form_enum=CallingForm,
-                   calling_form=CallingForm.RequestStreamingServer)
+                   calling_form=CallingForm.RequestStreamingServer,
+                   transport="grpc")
+
+
+def test_render_calling_form_streaming_server_async():
+    check_template(CALLING_FORM_TEMPLATE_TEST_STR,
+                   '''
+                   # Make the request
+                   stream = TEST_INVOCATION_TXT
+                   async for response in stream:
+                       print("Test print statement")
+                   ''',
+                   calling_form_enum=CallingForm,
+                   calling_form=CallingForm.RequestStreamingServer,
+                   transport="grpc-async")
 
 
 def test_render_calling_form_streaming_bidi():
@@ -764,7 +808,21 @@ def test_render_calling_form_streaming_bidi():
                        print("Test print statement")
                    ''',
                    calling_form_enum=CallingForm,
-                   calling_form=CallingForm.RequestStreamingBidi)
+                   calling_form=CallingForm.RequestStreamingBidi,
+                   transport="grpc")
+
+
+def test_render_calling_form_streaming_bidi_async():
+    check_template(CALLING_FORM_TEMPLATE_TEST_STR,
+                   '''
+                   # Make the request
+                   stream = TEST_INVOCATION_TXT
+                   async for response in stream:
+                       print("Test print statement")
+                   ''',
+                   calling_form_enum=CallingForm,
+                   calling_form=CallingForm.RequestStreamingBidi,
+                   transport="grpc-async")
 
 
 def test_render_calling_form_longrunning():
@@ -779,7 +837,24 @@ def test_render_calling_form_longrunning():
                    print("Test print statement")
                    ''',
                    calling_form_enum=CallingForm,
-                   calling_form=CallingForm.LongRunningRequestPromise)
+                   calling_form=CallingForm.LongRunningRequestPromise,
+                   transport="grpc")
+
+
+def test_render_calling_form_longrunning_async():
+    check_template(CALLING_FORM_TEMPLATE_TEST_STR,
+                   '''
+                   # Make the request
+                   operation = TEST_INVOCATION_TXT
+
+                   print("Waiting for operation to complete...")
+
+                   response = await operation.result()
+                   print("Test print statement")
+                   ''',
+                   calling_form_enum=CallingForm,
+                   calling_form=CallingForm.LongRunningRequestPromise,
+                   transport="grpc-async")
 
 
 def test_render_method_call_basic():
@@ -787,7 +862,7 @@ def test_render_method_call_basic():
         '''
         {% import "feature_fragments.j2" as frags %}
         {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
-                                  calling_form, calling_form_enum) }}
+                                  calling_form, calling_form_enum, transport) }}
         ''',
         '''
         client.categorize_mollusc(request=request)
@@ -806,7 +881,37 @@ def test_render_method_call_basic():
             ],
         ),
         calling_form_enum=CallingForm,
-        calling_form=CallingForm.Request
+        calling_form=CallingForm.Request,
+        transport="grpc"
+    )
+
+
+def test_render_method_call_basic_async():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
+                                  calling_form, calling_form_enum, transport) }}
+        ''',
+        '''
+        await client.categorize_mollusc(request=request)
+        ''',
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(base="video",
+                                             body=True,
+                                             single=None),
+                samplegen.TransformedRequest(base="audio",
+                                             body=True,
+                                             single=None),
+                samplegen.TransformedRequest(base="guess",
+                                             body=True,
+                                             single=None)
+            ],
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.Request,
+        transport="grpc-async"
     )
 
 
@@ -815,7 +920,7 @@ def test_render_method_call_basic_flattenable():
         '''
         {% import "feature_fragments.j2" as frags %}
         {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
-                                  calling_form, calling_form_enum) }}
+                                  calling_form, calling_form_enum, transport) }}
         ''',
         '''
         client.categorize_mollusc(video=video, audio=audio, guess=guess)
@@ -835,7 +940,8 @@ def test_render_method_call_basic_flattenable():
             flattenable=True,
         ),
         calling_form_enum=CallingForm,
-        calling_form=CallingForm.Request
+        calling_form=CallingForm.Request,
+        transport="grpc"
     )
 
 
@@ -844,7 +950,7 @@ def test_render_method_call_bidi():
         '''
         {% import "feature_fragments.j2" as frags %}
         {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
-                                  calling_form, calling_form_enum) }}
+                                  calling_form, calling_form_enum, transport) }}
         ''',
         '''
         client.categorize_mollusc([video])
@@ -859,7 +965,33 @@ def test_render_method_call_bidi():
             ]
         ),
         calling_form_enum=CallingForm,
-        calling_form=CallingForm.RequestStreamingBidi
+        calling_form=CallingForm.RequestStreamingBidi,
+        transport="grpc",
+    )
+
+
+def test_render_method_call_bidi_async():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
+                                  calling_form, calling_form_enum, transport) }}
+        ''',
+        '''
+        await client.categorize_mollusc([video])
+        ''',
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(
+                    base="video",
+                    body=True,
+                    single=None
+                )
+            ]
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.RequestStreamingBidi,
+        transport="grpc-async",
     )
 
 
@@ -868,7 +1000,7 @@ def test_render_method_call_client():
         '''
         {% import "feature_fragments.j2" as frags %}
         {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
-        calling_form, calling_form_enum) }}
+        calling_form, calling_form_enum, transport) }}
         ''',
         '''
         client.categorize_mollusc([video])
@@ -883,7 +1015,33 @@ def test_render_method_call_client():
             ]
         ),
         calling_form_enum=CallingForm,
-        calling_form=CallingForm.RequestStreamingClient
+        calling_form=CallingForm.RequestStreamingClient,
+        transport="grpc",
+    )
+
+
+def test_render_method_call_client_async():
+    check_template(
+        '''
+        {% import "feature_fragments.j2" as frags %}
+        {{ frags.render_method_call({"rpc": "CategorizeMollusc", "request": request},
+        calling_form, calling_form_enum, transport) }}
+        ''',
+        '''
+        await client.categorize_mollusc([video])
+        ''',
+        request=samplegen.FullRequest(
+            request_list=[
+                samplegen.TransformedRequest(
+                    base="video",
+                    body=True,
+                    single=None
+                )
+            ]
+        ),
+        calling_form_enum=CallingForm,
+        calling_form=CallingForm.RequestStreamingClient,
+        transport="grpc-async",
     )
 
 

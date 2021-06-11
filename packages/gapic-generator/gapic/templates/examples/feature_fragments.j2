@@ -202,8 +202,13 @@ request=request
 {% endmacro %}
 
 
-{% macro render_method_call(sample, calling_form, calling_form_enum) %}
+{% macro render_method_call(sample, calling_form, calling_form_enum, transport) %}
 {# Note: this doesn't deal with enums or unions #}
+{# LROs return operation objects and paged requests return pager objects #}
+{% if transport == "grpc-async" and calling_form not in
+[calling_form_enum.LongRunningRequestPromise, calling_form_enum.RequestPagedAll] %}
+await{{ " "}}
+{%- endif -%}
 {% if calling_form in [calling_form_enum.RequestStreamingBidi,
                        calling_form_enum.RequestStreamingClient] %}
 client.{{ sample.rpc|snake_case }}([{{ render_request_params(sample.request.request_list)|trim }}])
@@ -215,7 +220,7 @@ client.{{ sample.rpc|snake_case }}({{ render_request_params_unary(sample.request
 
 {# Setting up the method invocation is the responsibility of the caller: #}
 {# it's just easier to set up client side streaming and other things from outside this macro. #}
-{% macro render_calling_form(method_invocation_text, calling_form, calling_form_enum, response_statements ) %}
+{% macro render_calling_form(method_invocation_text, calling_form, calling_form_enum, transport, response_statements ) %}
 # Make the request
 {% if calling_form == calling_form_enum.Request %}
 response = {{ method_invocation_text|trim }}
@@ -228,13 +233,13 @@ response = {{ method_invocation_text|trim }}
 {% endif %}
 {% elif calling_form == calling_form_enum.RequestPagedAll %}
 page_result = {{ method_invocation_text|trim }}
-for response in page_result:
+{% if transport == "grpc-async" %}async {% endif %}for response in page_result:
   {% for statement in response_statements %}
     {{ dispatch_statement(statement)|trim }}
   {% endfor %}
 {% elif calling_form == calling_form_enum.RequestPaged %}
 page_result = {{ method_invocation_text|trim }}
-for page in page_result.pages():
+{% if transport == "grpc-async" %}async {% endif %}for page in page_result.pages():
     for response in page:
   {% for statement in response_statements %}
         {{ dispatch_statement(statement)|trim }}
@@ -242,7 +247,7 @@ for page in page_result.pages():
 {% elif calling_form in [calling_form_enum.RequestStreamingServer,
                         calling_form_enum.RequestStreamingBidi] %}
 stream = {{ method_invocation_text|trim }}
-for response in stream:
+{% if transport == "grpc-async" %}async {% endif %}for response in stream:
   {% for statement in response_statements %}
     {{ dispatch_statement(statement)|trim }}
   {% endfor %}
@@ -251,7 +256,7 @@ operation = {{ method_invocation_text|trim }}
 
 print("Waiting for operation to complete...")
 
-response = operation.result()
+response = {% if transport == "grpc-async" %}await {% endif %}operation.result()
 {% for statement in response_statements %}
 {{ dispatch_statement(statement)|trim }}
 {% endfor %}

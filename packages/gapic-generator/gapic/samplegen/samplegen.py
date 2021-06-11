@@ -293,7 +293,15 @@ class Validator:
         sample["module_name"] = api_schema.naming.versioned_module_name
         sample["module_namespace"] = api_schema.naming.module_namespace
 
-        sample["client_name"] = api_schema.services[sample["service"]].client_name
+        # Assume the gRPC transport if the transport is not specified
+        sample.setdefault("transport", api.TRANSPORT_GRPC)
+
+        if sample["transport"] == api.TRANSPORT_GRPC_ASYNC:
+            sample["client_name"] = api_schema.services[sample["service"]
+                                                        ].async_client_name
+        else:
+            sample["client_name"] = api_schema.services[sample["service"]].client_name
+
         # the type of the request object passed to the rpc e.g, `ListRequest`
         sample["request_type"] = rpc.input.ident.name
 
@@ -946,10 +954,8 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
 
     for service_name, service in gapic_metadata.services.items():
         api_short_name = api_schema.services[f"{api_schema.naming.proto_package}.{service_name}"].shortname
-        for transport_type, client in service.clients.items():
-            if transport_type == "grpc-async":
-                # TODO(busunkim): Enable generation of async samples
-                continue
+        for transport, client in service.clients.items():
+            transport_type = "async" if transport == api.TRANSPORT_GRPC_ASYNC else "sync"
             for rpc_name, method_list in client.rpcs.items():
                 # Region Tag Format:
                 # [{START|END} ${apishortname}_generated_${api}_${apiVersion}_${serviceName}_${rpcName}_{sync|async}_${overloadDisambiguation}]
@@ -957,6 +963,7 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
                 spec = {
                     "sample_type": "standalone",
                     "rpc": rpc_name,
+                    "transport": transport,
                     "request": [],
                     # response is populated in `preprocess_sample`
                     "service": f"{api_schema.naming.proto_package}.{service_name}",

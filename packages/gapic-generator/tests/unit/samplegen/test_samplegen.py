@@ -1910,15 +1910,28 @@ def test_generate_sample_spec_basic():
         ]
     )
     opts = Options.build("transport=grpc")
-    specs = list(samplegen.generate_sample_specs(api_schema, opts=opts))
-    assert len(specs) == 1
+    specs = sorted(samplegen.generate_sample_specs(
+        api_schema, opts=opts), key=lambda x: x["transport"])
+    specs.sort(key=lambda x: x["transport"])
+    assert len(specs) == 2
 
     assert specs[0] == {
         "sample_type": "standalone",
         "rpc": "Ramshorn",
+        "transport": "grpc",
         "request": [],
         "service": "animalia.mollusca.v1.Squid",
-        "region_tag": "example_generated_mollusca_v1_Squid_Ramshorn_grpc",
+        "region_tag": "example_generated_mollusca_v1_Squid_Ramshorn_sync",
+        "description": "Snippet for ramshorn"
+    }
+
+    assert specs[1] == {
+        "sample_type": "standalone",
+        "rpc": "Ramshorn",
+        "transport": "grpc-async",
+        "request": [],
+        "service": "animalia.mollusca.v1.Squid",
+        "region_tag": "example_generated_mollusca_v1_Squid_Ramshorn_async",
         "description": "Snippet for ramshorn"
     }
 
