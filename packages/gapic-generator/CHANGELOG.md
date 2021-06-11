@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.49.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.48.1...v0.49.0) (2021-06-11)
+
+
+### Features
+
+* add async samples ([#861](https://www.github.com/googleapis/gapic-generator-python/issues/861)) ([e385ffd](https://www.github.com/googleapis/gapic-generator-python/commit/e385ffd7f012c6a38c9fcd7c5f36ce090311032b))
+
 ### [0.48.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.48.0...v0.48.1) (2021-06-09)
 
 
