@@ -13,7 +13,7 @@ API Reference
 Changelog
 ---------
 
-For a list of all ``google-cloud-SERVICE`` releases:
+For a list of all ``google-cloud-tpu`` releases:
 
 .. toctree::
    :maxdepth: 2
