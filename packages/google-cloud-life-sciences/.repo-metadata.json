@@ -1,0 +1,13 @@
+{
+  "name": "lifesciences",
+  "name_pretty": "Cloud Life Sciences",
+  "product_documentation": "https://cloud.google.com/life-sciences/",
+  "client_documentation": "https://googleapis.dev/python/lifesciences/latest",
+  "issue_tracker": "",
+  "release_level": "beta",
+  "language": "python",
+  "library_type": "GAPIC_AUTO",
+  "repo": "googleapis/python-life-sciences",
+  "distribution_name": "google-cloud-life-sciences",
+  "api_id": "lifesciences.googleapis.com"
+}
