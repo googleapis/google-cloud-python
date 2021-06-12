@@ -1,0 +1,13 @@
+{
+    "name": "vpcaccess",
+    "name_pretty": "Virtual Private Cloud",
+    "product_documentation": "https://cloud.google.com/vpc/",
+    "client_documentation": "https://googleapis.dev/python/vpcaccess/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-vpc-access",
+    "distribution_name": "google-cloud-vpc-access",
+    "api_id": "vpcaccess.googleapis.com"
+}
