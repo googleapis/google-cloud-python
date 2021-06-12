@@ -1,0 +1,13 @@
+{
+    "name": "serviceusage",
+    "name_pretty": "Service Usage",
+    "product_documentation": "https://cloud.google.com/service-usage",
+    "client_documentation": "https://googleapis.dev/python/serviceusage/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-service-usage",
+    "distribution_name": "google-cloud-service-usage",
+    "api_id": "serviceusage.googleapis.com"
+}
