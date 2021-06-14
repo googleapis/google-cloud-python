@@ -859,7 +859,8 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         [CryptoKey][google.cloud.kms.v1.CryptoKey] that will be used in
         [Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt].
 
-        Returns an error if called on an asymmetric key.
+        Returns an error if called on a key whose purpose is not
+        [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
 
         Returns:
             Callable[[~.UpdateCryptoKeyPrimaryVersionRequest],

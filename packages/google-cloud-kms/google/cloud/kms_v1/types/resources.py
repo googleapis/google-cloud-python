@@ -387,6 +387,7 @@ class CryptoKeyVersion(proto.Message):
         RSA_DECRYPT_OAEP_4096_SHA512 = 17
         EC_SIGN_P256_SHA256 = 12
         EC_SIGN_P384_SHA384 = 13
+        EC_SIGN_SECP256K1_SHA256 = 31
         EXTERNAL_SYMMETRIC_ENCRYPTION = 18
 
     class CryptoKeyVersionState(proto.Enum):
