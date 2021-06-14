@@ -80,7 +80,7 @@ class TestClient(unittest.TestCase):
         from google.api_core.exceptions import DuplicateCredentialArgs
 
         credentials = _make_credentials()
-        client_options = {'credentials_file': '/path/to/creds.json'}
+        client_options = {"credentials_file": "/path/to/creds.json"}
         with self.assertRaises(DuplicateCredentialArgs):
             self._make_one(credentials=credentials, client_options=client_options)
 
@@ -92,26 +92,34 @@ class TestClient(unittest.TestCase):
 
     def test_ctor_client_options_w_creds_file_scopes(self):
         credentials = _make_credentials()
-        credentials_file = '/path/to/creds.json'
-        scopes = ['SCOPE1', 'SCOPE2']
-        client_options = {'credentials_file': credentials_file, 'scopes': scopes}
+        credentials_file = "/path/to/creds.json"
+        scopes = ["SCOPE1", "SCOPE2"]
+        client_options = {"credentials_file": credentials_file, "scopes": scopes}
 
-        patch = mock.patch("google.auth.load_credentials_from_file", return_value=(credentials, None))
+        patch = mock.patch(
+            "google.auth.load_credentials_from_file", return_value=(credentials, None)
+        )
         with patch as load_credentials_from_file:
             client_obj = self._make_one(client_options=client_options)
 
         self.assertIs(client_obj._credentials, credentials)
         self.assertIsNone(client_obj._http_internal)
-        load_credentials_from_file.assert_called_once_with(credentials_file, scopes=scopes)
+        load_credentials_from_file.assert_called_once_with(
+            credentials_file, scopes=scopes
+        )
 
     def test_ctor_client_options_w_quota_project(self):
         credentials = _make_credentials()
-        quota_project_id = 'quota-project-123'
-        client_options = {'quota_project_id': quota_project_id}
+        quota_project_id = "quota-project-123"
+        client_options = {"quota_project_id": quota_project_id}
 
-        client_obj = self._make_one(credentials=credentials, client_options=client_options)
+        client_obj = self._make_one(
+            credentials=credentials, client_options=client_options
+        )
 
-        self.assertIs(client_obj._credentials, credentials.with_quota_project.return_value)
+        self.assertIs(
+            client_obj._credentials, credentials.with_quota_project.return_value
+        )
         credentials.with_quota_project.assert_called_once_with(quota_project_id)
 
     def test_ctor__http_property_existing(self):
@@ -126,18 +134,24 @@ class TestClient(unittest.TestCase):
 
         credentials = _make_credentials()
         mock_client_cert_source = mock.Mock()
-        client_options = {'client_cert_source': mock_client_cert_source}
+        client_options = {"client_cert_source": mock_client_cert_source}
         client = self._make_one(credentials=credentials, client_options=client_options)
         self.assertIsNone(client._http_internal)
 
-        with mock.patch('google.auth.transport.requests.AuthorizedSession') as AuthorizedSession:
+        with mock.patch(
+            "google.auth.transport.requests.AuthorizedSession"
+        ) as AuthorizedSession:
             session = mock.Mock()
             session.configure_mtls_channel = mock.Mock()
             AuthorizedSession.return_value = session
             self.assertIs(client._http, session)
             # Check the mock.
-            AuthorizedSession.assert_called_once_with(credentials, refresh_timeout=_CREDENTIALS_REFRESH_TIMEOUT)
-            session.configure_mtls_channel.assert_called_once_with(mock_client_cert_source)
+            AuthorizedSession.assert_called_once_with(
+                credentials, refresh_timeout=_CREDENTIALS_REFRESH_TIMEOUT
+            )
+            session.configure_mtls_channel.assert_called_once_with(
+                mock_client_cert_source
+            )
             # Make sure the cached value is used on subsequent access.
             self.assertIs(client._http_internal, session)
             self.assertIs(client._http, session)
@@ -206,8 +220,7 @@ class Test_ClientProjectMixin(unittest.TestCase):
         environ = {}
         patch_env = mock.patch("os.environ", new=environ)
         patch_default = mock.patch(
-            "google.cloud.client._determine_default_project",
-            return_value=None,
+            "google.cloud.client._determine_default_project", return_value=None,
         )
         with patch_env:
             with patch_default as patched:
@@ -241,8 +254,7 @@ class Test_ClientProjectMixin(unittest.TestCase):
     def test_ctor_w_explicit_project(self):
         explicit_project = "explicit-project-456"
         patch_default = mock.patch(
-            "google.cloud.client._determine_default_project",
-            return_value=None,
+            "google.cloud.client._determine_default_project", return_value=None,
         )
         with patch_default as patched:
             client = self._make_one(project=explicit_project)
@@ -254,8 +266,7 @@ class Test_ClientProjectMixin(unittest.TestCase):
     def test_ctor_w_explicit_project_bytes(self):
         explicit_project = b"explicit-project-456"
         patch_default = mock.patch(
-            "google.cloud.client._determine_default_project",
-            return_value=None,
+            "google.cloud.client._determine_default_project", return_value=None,
         )
         with patch_default as patched:
             client = self._make_one(project=explicit_project)
@@ -267,8 +278,7 @@ class Test_ClientProjectMixin(unittest.TestCase):
     def test_ctor_w_explicit_project_invalid(self):
         explicit_project = object()
         patch_default = mock.patch(
-            "google.cloud.client._determine_default_project",
-            return_value=None,
+            "google.cloud.client._determine_default_project", return_value=None,
         )
         with patch_default as patched:
             with self.assertRaises(ValueError):
@@ -307,8 +317,7 @@ class Test_ClientProjectMixin(unittest.TestCase):
         project = "credentials-project-456"
         credentials = self._make_credentials(project_id=project)
         patch_default = mock.patch(
-            "google.cloud.client._determine_default_project",
-            return_value=None,
+            "google.cloud.client._determine_default_project", return_value=None,
         )
         with patch_default as patched:
             client = self._make_one(credentials=credentials)

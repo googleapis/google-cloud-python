@@ -15,9 +15,10 @@
 """Shared implementation of connections to API servers."""
 
 import collections
+
 try:
     import collections.abc as collections_abc
-except ImportError:
+except ImportError:  # Python2
     import collections as collections_abc
 import json
 import os
@@ -34,9 +35,7 @@ from google.cloud import version
 API_BASE_URL = "https://www.googleapis.com"
 """The base of the API call URL."""
 
-DEFAULT_USER_AGENT = "gcloud-python/{0}".format(
-    version.__version__
-)
+DEFAULT_USER_AGENT = "gcloud-python/{0}".format(version.__version__)
 """The user agent for google-cloud-python requests."""
 
 CLIENT_INFO_HEADER = "X-Goog-API-Client"
@@ -83,14 +82,12 @@ class Connection(object):
         :rtype: str
         :returns: user agent
         """
-        warnings.warn(
-            _USER_AGENT_ALL_CAPS_DEPRECATED, DeprecationWarning, stacklevel=2)
+        warnings.warn(_USER_AGENT_ALL_CAPS_DEPRECATED, DeprecationWarning, stacklevel=2)
         return self.user_agent
 
     @USER_AGENT.setter
     def USER_AGENT(self, value):
-        warnings.warn(
-            _USER_AGENT_ALL_CAPS_DEPRECATED, DeprecationWarning, stacklevel=2)
+        warnings.warn(_USER_AGENT_ALL_CAPS_DEPRECATED, DeprecationWarning, stacklevel=2)
         self.user_agent = value
 
     @property
@@ -114,13 +111,15 @@ class Connection(object):
         :returns: header keys / values
         """
         warnings.warn(
-            _EXTRA_HEADERS_ALL_CAPS_DEPRECATED, DeprecationWarning, stacklevel=2)
+            _EXTRA_HEADERS_ALL_CAPS_DEPRECATED, DeprecationWarning, stacklevel=2
+        )
         return self.extra_headers
 
     @_EXTRA_HEADERS.setter
     def _EXTRA_HEADERS(self, value):
         warnings.warn(
-            _EXTRA_HEADERS_ALL_CAPS_DEPRECATED, DeprecationWarning, stacklevel=2)
+            _EXTRA_HEADERS_ALL_CAPS_DEPRECATED, DeprecationWarning, stacklevel=2
+        )
         self.extra_headers = value
 
     @property
@@ -222,7 +221,9 @@ class JSONConnection(Connection):
             url_to_use = self.API_BASE_URL
         else:
             if self.ALLOW_AUTO_SWITCH_TO_MTLS_URL:
-                url_to_use = self.API_BASE_MTLS_URL if self.http.is_mtls else self.API_BASE_URL
+                url_to_use = (
+                    self.API_BASE_MTLS_URL if self.http.is_mtls else self.API_BASE_URL
+                )
             else:
                 url_to_use = self.API_BASE_URL
         return url_to_use

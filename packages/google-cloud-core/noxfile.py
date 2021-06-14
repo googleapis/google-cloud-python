@@ -19,8 +19,33 @@ import shutil
 import nox
 
 
+BLACK_VERSION = "black==19.10b0"
+BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
+
 DEFAULT_PYTHON_VERSION = "3.7"
 CURRENT_DIRECTORY = os.path.abspath(os.path.dirname(__file__))
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def lint(session):
+    """Run linters.
+
+    Returns a failure if the linters find linting errors or sufficiently
+    serious code quality issues.
+    """
+    session.install("flake8", "flake8-import-order", BLACK_VERSION)
+    session.install(".")
+    session.run("flake8", "google", "tests")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def blacken(session):
+    """Run black.
+
+    Format code to uniform standard.
+    """
+    session.install(BLACK_VERSION)
+    session.run("black", *BLACK_PATHS)
 
 
 def default(session):
@@ -51,7 +76,7 @@ def default(session):
         "--cov-report=",
         "--cov-fail-under=0",
         os.path.join("tests", "unit"),
-        *session.posargs
+        *session.posargs,
     )
 
 
@@ -59,18 +84,6 @@ def default(session):
 def unit(session):
     """Default unit test session."""
     default(session)
-
-
-@nox.session(python=DEFAULT_PYTHON_VERSION)
-def lint(session):
-    """Run linters.
-
-    Returns a failure if the linters find linting errors or sufficiently
-    serious code quality issues.
-    """
-    session.install("flake8", "flake8-import-order")
-    session.install(".")
-    session.run("flake8", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)

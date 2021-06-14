@@ -35,3 +35,5 @@ s.move(
         "setup.cfg",
     ],
 )
+
+s.shell.run(["nox", "-s", "blacken"], hide_output=False)

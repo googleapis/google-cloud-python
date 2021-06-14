@@ -158,9 +158,12 @@ class Client(_ClientFactoryMixin):
 
         if credentials and client_options.credentials_file:
             raise google.api_core.exceptions.DuplicateCredentialArgs(
-                "'credentials' and 'client_options.credentials_file' are mutually exclusive.")
+                "'credentials' and 'client_options.credentials_file' are mutually exclusive."
+            )
 
-        if credentials and not isinstance(credentials, google.auth.credentials.Credentials):
+        if credentials and not isinstance(
+            credentials, google.auth.credentials.Credentials
+        ):
             raise ValueError(_GOOGLE_AUTH_CREDENTIALS_HELP)
 
         scopes = client_options.scopes or self.SCOPE
@@ -169,15 +172,19 @@ class Client(_ClientFactoryMixin):
         if not _http and credentials is None:
             if client_options.credentials_file:
                 credentials, _ = google.auth.load_credentials_from_file(
-                    client_options.credentials_file, scopes=scopes)
+                    client_options.credentials_file, scopes=scopes
+                )
             else:
                 credentials, _ = google.auth.default(scopes=scopes)
 
         self._credentials = google.auth.credentials.with_scopes_if_required(
-            credentials, scopes=scopes)
+            credentials, scopes=scopes
+        )
 
         if client_options.quota_project_id:
-            self._credentials = self._credentials.with_quota_project(client_options.quota_project_id)
+            self._credentials = self._credentials.with_quota_project(
+                client_options.quota_project_id
+            )
 
         self._http_internal = _http
         self._client_cert_source = client_options.client_cert_source
@@ -202,8 +209,7 @@ class Client(_ClientFactoryMixin):
         """
         if self._http_internal is None:
             self._http_internal = google.auth.transport.requests.AuthorizedSession(
-                self._credentials,
-                refresh_timeout=_CREDENTIALS_REFRESH_TIMEOUT,
+                self._credentials, refresh_timeout=_CREDENTIALS_REFRESH_TIMEOUT,
             )
             self._http_internal.configure_mtls_channel(self._client_cert_source)
         return self._http_internal
@@ -233,8 +239,7 @@ class _ClientProjectMixin(object):
         # https://github.com/googleapis/python-cloud-core/issues/27
         if project is None:
             project = os.getenv(
-                environment_vars.PROJECT,
-                os.getenv(environment_vars.LEGACY_PROJECT),
+                environment_vars.PROJECT, os.getenv(environment_vars.LEGACY_PROJECT),
             )
 
         # Project set on explicit credentials overrides discovery from
@@ -296,4 +301,6 @@ class ClientWithProject(Client, _ClientProjectMixin):
 
     def __init__(self, project=None, credentials=None, client_options=None, _http=None):
         _ClientProjectMixin.__init__(self, project=project, credentials=credentials)
-        Client.__init__(self, credentials=credentials, client_options=client_options, _http=_http)
+        Client.__init__(
+            self, credentials=credentials, client_options=client_options, _http=_http
+        )

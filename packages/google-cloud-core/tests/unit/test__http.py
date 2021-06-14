@@ -186,14 +186,18 @@ class TestJSONConnection(unittest.TestCase):
         client = object()
         conn = self._make_mock_one(client)
         # Intended to emulate self.mock_template
-        URI = "/".join([conn.API_BASE_URL, "mock", conn.API_VERSION, "foo?prettyPrint=false"])
+        URI = "/".join(
+            [conn.API_BASE_URL, "mock", conn.API_VERSION, "foo?prettyPrint=false"]
+        )
         self.assertEqual(conn.build_api_url("/foo"), URI)
 
     def test_build_api_url_w_pretty_print_query_params(self):
         client = object()
         conn = self._make_mock_one(client)
         uri = conn.build_api_url("/foo", {"prettyPrint": "true"})
-        URI = "/".join([conn.API_BASE_URL, "mock", conn.API_VERSION, "foo?prettyPrint=true"])
+        URI = "/".join(
+            [conn.API_BASE_URL, "mock", conn.API_VERSION, "foo?prettyPrint=true"]
+        )
         self.assertEqual(uri, URI)
 
     def test_build_api_url_w_extra_query_params(self):
@@ -220,7 +224,9 @@ class TestJSONConnection(unittest.TestCase):
 
         client = object()
         conn = self._make_mock_one(client)
-        uri = conn.build_api_url("/foo", [("bar", "baz"), ("qux", "quux"), ("qux", "corge")])
+        uri = conn.build_api_url(
+            "/foo", [("bar", "baz"), ("qux", "quux"), ("qux", "corge")]
+        )
 
         scheme, netloc, path, qs, _ = urlsplit(uri)
         self.assertEqual("%s://%s" % (scheme, netloc), conn.API_BASE_URL)
