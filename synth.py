@@ -112,7 +112,7 @@ def client_for_repo(repo_slug) -> Optional[CloudClient]:
     return CloudClient(response.json())
 
 
-REPO_LIST_JSON = "https://raw.githubusercontent.com/googleapis/sloth/master/repos.json"
+REPO_LIST_JSON = "https://api.github.com/orgs/googleapis/repos?per_page=100&page={page_number}"
 REPO_EXCLUSION = [
     # core libraries
     "googleapis/python-api-core",
@@ -129,19 +129,24 @@ REPO_EXCLUSION = [
 
 def allowed_repo(repo) -> bool:
     return (
-        repo["language"] == "python"
-        and repo["repo"].startswith("googleapis/python-")
-        and repo["repo"] not in REPO_EXCLUSION
+        repo["full_name"].startswith("googleapis/python-")
+        and repo["full_name"] not in REPO_EXCLUSION
     )
 
 
+def get_clients_batch_from_response_json(response_json) -> List[CloudClient]:
+    return [client_for_repo(repo["full_name"]) for repo in response_json if allowed_repo(repo)]
+
 def all_clients() -> List[CloudClient]:
-    response = requests.get(REPO_LIST_JSON)
-    clients = [
-        client_for_repo(repo["repo"])
-        for repo in response.json()["repos"]
-        if allowed_repo(repo)
-    ]
+    clients = []
+    page_number = 1
+    while page_number < 10:
+        response = requests.get(REPO_LIST_JSON.format(page_number=page_number))
+        if len(response.json()) == 0:
+            break
+        clients.extend(get_clients_batch_from_response_json(response.json()))
+        page_number = page_number + 1
+
     # remove empty clients
     return [client for client in clients if client]
 
