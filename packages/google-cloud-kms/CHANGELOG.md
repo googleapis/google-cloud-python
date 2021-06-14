@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-kms/compare/v2.2.0...v2.3.0) (2021-06-14)
+
+
+### Features
+
+* add `from_service_account_info` ([6d115ce](https://www.github.com/googleapis/python-kms/commit/6d115ce1902e4306ba3e1d80de64a2424e47ef52))
+* add common resource path helpers ([#74](https://www.github.com/googleapis/python-kms/issues/74)) ([6d115ce](https://www.github.com/googleapis/python-kms/commit/6d115ce1902e4306ba3e1d80de64a2424e47ef52))
+* add ECDSA secp256k1 to the list of supported algorithms ([#120](https://www.github.com/googleapis/python-kms/issues/120)) ([65a453f](https://www.github.com/googleapis/python-kms/commit/65a453f3a2adb71ea82a96d769d748ad0dc721b4))
+* add script to verify attestations with certificate chains ([#99](https://www.github.com/googleapis/python-kms/issues/99)) ([7b0799f](https://www.github.com/googleapis/python-kms/commit/7b0799f4e1b52b359862e97ea2b89befafe92713))
+* expose client transport ([6d115ce](https://www.github.com/googleapis/python-kms/commit/6d115ce1902e4306ba3e1d80de64a2424e47ef52))
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#114](https://www.github.com/googleapis/python-kms/issues/114)) ([a6a894f](https://www.github.com/googleapis/python-kms/commit/a6a894f0c49fb1774d74aa26441e7525f0c0d138))
+* fix retryable errors ([6d115ce](https://www.github.com/googleapis/python-kms/commit/6d115ce1902e4306ba3e1d80de64a2424e47ef52))
+* remove grpc send/recv limits ([6d115ce](https://www.github.com/googleapis/python-kms/commit/6d115ce1902e4306ba3e1d80de64a2424e47ef52))
+* use correct retry deadline ([6d115ce](https://www.github.com/googleapis/python-kms/commit/6d115ce1902e4306ba3e1d80de64a2424e47ef52))
+
 ## [2.2.0](https://www.github.com/googleapis/python-kms/compare/v2.1.0...v2.2.0) (2020-09-16)
 
 
