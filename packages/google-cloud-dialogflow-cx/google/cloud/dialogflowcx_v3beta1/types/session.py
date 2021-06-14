@@ -116,7 +116,20 @@ class DetectIntentResponse(proto.Message):
         output_audio_config (google.cloud.dialogflowcx_v3beta1.types.OutputAudioConfig):
             The config used by the speech synthesizer to
             generate the output audio.
+        response_type (google.cloud.dialogflowcx_v3beta1.types.DetectIntentResponse.ResponseType):
+            Response type.
+        allow_cancellation (bool):
+            Indicates whether the partial response can be
+            cancelled when a later response arrives. e.g. if
+            the agent specified some music as partial
+            response, it can be cancelled.
     """
+
+    class ResponseType(proto.Enum):
+        r"""Represents different DetectIntentResponse types."""
+        RESPONSE_TYPE_UNSPECIFIED = 0
+        PARTIAL = 1
+        FINAL = 2
 
     response_id = proto.Field(proto.STRING, number=1,)
     query_result = proto.Field(proto.MESSAGE, number=2, message="QueryResult",)
@@ -124,6 +137,8 @@ class DetectIntentResponse(proto.Message):
     output_audio_config = proto.Field(
         proto.MESSAGE, number=5, message=audio_config.OutputAudioConfig,
     )
+    response_type = proto.Field(proto.ENUM, number=6, enum=ResponseType,)
+    allow_cancellation = proto.Field(proto.BOOL, number=7,)
 
 
 class StreamingDetectIntentRequest(proto.Message):
@@ -189,6 +204,11 @@ class StreamingDetectIntentRequest(proto.Message):
         output_audio_config (google.cloud.dialogflowcx_v3beta1.types.OutputAudioConfig):
             Instructs the speech synthesizer how to
             generate the output audio.
+        enable_partial_response (bool):
+            Enable partial detect intent response. If this flag is not
+            enabled, response stream still contains only one final
+            ``DetectIntentResponse`` even if some ``Fulfillment``\ s in
+            the agent have been configured to return partial responses.
     """
 
     session = proto.Field(proto.STRING, number=1,)
@@ -197,6 +217,7 @@ class StreamingDetectIntentRequest(proto.Message):
     output_audio_config = proto.Field(
         proto.MESSAGE, number=4, message=audio_config.OutputAudioConfig,
     )
+    enable_partial_response = proto.Field(proto.BOOL, number=5,)
 
 
 class StreamingDetectIntentResponse(proto.Message):
@@ -395,7 +416,7 @@ class QueryParameters(proto.Message):
             [page][google.cloud.dialogflow.cx.v3beta1.Page] to override
             the [current page][QueryResult.current_page] in the session.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/pages/<page ID>``.
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
 
             If ``current_page`` is specified, the previous state of the
             session will be ignored by Dialogflow, including the

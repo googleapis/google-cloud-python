@@ -165,8 +165,10 @@ class SecuritySettings(proto.Message):
             If empty, we use the default DLP inspect config.
 
             The template name will have one of the following formats:
-            ``projects/PROJECT_ID/inspectTemplates/TEMPLATE_ID`` OR
-            ``organizations/ORGANIZATION_ID/inspectTemplates/TEMPLATE_ID``
+            ``projects/<Project ID>/inspectTemplates/<Template ID>`` OR
+            ``projects/<Project ID>/locations/<Location ID>/inspectTemplates/<Template ID>``
+            OR
+            ``organizations/<Organization ID>/inspectTemplates/<Template ID>``
         retention_window_days (int):
             Retains data in interaction logging for the
             specified number of days. This does not apply to

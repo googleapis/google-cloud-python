@@ -463,7 +463,10 @@ def test_detect_intent(
     with mock.patch.object(type(client.transport.detect_intent), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = session.DetectIntentResponse(
-            response_id="response_id_value", output_audio=b"output_audio_blob",
+            response_id="response_id_value",
+            output_audio=b"output_audio_blob",
+            response_type=session.DetectIntentResponse.ResponseType.PARTIAL,
+            allow_cancellation=True,
         )
         response = client.detect_intent(request)
 
@@ -476,6 +479,8 @@ def test_detect_intent(
     assert isinstance(response, session.DetectIntentResponse)
     assert response.response_id == "response_id_value"
     assert response.output_audio == b"output_audio_blob"
+    assert response.response_type == session.DetectIntentResponse.ResponseType.PARTIAL
+    assert response.allow_cancellation is True
 
 
 def test_detect_intent_from_dict():
@@ -514,7 +519,10 @@ async def test_detect_intent_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             session.DetectIntentResponse(
-                response_id="response_id_value", output_audio=b"output_audio_blob",
+                response_id="response_id_value",
+                output_audio=b"output_audio_blob",
+                response_type=session.DetectIntentResponse.ResponseType.PARTIAL,
+                allow_cancellation=True,
             )
         )
         response = await client.detect_intent(request)
@@ -528,6 +536,8 @@ async def test_detect_intent_async(
     assert isinstance(response, session.DetectIntentResponse)
     assert response.response_id == "response_id_value"
     assert response.output_audio == b"output_audio_blob"
+    assert response.response_type == session.DetectIntentResponse.ResponseType.PARTIAL
+    assert response.allow_cancellation is True
 
 
 @pytest.mark.asyncio
