@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## [1.7.0](https://www.github.com/googleapis/python-cloud-core/compare/v1.6.0...v1.7.0) (2021-06-14)
+
+
+### Features
+
+* add 'Client.close' ([#100](https://www.github.com/googleapis/python-cloud-core/issues/100)) ([7387fc8](https://www.github.com/googleapis/python-cloud-core/commit/7387fc87186defff74612cf85909c7d456155d47))
+* add 'Client.from_service_account_info' factory ([#54](https://www.github.com/googleapis/python-cloud-core/issues/54)) ([7e59360](https://www.github.com/googleapis/python-cloud-core/commit/7e59360a43418947cbbb7608aa23ef5d566c964c))
+
+
+### Documentation
+
+* update python contributing guide ([#80](https://www.github.com/googleapis/python-cloud-core/issues/80)) ([58deef8](https://www.github.com/googleapis/python-cloud-core/commit/58deef8ce2e90415a4c38022e88fdfe25bc666b6))
+
 ## [1.6.0](https://www.github.com/googleapis/python-cloud-core/compare/v1.5.0...v1.6.0) (2021-02-02)
 
 
