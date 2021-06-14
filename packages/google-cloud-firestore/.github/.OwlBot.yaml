@@ -18,13 +18,16 @@ docker:
 deep-remove-regex:
   - /owl-bot-staging
 
+deep-preserve-regex:
+  - /owl-bot-staging/firestore/v1beta1
+
 deep-copy-regex:
   - source: /google/firestore/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/$1/$2
+    dest: /owl-bot-staging/firestore/$1/$2
   - source: /google/firestore/admin/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/admin/$1/$2
-  - source: /google/firestore/bundle/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/bundle/$1/$2
+    dest: /owl-bot-staging/firestore_admin/$1/$2
+  - source: /google/firestore/bundle/(.*-py)/(.*)
+    dest: /owl-bot-staging/firestore_bundle/$1/$2
 
 begin-after-commit-hash: 107ed1217b5e87048263f52cd3911d5f851aca7e
 

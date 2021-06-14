@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.cloud.firestore_v1.types import document as gfv_document
-from google.cloud.firestore_v1.types import query
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.cloud.firestore_v1.types import document as document_pb2  # type: ignore
+from google.cloud.firestore_v1.types import query as query_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -37,7 +34,6 @@ __protobuf__ = proto.module(
 
 class BundledQuery(proto.Message):
     r"""Encodes a query saved in the bundle.
-
     Attributes:
         parent (str):
             The parent resource name.
@@ -54,12 +50,10 @@ class BundledQuery(proto.Message):
         FIRST = 0
         LAST = 1
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     structured_query = proto.Field(
-        proto.MESSAGE, number=2, oneof="query_type", message=query.StructuredQuery,
+        proto.MESSAGE, number=2, oneof="query_type", message=query_pb2.StructuredQuery,
     )
-
     limit_type = proto.Field(proto.ENUM, number=3, enum=LimitType,)
 
 
@@ -83,16 +77,13 @@ class NamedQuery(proto.Message):
             client SDKs.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     bundled_query = proto.Field(proto.MESSAGE, number=2, message="BundledQuery",)
-
-    read_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+    read_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
 
 
 class BundledDocumentMetadata(proto.Message):
     r"""Metadata describing a Firestore document saved in the bundle.
-
     Attributes:
         name (str):
             The document key of a bundled document.
@@ -106,18 +97,14 @@ class BundledDocumentMetadata(proto.Message):
             this document matches to.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    read_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
-    exists = proto.Field(proto.BOOL, number=3)
-
-    queries = proto.RepeatedField(proto.STRING, number=4)
+    name = proto.Field(proto.STRING, number=1,)
+    read_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    exists = proto.Field(proto.BOOL, number=3,)
+    queries = proto.RepeatedField(proto.STRING, number=4,)
 
 
 class BundleMetadata(proto.Message):
     r"""Metadata describing the bundle file/stream.
-
     Attributes:
         id (str):
             The ID of the bundle.
@@ -133,15 +120,11 @@ class BundleMetadata(proto.Message):
             ``BundleMetadata``.
     """
 
-    id = proto.Field(proto.STRING, number=1)
-
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
-    version = proto.Field(proto.UINT32, number=3)
-
-    total_documents = proto.Field(proto.UINT32, number=4)
-
-    total_bytes = proto.Field(proto.UINT64, number=5)
+    id = proto.Field(proto.STRING, number=1,)
+    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    version = proto.Field(proto.UINT32, number=3,)
+    total_documents = proto.Field(proto.UINT32, number=4,)
+    total_bytes = proto.Field(proto.UINT64, number=5,)
 
 
 class BundleElement(proto.Message):
@@ -165,20 +148,17 @@ class BundleElement(proto.Message):
     metadata = proto.Field(
         proto.MESSAGE, number=1, oneof="element_type", message="BundleMetadata",
     )
-
     named_query = proto.Field(
         proto.MESSAGE, number=2, oneof="element_type", message="NamedQuery",
     )
-
     document_metadata = proto.Field(
         proto.MESSAGE,
         number=3,
         oneof="element_type",
         message="BundledDocumentMetadata",
     )
-
     document = proto.Field(
-        proto.MESSAGE, number=4, oneof="element_type", message=gfv_document.Document,
+        proto.MESSAGE, number=4, oneof="element_type", message=document_pb2.Document,
     )
 
 

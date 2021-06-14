@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,16 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
-
 try:
     import libcst as cst
 except ImportError:
     raise ImportError('Run `python -m pip install "libcst >= 0.2.5"` to install libcst.')
 
 
+    
 import pathlib
 import sys
 from typing import (Any, Callable, Dict, List, Sequence, Tuple)
@@ -47,16 +45,15 @@ def partition(
 class firestore_adminCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'create_index': ('parent', 'index', ),
-    'delete_index': ('name', ),
-    'export_documents': ('name', 'collection_ids', 'output_uri_prefix', ),
-    'get_field': ('name', ),
-    'get_index': ('name', ),
-    'import_documents': ('name', 'collection_ids', 'input_uri_prefix', ),
-    'list_fields': ('parent', 'filter', 'page_size', 'page_token', ),
-    'list_indexes': ('parent', 'filter', 'page_size', 'page_token', ),
-    'update_field': ('field', 'update_mask', ),
-
+          'create_index': ('parent', 'index', ),
+          'delete_index': ('name', ),
+          'export_documents': ('name', 'collection_ids', 'output_uri_prefix', ),
+          'get_field': ('name', ),
+          'get_index': ('name', ),
+          'import_documents': ('name', 'collection_ids', 'input_uri_prefix', ),
+          'list_fields': ('parent', 'filter', 'page_size', 'page_token', ),
+          'list_indexes': ('parent', 'filter', 'page_size', 'page_token', ),
+          'update_field': ('field', 'update_mask', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -87,7 +84,7 @@ class firestore_adminCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

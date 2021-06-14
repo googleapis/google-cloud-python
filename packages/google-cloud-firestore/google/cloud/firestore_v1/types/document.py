@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import struct_pb2 as struct  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
-from google.type import latlng_pb2 as latlng  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import latlng_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -80,18 +77,14 @@ class Document(proto.Message):
             ``read_time`` of a query.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     fields = proto.MapField(proto.STRING, proto.MESSAGE, number=2, message="Value",)
-
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
+    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
 
 
 class Value(proto.Message):
     r"""A message that can hold any of the supported value types.
-
     Attributes:
         null_value (google.protobuf.struct_pb2.NullValue):
             A null value.
@@ -132,33 +125,23 @@ class Value(proto.Message):
     """
 
     null_value = proto.Field(
-        proto.ENUM, number=11, oneof="value_type", enum=struct.NullValue,
+        proto.ENUM, number=11, oneof="value_type", enum=struct_pb2.NullValue,
     )
-
-    boolean_value = proto.Field(proto.BOOL, number=1, oneof="value_type")
-
-    integer_value = proto.Field(proto.INT64, number=2, oneof="value_type")
-
-    double_value = proto.Field(proto.DOUBLE, number=3, oneof="value_type")
-
+    boolean_value = proto.Field(proto.BOOL, number=1, oneof="value_type",)
+    integer_value = proto.Field(proto.INT64, number=2, oneof="value_type",)
+    double_value = proto.Field(proto.DOUBLE, number=3, oneof="value_type",)
     timestamp_value = proto.Field(
-        proto.MESSAGE, number=10, oneof="value_type", message=timestamp.Timestamp,
+        proto.MESSAGE, number=10, oneof="value_type", message=timestamp_pb2.Timestamp,
     )
-
-    string_value = proto.Field(proto.STRING, number=17, oneof="value_type")
-
-    bytes_value = proto.Field(proto.BYTES, number=18, oneof="value_type")
-
-    reference_value = proto.Field(proto.STRING, number=5, oneof="value_type")
-
+    string_value = proto.Field(proto.STRING, number=17, oneof="value_type",)
+    bytes_value = proto.Field(proto.BYTES, number=18, oneof="value_type",)
+    reference_value = proto.Field(proto.STRING, number=5, oneof="value_type",)
     geo_point_value = proto.Field(
-        proto.MESSAGE, number=8, oneof="value_type", message=latlng.LatLng,
+        proto.MESSAGE, number=8, oneof="value_type", message=latlng_pb2.LatLng,
     )
-
     array_value = proto.Field(
         proto.MESSAGE, number=9, oneof="value_type", message="ArrayValue",
     )
-
     map_value = proto.Field(
         proto.MESSAGE, number=6, oneof="value_type", message="MapValue",
     )
@@ -166,7 +149,6 @@ class Value(proto.Message):
 
 class ArrayValue(proto.Message):
     r"""An array value.
-
     Attributes:
         values (Sequence[google.cloud.firestore_v1.types.Value]):
             Values in the array.
@@ -177,7 +159,6 @@ class ArrayValue(proto.Message):
 
 class MapValue(proto.Message):
     r"""A map value.
-
     Attributes:
         fields (Sequence[google.cloud.firestore_v1.types.MapValue.FieldsEntry]):
             The map's fields.

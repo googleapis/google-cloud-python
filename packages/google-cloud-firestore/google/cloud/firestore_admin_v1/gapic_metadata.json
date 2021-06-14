@@ -1,0 +1,113 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.firestore_admin_v1",
+  "protoPackage": "google.firestore.admin.v1",
+  "schema": "1.0",
+  "services": {
+    "FirestoreAdmin": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "FirestoreAdminClient",
+          "rpcs": {
+            "CreateIndex": {
+              "methods": [
+                "create_index"
+              ]
+            },
+            "DeleteIndex": {
+              "methods": [
+                "delete_index"
+              ]
+            },
+            "ExportDocuments": {
+              "methods": [
+                "export_documents"
+              ]
+            },
+            "GetField": {
+              "methods": [
+                "get_field"
+              ]
+            },
+            "GetIndex": {
+              "methods": [
+                "get_index"
+              ]
+            },
+            "ImportDocuments": {
+              "methods": [
+                "import_documents"
+              ]
+            },
+            "ListFields": {
+              "methods": [
+                "list_fields"
+              ]
+            },
+            "ListIndexes": {
+              "methods": [
+                "list_indexes"
+              ]
+            },
+            "UpdateField": {
+              "methods": [
+                "update_field"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "FirestoreAdminAsyncClient",
+          "rpcs": {
+            "CreateIndex": {
+              "methods": [
+                "create_index"
+              ]
+            },
+            "DeleteIndex": {
+              "methods": [
+                "delete_index"
+              ]
+            },
+            "ExportDocuments": {
+              "methods": [
+                "export_documents"
+              ]
+            },
+            "GetField": {
+              "methods": [
+                "get_field"
+              ]
+            },
+            "GetIndex": {
+              "methods": [
+                "get_index"
+              ]
+            },
+            "ImportDocuments": {
+              "methods": [
+                "import_documents"
+              ]
+            },
+            "ListFields": {
+              "methods": [
+                "list_fields"
+              ]
+            },
+            "ListIndexes": {
+              "methods": [
+                "list_indexes"
+              ]
+            },
+            "UpdateField": {
+              "methods": [
+                "update_field"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -109,12 +107,10 @@ class Index(proto.Message):
             ARRAY_CONFIG_UNSPECIFIED = 0
             CONTAINS = 1
 
-        field_path = proto.Field(proto.STRING, number=1)
-
+        field_path = proto.Field(proto.STRING, number=1,)
         order = proto.Field(
             proto.ENUM, number=2, oneof="value_mode", enum="Index.IndexField.Order",
         )
-
         array_config = proto.Field(
             proto.ENUM,
             number=3,
@@ -122,12 +118,9 @@ class Index(proto.Message):
             enum="Index.IndexField.ArrayConfig",
         )
 
-    name = proto.Field(proto.STRING, number=1)
-
+    name = proto.Field(proto.STRING, number=1,)
     query_scope = proto.Field(proto.ENUM, number=2, enum=QueryScope,)
-
     fields = proto.RepeatedField(proto.MESSAGE, number=3, message=IndexField,)
-
     state = proto.Field(proto.ENUM, number=4, enum=State,)
 
 

@@ -164,7 +164,7 @@ def system(session):
     if system_test_exists:
         session.run(
             "py.test",
-            "--quiet",
+            "--verbose",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_path,
             *session.posargs,
@@ -172,7 +172,7 @@ def system(session):
     if system_test_folder_exists:
         session.run(
             "py.test",
-            "--quiet",
+            "--verbose",
             f"--junitxml=system_{session.python}_sponge_log.xml",
             system_test_folder_path,
             *session.posargs,

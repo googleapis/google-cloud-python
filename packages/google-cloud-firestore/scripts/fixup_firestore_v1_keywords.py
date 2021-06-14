@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,16 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
-
 try:
     import libcst as cst
 except ImportError:
     raise ImportError('Run `python -m pip install "libcst >= 0.2.5"` to install libcst.')
 
 
+    
 import pathlib
 import sys
 from typing import (Any, Callable, Dict, List, Sequence, Tuple)
@@ -47,22 +45,21 @@ def partition(
 class firestoreCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'batch_get_documents': ('database', 'documents', 'mask', 'transaction', 'new_transaction', 'read_time', ),
-    'batch_write': ('database', 'writes', 'labels', ),
-    'begin_transaction': ('database', 'options', ),
-    'commit': ('database', 'writes', 'transaction', ),
-    'create_document': ('parent', 'collection_id', 'document', 'document_id', 'mask', ),
-    'delete_document': ('name', 'current_document', ),
-    'get_document': ('name', 'mask', 'transaction', 'read_time', ),
-    'list_collection_ids': ('parent', 'page_size', 'page_token', ),
-    'list_documents': ('parent', 'collection_id', 'page_size', 'page_token', 'order_by', 'mask', 'transaction', 'read_time', 'show_missing', ),
-    'listen': ('database', 'add_target', 'remove_target', 'labels', ),
-    'partition_query': ('parent', 'structured_query', 'partition_count', 'page_token', 'page_size', ),
-    'rollback': ('database', 'transaction', ),
-    'run_query': ('parent', 'structured_query', 'transaction', 'new_transaction', 'read_time', ),
-    'update_document': ('document', 'update_mask', 'mask', 'current_document', ),
-    'write': ('database', 'stream_id', 'writes', 'stream_token', 'labels', ),
-
+          'batch_get_documents': ('database', 'documents', 'mask', 'transaction', 'new_transaction', 'read_time', ),
+          'batch_write': ('database', 'writes', 'labels', ),
+          'begin_transaction': ('database', 'options', ),
+          'commit': ('database', 'writes', 'transaction', ),
+          'create_document': ('parent', 'collection_id', 'document', 'document_id', 'mask', ),
+          'delete_document': ('name', 'current_document', ),
+          'get_document': ('name', 'mask', 'transaction', 'read_time', ),
+          'list_collection_ids': ('parent', 'page_size', 'page_token', ),
+          'list_documents': ('parent', 'collection_id', 'page_size', 'page_token', 'order_by', 'mask', 'transaction', 'read_time', 'show_missing', ),
+          'listen': ('database', 'add_target', 'remove_target', 'labels', ),
+          'partition_query': ('parent', 'structured_query', 'partition_count', 'page_token', 'page_size', ),
+          'rollback': ('database', 'transaction', ),
+          'run_query': ('parent', 'structured_query', 'transaction', 'new_transaction', 'read_time', ),
+          'update_document': ('document', 'update_mask', 'mask', 'current_document', ),
+          'write': ('database', 'stream_id', 'writes', 'stream_token', 'labels', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -93,7 +90,7 @@ class firestoreCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

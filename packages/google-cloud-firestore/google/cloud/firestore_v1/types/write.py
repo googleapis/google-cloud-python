@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from google.cloud.firestore_v1.types import common
 from google.cloud.firestore_v1.types import document as gf_document
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -39,7 +36,6 @@ __protobuf__ = proto.module(
 
 class Write(proto.Message):
     r"""A write on a document.
-
     Attributes:
         update (google.cloud.firestore_v1.types.Document):
             A document to write.
@@ -75,19 +71,14 @@ class Write(proto.Message):
     update = proto.Field(
         proto.MESSAGE, number=1, oneof="operation", message=gf_document.Document,
     )
-
-    delete = proto.Field(proto.STRING, number=2, oneof="operation")
-
+    delete = proto.Field(proto.STRING, number=2, oneof="operation",)
     transform = proto.Field(
         proto.MESSAGE, number=6, oneof="operation", message="DocumentTransform",
     )
-
     update_mask = proto.Field(proto.MESSAGE, number=3, message=common.DocumentMask,)
-
     update_transforms = proto.RepeatedField(
         proto.MESSAGE, number=7, message="DocumentTransform.FieldTransform",
     )
-
     current_document = proto.Field(
         proto.MESSAGE, number=4, message=common.Precondition,
     )
@@ -95,7 +86,6 @@ class Write(proto.Message):
 
 class DocumentTransform(proto.Message):
     r"""A transformation of a document.
-
     Attributes:
         document (str):
             The name of the document to transform.
@@ -107,7 +97,6 @@ class DocumentTransform(proto.Message):
 
     class FieldTransform(proto.Message):
         r"""A transformation of a field of the document.
-
         Attributes:
             field_path (str):
                 The path of the field. See
@@ -195,34 +184,28 @@ class DocumentTransform(proto.Message):
             SERVER_VALUE_UNSPECIFIED = 0
             REQUEST_TIME = 1
 
-        field_path = proto.Field(proto.STRING, number=1)
-
+        field_path = proto.Field(proto.STRING, number=1,)
         set_to_server_value = proto.Field(
             proto.ENUM,
             number=2,
             oneof="transform_type",
             enum="DocumentTransform.FieldTransform.ServerValue",
         )
-
         increment = proto.Field(
             proto.MESSAGE, number=3, oneof="transform_type", message=gf_document.Value,
         )
-
         maximum = proto.Field(
             proto.MESSAGE, number=4, oneof="transform_type", message=gf_document.Value,
         )
-
         minimum = proto.Field(
             proto.MESSAGE, number=5, oneof="transform_type", message=gf_document.Value,
         )
-
         append_missing_elements = proto.Field(
             proto.MESSAGE,
             number=6,
             oneof="transform_type",
             message=gf_document.ArrayValue,
         )
-
         remove_all_from_array = proto.Field(
             proto.MESSAGE,
             number=7,
@@ -230,8 +213,7 @@ class DocumentTransform(proto.Message):
             message=gf_document.ArrayValue,
         )
 
-    document = proto.Field(proto.STRING, number=1)
-
+    document = proto.Field(proto.STRING, number=1,)
     field_transforms = proto.RepeatedField(
         proto.MESSAGE, number=2, message=FieldTransform,
     )
@@ -239,7 +221,6 @@ class DocumentTransform(proto.Message):
 
 class WriteResult(proto.Message):
     r"""The result of applying a write.
-
     Attributes:
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             The last update time of the document after applying the
@@ -253,8 +234,7 @@ class WriteResult(proto.Message):
             in the same order.
     """
 
-    update_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
-
+    update_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
     transform_results = proto.RepeatedField(
         proto.MESSAGE, number=2, message=gf_document.Value,
     )
@@ -287,10 +267,8 @@ class DocumentChange(proto.Message):
     """
 
     document = proto.Field(proto.MESSAGE, number=1, message=gf_document.Document,)
-
-    target_ids = proto.RepeatedField(proto.INT32, number=5)
-
-    removed_target_ids = proto.RepeatedField(proto.INT32, number=6)
+    target_ids = proto.RepeatedField(proto.INT32, number=5,)
+    removed_target_ids = proto.RepeatedField(proto.INT32, number=6,)
 
 
 class DocumentDelete(proto.Message):
@@ -317,11 +295,9 @@ class DocumentDelete(proto.Message):
             Greater or equal to the ``commit_time`` of the delete.
     """
 
-    document = proto.Field(proto.STRING, number=1)
-
-    removed_target_ids = proto.RepeatedField(proto.INT32, number=6)
-
-    read_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
+    document = proto.Field(proto.STRING, number=1,)
+    removed_target_ids = proto.RepeatedField(proto.INT32, number=6,)
+    read_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
 
 
 class DocumentRemove(proto.Message):
@@ -351,16 +327,13 @@ class DocumentRemove(proto.Message):
             change/delete/remove.
     """
 
-    document = proto.Field(proto.STRING, number=1)
-
-    removed_target_ids = proto.RepeatedField(proto.INT32, number=2)
-
-    read_time = proto.Field(proto.MESSAGE, number=4, message=timestamp.Timestamp,)
+    document = proto.Field(proto.STRING, number=1,)
+    removed_target_ids = proto.RepeatedField(proto.INT32, number=2,)
+    read_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
 
 
 class ExistenceFilter(proto.Message):
     r"""A digest of all the documents that match a given target.
-
     Attributes:
         target_id (int):
             The target ID to which this filter applies.
@@ -373,9 +346,8 @@ class ExistenceFilter(proto.Message):
             longer match the target.
     """
 
-    target_id = proto.Field(proto.INT32, number=1)
-
-    count = proto.Field(proto.INT32, number=2)
+    target_id = proto.Field(proto.INT32, number=1,)
+    count = proto.Field(proto.INT32, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
