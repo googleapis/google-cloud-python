@@ -43,7 +43,8 @@ def sub(project_id, subscription_id, timeout=None):
         # exiting while messages get processed in the callbacks.
         streaming_pull_future.result(timeout=timeout)
     except:  # noqa
-        streaming_pull_future.cancel()
+        streaming_pull_future.cancel()  # Trigger the shutdown.
+        streaming_pull_future.result()  # Block until the shutdown is complete.
 
     subscriber_client.close()
 

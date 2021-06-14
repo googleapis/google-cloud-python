@@ -188,7 +188,8 @@ class Client(object):
             try:
                 future.result()
             except KeyboardInterrupt:
-                future.cancel()
+                future.cancel()  # Trigger the shutdown.
+                future.result()  # Block until the shutdown is complete.
 
         Args:
             subscription (str): The name of the subscription. The

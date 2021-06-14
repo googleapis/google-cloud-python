@@ -343,7 +343,8 @@ def subscribe_with_avro_schema(project_id, subscription_id, avsc_file, timeout=N
             # unless an exception occurs first.
             streaming_pull_future.result(timeout=timeout)
         except TimeoutError:
-            streaming_pull_future.cancel()
+            streaming_pull_future.cancel()  # Trigger the shutdown.
+            streaming_pull_future.result()  # Block until the shutdown is complete.
     # [END pubsub_subscribe_avro_records]
 
 
@@ -393,7 +394,8 @@ def subscribe_with_proto_schema(project_id, subscription_id, timeout):
             # unless an exception occurs first.
             streaming_pull_future.result(timeout=timeout)
         except TimeoutError:
-            streaming_pull_future.cancel()
+            streaming_pull_future.cancel()  # Trigger the shutdown.
+            streaming_pull_future.result()  # Block until the shutdown is complete.
     # [END pubsub_subscribe_proto_messages]
 
 
