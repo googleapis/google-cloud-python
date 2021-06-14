@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+### [2.1.2](https://www.github.com/googleapis/python-firestore/compare/v2.1.1...v2.1.2) (2021-06-14)
+
+
+### Documentation
+
+* fix broken links in multiprocessing.rst ([#360](https://www.github.com/googleapis/python-firestore/issues/360)) ([6e2c899](https://www.github.com/googleapis/python-firestore/commit/6e2c89989c73ece393c9d23c87f1fc67b500e079))
+
 ### [2.1.1](https://www.github.com/googleapis/python-firestore/compare/v2.1.0...v2.1.1) (2021-05-03)
 
 
