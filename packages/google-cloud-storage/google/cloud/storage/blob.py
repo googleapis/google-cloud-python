@@ -3198,6 +3198,7 @@ class Blob(_PropertyMixin):
         timeout=_DEFAULT_TIMEOUT,
         if_generation_match=None,
         if_metageneration_match=None,
+        if_source_generation_match=None,
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
     ):
         """Concatenate source blobs into this one.
@@ -3218,73 +3219,98 @@ class Blob(_PropertyMixin):
             (Optional) The amount of time, in seconds, to wait
             for the server response.  See: :ref:`configuring_timeouts`
 
-        :type if_generation_match: list of long
+        :type if_generation_match: long
         :param if_generation_match:
-            (Optional) Make the operation conditional on whether the blob's
-            current generation matches the given value.  Setting to 0 makes the
-            operation succeed only if there are no live versions of the blob.
-            The list must match ``sources`` item-to-item.
+            (Optional) Makes the operation conditional on whether the
+            destination object's current generation matches the given value.
+            Setting to 0 makes the operation succeed only if there are no live
+            versions of the object.
 
-        :type if_metageneration_match: list of long
+            Note: In a previous version, this argument worked identically to the
+            ``if_source_generation_match`` argument. For backwards-compatibility reasons,
+            if a list is passed in, this argument will behave like ``if_source_generation_match``
+            and also issue a DeprecationWarning.
+
+        :type if_metageneration_match: long
         :param if_metageneration_match:
-            (Optional) Make the operation conditional on whether the blob's
-            current metageneration matches the given value. The list must match
-            ``sources`` item-to-item.
+            (Optional) Makes the operation conditional on whether the
+            destination object's current metageneration matches the given
+            value.
+
+            If a list of long is passed in, no match operation will be performed.
+            (Deprecated: type(list of long) is supported for backwards-compatability reasons only.)
+
+        :type if_source_generation_match: list of long
+        :param if_source_generation_match:
+            (Optional) Makes the operation conditional on whether the current generation
+            of each source blob matches the corresponding generation.
+            The list must match ``sources`` item-to-item.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
 
         Example:
-            Compose blobs using generation match preconditions.
+            Compose blobs using source generation match preconditions.
 
             >>> from google.cloud import storage
             >>> client = storage.Client()
             >>> bucket = client.bucket("bucket-name")
 
             >>> blobs = [bucket.blob("blob-name-1"), bucket.blob("blob-name-2")]
-            >>> if_generation_match = [None] * len(blobs)
-            >>> if_generation_match[0] = "123"  # precondition for "blob-name-1"
+            >>> if_source_generation_match = [None] * len(blobs)
+            >>> if_source_generation_match[0] = "123"  # precondition for "blob-name-1"
 
             >>> composed_blob = bucket.blob("composed-name")
-            >>> composed_blob.compose(blobs, if_generation_match)
+            >>> composed_blob.compose(blobs, if_source_generation_match=if_source_generation_match)
         """
         sources_len = len(sources)
-        if if_generation_match is not None and len(if_generation_match) != sources_len:
-            raise ValueError(
-                "'if_generation_match' length must be the same as 'sources' length"
-            )
-
-        if (
-            if_metageneration_match is not None
-            and len(if_metageneration_match) != sources_len
-        ):
-            raise ValueError(
-                "'if_metageneration_match' length must be the same as 'sources' length"
-            )
-
         client = self._require_client(client)
         query_params = {}
 
-        if self.user_project is not None:
-            query_params["userProject"] = self.user_project
+        if isinstance(if_generation_match, list):
+            warnings.warn(
+                "if_generation_match: type list is deprecated and supported for backwards-compatability reasons only."
+                "Use if_source_generation_match instead to match source objects generations.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+
+            if if_source_generation_match is not None:
+                raise ValueError(
+                    "Use if_generation_match to match the generation of the destination object by passing in a generation number, instead of a list."
+                    "Use if_source_generation_match to match source objects generations."
+                )
+
+            # if_generation_match: type list is deprecated. Instead use if_source_generation_match.
+            if_source_generation_match = if_generation_match
+            if_generation_match = None
+
+        if isinstance(if_metageneration_match, list):
+            warnings.warn(
+                "if_metageneration_match: type list is deprecated and supported for backwards-compatability reasons only."
+                "Note that the metageneration to be matched is that of the destination blob."
+                "Please pass in a single value (type long).",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+
+            if_metageneration_match = None
+
+        if if_source_generation_match is None:
+            if_source_generation_match = [None] * sources_len
+        if len(if_source_generation_match) != sources_len:
+            raise ValueError(
+                "'if_source_generation_match' length must be the same as 'sources' length"
+            )
 
         source_objects = []
-        for index, source in enumerate(sources):
-            source_object = {"name": source.name}
+        for source, source_generation in zip(sources, if_source_generation_match):
+            source_object = {"name": source.name, "generation": source.generation}
 
             preconditions = {}
-            if (
-                if_generation_match is not None
-                and if_generation_match[index] is not None
-            ):
-                preconditions["ifGenerationMatch"] = if_generation_match[index]
-
-            if (
-                if_metageneration_match is not None
-                and if_metageneration_match[index] is not None
-            ):
-                preconditions["ifMetagenerationMatch"] = if_metageneration_match[index]
+            if source_generation is not None:
+                preconditions["ifGenerationMatch"] = source_generation
 
             if preconditions:
                 source_object["objectPreconditions"] = preconditions
@@ -3295,6 +3321,16 @@ class Blob(_PropertyMixin):
             "sourceObjects": source_objects,
             "destination": self._properties.copy(),
         }
+
+        if self.user_project is not None:
+            query_params["userProject"] = self.user_project
+
+        _add_generation_match_parameters(
+            query_params,
+            if_generation_match=if_generation_match,
+            if_metageneration_match=if_metageneration_match,
+        )
+
         api_response = client._post_resource(
             "{}/compose".format(self.path),
             request,

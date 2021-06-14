@@ -3754,7 +3754,10 @@ class Test_Blob(unittest.TestCase):
 
         expected_path = "/b/name/o/%s/compose" % destination_name
         expected_data = {
-            "sourceObjects": [{"name": source_1_name}, {"name": source_2_name}],
+            "sourceObjects": [
+                {"name": source_1.name, "generation": source_1.generation},
+                {"name": source_2.name, "generation": source_2.generation},
+            ],
             "destination": {},
         }
         expected_query_params = {}
@@ -3788,7 +3791,10 @@ class Test_Blob(unittest.TestCase):
 
         expected_path = "/b/name/o/%s/compose" % destination_name
         expected_data = {
-            "sourceObjects": [{"name": source_1_name}, {"name": source_2_name}],
+            "sourceObjects": [
+                {"name": source_1.name, "generation": source_1.generation},
+                {"name": source_2.name, "generation": source_2.generation},
+            ],
             "destination": {"contentType": "text/plain"},
         }
         expected_query_params = {"userProject": user_project}
@@ -3823,7 +3829,10 @@ class Test_Blob(unittest.TestCase):
 
         expected_path = "/b/name/o/%s/compose" % destination_name
         expected_data = {
-            "sourceObjects": [{"name": source_1_name}, {"name": source_2_name}],
+            "sourceObjects": [
+                {"name": source_1.name, "generation": source_1.generation},
+                {"name": source_2.name, "generation": source_2.generation},
+            ],
             "destination": {
                 "contentType": "text/plain",
                 "contentLanguage": "en-US",
@@ -3840,13 +3849,12 @@ class Test_Blob(unittest.TestCase):
             _target_object=destination,
         )
 
-    def test_compose_w_generation_match(self):
+    def test_compose_w_source_generation_match(self):
         source_1_name = "source-1"
         source_2_name = "source-2"
         destination_name = "destination"
         api_response = {}
-        generation_numbers = [6, 9]
-        metageneration_numbers = [7, 1]
+        source_generation_numbers = [6, 9]
 
         client = mock.Mock(spec=["_post_resource"])
         client._post_resource.return_value = api_response
@@ -3857,25 +3865,24 @@ class Test_Blob(unittest.TestCase):
         destination = self._make_one(destination_name, bucket=bucket)
         destination.compose(
             sources=[source_1, source_2],
-            if_generation_match=generation_numbers,
-            if_metageneration_match=metageneration_numbers,
+            if_source_generation_match=source_generation_numbers,
         )
 
         expected_path = "/b/name/o/%s/compose" % destination_name
         expected_data = {
             "sourceObjects": [
                 {
-                    "name": source_1_name,
+                    "name": source_1.name,
+                    "generation": source_1.generation,
                     "objectPreconditions": {
-                        "ifGenerationMatch": generation_numbers[0],
-                        "ifMetagenerationMatch": metageneration_numbers[0],
+                        "ifGenerationMatch": source_generation_numbers[0],
                     },
                 },
                 {
-                    "name": source_2_name,
+                    "name": source_2.name,
+                    "generation": source_2.generation,
                     "objectPreconditions": {
-                        "ifGenerationMatch": generation_numbers[1],
-                        "ifMetagenerationMatch": metageneration_numbers[1],
+                        "ifGenerationMatch": source_generation_numbers[1],
                     },
                 },
             ],
@@ -3891,49 +3898,31 @@ class Test_Blob(unittest.TestCase):
             _target_object=destination,
         )
 
-    def test_compose_w_generation_match_bad_length(self):
+    def test_compose_w_source_generation_match_bad_length(self):
         source_1_name = "source-1"
         source_2_name = "source-2"
         destination_name = "destination"
-        generation_numbers = [6]
+        source_generation_numbers = [6]
         client = mock.Mock(spec=["_post_resource"])
         bucket = _Bucket(client=client)
         source_1 = self._make_one(source_1_name, bucket=bucket)
         source_2 = self._make_one(source_2_name, bucket=bucket)
 
-        destination = self._make_one(destination_name, bucket=bucket)
-
-        with self.assertRaises(ValueError):
-            destination.compose(
-                sources=[source_1, source_2], if_generation_match=generation_numbers
-            )
-
-        client._post_resource.assert_not_called()
-
-    def test_compose_w_metageneration_match_bad_length(self):
-        source_1_name = "source-1"
-        source_2_name = "source-2"
-        destination_name = "destination"
-        metageneration_numbers = [7]
-        client = mock.Mock(spec=["_post_resource"])
-        bucket = _Bucket(client=client)
-        source_1 = self._make_one(source_1_name, bucket=bucket)
-        source_2 = self._make_one(source_2_name, bucket=bucket)
         destination = self._make_one(destination_name, bucket=bucket)
 
         with self.assertRaises(ValueError):
             destination.compose(
                 sources=[source_1, source_2],
-                if_metageneration_match=metageneration_numbers,
+                if_source_generation_match=source_generation_numbers,
             )
 
         client._post_resource.assert_not_called()
 
-    def test_compose_w_generation_match_nones(self):
+    def test_compose_w_source_generation_match_nones(self):
         source_1_name = "source-1"
         source_2_name = "source-2"
         destination_name = "destination"
-        generation_numbers = [6, None]
+        source_generation_numbers = [6, None]
         api_response = {}
         client = mock.Mock(spec=["_post_resource"])
         client._post_resource.return_value = api_response
@@ -3943,7 +3932,86 @@ class Test_Blob(unittest.TestCase):
         destination = self._make_one(destination_name, bucket=bucket)
 
         destination.compose(
-            sources=[source_1, source_2], if_generation_match=generation_numbers
+            sources=[source_1, source_2],
+            if_source_generation_match=source_generation_numbers,
+        )
+
+        expected_path = "/b/name/o/%s/compose" % destination_name
+        expected_data = {
+            "sourceObjects": [
+                {
+                    "name": source_1.name,
+                    "generation": source_1.generation,
+                    "objectPreconditions": {
+                        "ifGenerationMatch": source_generation_numbers[0],
+                    },
+                },
+                {"name": source_2.name, "generation": source_2.generation},
+            ],
+            "destination": {},
+        }
+        expected_query_params = {}
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            _target_object=destination,
+        )
+
+    def test_compose_w_generation_match(self):
+        source_1_name = "source-1"
+        source_2_name = "source-2"
+        destination_name = "destination"
+        generation_number = 1
+        api_response = {}
+        client = mock.Mock(spec=["_post_resource"])
+        client._post_resource.return_value = api_response
+        bucket = _Bucket(client=client)
+        source_1 = self._make_one(source_1_name, bucket=bucket)
+        source_2 = self._make_one(source_2_name, bucket=bucket)
+        destination = self._make_one(destination_name, bucket=bucket)
+
+        destination.compose(
+            sources=[source_1, source_2], if_generation_match=generation_number,
+        )
+
+        expected_path = "/b/name/o/%s/compose" % destination_name
+        expected_data = {
+            "sourceObjects": [
+                {"name": source_1.name, "generation": source_1.generation},
+                {"name": source_2.name, "generation": source_2.generation},
+            ],
+            "destination": {},
+        }
+        expected_query_params = {"ifGenerationMatch": generation_number}
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            _target_object=destination,
+        )
+
+    @mock.patch("warnings.warn")
+    def test_compose_w_generation_match_w_warning(self, mock_warn):
+        source_1_name = "source-1"
+        source_2_name = "source-2"
+        destination_name = "destination"
+        api_response = {}
+        generation_numbers = [6, 9]
+
+        client = mock.Mock(spec=["_post_resource"])
+        client._post_resource.return_value = api_response
+        bucket = _Bucket(client=client)
+        source_1 = self._make_one(source_1_name, bucket=bucket)
+        source_2 = self._make_one(source_2_name, bucket=bucket)
+
+        destination = self._make_one(destination_name, bucket=bucket)
+        destination.compose(
+            sources=[source_1, source_2], if_generation_match=generation_numbers,
         )
 
         expected_path = "/b/name/o/%s/compose" % destination_name
@@ -3951,15 +4019,128 @@ class Test_Blob(unittest.TestCase):
             "sourceObjects": [
                 {
                     "name": source_1_name,
+                    "generation": None,
                     "objectPreconditions": {
                         "ifGenerationMatch": generation_numbers[0],
                     },
                 },
-                {"name": source_2_name},
+                {
+                    "name": source_2_name,
+                    "generation": None,
+                    "objectPreconditions": {
+                        "ifGenerationMatch": generation_numbers[1],
+                    },
+                },
             ],
             "destination": {},
         }
         expected_query_params = {}
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            _target_object=destination,
+        )
+
+        mock_warn.assert_called_with(
+            "if_generation_match: type list is deprecated and supported for backwards-compatability reasons only."
+            "Use if_source_generation_match instead to match source objects generations.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
+    def test_compose_invalid_generation_match(self):
+        source_1_name = "source-1"
+        source_2_name = "source-2"
+        destination_name = "destination"
+        source_generation_numbers = [6, 8]
+        client = mock.Mock(spec=["_post_resource"])
+        bucket = _Bucket(client=client)
+        source_1 = self._make_one(source_1_name, bucket=bucket)
+        source_2 = self._make_one(source_2_name, bucket=bucket)
+
+        destination = self._make_one(destination_name, bucket=bucket)
+
+        with self.assertRaises(ValueError):
+            destination.compose(
+                sources=[source_1, source_2],
+                if_generation_match=source_generation_numbers,
+                if_source_generation_match=source_generation_numbers,
+            )
+
+        client._post_resource.assert_not_called()
+
+    @mock.patch("warnings.warn")
+    def test_compose_w_metageneration_match_w_warning(self, mock_warn):
+        source_1_name = "source-1"
+        source_2_name = "source-2"
+        destination_name = "destination"
+        metageneration_number = [6]
+        client = mock.Mock(spec=["_post_resource"])
+        bucket = _Bucket(client=client)
+        source_1 = self._make_one(source_1_name, bucket=bucket)
+        source_2 = self._make_one(source_2_name, bucket=bucket)
+
+        destination = self._make_one(destination_name, bucket=bucket)
+
+        destination.compose(
+            sources=[source_1, source_2], if_metageneration_match=metageneration_number,
+        )
+
+        expected_path = "/b/name/o/%s/compose" % destination_name
+        expected_data = {
+            "sourceObjects": [
+                {"name": source_1_name, "generation": None},
+                {"name": source_2_name, "generation": None},
+            ],
+            "destination": {},
+        }
+        expected_query_params = {}
+        client._post_resource.assert_called_once_with(
+            expected_path,
+            expected_data,
+            query_params=expected_query_params,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+            _target_object=destination,
+        )
+
+        mock_warn.assert_called_with(
+            "if_metageneration_match: type list is deprecated and supported for backwards-compatability reasons only."
+            "Note that the metageneration to be matched is that of the destination blob."
+            "Please pass in a single value (type long).",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
+    def test_compose_w_metageneration_match(self):
+        source_1_name = "source-1"
+        source_2_name = "source-2"
+        destination_name = "destination"
+        metageneration_number = 1
+        api_response = {}
+        client = mock.Mock(spec=["_post_resource"])
+        client._post_resource.return_value = api_response
+        bucket = _Bucket(client=client)
+        source_1 = self._make_one(source_1_name, bucket=bucket)
+        source_2 = self._make_one(source_2_name, bucket=bucket)
+        destination = self._make_one(destination_name, bucket=bucket)
+
+        destination.compose(
+            sources=[source_1, source_2], if_metageneration_match=metageneration_number,
+        )
+
+        expected_path = "/b/name/o/%s/compose" % destination_name
+        expected_data = {
+            "sourceObjects": [
+                {"name": source_1.name, "generation": source_1.generation},
+                {"name": source_2.name, "generation": source_2.generation},
+            ],
+            "destination": {},
+        }
+        expected_query_params = {"ifMetagenerationMatch": metageneration_number}
         client._post_resource.assert_called_once_with(
             expected_path,
             expected_data,
