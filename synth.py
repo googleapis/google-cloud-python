@@ -131,6 +131,7 @@ def allowed_repo(repo) -> bool:
     return (
         repo["full_name"].startswith("googleapis/python-")
         and repo["full_name"] not in REPO_EXCLUSION
+        and not repo["archived"]
     )
 
 

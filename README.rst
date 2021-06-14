@@ -379,9 +379,6 @@ Libraries
    * - `Network Connectivity Center <https://github.com/googleapis/python-network-connectivity>`_
      - |alpha|
      - |PyPI-google-cloud-network-connectivity|
-   * - `Stackdriver Incident Response and Management <https://github.com/googleapis/python-irm>`_
-     - |alpha|
-     - |PyPI-google-cloud-irm|
 
 .. |PyPI-google-cloud-aiplatform| image:: https://img.shields.io/pypi/v/google-cloud-aiplatform.svg
      :target: https://pypi.org/project/google-cloud-aiplatform
@@ -589,8 +586,6 @@ Libraries
      :target: https://pypi.org/project/google-cloud-data-qna
 .. |PyPI-google-cloud-network-connectivity| image:: https://img.shields.io/pypi/v/google-cloud-network-connectivity.svg
      :target: https://pypi.org/project/google-cloud-network-connectivity
-.. |PyPI-google-cloud-irm| image:: https://img.shields.io/pypi/v/google-cloud-irm.svg
-     :target: https://pypi.org/project/google-cloud-irm
 
 .. API_TABLE_END
 
