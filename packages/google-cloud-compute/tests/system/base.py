@@ -23,6 +23,7 @@ from google.cloud.compute_v1.services.region_operations.client import (
 from google.cloud.compute_v1.services.global_operations.client import (
     GlobalOperationsClient,
 )
+from google.cloud.compute_v1.types import Operation
 
 
 class TestBase(unittest.TestCase):
@@ -51,6 +52,16 @@ class TestBase(unittest.TestCase):
         )
         if result.error:
             self.fail("Zonal operation {} has errors".format(operation))
+        op = client.get(
+            operation=operation, zone=self.DEFAULT_ZONE, project=self.DEFAULT_PROJECT
+        )
+        # this is a workaround, some operations take up to 3 min, currently we cant set timeout for wait()
+        if op.status != Operation.Status.DONE:
+            client.wait(
+                operation=operation,
+                zone=self.DEFAULT_ZONE,
+                project=self.DEFAULT_PROJECT,
+            )
 
     def wait_for_regional_operation(self, operation):
         client = RegionOperationsClient()
