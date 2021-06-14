@@ -214,6 +214,21 @@ class Client(_ClientFactoryMixin):
             self._http_internal.configure_mtls_channel(self._client_cert_source)
         return self._http_internal
 
+    def close(self):
+        """Clean up transport, if set.
+
+        Suggested use:
+
+        .. code-block:: python
+
+           import contextlib
+
+           with contextlib.closing(client):  # closes on exit
+               do_something_with(client)
+        """
+        if self._http_internal is not None:
+            self._http_internal.close()
+
 
 class _ClientProjectMixin(object):
     """Mixin to allow setting the project on the client.

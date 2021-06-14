@@ -205,6 +205,21 @@ class TestClient(unittest.TestCase):
         file_open.assert_called_once_with(mock.sentinel.filename, "r", encoding="utf-8")
         constructor.assert_called_once_with(info)
 
+    def test_close_w__http_internal_none(self):
+        credentials = _make_credentials()
+        client_obj = self._make_one(credentials=credentials, _http=None)
+
+        client_obj.close()  # noraise
+
+    def test_close_w__http_internal_set(self):
+        credentials = _make_credentials()
+        http = mock.Mock(spec=["close"])
+        client_obj = self._make_one(credentials=credentials, _http=http)
+
+        client_obj.close()
+
+        http.close.assert_called_once_with()
+
 
 class Test_ClientProjectMixin(unittest.TestCase):
     @staticmethod
