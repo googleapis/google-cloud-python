@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.5.0](https://www.github.com/googleapis/python-spanner/compare/v3.4.0...v3.5.0) (2021-06-11)
+
+
+### Features
+
+* add decimal validation for numeric precision and scale supported by Spanner ([#340](https://www.github.com/googleapis/python-spanner/issues/340)) ([aa36c5e](https://www.github.com/googleapis/python-spanner/commit/aa36c5ecf5b0decc6c5c3316cc5bc6b6981d9bf9))
+* add progress field to UpdateDatabaseDdlMetadata ([#361](https://www.github.com/googleapis/python-spanner/issues/361)) ([1c03dcc](https://www.github.com/googleapis/python-spanner/commit/1c03dcc182fc96a2ca85b23da99cbcaebfb3fe09))
+* add query statistics package support ([#129](https://www.github.com/googleapis/python-spanner/issues/129)) ([6598dea](https://www.github.com/googleapis/python-spanner/commit/6598deade66c8887514a1a6571fffb1bd7b16fd0))
+
+
+### Bug Fixes
+
+* an Aborted exception isn't properly retried ([#345](https://www.github.com/googleapis/python-spanner/issues/345)) ([e69e6ab](https://www.github.com/googleapis/python-spanner/commit/e69e6ab5cffd02bc9af6c08dbe9b5f229847d86d))
+* correctly classify select statements that begin with brackets ([#351](https://www.github.com/googleapis/python-spanner/issues/351)) ([d526acc](https://www.github.com/googleapis/python-spanner/commit/d526acca4795ebf34867ab4a256413a728fccd93))
+* update to support the open-telemetry status code spec change ([#358](https://www.github.com/googleapis/python-spanner/issues/358)) ([0f894f1](https://www.github.com/googleapis/python-spanner/commit/0f894f12622cfa6e38b838eb91e49f256d8d857d))
+
 ## [3.4.0](https://www.github.com/googleapis/python-spanner/compare/v3.3.0...v3.4.0) (2021-04-29)
 
 
