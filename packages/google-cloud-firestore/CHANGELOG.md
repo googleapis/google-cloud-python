@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+### [2.1.3](https://www.github.com/googleapis/python-firestore/compare/v2.1.2...v2.1.3) (2021-06-15)
+
+
+### Bug Fixes
+
+* add 'packaging' dependency ([#372](https://www.github.com/googleapis/python-firestore/issues/372)) ([9623a51](https://www.github.com/googleapis/python-firestore/commit/9623a51e099f4f01013a6074f2a1ecc4a47db9d6)), closes [#371](https://www.github.com/googleapis/python-firestore/issues/371)
+
 ### [2.1.2](https://www.github.com/googleapis/python-firestore/compare/v2.1.1...v2.1.2) (2021-06-14)
 
 
