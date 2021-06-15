@@ -84,10 +84,10 @@ for file in python-pubsublite/samples/**/requirements.txt; do
     # Install python-pubsub from source.
     python -m pip install -e "$ROOT" -q
     python -m pytest quickstart_test.py
+    EXIT=$?
+    
     deactivate py-3.6
     rm -rf py-3.6/
-
-    EXIT=$?
 
     if [[ $EXIT -ne 0 ]]; then
       RTN=1
