@@ -22,6 +22,7 @@ import sys
 import proto
 
 from google.api import http_pb2
+from google.api_core import gapic_v1
 from google.iam.v1 import iam_policy_pb2
 from google.iam.v1 import policy_pb2
 from google.iam.v1.logging import audit_data_pb2
@@ -98,11 +99,13 @@ PublishFlowControl.limit_exceeded_behavior.__doc__ = (
 # This class is used when creating a publisher client to pass in options
 # to enable/disable features.
 PublisherOptions = collections.namedtuple(
-    "PublisherConfig", ["enable_message_ordering", "flow_control"]
+    "PublisherOptions", ["enable_message_ordering", "flow_control", "retry", "timeout"]
 )
 PublisherOptions.__new__.__defaults__ = (
     False,  # enable_message_ordering: False
     PublishFlowControl(),  # default flow control settings
+    gapic_v1.method.DEFAULT,  # use default api_core value for retry
+    gapic_v1.method.DEFAULT,  # use default api_core value for timeout
 )
 PublisherOptions.__doc__ = "The options for the publisher client."
 PublisherOptions.enable_message_ordering.__doc__ = (
@@ -111,6 +114,14 @@ PublisherOptions.enable_message_ordering.__doc__ = (
 PublisherOptions.flow_control.__doc__ = (
     "Flow control settings for message publishing by the client. By default "
     "the publisher client does not do any throttling."
+)
+PublisherOptions.retry.__doc__ = (
+    "Retry settings for message publishing by the client. This should be "
+    "an instance of :class:`google.api_core.retry.Retry`."
+)
+PublisherOptions.timeout.__doc__ = (
+    "Timeout settings for message publishing by the client. It should be compatible "
+    "with :class:`~.pubsub_v1.types.TimeoutType`."
 )
 
 # Define the type class and default values for flow control settings.

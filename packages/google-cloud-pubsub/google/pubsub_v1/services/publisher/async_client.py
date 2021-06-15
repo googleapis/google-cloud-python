@@ -25,6 +25,7 @@ import google.api_core.client_options as ClientOptions  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
+from google.api_core import timeout as timeouts  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
@@ -32,7 +33,7 @@ from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
 from google.pubsub_v1.services.publisher import pagers
 from google.pubsub_v1.types import pubsub
-
+from google.pubsub_v1.types import TimeoutType
 from .transports.base import PublisherTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import PublisherGrpcAsyncIOTransport
 from .client import PublisherClient
@@ -177,7 +178,7 @@ class PublisherAsyncClient:
         *,
         name: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: TimeoutType = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.Topic:
         r"""Creates the given topic with the given name. See the [resource
@@ -203,7 +204,8 @@ class PublisherAsyncClient:
 
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (TimeoutType):
+                The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -261,7 +263,7 @@ class PublisherAsyncClient:
         request: pubsub.UpdateTopicRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: TimeoutType = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.Topic:
         r"""Updates an existing topic. Note that certain
@@ -270,10 +272,10 @@ class PublisherAsyncClient:
         Args:
             request (:class:`google.pubsub_v1.types.UpdateTopicRequest`):
                 The request object. Request for the UpdateTopic method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (TimeoutType):
+                The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -321,7 +323,7 @@ class PublisherAsyncClient:
         topic: str = None,
         messages: Sequence[pubsub.PubsubMessage] = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: TimeoutType = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.PublishResponse:
         r"""Adds one or more messages to the topic. Returns ``NOT_FOUND`` if
@@ -343,10 +345,10 @@ class PublisherAsyncClient:
                 This corresponds to the ``messages`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (TimeoutType):
+                The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -416,7 +418,7 @@ class PublisherAsyncClient:
         *,
         topic: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: TimeoutType = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.Topic:
         r"""Gets the configuration of a topic.
@@ -431,10 +433,10 @@ class PublisherAsyncClient:
                 This corresponds to the ``topic`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (TimeoutType):
+                The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -497,7 +499,7 @@ class PublisherAsyncClient:
         *,
         project: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: TimeoutType = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTopicsAsyncPager:
         r"""Lists matching topics.
@@ -512,10 +514,10 @@ class PublisherAsyncClient:
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (TimeoutType):
+                The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -588,7 +590,7 @@ class PublisherAsyncClient:
         *,
         topic: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: TimeoutType = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTopicSubscriptionsAsyncPager:
         r"""Lists the names of the attached subscriptions on this
@@ -606,10 +608,10 @@ class PublisherAsyncClient:
                 This corresponds to the ``topic`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (TimeoutType):
+                The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -682,7 +684,7 @@ class PublisherAsyncClient:
         *,
         topic: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: TimeoutType = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTopicSnapshotsAsyncPager:
         r"""Lists the names of the snapshots on this topic. Snapshots are
@@ -704,10 +706,10 @@ class PublisherAsyncClient:
                 This corresponds to the ``topic`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (TimeoutType):
+                The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -780,7 +782,7 @@ class PublisherAsyncClient:
         *,
         topic: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: TimeoutType = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the topic with the given name. Returns ``NOT_FOUND`` if
@@ -801,10 +803,10 @@ class PublisherAsyncClient:
                 This corresponds to the ``topic`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (TimeoutType):
+                The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -857,7 +859,7 @@ class PublisherAsyncClient:
         request: pubsub.DetachSubscriptionRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: TimeoutType = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pubsub.DetachSubscriptionResponse:
         r"""Detaches a subscription from this topic. All messages retained
@@ -870,10 +872,10 @@ class PublisherAsyncClient:
             request (:class:`google.pubsub_v1.types.DetachSubscriptionRequest`):
                 The request object. Request for the DetachSubscription
                 method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (TimeoutType):
+                The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -921,7 +923,7 @@ class PublisherAsyncClient:
         request: iam_policy.SetIamPolicyRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: TimeoutType = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy.Policy:
         r"""Sets the IAM access control policy on the specified
@@ -932,7 +934,8 @@ class PublisherAsyncClient:
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (TimeoutType):
+                The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         Returns:
@@ -1027,7 +1030,7 @@ class PublisherAsyncClient:
         request: iam_policy.GetIamPolicyRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: TimeoutType = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> policy.Policy:
         r"""Gets the IAM access control policy for a function.
@@ -1039,7 +1042,8 @@ class PublisherAsyncClient:
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (TimeoutType):
+                The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         Returns:
@@ -1134,7 +1138,7 @@ class PublisherAsyncClient:
         request: iam_policy.TestIamPermissionsRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: TimeoutType = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy.TestIamPermissionsResponse:
         r"""Tests the specified permissions against the IAM access control
@@ -1146,7 +1150,8 @@ class PublisherAsyncClient:
                 `TestIamPermissions` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (TimeoutType):
+                The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         Returns:

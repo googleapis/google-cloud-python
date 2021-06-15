@@ -100,7 +100,7 @@ specified by the API producer.
         *,
         project: str = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        timeout: google.pubsub_v1.types.TimeoutType = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListTopicsPager:
 ```
@@ -161,3 +161,44 @@ The publisher and subscriber clients cannot be constructed with `client_config`
 argument anymore. If you want to customize retry and timeout settings for a particular
 method, you need to do it upon method invocation by passing the custom `timeout` and
 `retry` arguments, respectively.
+
+
+## Custom Retry and Timeout settings for Publisher Client
+
+The ``publisher_options`` parameter to the Publisher Client, as well as all of the
+client's methods, now accept custom retry and timeout settings:
+
+```py
+custom_retry = api_core.retry.Retry(
+    initial=0.250,  # seconds (default: 0.1)
+    maximum=90.0,  # seconds (default: 60.0)
+    multiplier=1.45,  # default: 1.3
+    deadline=300.0,  # seconds (default: 60.0)
+    predicate=api_core.retry.if_exception_type(
+        api_core.exceptions.Aborted,
+        api_core.exceptions.DeadlineExceeded,
+        api_core.exceptions.InternalServerError,
+        api_core.exceptions.ResourceExhausted,
+        api_core.exceptions.ServiceUnavailable,
+        api_core.exceptions.Unknown,
+        api_core.exceptions.Cancelled,
+    ),
+)
+
+custom_timeout=api_core.timeout.ExponentialTimeout(
+    initial=1.0,  
+    maximum=10.0,  
+    multiplier=1.0,  
+    deadline=300.0,  
+)
+
+publisher = pubsub_v1.PublisherClient(
+    publisher_options = pubsub_v1.types.PublisherOptions(
+        retry=custom_retry,
+        timeout=custom_timeout,
+    ),
+)
+```
+
+The timeout can be either an instance of `google.api_core.timeout.ConstantTimeout`,
+or an instance of `google.api_core.timeout.ExponentialTimeout`, as in the example.

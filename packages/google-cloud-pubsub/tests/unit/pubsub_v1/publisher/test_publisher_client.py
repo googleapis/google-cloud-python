@@ -337,6 +337,7 @@ def test_publish_new_batch_needed(creds):
         batch_done_callback=None,
         commit_when_full=True,
         commit_retry=gapic_v1.method.DEFAULT,
+        commit_timeout=gapic_v1.method.DEFAULT,
     )
     message_pb = gapic_types.PubsubMessage(data=b"foo", attributes={"bar": "baz"})
     batch1.publish.assert_called_once_with(message_pb)
@@ -348,6 +349,44 @@ def test_publish_attrs_type_error(creds):
     topic = "topic/path"
     with pytest.raises(TypeError):
         client.publish(topic, b"foo", answer=42)
+
+
+def test_publish_custom_retry_overrides_configured_retry(creds):
+    client = publisher.Client(
+        credentials=creds,
+        publisher_options=types.PublisherOptions(retry=mock.sentinel.publish_retry),
+    )
+
+    topic = "topic/path"
+    client._flow_controller = mock.Mock()
+    fake_sequencer = mock.Mock()
+    client._get_or_create_sequencer = mock.Mock(return_value=fake_sequencer)
+    client.publish(topic, b"hello!", retry=mock.sentinel.custom_retry)
+
+    fake_sequencer.publish.assert_called_once_with(
+        mock.ANY, retry=mock.sentinel.custom_retry, timeout=mock.ANY
+    )
+    message = fake_sequencer.publish.call_args.args[0]
+    assert message.data == b"hello!"
+
+
+def test_publish_custom_timeout_overrides_configured_timeout(creds):
+    client = publisher.Client(
+        credentials=creds,
+        publisher_options=types.PublisherOptions(timeout=mock.sentinel.publish_timeout),
+    )
+
+    topic = "topic/path"
+    client._flow_controller = mock.Mock()
+    fake_sequencer = mock.Mock()
+    client._get_or_create_sequencer = mock.Mock(return_value=fake_sequencer)
+    client.publish(topic, b"hello!", timeout=mock.sentinel.custom_timeout)
+
+    fake_sequencer.publish.assert_called_once_with(
+        mock.ANY, retry=mock.ANY, timeout=mock.sentinel.custom_timeout
+    )
+    message = fake_sequencer.publish.call_args.args[0]
+    assert message.data == b"hello!"
 
 
 def test_stop(creds):

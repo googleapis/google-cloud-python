@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import Union
 
 from .pubsub import (
     AcknowledgeRequest,
@@ -76,7 +76,16 @@ from .schema import (
     SchemaView,
 )
 
+TimeoutType = Union[
+    int,
+    float,
+    "google.api_core.timeout.ConstantTimeout",
+    "google.api_core.timeout.ExponentialTimeout",
+]
+"""The type of the timeout parameter of publisher client methods."""
+
 __all__ = (
+    "TimeoutType",
     "AcknowledgeRequest",
     "CreateSnapshotRequest",
     "DeadLetterPolicy",

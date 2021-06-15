@@ -230,7 +230,13 @@ class Client(object):
                 sequencer.unpause()
 
     def publish(
-        self, topic, data, ordering_key="", retry=gapic_v1.method.DEFAULT, **attrs
+        self,
+        topic,
+        data,
+        ordering_key="",
+        retry=gapic_v1.method.DEFAULT,
+        timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
+        **attrs
     ):
         """Publish a single message.
 
@@ -269,6 +275,12 @@ class Client(object):
             retry (Optional[google.api_core.retry.Retry]): Designation of what
                 errors, if any, should be retried. If `ordering_key` is specified,
                 the total retry deadline will be changed to "infinity".
+                If given, it overides any retry passed into the client through
+                the ``publisher_options`` argument.
+            timeout (:class:`~.pubsub_v1.types.TimeoutType`):
+                The timeout for the RPC request. Can be used to override any timeout
+                passed in through ``publisher_options`` when instantiating the client.
+
             attrs (Mapping[str, str]): A dictionary of attributes to be
                 sent as metadata. (These may be text strings or byte strings.)
 
@@ -331,6 +343,12 @@ class Client(object):
         def on_publish_done(future):
             self._flow_controller.release(message)
 
+        if retry is gapic_v1.method.DEFAULT:  # if custom retry not passed in
+            retry = self.publisher_options.retry
+
+        if timeout is gapic_v1.method.DEFAULT:  # if custom timeout not passed in
+            timeout = self.publisher_options.timeout
+
         with self._batch_lock:
             if self._is_stopped:
                 raise RuntimeError("Cannot publish on a stopped publisher.")
@@ -347,7 +365,7 @@ class Client(object):
 
             # Delegate the publishing to the sequencer.
             sequencer = self._get_or_create_sequencer(topic, ordering_key)
-            future = sequencer.publish(message, retry=retry)
+            future = sequencer.publish(message, retry=retry, timeout=timeout)
             future.add_done_callback(on_publish_done)
 
             # Create a timer thread if necessary to enforce the batching

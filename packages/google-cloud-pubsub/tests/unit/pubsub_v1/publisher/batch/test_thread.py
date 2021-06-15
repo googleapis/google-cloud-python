@@ -42,6 +42,7 @@ def create_batch(
     batch_done_callback=None,
     commit_when_full=True,
     commit_retry=gapic_v1.method.DEFAULT,
+    commit_timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
     **batch_settings
 ):
     """Return a batch object suitable for testing.
@@ -54,6 +55,8 @@ def create_batch(
             has reached byte-size or number-of-messages limits.
         commit_retry (Optional[google.api_core.retry.Retry]): The retry settings
             for the batch commit call.
+        commit_timeout (:class:`~.pubsub_v1.types.TimeoutType`):
+            The timeout to apply to the batch commit call.
         batch_settings (Mapping[str, str]): Arguments passed on to the
             :class:``~.pubsub_v1.types.BatchSettings`` constructor.
 
@@ -69,6 +72,7 @@ def create_batch(
         batch_done_callback=batch_done_callback,
         commit_when_full=commit_when_full,
         commit_retry=commit_retry,
+        commit_timeout=commit_timeout,
     )
 
 
@@ -138,6 +142,7 @@ def test_blocking__commit():
             gapic_types.PubsubMessage(data=b"This is another message."),
         ],
         retry=gapic_v1.method.DEFAULT,
+        timeout=gapic_v1.method.DEFAULT,
     )
 
     # Establish that all of the futures are done, and that they have the
@@ -166,6 +171,29 @@ def test_blocking__commit_custom_retry():
         topic="topic_name",
         messages=[gapic_types.PubsubMessage(data=b"This is my message.")],
         retry=mock.sentinel.custom_retry,
+        timeout=gapic_v1.method.DEFAULT,
+    )
+
+
+def test_blocking__commit_custom_timeout():
+    batch = create_batch(commit_timeout=mock.sentinel.custom_timeout)
+    batch.publish({"data": b"This is my message."})
+
+    # Set up the underlying API publish method to return a PublishResponse.
+    publish_response = gapic_types.PublishResponse(message_ids=["a"])
+    patch = mock.patch.object(
+        type(batch.client.api), "publish", return_value=publish_response
+    )
+    with patch as publish:
+        batch._commit()
+
+    # Establish that the underlying API call was made with expected
+    # arguments.
+    publish.assert_called_once_with(
+        topic="topic_name",
+        messages=[gapic_types.PubsubMessage(data=b"This is my message.")],
+        retry=gapic_v1.method.DEFAULT,
+        timeout=mock.sentinel.custom_timeout,
     )
 
 
@@ -173,7 +201,7 @@ def test_client_api_publish_not_blocking_additional_publish_calls():
     batch = create_batch(max_messages=1)
     api_publish_called = threading.Event()
 
-    def api_publish_delay(topic="", messages=(), retry=None):
+    def api_publish_delay(topic="", messages=(), retry=None, timeout=None):
         api_publish_called.set()
         time.sleep(1.0)
         message_ids = [str(i) for i in range(len(messages))]

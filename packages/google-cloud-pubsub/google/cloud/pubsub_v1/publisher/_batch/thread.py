@@ -73,6 +73,9 @@ class Batch(base.Batch):
         commit_retry (Optional[google.api_core.retry.Retry]): Designation of what
             errors, if any, should be retried when commiting the batch. If not
             provided, a default retry is used.
+        commit_timeout (:class:`~.pubsub_v1.types.TimeoutType`):
+                The timeout to apply when commiting the batch. If not provided, a
+                default timeout is used.
     """
 
     def __init__(
@@ -83,6 +86,7 @@ class Batch(base.Batch):
         batch_done_callback=None,
         commit_when_full=True,
         commit_retry=gapic_v1.method.DEFAULT,
+        commit_timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
     ):
         self._client = client
         self._topic = topic
@@ -106,6 +110,7 @@ class Batch(base.Batch):
         self._size = self._base_request_size
 
         self._commit_retry = commit_retry
+        self._commit_timeout = commit_timeout
 
     @staticmethod
     def make_lock():
@@ -261,7 +266,10 @@ class Batch(base.Batch):
         try:
             # Performs retries for errors defined by the retry configuration.
             response = self._client.api.publish(
-                topic=self._topic, messages=self._messages, retry=self._commit_retry
+                topic=self._topic,
+                messages=self._messages,
+                retry=self._commit_retry,
+                timeout=self._commit_timeout,
             )
         except google.api_core.exceptions.GoogleAPIError as exc:
             # We failed to publish, even after retries, so set the exception on
