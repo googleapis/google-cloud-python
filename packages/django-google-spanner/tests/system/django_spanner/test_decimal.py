@@ -91,7 +91,7 @@ class TestDecimal(TransactionTestCase):
             with self.assertRaises(ValueError):
                 num_val.save()
         else:
-            with self.assertRaisesRegex(ProgrammingError):
+            with self.assertRaises(ProgrammingError):
                 num_val.save()
 
     def test_decimal_update(self):
