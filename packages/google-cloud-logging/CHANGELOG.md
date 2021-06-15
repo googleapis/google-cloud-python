@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [2.5.0](https://www.github.com/googleapis/python-logging/compare/v2.4.0...v2.5.0) (2021-06-10)
+
+
+### Features
+
+* support AuditLog and RequestLog protos ([#274](https://www.github.com/googleapis/python-logging/issues/274)) ([5d91be9](https://www.github.com/googleapis/python-logging/commit/5d91be9f121c364cbd53c6a9fffc4fb6ca6bd324))
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#300](https://www.github.com/googleapis/python-logging/issues/300)) ([68c5cec](https://www.github.com/googleapis/python-logging/commit/68c5ceced3288253af8e3c6013a35fa3954b37bc))
+* structured log handler formatting issues ([#319](https://www.github.com/googleapis/python-logging/issues/319)) ([db9da37](https://www.github.com/googleapis/python-logging/commit/db9da3700511b5a24c3c44c9f4377705937caf46))
+
 ## [2.4.0](https://www.github.com/googleapis/python-logging/compare/v2.3.1...v2.4.0) (2021-05-12)
 
 
