@@ -510,6 +510,38 @@ class ComponentReflectionTest(_ComponentReflectionTest):
                 DDL("create temporary view user_tmp_v as " "select * from user_tmp"),
             )
             event.listen(user_tmp, "before_drop", DDL("drop view user_tmp_v"))
+    
+     @testing.provide_metadata
+    def test_reflect_string_column_max_len(self):
+        """
+        SPANNER SPECIFIC TEST:
+
+        In Spanner column of the STRING type can be
+        created with size defined as MAX. The test
+        checks that such a column is correctly reflected.
+        """
+        Table("text_table", self.metadata, Column("TestColumn", Text, nullable=False))
+        self.metadata.create_all()
+
+        Table("text_table", MetaData(bind=self.bind), autoload=True)
+
+    @testing.provide_metadata
+    def test_reflect_bytes_column_max_len(self):
+        """
+        SPANNER SPECIFIC TEST:
+
+        In Spanner column of the BYTES type can be
+        created with size defined as MAX. The test
+        checks that such a column is correctly reflected.
+        """
+        Table(
+            "bytes_table",
+            self.metadata,
+            Column("TestColumn", LargeBinary, nullable=False),
+        )
+        self.metadata.create_all()
+
+        Table("bytes_table", MetaData(bind=self.bind), autoload=True)
 
     @testing.provide_metadata
     def _test_get_unique_constraints(self, schema=None):
@@ -573,7 +605,10 @@ class ComponentReflectionTest(_ComponentReflectionTest):
 
         reflected_metadata = MetaData()
         reflected = Table(
-            "testtbl", reflected_metadata, autoload_with=orig_meta.bind, schema=schema,
+            "testtbl",
+            reflected_metadata,
+            autoload_with=orig_meta.bind,
+            schema=schema,
         )
 
         # test "deduplicates for index" logic.   MySQL and Oracle
@@ -830,7 +865,9 @@ class NumericTest(_NumericTest):
         Overriding the test to avoid the same failure.
         """
         self._literal_round_trip(
-            Numeric(precision=8, scale=4), [15.7563], [decimal.Decimal("15.7563")],
+            Numeric(precision=8, scale=4),
+            [15.7563],
+            [decimal.Decimal("15.7563")],
         )
         self._literal_round_trip(
             Numeric(precision=8, scale=4),
@@ -849,7 +886,9 @@ class NumericTest(_NumericTest):
         Overriding the test to avoid the same failure.
         """
         self._literal_round_trip(
-            Numeric(precision=8, scale=4, asdecimal=False), [15.7563], [15.7563],
+            Numeric(precision=8, scale=4, asdecimal=False),
+            [15.7563],
+            [15.7563],
         )
         self._literal_round_trip(
             Numeric(precision=8, scale=4, asdecimal=False),
@@ -944,7 +983,9 @@ class NumericTest(_NumericTest):
         Overriding the test to avoid the same failure.
         """
         self._do_test(
-            Float(precision=8, asdecimal=True), [15.7563], [decimal.Decimal("15.7563")],
+            Float(precision=8, asdecimal=True),
+            [15.7563],
+            [decimal.Decimal("15.7563")],
         )
 
         self._do_test(

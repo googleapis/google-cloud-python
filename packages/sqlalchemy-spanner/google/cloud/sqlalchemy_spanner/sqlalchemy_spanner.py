@@ -68,6 +68,19 @@ _compound_keywords = {
     selectable.CompoundSelect.INTERSECT_ALL: "INTERSECT ALL",
 }
 
+_max_size = 2621440
+
+def int_from_size(size_str):
+    """Convert a string column length to an integer value.
+    
+    Args:
+        size_str (str): The column length or the 'MAX' keyword.
+       
+    Returns:
+        int: The column length value.
+    """
+    return _max_size if size_str == "MAX" else int(size_str)
+
 
 def engine_to_connection(function):
     """
@@ -451,12 +464,12 @@ ORDER BY
             for col in columns:
                 if col[1].startswith("STRING"):
                     end = col[1].index(")")
-                    size = int(col[1][7:end])
+                    size = int_from_size(col[1][7:end])
                     type_ = _type_map["STRING"](length=size)
                 # add test creating a table with bytes
                 elif col[1].startswith("BYTES"):
                     end = col[1].index(")")
-                    size = int(col[1][6:end])
+                    size = int_from_size(col[1][6:end])
                     type_ = _type_map["BYTES"](length=size)
                 else:
                     type_ = _type_map[col[1]]
