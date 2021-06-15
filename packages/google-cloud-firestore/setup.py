@@ -27,6 +27,7 @@ release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
     "google-cloud-core >= 1.4.1, < 2.0dev",
+    "packaging >= 14.3",
     "pytz",
     "proto-plus >= 1.10.0",
 ]
