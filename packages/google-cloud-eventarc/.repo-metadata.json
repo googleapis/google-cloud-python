@@ -1,0 +1,13 @@
+{
+    "name": "eventarc",
+    "name_pretty": "Eventarc",
+    "product_documentation": "https://cloud.google.com/eventarc/",
+    "client_documentation": "https://googleapis.dev/python/eventarc/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-eventarc",
+    "distribution_name": "google-cloud-eventarc",
+    "api_id": "eventarc.googleapis.com"
+}
