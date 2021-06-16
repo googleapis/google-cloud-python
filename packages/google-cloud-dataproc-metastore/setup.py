@@ -27,6 +27,7 @@ url = "https://github.com/googleapis/python-dataproc-metastore"
 dependencies = [
     "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
     "proto-plus >= 1.4.0",
+    "packaging >= 14.3",
 ]
 
 package_root = os.path.abspath(os.path.dirname(__file__))
