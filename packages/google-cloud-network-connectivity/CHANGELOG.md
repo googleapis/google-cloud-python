@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-network-connectivity/compare/v0.2.0...v0.3.0) (2021-06-16)
+
+
+### Features
+
+* add `from_service_account_info` ([#12](https://www.github.com/googleapis/python-network-connectivity/issues/12)) ([f1f7ccb](https://www.github.com/googleapis/python-network-connectivity/commit/f1f7ccb4dde88718462361db2f0ff72ff8fbbf0d))
+* support self-signed JWT flow for service accounts ([013202c](https://www.github.com/googleapis/python-network-connectivity/commit/013202c7af491384b01f7f8a070d755ea277e4ae))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([013202c](https://www.github.com/googleapis/python-network-connectivity/commit/013202c7af491384b01f7f8a070d755ea277e4ae))
+* **deps:** add packaging requirement ([#37](https://www.github.com/googleapis/python-network-connectivity/issues/37)) ([3592699](https://www.github.com/googleapis/python-network-connectivity/commit/359269920e4d11e00af6c7830161b2220b476b55))
+* exclude docs and tests from package ([#42](https://www.github.com/googleapis/python-network-connectivity/issues/42)) ([ee876c9](https://www.github.com/googleapis/python-network-connectivity/commit/ee876c91794a5b5f23dd2ce2bd9434f62c18a33d))
+
 ## [0.2.0](https://www.github.com/googleapis/python-network-connectivity/compare/v0.1.0...v0.2.0) (2021-02-25)
 
 
