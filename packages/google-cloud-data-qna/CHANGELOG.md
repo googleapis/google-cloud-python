@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-data-qna/compare/v0.2.0...v0.2.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#51](https://www.github.com/googleapis/python-data-qna/issues/51)) ([02506a4](https://www.github.com/googleapis/python-data-qna/commit/02506a41ca4d5cca4c8dc7d171a7c4cd874b9e26))
+
 ## [0.2.0](https://www.github.com/googleapis/python-data-qna/compare/v0.1.1...v0.2.0) (2021-05-18)
 
 
