@@ -510,8 +510,8 @@ class ComponentReflectionTest(_ComponentReflectionTest):
                 DDL("create temporary view user_tmp_v as " "select * from user_tmp"),
             )
             event.listen(user_tmp, "before_drop", DDL("drop view user_tmp_v"))
-    
-     @testing.provide_metadata
+
+    @testing.provide_metadata
     def test_reflect_string_column_max_len(self):
         """
         SPANNER SPECIFIC TEST:
@@ -605,10 +605,7 @@ class ComponentReflectionTest(_ComponentReflectionTest):
 
         reflected_metadata = MetaData()
         reflected = Table(
-            "testtbl",
-            reflected_metadata,
-            autoload_with=orig_meta.bind,
-            schema=schema,
+            "testtbl", reflected_metadata, autoload_with=orig_meta.bind, schema=schema,
         )
 
         # test "deduplicates for index" logic.   MySQL and Oracle
@@ -865,9 +862,7 @@ class NumericTest(_NumericTest):
         Overriding the test to avoid the same failure.
         """
         self._literal_round_trip(
-            Numeric(precision=8, scale=4),
-            [15.7563],
-            [decimal.Decimal("15.7563")],
+            Numeric(precision=8, scale=4), [15.7563], [decimal.Decimal("15.7563")],
         )
         self._literal_round_trip(
             Numeric(precision=8, scale=4),
@@ -886,9 +881,7 @@ class NumericTest(_NumericTest):
         Overriding the test to avoid the same failure.
         """
         self._literal_round_trip(
-            Numeric(precision=8, scale=4, asdecimal=False),
-            [15.7563],
-            [15.7563],
+            Numeric(precision=8, scale=4, asdecimal=False), [15.7563], [15.7563],
         )
         self._literal_round_trip(
             Numeric(precision=8, scale=4, asdecimal=False),
@@ -983,9 +976,7 @@ class NumericTest(_NumericTest):
         Overriding the test to avoid the same failure.
         """
         self._do_test(
-            Float(precision=8, asdecimal=True),
-            [15.7563],
-            [decimal.Decimal("15.7563")],
+            Float(precision=8, asdecimal=True), [15.7563], [decimal.Decimal("15.7563")],
         )
 
         self._do_test(
