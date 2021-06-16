@@ -34,6 +34,7 @@ dependencies = [
     "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
     "proto-plus >= 1.13.0",
     "libcst >= 0.2.5",
+    "packaging >= 14.3",
 ]
 extras = {}
 
