@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -39,7 +36,6 @@ __protobuf__ = proto.module(
 
 class Workflow(proto.Message):
     r"""Workflow program to be executed by Workflows.
-
     Attributes:
         name (str):
             The resource name of the workflow.
@@ -106,27 +102,18 @@ class Workflow(proto.Message):
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
 
-    name = proto.Field(proto.STRING, number=1)
-
-    description = proto.Field(proto.STRING, number=2)
-
+    name = proto.Field(proto.STRING, number=1,)
+    description = proto.Field(proto.STRING, number=2,)
     state = proto.Field(proto.ENUM, number=3, enum=State,)
-
-    revision_id = proto.Field(proto.STRING, number=4)
-
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp.Timestamp,)
-
+    revision_id = proto.Field(proto.STRING, number=4,)
+    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
     revision_create_time = proto.Field(
-        proto.MESSAGE, number=7, message=timestamp.Timestamp,
+        proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,
     )
-
-    labels = proto.MapField(proto.STRING, proto.STRING, number=8)
-
-    service_account = proto.Field(proto.STRING, number=9)
-
-    source_contents = proto.Field(proto.STRING, number=10, oneof="source_code")
+    labels = proto.MapField(proto.STRING, proto.STRING, number=8,)
+    service_account = proto.Field(proto.STRING, number=9,)
+    source_contents = proto.Field(proto.STRING, number=10, oneof="source_code",)
 
 
 class ListWorkflowsRequest(proto.Message):
@@ -166,15 +153,11 @@ class ListWorkflowsRequest(proto.Message):
             in an unspecified order.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    page_size = proto.Field(proto.INT32, number=2)
-
-    page_token = proto.Field(proto.STRING, number=3)
-
-    filter = proto.Field(proto.STRING, number=4)
-
-    order_by = proto.Field(proto.STRING, number=5)
+    parent = proto.Field(proto.STRING, number=1,)
+    page_size = proto.Field(proto.INT32, number=2,)
+    page_token = proto.Field(proto.STRING, number=3,)
+    filter = proto.Field(proto.STRING, number=4,)
+    order_by = proto.Field(proto.STRING, number=5,)
 
 
 class ListWorkflowsResponse(proto.Message):
@@ -198,10 +181,8 @@ class ListWorkflowsResponse(proto.Message):
         return self
 
     workflows = proto.RepeatedField(proto.MESSAGE, number=1, message="Workflow",)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
-
-    unreachable = proto.RepeatedField(proto.STRING, number=3)
+    next_page_token = proto.Field(proto.STRING, number=2,)
+    unreachable = proto.RepeatedField(proto.STRING, number=3,)
 
 
 class GetWorkflowRequest(proto.Message):
@@ -216,7 +197,7 @@ class GetWorkflowRequest(proto.Message):
             projects/{project}/locations/{location}/workflows/{workflow}
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateWorkflowRequest(proto.Message):
@@ -243,11 +224,9 @@ class CreateWorkflowRequest(proto.Message):
             -  Must be unique within the customer project and location.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
+    parent = proto.Field(proto.STRING, number=1,)
     workflow = proto.Field(proto.MESSAGE, number=2, message="Workflow",)
-
-    workflow_id = proto.Field(proto.STRING, number=3)
+    workflow_id = proto.Field(proto.STRING, number=3,)
 
 
 class DeleteWorkflowRequest(proto.Message):
@@ -262,7 +241,7 @@ class DeleteWorkflowRequest(proto.Message):
             projects/{project}/locations/{location}/workflows/{workflow}
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class UpdateWorkflowRequest(proto.Message):
@@ -279,13 +258,13 @@ class UpdateWorkflowRequest(proto.Message):
     """
 
     workflow = proto.Field(proto.MESSAGE, number=1, message="Workflow",)
-
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    )
 
 
 class OperationMetadata(proto.Message):
     r"""Represents the metadata of the long-running operation.
-
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The time the operation was created.
@@ -300,15 +279,11 @@ class OperationMetadata(proto.Message):
             API version used to start the operation.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp.Timestamp,)
-
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
-    target = proto.Field(proto.STRING, number=3)
-
-    verb = proto.Field(proto.STRING, number=4)
-
-    api_version = proto.Field(proto.STRING, number=5)
+    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    target = proto.Field(proto.STRING, number=3,)
+    verb = proto.Field(proto.STRING, number=4,)
+    api_version = proto.Field(proto.STRING, number=5,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,10 +14,11 @@
 # limitations under the License.
 #
 
+from google.cloud.workflows_v1.services.workflows.client import WorkflowsClient
 from google.cloud.workflows_v1.services.workflows.async_client import (
     WorkflowsAsyncClient,
 )
-from google.cloud.workflows_v1.services.workflows.client import WorkflowsClient
+
 from google.cloud.workflows_v1.types.workflows import CreateWorkflowRequest
 from google.cloud.workflows_v1.types.workflows import DeleteWorkflowRequest
 from google.cloud.workflows_v1.types.workflows import GetWorkflowRequest
@@ -29,6 +29,8 @@ from google.cloud.workflows_v1.types.workflows import UpdateWorkflowRequest
 from google.cloud.workflows_v1.types.workflows import Workflow
 
 __all__ = (
+    "WorkflowsClient",
+    "WorkflowsAsyncClient",
     "CreateWorkflowRequest",
     "DeleteWorkflowRequest",
     "GetWorkflowRequest",
@@ -37,6 +39,4 @@ __all__ = (
     "OperationMetadata",
     "UpdateWorkflowRequest",
     "Workflow",
-    "WorkflowsAsyncClient",
-    "WorkflowsClient",
 )
