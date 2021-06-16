@@ -469,11 +469,29 @@ class AutomatedAgentReply(proto.Message):
             Response of the Dialogflow
             [Sessions.DetectIntent][google.cloud.dialogflow.v2.Sessions.DetectIntent]
             call.
+        automated_agent_reply_type (google.cloud.dialogflow_v2.types.AutomatedAgentReply.AutomatedAgentReplyType):
+            AutomatedAgentReply type.
+        allow_cancellation (bool):
+            Indicates whether the partial automated agent
+            reply is interruptible when a later reply
+            message arrives. e.g. if the agent specified
+            some music as partial response, it can be
+            cancelled.
     """
+
+    class AutomatedAgentReplyType(proto.Enum):
+        r"""Represents different automated agent reply types."""
+        AUTOMATED_AGENT_REPLY_TYPE_UNSPECIFIED = 0
+        PARTIAL = 1
+        FINAL = 2
 
     detect_intent_response = proto.Field(
         proto.MESSAGE, number=1, message=session.DetectIntentResponse,
     )
+    automated_agent_reply_type = proto.Field(
+        proto.ENUM, number=7, enum=AutomatedAgentReplyType,
+    )
+    allow_cancellation = proto.Field(proto.BOOL, number=8,)
 
 
 class ArticleAnswer(proto.Message):
