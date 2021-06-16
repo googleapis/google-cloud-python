@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.2](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.2.1...v0.2.2) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#52](https://www.github.com/googleapis/python-recommendations-ai/issues/52)) ([5d4926d](https://www.github.com/googleapis/python-recommendations-ai/commit/5d4926d7220f924ba296098e102d8c64b010ad36))
+
 ### [0.2.1](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.2.0...v0.2.1) (2021-05-28)
 
 
