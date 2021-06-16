@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.1](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.0...v0.1.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#5](https://www.github.com/googleapis/python-appengine-logging/issues/5)) ([7f65db0](https://www.github.com/googleapis/python-appengine-logging/commit/7f65db00cd1196d2fc2d7ec2197a594d6b56a568))
+
 ## 0.1.0 (2021-06-02)
 
 
