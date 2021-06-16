@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.2](https://www.github.com/googleapis/python-binary-authorization/compare/v0.2.1...v0.2.2) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#39](https://www.github.com/googleapis/python-binary-authorization/issues/39)) ([a90d7f4](https://www.github.com/googleapis/python-binary-authorization/commit/a90d7f46ca54c3bf805208bff157cfbc48a14234))
+
 ### [0.2.1](https://www.github.com/googleapis/python-binary-authorization/compare/v0.2.0...v0.2.1) (2021-05-25)
 
 
