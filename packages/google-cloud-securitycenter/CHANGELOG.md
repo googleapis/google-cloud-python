@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+### [1.3.1](https://www.github.com/googleapis/python-securitycenter/compare/v1.3.0...v1.3.1) (2021-06-10)
+
+
+### Documentation
+
+* update currently supported Finding filter fields ([#159](https://www.github.com/googleapis/python-securitycenter/issues/159)) ([89ca24b](https://www.github.com/googleapis/python-securitycenter/commit/89ca24b49c93737569b428dd7ca883de6429a41c))
+
 ## [1.3.0](https://www.github.com/googleapis/python-securitycenter/compare/v1.2.0...v1.3.0) (2021-05-28)
 
 
