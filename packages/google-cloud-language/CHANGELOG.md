@@ -4,6 +4,36 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.1.0](https://www.github.com/googleapis/python-language/compare/v1.4.0...v2.1.0) (2021-06-16)
+
+
+### Features
+
+* add 'from_service_account_info' factory to clients ([cc8a180](https://www.github.com/googleapis/python-language/commit/cc8a18032af7c8d8bf45130898eeae7efb17a91e))
+* add common resource helper methods; expose client transport ([#55](https://www.github.com/googleapis/python-language/issues/55)) ([8dde55c](https://www.github.com/googleapis/python-language/commit/8dde55cdd0e956c333039c0b74e49a06dd6ad33b))
+* add from_service_account_info factory and fix sphinx identifiers  ([#66](https://www.github.com/googleapis/python-language/issues/66)) ([cc8a180](https://www.github.com/googleapis/python-language/commit/cc8a18032af7c8d8bf45130898eeae7efb17a91e))
+* support self-signed JWT flow for service accounts ([0dcb15e](https://www.github.com/googleapis/python-language/commit/0dcb15eb46b60bd816a6919464be1331c2c8de41))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([0dcb15e](https://www.github.com/googleapis/python-language/commit/0dcb15eb46b60bd816a6919464be1331c2c8de41))
+* adds underscore to "type" to NL API samples ([#49](https://www.github.com/googleapis/python-language/issues/49)) ([36aa320](https://www.github.com/googleapis/python-language/commit/36aa320bf3e0018d66a7d0c91ce4733f20e9acc0))
+* **deps:** add packaging requirement ([#113](https://www.github.com/googleapis/python-language/issues/113)) ([7e711ac](https://www.github.com/googleapis/python-language/commit/7e711ac63c95c1018d24c7c4db3bc02c191efcfc))
+* fix sphinx identifiers ([cc8a180](https://www.github.com/googleapis/python-language/commit/cc8a18032af7c8d8bf45130898eeae7efb17a91e))
+* remove client recv msg limit fix: add enums to `types/__init__.py` ([#62](https://www.github.com/googleapis/python-language/issues/62)) ([3476c0f](https://www.github.com/googleapis/python-language/commit/3476c0f72529cbcbe61ea5c7e6a22291777bed7e))
+* use correct retry deadlines ([#83](https://www.github.com/googleapis/python-language/issues/83)) ([e2be2d8](https://www.github.com/googleapis/python-language/commit/e2be2d8ecf849940f2ea066655fda3bee68d8a74))
+
+
+### Documentation
+
+* fix typos ([#125](https://www.github.com/googleapis/python-language/issues/125)) ([788176f](https://www.github.com/googleapis/python-language/commit/788176feff5fb541e0d16f236b10b765d04ecb98))
+
+
+### Miscellaneous Chores
+
+* release as 2.1.0 ([#126](https://www.github.com/googleapis/python-language/issues/126)) ([92fa7f9](https://www.github.com/googleapis/python-language/commit/92fa7f995013c302f3bd3eb6bec53d92d8d9990c))
+
 ## [2.0.0](https://www.github.com/googleapis/python-language/compare/v1.3.0...v2.0.0) (2020-10-16)
 
 
