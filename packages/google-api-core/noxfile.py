@@ -20,9 +20,17 @@ import shutil
 # https://github.com/google/importlab/issues/25
 import nox  # pytype: disable=import-error
 
+
+BLACK_VERSION = "black==19.10b0"
+BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
+# Black and flake8 clash on the syntax for ignoring flake8's F401 in this file.
+BLACK_EXCLUDES = ["--exclude", "^/google/api_core/operations_v1/__init__.py"]
+
+DEFAULT_PYTHON_VERSION = "3.7"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 _MINIMAL_ASYNCIO_SUPPORT_PYTHON_VERSION = [3, 6]
+
 
 def _greater_or_equal_than_36(version_string):
     tokens = version_string.split(".")
@@ -32,6 +40,31 @@ def _greater_or_equal_than_36(version_string):
         except ValueError:
             pass
     return tokens >= [3, 6]
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def lint(session):
+    """Run linters.
+
+    Returns a failure if the linters find linting errors or sufficiently
+    serious code quality issues.
+    """
+    session.install("flake8", "flake8-import-order", BLACK_VERSION)
+    session.install(".")
+    session.run(
+        "black", "--check", *BLACK_EXCLUDES, *BLACK_PATHS,
+    )
+    session.run("flake8", "google", "tests")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def blacken(session):
+    """Run black.
+
+    Format code to uniform standard.
+    """
+    session.install(BLACK_VERSION)
+    session.run("black", *BLACK_EXCLUDES, *BLACK_PATHS)
 
 
 def default(session):
@@ -93,18 +126,6 @@ def unit_grpc_gcp(session):
     session.install("grpcio-gcp", "-c", constraints_path)
 
     default(session)
-
-
-@nox.session(python="3.6")
-def lint(session):
-    """Run linters.
-
-    Returns a failure if the linters find linting errors or sufficiently
-    serious code quality issues.
-    """
-    session.install("flake8", "flake8-import-order")
-    session.install(".")
-    session.run("flake8", "google", "tests")
 
 
 @nox.session(python="3.6")

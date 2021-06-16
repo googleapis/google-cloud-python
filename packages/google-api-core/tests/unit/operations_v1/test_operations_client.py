@@ -27,7 +27,9 @@ def test_get_operation():
     response = client.get_operation("name", metadata=[("header", "foo")])
 
     assert ("header", "foo") in channel.GetOperation.calls[0].metadata
-    assert ("x-goog-request-params", "name=name") in channel.GetOperation.calls[0].metadata
+    assert ("x-goog-request-params", "name=name") in channel.GetOperation.calls[
+        0
+    ].metadata
     assert len(channel.GetOperation.requests) == 1
     assert channel.GetOperation.requests[0].name == "name"
     assert response == channel.GetOperation.response
@@ -49,7 +51,9 @@ def test_list_operations():
     assert list(response) == operations
 
     assert ("header", "foo") in channel.ListOperations.calls[0].metadata
-    assert ("x-goog-request-params", "name=name") in channel.ListOperations.calls[0].metadata
+    assert ("x-goog-request-params", "name=name") in channel.ListOperations.calls[
+        0
+    ].metadata
     assert len(channel.ListOperations.requests) == 1
     request = channel.ListOperations.requests[0]
     assert isinstance(request, operations_pb2.ListOperationsRequest)
@@ -65,7 +69,9 @@ def test_delete_operation():
     client.delete_operation("name", metadata=[("header", "foo")])
 
     assert ("header", "foo") in channel.DeleteOperation.calls[0].metadata
-    assert ("x-goog-request-params", "name=name") in channel.DeleteOperation.calls[0].metadata
+    assert ("x-goog-request-params", "name=name") in channel.DeleteOperation.calls[
+        0
+    ].metadata
     assert len(channel.DeleteOperation.requests) == 1
     assert channel.DeleteOperation.requests[0].name == "name"
 
@@ -78,6 +84,8 @@ def test_cancel_operation():
     client.cancel_operation("name", metadata=[("header", "foo")])
 
     assert ("header", "foo") in channel.CancelOperation.calls[0].metadata
-    assert ("x-goog-request-params", "name=name") in channel.CancelOperation.calls[0].metadata
+    assert ("x-goog-request-params", "name=name") in channel.CancelOperation.calls[
+        0
+    ].metadata
     assert len(channel.CancelOperation.requests) == 1
     assert channel.CancelOperation.requests[0].name == "name"

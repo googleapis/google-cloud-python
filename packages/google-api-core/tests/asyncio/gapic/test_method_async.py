@@ -18,8 +18,11 @@ from grpc.experimental import aio
 import mock
 import pytest
 
-from google.api_core import (exceptions, gapic_v1, grpc_helpers_async,
-                             retry_async, timeout)
+from google.api_core import exceptions
+from google.api_core import gapic_v1
+from google.api_core import grpc_helpers_async
+from google.api_core import retry_async
+from google.api_core import timeout
 
 
 def _utcnow_monotonic():
@@ -55,9 +58,7 @@ async def test_wrap_method_with_no_client_info():
     fake_call = grpc_helpers_async.FakeUnaryUnaryCall()
     method = mock.Mock(spec=aio.UnaryUnaryMultiCallable, return_value=fake_call)
 
-    wrapped_method = gapic_v1.method_async.wrap_method(
-        method, client_info=None
-    )
+    wrapped_method = gapic_v1.method_async.wrap_method(method, client_info=None)
 
     await wrapped_method(1, 2, meep="moop")
 
@@ -76,9 +77,7 @@ async def test_wrap_method_with_custom_client_info():
     fake_call = grpc_helpers_async.FakeUnaryUnaryCall()
     method = mock.Mock(spec=aio.UnaryUnaryMultiCallable, return_value=fake_call)
 
-    wrapped_method = gapic_v1.method_async.wrap_method(
-        method, client_info=client_info
-    )
+    wrapped_method = gapic_v1.method_async.wrap_method(method, client_info=client_info)
 
     await wrapped_method(1, 2, meep="moop")
 
@@ -125,10 +124,10 @@ async def test_invoke_wrapped_method_with_metadata_as_none():
 @pytest.mark.asyncio
 async def test_wrap_method_with_default_retry_and_timeout(unused_sleep):
     fake_call = grpc_helpers_async.FakeUnaryUnaryCall(42)
-    method = mock.Mock(spec=aio.UnaryUnaryMultiCallable, side_effect=[
-        exceptions.InternalServerError(None),
-        fake_call,
-    ])
+    method = mock.Mock(
+        spec=aio.UnaryUnaryMultiCallable,
+        side_effect=[exceptions.InternalServerError(None), fake_call],
+    )
 
     default_retry = retry_async.AsyncRetry()
     default_timeout = timeout.ConstantTimeout(60)
@@ -147,10 +146,10 @@ async def test_wrap_method_with_default_retry_and_timeout(unused_sleep):
 @pytest.mark.asyncio
 async def test_wrap_method_with_default_retry_and_timeout_using_sentinel(unused_sleep):
     fake_call = grpc_helpers_async.FakeUnaryUnaryCall(42)
-    method = mock.Mock(spec=aio.UnaryUnaryMultiCallable, side_effect=[
-        exceptions.InternalServerError(None),
-        fake_call,
-    ])
+    method = mock.Mock(
+        spec=aio.UnaryUnaryMultiCallable,
+        side_effect=[exceptions.InternalServerError(None), fake_call],
+    )
 
     default_retry = retry_async.AsyncRetry()
     default_timeout = timeout.ConstantTimeout(60)
@@ -159,8 +158,7 @@ async def test_wrap_method_with_default_retry_and_timeout_using_sentinel(unused_
     )
 
     result = await wrapped_method(
-        retry=gapic_v1.method_async.DEFAULT,
-        timeout=gapic_v1.method_async.DEFAULT,
+        retry=gapic_v1.method_async.DEFAULT, timeout=gapic_v1.method_async.DEFAULT,
     )
 
     assert result == 42
@@ -172,10 +170,10 @@ async def test_wrap_method_with_default_retry_and_timeout_using_sentinel(unused_
 @pytest.mark.asyncio
 async def test_wrap_method_with_overriding_retry_and_timeout(unused_sleep):
     fake_call = grpc_helpers_async.FakeUnaryUnaryCall(42)
-    method = mock.Mock(spec=aio.UnaryUnaryMultiCallable, side_effect=[
-        exceptions.NotFound(None),
-        fake_call,
-    ])
+    method = mock.Mock(
+        spec=aio.UnaryUnaryMultiCallable,
+        side_effect=[exceptions.NotFound(None), fake_call],
+    )
 
     default_retry = retry_async.AsyncRetry()
     default_timeout = timeout.ConstantTimeout(60)
@@ -184,7 +182,9 @@ async def test_wrap_method_with_overriding_retry_and_timeout(unused_sleep):
     )
 
     result = await wrapped_method(
-        retry=retry_async.AsyncRetry(retry_async.if_exception_type(exceptions.NotFound)),
+        retry=retry_async.AsyncRetry(
+            retry_async.if_exception_type(exceptions.NotFound)
+        ),
         timeout=timeout.ConstantTimeout(22),
     )
 
@@ -204,7 +204,8 @@ async def test_wrap_method_with_overriding_retry_deadline(utcnow, unused_sleep):
     fake_call = grpc_helpers_async.FakeUnaryUnaryCall(42)
     method = mock.Mock(
         spec=aio.UnaryUnaryMultiCallable,
-        side_effect=([exceptions.InternalServerError(None)] * 4) + [fake_call])
+        side_effect=([exceptions.InternalServerError(None)] * 4) + [fake_call],
+    )
 
     default_retry = retry_async.AsyncRetry()
     default_timeout = timeout.ExponentialTimeout(deadline=60)

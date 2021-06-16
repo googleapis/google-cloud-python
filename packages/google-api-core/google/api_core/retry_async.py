@@ -56,9 +56,12 @@ import datetime
 import functools
 import logging
 
-from google.api_core import datetime_helpers, exceptions
-from google.api_core.retry import (exponential_sleep_generator,  # noqa: F401
-                                   if_exception_type, if_transient_error)
+from google.api_core import datetime_helpers
+from google.api_core import exceptions
+from google.api_core.retry import exponential_sleep_generator
+from google.api_core.retry import if_exception_type  # noqa: F401
+from google.api_core.retry import if_transient_error
+
 
 _LOGGER = logging.getLogger(__name__)
 _DEFAULT_INITIAL_DELAY = 1.0  # seconds
@@ -96,7 +99,11 @@ async def retry_target(target, predicate, sleep_generator, deadline, on_error=No
         ValueError: If the sleep generator stops yielding values.
         Exception: If the target raises a method that isn't retryable.
     """
-    deadline_dt = (datetime_helpers.utcnow() + datetime.timedelta(seconds=deadline)) if deadline else None
+    deadline_dt = (
+        (datetime_helpers.utcnow() + datetime.timedelta(seconds=deadline))
+        if deadline
+        else None
+    )
 
     last_exc = None
 
@@ -107,7 +114,7 @@ async def retry_target(target, predicate, sleep_generator, deadline, on_error=No
             else:
                 return await asyncio.wait_for(
                     target(),
-                    timeout=(deadline_dt - datetime_helpers.utcnow()).total_seconds()
+                    timeout=(deadline_dt - datetime_helpers.utcnow()).total_seconds(),
                 )
         # pylint: disable=broad-except
         # This function explicitly must deal with broad exceptions.
@@ -215,13 +222,15 @@ class AsyncRetry:
 
         return retry_wrapped_func
 
-    def _replace(self,
-                 predicate=None,
-                 initial=None,
-                 maximum=None,
-                 multiplier=None,
-                 deadline=None,
-                 on_error=None):
+    def _replace(
+        self,
+        predicate=None,
+        initial=None,
+        maximum=None,
+        multiplier=None,
+        deadline=None,
+        on_error=None,
+    ):
         return AsyncRetry(
             predicate=predicate or self._predicate,
             initial=initial or self._initial,

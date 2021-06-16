@@ -38,5 +38,5 @@ def parse_method_configs(interface_config):
             configuration.
     """
     return config.parse_method_configs(
-        interface_config,
-        retry_impl=retry_async.AsyncRetry)
+        interface_config, retry_impl=retry_async.AsyncRetry
+    )

@@ -21,13 +21,11 @@ from google.api_core import page_iterator_async
 
 
 class PageAsyncIteratorImpl(page_iterator_async.AsyncIterator):
-
     async def _next_page(self):
         return mock.create_autospec(page_iterator_async.Page, instance=True)
 
 
 class TestAsyncIterator:
-
     def test_constructor(self):
         client = mock.sentinel.client
         item_to_value = mock.sentinel.item_to_value
@@ -51,7 +49,9 @@ class TestAsyncIterator:
     async def test_anext(self):
         parent = mock.sentinel.parent
         page_1 = page_iterator_async.Page(
-            parent, ("item 1.1", "item 1.2"), page_iterator_async._item_to_value_identity
+            parent,
+            ("item 1.1", "item 1.2"),
+            page_iterator_async._item_to_value_identity,
         )
         page_2 = page_iterator_async.Page(
             parent, ("item 2.1",), page_iterator_async._item_to_value_identity
@@ -96,7 +96,8 @@ class TestAsyncIterator:
     async def test__page_aiter_increment(self):
         iterator = PageAsyncIteratorImpl(None, None)
         page = page_iterator_async.Page(
-            iterator, ("item",), page_iterator_async._item_to_value_identity)
+            iterator, ("item",), page_iterator_async._item_to_value_identity
+        )
         iterator._next_page = mock.AsyncMock(side_effect=[page, None])
 
         assert iterator.num_results == 0
@@ -128,9 +129,11 @@ class TestAsyncIterator:
         # Make pages from mock responses
         parent = mock.sentinel.parent
         page1 = page_iterator_async.Page(
-            parent, (item1, item2), page_iterator_async._item_to_value_identity)
+            parent, (item1, item2), page_iterator_async._item_to_value_identity
+        )
         page2 = page_iterator_async.Page(
-            parent, (item3,), page_iterator_async._item_to_value_identity)
+            parent, (item3,), page_iterator_async._item_to_value_identity
+        )
 
         iterator = PageAsyncIteratorImpl(None, None)
         iterator._next_page = mock.AsyncMock(side_effect=[page1, page2, None])
@@ -187,7 +190,6 @@ class TestAsyncIterator:
 
 
 class TestAsyncGRPCIterator(object):
-
     def test_constructor(self):
         client = mock.sentinel.client
         items_field = "items"

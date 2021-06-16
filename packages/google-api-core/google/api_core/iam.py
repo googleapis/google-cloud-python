@@ -450,10 +450,7 @@ class Policy(collections_abc.MutableMapping):
             for binding in self._bindings:
                 members = binding.get("members")
                 if members:
-                    new_binding = {
-                        "role": binding["role"],
-                        "members": sorted(members)
-                    }
+                    new_binding = {"role": binding["role"], "members": sorted(members)}
                     condition = binding.get("condition")
                     if condition:
                         new_binding["condition"] = condition

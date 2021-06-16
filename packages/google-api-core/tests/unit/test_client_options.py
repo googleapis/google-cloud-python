@@ -35,7 +35,7 @@ def test_constructor():
         scopes=[
             "https://www.googleapis.com/auth/cloud-platform",
             "https://www.googleapis.com/auth/cloud-platform.read-only",
-        ]
+        ],
     )
 
     assert options.api_endpoint == "foo.googleapis.com"
@@ -82,7 +82,7 @@ def test_from_dict():
             "scopes": [
                 "https://www.googleapis.com/auth/cloud-platform",
                 "https://www.googleapis.com/auth/cloud-platform.read-only",
-            ]
+            ],
         }
     )
 

@@ -177,15 +177,15 @@ def test_from_gapic():
         operations_client,
         struct_pb2.Struct,
         metadata_type=struct_pb2.Struct,
-        grpc_metadata=[('x-goog-request-params', 'foo')]
+        grpc_metadata=[("x-goog-request-params", "foo")],
     )
 
     assert future._result_type == struct_pb2.Struct
     assert future._metadata_type == struct_pb2.Struct
     assert future.operation.name == TEST_OPERATION_NAME
     assert future.done
-    assert future._refresh.keywords["metadata"] == [('x-goog-request-params', 'foo')]
-    assert future._cancel.keywords["metadata"] == [('x-goog-request-params', 'foo')]
+    assert future._refresh.keywords["metadata"] == [("x-goog-request-params", "foo")]
+    assert future._cancel.keywords["metadata"] == [("x-goog-request-params", "foo")]
 
 
 def test_deserialize():

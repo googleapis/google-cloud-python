@@ -170,8 +170,10 @@ async def test_wrap_stream_errors_aiter():
     grpc_error = RpcErrorImpl(grpc.StatusCode.INVALID_ARGUMENT)
 
     mock_call = mock.Mock(aio.StreamStreamCall, autospec=True)
-    mocked_aiter = mock.Mock(spec=['__anext__'])
-    mocked_aiter.__anext__ = mock.AsyncMock(side_effect=[mock.sentinel.response, grpc_error])
+    mocked_aiter = mock.Mock(spec=["__anext__"])
+    mocked_aiter.__anext__ = mock.AsyncMock(
+        side_effect=[mock.sentinel.response, grpc_error]
+    )
     mock_call.__aiter__ = mock.Mock(return_value=mocked_aiter)
     multicallable = mock.Mock(return_value=mock_call)
 
@@ -186,11 +188,13 @@ async def test_wrap_stream_errors_aiter():
 
 @pytest.mark.asyncio
 async def test_wrap_stream_errors_aiter_non_rpc_error():
-    non_grpc_error = TypeError('Not a gRPC error')
+    non_grpc_error = TypeError("Not a gRPC error")
 
     mock_call = mock.Mock(aio.StreamStreamCall, autospec=True)
-    mocked_aiter = mock.Mock(spec=['__anext__'])
-    mocked_aiter.__anext__ = mock.AsyncMock(side_effect=[mock.sentinel.response, non_grpc_error])
+    mocked_aiter = mock.Mock(spec=["__anext__"])
+    mocked_aiter.__anext__ = mock.AsyncMock(
+        side_effect=[mock.sentinel.response, non_grpc_error]
+    )
     mock_call.__aiter__ = mock.Mock(return_value=mocked_aiter)
     multicallable = mock.Mock(return_value=mock_call)
 
@@ -283,7 +287,7 @@ def test_create_channel_implicit(grpc_secure_channel, default, composite_creds_c
 @mock.patch(
     "google.auth.transport.requests.Request",
     autospec=True,
-    return_value=mock.sentinel.Request
+    return_value=mock.sentinel.Request,
 )
 @mock.patch("grpc.composite_channel_credentials")
 @mock.patch(
@@ -292,7 +296,9 @@ def test_create_channel_implicit(grpc_secure_channel, default, composite_creds_c
     return_value=(mock.sentinel.credentials, mock.sentinel.projet),
 )
 @mock.patch("grpc.experimental.aio.secure_channel")
-def test_create_channel_implicit_with_default_host(grpc_secure_channel, default, composite_creds_call, request, auth_metadata_plugin):
+def test_create_channel_implicit_with_default_host(
+    grpc_secure_channel, default, composite_creds_call, request, auth_metadata_plugin
+):
     target = "example.com:443"
     default_host = "example.com"
     composite_creds = composite_creds_call.return_value
@@ -302,7 +308,9 @@ def test_create_channel_implicit_with_default_host(grpc_secure_channel, default,
     assert channel is grpc_secure_channel.return_value
 
     default.assert_called_once_with(scopes=None, default_scopes=None)
-    auth_metadata_plugin.assert_called_once_with(mock.sentinel.credentials, mock.sentinel.Request, default_host=default_host)
+    auth_metadata_plugin.assert_called_once_with(
+        mock.sentinel.credentials, mock.sentinel.Request, default_host=default_host
+    )
     grpc_secure_channel.assert_called_once_with(target, composite_creds)
 
 
@@ -361,7 +369,9 @@ def test_create_channel_implicit_with_default_scopes(
     target = "example.com:443"
     composite_creds = composite_creds_call.return_value
 
-    channel = grpc_helpers_async.create_channel(target, default_scopes=["three", "four"])
+    channel = grpc_helpers_async.create_channel(
+        target, default_scopes=["three", "four"]
+    )
 
     assert channel is grpc_secure_channel.return_value
 
@@ -376,7 +386,7 @@ def test_create_channel_explicit_with_duplicate_credentials():
         grpc_helpers_async.create_channel(
             target,
             credentials_file="credentials.json",
-            credentials=mock.sentinel.credentials
+            credentials=mock.sentinel.credentials,
         )
 
     assert "mutually exclusive" in str(excinfo.value)
@@ -389,9 +399,13 @@ def test_create_channel_explicit(grpc_secure_channel, auth_creds, composite_cred
     target = "example.com:443"
     composite_creds = composite_creds_call.return_value
 
-    channel = grpc_helpers_async.create_channel(target, credentials=mock.sentinel.credentials)
+    channel = grpc_helpers_async.create_channel(
+        target, credentials=mock.sentinel.credentials
+    )
 
-    auth_creds.assert_called_once_with(mock.sentinel.credentials, scopes=None, default_scopes=None)
+    auth_creds.assert_called_once_with(
+        mock.sentinel.credentials, scopes=None, default_scopes=None
+    )
     assert channel is grpc_secure_channel.return_value
     grpc_secure_channel.assert_called_once_with(target, composite_creds)
 
@@ -417,7 +431,9 @@ def test_create_channel_explicit_scoped(grpc_secure_channel, composite_creds_cal
 
 @mock.patch("grpc.composite_channel_credentials")
 @mock.patch("grpc.experimental.aio.secure_channel")
-def test_create_channel_explicit_default_scopes(grpc_secure_channel, composite_creds_call):
+def test_create_channel_explicit_default_scopes(
+    grpc_secure_channel, composite_creds_call
+):
     target = "example.com:443"
     default_scopes = ["3", "4"]
     composite_creds = composite_creds_call.return_value
@@ -429,18 +445,24 @@ def test_create_channel_explicit_default_scopes(grpc_secure_channel, composite_c
         target, credentials=credentials, default_scopes=default_scopes
     )
 
-    credentials.with_scopes.assert_called_once_with(scopes=None, default_scopes=default_scopes)
+    credentials.with_scopes.assert_called_once_with(
+        scopes=None, default_scopes=default_scopes
+    )
     assert channel is grpc_secure_channel.return_value
     grpc_secure_channel.assert_called_once_with(target, composite_creds)
 
 
 @mock.patch("grpc.composite_channel_credentials")
 @mock.patch("grpc.experimental.aio.secure_channel")
-def test_create_channel_explicit_with_quota_project(grpc_secure_channel, composite_creds_call):
+def test_create_channel_explicit_with_quota_project(
+    grpc_secure_channel, composite_creds_call
+):
     target = "example.com:443"
     composite_creds = composite_creds_call.return_value
 
-    credentials = mock.create_autospec(google.auth.credentials.CredentialsWithQuotaProject, instance=True)
+    credentials = mock.create_autospec(
+        google.auth.credentials.CredentialsWithQuotaProject, instance=True
+    )
 
     channel = grpc_helpers_async.create_channel(
         target, credentials=credentials, quota_project_id="project-foo"
@@ -456,9 +478,11 @@ def test_create_channel_explicit_with_quota_project(grpc_secure_channel, composi
 @mock.patch(
     "google.auth.load_credentials_from_file",
     autospec=True,
-    return_value=(mock.sentinel.credentials, mock.sentinel.project)
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
 )
-def test_create_channnel_with_credentials_file(load_credentials_from_file, grpc_secure_channel, composite_creds_call):
+def test_create_channnel_with_credentials_file(
+    load_credentials_from_file, grpc_secure_channel, composite_creds_call
+):
     target = "example.com:443"
 
     credentials_file = "/path/to/credentials/file.json"
@@ -468,7 +492,9 @@ def test_create_channnel_with_credentials_file(load_credentials_from_file, grpc_
         target, credentials_file=credentials_file
     )
 
-    google.auth.load_credentials_from_file.assert_called_once_with(credentials_file, scopes=None, default_scopes=None)
+    google.auth.load_credentials_from_file.assert_called_once_with(
+        credentials_file, scopes=None, default_scopes=None
+    )
     assert channel is grpc_secure_channel.return_value
     grpc_secure_channel.assert_called_once_with(target, composite_creds)
 
@@ -478,9 +504,11 @@ def test_create_channnel_with_credentials_file(load_credentials_from_file, grpc_
 @mock.patch(
     "google.auth.load_credentials_from_file",
     autospec=True,
-    return_value=(mock.sentinel.credentials, mock.sentinel.project)
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
 )
-def test_create_channel_with_credentials_file_and_scopes(load_credentials_from_file, grpc_secure_channel, composite_creds_call):
+def test_create_channel_with_credentials_file_and_scopes(
+    load_credentials_from_file, grpc_secure_channel, composite_creds_call
+):
     target = "example.com:443"
     scopes = ["1", "2"]
 
@@ -491,7 +519,9 @@ def test_create_channel_with_credentials_file_and_scopes(load_credentials_from_f
         target, credentials_file=credentials_file, scopes=scopes
     )
 
-    google.auth.load_credentials_from_file.assert_called_once_with(credentials_file, scopes=scopes, default_scopes=None)
+    google.auth.load_credentials_from_file.assert_called_once_with(
+        credentials_file, scopes=scopes, default_scopes=None
+    )
     assert channel is grpc_secure_channel.return_value
     grpc_secure_channel.assert_called_once_with(target, composite_creds)
 
@@ -501,9 +531,11 @@ def test_create_channel_with_credentials_file_and_scopes(load_credentials_from_f
 @mock.patch(
     "google.auth.load_credentials_from_file",
     autospec=True,
-    return_value=(mock.sentinel.credentials, mock.sentinel.project)
+    return_value=(mock.sentinel.credentials, mock.sentinel.project),
 )
-def test_create_channel_with_credentials_file_and_default_scopes(load_credentials_from_file, grpc_secure_channel, composite_creds_call):
+def test_create_channel_with_credentials_file_and_default_scopes(
+    load_credentials_from_file, grpc_secure_channel, composite_creds_call
+):
     target = "example.com:443"
     default_scopes = ["3", "4"]
 
@@ -514,12 +546,16 @@ def test_create_channel_with_credentials_file_and_default_scopes(load_credential
         target, credentials_file=credentials_file, default_scopes=default_scopes
     )
 
-    google.auth.load_credentials_from_file.assert_called_once_with(credentials_file, scopes=None, default_scopes=default_scopes)
+    google.auth.load_credentials_from_file.assert_called_once_with(
+        credentials_file, scopes=None, default_scopes=default_scopes
+    )
     assert channel is grpc_secure_channel.return_value
     grpc_secure_channel.assert_called_once_with(target, composite_creds)
 
 
-@pytest.mark.skipif(grpc_helpers_async.HAS_GRPC_GCP, reason="grpc_gcp module not available")
+@pytest.mark.skipif(
+    grpc_helpers_async.HAS_GRPC_GCP, reason="grpc_gcp module not available"
+)
 @mock.patch("grpc.experimental.aio.secure_channel")
 def test_create_channel_without_grpc_gcp(grpc_secure_channel):
     target = "example.com:443"

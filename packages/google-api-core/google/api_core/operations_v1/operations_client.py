@@ -139,7 +139,9 @@ class OperationsClient(object):
         metadata = metadata or []
         metadata.append(gapic_v1.routing_header.to_grpc_metadata({"name": name}))
 
-        return self._get_operation(request, retry=retry, timeout=timeout, metadata=metadata)
+        return self._get_operation(
+            request, retry=retry, timeout=timeout, metadata=metadata
+        )
 
     def list_operations(
         self,
@@ -206,7 +208,9 @@ class OperationsClient(object):
         metadata.append(gapic_v1.routing_header.to_grpc_metadata({"name": name}))
 
         # Create the method used to fetch pages
-        method = functools.partial(self._list_operations, retry=retry, timeout=timeout, metadata=metadata)
+        method = functools.partial(
+            self._list_operations, retry=retry, timeout=timeout, metadata=metadata
+        )
 
         iterator = page_iterator.GRPCIterator(
             client=None,

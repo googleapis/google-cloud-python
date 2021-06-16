@@ -57,6 +57,7 @@ class TestPolicy:
 
     def test__getitem___and_set(self):
         from google.api_core.iam import OWNER_ROLE
+
         policy = self._make_one()
 
         # get the policy using the getter and then modify it
@@ -120,7 +121,7 @@ class TestPolicy:
         policy = self._make_one()
         policy.bindings = [
             {"role": "to/keep", "members": set(["phred@example.com"])},
-            {"role": "to/remove", "members": set(["phred@example.com"])}
+            {"role": "to/remove", "members": set(["phred@example.com"])},
         ]
         del policy["to/remove"]
         assert len(policy) == 1
@@ -150,7 +151,9 @@ class TestPolicy:
         USER = "user:phred@example.com"
         CONDITION = {"expression": "2 > 1"}
         policy = self._make_one()
-        BINDINGS = [{"role": "role/reader", "members": set([USER]), "condition": CONDITION}]
+        BINDINGS = [
+            {"role": "role/reader", "members": set([USER]), "condition": CONDITION}
+        ]
         policy.bindings = BINDINGS
         assert policy.bindings == BINDINGS
 
@@ -394,13 +397,17 @@ class TestPolicy:
         CONDITION = {
             "title": "title",
             "description": "description",
-            "expression": "true"
+            "expression": "true",
         }
         BINDINGS = [
             {"role": OWNER_ROLE, "members": [OWNER1, OWNER2]},
             {"role": EDITOR_ROLE, "members": [EDITOR1, EDITOR2]},
             {"role": VIEWER_ROLE, "members": [VIEWER1, VIEWER2]},
-            {"role": VIEWER_ROLE, "members": [VIEWER1, VIEWER2], "condition": CONDITION},
+            {
+                "role": VIEWER_ROLE,
+                "members": [VIEWER1, VIEWER2],
+                "condition": CONDITION,
+            },
         ]
         policy = self._make_one("DEADBEEF", 1)
         policy.bindings = BINDINGS

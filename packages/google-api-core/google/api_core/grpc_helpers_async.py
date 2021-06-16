@@ -36,7 +36,6 @@ HAS_GRPC_GCP = False
 
 
 class _WrappedCall(aio.Call):
-
     def __init__(self):
         self._call = None
 
@@ -80,7 +79,6 @@ class _WrappedCall(aio.Call):
 
 
 class _WrappedUnaryResponseMixin(_WrappedCall):
-
     def __await__(self):
         try:
             response = yield from self._call.__await__()
@@ -90,7 +88,6 @@ class _WrappedUnaryResponseMixin(_WrappedCall):
 
 
 class _WrappedStreamResponseMixin(_WrappedCall):
-
     def __init__(self):
         self._wrapped_async_generator = None
 
@@ -117,7 +114,6 @@ class _WrappedStreamResponseMixin(_WrappedCall):
 
 
 class _WrappedStreamRequestMixin(_WrappedCall):
-
     async def write(self, request):
         try:
             await self._call.write(request)
@@ -142,11 +138,15 @@ class _WrappedUnaryStreamCall(_WrappedStreamResponseMixin, aio.UnaryStreamCall):
     """Wrapped UnaryStreamCall to map exceptions."""
 
 
-class _WrappedStreamUnaryCall(_WrappedUnaryResponseMixin, _WrappedStreamRequestMixin, aio.StreamUnaryCall):
+class _WrappedStreamUnaryCall(
+    _WrappedUnaryResponseMixin, _WrappedStreamRequestMixin, aio.StreamUnaryCall
+):
     """Wrapped StreamUnaryCall to map exceptions."""
 
 
-class _WrappedStreamStreamCall(_WrappedStreamRequestMixin, _WrappedStreamResponseMixin, aio.StreamStreamCall):
+class _WrappedStreamStreamCall(
+    _WrappedStreamRequestMixin, _WrappedStreamResponseMixin, aio.StreamStreamCall
+):
     """Wrapped StreamStreamCall to map exceptions."""
 
 
@@ -177,7 +177,7 @@ def _wrap_stream_errors(callable_):
         elif isinstance(call, aio.StreamStreamCall):
             call = _WrappedStreamStreamCall().with_call(call)
         else:
-            raise TypeError('Unexpected type of call %s' % type(call))
+            raise TypeError("Unexpected type of call %s" % type(call))
 
         await call.wait_for_connection()
         return call
@@ -207,15 +207,16 @@ def wrap_errors(callable_):
 
 
 def create_channel(
-        target,
-        credentials=None,
-        scopes=None,
-        ssl_credentials=None,
-        credentials_file=None,
-        quota_project_id=None,
-        default_scopes=None,
-        default_host=None,
-        **kwargs):
+    target,
+    credentials=None,
+    scopes=None,
+    ssl_credentials=None,
+    credentials_file=None,
+    quota_project_id=None,
+    default_scopes=None,
+    default_host=None,
+    **kwargs
+):
     """Create an AsyncIO secure channel with credentials.
 
     Args:
@@ -251,7 +252,7 @@ def create_channel(
         default_scopes=default_scopes,
         ssl_credentials=ssl_credentials,
         quota_project_id=quota_project_id,
-        default_host=default_host
+        default_host=default_host,
     )
 
     return aio.secure_channel(target, composite_credentials, **kwargs)

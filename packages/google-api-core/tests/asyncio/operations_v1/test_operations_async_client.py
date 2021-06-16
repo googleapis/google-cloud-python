@@ -16,8 +16,7 @@ from grpc.experimental import aio
 import mock
 import pytest
 
-from google.api_core import (grpc_helpers_async, operations_v1,
-                             page_iterator_async)
+from google.api_core import grpc_helpers_async, operations_v1, page_iterator_async
 from google.longrunning import operations_pb2
 from google.protobuf import empty_pb2
 
@@ -33,14 +32,17 @@ def _mock_grpc_objects(response):
 @pytest.mark.asyncio
 async def test_get_operation():
     mocked_channel, method, fake_call = _mock_grpc_objects(
-        operations_pb2.Operation(name="meep"))
+        operations_pb2.Operation(name="meep")
+    )
     client = operations_v1.OperationsAsyncClient(mocked_channel)
 
     response = await client.get_operation("name", metadata=[("header", "foo")])
     assert method.call_count == 1
     assert tuple(method.call_args_list[0])[0][0].name == "name"
     assert ("header", "foo") in tuple(method.call_args_list[0])[1]["metadata"]
-    assert ("x-goog-request-params", "name=name") in tuple(method.call_args_list[0])[1]["metadata"]
+    assert ("x-goog-request-params", "name=name") in tuple(method.call_args_list[0])[1][
+        "metadata"
+    ]
     assert response == fake_call.response
 
 
@@ -66,7 +68,9 @@ async def test_list_operations():
 
     assert method.call_count == 1
     assert ("header", "foo") in tuple(method.call_args_list[0])[1]["metadata"]
-    assert ("x-goog-request-params", "name=name") in tuple(method.call_args_list[0])[1]["metadata"]
+    assert ("x-goog-request-params", "name=name") in tuple(method.call_args_list[0])[1][
+        "metadata"
+    ]
     request = tuple(method.call_args_list[0])[0][0]
     assert isinstance(request, operations_pb2.ListOperationsRequest)
     assert request.name == "name"
@@ -75,8 +79,7 @@ async def test_list_operations():
 
 @pytest.mark.asyncio
 async def test_delete_operation():
-    mocked_channel, method, fake_call = _mock_grpc_objects(
-        empty_pb2.Empty())
+    mocked_channel, method, fake_call = _mock_grpc_objects(empty_pb2.Empty())
     client = operations_v1.OperationsAsyncClient(mocked_channel)
 
     await client.delete_operation("name", metadata=[("header", "foo")])
@@ -84,13 +87,14 @@ async def test_delete_operation():
     assert method.call_count == 1
     assert tuple(method.call_args_list[0])[0][0].name == "name"
     assert ("header", "foo") in tuple(method.call_args_list[0])[1]["metadata"]
-    assert ("x-goog-request-params", "name=name") in tuple(method.call_args_list[0])[1]["metadata"]
+    assert ("x-goog-request-params", "name=name") in tuple(method.call_args_list[0])[1][
+        "metadata"
+    ]
 
 
 @pytest.mark.asyncio
 async def test_cancel_operation():
-    mocked_channel, method, fake_call = _mock_grpc_objects(
-        empty_pb2.Empty())
+    mocked_channel, method, fake_call = _mock_grpc_objects(empty_pb2.Empty())
     client = operations_v1.OperationsAsyncClient(mocked_channel)
 
     await client.cancel_operation("name", metadata=[("header", "foo")])
@@ -98,4 +102,6 @@ async def test_cancel_operation():
     assert method.call_count == 1
     assert tuple(method.call_args_list[0])[0][0].name == "name"
     assert ("header", "foo") in tuple(method.call_args_list[0])[1]["metadata"]
-    assert ("x-goog-request-params", "name=name") in tuple(method.call_args_list[0])[1]["metadata"]
+    assert ("x-goog-request-params", "name=name") in tuple(method.call_args_list[0])[1][
+        "metadata"
+    ]

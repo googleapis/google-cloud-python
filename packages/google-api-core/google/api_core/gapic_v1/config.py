@@ -153,7 +153,9 @@ def parse_method_configs(interface_config, retry_impl=retry.Retry):
         if retry_params_name is not None:
             retry_params = retry_params_map[retry_params_name]
             retry_ = _retry_from_retry_config(
-                retry_params, retry_codes_map[method_params["retry_codes_name"]], retry_impl
+                retry_params,
+                retry_codes_map[method_params["retry_codes_name"]],
+                retry_impl,
             )
             timeout_ = _timeout_from_retry_config(retry_params)
 

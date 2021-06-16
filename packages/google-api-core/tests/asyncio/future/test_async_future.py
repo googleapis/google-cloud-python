@@ -125,7 +125,6 @@ async def test_result_with_polling():
 
 
 class AsyncFutureTimeout(AsyncFutureWithPoll):
-
     async def done(self):
         await asyncio.sleep(0.2)
         return False

@@ -66,7 +66,9 @@ async def test_retry_target_w_on_error(utcnow, sleep):
 
     on_error = mock.Mock()
 
-    result = await retry_async.retry_target(target, predicate, range(10), None, on_error=on_error)
+    result = await retry_async.retry_target(
+        target, predicate, range(10), None, on_error=on_error
+    )
 
     assert result == 42
     assert call_count["target"] == 3
@@ -122,11 +124,12 @@ async def test_retry_target_deadline_exceeded(utcnow, sleep):
 @pytest.mark.asyncio
 async def test_retry_target_bad_sleep_generator():
     with pytest.raises(ValueError, match="Sleep generator"):
-        await retry_async.retry_target(mock.sentinel.target, mock.sentinel.predicate, [], None)
+        await retry_async.retry_target(
+            mock.sentinel.target, mock.sentinel.predicate, [], None
+        )
 
 
 class TestAsyncRetry:
-
     def test_constructor_defaults(self):
         retry_ = retry_async.AsyncRetry()
         assert retry_._predicate == retry_async.if_transient_error
@@ -276,7 +279,9 @@ class TestAsyncRetry:
     async def test___call___and_execute_retry(self, sleep, uniform):
 
         on_error = mock.Mock(spec=["__call__"], side_effect=[None])
-        retry_ = retry_async.AsyncRetry(predicate=retry_async.if_exception_type(ValueError))
+        retry_ = retry_async.AsyncRetry(
+            predicate=retry_async.if_exception_type(ValueError)
+        )
 
         target = mock.AsyncMock(spec=["__call__"], side_effect=[ValueError(), 42])
         # __name__ is needed by functools.partial.
@@ -325,6 +330,7 @@ class TestAsyncRetry:
             # time clock.
             def increase_time(sleep_delay):
                 patched_utcnow.return_value += datetime.timedelta(seconds=sleep_delay)
+
             sleep.side_effect = increase_time
 
             with pytest.raises(exceptions.RetryError):
@@ -339,7 +345,7 @@ class TestAsyncRetry:
         last_wait = sleep.call_args.args[0]
         total_wait = sum(call_args.args[0] for call_args in sleep.call_args_list)
 
-        assert last_wait == 2.9   # and not 8.0, because the last delay was shortened
+        assert last_wait == 2.9  # and not 8.0, because the last delay was shortened
         assert total_wait == 9.9  # the same as the deadline
 
     @mock.patch("asyncio.sleep", autospec=True)

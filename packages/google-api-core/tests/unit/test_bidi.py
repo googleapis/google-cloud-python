@@ -121,21 +121,18 @@ class Test_Throttle(object):
     def test_repr(self):
         delta = datetime.timedelta(seconds=4.5)
         instance = bidi._Throttle(access_limit=42, time_window=delta)
-        assert repr(instance) == \
-            "_Throttle(access_limit=42, time_window={})".format(repr(delta))
+        assert repr(instance) == "_Throttle(access_limit=42, time_window={})".format(
+            repr(delta)
+        )
 
     def test_raises_error_on_invalid_init_arguments(self):
         with pytest.raises(ValueError) as exc_info:
-            bidi._Throttle(
-                access_limit=10, time_window=datetime.timedelta(seconds=0.0)
-            )
+            bidi._Throttle(access_limit=10, time_window=datetime.timedelta(seconds=0.0))
         assert "time_window" in str(exc_info.value)
         assert "must be a positive timedelta" in str(exc_info.value)
 
         with pytest.raises(ValueError) as exc_info:
-            bidi._Throttle(
-                access_limit=0, time_window=datetime.timedelta(seconds=10)
-            )
+            bidi._Throttle(access_limit=0, time_window=datetime.timedelta(seconds=10))
         assert "access_limit" in str(exc_info.value)
         assert "must be positive" in str(exc_info.value)
 
@@ -461,7 +458,9 @@ class TestResumableBidiRpc(object):
         )
         should_recover = mock.Mock(spec=["__call__"], return_value=False)
         should_terminate = mock.Mock(spec=["__call__"], return_value=True)
-        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover, should_terminate=should_terminate)
+        bidi_rpc = bidi.ResumableBidiRpc(
+            start_rpc, should_recover, should_terminate=should_terminate
+        )
 
         bidi_rpc.open()
 
@@ -527,7 +526,9 @@ class TestResumableBidiRpc(object):
         )
         should_recover = mock.Mock(spec=["__call__"], return_value=False)
         should_terminate = mock.Mock(spec=["__call__"], return_value=True)
-        bidi_rpc = bidi.ResumableBidiRpc(start_rpc, should_recover, should_terminate=should_terminate)
+        bidi_rpc = bidi.ResumableBidiRpc(
+            start_rpc, should_recover, should_terminate=should_terminate
+        )
 
         bidi_rpc.open()
 

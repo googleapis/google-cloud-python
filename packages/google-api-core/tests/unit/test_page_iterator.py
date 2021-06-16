@@ -150,7 +150,8 @@ class TestIterator(object):
     def test__page_iter_increment(self):
         iterator = PageIteratorImpl(None, None)
         page = page_iterator.Page(
-            iterator, ("item",), page_iterator._item_to_value_identity)
+            iterator, ("item",), page_iterator._item_to_value_identity
+        )
         iterator._next_page = mock.Mock(side_effect=[page, None])
 
         assert iterator.num_results == 0
@@ -180,9 +181,11 @@ class TestIterator(object):
         # Make pages from mock responses
         parent = mock.sentinel.parent
         page1 = page_iterator.Page(
-            parent, (item1, item2), page_iterator._item_to_value_identity)
+            parent, (item1, item2), page_iterator._item_to_value_identity
+        )
         page2 = page_iterator.Page(
-            parent, (item3,), page_iterator._item_to_value_identity)
+            parent, (item3,), page_iterator._item_to_value_identity
+        )
 
         iterator = PageIteratorImpl(None, None)
         iterator._next_page = mock.Mock(side_effect=[page1, page2, None])
@@ -456,7 +459,8 @@ class TestHTTPIterator(object):
 
     @pytest.mark.parametrize(
         "page_size,max_results,pages",
-        [(3, None, False), (3, 8, False), (3, None, True), (3, 8, True)])
+        [(3, None, False), (3, 8, False), (3, None, True), (3, 8, True)],
+    )
     def test_page_size_items(self, page_size, max_results, pages):
         path = "/foo"
         NITEMS = 10
@@ -467,19 +471,20 @@ class TestHTTPIterator(object):
             assert not args
             query_params = dict(
                 maxResults=(
-                    page_size if max_results is None
-                    else min(page_size, max_results - n[0]))
+                    page_size
+                    if max_results is None
+                    else min(page_size, max_results - n[0])
+                )
             )
             if n[0]:
-                query_params.update(pageToken='test')
-            assert kw == {'method': 'GET', 'path': '/foo',
-                          'query_params': query_params}
-            n_items = min(kw['query_params']['maxResults'], NITEMS - n[0])
+                query_params.update(pageToken="test")
+            assert kw == {"method": "GET", "path": "/foo", "query_params": query_params}
+            n_items = min(kw["query_params"]["maxResults"], NITEMS - n[0])
             items = [dict(name=str(i + n[0])) for i in range(n_items)]
             n[0] += n_items
             result = dict(items=items)
             if n[0] < NITEMS:
-                result.update(nextPageToken='test')
+                result.update(nextPageToken="test")
             return result
 
         iterator = page_iterator.HTTPIterator(
@@ -498,13 +503,12 @@ class TestHTTPIterator(object):
             items_iter = iter(iterator.pages)
             npages = int(math.ceil(float(n_results) / page_size))
             for ipage in range(npages):
-                assert (
-                    list(six.next(items_iter)) == [
-                        dict(name=str(i))
-                        for i in range(ipage * page_size,
-                                       min((ipage + 1) * page_size, n_results),
-                                       )
-                    ])
+                assert list(six.next(items_iter)) == [
+                    dict(name=str(i))
+                    for i in range(
+                        ipage * page_size, min((ipage + 1) * page_size, n_results),
+                    )
+                ]
         else:
             items_iter = iter(iterator)
             for i in range(n_results):

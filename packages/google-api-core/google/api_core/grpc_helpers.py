@@ -157,7 +157,9 @@ def _wrap_stream_errors(callable_):
             # hidden flag to see if pre-fetching is disabled.
             # https://github.com/googleapis/python-pubsub/issues/93#issuecomment-630762257
             prefetch_first = getattr(callable_, "_prefetch_first_result_", True)
-            return _StreamingResponseIterator(result, prefetch_first_result=prefetch_first)
+            return _StreamingResponseIterator(
+                result, prefetch_first_result=prefetch_first
+            )
         except grpc.RpcError as exc:
             six.raise_from(exceptions.from_grpc_error(exc), exc)
 
@@ -187,13 +189,14 @@ def wrap_errors(callable_):
 
 
 def _create_composite_credentials(
-        credentials=None,
-        credentials_file=None,
-        default_scopes=None,
-        scopes=None,
-        ssl_credentials=None,
-        quota_project_id=None,
-        default_host=None):
+    credentials=None,
+    credentials_file=None,
+    default_scopes=None,
+    scopes=None,
+    ssl_credentials=None,
+    quota_project_id=None,
+    default_host=None,
+):
     """Create the composite credentials for secure channels.
 
     Args:
@@ -227,20 +230,20 @@ def _create_composite_credentials(
 
     if credentials_file:
         credentials, _ = google.auth.load_credentials_from_file(
-            credentials_file,
-            scopes=scopes,
-            default_scopes=default_scopes
+            credentials_file, scopes=scopes, default_scopes=default_scopes
         )
     elif credentials:
         credentials = google.auth.credentials.with_scopes_if_required(
-            credentials,
-            scopes=scopes,
-            default_scopes=default_scopes
+            credentials, scopes=scopes, default_scopes=default_scopes
         )
     else:
-        credentials, _ = google.auth.default(scopes=scopes, default_scopes=default_scopes)
+        credentials, _ = google.auth.default(
+            scopes=scopes, default_scopes=default_scopes
+        )
 
-    if quota_project_id and isinstance(credentials, google.auth.credentials.CredentialsWithQuotaProject):
+    if quota_project_id and isinstance(
+        credentials, google.auth.credentials.CredentialsWithQuotaProject
+    ):
         credentials = credentials.with_quota_project(quota_project_id)
 
     request = google.auth.transport.requests.Request()
@@ -257,21 +260,20 @@ def _create_composite_credentials(
         ssl_credentials = grpc.ssl_channel_credentials()
 
     # Combine the ssl credentials and the authorization credentials.
-    return grpc.composite_channel_credentials(
-        ssl_credentials, google_auth_credentials
-    )
+    return grpc.composite_channel_credentials(ssl_credentials, google_auth_credentials)
 
 
 def create_channel(
-        target,
-        credentials=None,
-        scopes=None,
-        ssl_credentials=None,
-        credentials_file=None,
-        quota_project_id=None,
-        default_scopes=None,
-        default_host=None,
-        **kwargs):
+    target,
+    credentials=None,
+    scopes=None,
+    ssl_credentials=None,
+    credentials_file=None,
+    quota_project_id=None,
+    default_scopes=None,
+    default_host=None,
+    **kwargs
+):
     """Create a secure channel with credentials.
 
     Args:

@@ -386,6 +386,7 @@ class TestRetry(object):
             # time clock.
             def increase_time(sleep_delay):
                 patched_utcnow.return_value += datetime.timedelta(seconds=sleep_delay)
+
             sleep.side_effect = increase_time
 
             with pytest.raises(exceptions.RetryError):
@@ -400,7 +401,7 @@ class TestRetry(object):
         last_wait = sleep.call_args.args[0]
         total_wait = sum(call_args.args[0] for call_args in sleep.call_args_list)
 
-        assert last_wait == 2.9   # and not 8.0, because the last delay was shortened
+        assert last_wait == 2.9  # and not 8.0, because the last delay was shortened
         assert total_wait == 9.9  # the same as the deadline
 
     @mock.patch("time.sleep", autospec=True)

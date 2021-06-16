@@ -19,16 +19,16 @@ pagination, and long-running operations to gRPC methods.
 
 from google.api_core import general_helpers, grpc_helpers_async
 from google.api_core.gapic_v1 import client_info
-from google.api_core.gapic_v1.method import (_GapicCallable,  # noqa: F401
-                                             DEFAULT,
-                                             USE_DEFAULT_METADATA)
+from google.api_core.gapic_v1.method import _GapicCallable
+from google.api_core.gapic_v1.method import DEFAULT  # noqa: F401
+from google.api_core.gapic_v1.method import USE_DEFAULT_METADATA  # noqa: F401
 
 
 def wrap_method(
-        func,
-        default_retry=None,
-        default_timeout=None,
-        client_info=client_info.DEFAULT_CLIENT_INFO,
+    func,
+    default_retry=None,
+    default_timeout=None,
+    client_info=client_info.DEFAULT_CLIENT_INFO,
 ):
     """Wrap an async RPC method with common behavior.
 
@@ -41,5 +41,6 @@ def wrap_method(
 
     metadata = [client_info.to_grpc_metadata()] if client_info is not None else None
 
-    return general_helpers.wraps(func)(_GapicCallable(
-        func, default_retry, default_timeout, metadata=metadata))
+    return general_helpers.wraps(func)(
+        _GapicCallable(func, default_retry, default_timeout, metadata=metadata)
+    )

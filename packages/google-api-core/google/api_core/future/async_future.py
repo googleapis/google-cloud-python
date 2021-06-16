@@ -24,6 +24,7 @@ from google.api_core.future import base
 
 class _OperationNotComplete(Exception):
     """Private exception used for polling via retry."""
+
     pass
 
 
@@ -145,7 +146,9 @@ class AsyncFuture(base.Future):
                 is complete.
         """
         if self._background_task is None:
-            self._background_task = asyncio.get_event_loop().create_task(self._blocking_poll())
+            self._background_task = asyncio.get_event_loop().create_task(
+                self._blocking_poll()
+            )
         self._future.add_done_callback(fn)
 
     def set_result(self, result):
