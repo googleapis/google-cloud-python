@@ -1,7 +1,7 @@
 Python Client for Managed Service for Microsoft Active Directory
 ================================================================
 
-|beta| |pypi| |versions|
+|GA| |pypi| |versions|
 
 `Managed Service for Microsoft Active Directory`_ (AD) is a highly available,
 hardened Google Cloud service running actual Microsoft AD that enables you to
@@ -12,8 +12,8 @@ on-premises AD domain to the cloud.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-managed-identities.svg
    :target: https://pypi.org/project/google-cloud-managed-identities/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-managed-identities.svg
