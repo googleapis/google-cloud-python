@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.7.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.6.0...v0.7.0) (2021-06-16)
+
+
+### Features
+
+* **v3beta1:** Support partial response feature ([5e21ed4](https://www.github.com/googleapis/python-dialogflow-cx/commit/5e21ed454ad6a5d687e634ad4e697f1921104c47))
+* **v3beta1:** support sentiment analysis in bot testing ([#100](https://www.github.com/googleapis/python-dialogflow-cx/issues/100)) ([f24f302](https://www.github.com/googleapis/python-dialogflow-cx/commit/f24f3028fa83da14614d1340e5bce7719be287b6))
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#104](https://www.github.com/googleapis/python-dialogflow-cx/issues/104)) ([2ddb70b](https://www.github.com/googleapis/python-dialogflow-cx/commit/2ddb70b5825ad0d59165d7dfbfe36677d586cccf))
+* **v3beta1:** Set agent default language code as required ([#103](https://www.github.com/googleapis/python-dialogflow-cx/issues/103)) ([5e21ed4](https://www.github.com/googleapis/python-dialogflow-cx/commit/5e21ed454ad6a5d687e634ad4e697f1921104c47))
+
+
+### Documentation
+
+* **v3beta1:** Update docs of Agents, Fulfillments, SecuritySettings and Sessions ([5e21ed4](https://www.github.com/googleapis/python-dialogflow-cx/commit/5e21ed454ad6a5d687e634ad4e697f1921104c47))
+
 ## [0.6.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.5.0...v0.6.0) (2021-06-07)
 
 
