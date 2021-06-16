@@ -3,6 +3,18 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.3.0](https://www.github.com/googleapis/python-webrisk/compare/v1.2.0...v1.3.0) (2021-06-01)
+
+
+### Features
+
+* bump release level to production/stable ([#81](https://www.github.com/googleapis/python-webrisk/issues/81)) ([0946b75](https://www.github.com/googleapis/python-webrisk/commit/0946b753e9371a4f275035cf35b11fd6b5b5464e)), closes [#20](https://www.github.com/googleapis/python-webrisk/issues/20)
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#82](https://www.github.com/googleapis/python-webrisk/issues/82)) ([4ec0245](https://www.github.com/googleapis/python-webrisk/commit/4ec0245957d14816bd3ed293e617f5cf830850f4))
+
 ## [1.2.0](https://www.github.com/googleapis/python-webrisk/compare/v1.1.0...v1.2.0) (2021-03-31)
 
 
