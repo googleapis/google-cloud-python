@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.2](https://www.github.com/googleapis/python-gke-hub/compare/v0.1.1...v0.1.2) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#37](https://www.github.com/googleapis/python-gke-hub/issues/37)) ([65eee87](https://www.github.com/googleapis/python-gke-hub/commit/65eee87a7f48cce25cc89fdedaf383de0fdc4247))
+
 ### [0.1.1](https://www.github.com/googleapis/python-gke-hub/compare/v0.1.0...v0.1.1) (2021-05-27)
 
 
