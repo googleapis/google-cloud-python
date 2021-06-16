@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.1](https://www.github.com/googleapis/python-private-catalog/compare/v0.1.0...v0.1.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#5](https://www.github.com/googleapis/python-private-catalog/issues/5)) ([70b28c9](https://www.github.com/googleapis/python-private-catalog/commit/70b28c9a34c9bfa2a4529c6a7752c107f6d0dfe1))
+
 ## 0.1.0 (2021-06-03)
 
 
