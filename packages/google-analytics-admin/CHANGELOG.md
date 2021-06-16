@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/python-analytics-admin/compare/v0.3.0...v0.3.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#78](https://www.github.com/googleapis/python-analytics-admin/issues/78)) ([680a695](https://www.github.com/googleapis/python-analytics-admin/commit/680a695e446c979e30542cd4dc563028b126aef5))
+
 ## [0.3.0](https://www.github.com/googleapis/python-analytics-admin/compare/v1.0.0...v0.3.0) (2021-06-09)
 
 
