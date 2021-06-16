@@ -1,7 +1,7 @@
 Python Client for Organization Policy
 =================================================
 
-|beta| |pypi| |versions|
+|GA| |pypi| |versions|
 
 `Organization Policy`_: The Organization Policy API allows users to configure governance rules on their GCP
 resources across the Cloud Resource Hierarchy.
@@ -9,8 +9,8 @@ resources across the Cloud Resource Hierarchy.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-org-policy.svg
    :target: https://pypi.org/project/google-cloud-org-policy/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-org-policy.svg
