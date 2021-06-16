@@ -14,5 +14,4 @@
 
 docker:
   image: gcr.io/repo-automation-bots/owlbot-python:latest
-
-begin-after-commit-hash: ee56c3493ec6aeb237ff515ecea949710944a20f
+  digest: sha256:c66ba3c8d7bc8566f47df841f98cd0097b28fff0b1864c86f5817f4c8c3e8600
