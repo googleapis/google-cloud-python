@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-dataproc-metastore/compare/v0.2.0...v0.2.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#33](https://www.github.com/googleapis/python-dataproc-metastore/issues/33)) ([dfaec68](https://www.github.com/googleapis/python-dataproc-metastore/commit/dfaec68833ded607fd0514d73b10e0d33dc26c72))
+
 ## [0.2.0](https://www.github.com/googleapis/python-dataproc-metastore/compare/v0.1.0...v0.2.0) (2021-06-02)
 
 
