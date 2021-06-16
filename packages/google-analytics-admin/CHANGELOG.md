@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.2](https://www.github.com/googleapis/python-analytics-admin/compare/v0.3.1...v0.3.2) (2021-06-16)
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#80](https://www.github.com/googleapis/python-analytics-admin/issues/80)) ([6d99bcc](https://www.github.com/googleapis/python-analytics-admin/commit/6d99bcc3e940e4f6bc857e7d4ede53e01537c7ec))
+
 ### [0.3.1](https://www.github.com/googleapis/python-analytics-admin/compare/v0.3.0...v0.3.1) (2021-06-16)
 
 
