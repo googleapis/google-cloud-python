@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-workflows/compare/v1.0.0...v1.1.0) (2021-06-16)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([1165c47](https://www.github.com/googleapis/python-workflows/commit/1165c47754c62c4538e254c59909aaa50190dbde))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([1165c47](https://www.github.com/googleapis/python-workflows/commit/1165c47754c62c4538e254c59909aaa50190dbde))
+
 ## [1.0.0](https://www.github.com/googleapis/python-workflows/compare/v0.3.0...v1.0.0) (2021-06-02)
 
 
