@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.6.1](https://www.github.com/googleapis/python-functions/compare/v0.6.0...v0.6.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#69](https://www.github.com/googleapis/python-functions/issues/69)) ([c75b52b](https://www.github.com/googleapis/python-functions/commit/c75b52bcc46d13f8f5ad61b91d5b7ced9c1b1e15))
+
 ## [0.6.0](https://www.github.com/googleapis/python-functions/compare/v0.5.1...v0.6.0) (2021-05-28)
 
 
