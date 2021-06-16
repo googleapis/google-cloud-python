@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.7.1](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.7.0...v0.7.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#105](https://www.github.com/googleapis/python-dialogflow-cx/issues/105)) ([5d47692](https://www.github.com/googleapis/python-dialogflow-cx/commit/5d476920c8c6825050a828896231542f6bfde2e2))
+
 ## [0.7.0](https://www.github.com/googleapis/python-dialogflow-cx/compare/v0.6.0...v0.7.0) (2021-06-16)
 
 
