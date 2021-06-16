@@ -36,7 +36,11 @@ setuptools.setup(
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
     url="https://github.com/googleapis/python-analytics-data",
-    packages=setuptools.PEP420PackageFinder.find(),
+    packages=[
+        package
+        for package in setuptools.PEP420PackageFinder.find()
+        if package.startswith("google")
+    ],
     namespace_packages=("google", "google.analytics"),
     platforms="Posix; MacOS X; Windows",
     include_package_data=True,
