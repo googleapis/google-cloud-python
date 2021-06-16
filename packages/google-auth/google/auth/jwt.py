@@ -525,8 +525,9 @@ class Credentials(
             "sub": self._subject,
             "iat": _helpers.datetime_to_secs(now),
             "exp": _helpers.datetime_to_secs(expiry),
-            "aud": self._audience,
         }
+        if self._audience:
+            payload["aud"] = self._audience
 
         payload.update(self._additional_claims)
 

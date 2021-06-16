@@ -390,6 +390,18 @@ class TestCredentials(object):
         assert new_credentials._additional_claims == self.credentials._additional_claims
         assert new_credentials._quota_project_id == self.credentials._quota_project_id
 
+    def test__make_jwt_without_audience(self):
+        cred = jwt.Credentials.from_service_account_info(
+            SERVICE_ACCOUNT_INFO.copy(),
+            subject=self.SUBJECT,
+            audience=None,
+            additional_claims={"scope": "foo bar"},
+        )
+        token, _ = cred._make_jwt()
+        payload = jwt.decode(token, PUBLIC_CERT_BYTES)
+        assert payload["scope"] == "foo bar"
+        assert "aud" not in payload
+
     def test_with_quota_project(self):
         quota_project_id = "project-foo"
 

@@ -155,6 +155,13 @@ class TestCredentials(object):
         new_credentials.apply(hdrs, token="tok")
         assert "x-goog-user-project" in hdrs
 
+    def test__with_always_use_jwt_access(self):
+        credentials = self.make_credentials()
+        assert not credentials._always_use_jwt_access
+
+        new_credentials = credentials.with_always_use_jwt_access(True)
+        assert new_credentials._always_use_jwt_access
+
     def test__make_authorization_grant_assertion(self):
         credentials = self.make_credentials()
         token = credentials._make_authorization_grant_assertion()
@@ -223,6 +230,65 @@ class TestCredentials(object):
         credentials._create_self_signed_jwt(audience)
 
         # JWT should not be created if there are user-defined scopes
+        jwt.from_signing_credentials.assert_not_called()
+
+    @mock.patch("google.auth.jwt.Credentials", instance=True, autospec=True)
+    def test__create_self_signed_jwt_always_use_jwt_access_with_audience(self, jwt):
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.TOKEN_URI,
+            default_scopes=["bar", "foo"],
+            always_use_jwt_access=True,
+        )
+
+        audience = "https://pubsub.googleapis.com"
+        credentials._create_self_signed_jwt(audience)
+        jwt.from_signing_credentials.assert_called_once_with(credentials, audience)
+
+    @mock.patch("google.auth.jwt.Credentials", instance=True, autospec=True)
+    def test__create_self_signed_jwt_always_use_jwt_access_with_scopes(self, jwt):
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.TOKEN_URI,
+            scopes=["bar", "foo"],
+            always_use_jwt_access=True,
+        )
+
+        audience = "https://pubsub.googleapis.com"
+        credentials._create_self_signed_jwt(audience)
+        jwt.from_signing_credentials.assert_called_once_with(
+            credentials, None, additional_claims={"scope": "bar foo"}
+        )
+
+    @mock.patch("google.auth.jwt.Credentials", instance=True, autospec=True)
+    def test__create_self_signed_jwt_always_use_jwt_access_with_default_scopes(
+        self, jwt
+    ):
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.TOKEN_URI,
+            default_scopes=["bar", "foo"],
+            always_use_jwt_access=True,
+        )
+
+        credentials._create_self_signed_jwt(None)
+        jwt.from_signing_credentials.assert_called_once_with(
+            credentials, None, additional_claims={"scope": "bar foo"}
+        )
+
+    @mock.patch("google.auth.jwt.Credentials", instance=True, autospec=True)
+    def test__create_self_signed_jwt_always_use_jwt_access(self, jwt):
+        credentials = service_account.Credentials(
+            SIGNER,
+            self.SERVICE_ACCOUNT_EMAIL,
+            self.TOKEN_URI,
+            always_use_jwt_access=True,
+        )
+
+        credentials._create_self_signed_jwt(None)
         jwt.from_signing_credentials.assert_not_called()
 
     @mock.patch("google.oauth2._client.jwt_grant", autospec=True)

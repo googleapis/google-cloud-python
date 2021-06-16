@@ -378,7 +378,7 @@ class TestAuthorizedSession(object):
 
         authed_session = google.auth.transport.requests.AuthorizedSession(credentials)
 
-        authed_session.credentials._create_self_signed_jwt.assert_not_called()
+        authed_session.credentials._create_self_signed_jwt.assert_called_once_with(None)
 
     def test_authorized_session_with_default_host(self):
         default_host = "pubsub.googleapis.com"

@@ -293,13 +293,9 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
 
         # https://google.aip.dev/auth/4111
         # Attempt to use self-signed JWTs when a service account is used.
-        # A default host must be explicitly provided.
-        if (
-            isinstance(self.credentials, service_account.Credentials)
-            and self._default_host
-        ):
+        if isinstance(self.credentials, service_account.Credentials):
             self.credentials._create_self_signed_jwt(
-                "https://{}/".format(self._default_host)
+                "https://{}/".format(self._default_host) if self._default_host else None
             )
 
         super(AuthorizedHttp, self).__init__()

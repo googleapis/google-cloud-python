@@ -111,8 +111,7 @@ class TestAuthMetadataPlugin(object):
 
         plugin._get_authorization_headers(context)
 
-        # self-signed JWT should not be created when default_host is not set
-        credentials._create_self_signed_jwt.assert_not_called()
+        credentials._create_self_signed_jwt.assert_called_once_with(None)
 
     def test__get_authorization_headers_with_service_account_and_default_host(self):
         credentials = mock.create_autospec(service_account.Credentials)

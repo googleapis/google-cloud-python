@@ -131,6 +131,7 @@ class Credentials(
         project_id=None,
         quota_project_id=None,
         additional_claims=None,
+        always_use_jwt_access=False,
     ):
         """
         Args:
@@ -149,6 +150,8 @@ class Credentials(
                 billing.
             additional_claims (Mapping[str, str]): Any additional claims for
                 the JWT assertion used in the authorization grant.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be always used.
 
         .. note:: Typically one of the helper constructors
             :meth:`from_service_account_file` or
@@ -165,6 +168,7 @@ class Credentials(
         self._project_id = project_id
         self._quota_project_id = quota_project_id
         self._token_uri = token_uri
+        self._always_use_jwt_access = always_use_jwt_access
 
         self._jwt_credentials = None
 
@@ -266,6 +270,30 @@ class Credentials(
             project_id=self._project_id,
             quota_project_id=self._quota_project_id,
             additional_claims=self._additional_claims.copy(),
+            always_use_jwt_access=self._always_use_jwt_access,
+        )
+
+    def with_always_use_jwt_access(self, always_use_jwt_access):
+        """Create a copy of these credentials with the specified always_use_jwt_access value.
+
+        Args:
+            always_use_jwt_access (bool): Whether always use self signed JWT or not.
+
+        Returns:
+            google.auth.service_account.Credentials: A new credentials
+                instance.
+        """
+        return self.__class__(
+            self._signer,
+            service_account_email=self._service_account_email,
+            scopes=self._scopes,
+            default_scopes=self._default_scopes,
+            token_uri=self._token_uri,
+            subject=self._subject,
+            project_id=self._project_id,
+            quota_project_id=self._quota_project_id,
+            additional_claims=self._additional_claims.copy(),
+            always_use_jwt_access=always_use_jwt_access,
         )
 
     def with_subject(self, subject):
@@ -288,6 +316,7 @@ class Credentials(
             project_id=self._project_id,
             quota_project_id=self._quota_project_id,
             additional_claims=self._additional_claims.copy(),
+            always_use_jwt_access=self._always_use_jwt_access,
         )
 
     def with_claims(self, additional_claims):
@@ -315,6 +344,7 @@ class Credentials(
             project_id=self._project_id,
             quota_project_id=self._quota_project_id,
             additional_claims=new_additional_claims,
+            always_use_jwt_access=self._always_use_jwt_access,
         )
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
@@ -330,6 +360,7 @@ class Credentials(
             project_id=self._project_id,
             quota_project_id=quota_project_id,
             additional_claims=self._additional_claims.copy(),
+            always_use_jwt_access=self._always_use_jwt_access,
         )
 
     def _make_authorization_grant_assertion(self):
@@ -386,8 +417,22 @@ class Credentials(
             audience (str): The service URL. ``https://[API_ENDPOINT]/``
         """
         # https://google.aip.dev/auth/4111
-        # If the user has not defined scopes, create a self-signed jwt
-        if not self.scopes:
+        if self._always_use_jwt_access:
+            if self._scopes:
+                self._jwt_credentials = jwt.Credentials.from_signing_credentials(
+                    self, None, additional_claims={"scope": " ".join(self._scopes)}
+                )
+            elif audience:
+                self._jwt_credentials = jwt.Credentials.from_signing_credentials(
+                    self, audience
+                )
+            elif self._default_scopes:
+                self._jwt_credentials = jwt.Credentials.from_signing_credentials(
+                    self,
+                    None,
+                    additional_claims={"scope": " ".join(self._default_scopes)},
+                )
+        elif not self._scopes and audience:
             self._jwt_credentials = jwt.Credentials.from_signing_credentials(
                 self, audience
             )

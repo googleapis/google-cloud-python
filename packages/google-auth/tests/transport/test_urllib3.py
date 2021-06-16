@@ -164,7 +164,7 @@ class TestAuthorizedHttp(object):
 
         authed_http = google.auth.transport.urllib3.AuthorizedHttp(credentials)
 
-        authed_http.credentials._create_self_signed_jwt.assert_not_called()
+        authed_http.credentials._create_self_signed_jwt.assert_called_once_with(None)
 
     def test_urlopen_with_default_host(self):
         default_host = "pubsub.googleapis.com"
