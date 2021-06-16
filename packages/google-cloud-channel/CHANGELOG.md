@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/googleapis/python-channel/compare/v1.1.0...v1.1.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#55](https://www.github.com/googleapis/python-channel/issues/55)) ([7747953](https://www.github.com/googleapis/python-channel/commit/7747953eb02ae952108cc9d2dcd66f939e60e115))
+
 ## [1.1.0](https://www.github.com/googleapis/python-channel/compare/v1.0.0...v1.1.0) (2021-06-10)
 
 
