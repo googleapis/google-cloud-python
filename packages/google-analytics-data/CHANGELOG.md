@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.6.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.6.0...v0.6.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#82](https://www.github.com/googleapis/python-analytics-data/issues/82)) ([acd60f1](https://www.github.com/googleapis/python-analytics-data/commit/acd60f15ae2192e54b180776b62ee2ea9fce7d3f))
+
 ## [0.6.0](https://www.github.com/googleapis/python-analytics-data/compare/v0.5.1...v0.6.0) (2021-06-08)
 
 
