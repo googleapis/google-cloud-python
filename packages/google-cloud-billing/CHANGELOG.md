@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.2.1](https://www.github.com/googleapis/python-billing/compare/v1.2.0...v1.2.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#79](https://www.github.com/googleapis/python-billing/issues/79)) ([f2fc441](https://www.github.com/googleapis/python-billing/commit/f2fc4412c677c5648cbe12a86f01699118279a56))
+
 ## [1.2.0](https://www.github.com/googleapis/python-billing/compare/v1.1.1...v1.2.0) (2021-05-28)
 
 
