@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/python-assured-workloads/compare/v0.3.0...v0.3.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#44](https://www.github.com/googleapis/python-assured-workloads/issues/44)) ([d3dda4c](https://www.github.com/googleapis/python-assured-workloads/commit/d3dda4c019cc5fa8877b59d8454273f841a73d88))
+
 ## [0.3.0](https://www.github.com/googleapis/python-assured-workloads/compare/v0.2.1...v0.3.0) (2021-05-28)
 
 
