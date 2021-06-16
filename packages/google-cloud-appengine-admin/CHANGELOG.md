@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-appengine-admin/compare/v1.0.0...v1.0.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#30](https://www.github.com/googleapis/python-appengine-admin/issues/30)) ([16ad4ac](https://www.github.com/googleapis/python-appengine-admin/commit/16ad4acea57a44126d0d954962a15a455dfbdbf0))
+
 ## [1.0.0](https://www.github.com/googleapis/python-appengine-admin/compare/v0.2.0...v1.0.0) (2021-06-02)
 
 
