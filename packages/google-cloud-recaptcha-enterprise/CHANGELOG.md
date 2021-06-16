@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.3](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.3.2...v0.3.3) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#79](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/79)) ([1d39b4b](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/1d39b4bbf30aadafaa407c4911e2368d9330ccef)), closes [#74](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/74)
+
 ### [0.3.2](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.3.1...v0.3.2) (2021-06-09)
 
 
