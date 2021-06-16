@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+### [2.3.2](https://www.github.com/googleapis/python-vision/compare/v2.3.1...v2.3.2) (2021-06-02)
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#147](https://www.github.com/googleapis/python-vision/issues/147)) ([41b88bd](https://www.github.com/googleapis/python-vision/commit/41b88bd482d4d6ec76fc6efc99aa9343496faf72))
+
 ### [2.3.1](https://www.github.com/googleapis/python-vision/compare/v2.3.0...v2.3.1) (2021-04-13)
 
 
