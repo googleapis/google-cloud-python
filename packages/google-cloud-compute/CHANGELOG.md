@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-compute/compare/v0.4.0...v0.4.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#65](https://www.github.com/googleapis/python-compute/issues/65)) ([c157bf5](https://www.github.com/googleapis/python-compute/commit/c157bf507227d7c1c815d5e236e4d710e12fbdec))
+
 ## [0.4.0](https://www.github.com/googleapis/python-compute/compare/v0.3.0...v0.4.0) (2021-06-07)
 
 
