@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.2](https://www.github.com/googleapis/python-artifact-registry/compare/v0.2.1...v0.2.2) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#38](https://www.github.com/googleapis/python-artifact-registry/issues/38)) ([345496f](https://www.github.com/googleapis/python-artifact-registry/commit/345496fbd96d4c780acdb2ee940e530e7d48ab6c))
+
 ### [0.2.1](https://www.github.com/googleapis/python-artifact-registry/compare/v0.2.0...v0.2.1) (2021-06-01)
 
 
