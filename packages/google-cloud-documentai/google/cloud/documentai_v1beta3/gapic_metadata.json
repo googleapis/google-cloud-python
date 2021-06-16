@@ -15,6 +15,36 @@
                 "batch_process_documents"
               ]
             },
+            "CreateProcessor": {
+              "methods": [
+                "create_processor"
+              ]
+            },
+            "DeleteProcessor": {
+              "methods": [
+                "delete_processor"
+              ]
+            },
+            "DisableProcessor": {
+              "methods": [
+                "disable_processor"
+              ]
+            },
+            "EnableProcessor": {
+              "methods": [
+                "enable_processor"
+              ]
+            },
+            "FetchProcessorTypes": {
+              "methods": [
+                "fetch_processor_types"
+              ]
+            },
+            "ListProcessors": {
+              "methods": [
+                "list_processors"
+              ]
+            },
             "ProcessDocument": {
               "methods": [
                 "process_document"
@@ -33,6 +63,36 @@
             "BatchProcessDocuments": {
               "methods": [
                 "batch_process_documents"
+              ]
+            },
+            "CreateProcessor": {
+              "methods": [
+                "create_processor"
+              ]
+            },
+            "DeleteProcessor": {
+              "methods": [
+                "delete_processor"
+              ]
+            },
+            "DisableProcessor": {
+              "methods": [
+                "disable_processor"
+              ]
+            },
+            "EnableProcessor": {
+              "methods": [
+                "enable_processor"
+              ]
+            },
+            "FetchProcessorTypes": {
+              "methods": [
+                "fetch_processor_types"
+              ]
+            },
+            "ListProcessors": {
+              "methods": [
+                "list_processors"
               ]
             },
             "ProcessDocument": {

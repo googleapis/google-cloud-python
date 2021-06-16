@@ -40,6 +40,7 @@ from google.cloud.documentai_v1beta3.services.document_processor_service import 
 from google.cloud.documentai_v1beta3.services.document_processor_service import (
     DocumentProcessorServiceClient,
 )
+from google.cloud.documentai_v1beta3.services.document_processor_service import pagers
 from google.cloud.documentai_v1beta3.services.document_processor_service import (
     transports,
 )
@@ -53,6 +54,9 @@ from google.cloud.documentai_v1beta3.types import document
 from google.cloud.documentai_v1beta3.types import document_io
 from google.cloud.documentai_v1beta3.types import document_processor_service
 from google.cloud.documentai_v1beta3.types import geometry
+from google.cloud.documentai_v1beta3.types import processor
+from google.cloud.documentai_v1beta3.types import processor as gcd_processor
+from google.cloud.documentai_v1beta3.types import processor_type
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
@@ -956,6 +960,1336 @@ async def test_batch_process_documents_flattened_error_async():
         )
 
 
+def test_fetch_processor_types(
+    transport: str = "grpc",
+    request_type=document_processor_service.FetchProcessorTypesRequest,
+):
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_processor_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = document_processor_service.FetchProcessorTypesResponse()
+        response = client.fetch_processor_types(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.FetchProcessorTypesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, document_processor_service.FetchProcessorTypesResponse)
+
+
+def test_fetch_processor_types_from_dict():
+    test_fetch_processor_types(request_type=dict)
+
+
+def test_fetch_processor_types_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_processor_types), "__call__"
+    ) as call:
+        client.fetch_processor_types()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.FetchProcessorTypesRequest()
+
+
+@pytest.mark.asyncio
+async def test_fetch_processor_types_async(
+    transport: str = "grpc_asyncio",
+    request_type=document_processor_service.FetchProcessorTypesRequest,
+):
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_processor_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_processor_service.FetchProcessorTypesResponse()
+        )
+        response = await client.fetch_processor_types(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.FetchProcessorTypesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, document_processor_service.FetchProcessorTypesResponse)
+
+
+@pytest.mark.asyncio
+async def test_fetch_processor_types_async_from_dict():
+    await test_fetch_processor_types_async(request_type=dict)
+
+
+def test_fetch_processor_types_field_headers():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document_processor_service.FetchProcessorTypesRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_processor_types), "__call__"
+    ) as call:
+        call.return_value = document_processor_service.FetchProcessorTypesResponse()
+        client.fetch_processor_types(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_fetch_processor_types_field_headers_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document_processor_service.FetchProcessorTypesRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_processor_types), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_processor_service.FetchProcessorTypesResponse()
+        )
+        await client.fetch_processor_types(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_fetch_processor_types_flattened():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_processor_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = document_processor_service.FetchProcessorTypesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.fetch_processor_types(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].parent == "parent_value"
+
+
+def test_fetch_processor_types_flattened_error():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.fetch_processor_types(
+            document_processor_service.FetchProcessorTypesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_fetch_processor_types_flattened_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_processor_types), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = document_processor_service.FetchProcessorTypesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_processor_service.FetchProcessorTypesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.fetch_processor_types(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].parent == "parent_value"
+
+
+@pytest.mark.asyncio
+async def test_fetch_processor_types_flattened_error_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.fetch_processor_types(
+            document_processor_service.FetchProcessorTypesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_processors(
+    transport: str = "grpc",
+    request_type=document_processor_service.ListProcessorsRequest,
+):
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_processors), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = document_processor_service.ListProcessorsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_processors(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ListProcessorsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListProcessorsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_processors_from_dict():
+    test_list_processors(request_type=dict)
+
+
+def test_list_processors_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_processors), "__call__") as call:
+        client.list_processors()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ListProcessorsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_processors_async(
+    transport: str = "grpc_asyncio",
+    request_type=document_processor_service.ListProcessorsRequest,
+):
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_processors), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_processor_service.ListProcessorsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_processors(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.ListProcessorsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListProcessorsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_processors_async_from_dict():
+    await test_list_processors_async(request_type=dict)
+
+
+def test_list_processors_field_headers():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document_processor_service.ListProcessorsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_processors), "__call__") as call:
+        call.return_value = document_processor_service.ListProcessorsResponse()
+        client.list_processors(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_processors_field_headers_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document_processor_service.ListProcessorsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_processors), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_processor_service.ListProcessorsResponse()
+        )
+        await client.list_processors(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_list_processors_flattened():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_processors), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = document_processor_service.ListProcessorsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_processors(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].parent == "parent_value"
+
+
+def test_list_processors_flattened_error():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_processors(
+            document_processor_service.ListProcessorsRequest(), parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_processors_flattened_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_processors), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = document_processor_service.ListProcessorsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_processor_service.ListProcessorsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_processors(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].parent == "parent_value"
+
+
+@pytest.mark.asyncio
+async def test_list_processors_flattened_error_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_processors(
+            document_processor_service.ListProcessorsRequest(), parent="parent_value",
+        )
+
+
+def test_list_processors_pager():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_processors), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            document_processor_service.ListProcessorsResponse(
+                processors=[
+                    processor.Processor(),
+                    processor.Processor(),
+                    processor.Processor(),
+                ],
+                next_page_token="abc",
+            ),
+            document_processor_service.ListProcessorsResponse(
+                processors=[], next_page_token="def",
+            ),
+            document_processor_service.ListProcessorsResponse(
+                processors=[processor.Processor(),], next_page_token="ghi",
+            ),
+            document_processor_service.ListProcessorsResponse(
+                processors=[processor.Processor(), processor.Processor(),],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_processors(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(isinstance(i, processor.Processor) for i in results)
+
+
+def test_list_processors_pages():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_processors), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            document_processor_service.ListProcessorsResponse(
+                processors=[
+                    processor.Processor(),
+                    processor.Processor(),
+                    processor.Processor(),
+                ],
+                next_page_token="abc",
+            ),
+            document_processor_service.ListProcessorsResponse(
+                processors=[], next_page_token="def",
+            ),
+            document_processor_service.ListProcessorsResponse(
+                processors=[processor.Processor(),], next_page_token="ghi",
+            ),
+            document_processor_service.ListProcessorsResponse(
+                processors=[processor.Processor(), processor.Processor(),],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_processors(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_processors_async_pager():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_processors), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            document_processor_service.ListProcessorsResponse(
+                processors=[
+                    processor.Processor(),
+                    processor.Processor(),
+                    processor.Processor(),
+                ],
+                next_page_token="abc",
+            ),
+            document_processor_service.ListProcessorsResponse(
+                processors=[], next_page_token="def",
+            ),
+            document_processor_service.ListProcessorsResponse(
+                processors=[processor.Processor(),], next_page_token="ghi",
+            ),
+            document_processor_service.ListProcessorsResponse(
+                processors=[processor.Processor(), processor.Processor(),],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_processors(request={},)
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, processor.Processor) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_processors_async_pages():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_processors), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            document_processor_service.ListProcessorsResponse(
+                processors=[
+                    processor.Processor(),
+                    processor.Processor(),
+                    processor.Processor(),
+                ],
+                next_page_token="abc",
+            ),
+            document_processor_service.ListProcessorsResponse(
+                processors=[], next_page_token="def",
+            ),
+            document_processor_service.ListProcessorsResponse(
+                processors=[processor.Processor(),], next_page_token="ghi",
+            ),
+            document_processor_service.ListProcessorsResponse(
+                processors=[processor.Processor(), processor.Processor(),],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_processors(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_create_processor(
+    transport: str = "grpc",
+    request_type=document_processor_service.CreateProcessorRequest,
+):
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_processor), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcd_processor.Processor(
+            name="name_value",
+            type_="type__value",
+            display_name="display_name_value",
+            state=gcd_processor.Processor.State.ENABLED,
+            default_processor_version="default_processor_version_value",
+            process_endpoint="process_endpoint_value",
+            kms_key_name="kms_key_name_value",
+        )
+        response = client.create_processor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.CreateProcessorRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_processor.Processor)
+    assert response.name == "name_value"
+    assert response.type_ == "type__value"
+    assert response.display_name == "display_name_value"
+    assert response.state == gcd_processor.Processor.State.ENABLED
+    assert response.default_processor_version == "default_processor_version_value"
+    assert response.process_endpoint == "process_endpoint_value"
+    assert response.kms_key_name == "kms_key_name_value"
+
+
+def test_create_processor_from_dict():
+    test_create_processor(request_type=dict)
+
+
+def test_create_processor_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_processor), "__call__") as call:
+        client.create_processor()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.CreateProcessorRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_processor_async(
+    transport: str = "grpc_asyncio",
+    request_type=document_processor_service.CreateProcessorRequest,
+):
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_processor), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_processor.Processor(
+                name="name_value",
+                type_="type__value",
+                display_name="display_name_value",
+                state=gcd_processor.Processor.State.ENABLED,
+                default_processor_version="default_processor_version_value",
+                process_endpoint="process_endpoint_value",
+                kms_key_name="kms_key_name_value",
+            )
+        )
+        response = await client.create_processor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.CreateProcessorRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, gcd_processor.Processor)
+    assert response.name == "name_value"
+    assert response.type_ == "type__value"
+    assert response.display_name == "display_name_value"
+    assert response.state == gcd_processor.Processor.State.ENABLED
+    assert response.default_processor_version == "default_processor_version_value"
+    assert response.process_endpoint == "process_endpoint_value"
+    assert response.kms_key_name == "kms_key_name_value"
+
+
+@pytest.mark.asyncio
+async def test_create_processor_async_from_dict():
+    await test_create_processor_async(request_type=dict)
+
+
+def test_create_processor_field_headers():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document_processor_service.CreateProcessorRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_processor), "__call__") as call:
+        call.return_value = gcd_processor.Processor()
+        client.create_processor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_processor_field_headers_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document_processor_service.CreateProcessorRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_processor), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_processor.Processor()
+        )
+        await client.create_processor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_create_processor_flattened():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_processor), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcd_processor.Processor()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_processor(
+            parent="parent_value", processor=gcd_processor.Processor(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].parent == "parent_value"
+        assert args[0].processor == gcd_processor.Processor(name="name_value")
+
+
+def test_create_processor_flattened_error():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_processor(
+            document_processor_service.CreateProcessorRequest(),
+            parent="parent_value",
+            processor=gcd_processor.Processor(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_processor_flattened_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_processor), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gcd_processor.Processor()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_processor.Processor()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_processor(
+            parent="parent_value", processor=gcd_processor.Processor(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].parent == "parent_value"
+        assert args[0].processor == gcd_processor.Processor(name="name_value")
+
+
+@pytest.mark.asyncio
+async def test_create_processor_flattened_error_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_processor(
+            document_processor_service.CreateProcessorRequest(),
+            parent="parent_value",
+            processor=gcd_processor.Processor(name="name_value"),
+        )
+
+
+def test_delete_processor(
+    transport: str = "grpc",
+    request_type=document_processor_service.DeleteProcessorRequest,
+):
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_processor), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_processor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.DeleteProcessorRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_processor_from_dict():
+    test_delete_processor(request_type=dict)
+
+
+def test_delete_processor_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_processor), "__call__") as call:
+        client.delete_processor()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.DeleteProcessorRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_processor_async(
+    transport: str = "grpc_asyncio",
+    request_type=document_processor_service.DeleteProcessorRequest,
+):
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_processor), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_processor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.DeleteProcessorRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_processor_async_from_dict():
+    await test_delete_processor_async(request_type=dict)
+
+
+def test_delete_processor_field_headers():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document_processor_service.DeleteProcessorRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_processor), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_processor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_processor_field_headers_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document_processor_service.DeleteProcessorRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_processor), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_processor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_delete_processor_flattened():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_processor), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_processor(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].name == "name_value"
+
+
+def test_delete_processor_flattened_error():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_processor(
+            document_processor_service.DeleteProcessorRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_processor_flattened_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_processor), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_processor(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_delete_processor_flattened_error_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_processor(
+            document_processor_service.DeleteProcessorRequest(), name="name_value",
+        )
+
+
+def test_enable_processor(
+    transport: str = "grpc",
+    request_type=document_processor_service.EnableProcessorRequest,
+):
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.enable_processor), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.enable_processor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.EnableProcessorRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_enable_processor_from_dict():
+    test_enable_processor(request_type=dict)
+
+
+def test_enable_processor_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.enable_processor), "__call__") as call:
+        client.enable_processor()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.EnableProcessorRequest()
+
+
+@pytest.mark.asyncio
+async def test_enable_processor_async(
+    transport: str = "grpc_asyncio",
+    request_type=document_processor_service.EnableProcessorRequest,
+):
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.enable_processor), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.enable_processor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.EnableProcessorRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_enable_processor_async_from_dict():
+    await test_enable_processor_async(request_type=dict)
+
+
+def test_enable_processor_field_headers():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document_processor_service.EnableProcessorRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.enable_processor), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.enable_processor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_enable_processor_field_headers_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document_processor_service.EnableProcessorRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.enable_processor), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.enable_processor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_disable_processor(
+    transport: str = "grpc",
+    request_type=document_processor_service.DisableProcessorRequest,
+):
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_processor), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.disable_processor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.DisableProcessorRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_disable_processor_from_dict():
+    test_disable_processor(request_type=dict)
+
+
+def test_disable_processor_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_processor), "__call__"
+    ) as call:
+        client.disable_processor()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.DisableProcessorRequest()
+
+
+@pytest.mark.asyncio
+async def test_disable_processor_async(
+    transport: str = "grpc_asyncio",
+    request_type=document_processor_service.DisableProcessorRequest,
+):
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_processor), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.disable_processor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_processor_service.DisableProcessorRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_disable_processor_async_from_dict():
+    await test_disable_processor_async(request_type=dict)
+
+
+def test_disable_processor_field_headers():
+    client = DocumentProcessorServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document_processor_service.DisableProcessorRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_processor), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.disable_processor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_disable_processor_field_headers_async():
+    client = DocumentProcessorServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = document_processor_service.DisableProcessorRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.disable_processor), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.disable_processor(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
 def test_review_document(
     transport: str = "grpc",
     request_type=document_processor_service.ReviewDocumentRequest,
@@ -1277,6 +2611,12 @@ def test_document_processor_service_base_transport():
     methods = (
         "process_document",
         "batch_process_documents",
+        "fetch_processor_types",
+        "list_processors",
+        "create_processor",
+        "delete_processor",
+        "enable_processor",
+        "disable_processor",
         "review_document",
     )
     for method in methods:
@@ -1785,8 +3125,34 @@ def test_parse_processor_path():
     assert expected == actual
 
 
+def test_processor_type_path():
+    project = "squid"
+    location = "clam"
+    processor_type = "whelk"
+    expected = "projects/{project}/locations/{location}/processorTypes/{processor_type}".format(
+        project=project, location=location, processor_type=processor_type,
+    )
+    actual = DocumentProcessorServiceClient.processor_type_path(
+        project, location, processor_type
+    )
+    assert expected == actual
+
+
+def test_parse_processor_type_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "processor_type": "nudibranch",
+    }
+    path = DocumentProcessorServiceClient.processor_type_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DocumentProcessorServiceClient.parse_processor_type_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -1796,7 +3162,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "mussel",
     }
     path = DocumentProcessorServiceClient.common_billing_account_path(**expected)
 
@@ -1806,7 +3172,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "winkle"
     expected = "folders/{folder}".format(folder=folder,)
     actual = DocumentProcessorServiceClient.common_folder_path(folder)
     assert expected == actual
@@ -1814,7 +3180,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nautilus",
     }
     path = DocumentProcessorServiceClient.common_folder_path(**expected)
 
@@ -1824,7 +3190,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "scallop"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = DocumentProcessorServiceClient.common_organization_path(organization)
     assert expected == actual
@@ -1832,7 +3198,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "abalone",
     }
     path = DocumentProcessorServiceClient.common_organization_path(**expected)
 
@@ -1842,7 +3208,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "squid"
     expected = "projects/{project}".format(project=project,)
     actual = DocumentProcessorServiceClient.common_project_path(project)
     assert expected == actual
@@ -1850,7 +3216,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "clam",
     }
     path = DocumentProcessorServiceClient.common_project_path(**expected)
 
@@ -1860,8 +3226,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -1871,8 +3237,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
     }
     path = DocumentProcessorServiceClient.common_location_path(**expected)
 

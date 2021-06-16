@@ -27,7 +27,20 @@ from .types.document_io import RawDocument
 from .types.document_processor_service import BatchProcessMetadata
 from .types.document_processor_service import BatchProcessRequest
 from .types.document_processor_service import BatchProcessResponse
+from .types.document_processor_service import CreateProcessorRequest
+from .types.document_processor_service import DeleteProcessorMetadata
+from .types.document_processor_service import DeleteProcessorRequest
+from .types.document_processor_service import DisableProcessorMetadata
+from .types.document_processor_service import DisableProcessorRequest
+from .types.document_processor_service import DisableProcessorResponse
+from .types.document_processor_service import EnableProcessorMetadata
+from .types.document_processor_service import EnableProcessorRequest
+from .types.document_processor_service import EnableProcessorResponse
+from .types.document_processor_service import FetchProcessorTypesRequest
+from .types.document_processor_service import FetchProcessorTypesResponse
 from .types.document_processor_service import HumanReviewStatus
+from .types.document_processor_service import ListProcessorsRequest
+from .types.document_processor_service import ListProcessorsResponse
 from .types.document_processor_service import ProcessRequest
 from .types.document_processor_service import ProcessResponse
 from .types.document_processor_service import ReviewDocumentOperationMetadata
@@ -37,6 +50,8 @@ from .types.geometry import BoundingPoly
 from .types.geometry import NormalizedVertex
 from .types.geometry import Vertex
 from .types.operation_metadata import CommonOperationMetadata
+from .types.processor import Processor
+from .types.processor_type import ProcessorType
 
 __all__ = (
     "DocumentProcessorServiceAsyncClient",
@@ -46,16 +61,31 @@ __all__ = (
     "BatchProcessResponse",
     "BoundingPoly",
     "CommonOperationMetadata",
+    "CreateProcessorRequest",
+    "DeleteProcessorMetadata",
+    "DeleteProcessorRequest",
+    "DisableProcessorMetadata",
+    "DisableProcessorRequest",
+    "DisableProcessorResponse",
     "Document",
     "DocumentOutputConfig",
     "DocumentProcessorServiceClient",
+    "EnableProcessorMetadata",
+    "EnableProcessorRequest",
+    "EnableProcessorResponse",
+    "FetchProcessorTypesRequest",
+    "FetchProcessorTypesResponse",
     "GcsDocument",
     "GcsDocuments",
     "GcsPrefix",
     "HumanReviewStatus",
+    "ListProcessorsRequest",
+    "ListProcessorsResponse",
     "NormalizedVertex",
     "ProcessRequest",
     "ProcessResponse",
+    "Processor",
+    "ProcessorType",
     "RawDocument",
     "ReviewDocumentOperationMetadata",
     "ReviewDocumentRequest",

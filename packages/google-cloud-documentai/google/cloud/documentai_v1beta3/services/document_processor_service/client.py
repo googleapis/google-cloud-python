@@ -32,8 +32,14 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.cloud.documentai_v1beta3.services.document_processor_service import pagers
 from google.cloud.documentai_v1beta3.types import document
 from google.cloud.documentai_v1beta3.types import document_processor_service
+from google.cloud.documentai_v1beta3.types import processor
+from google.cloud.documentai_v1beta3.types import processor as gcd_processor
+from google.cloud.documentai_v1beta3.types import processor_type
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import DocumentProcessorServiceTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import DocumentProcessorServiceGrpcTransport
 from .transports.grpc_asyncio import DocumentProcessorServiceGrpcAsyncIOTransport
@@ -192,6 +198,22 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         """Parses a processor path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/processors/(?P<processor>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def processor_type_path(project: str, location: str, processor_type: str,) -> str:
+        """Returns a fully-qualified processor_type string."""
+        return "projects/{project}/locations/{location}/processorTypes/{processor_type}".format(
+            project=project, location=location, processor_type=processor_type,
+        )
+
+    @staticmethod
+    def parse_processor_type_path(path: str) -> Dict[str, str]:
+        """Parses a processor_type path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/processorTypes/(?P<processor_type>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -525,6 +547,467 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         # Done; return the response.
         return response
 
+    def fetch_processor_types(
+        self,
+        request: document_processor_service.FetchProcessorTypesRequest = None,
+        *,
+        parent: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> document_processor_service.FetchProcessorTypesResponse:
+        r"""Fetches processor types.
+
+        Args:
+            request (google.cloud.documentai_v1beta3.types.FetchProcessorTypesRequest):
+                The request object. Request message for fetch processor
+                types.
+            parent (str):
+                Required. The project of processor
+                type to list. Format:
+                projects/{project}/locations/{location}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.documentai_v1beta3.types.FetchProcessorTypesResponse:
+                Response message for fetch processor
+                types.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a document_processor_service.FetchProcessorTypesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, document_processor_service.FetchProcessorTypesRequest
+        ):
+            request = document_processor_service.FetchProcessorTypesRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.fetch_processor_types]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def list_processors(
+        self,
+        request: document_processor_service.ListProcessorsRequest = None,
+        *,
+        parent: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListProcessorsPager:
+        r"""Lists all processors which belong to this project.
+
+        Args:
+            request (google.cloud.documentai_v1beta3.types.ListProcessorsRequest):
+                The request object. Request message for list all
+                processors belongs to a project.
+            parent (str):
+                Required. The parent (project and
+                location) which owns this collection of
+                Processors. Format:
+                projects/{project}/locations/{location}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.documentai_v1beta3.services.document_processor_service.pagers.ListProcessorsPager:
+                Response message for list processors.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a document_processor_service.ListProcessorsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, document_processor_service.ListProcessorsRequest):
+            request = document_processor_service.ListProcessorsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_processors]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListProcessorsPager(
+            method=rpc, request=request, response=response, metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_processor(
+        self,
+        request: document_processor_service.CreateProcessorRequest = None,
+        *,
+        parent: str = None,
+        processor: gcd_processor.Processor = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcd_processor.Processor:
+        r"""Creates a processor from the type processor that the
+        user chose. The processor will be at "ENABLED" state by
+        default after its creation.
+
+        Args:
+            request (google.cloud.documentai_v1beta3.types.CreateProcessorRequest):
+                The request object. Request message for create a
+                processor. Notice this request is sent to a regionalized
+                backend service, and if the processor type is not
+                available on that region, the creation will fail.
+            parent (str):
+                Required. The parent (project and
+                location) under which to create the
+                processor. Format:
+                projects/{project}/locations/{location}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            processor (google.cloud.documentai_v1beta3.types.Processor):
+                Required. The processor to be created, requires
+                [processor_type] and [display_name] to be set. Also, the
+                processor is under CMEK if CMEK fields are set.
+
+                This corresponds to the ``processor`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.documentai_v1beta3.types.Processor:
+                The first-class citizen for
+                DocumentAI. Each processor defines how
+                to extract structural information from a
+                document.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, processor])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a document_processor_service.CreateProcessorRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, document_processor_service.CreateProcessorRequest):
+            request = document_processor_service.CreateProcessorRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if processor is not None:
+                request.processor = processor
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_processor]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Done; return the response.
+        return response
+
+    def delete_processor(
+        self,
+        request: document_processor_service.DeleteProcessorRequest = None,
+        *,
+        name: str = None,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Deletes the processor, unloads all deployed model
+        artifacts if it was enabled and then deletes all
+        artifacts associated with this processor.
+
+        Args:
+            request (google.cloud.documentai_v1beta3.types.DeleteProcessorRequest):
+                The request object. Request message for the delete
+                processor method.
+            name (str):
+                Required. The processor resource name
+                to be deleted.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+                   The JSON representation for Empty is empty JSON
+                   object {}.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Sanity check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a document_processor_service.DeleteProcessorRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, document_processor_service.DeleteProcessorRequest):
+            request = document_processor_service.DeleteProcessorRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_processor]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=document_processor_service.DeleteProcessorMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def enable_processor(
+        self,
+        request: document_processor_service.EnableProcessorRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Enables a processor
+
+        Args:
+            request (google.cloud.documentai_v1beta3.types.EnableProcessorRequest):
+                The request object. Request message for the enable
+                processor method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.documentai_v1beta3.types.EnableProcessorResponse`
+                Response message for the enable processor method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a document_processor_service.EnableProcessorRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, document_processor_service.EnableProcessorRequest):
+            request = document_processor_service.EnableProcessorRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.enable_processor]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            document_processor_service.EnableProcessorResponse,
+            metadata_type=document_processor_service.EnableProcessorMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def disable_processor(
+        self,
+        request: document_processor_service.DisableProcessorRequest = None,
+        *,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Disables a processor
+
+        Args:
+            request (google.cloud.documentai_v1beta3.types.DisableProcessorRequest):
+                The request object. Request message for the disable
+                processor method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.documentai_v1beta3.types.DisableProcessorResponse`
+                Response message for the disable processor method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a document_processor_service.DisableProcessorRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, document_processor_service.DisableProcessorRequest):
+            request = document_processor_service.DisableProcessorRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.disable_processor]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            document_processor_service.DisableProcessorResponse,
+            metadata_type=document_processor_service.DisableProcessorMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def review_document(
         self,
         request: document_processor_service.ReviewDocumentRequest = None,
@@ -540,7 +1023,7 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         Args:
             request (google.cloud.documentai_v1beta3.types.ReviewDocumentRequest):
                 The request object. Request message for review document
-                method.
+                method. Next Id: 6.
             human_review_config (str):
                 Required. The resource name of the
                 HumanReviewConfig that the document will
