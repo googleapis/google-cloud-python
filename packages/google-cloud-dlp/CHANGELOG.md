@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+### [3.1.1](https://www.github.com/googleapis/python-dlp/compare/v3.1.0...v3.1.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#162](https://www.github.com/googleapis/python-dlp/issues/162)) ([e857e15](https://www.github.com/googleapis/python-dlp/commit/e857e1522d9fd59c1b4c5d9936c7371ddf8018b1))
+
 ## [3.1.0](https://www.github.com/googleapis/python-dlp/compare/v3.0.1...v3.1.0) (2021-05-28)
 
 
