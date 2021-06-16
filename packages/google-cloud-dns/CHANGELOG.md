@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dns/#history
 
+### [0.32.3](https://www.github.com/googleapis/python-dns/compare/v0.32.2...v0.32.3) (2021-05-27)
+
+
+### Bug Fixes
+
+* require google-cloud-core >= 1.3.0 ([#38](https://www.github.com/googleapis/python-dns/issues/38)) ([3ba0456](https://www.github.com/googleapis/python-dns/commit/3ba0456e6df34845c8d601d6d359eed98bfc17cf))
+
 ### [0.32.2](https://www.github.com/googleapis/python-dns/compare/v0.32.1...v0.32.2) (2021-02-11)
 
 
