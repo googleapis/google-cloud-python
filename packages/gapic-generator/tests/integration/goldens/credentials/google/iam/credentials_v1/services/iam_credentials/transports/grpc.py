@@ -155,6 +155,7 @@ class IAMCredentialsGrpcTransport(IAMCredentialsTransport):
             scopes=scopes,
             quota_project_id=quota_project_id,
             client_info=client_info,
+            always_use_jwt_access=True,
         )
 
         if not self._grpc_channel:

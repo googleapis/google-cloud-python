@@ -25,6 +25,7 @@ from google.api_core import gapic_v1    # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.oauth2 import service_account # type: ignore
 
 from google.cloud.redis_v1.types import cloud_redis
 from google.longrunning import operations_pb2  # type: ignore
@@ -64,6 +65,7 @@ class CloudRedisTransport(abc.ABC):
             scopes: Optional[Sequence[str]] = None,
             quota_project_id: Optional[str] = None,
             client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
             **kwargs,
             ) -> None:
         """Instantiate the transport.
@@ -87,6 +89,8 @@ class CloudRedisTransport(abc.ABC):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ':' not in host:
@@ -112,6 +116,10 @@ class CloudRedisTransport(abc.ABC):
 
         elif credentials is None:
             credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
+
+        # If the credentials is service account credentials, then always try to use self signed JWT.
+        if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
+            credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
         self._credentials = credentials

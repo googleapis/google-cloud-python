@@ -119,6 +119,19 @@ def test_{{ service.client_name|snake_case }}_from_service_account_info(client_c
     {{ service.async_client_name }},
     {% endif %}
 ])
+def test_{{ service.client_name|snake_case }}_service_account_always_use_jwt(client_class):
+    with mock.patch.object(service_account.Credentials, 'with_always_use_jwt_access', create=True) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        client = client_class(credentials=creds)
+        use_jwt.assert_called_with(True)
+
+
+@pytest.mark.parametrize("client_class", [
+    {{ service.client_name }},
+    {% if 'grpc' in opts.transport %}
+    {{ service.async_client_name }},
+    {% endif %}
+])
 def test_{{ service.client_name|snake_case }}_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(service_account.Credentials, 'from_service_account_file') as factory:
