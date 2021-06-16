@@ -57,6 +57,12 @@ class TestAsyncCollectionReference(aiounittest.AsyncTestCase):
         # ``AsyncCollectionReference``.
         self.assertLessEqual(query_methods, collection_methods)
 
+    def test_document_name_default(self):
+        client = _make_client()
+        document = client.collection("test").document()
+        # name is random, but assert it is not None
+        self.assertTrue(document.id is not None)
+
     def test_constructor(self):
         collection_id1 = "rooms"
         document_id = "roomA"
