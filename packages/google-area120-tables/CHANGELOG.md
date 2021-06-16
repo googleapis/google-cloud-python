@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/python-area120-tables/compare/v0.3.0...v0.3.1) (2021-06-16)
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#52](https://www.github.com/googleapis/python-area120-tables/issues/52)) ([da319aa](https://www.github.com/googleapis/python-area120-tables/commit/da319aa3611e82602a4085a7b4472b2ad074b0a7))
+
 ## [0.3.0](https://www.github.com/googleapis/python-area120-tables/compare/v0.2.0...v0.3.0) (2021-05-28)
 
 
