@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.0.2](https://www.github.com/googleapis/python-appengine-admin/compare/v1.0.1...v1.0.2) (2021-06-16)
+
+
+### Bug Fixes
+
+* fix typo in setup.py ([#32](https://www.github.com/googleapis/python-appengine-admin/issues/32)) ([1a749ef](https://www.github.com/googleapis/python-appengine-admin/commit/1a749effe4873c759a1630c0d836bafa193856c6))
+
 ### [1.0.1](https://www.github.com/googleapis/python-appengine-admin/compare/v1.0.0...v1.0.1) (2021-06-16)
 
 
