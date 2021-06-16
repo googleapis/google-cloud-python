@@ -271,7 +271,7 @@ def blacken(session):
 def docs(session):
     """Build the docs."""
 
-    session.install("ipython", "recommonmark", "sphinx", "sphinx_rtd_theme")
+    session.install("ipython", "recommonmark", "sphinx==4.0.1", "sphinx_rtd_theme")
     session.install("google-cloud-storage")
     session.install("-e", ".[all]")
 
@@ -295,7 +295,9 @@ def docfx(session):
     """Build the docfx yaml files for this library."""
 
     session.install("-e", ".")
-    session.install("sphinx", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml")
+    session.install(
+        "sphinx==4.0.1", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml"
+    )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
