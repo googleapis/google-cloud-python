@@ -36,7 +36,11 @@ setuptools.setup(
     author_email="googleapis-packages@google.com",
     license="Apache 2.0",
     url="https://github.com/googleapis/python-domains",
-    packages=setuptools.PEP420PackageFinder.find(),
+    packages=[
+        package
+        for package in setuptools.PEP420PackageFinder.find()
+        if package.startswith("google")
+    ],
     include_package_data=True,
     install_requires=(
         "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
