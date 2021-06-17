@@ -599,12 +599,13 @@ class ComponentReflectionTest(_ComponentReflectionTest):
 
             if not schema:
                 # test_needs_fk is at the moment to force MySQL InnoDB
-                # noncol_idx_test_nopk = Table(
-                #     "noncol_idx_test_nopk",
-                #     metadata,
-                #     Column("q", sqlalchemy.String(5)),
-                #     test_needs_fk=True,
-                # )
+                noncol_idx_test_nopk = Table(
+                    "noncol_idx_test_nopk",
+                    metadata,
+                    Column("id", sqlalchemy.Integer, primary_key=True),
+                    Column("q", sqlalchemy.String(5)),
+                    test_needs_fk=True,
+                )
 
                 noncol_idx_test_pk = Table(
                     "noncol_idx_test_pk",
@@ -615,7 +616,7 @@ class ComponentReflectionTest(_ComponentReflectionTest):
                 )
 
                 if testing.requires.indexes_with_ascdesc.enabled:
-                    # Index("noncol_idx_nopk", noncol_idx_test_nopk.c.q.desc())
+                    sqlalchemy.Index("noncol_idx_nopk", noncol_idx_test_nopk.c.q.desc())
                     sqlalchemy.Index("noncol_idx_pk", noncol_idx_test_pk.c.q.desc())
 
         if testing.requires.view_column_reflection.enabled:
