@@ -80,9 +80,9 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-access-approval"
-copyright = u"2019, Google"
-author = u"Google APIs"
+project = "google-cloud-access-approval"
+copyright = "2019, Google"
+author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -281,7 +281,7 @@ latex_documents = [
     (
         master_doc,
         "google-cloud-access-approval.tex",
-        u"google-cloud-access-approval Documentation",
+        "google-cloud-access-approval Documentation",
         author,
         "manual",
     )
@@ -316,7 +316,7 @@ man_pages = [
     (
         master_doc,
         "google-cloud-access-approval",
-        u"google-cloud-access-approval Documentation",
+        "google-cloud-access-approval Documentation",
         [author],
         1,
     )
@@ -335,7 +335,7 @@ texinfo_documents = [
     (
         master_doc,
         "google-cloud-access-approval",
-        u"google-cloud-access-approval Documentation",
+        "google-cloud-access-approval Documentation",
         author,
         "google-cloud-access-approval",
         "google-cloud-access-approval Library",
