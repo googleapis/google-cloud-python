@@ -18,15 +18,10 @@ from contextlib import contextmanager
 
 from google.api_core.exceptions import GoogleAPICallError
 from google.cloud.spanner_v1 import SpannerClient
-from google.cloud.spanner_dbapi.exceptions import IntegrityError
-from google.cloud.spanner_dbapi.exceptions import InterfaceError
-from google.cloud.spanner_dbapi.exceptions import OperationalError
-from google.cloud.spanner_dbapi.exceptions import ProgrammingError
 
 try:
     from opentelemetry import trace
-    from opentelemetry.trace.status import Status, StatusCanonicalCode
-    from opentelemetry.instrumentation.utils import http_status_to_canonical_code
+    from opentelemetry.trace.status import Status, StatusCode
 
     HAS_OPENTELEMETRY_INSTALLED = True
 except ImportError:
@@ -45,6 +40,7 @@ def trace_call(name, extra_attributes=None):
     # Set base attributes that we know for every trace created
     attributes = {
         "db.type": "spanner",
+        "db.engine": "sqlalchemy_spanner",
         "db.url": SpannerClient.DEFAULT_ENDPOINT,
         "net.host.name": SpannerClient.DEFAULT_ENDPOINT,
     }
@@ -56,20 +52,9 @@ def trace_call(name, extra_attributes=None):
         name, kind=trace.SpanKind.CLIENT, attributes=attributes
     ) as span:
         try:
+            span.set_status(Status(StatusCode.OK))
             yield span
-        except (ValueError, InterfaceError) as e:
-            span.set_status(Status(StatusCanonicalCode.UNKNOWN, e.args[0]))
         except GoogleAPICallError as error:
-            if error.code is not None:
-                span.set_status(Status(http_status_to_canonical_code(error.code)))
-            elif error.grpc_status_code is not None:
-                span.set_status(
-                    # OpenTelemetry's StatusCanonicalCode maps 1-1 with grpc status
-                    # codes
-                    Status(StatusCanonicalCode(error.grpc_status_code.value[0]))
-                )
+            span.set_status(Status(StatusCode.ERROR))
+            span.record_exception(error)
             raise
-        except (IntegrityError, ProgrammingError, OperationalError) as e:
-            span.set_status(
-                Status(http_status_to_canonical_code(e.args[0].code), e.args[0].message)
-            )

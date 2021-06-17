@@ -22,9 +22,9 @@ description = "SQLAlchemy dialect integrated into Cloud Spanner database"
 dependencies = ["sqlalchemy>=1.1.13, <=1.3.23", "google-cloud-spanner>=3.3.0"]
 extras = {
     "tracing": [
-        "opentelemetry-api==0.11b0",
-        "opentelemetry-sdk==0.11b0",
-        "opentelemetry-instrumentation==0.11b0",
+        "opentelemetry-api >= 1.1.0",
+        "opentelemetry-sdk >= 1.1.0",
+        "opentelemetry-instrumentation >= 0.20b0",
     ]
 }
 
