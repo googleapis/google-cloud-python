@@ -80,9 +80,9 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-dns"
-copyright = u"2019, Google"
-author = u"Google APIs"
+project = "google-cloud-dns"
+copyright = "2019, Google"
+author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -281,7 +281,7 @@ latex_documents = [
     (
         master_doc,
         "google-cloud-dns.tex",
-        u"google-cloud-dns Documentation",
+        "google-cloud-dns Documentation",
         author,
         "manual",
     )
@@ -313,7 +313,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, "google-cloud-dns", u"google-cloud-dns Documentation", [author], 1,)
+    (master_doc, "google-cloud-dns", "google-cloud-dns Documentation", [author], 1,)
 ]
 
 # If true, show URL addresses after external links.
@@ -329,7 +329,7 @@ texinfo_documents = [
     (
         master_doc,
         "google-cloud-dns",
-        u"google-cloud-dns Documentation",
+        "google-cloud-dns Documentation",
         author,
         "google-cloud-dns",
         "google-cloud-dns Library",
