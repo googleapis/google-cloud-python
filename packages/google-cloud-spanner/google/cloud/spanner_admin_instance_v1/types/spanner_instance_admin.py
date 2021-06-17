@@ -128,6 +128,11 @@ class Instance(proto.Message):
             See `the
             documentation <https://cloud.google.com/spanner/docs/instances#node_count>`__
             for more information about nodes.
+        processing_units (int):
+            The number of processing units allocated to this instance.
+            At most one of processing_units or node_count should be
+            present in the message. This may be zero in API responses
+            for instances that are not yet in state ``READY``.
         state (google.cloud.spanner_admin_instance_v1.types.Instance.State):
             Output only. The current instance state. For
             [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance],
@@ -177,6 +182,7 @@ class Instance(proto.Message):
     config = proto.Field(proto.STRING, number=2,)
     display_name = proto.Field(proto.STRING, number=3,)
     node_count = proto.Field(proto.INT32, number=5,)
+    processing_units = proto.Field(proto.INT32, number=9,)
     state = proto.Field(proto.ENUM, number=6, enum=State,)
     labels = proto.MapField(proto.STRING, proto.STRING, number=7,)
     endpoint_uris = proto.RepeatedField(proto.STRING, number=8,)

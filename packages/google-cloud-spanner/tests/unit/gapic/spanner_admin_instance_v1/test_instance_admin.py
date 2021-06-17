@@ -1488,6 +1488,7 @@ def test_get_instance(
             config="config_value",
             display_name="display_name_value",
             node_count=1070,
+            processing_units=1743,
             state=spanner_instance_admin.Instance.State.CREATING,
             endpoint_uris=["endpoint_uris_value"],
         )
@@ -1504,6 +1505,7 @@ def test_get_instance(
     assert response.config == "config_value"
     assert response.display_name == "display_name_value"
     assert response.node_count == 1070
+    assert response.processing_units == 1743
     assert response.state == spanner_instance_admin.Instance.State.CREATING
     assert response.endpoint_uris == ["endpoint_uris_value"]
 
@@ -1549,6 +1551,7 @@ async def test_get_instance_async(
                 config="config_value",
                 display_name="display_name_value",
                 node_count=1070,
+                processing_units=1743,
                 state=spanner_instance_admin.Instance.State.CREATING,
                 endpoint_uris=["endpoint_uris_value"],
             )
@@ -1566,6 +1569,7 @@ async def test_get_instance_async(
     assert response.config == "config_value"
     assert response.display_name == "display_name_value"
     assert response.node_count == 1070
+    assert response.processing_units == 1743
     assert response.state == spanner_instance_admin.Instance.State.CREATING
     assert response.endpoint_uris == ["endpoint_uris_value"]
 
