@@ -134,6 +134,13 @@ def test_publish_with_batch_settings(topic_path, capsys):
     assert f"Published messages with batch settings to {topic_path}." in out
 
 
+def test_publish_with_flow_control_settings(topic_path, capsys):
+    publisher.publish_messages_with_flow_control_settings(PROJECT_ID, TOPIC_ID)
+
+    out, _ = capsys.readouterr()
+    assert f"Published messages with flow control settings to {topic_path}." in out
+
+
 def test_publish_with_retry_settings(topic_path, capsys):
     publisher.publish_messages_with_retry_settings(PROJECT_ID, TOPIC_ID)
 
