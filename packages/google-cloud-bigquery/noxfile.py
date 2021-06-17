@@ -142,6 +142,9 @@ def system(session):
     else:
         session.install("google-cloud-storage", "-c", constraints_path)
 
+    # Data Catalog needed for the column ACL test with a real Policy Tag.
+    session.install("google-cloud-datacatalog", "-c", constraints_path)
+
     session.install("-e", ".[all]", "-c", constraints_path)
     session.install("ipython", "-c", constraints_path)
 
@@ -211,6 +214,7 @@ def prerelease_deps(session):
     session.install("--pre", "grpcio", "pandas")
     session.install(
         "freezegun",
+        "google-cloud-datacatalog",
         "google-cloud-storage",
         "google-cloud-testutils",
         "IPython",
