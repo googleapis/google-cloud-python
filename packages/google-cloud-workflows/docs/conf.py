@@ -80,9 +80,9 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-workflows"
-copyright = u"2019, Google"
-author = u"Google APIs"
+project = "google-cloud-workflows"
+copyright = "2019, Google"
+author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -281,7 +281,7 @@ latex_documents = [
     (
         master_doc,
         "google-cloud-workflows.tex",
-        u"google-cloud-workflows Documentation",
+        "google-cloud-workflows Documentation",
         author,
         "manual",
     )
@@ -316,7 +316,7 @@ man_pages = [
     (
         master_doc,
         "google-cloud-workflows",
-        u"google-cloud-workflows Documentation",
+        "google-cloud-workflows Documentation",
         [author],
         1,
     )
@@ -335,7 +335,7 @@ texinfo_documents = [
     (
         master_doc,
         "google-cloud-workflows",
-        u"google-cloud-workflows Documentation",
+        "google-cloud-workflows Documentation",
         author,
         "google-cloud-workflows",
         "google-cloud-workflows Library",
