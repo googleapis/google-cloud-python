@@ -80,9 +80,9 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-dialogflow"
-copyright = u"2019, Google"
-author = u"Google APIs"
+project = "google-cloud-dialogflow"
+copyright = "2019, Google"
+author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -281,7 +281,7 @@ latex_documents = [
     (
         master_doc,
         "google-cloud-dialogflow.tex",
-        u"google-cloud-dialogflow Documentation",
+        "google-cloud-dialogflow Documentation",
         author,
         "manual",
     )
@@ -316,7 +316,7 @@ man_pages = [
     (
         master_doc,
         "google-cloud-dialogflow",
-        u"google-cloud-dialogflow Documentation",
+        "google-cloud-dialogflow Documentation",
         [author],
         1,
     )
@@ -335,7 +335,7 @@ texinfo_documents = [
     (
         master_doc,
         "google-cloud-dialogflow",
-        u"google-cloud-dialogflow Documentation",
+        "google-cloud-dialogflow Documentation",
         author,
         "google-cloud-dialogflow",
         "google-cloud-dialogflow Library",
