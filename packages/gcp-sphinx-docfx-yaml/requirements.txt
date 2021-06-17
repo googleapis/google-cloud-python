@@ -1,4 +1,5 @@
 # google-resumable-media-python requires manual update as this repo isn't templated.
+sphinxcontrib.napoleon 
 sphinx==4.0.2
 -e .
 tox

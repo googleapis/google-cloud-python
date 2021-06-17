@@ -182,3 +182,22 @@ class Foo(object):
         :param tuple arg1: Parameter arg1 of :meth:`conflict.foo.Foo.method_default_value_comma`, default value is (1,2,3).
         """
         pass
+
+    def snapshot(self, **kw):
+        """Create a snapshot to perform a set of reads with shared staleness.
+
+        See
+        https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.TransactionOptions.ReadOnly
+
+        :type kw: dict
+        :param kw: Passed through to
+                   :class:`~google.cloud.spanner_v1.snapshot.Snapshot` ctor.
+
+        :rtype: :class:`~google.cloud.spanner_v1.snapshot.Snapshot`
+        :returns: a snapshot bound to this session
+        :raises ValueError: if the session has not yet been created.
+        """
+        if self._session_id is None:
+            raise ValueError("Session has not been created.")
+
+        return Snapshot(self, **kw)

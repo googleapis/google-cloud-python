@@ -36,6 +36,8 @@ def function(arg1, arg2, arg3, arg4):
 class Foo(object):
     """ Docstring of :class:`format.google.foo.Foo` class in google format.
 
+    Testing for xref with new regex: :class:`google.spanner.v1.types.ExecuteSqlRequest.QueryMode` class.
+
     Attributes:
         attr (:class:`~format.rst.enum.EnumFoo`): Docstring of :any:`format.google.foo.Foo.attr` from class docstring.
 
