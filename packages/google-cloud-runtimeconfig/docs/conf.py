@@ -80,9 +80,9 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-runtimeconfig"
-copyright = u"2019, Google"
-author = u"Google APIs"
+project = "google-cloud-runtimeconfig"
+copyright = "2019, Google"
+author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -281,7 +281,7 @@ latex_documents = [
     (
         master_doc,
         "google-cloud-runtimeconfig.tex",
-        u"google-cloud-runtimeconfig Documentation",
+        "google-cloud-runtimeconfig Documentation",
         author,
         "manual",
     )
@@ -316,7 +316,7 @@ man_pages = [
     (
         master_doc,
         "google-cloud-runtimeconfig",
-        u"google-cloud-runtimeconfig Documentation",
+        "google-cloud-runtimeconfig Documentation",
         [author],
         1,
     )
@@ -335,7 +335,7 @@ texinfo_documents = [
     (
         master_doc,
         "google-cloud-runtimeconfig",
-        u"google-cloud-runtimeconfig Documentation",
+        "google-cloud-runtimeconfig Documentation",
         author,
         "google-cloud-runtimeconfig",
         "google-cloud-runtimeconfig Library",
