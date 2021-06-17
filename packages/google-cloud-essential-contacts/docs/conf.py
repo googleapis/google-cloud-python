@@ -80,9 +80,9 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-essential-contacts"
-copyright = u"2019, Google"
-author = u"Google APIs"
+project = "google-cloud-essential-contacts"
+copyright = "2019, Google"
+author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -281,7 +281,7 @@ latex_documents = [
     (
         master_doc,
         "google-cloud-essential-contacts.tex",
-        u"google-cloud-essential-contacts Documentation",
+        "google-cloud-essential-contacts Documentation",
         author,
         "manual",
     )
@@ -316,7 +316,7 @@ man_pages = [
     (
         master_doc,
         "google-cloud-essential-contacts",
-        u"google-cloud-essential-contacts Documentation",
+        "google-cloud-essential-contacts Documentation",
         [author],
         1,
     )
@@ -335,7 +335,7 @@ texinfo_documents = [
     (
         master_doc,
         "google-cloud-essential-contacts",
-        u"google-cloud-essential-contacts Documentation",
+        "google-cloud-essential-contacts Documentation",
         author,
         "google-cloud-essential-contacts",
         "google-cloud-essential-contacts Library",
