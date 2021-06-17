@@ -80,9 +80,9 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-bigquery-logging"
-copyright = u"2019, Google"
-author = u"Google APIs"
+project = "google-cloud-bigquery-logging"
+copyright = "2019, Google"
+author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -281,7 +281,7 @@ latex_documents = [
     (
         master_doc,
         "google-cloud-bigquery-logging.tex",
-        u"google-cloud-bigquery-logging Documentation",
+        "google-cloud-bigquery-logging Documentation",
         author,
         "manual",
     )
@@ -316,7 +316,7 @@ man_pages = [
     (
         master_doc,
         "google-cloud-bigquery-logging",
-        u"google-cloud-bigquery-logging Documentation",
+        "google-cloud-bigquery-logging Documentation",
         [author],
         1,
     )
@@ -335,7 +335,7 @@ texinfo_documents = [
     (
         master_doc,
         "google-cloud-bigquery-logging",
-        u"google-cloud-bigquery-logging Documentation",
+        "google-cloud-bigquery-logging Documentation",
         author,
         "google-cloud-bigquery-logging",
         "google-cloud-bigquery-logging Library",
