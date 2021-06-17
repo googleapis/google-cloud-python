@@ -80,9 +80,9 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-analytics-admin"
-copyright = u"2019, Google"
-author = u"Google APIs"
+project = "google-analytics-admin"
+copyright = "2019, Google"
+author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -281,7 +281,7 @@ latex_documents = [
     (
         master_doc,
         "google-analytics-admin.tex",
-        u"google-analytics-admin Documentation",
+        "google-analytics-admin Documentation",
         author,
         "manual",
     )
@@ -316,7 +316,7 @@ man_pages = [
     (
         master_doc,
         "google-analytics-admin",
-        u"google-analytics-admin Documentation",
+        "google-analytics-admin Documentation",
         [author],
         1,
     )
@@ -335,7 +335,7 @@ texinfo_documents = [
     (
         master_doc,
         "google-analytics-admin",
-        u"google-analytics-admin Documentation",
+        "google-analytics-admin Documentation",
         author,
         "google-analytics-admin",
         "google-analytics-admin Library",
