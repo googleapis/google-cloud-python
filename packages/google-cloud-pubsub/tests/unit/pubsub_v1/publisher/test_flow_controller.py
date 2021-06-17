@@ -16,10 +16,14 @@ from __future__ import absolute_import
 
 import threading
 import time
+from typing import Callable
+from typing import Sequence
+from typing import Union
 import warnings
 
 import pytest
 
+import google
 from google.cloud.pubsub_v1 import types
 from google.cloud.pubsub_v1.publisher import exceptions
 from google.cloud.pubsub_v1.publisher.flow_controller import FlowController
@@ -27,25 +31,20 @@ from google.pubsub_v1 import types as grpc_types
 
 
 def _run_in_daemon(
-    flow_controller,
-    action,
-    messages,
-    all_done_event,
-    error_event=None,
-    action_pause=None,
+    action: Callable[["google.cloud.pubsub_v1.types.PubsubMessage"], None],
+    messages: Sequence["google.cloud.pubsub_v1.types.PubsubMessage"],
+    all_done_event: threading.Event,
+    error_event: threading.Event = None,
+    action_pause: Union[int, float] = None,
 ):
-    """Run flow controller action (add or remove messages) in a daemon thread.
-    """
-    assert action in ("add", "release")
+    """Run flow controller action (add or remove messages) in a daemon thread."""
 
     def run_me():
-        method = getattr(flow_controller, action)
-
         try:
             for msg in messages:
                 if action_pause is not None:
                     time.sleep(action_pause)
-                method(msg)
+                action(msg)
         except Exception:
             if error_event is not None:  # pragma: NO COVER
                 error_event.set()
@@ -227,7 +226,7 @@ def test_blocking_on_overflow_until_free_capacity():
     releasing_x_done = threading.Event()
 
     # Adding a message with free capacity should not block.
-    _run_in_daemon(flow_controller, "add", [msg1], adding_1_done)
+    _run_in_daemon(flow_controller.add, [msg1], adding_1_done)
     if not adding_1_done.wait(timeout=0.1):
         pytest.fail(  # pragma: NO COVER
             "Adding a message with enough flow capacity blocked or errored."
@@ -235,21 +234,21 @@ def test_blocking_on_overflow_until_free_capacity():
 
     # Adding messages when there is not enough capacity should block, even if
     # added through multiple threads.
-    _run_in_daemon(flow_controller, "add", [msg2], adding_2_done)
+    _run_in_daemon(flow_controller.add, [msg2], adding_2_done)
     if adding_2_done.wait(timeout=0.1):
         pytest.fail("Adding a message on overflow did not block.")  # pragma: NO COVER
 
-    _run_in_daemon(flow_controller, "add", [msg3], adding_3_done)
+    _run_in_daemon(flow_controller.add, [msg3], adding_3_done)
     if adding_3_done.wait(timeout=0.1):
         pytest.fail("Adding a message on overflow did not block.")  # pragma: NO COVER
 
-    _run_in_daemon(flow_controller, "add", [msg4], adding_4_done)
+    _run_in_daemon(flow_controller.add, [msg4], adding_4_done)
     if adding_4_done.wait(timeout=0.1):
         pytest.fail("Adding a message on overflow did not block.")  # pragma: NO COVER
 
     # After releasing one message, there should be room for a new message, which
     # should result in unblocking one of the waiting threads.
-    _run_in_daemon(flow_controller, "release", [msg1], releasing_1_done)
+    _run_in_daemon(flow_controller.release, [msg1], releasing_1_done)
     if not releasing_1_done.wait(timeout=0.1):
         pytest.fail("Releasing a message blocked or errored.")  # pragma: NO COVER
 
@@ -266,7 +265,7 @@ def test_blocking_on_overflow_until_free_capacity():
 
     # Release another message and verify that yet another thread gets unblocked.
     added_msg = [msg2, msg3, msg4][done_status.index(True)]
-    _run_in_daemon(flow_controller, "release", [added_msg], releasing_x_done)
+    _run_in_daemon(flow_controller.release, [added_msg], releasing_x_done)
 
     if not releasing_x_done.wait(timeout=0.1):
         pytest.fail("Releasing messages blocked or errored.")  # pragma: NO COVER
@@ -293,7 +292,7 @@ def test_error_if_mesage_would_block_indefinitely():
     adding_done = threading.Event()
     error_event = threading.Event()
 
-    _run_in_daemon(flow_controller, "add", [msg], adding_done, error_event=error_event)
+    _run_in_daemon(flow_controller.add, [msg], adding_done, error_event=error_event)
 
     assert error_event.wait(timeout=0.1), "No error on adding too large a message."
 
@@ -329,20 +328,20 @@ def test_threads_posting_large_messages_do_not_starve():
     # enough messages should eventually allow the large message to come through, even
     # if more messages are added after it (those should wait for the large message).
     initial_messages = [grpc_types.PubsubMessage(data=b"x" * 10)] * 5
-    _run_in_daemon(flow_controller, "add", initial_messages, adding_initial_done)
+    _run_in_daemon(flow_controller.add, initial_messages, adding_initial_done)
     assert adding_initial_done.wait(timeout=0.1)
 
-    _run_in_daemon(flow_controller, "add", [large_msg], adding_large_done)
+    _run_in_daemon(flow_controller.add, [large_msg], adding_large_done)
 
     # Continuously keep adding more messages after the large one.
     messages = [grpc_types.PubsubMessage(data=b"x" * 10)] * 10
-    _run_in_daemon(flow_controller, "add", messages, adding_busy_done, action_pause=0.1)
+    _run_in_daemon(flow_controller.add, messages, adding_busy_done, action_pause=0.1)
 
     # At the same time, gradually keep releasing the messages - the freeed up
     # capacity should be consumed by the large message, not the other small messages
     # being added after it.
     _run_in_daemon(
-        flow_controller, "release", messages, releasing_busy_done, action_pause=0.1
+        flow_controller.release, messages, releasing_busy_done, action_pause=0.1
     )
 
     # Sanity check - releasing should have completed by now.
@@ -359,12 +358,47 @@ def test_threads_posting_large_messages_do_not_starve():
 
     # Releasing the large message should unblock adding the remaining "busy" messages
     # that have not been added yet.
-    _run_in_daemon(flow_controller, "release", [large_msg], releasing_large_done)
+    _run_in_daemon(flow_controller.release, [large_msg], releasing_large_done)
     if not releasing_large_done.wait(timeout=0.1):
         pytest.fail("Releasing a message blocked or errored.")  # pragma: NO COVER
 
     if not adding_busy_done.wait(timeout=1.0):
         pytest.fail("Adding messages blocked or errored.")  # pragma: NO COVER
+
+
+def test_blocked_messages_are_accepted_in_fifo_order():
+    settings = types.PublishFlowControl(
+        message_limit=1,
+        byte_limit=1_000_000,  # Unlimited for practical purposes in the test.
+        limit_exceeded_behavior=types.LimitExceededBehavior.BLOCK,
+    )
+    flow_controller = FlowController(settings)
+
+    # It's OK if the message instance is shared, as flow controlelr is only concerned
+    # with byte sizes and counts, and not with particular message instances.
+    message = grpc_types.PubsubMessage(data=b"x")
+
+    adding_done_events = [threading.Event() for _ in range(10)]
+    releasing_done_events = [threading.Event() for _ in adding_done_events]
+
+    # Add messages. The first one will be accepted, and the rest should queue behind.
+    for adding_done in adding_done_events:
+        _run_in_daemon(flow_controller.add, [message], adding_done)
+        time.sleep(0.1)
+
+    if not adding_done_events[0].wait(timeout=0.1):  # pragma: NO COVER
+        pytest.fail("The first message unexpectedly got blocked on adding.")
+
+    # For each message, check that it has indeed been added to the flow controller.
+    # Then release it to make room for the next message in line, and repeat the check.
+    enumeration = enumerate(zip(adding_done_events, releasing_done_events))
+    for i, (adding_done, releasing_done) in enumeration:
+        if not adding_done.wait(timeout=0.1):  # pragma: NO COVER
+            pytest.fail(f"Queued message still blocked on adding (i={i}).")
+
+        _run_in_daemon(flow_controller.release, [message], releasing_done)
+        if not releasing_done.wait(timeout=0.1):  # pragma: NO COVER
+            pytest.fail(f"Queued message was not released in time (i={i}).")
 
 
 def test_warning_on_internal_reservation_stats_error_when_unblocking():
@@ -387,7 +421,7 @@ def test_warning_on_internal_reservation_stats_error_when_unblocking():
     releasing_1_done = threading.Event()
 
     # Adding a message with free capacity should not block.
-    _run_in_daemon(flow_controller, "add", [msg1], adding_1_done)
+    _run_in_daemon(flow_controller.add, [msg1], adding_1_done)
     if not adding_1_done.wait(timeout=0.1):
         pytest.fail(  # pragma: NO COVER
             "Adding a message with enough flow capacity blocked or errored."
@@ -395,17 +429,17 @@ def test_warning_on_internal_reservation_stats_error_when_unblocking():
 
     # Adding messages when there is not enough capacity should block, even if
     # added through multiple threads.
-    _run_in_daemon(flow_controller, "add", [msg2], adding_2_done)
+    _run_in_daemon(flow_controller.add, [msg2], adding_2_done)
     if adding_2_done.wait(timeout=0.1):
         pytest.fail("Adding a message on overflow did not block.")  # pragma: NO COVER
 
     # Intentionally corrupt internal stats
-    reservation = next(iter(flow_controller._byte_reservations.values()), None)
+    reservation = next(iter(flow_controller._waiting.values()), None)
     assert reservation is not None, "No messages blocked by flow controller."
-    reservation.reserved = reservation.needed + 1
+    reservation.bytes_reserved = reservation.bytes_needed + 1
 
     with warnings.catch_warnings(record=True) as warned:
-        _run_in_daemon(flow_controller, "release", [msg1], releasing_1_done)
+        _run_in_daemon(flow_controller.release, [msg1], releasing_1_done)
         if not releasing_1_done.wait(timeout=0.1):
             pytest.fail("Releasing a message blocked or errored.")  # pragma: NO COVER
 
