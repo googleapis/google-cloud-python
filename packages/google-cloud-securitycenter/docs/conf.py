@@ -80,9 +80,9 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-securitycenter"
-copyright = u"2019, Google"
-author = u"Google APIs"
+project = "google-cloud-securitycenter"
+copyright = "2019, Google"
+author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -281,7 +281,7 @@ latex_documents = [
     (
         master_doc,
         "google-cloud-securitycenter.tex",
-        u"google-cloud-securitycenter Documentation",
+        "google-cloud-securitycenter Documentation",
         author,
         "manual",
     )
@@ -316,7 +316,7 @@ man_pages = [
     (
         master_doc,
         "google-cloud-securitycenter",
-        u"google-cloud-securitycenter Documentation",
+        "google-cloud-securitycenter Documentation",
         [author],
         1,
     )
@@ -335,7 +335,7 @@ texinfo_documents = [
     (
         master_doc,
         "google-cloud-securitycenter",
-        u"google-cloud-securitycenter Documentation",
+        "google-cloud-securitycenter Documentation",
         author,
         "google-cloud-securitycenter",
         "google-cloud-securitycenter Library",
