@@ -481,6 +481,149 @@ class UnicodeTextTest(UnicodeFixtureTest, _UnicodeTextTest):
 
 class ComponentReflectionTest(_ComponentReflectionTest):
     @classmethod
+    def define_reflected_tables(cls, metadata, schema):
+        if schema:
+            schema_prefix = schema + "."
+        else:
+            schema_prefix = ""
+
+        if testing.requires.self_referential_foreign_keys.enabled:
+            users = Table(
+                "users",
+                metadata,
+                Column("user_id", sqlalchemy.INT, primary_key=True),
+                Column("test1", sqlalchemy.CHAR(5), nullable=False),
+                Column("test2", sqlalchemy.Float(5), nullable=False),
+                Column(
+                    "parent_user_id",
+                    sqlalchemy.Integer,
+                    sqlalchemy.ForeignKey(
+                        "%susers.user_id" % schema_prefix, name="user_id_fk"
+                    ),
+                ),
+                schema=schema,
+                test_needs_fk=True,
+            )
+        else:
+            users = Table(
+                "users",
+                metadata,
+                Column("user_id", sqlalchemy.INT, primary_key=True),
+                Column("test1", sqlalchemy.CHAR(5), nullable=False),
+                Column("test2", sqlalchemy.Float(5), nullable=False),
+                schema=schema,
+                test_needs_fk=True,
+            )
+
+        Table(
+            "dingalings",
+            metadata,
+            Column("dingaling_id", sqlalchemy.Integer, primary_key=True),
+            Column(
+                "address_id",
+                sqlalchemy.Integer,
+                sqlalchemy.ForeignKey("%semail_addresses.address_id" % schema_prefix),
+            ),
+            Column("data", sqlalchemy.String(30)),
+            schema=schema,
+            test_needs_fk=True,
+        )
+        Table(
+            "email_addresses",
+            metadata,
+            Column("address_id", sqlalchemy.Integer, primary_key=True),
+            Column(
+                "remote_user_id",
+                sqlalchemy.Integer,
+                sqlalchemy.ForeignKey(users.c.user_id),
+            ),
+            Column("email_address", sqlalchemy.String(20)),
+            sqlalchemy.PrimaryKeyConstraint("address_id", name="email_ad_pk"),
+            schema=schema,
+            test_needs_fk=True,
+        )
+        Table(
+            "comment_test",
+            metadata,
+            Column("id", sqlalchemy.Integer, primary_key=True, comment="id comment"),
+            Column("data", sqlalchemy.String(20), comment="data % comment"),
+            Column(
+                "d2",
+                sqlalchemy.String(20),
+                comment=r"""Comment types type speedily ' " \ '' Fun!""",
+            ),
+            schema=schema,
+            comment=r"""the test % ' " \ table comment""",
+        )
+
+        if testing.requires.cross_schema_fk_reflection.enabled:
+            if schema is None:
+                Table(
+                    "local_table",
+                    metadata,
+                    Column("id", sqlalchemy.Integer, primary_key=True),
+                    Column("data", sqlalchemy.String(20)),
+                    Column(
+                        "remote_id",
+                        ForeignKey("%s.remote_table_2.id" % testing.config.test_schema),
+                    ),
+                    test_needs_fk=True,
+                    schema=config.db.dialect.default_schema_name,
+                )
+            else:
+                Table(
+                    "remote_table",
+                    metadata,
+                    Column("id", sqlalchemy.Integer, primary_key=True),
+                    Column(
+                        "local_id",
+                        ForeignKey(
+                            "%s.local_table.id" % config.db.dialect.default_schema_name
+                        ),
+                    ),
+                    Column("data", sqlalchemy.String(20)),
+                    schema=schema,
+                    test_needs_fk=True,
+                )
+                Table(
+                    "remote_table_2",
+                    metadata,
+                    Column("id", sqlalchemy.Integer, primary_key=True),
+                    Column("data", sqlalchemy.String(20)),
+                    schema=schema,
+                    test_needs_fk=True,
+                )
+
+        if testing.requires.index_reflection.enabled:
+            cls.define_index(metadata, users)
+
+            if not schema:
+                # test_needs_fk is at the moment to force MySQL InnoDB
+                # noncol_idx_test_nopk = Table(
+                #     "noncol_idx_test_nopk",
+                #     metadata,
+                #     Column("q", sqlalchemy.String(5)),
+                #     test_needs_fk=True,
+                # )
+
+                noncol_idx_test_pk = Table(
+                    "noncol_idx_test_pk",
+                    metadata,
+                    Column("id", sqlalchemy.Integer, primary_key=True),
+                    Column("q", sqlalchemy.String(5)),
+                    test_needs_fk=True,
+                )
+
+                if testing.requires.indexes_with_ascdesc.enabled:
+                    # Index("noncol_idx_nopk", noncol_idx_test_nopk.c.q.desc())
+                    sqlalchemy.Index("noncol_idx_pk", noncol_idx_test_pk.c.q.desc())
+
+        if testing.requires.view_column_reflection.enabled:
+            cls.define_views(metadata, schema)
+        if not schema and testing.requires.temp_table_reflection.enabled:
+            cls.define_temp_tables(metadata)
+
+    @classmethod
     def define_temp_tables(cls, metadata):
         """
         SPANNER OVERRIDE:
@@ -573,6 +716,7 @@ class ComponentReflectionTest(_ComponentReflectionTest):
         Table(
             "testtbl",
             orig_meta,
+            Column("id", sqlalchemy.Integer, primary_key=True),
             Column("a", sqlalchemy.String(20)),
             Column("b", sqlalchemy.String(30)),
             Column("c", sqlalchemy.Integer),
