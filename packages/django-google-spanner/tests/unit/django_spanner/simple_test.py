@@ -7,13 +7,16 @@
 from django_spanner.client import DatabaseClient
 from django_spanner.base import DatabaseWrapper
 from django_spanner.operations import DatabaseOperations
-from unittest import TestCase
+
+# from unittest import TestCase
+from tests._helpers import OpenTelemetryBase
 import os
 
 
-class SpannerSimpleTestClass(TestCase):
+class SpannerSimpleTestClass(OpenTelemetryBase):
     @classmethod
     def setUpClass(cls):
+        super(SpannerSimpleTestClass, cls).setUpClass()
         cls.PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
 
         cls.INSTANCE_ID = "instance_id"
