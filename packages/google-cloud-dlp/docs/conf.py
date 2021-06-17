@@ -80,9 +80,9 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-dlp"
-copyright = u"2019, Google"
-author = u"Google APIs"
+project = "google-cloud-dlp"
+copyright = "2019, Google"
+author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -281,7 +281,7 @@ latex_documents = [
     (
         master_doc,
         "google-cloud-dlp.tex",
-        u"google-cloud-dlp Documentation",
+        "google-cloud-dlp Documentation",
         author,
         "manual",
     )
@@ -313,7 +313,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, "google-cloud-dlp", u"google-cloud-dlp Documentation", [author], 1,)
+    (master_doc, "google-cloud-dlp", "google-cloud-dlp Documentation", [author], 1,)
 ]
 
 # If true, show URL addresses after external links.
@@ -329,7 +329,7 @@ texinfo_documents = [
     (
         master_doc,
         "google-cloud-dlp",
-        u"google-cloud-dlp Documentation",
+        "google-cloud-dlp Documentation",
         author,
         "google-cloud-dlp",
         "google-cloud-dlp Library",
