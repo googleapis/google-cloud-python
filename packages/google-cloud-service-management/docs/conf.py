@@ -80,9 +80,9 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = u"google-cloud-service-management"
-copyright = u"2019, Google"
-author = u"Google APIs"
+project = "google-cloud-service-management"
+copyright = "2019, Google"
+author = "Google APIs"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -281,7 +281,7 @@ latex_documents = [
     (
         master_doc,
         "google-cloud-service-management.tex",
-        u"google-cloud-service-management Documentation",
+        "google-cloud-service-management Documentation",
         author,
         "manual",
     )
@@ -316,7 +316,7 @@ man_pages = [
     (
         master_doc,
         "google-cloud-service-management",
-        u"google-cloud-service-management Documentation",
+        "google-cloud-service-management Documentation",
         [author],
         1,
     )
@@ -335,7 +335,7 @@ texinfo_documents = [
     (
         master_doc,
         "google-cloud-service-management",
-        u"google-cloud-service-management Documentation",
+        "google-cloud-service-management Documentation",
         author,
         "google-cloud-service-management",
         "google-cloud-service-management Library",
