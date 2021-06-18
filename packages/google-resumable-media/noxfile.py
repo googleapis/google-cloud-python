@@ -14,9 +14,12 @@
 
 from __future__ import absolute_import
 import os
+import pathlib
 import shutil
 
 import nox
+
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 SYSTEM_TEST_ENV_VARS = ("GOOGLE_APPLICATION_CREDENTIALS",)
 BLACK_VERSION = "black==20.8b1"
@@ -32,9 +35,13 @@ UNIT_TEST_SYNC_PYTHON_VERSIONS = ["2.7"]
 def unit(session):
     """Run the unit test suite."""
 
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+
     # Install all test dependencies, then install this package in-place.
     session.install("mock", "pytest", "pytest-cov", "pytest-asyncio<=0.14.0", GOOGLE_AUTH)
-    session.install("-e", ".[requests,aiohttp]")
+    session.install("-e", ".[requests,aiohttp]", "-c", constraints_path)
 
     # Run py.test against the unit tests.
     # NOTE: We don't require 100% line coverage for unit test runs since
@@ -60,9 +67,13 @@ def unit(session):
 def unit_2(session):
     """Run the unit test suite."""
 
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+
     # Install all test dependencies, then install this package in-place.
     session.install("mock", "pytest", "pytest-cov")
-    session.install("-e", ".[requests]")
+    session.install("-e", ".[requests]", "-c", constraints_path)    
 
     # Run py.test against the unit tests.
     # NOTE: We don't require 100% line coverage for unit test runs since
@@ -210,6 +221,10 @@ def blacken(session):
 def system(session):
     """Run the system test suite."""
 
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+
     # Environment check: environment variables are set.
     missing = []
     for env_var in SYSTEM_TEST_ENV_VARS:
@@ -225,7 +240,7 @@ def system(session):
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
     session.install("mock", "pytest", GOOGLE_AUTH, "google-cloud-testutils")
-    session.install("-e", ".[requests,aiohttp]")
+    session.install("-e", ".[requests,aiohttp]", "-c", constraints_path)
 
     # Run py.test against the async system tests.
     if session.python.startswith("3"):
