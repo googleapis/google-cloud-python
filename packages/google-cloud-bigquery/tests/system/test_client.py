@@ -1123,7 +1123,7 @@ class TestBigQuery(unittest.TestCase):
         job.result(timeout=100)
 
         self.to_delete.insert(0, destination)
-        got_bytes = retry_storage_errors(destination.download_as_string)()
+        got_bytes = retry_storage_errors(destination.download_as_bytes)()
         got = got_bytes.decode("utf-8")
         self.assertIn("Bharney Rhubble", got)
 
@@ -2178,15 +2178,11 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(tbl.num_rows, 1)
         self.assertEqual(tbl.num_columns, 3)
         # Columns may not appear in the requested order.
-        self.assertTrue(
-            pyarrow.types.is_float64(tbl.schema.field_by_name("float_col").type)
-        )
-        self.assertTrue(
-            pyarrow.types.is_string(tbl.schema.field_by_name("string_col").type)
-        )
-        record_col = tbl.schema.field_by_name("record_col").type
+        self.assertTrue(pyarrow.types.is_float64(tbl.schema.field("float_col").type))
+        self.assertTrue(pyarrow.types.is_string(tbl.schema.field("string_col").type))
+        record_col = tbl.schema.field("record_col").type
         self.assertTrue(pyarrow.types.is_struct(record_col))
-        self.assertEqual(record_col.num_children, 2)
+        self.assertEqual(record_col.num_fields, 2)
         self.assertEqual(record_col[0].name, "nested_string")
         self.assertTrue(pyarrow.types.is_string(record_col[0].type))
         self.assertEqual(record_col[1].name, "nested_repeated")
