@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-monitoring/compare/v2.2.1...v2.3.0) (2021-06-18)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([ffa4b1f](https://www.github.com/googleapis/python-monitoring/commit/ffa4b1fb529824a5c408880ca5d1e80149bb5a8c))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([ffa4b1f](https://www.github.com/googleapis/python-monitoring/commit/ffa4b1fb529824a5c408880ca5d1e80149bb5a8c))
+
 ### [2.2.1](https://www.github.com/googleapis/python-monitoring/compare/v2.2.0...v2.2.1) (2021-03-29)
 
 
