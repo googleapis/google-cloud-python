@@ -23,7 +23,30 @@ from synthtool.languages import python
 default_version = "v1beta1"
 
 for library in s.get_staging_dirs(default_version):
+    # work around gapic generator bug
+    # https://github.com/googleapis/gapic-generator-python/issues/924
+    s.replace(library / f"google/cloud/gkeconnect/gateway_{library.name}/services/gateway_service/*client.py",
+        """;
+                    }""",
+        """;\n
+                    }"""
+    )
+
+    # work around gapic generator bug
+    # https://github.com/googleapis/gapic-generator-python/issues/924
+    s.replace(library / f"google/cloud/gkeconnect/gateway_{library.name}/services/gateway_service/*client.py",
+                   """rpc GetResource\(GetResourceRequest\) returns
+                \(google.api.HttpBody\);       rpc
+                UpdateResource\(google.api.HttpBody\) returns
+                      \(google.protobuf.Empty\);""",
+                   """rpc GetResource(GetResourceRequest)
+                        returns (google.api.HttpBody);
+                      rpc UpdateResource(google.api.HttpBody)
+                        returns (google.protobuf.Empty);"""
+    )
+
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
+
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
