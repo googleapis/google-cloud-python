@@ -355,6 +355,10 @@ class TransitionRouteGroupsAsyncClient:
         [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup]
         in the specified flow.
 
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
         Args:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.CreateTransitionRouteGroupRequest`):
                 The request object. The request message for
@@ -441,6 +445,10 @@ class TransitionRouteGroupsAsyncClient:
         r"""Updates the specified
         [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
 
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
         Args:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.UpdateTransitionRouteGroupRequest`):
                 The request object. The request message for
@@ -525,6 +533,10 @@ class TransitionRouteGroupsAsyncClient:
     ) -> None:
         r"""Deletes the specified
         [TransitionRouteGroup][google.cloud.dialogflow.cx.v3beta1.TransitionRouteGroup].
+
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.DeleteTransitionRouteGroupRequest`):

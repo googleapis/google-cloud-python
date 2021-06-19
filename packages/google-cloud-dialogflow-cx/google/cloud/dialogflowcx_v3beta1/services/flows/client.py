@@ -457,6 +457,10 @@ class FlowsClient(metaclass=FlowsClientMeta):
     ) -> gcdc_flow.Flow:
         r"""Creates a flow in the specified agent.
 
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
         Args:
             request (google.cloud.dialogflowcx_v3beta1.types.CreateFlowRequest):
                 The request object. The request message for
@@ -793,6 +797,10 @@ class FlowsClient(metaclass=FlowsClientMeta):
     ) -> gcdc_flow.Flow:
         r"""Updates the specified flow.
 
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
         Args:
             request (google.cloud.dialogflowcx_v3beta1.types.UpdateFlowRequest):
                 The request object. The request message for
@@ -893,8 +901,12 @@ class FlowsClient(metaclass=FlowsClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Trains the specified flow. Note that only the flow in
-        'draft' environment is trained.
+        r"""Trains the specified flow. Note that only the flow in 'draft'
+        environment is trained.
+
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
             request (google.cloud.dialogflowcx_v3beta1.types.TrainFlowRequest):
@@ -1112,8 +1124,12 @@ class FlowsClient(metaclass=FlowsClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Imports the specified flow to the specified agent
-        from a binary file.
+        r"""Imports the specified flow to the specified agent from a binary
+        file.
+
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
             request (google.cloud.dialogflowcx_v3beta1.types.ImportFlowRequest):

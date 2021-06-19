@@ -288,6 +288,10 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
 
         Creates an intent in the specified agent.
 
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
         Returns:
             Callable[[~.CreateIntentRequest],
                     Awaitable[~.Intent]]:
@@ -314,6 +318,10 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
 
         Updates the specified intent.
 
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
         Returns:
             Callable[[~.UpdateIntentRequest],
                     Awaitable[~.Intent]]:
@@ -339,6 +347,10 @@ class IntentsGrpcAsyncIOTransport(IntentsTransport):
         r"""Return a callable for the delete intent method over gRPC.
 
         Deletes the specified intent.
+
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.DeleteIntentRequest],

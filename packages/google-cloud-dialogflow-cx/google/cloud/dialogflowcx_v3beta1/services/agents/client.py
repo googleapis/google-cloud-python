@@ -615,6 +615,10 @@ class AgentsClient(metaclass=AgentsClientMeta):
     ) -> gcdc_agent.Agent:
         r"""Creates an agent in the specified location.
 
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
         Args:
             request (google.cloud.dialogflowcx_v3beta1.types.CreateAgentRequest):
                 The request object. The request message for
@@ -705,6 +709,10 @@ class AgentsClient(metaclass=AgentsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_agent.Agent:
         r"""Updates the specified agent.
+
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
             request (google.cloud.dialogflowcx_v3beta1.types.UpdateAgentRequest):
@@ -923,9 +931,14 @@ class AgentsClient(metaclass=AgentsClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
         r"""Restores the specified agent from a binary file.
+
         Replaces the current agent with a new one. Note that all
-        existing resources in agent (e.g. intents, entity types,
-        flows) will be removed.
+        existing resources in agent (e.g. intents, entity types, flows)
+        will be removed.
+
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
             request (google.cloud.dialogflowcx_v3beta1.types.RestoreAgentRequest):

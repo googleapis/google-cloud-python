@@ -305,6 +305,10 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
 
         Creates an agent in the specified location.
 
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
         Returns:
             Callable[[~.CreateAgentRequest],
                     Awaitable[~.Agent]]:
@@ -330,6 +334,10 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
         r"""Return a callable for the update agent method over gRPC.
 
         Updates the specified agent.
+
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.UpdateAgentRequest],
@@ -408,9 +416,14 @@ class AgentsGrpcAsyncIOTransport(AgentsTransport):
         r"""Return a callable for the restore agent method over gRPC.
 
         Restores the specified agent from a binary file.
+
         Replaces the current agent with a new one. Note that all
-        existing resources in agent (e.g. intents, entity types,
-        flows) will be removed.
+        existing resources in agent (e.g. intents, entity types, flows)
+        will be removed.
+
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.RestoreAgentRequest],

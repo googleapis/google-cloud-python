@@ -469,6 +469,10 @@ class EntityTypesAsyncClient:
     ) -> gcdc_entity_type.EntityType:
         r"""Updates the specified entity type.
 
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
         Args:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.UpdateEntityTypeRequest`):
                 The request object. The request message for
@@ -580,6 +584,10 @@ class EntityTypesAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified entity type.
+
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
             request (:class:`google.cloud.dialogflowcx_v3beta1.types.DeleteEntityTypeRequest`):

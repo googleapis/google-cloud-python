@@ -247,6 +247,10 @@ class FlowsGrpcTransport(FlowsTransport):
 
         Creates a flow in the specified agent.
 
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
         Returns:
             Callable[[~.CreateFlowRequest],
                     ~.Flow]:
@@ -343,6 +347,10 @@ class FlowsGrpcTransport(FlowsTransport):
 
         Updates the specified flow.
 
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
         Returns:
             Callable[[~.UpdateFlowRequest],
                     ~.Flow]:
@@ -365,8 +373,12 @@ class FlowsGrpcTransport(FlowsTransport):
     def train_flow(self) -> Callable[[flow.TrainFlowRequest], operations_pb2.Operation]:
         r"""Return a callable for the train flow method over gRPC.
 
-        Trains the specified flow. Note that only the flow in
-        'draft' environment is trained.
+        Trains the specified flow. Note that only the flow in 'draft'
+        environment is trained.
+
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.TrainFlowRequest],
@@ -448,8 +460,12 @@ class FlowsGrpcTransport(FlowsTransport):
     ) -> Callable[[flow.ImportFlowRequest], operations_pb2.Operation]:
         r"""Return a callable for the import flow method over gRPC.
 
-        Imports the specified flow to the specified agent
-        from a binary file.
+        Imports the specified flow to the specified agent from a binary
+        file.
+
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.ImportFlowRequest],
