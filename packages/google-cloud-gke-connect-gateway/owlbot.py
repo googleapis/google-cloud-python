@@ -54,7 +54,7 @@ s.remove_staging_dirs()
 # ----------------------------------------------------------------------------
 
 templated_files = gcp.CommonTemplates().py_library(microgenerator=True)
-s.move(templated_files, excludes=[".coveragerc", ".pre-commit-config.yaml"]) # the microgenerator has a good coveragerc file
+s.move(templated_files, excludes=[".coveragerc"]) # the microgenerator has a good coveragerc file
 
 # ----------------------------------------------------------------------------
 # Run blacken session
