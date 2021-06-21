@@ -42,6 +42,7 @@ import google.api_core
 from google.api_core import path_template
 import google.oauth2
 from test_utils.retry import RetryErrors
+from test_utils.retry import RetryInstanceState
 from test_utils.system import unique_resource_id
 from test_utils.vpcsc_config import vpcsc_config
 
@@ -57,12 +58,17 @@ def _bad_copy(bad_request):
     return err_msg.startswith("No file found in request. (POST") and "copyTo" in err_msg
 
 
+def _no_event_based_hold(blob):
+    return not blob.event_based_hold
+
+
 retry_429 = RetryErrors(exceptions.TooManyRequests, max_tries=6)
 retry_429_harder = RetryErrors(exceptions.TooManyRequests, max_tries=10)
 retry_429_503 = RetryErrors(
     [exceptions.TooManyRequests, exceptions.ServiceUnavailable], max_tries=10
 )
 retry_bad_copy = RetryErrors(exceptions.BadRequest, error_predicate=_bad_copy)
+retry_no_event_based_hold = RetryInstanceState(_no_event_based_hold)
 
 
 def _empty_bucket(client, bucket):
@@ -2482,6 +2488,11 @@ class TestRetentionPolicy(unittest.TestCase):
         self.assertFalse(bucket.retention_policy_locked)
 
         blob.upload_from_string(payload)
+
+        # https://github.com/googleapis/python-storage/issues/435
+        if blob.event_based_hold:
+            retry_no_event_based_hold(blob.reload)()
+
         self.assertFalse(blob.event_based_hold)
         self.assertFalse(blob.temporary_hold)
         self.assertIsNone(blob.retention_expiration_time)
