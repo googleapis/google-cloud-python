@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.cloud.bigquery.schema import PolicyTagList
 import unittest
 
 import mock
@@ -41,6 +42,7 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(field.mode, "NULLABLE")
         self.assertIsNone(field.description)
         self.assertEqual(field.fields, ())
+        self.assertEqual(field.policy_tags, PolicyTagList())
 
     def test_constructor_explicit(self):
         field = self._make_one("test", "STRING", mode="REQUIRED", description="Testing")
@@ -104,7 +106,14 @@ class TestSchemaField(unittest.TestCase):
             self.assertEqual(
                 field.to_api_repr(),
                 {
-                    "fields": [{"mode": "NULLABLE", "name": "bar", "type": "INTEGER"}],
+                    "fields": [
+                        {
+                            "mode": "NULLABLE",
+                            "name": "bar",
+                            "type": "INTEGER",
+                            "policyTags": {"names": []},
+                        }
+                    ],
                     "mode": "REQUIRED",
                     "name": "foo",
                     "type": record_type,
@@ -404,6 +413,23 @@ class TestSchemaField(unittest.TestCase):
         other = self._make_one("test", "RECORD", fields=[sub1, sub2])
         self.assertEqual(field, other)
 
+    def test___eq___hit_w_policy_tags(self):
+        field = self._make_one(
+            "test",
+            "STRING",
+            mode="REQUIRED",
+            description="Testing",
+            policy_tags=PolicyTagList(names=["foo", "bar"]),
+        )
+        other = self._make_one(
+            "test",
+            "STRING",
+            mode="REQUIRED",
+            description="Testing",
+            policy_tags=PolicyTagList(names=["bar", "foo"]),
+        )
+        self.assertEqual(field, other)  # Policy tags order does not matter.
+
     def test___ne___wrong_type(self):
         field = self._make_one("toast", "INTEGER")
         other = object()
@@ -426,6 +452,23 @@ class TestSchemaField(unittest.TestCase):
         )
         self.assertNotEqual(field1, field2)
 
+    def test___ne___different_policy_tags(self):
+        field = self._make_one(
+            "test",
+            "STRING",
+            mode="REQUIRED",
+            description="Testing",
+            policy_tags=PolicyTagList(names=["foo", "bar"]),
+        )
+        other = self._make_one(
+            "test",
+            "STRING",
+            mode="REQUIRED",
+            description="Testing",
+            policy_tags=PolicyTagList(names=["foo", "baz"]),
+        )
+        self.assertNotEqual(field, other)
+
     def test___hash__set_equality(self):
         sub1 = self._make_one("sub1", "STRING")
         sub2 = self._make_one("sub2", "STRING")
@@ -446,7 +489,7 @@ class TestSchemaField(unittest.TestCase):
 
     def test___repr__(self):
         field1 = self._make_one("field1", "STRING")
-        expected = "SchemaField('field1', 'STRING', 'NULLABLE', None, (), None)"
+        expected = "SchemaField('field1', 'STRING', 'NULLABLE', None, (), ())"
         self.assertEqual(repr(field1), expected)
 
 
@@ -524,10 +567,22 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         resource = self._call_fut([full_name, age])
         self.assertEqual(len(resource), 2)
         self.assertEqual(
-            resource[0], {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
+            resource[0],
+            {
+                "name": "full_name",
+                "type": "STRING",
+                "mode": "REQUIRED",
+                "policyTags": {"names": []},
+            },
         )
         self.assertEqual(
-            resource[1], {"name": "age", "type": "INTEGER", "mode": "REQUIRED"}
+            resource[1],
+            {
+                "name": "age",
+                "type": "INTEGER",
+                "mode": "REQUIRED",
+                "policyTags": {"names": []},
+            },
         )
 
     def test_w_description(self):
@@ -553,11 +608,18 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
                 "type": "STRING",
                 "mode": "REQUIRED",
                 "description": DESCRIPTION,
+                "policyTags": {"names": []},
             },
         )
         self.assertEqual(
             resource[1],
-            {"name": "age", "type": "INTEGER", "mode": "REQUIRED", "description": None},
+            {
+                "name": "age",
+                "type": "INTEGER",
+                "mode": "REQUIRED",
+                "description": None,
+                "policyTags": {"names": []},
+            },
         )
 
     def test_w_subfields(self):
@@ -572,7 +634,13 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
         resource = self._call_fut([full_name, phone])
         self.assertEqual(len(resource), 2)
         self.assertEqual(
-            resource[0], {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
+            resource[0],
+            {
+                "name": "full_name",
+                "type": "STRING",
+                "mode": "REQUIRED",
+                "policyTags": {"names": []},
+            },
         )
         self.assertEqual(
             resource[1],
@@ -581,8 +649,18 @@ class Test_build_schema_resource(unittest.TestCase, _SchemaBase):
                 "type": "RECORD",
                 "mode": "REPEATED",
                 "fields": [
-                    {"name": "type", "type": "STRING", "mode": "REQUIRED"},
-                    {"name": "number", "type": "STRING", "mode": "REQUIRED"},
+                    {
+                        "name": "type",
+                        "type": "STRING",
+                        "mode": "REQUIRED",
+                        "policyTags": {"names": []},
+                    },
+                    {
+                        "name": "number",
+                        "type": "STRING",
+                        "mode": "REQUIRED",
+                        "policyTags": {"names": []},
+                    },
                 ],
             },
         )
@@ -794,43 +872,83 @@ def test_from_api_repr_parameterized(api, expect, key2):
     [
         (
             dict(name="n", field_type="NUMERIC"),
-            dict(name="n", type="NUMERIC", mode="NULLABLE"),
+            dict(name="n", type="NUMERIC", mode="NULLABLE", policyTags={"names": []}),
         ),
         (
             dict(name="n", field_type="NUMERIC", precision=9),
-            dict(name="n", type="NUMERIC", mode="NULLABLE", precision=9),
+            dict(
+                name="n",
+                type="NUMERIC",
+                mode="NULLABLE",
+                precision=9,
+                policyTags={"names": []},
+            ),
         ),
         (
             dict(name="n", field_type="NUMERIC", precision=9, scale=2),
-            dict(name="n", type="NUMERIC", mode="NULLABLE", precision=9, scale=2),
+            dict(
+                name="n",
+                type="NUMERIC",
+                mode="NULLABLE",
+                precision=9,
+                scale=2,
+                policyTags={"names": []},
+            ),
         ),
         (
             dict(name="n", field_type="BIGNUMERIC"),
-            dict(name="n", type="BIGNUMERIC", mode="NULLABLE"),
+            dict(
+                name="n", type="BIGNUMERIC", mode="NULLABLE", policyTags={"names": []}
+            ),
         ),
         (
             dict(name="n", field_type="BIGNUMERIC", precision=40),
-            dict(name="n", type="BIGNUMERIC", mode="NULLABLE", precision=40),
+            dict(
+                name="n",
+                type="BIGNUMERIC",
+                mode="NULLABLE",
+                precision=40,
+                policyTags={"names": []},
+            ),
         ),
         (
             dict(name="n", field_type="BIGNUMERIC", precision=40, scale=2),
-            dict(name="n", type="BIGNUMERIC", mode="NULLABLE", precision=40, scale=2),
+            dict(
+                name="n",
+                type="BIGNUMERIC",
+                mode="NULLABLE",
+                precision=40,
+                scale=2,
+                policyTags={"names": []},
+            ),
         ),
         (
             dict(name="n", field_type="STRING"),
-            dict(name="n", type="STRING", mode="NULLABLE"),
+            dict(name="n", type="STRING", mode="NULLABLE", policyTags={"names": []}),
         ),
         (
             dict(name="n", field_type="STRING", max_length=9),
-            dict(name="n", type="STRING", mode="NULLABLE", maxLength=9),
+            dict(
+                name="n",
+                type="STRING",
+                mode="NULLABLE",
+                maxLength=9,
+                policyTags={"names": []},
+            ),
         ),
         (
             dict(name="n", field_type="BYTES"),
-            dict(name="n", type="BYTES", mode="NULLABLE"),
+            dict(name="n", type="BYTES", mode="NULLABLE", policyTags={"names": []}),
         ),
         (
             dict(name="n", field_type="BYTES", max_length=9),
-            dict(name="n", type="BYTES", mode="NULLABLE", maxLength=9),
+            dict(
+                name="n",
+                type="BYTES",
+                mode="NULLABLE",
+                maxLength=9,
+                policyTags={"names": []},
+            ),
         ),
     ],
 )

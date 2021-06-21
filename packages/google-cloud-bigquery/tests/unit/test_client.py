@@ -1019,8 +1019,18 @@ class TestClient(unittest.TestCase):
             {
                 "schema": {
                     "fields": [
-                        {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
-                        {"name": "age", "type": "INTEGER", "mode": "REQUIRED"},
+                        {
+                            "name": "full_name",
+                            "type": "STRING",
+                            "mode": "REQUIRED",
+                            "policyTags": {"names": []},
+                        },
+                        {
+                            "name": "age",
+                            "type": "INTEGER",
+                            "mode": "REQUIRED",
+                            "policyTags": {"names": []},
+                        },
                     ]
                 },
                 "view": {"query": query},
@@ -1054,8 +1064,18 @@ class TestClient(unittest.TestCase):
                 },
                 "schema": {
                     "fields": [
-                        {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
-                        {"name": "age", "type": "INTEGER", "mode": "REQUIRED"},
+                        {
+                            "name": "full_name",
+                            "type": "STRING",
+                            "mode": "REQUIRED",
+                            "policyTags": {"names": []},
+                        },
+                        {
+                            "name": "age",
+                            "type": "INTEGER",
+                            "mode": "REQUIRED",
+                            "policyTags": {"names": []},
+                        },
                     ]
                 },
                 "view": {"query": query, "useLegacySql": False},
@@ -2000,12 +2020,14 @@ class TestClient(unittest.TestCase):
                             "type": "STRING",
                             "mode": "REQUIRED",
                             "description": None,
+                            "policyTags": {"names": []},
                         },
                         {
                             "name": "age",
                             "type": "INTEGER",
                             "mode": "REQUIRED",
                             "description": "New field description",
+                            "policyTags": {"names": []},
                         },
                     ]
                 },
@@ -2047,12 +2069,14 @@ class TestClient(unittest.TestCase):
                         "type": "STRING",
                         "mode": "REQUIRED",
                         "description": None,
+                        "policyTags": {"names": []},
                     },
                     {
                         "name": "age",
                         "type": "INTEGER",
                         "mode": "REQUIRED",
                         "description": "New field description",
+                        "policyTags": {"names": []},
                     },
                 ]
             },
@@ -2173,14 +2197,21 @@ class TestClient(unittest.TestCase):
                     "type": "STRING",
                     "mode": "REQUIRED",
                     "description": None,
+                    "policyTags": {"names": []},
                 },
                 {
                     "name": "age",
                     "type": "INTEGER",
                     "mode": "REQUIRED",
                     "description": "this is a column",
+                    "policyTags": {"names": []},
                 },
-                {"name": "country", "type": "STRING", "mode": "NULLABLE"},
+                {
+                    "name": "country",
+                    "type": "STRING",
+                    "mode": "NULLABLE",
+                    "policyTags": {"names": []},
+                },
             ]
         }
         schema = [
@@ -6516,10 +6547,10 @@ class TestClientUpload(object):
             assert field["type"] == table_field.field_type
             assert field["mode"] == table_field.mode
             assert len(field.get("fields", [])) == len(table_field.fields)
+            assert field["policyTags"]["names"] == []
             # Omit unnecessary fields when they come from getting the table
             # (not passed in via job_config)
             assert "description" not in field
-            assert "policyTags" not in field
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
@@ -7718,18 +7749,21 @@ class TestClientUpload(object):
                 "description": "quarter",
                 "mode": "REQUIRED",
                 "name": "qtr",
+                "policyTags": {"names": []},
                 "type": "STRING",
             },
             {
                 "description": "sales representative",
                 "mode": "NULLABLE",
                 "name": "rep",
+                "policyTags": {"names": []},
                 "type": "STRING",
             },
             {
                 "description": "total sales",
                 "mode": "NULLABLE",
                 "name": "sales",
+                "policyTags": {"names": []},
                 "type": "FLOAT",
             },
         ]
@@ -7762,18 +7796,21 @@ class TestClientUpload(object):
                 "description": "quarter",
                 "mode": "REQUIRED",
                 "name": "qtr",
+                "policyTags": {"names": []},
                 "type": "STRING",
             },
             {
                 "description": "sales representative",
                 "mode": "NULLABLE",
                 "name": "rep",
+                "policyTags": {"names": []},
                 "type": "STRING",
             },
             {
                 "description": "total sales",
                 "mode": "NULLABLE",
                 "name": "sales",
+                "policyTags": {"names": []},
                 "type": "FLOAT",
             },
         ]

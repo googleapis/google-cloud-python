@@ -434,11 +434,13 @@ class TestLoadJobConfig(_Base):
             "name": "full_name",
             "type": "STRING",
             "mode": "REQUIRED",
+            "policyTags": {"names": []},
         }
         age_repr = {
             "name": "age",
             "type": "INTEGER",
             "mode": "REQUIRED",
+            "policyTags": {"names": []},
         }
         self.assertEqual(
             config._properties["load"]["schema"], {"fields": [full_name_repr, age_repr]}
@@ -451,11 +453,13 @@ class TestLoadJobConfig(_Base):
             "name": "full_name",
             "type": "STRING",
             "mode": "REQUIRED",
+            "policyTags": {"names": []},
         }
         age_repr = {
             "name": "age",
             "type": "INTEGER",
             "mode": "REQUIRED",
+            "policyTags": {"names": []},
         }
         schema = [full_name_repr, age_repr]
         config.schema = schema

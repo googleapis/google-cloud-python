@@ -653,6 +653,56 @@ class TestBigQuery(unittest.TestCase):
             self.assertEqual(found.field_type, expected.field_type)
             self.assertEqual(found.mode, expected.mode)
 
+    def test_unset_table_schema_attributes(self):
+        from google.cloud.bigquery.schema import PolicyTagList
+
+        dataset = self.temp_dataset(_make_dataset_id("unset_policy_tags"))
+        table_id = "test_table"
+        policy_tags = PolicyTagList(
+            names=[
+                "projects/{}/locations/us/taxonomies/1/policyTags/2".format(
+                    Config.CLIENT.project
+                ),
+            ]
+        )
+
+        schema = [
+            bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
+            bigquery.SchemaField(
+                "secret_int",
+                "INTEGER",
+                mode="REQUIRED",
+                description="This field is numeric",
+                policy_tags=policy_tags,
+            ),
+        ]
+        table_arg = Table(dataset.table(table_id), schema=schema)
+        self.assertFalse(_table_exists(table_arg))
+
+        table = helpers.retry_403(Config.CLIENT.create_table)(table_arg)
+        self.to_delete.insert(0, table)
+
+        self.assertTrue(_table_exists(table))
+        self.assertEqual(policy_tags, table.schema[1].policy_tags)
+
+        # Amend the schema to replace the policy tags
+        new_schema = table.schema[:]
+        old_field = table.schema[1]
+        new_schema[1] = bigquery.SchemaField(
+            name=old_field.name,
+            field_type=old_field.field_type,
+            mode=old_field.mode,
+            description=None,
+            fields=old_field.fields,
+            policy_tags=None,
+        )
+
+        table.schema = new_schema
+        updated_table = Config.CLIENT.update_table(table, ["schema"])
+
+        self.assertFalse(updated_table.schema[1].description)  # Empty string or None.
+        self.assertEqual(updated_table.schema[1].policy_tags.names, ())
+
     def test_update_table_clustering_configuration(self):
         dataset = self.temp_dataset(_make_dataset_id("update_table"))
 
