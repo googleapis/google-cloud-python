@@ -11,7 +11,9 @@ templated_files = common.py_library(
     unit_test_external_dependencies=["click"],
     unit_test_python_versions=["3.6", "3.7", "3.8", "3.9"],
 )
-s.move(templated_files, excludes=["docs/multiprocessing.rst"])
+s.move(templated_files, excludes=[
+    "docs/multiprocessing.rst"
+])
 
 # Change black paths
 s.replace(
@@ -31,6 +33,13 @@ s.replace(
     "noxfile.py",
     '"--cov=google/cloud",',
     '"--cov=google_auth_oauthlib",',
+)
+
+# Block pushing non-cloud libraries to Cloud RAD
+s.replace(
+    ".kokoro/docs/common.cfg",
+    r'value: "docs-staging-v2"',
+    r'value: "docs-staging-v2-staging"'
 )
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
