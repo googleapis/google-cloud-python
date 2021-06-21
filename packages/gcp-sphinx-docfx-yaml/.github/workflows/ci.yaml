@@ -25,4 +25,7 @@ jobs:
       - name: Run unittest
         run: |
           tox -e unittest
+      - name: Run librarytest
+        run: |
+          tox -e librarytest
 

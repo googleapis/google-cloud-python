@@ -20,9 +20,10 @@ description = 'Sphinx Python Domain to DocFX YAML Generator'
 version = '0.3.0'
 dependencies = [
     'PyYAML',
-    'wheel>=0.24.0',
     'sphinx',
-    'unidecode'
+    'sphinxcontrib.napoleon',
+    'unidecode',
+    'wheel>=0.24.0'
 ]
 
 packages = setuptools.find_packages('.', exclude=['tests'])
