@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.3.0...v0.3.1) (2021-06-21)
+
+
+### Bug Fixes
+
+* update dependency requirements ([#48](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/48)) ([c1c036f](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/c1c036fd00be08f219ffa4ebdfb5d13e2ee5768a))
+
 ## [0.3.0](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.2.0...v0.3.0) (2021-06-21)
 
 
