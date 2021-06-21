@@ -54,14 +54,7 @@ def gapic_generator_python():
         url = "https://github.com/jgm/pandoc/releases/download/2.2.1/pandoc-2.2.1-macOS.zip",
     )
 
-    _maybe(
-        http_archive,
-        name = "com_google_api_codegen",
-        strip_prefix = "gapic-generator-03abac35ec0716c6f426ffc1532f9a62f1c9e6a2",
-        urls = ["https://github.com/googleapis/gapic-generator/archive/03abac35ec0716c6f426ffc1532f9a62f1c9e6a2.zip"],
-    )
-
-    _rules_gapic_version = "0.5.3"
+    _rules_gapic_version = "0.5.4"
     _maybe(
         http_archive,
         name = "rules_gapic",
