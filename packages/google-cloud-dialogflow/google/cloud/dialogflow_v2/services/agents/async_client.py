@@ -248,6 +248,10 @@ class AgentsAsyncClient:
     ) -> gcd_agent.Agent:
         r"""Creates/updates the specified agent.
 
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
+
         Args:
             request (:class:`google.cloud.dialogflow_v2.types.SetAgentRequest`):
                 The request object. The request message for
@@ -478,8 +482,9 @@ class AgentsAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Trains the specified agent.
 
-        Operation <response:
-        [google.protobuf.Empty][google.protobuf.Empty]>
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
             request (:class:`google.cloud.dialogflow_v2.types.TrainAgentRequest`):
@@ -572,9 +577,6 @@ class AgentsAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Exports the specified agent to a ZIP file.
-
-        Operation <response:
-        [ExportAgentResponse][google.cloud.dialogflow.v2.ExportAgentResponse]>
 
         Args:
             request (:class:`google.cloud.dialogflow_v2.types.ExportAgentRequest`):
@@ -669,10 +671,13 @@ class AgentsAsyncClient:
         and wait for the operation it returns in order to train
         explicitly.
 
-        Operation <response:
-        [google.protobuf.Empty][google.protobuf.Empty]> An operation
-        which tracks when importing is complete. It only tracks when the
-        draft agent is updated not when it is done training.
+        An operation which tracks when importing is complete. It only
+        tracks when the draft agent is updated not when it is done
+        training.
+
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
             request (:class:`google.cloud.dialogflow_v2.types.ImportAgentRequest`):
@@ -753,10 +758,13 @@ class AgentsAsyncClient:
         and wait for the operation it returns in order to train
         explicitly.
 
-        Operation <response:
-        [google.protobuf.Empty][google.protobuf.Empty]> An operation
-        which tracks when restoring is complete. It only tracks when the
-        draft agent is updated not when it is done training.
+        An operation which tracks when restoring is complete. It only
+        tracks when the draft agent is updated not when it is done
+        training.
+
+        Note: You should always train an agent prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
         Args:
             request (:class:`google.cloud.dialogflow_v2.types.RestoreAgentRequest`):

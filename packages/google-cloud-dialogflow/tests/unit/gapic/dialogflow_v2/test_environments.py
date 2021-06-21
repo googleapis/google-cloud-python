@@ -2334,8 +2334,30 @@ def test_parse_fulfillment_path():
     assert expected == actual
 
 
+def test_version_path():
+    project = "cuttlefish"
+    version = "mussel"
+    expected = "projects/{project}/agent/versions/{version}".format(
+        project=project, version=version,
+    )
+    actual = EnvironmentsClient.version_path(project, version)
+    assert expected == actual
+
+
+def test_parse_version_path():
+    expected = {
+        "project": "winkle",
+        "version": "nautilus",
+    }
+    path = EnvironmentsClient.version_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = EnvironmentsClient.parse_version_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2345,7 +2367,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "abalone",
     }
     path = EnvironmentsClient.common_billing_account_path(**expected)
 
@@ -2355,7 +2377,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "squid"
     expected = "folders/{folder}".format(folder=folder,)
     actual = EnvironmentsClient.common_folder_path(folder)
     assert expected == actual
@@ -2363,7 +2385,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "clam",
     }
     path = EnvironmentsClient.common_folder_path(**expected)
 
@@ -2373,7 +2395,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "whelk"
     expected = "organizations/{organization}".format(organization=organization,)
     actual = EnvironmentsClient.common_organization_path(organization)
     assert expected == actual
@@ -2381,7 +2403,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "octopus",
     }
     path = EnvironmentsClient.common_organization_path(**expected)
 
@@ -2391,7 +2413,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "oyster"
     expected = "projects/{project}".format(project=project,)
     actual = EnvironmentsClient.common_project_path(project)
     assert expected == actual
@@ -2399,7 +2421,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "nudibranch",
     }
     path = EnvironmentsClient.common_project_path(**expected)
 
@@ -2409,8 +2431,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
@@ -2420,8 +2442,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = EnvironmentsClient.common_location_path(**expected)
 

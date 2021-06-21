@@ -72,7 +72,7 @@ class Environment(proto.Message):
             characters. If exceeded, the request is
             rejected.
         agent_version (str):
-            Optional. The agent version loaded into this environment.
+            Required. The agent version loaded into this environment.
             Supported formats:
 
             -  ``projects/<Project ID>/agent/versions/<Version ID>``

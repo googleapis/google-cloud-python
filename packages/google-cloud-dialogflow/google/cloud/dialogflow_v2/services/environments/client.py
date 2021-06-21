@@ -184,6 +184,21 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def version_path(project: str, version: str,) -> str:
+        """Returns a fully-qualified version string."""
+        return "projects/{project}/agent/versions/{version}".format(
+            project=project, version=version,
+        )
+
+    @staticmethod
+    def parse_version_path(path: str) -> Dict[str, str]:
+        """Parses a version path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/agent/versions/(?P<version>.+?)$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(billing_account: str,) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
