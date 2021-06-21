@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.50.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.49.0...v0.50.0) (2021-06-21)
+
+
+### Features
+
+* enable self signed jwt for grpc ([#920](https://www.github.com/googleapis/gapic-generator-python/issues/920)) ([da119c7](https://www.github.com/googleapis/gapic-generator-python/commit/da119c72c82d04e168c4b41e5bf910a0c1609ce3))
+
+
+### Bug Fixes
+
+* **bazel:** Remove monolith imports from Python µgen Bazel rules ([#923](https://www.github.com/googleapis/gapic-generator-python/issues/923)) ([4a2afa7](https://www.github.com/googleapis/gapic-generator-python/commit/4a2afa78455817e7e6c058d21857326867fe3f21))
+* temporarily disable code coverage in showcase_unit tests ([#925](https://www.github.com/googleapis/gapic-generator-python/issues/925)) ([0dfac03](https://www.github.com/googleapis/gapic-generator-python/commit/0dfac03bd3ef8c12b33e6c03e62eab3e7bf2cd69))
+
 ## [0.49.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.48.1...v0.49.0) (2021-06-11)
 
 
