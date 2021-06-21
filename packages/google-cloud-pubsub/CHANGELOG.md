@@ -5,6 +5,25 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.6.0](https://www.github.com/googleapis/python-pubsub/compare/v2.5.0...v2.6.0) (2021-06-17)
+
+
+### Features
+
+* support customizable retry and timeout settings on the publisher client ([#299](https://www.github.com/googleapis/python-pubsub/issues/299)) ([7597604](https://www.github.com/googleapis/python-pubsub/commit/7597604b41fa3a1e9bf34addc35c8647dde007cc))
+
+
+### Bug Fixes
+
+* ACK deadline set for received messages can be too low  ([#416](https://www.github.com/googleapis/python-pubsub/issues/416)) ([e907f6e](https://www.github.com/googleapis/python-pubsub/commit/e907f6e05f59f64a3b08df3304e92ec960997be6))
+* threads can skip the line in publisher flow controller ([#422](https://www.github.com/googleapis/python-pubsub/issues/422)) ([ef89f55](https://www.github.com/googleapis/python-pubsub/commit/ef89f55a41044e9ad26b91132b4b1be9c7b2c127))
+
+
+### Documentation
+
+* block until the streaming pull shuts down ([#424](https://www.github.com/googleapis/python-pubsub/issues/424)) ([d0d0b70](https://www.github.com/googleapis/python-pubsub/commit/d0d0b704642df8dee893d3f585aeb666e19696fb))
+* explain that future.cancel() is non-blocking ([#420](https://www.github.com/googleapis/python-pubsub/issues/420)) ([c825789](https://www.github.com/googleapis/python-pubsub/commit/c825789bdff310f44cbb132a723e99d1e6331d8f))
+
 ## [2.5.0](https://www.github.com/googleapis/python-pubsub/compare/v2.4.2...v2.5.0) (2021-05-18)
 
 
