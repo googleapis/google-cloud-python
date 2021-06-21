@@ -983,37 +983,35 @@ class Client(ClientWithProject):
              str, \
             ]):
                 The blob resource to pass or URI to download.
+
             file_obj (file):
                 A file handle to which to write the blob's data.
+
             start (int):
                 (Optional) The first byte in a range to be downloaded.
+
             end (int):
                 (Optional) The last byte in a range to be downloaded.
+
             raw_download (bool):
                 (Optional) If true, download the object without any expansion.
-            if_generation_match (long):
-                (Optional) Make the operation conditional on whether
-                the blob's current generation matches the given value.
-                Setting to 0 makes the operation succeed only if there
-                are no live versions of the blob.
-            if_generation_not_match (long):
-                (Optional) Make the operation conditional on whether
-                the blob's current generation does not match the given
-                value. If no live blob exists, the precondition fails.
-                Setting to 0 makes the operation succeed only if there
-                is a live version of the blob.
-            if_metageneration_match (long):
-                (Optional) Make the operation conditional on whether the
-                blob's current metageneration matches the given value.
-            if_metageneration_not_match (long):
-                (Optional) Make the operation conditional on whether the
-                blob's current metageneration does not match the given value.
+
+            if_generation_match: long
+                (Optional) See :ref:`using-if-generation-match`
+
+            if_generation_not_match: long
+                (Optional) See :ref:`using-if-generation-not-match`
+
+            if_metageneration_match: long
+                (Optional) See :ref:`using-if-metageneration-match`
+
+            if_metageneration_not_match: long
+                (Optional) See :ref:`using-if-metageneration-not-match`
+
             timeout ([Union[float, Tuple[float, float]]]):
-                (Optional) The number of seconds the transport should wait for the
-                server response. Depending on the retry strategy, a request may be
-                repeated several times using the same timeout each time.
-                Can also be passed as a tuple (connect_timeout, read_timeout).
-                See :meth:`requests.Session.request` documentation for details.
+                (Optional) The amount of time, in seconds, to wait
+                for the server response.  See: :ref:`configuring_timeouts`
+
             checksum (str):
                 (Optional) The type of checksum to compute to verify the integrity
                 of the object. The response headers must contain a checksum of the

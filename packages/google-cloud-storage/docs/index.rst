@@ -22,6 +22,7 @@ API Reference
   hmac_key
   notification
   retry_timeout
+  generation_metageneration
 
 Changelog
 ---------

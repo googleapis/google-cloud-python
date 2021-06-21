@@ -3996,7 +3996,9 @@ class Test_Blob(unittest.TestCase):
         )
 
     @mock.patch("warnings.warn")
-    def test_compose_w_generation_match_w_warning(self, mock_warn):
+    def test_compose_w_if_generation_match_list_w_warning(self, mock_warn):
+        from google.cloud.storage.blob import _COMPOSE_IF_GENERATION_LIST_DEPRECATED
+
         source_1_name = "source-1"
         source_2_name = "source-2"
         destination_name = "destination"
@@ -4045,13 +4047,10 @@ class Test_Blob(unittest.TestCase):
         )
 
         mock_warn.assert_called_with(
-            "if_generation_match: type list is deprecated and supported for backwards-compatability reasons only."
-            "Use if_source_generation_match instead to match source objects generations.",
-            DeprecationWarning,
-            stacklevel=2,
+            _COMPOSE_IF_GENERATION_LIST_DEPRECATED, DeprecationWarning, stacklevel=2,
         )
 
-    def test_compose_invalid_generation_match(self):
+    def test_compose_w_if_generation_match_and_if_s_generation_match(self):
         source_1_name = "source-1"
         source_2_name = "source-2"
         destination_name = "destination"
@@ -4073,7 +4072,9 @@ class Test_Blob(unittest.TestCase):
         client._post_resource.assert_not_called()
 
     @mock.patch("warnings.warn")
-    def test_compose_w_metageneration_match_w_warning(self, mock_warn):
+    def test_compose_w_if_metageneration_match_list_w_warning(self, mock_warn):
+        from google.cloud.storage.blob import _COMPOSE_IF_METAGENERATION_LIST_DEPRECATED
+
         source_1_name = "source-1"
         source_2_name = "source-2"
         destination_name = "destination"
@@ -4108,9 +4109,7 @@ class Test_Blob(unittest.TestCase):
         )
 
         mock_warn.assert_called_with(
-            "if_metageneration_match: type list is deprecated and supported for backwards-compatability reasons only."
-            "Note that the metageneration to be matched is that of the destination blob."
-            "Please pass in a single value (type long).",
+            _COMPOSE_IF_METAGENERATION_LIST_DEPRECATED,
             DeprecationWarning,
             stacklevel=2,
         )

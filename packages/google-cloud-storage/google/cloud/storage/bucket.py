@@ -1045,11 +1045,11 @@ class Bucket(_PropertyMixin):
         client=None,
         encryption_key=None,
         generation=None,
-        timeout=_DEFAULT_TIMEOUT,
         if_generation_match=None,
         if_generation_not_match=None,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
+        timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
         **kwargs
     ):
@@ -1079,34 +1079,29 @@ class Bucket(_PropertyMixin):
             https://cloud.google.com/storage/docs/encryption#customer-supplied.
 
         :type generation: long
-        :param generation: (Optional) If present, selects a specific revision of
-                           this object.
+        :param generation:
+            (Optional) If present, selects a specific revision of this object.
+
+        :type if_generation_match: long
+        :param if_generation_match:
+            (Optional) See :ref:`using-if-generation-match`
+
+        :type if_generation_not_match: long
+        :param if_generation_not_match:
+            (Optional) See :ref:`using-if-generation-not-match`
+
+        :type if_metageneration_match: long
+        :param if_metageneration_match:
+            (Optional) See :ref:`using-if-metageneration-match`
+
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match:
+            (Optional) See :ref:`using-if-metageneration-not-match`
 
         :type timeout: float or tuple
         :param timeout:
             (Optional) The amount of time, in seconds, to wait
             for the server response.  See: :ref:`configuring_timeouts`
-
-        :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
-
-        :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
-
-        :type if_metageneration_match: long
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
-
-        :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry:
@@ -1454,11 +1449,11 @@ class Bucket(_PropertyMixin):
         blob_name,
         client=None,
         generation=None,
-        timeout=_DEFAULT_TIMEOUT,
         if_generation_match=None,
         if_generation_not_match=None,
         if_metageneration_match=None,
         if_metageneration_not_match=None,
+        timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
     ):
         """Deletes a blob from the current bucket.
@@ -1487,31 +1482,26 @@ class Bucket(_PropertyMixin):
         :param generation: (Optional) If present, permanently deletes a specific
                            revision of this object.
 
+        :type if_generation_match: long
+        :param if_generation_match:
+            (Optional) See :ref:`using-if-generation-match`
+
+        :type if_generation_not_match: long
+        :param if_generation_not_match:
+            (Optional) See :ref:`using-if-generation-not-match`
+
+        :type if_metageneration_match: long
+        :param if_metageneration_match:
+            (Optional) See :ref:`using-if-metageneration-match`
+
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match:
+            (Optional) See :ref:`using-if-metageneration-not-match`
+
         :type timeout: float or tuple
         :param timeout:
             (Optional) The amount of time, in seconds, to wait
             for the server response.  See: :ref:`configuring_timeouts`
-
-        :type if_generation_match: long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob.
-
-        :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob.
-
-        :type if_metageneration_match: long
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
-
-        :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry:
@@ -1581,35 +1571,31 @@ class Bucket(_PropertyMixin):
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
+        :type if_generation_match: list of long
+        :param if_generation_match:
+            (Optional) See :ref:`using-if-generation-match`
+            Note that the length of the list must match the length of
+            The list must match ``blobs`` item-to-item.
+
+        :type if_generation_not_match: list of long
+        :param if_generation_not_match:
+            (Optional) See :ref:`using-if-generation-not-match`
+            The list must match ``blobs`` item-to-item.
+
+        :type if_metageneration_match: list of long
+        :param if_metageneration_match:
+            (Optional) See :ref:`using-if-metageneration-match`
+            The list must match ``blobs`` item-to-item.
+
+        :type if_metageneration_not_match: list of long
+        :param if_metageneration_not_match:
+            (Optional) See :ref:`using-if-metageneration-not-match`
+            The list must match ``blobs`` item-to-item.
+
         :type timeout: float or tuple
         :param timeout:
             (Optional) The amount of time, in seconds, to wait
             for the server response.  See: :ref:`configuring_timeouts`
-
-        :type if_generation_match: list of long
-        :param if_generation_match: (Optional) Make the operation conditional on whether
-                                    the blob's current generation matches the given value.
-                                    Setting to 0 makes the operation succeed only if there
-                                    are no live versions of the blob. The list must match
-                                    ``blobs`` item-to-item.
-
-        :type if_generation_not_match: list of long
-        :param if_generation_not_match: (Optional) Make the operation conditional on whether
-                                        the blob's current generation does not match the given
-                                        value. If no live blob exists, the precondition fails.
-                                        Setting to 0 makes the operation succeed only if there
-                                        is a live version of the blob. The list must match
-                                        ``blobs`` item-to-item.
-
-        :type if_metageneration_match: list of long
-        :param if_metageneration_match: (Optional) Make the operation conditional on whether the
-                                        blob's current metageneration matches the given value.
-                                        The list must match ``blobs`` item-to-item.
-
-        :type if_metageneration_not_match: list of long
-        :param if_metageneration_not_match: (Optional) Make the operation conditional on whether the
-                                            blob's current metageneration does not match the given value.
-                                            The list must match ``blobs`` item-to-item.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry:
@@ -1673,7 +1659,6 @@ class Bucket(_PropertyMixin):
         client=None,
         preserve_acl=True,
         source_generation=None,
-        timeout=_DEFAULT_TIMEOUT,
         if_generation_match=None,
         if_generation_not_match=None,
         if_metageneration_match=None,
@@ -1682,6 +1667,7 @@ class Bucket(_PropertyMixin):
         if_source_generation_not_match=None,
         if_source_metageneration_match=None,
         if_source_metageneration_not_match=None,
+        timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
     ):
         """Copy the given blob to the given bucket, optionally with a new name.
@@ -1712,67 +1698,54 @@ class Bucket(_PropertyMixin):
         :param source_generation: (Optional) The generation of the blob to be
                                   copied.
 
+        :type if_generation_match: long
+        :param if_generation_match:
+            (Optional) See :ref:`using-if-generation-match`
+            Note that the generation to be matched is that of the
+            ``destination`` blob.
+
+        :type if_generation_not_match: long
+        :param if_generation_not_match:
+            (Optional) See :ref:`using-if-generation-not-match`
+            Note that the generation to be matched is that of the
+            ``destination`` blob.
+
+        :type if_metageneration_match: long
+        :param if_metageneration_match:
+            (Optional) See :ref:`using-if-metageneration-match`
+            Note that the metageneration to be matched is that of the
+            ``destination`` blob.
+
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match:
+            (Optional) See :ref:`using-if-metageneration-not-match`
+            Note that the metageneration to be matched is that of the
+            ``destination`` blob.
+
+        :type if_source_generation_match: long
+        :param if_source_generation_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's generation matches the given value.
+
+        :type if_source_generation_not_match: long
+        :param if_source_generation_not_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's generation does not match the given value.
+
+        :type if_source_metageneration_match: long
+        :param if_source_metageneration_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's current metageneration matches the given value.
+
+        :type if_source_metageneration_not_match: long
+        :param if_source_metageneration_not_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's current metageneration does not match the given value.
+
         :type timeout: float or tuple
         :param timeout:
             (Optional) The amount of time, in seconds, to wait
             for the server response.  See: :ref:`configuring_timeouts`
-
-        :type if_generation_match: long
-        :param if_generation_match: (Optional) Makes the operation
-                                    conditional on whether the destination
-                                    object's current generation matches the
-                                    given value. Setting to 0 makes the
-                                    operation succeed only if there are no
-                                    live versions of the object.
-
-        :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Makes the operation
-                                        conditional on whether the
-                                        destination object's current
-                                        generation does not match the given
-                                        value. If no live object exists,
-                                        the precondition fails. Setting to
-                                        0 makes the operation succeed only
-                                        if there is a live version
-                                        of the object.
-
-        :type if_metageneration_match: long
-        :param if_metageneration_match: (Optional) Makes the operation
-                                        conditional on whether the
-                                        destination object's current
-                                        metageneration matches the given
-                                        value.
-
-        :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Makes the operation
-                                            conditional on whether the
-                                            destination object's current
-                                            metageneration does not match
-                                            the given value.
-
-        :type if_source_generation_match: long
-        :param if_source_generation_match: (Optional) Makes the operation
-                                           conditional on whether the source
-                                           object's generation matches the
-                                           given value.
-
-        :type if_source_generation_not_match: long
-        :param if_source_generation_not_match: (Optional) Makes the operation
-                                               conditional on whether the source
-                                               object's generation does not match
-                                               the given value.
-
-        :type if_source_metageneration_match: long
-        :param if_source_metageneration_match: (Optional) Makes the operation
-                                               conditional on whether the source
-                                               object's current metageneration
-                                               matches the given value.
-
-        :type if_source_metageneration_not_match: long
-        :param if_source_metageneration_not_match: (Optional) Makes the operation
-                                                   conditional on whether the source
-                                                   object's current metageneration
-                                                   does not match the given value.
 
         :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
         :param retry:
@@ -1880,65 +1853,52 @@ class Bucket(_PropertyMixin):
                        to the ``client`` stored on the current bucket.
 
         :type if_generation_match: long
-        :param if_generation_match: (Optional) Makes the operation
-                                    conditional on whether the destination
-                                    object's current generation matches the
-                                    given value. Setting to 0 makes the
-                                    operation succeed only if there are no
-                                    live versions of the object.
+        :param if_generation_match:
+            (Optional) See :ref:`using-if-generation-match`
+            Note that the generation to be matched is that of the
+            ``destination`` blob.
 
         :type if_generation_not_match: long
-        :param if_generation_not_match: (Optional) Makes the operation
-                                        conditional on whether the
-                                        destination object's current
-                                        generation does not match the given
-                                        value. If no live object exists,
-                                        the precondition fails. Setting to
-                                        0 makes the operation succeed only
-                                        if there is a live version
-                                        of the object.
+        :param if_generation_not_match:
+            (Optional) See :ref:`using-if-generation-not-match`
+            Note that the generation to be matched is that of the
+            ``destination`` blob.
 
         :type if_metageneration_match: long
-        :param if_metageneration_match: (Optional) Makes the operation
-                                        conditional on whether the
-                                        destination object's current
-                                        metageneration matches the given
-                                        value.
+        :param if_metageneration_match:
+            (Optional) See :ref:`using-if-metageneration-match`
+            Note that the metageneration to be matched is that of the
+            ``destination`` blob.
 
         :type if_metageneration_not_match: long
-        :param if_metageneration_not_match: (Optional) Makes the operation
-                                            conditional on whether the
-                                            destination object's current
-                                            metageneration does not match
-                                            the given value.
+        :param if_metageneration_not_match:
+            (Optional) See :ref:`using-if-metageneration-not-match`
+            Note that the metageneration to be matched is that of the
+            ``destination`` blob.
 
         :type if_source_generation_match: long
-        :param if_source_generation_match: (Optional) Makes the operation
-                                           conditional on whether the source
-                                           object's generation matches the
-                                           given value. Also used in the
-                                           delete request.
+        :param if_source_generation_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's generation matches the given value. Also used in the
+            (implied) delete request.
 
         :type if_source_generation_not_match: long
-        :param if_source_generation_not_match: (Optional) Makes the operation
-                                               conditional on whether the source
-                                               object's generation does not match
-                                               the given value. Also used in the
-                                               delete request.
+        :param if_source_generation_not_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's generation does not match the given value. Also used in
+            the (implied) delete request.
 
         :type if_source_metageneration_match: long
-        :param if_source_metageneration_match: (Optional) Makes the operation
-                                               conditional on whether the source
-                                               object's current metageneration
-                                               matches the given value.Also used in the
-                                               delete request.
+        :param if_source_metageneration_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's current metageneration matches the given value. Also used
+            in the (implied) delete request.
 
         :type if_source_metageneration_not_match: long
-        :param if_source_metageneration_not_match: (Optional) Makes the operation
-                                                   conditional on whether the source
-                                                   object's current metageneration
-                                                   does not match the given value.
-                                                   Also used in the delete request.
+        :param if_source_metageneration_not_match:
+            (Optional) Makes the operation conditional on whether the source
+            object's current metageneration does not match the given value.
+            Also used in the (implied) delete request.
 
         :type timeout: float or tuple
         :param timeout:

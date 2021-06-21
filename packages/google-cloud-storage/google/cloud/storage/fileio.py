@@ -67,7 +67,8 @@ class BlobReader(io.BufferedIOBase):
         The default is the chunk_size of the blob, or 40MiB.
 
     :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
-    :param retry: (Optional) How to retry the RPC. A None value will disable
+    :param retry:
+        (Optional) How to retry the RPC. A None value will disable
         retries. A google.api_core.retry.Retry value will enable retries,
         and the object will define retriable response codes and errors and
         configure backoff and timeout options.
@@ -88,10 +89,15 @@ class BlobReader(io.BufferedIOBase):
         configuration changes for Retry objects such as delays and deadlines
         are respected.
 
-    :param download_kwargs: Keyword arguments to pass to the underlying API
-        calls. The following arguments are supported: "if_generation_match",
-        "if_generation_not_match", "if_metageneration_match",
-        "if_metageneration_not_match", "timeout".
+    :param download_kwargs:
+        Keyword arguments to pass to the underlying API calls.
+        The following arguments are supported:
+
+        - ``if_generation_match``
+        - ``if_generation_not_match``
+        - ``if_metageneration_match``
+        - ``if_metageneration_not_match``
+        - ``timeout``
     """
 
     def __init__(self, blob, chunk_size=None, retry=DEFAULT_RETRY, **download_kwargs):
@@ -230,7 +236,8 @@ class BlobWriter(io.BufferedIOBase):
         expectations.
 
     :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
-    :param retry: (Optional) How to retry the RPC. A None value will disable
+    :param retry:
+        (Optional) How to retry the RPC. A None value will disable
         retries. A google.api_core.retry.Retry value will enable retries,
         and the object will define retriable response codes and errors and
         configure backoff and timeout options.
@@ -251,11 +258,19 @@ class BlobWriter(io.BufferedIOBase):
         configuration changes for Retry objects such as delays and deadlines
         are respected.
 
-    :param upload_kwargs: Keyword arguments to pass to the underlying API
-        calls. The following arguments are supported: "if_generation_match",
-        "if_generation_not_match", "if_metageneration_match",
-        "if_metageneration_not_match", "timeout", "content_type",
-        "num_retries", "predefined_acl", "checksum".
+    :param upload_kwargs:
+        Keyword arguments to pass to the underlying API
+        calls. The following arguments are supported:
+
+        - ``if_generation_match``
+        - ``if_generation_not_match``
+        - ``if_metageneration_match``
+        - ``if_metageneration_not_match``
+        - ``timeout``
+        - ``content_type``
+        - ``num_retries``
+        - ``predefined_acl``
+        - ``checksum``
     """
 
     def __init__(
