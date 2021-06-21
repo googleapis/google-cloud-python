@@ -22,4 +22,7 @@ jobs:
       - name: Run tests
         run: |
           tox -e docs
+      - name: Run unittest
+        run: |
+          tox -e unittest
 
