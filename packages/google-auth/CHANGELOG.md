@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [1.32.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.31.0...v1.32.0) (2021-06-16)
+
+
+### Features
+
+* allow scopes for self signed jwt ([#776](https://www.github.com/googleapis/google-auth-library-python/issues/776)) ([2cfe655](https://www.github.com/googleapis/google-auth-library-python/commit/2cfe655bba837170abc07701557a1a5e0fe3294e))
+
 ## [1.31.0](https://www.github.com/googleapis/google-auth-library-python/compare/v1.30.2...v1.31.0) (2021-06-09)
 
 
