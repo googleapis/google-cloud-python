@@ -21,6 +21,8 @@ from google.api_core import gapic_v1
 from google.cloud.spanner_v1.param_types import INT64
 from google.api_core.retry import Retry
 
+from google.cloud.spanner_v1 import RequestOptions
+
 DML_WO_PARAM = """
 DELETE FROM citizens
 """
@@ -902,7 +904,13 @@ class TestDatabase(_BaseTest):
         )
 
     def _execute_partitioned_dml_helper(
-        self, dml, params=None, param_types=None, query_options=None, retried=False
+        self,
+        dml,
+        params=None,
+        param_types=None,
+        query_options=None,
+        request_options=None,
+        retried=False,
     ):
         from google.api_core.exceptions import Aborted
         from google.api_core.retry import Retry
@@ -949,7 +957,7 @@ class TestDatabase(_BaseTest):
             api.execute_streaming_sql.return_value = iterator
 
         row_count = database.execute_partitioned_dml(
-            dml, params, param_types, query_options
+            dml, params, param_types, query_options, request_options
         )
 
         self.assertEqual(row_count, 2)
@@ -989,6 +997,7 @@ class TestDatabase(_BaseTest):
             params=expected_params,
             param_types=param_types,
             query_options=expected_query_options,
+            request_options=request_options,
         )
 
         api.execute_streaming_sql.assert_any_call(
@@ -1006,6 +1015,7 @@ class TestDatabase(_BaseTest):
                 params=expected_params,
                 param_types=param_types,
                 query_options=expected_query_options,
+                request_options=request_options,
             )
             api.execute_streaming_sql.assert_called_with(
                 request=expected_request,
@@ -1033,6 +1043,14 @@ class TestDatabase(_BaseTest):
         self._execute_partitioned_dml_helper(
             dml=DML_W_PARAM,
             query_options=ExecuteSqlRequest.QueryOptions(optimizer_version="3"),
+        )
+
+    def test_execute_partitioned_dml_w_request_options(self):
+        self._execute_partitioned_dml_helper(
+            dml=DML_W_PARAM,
+            request_options=RequestOptions(
+                priority=RequestOptions.Priority.PRIORITY_MEDIUM
+            ),
         )
 
     def test_execute_partitioned_dml_wo_params_retry_aborted(self):

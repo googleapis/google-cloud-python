@@ -34,6 +34,7 @@ from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1._helpers import _SessionWrapper
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
 from google.cloud.spanner_v1.streamed import StreamedResultSet
+from google.cloud.spanner_v1 import RequestOptions
 
 _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES = (
     "RST_STREAM",
@@ -124,6 +125,7 @@ class _SnapshotBase(_SessionWrapper):
         index="",
         limit=0,
         partition=None,
+        request_options=None,
         *,
         retry=gapic_v1.method.DEFAULT,
         timeout=gapic_v1.method.DEFAULT,
@@ -152,6 +154,13 @@ class _SnapshotBase(_SessionWrapper):
                           from :meth:`partition_read`.  Incompatible with
                           ``limit``.
 
+        :type request_options:
+            :class:`google.cloud.spanner_v1.types.RequestOptions`
+        :param request_options:
+                (Optional) Common options for this request.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.RequestOptions`.
+
         :type retry: :class:`~google.api_core.retry.Retry`
         :param retry: (Optional) The retry settings for this request.
 
@@ -176,6 +185,9 @@ class _SnapshotBase(_SessionWrapper):
         metadata = _metadata_with_prefix(database.name)
         transaction = self._make_txn_selector()
 
+        if type(request_options) == dict:
+            request_options = RequestOptions(request_options)
+
         request = ReadRequest(
             session=self._session.name,
             table=table,
@@ -185,6 +197,7 @@ class _SnapshotBase(_SessionWrapper):
             index=index,
             limit=limit,
             partition_token=partition,
+            request_options=request_options,
         )
         restart = functools.partial(
             api.streaming_read,
@@ -217,6 +230,7 @@ class _SnapshotBase(_SessionWrapper):
         param_types=None,
         query_mode=None,
         query_options=None,
+        request_options=None,
         partition=None,
         retry=gapic_v1.method.DEFAULT,
         timeout=gapic_v1.method.DEFAULT,
@@ -248,6 +262,13 @@ class _SnapshotBase(_SessionWrapper):
                 (Optional) Query optimizer configuration to use for the given query.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.QueryOptions`
+
+        :type request_options:
+            :class:`google.cloud.spanner_v1.types.RequestOptions`
+        :param request_options:
+                (Optional) Common options for this request.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.RequestOptions`.
 
         :type partition: bytes
         :param partition: (Optional) one of the partition tokens returned
@@ -291,6 +312,9 @@ class _SnapshotBase(_SessionWrapper):
         default_query_options = database._instance._client._query_options
         query_options = _merge_query_options(default_query_options, query_options)
 
+        if type(request_options) == dict:
+            request_options = RequestOptions(request_options)
+
         request = ExecuteSqlRequest(
             session=self._session.name,
             sql=sql,
@@ -301,6 +325,7 @@ class _SnapshotBase(_SessionWrapper):
             partition_token=partition,
             seqno=self._execute_sql_count,
             query_options=query_options,
+            request_options=request_options,
         )
         restart = functools.partial(
             api.execute_streaming_sql,

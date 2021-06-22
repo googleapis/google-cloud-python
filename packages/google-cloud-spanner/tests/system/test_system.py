@@ -43,11 +43,13 @@ from google.cloud.spanner_v1 import KeySet
 from google.cloud.spanner_v1.instance import Backup
 from google.cloud.spanner_v1.instance import Instance
 from google.cloud.spanner_v1.table import Table
+from google.cloud.spanner_v1 import RequestOptions
 
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryInstanceState
 from test_utils.retry import RetryResult
 from test_utils.system import unique_resource_id
+
 from tests._fixtures import DDL_STATEMENTS
 from tests._fixtures import EMULATOR_DDL_STATEMENTS
 from tests._helpers import OpenTelemetryBase, HAS_OPENTELEMETRY_INSTALLED
@@ -1821,6 +1823,9 @@ class TestSessionAPI(OpenTelemetryBase, _TestData):
             update_statement,
             params={"email": nonesuch, "target": target},
             param_types={"email": param_types.STRING, "target": param_types.STRING},
+            request_options=RequestOptions(
+                priority=RequestOptions.Priority.PRIORITY_MEDIUM
+            ),
         )
         self.assertEqual(row_count, 1)
 

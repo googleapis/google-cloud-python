@@ -230,6 +230,7 @@ class Session(object):
         param_types=None,
         query_mode=None,
         query_options=None,
+        request_options=None,
         retry=google.api_core.gapic_v1.method.DEFAULT,
         timeout=google.api_core.gapic_v1.method.DEFAULT,
     ):
@@ -258,6 +259,13 @@ class Session(object):
             or :class:`dict`
         :param query_options: (Optional) Options that are provided for query plan stability.
 
+        :type request_options:
+            :class:`google.cloud.spanner_v1.types.RequestOptions`
+        :param request_options:
+                (Optional) Common options for this request.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.RequestOptions`.
+
         :type retry: :class:`~google.api_core.retry.Retry`
         :param retry: (Optional) The retry settings for this request.
 
@@ -273,6 +281,7 @@ class Session(object):
             param_types,
             query_mode,
             query_options=query_options,
+            request_options=request_options,
             retry=retry,
             timeout=timeout,
         )
@@ -319,9 +328,12 @@ class Session(object):
 
         :type kw: dict
         :param kw: (Optional) keyword arguments to be passed to ``func``.
-                   If passed, "timeout_secs" will be removed and used to
+                   If passed:
+                   "timeout_secs" will be removed and used to
                    override the default retry timeout which defines maximum timestamp
                    to continue retrying the transaction.
+                   "commit_request_options" will be removed and used to set the
+                   request options for the commit request.
 
         :rtype: Any
         :returns: The return value of ``func``.
@@ -330,6 +342,7 @@ class Session(object):
             reraises any non-ABORT exceptions raised by ``func``.
         """
         deadline = time.time() + kw.pop("timeout_secs", DEFAULT_RETRY_TIMEOUT_SECS)
+        commit_request_options = kw.pop("commit_request_options", None)
         attempts = 0
 
         while True:
@@ -355,7 +368,10 @@ class Session(object):
                 raise
 
             try:
-                txn.commit(return_commit_stats=self._database.log_commit_stats)
+                txn.commit(
+                    return_commit_stats=self._database.log_commit_stats,
+                    request_options=commit_request_options,
+                )
             except Aborted as exc:
                 del self._transaction
                 _delay_until_retry(exc, deadline, attempts)

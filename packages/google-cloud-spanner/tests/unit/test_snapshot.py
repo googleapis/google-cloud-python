@@ -15,6 +15,8 @@
 
 from google.api_core import gapic_v1
 import mock
+
+from google.cloud.spanner_v1 import RequestOptions
 from tests._helpers import (
     OpenTelemetryBase,
     StatusCode,
@@ -590,6 +592,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         partition=None,
         sql_count=0,
         query_options=None,
+        request_options=None,
         timeout=gapic_v1.method.DEFAULT,
         retry=gapic_v1.method.DEFAULT,
     ):
@@ -649,6 +652,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
             PARAM_TYPES,
             query_mode=MODE,
             query_options=query_options,
+            request_options=request_options,
             partition=partition,
             retry=retry,
             timeout=timeout,
@@ -695,6 +699,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
             param_types=PARAM_TYPES,
             query_mode=MODE,
             query_options=expected_query_options,
+            request_options=request_options,
             partition_token=partition,
             seqno=sql_count,
         )
@@ -745,6 +750,14 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self._execute_sql_helper(
             multi_use=False,
             query_options=ExecuteSqlRequest.QueryOptions(optimizer_version="3"),
+        )
+
+    def test_execute_sql_w_request_options(self):
+        self._execute_sql_helper(
+            multi_use=False,
+            request_options=RequestOptions(
+                priority=RequestOptions.Priority.PRIORITY_MEDIUM
+            ),
         )
 
     def _partition_read_helper(

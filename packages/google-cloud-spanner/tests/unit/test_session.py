@@ -550,6 +550,7 @@ class TestSession(OpenTelemetryBase):
             None,
             None,
             query_options=None,
+            request_options=None,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             retry=google.api_core.gapic_v1.method.DEFAULT,
         )
@@ -579,6 +580,7 @@ class TestSession(OpenTelemetryBase):
             param_types,
             "PLAN",
             query_options=None,
+            request_options=None,
             timeout=None,
             retry=None,
         )
@@ -606,6 +608,7 @@ class TestSession(OpenTelemetryBase):
             param_types,
             "PLAN",
             query_options=None,
+            request_options=None,
             timeout=google.api_core.gapic_v1.method.DEFAULT,
             retry=google.api_core.gapic_v1.method.DEFAULT,
         )

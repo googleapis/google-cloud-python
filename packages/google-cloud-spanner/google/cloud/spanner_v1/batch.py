@@ -23,6 +23,7 @@ from google.cloud.spanner_v1._helpers import _SessionWrapper
 from google.cloud.spanner_v1._helpers import _make_list_value_pbs
 from google.cloud.spanner_v1._helpers import _metadata_with_prefix
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
+from google.cloud.spanner_v1 import RequestOptions
 
 # pylint: enable=ungrouped-imports
 
@@ -138,12 +139,19 @@ class Batch(_BatchBase):
         if self.committed is not None:
             raise ValueError("Batch already committed")
 
-    def commit(self, return_commit_stats=False):
+    def commit(self, return_commit_stats=False, request_options=None):
         """Commit mutations to the database.
 
         :type return_commit_stats: bool
         :param return_commit_stats:
           If true, the response will return commit stats which can be accessed though commit_stats.
+
+        :type request_options:
+            :class:`google.cloud.spanner_v1.types.RequestOptions`
+        :param request_options:
+                (Optional) Common options for this request.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.RequestOptions`.
 
         :rtype: datetime
         :returns: timestamp of the committed changes.
@@ -154,11 +162,16 @@ class Batch(_BatchBase):
         metadata = _metadata_with_prefix(database.name)
         txn_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
         trace_attributes = {"num_mutations": len(self._mutations)}
+
+        if type(request_options) == dict:
+            request_options = RequestOptions(request_options)
+
         request = CommitRequest(
             session=self._session.name,
             mutations=self._mutations,
             single_use_transaction=txn_options,
             return_commit_stats=return_commit_stats,
+            request_options=request_options,
         )
         with trace_call("CloudSpanner.Commit", self._session, trace_attributes):
             response = api.commit(request=request, metadata=metadata,)

@@ -28,6 +28,7 @@ from .types.mutation import Mutation
 from .types.query_plan import PlanNode
 from .types.query_plan import QueryPlan
 from .types.result_set import PartialResultSet
+from .types import RequestOptions
 from .types.result_set import ResultSet
 from .types.result_set import ResultSetMetadata
 from .types.result_set import ResultSetStats
@@ -119,6 +120,7 @@ __all__ = (
     "PlanNode",
     "QueryPlan",
     "ReadRequest",
+    "RequestOptions",
     "ResultSet",
     "ResultSetMetadata",
     "ResultSetStats",

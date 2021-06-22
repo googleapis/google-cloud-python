@@ -232,12 +232,13 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         self.assertEqual(committed, now)
         self.assertEqual(batch.committed, committed)
 
-        (session, mutations, single_use_txn, metadata) = api._committed
+        (session, mutations, single_use_txn, metadata, request_options) = api._committed
         self.assertEqual(session, self.SESSION_NAME)
         self.assertEqual(mutations, batch._mutations)
         self.assertIsInstance(single_use_txn, TransactionOptions)
         self.assertTrue(type(single_use_txn).pb(single_use_txn).HasField("read_write"))
         self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
+        self.assertEqual(request_options, None)
 
         self.assertSpanAttributes(
             "CloudSpanner.Commit", attributes=dict(BASE_ATTRIBUTES, num_mutations=1)
@@ -280,12 +281,13 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
 
         self.assertEqual(batch.committed, now)
 
-        (session, mutations, single_use_txn, metadata) = api._committed
+        (session, mutations, single_use_txn, metadata, request_options) = api._committed
         self.assertEqual(session, self.SESSION_NAME)
         self.assertEqual(mutations, batch._mutations)
         self.assertIsInstance(single_use_txn, TransactionOptions)
         self.assertTrue(type(single_use_txn).pb(single_use_txn).HasField("read_write"))
         self.assertEqual(metadata, [("google-cloud-resource-prefix", database.name)])
+        self.assertEqual(request_options, None)
 
         self.assertSpanAttributes(
             "CloudSpanner.Commit", attributes=dict(BASE_ATTRIBUTES, num_mutations=1)
@@ -339,7 +341,7 @@ class _FauxSpannerAPI:
         self.__dict__.update(**kwargs)
 
     def commit(
-        self, request=None, metadata=None,
+        self, request=None, metadata=None, request_options=None,
     ):
         from google.api_core.exceptions import Unknown
 
@@ -349,6 +351,7 @@ class _FauxSpannerAPI:
             request.mutations,
             request.single_use_transaction,
             metadata,
+            request_options,
         )
         if self._rpc_error:
             raise Unknown("error")
