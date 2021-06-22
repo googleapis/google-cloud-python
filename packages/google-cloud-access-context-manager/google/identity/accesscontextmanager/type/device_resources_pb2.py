@@ -38,7 +38,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
     serialized_options=b"\n-com.google.identity.accesscontextmanager.typeB\tTypeProtoP\001ZMgoogle.golang.org/genproto/googleapis/identity/accesscontextmanager/type;type\252\002)Google.Identity.AccessContextManager.Type\312\002)Google\\Identity\\AccessContextManager\\Type\352\002,Google::Identity::AccessContextManager::Type",
     create_key=_descriptor._internal_create_key,
     serialized_pb=b"\n@google/identity/accesscontextmanager/type/device_resources.proto\x12)google.identity.accesscontextmanager.type\x1a\x1cgoogle/api/annotations.proto*p\n\x16\x44\x65viceEncryptionStatus\x12\x1a\n\x16\x45NCRYPTION_UNSPECIFIED\x10\x00\x12\x1a\n\x16\x45NCRYPTION_UNSUPPORTED\x10\x01\x12\x0f\n\x0bUNENCRYPTED\x10\x02\x12\r\n\tENCRYPTED\x10\x03*\x82\x01\n\x06OsType\x12\x12\n\x0eOS_UNSPECIFIED\x10\x00\x12\x0f\n\x0b\x44\x45SKTOP_MAC\x10\x01\x12\x13\n\x0f\x44\x45SKTOP_WINDOWS\x10\x02\x12\x11\n\rDESKTOP_LINUX\x10\x03\x12\x15\n\x11\x44\x45SKTOP_CHROME_OS\x10\x06\x12\x0b\n\x07\x41NDROID\x10\x04\x12\x07\n\x03IOS\x10\x05*V\n\x15\x44\x65viceManagementLevel\x12\x1a\n\x16MANAGEMENT_UNSPECIFIED\x10\x00\x12\x08\n\x04NONE\x10\x01\x12\t\n\x05\x42\x41SIC\x10\x02\x12\x0c\n\x08\x43OMPLETE\x10\x03\x42\x92\x02\n-com.google.identity.accesscontextmanager.typeB\tTypeProtoP\x01ZMgoogle.golang.org/genproto/googleapis/identity/accesscontextmanager/type;type\xaa\x02)Google.Identity.AccessContextManager.Type\xca\x02)Google\\Identity\\AccessContextManager\\Type\xea\x02,Google::Identity::AccessContextManager::Typeb\x06proto3",
-    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR],
+    dependencies=[google_dot_api_dot_annotations__pb2.DESCRIPTOR,],
 )
 
 _DEVICEENCRYPTIONSTATUS = _descriptor.EnumDescriptor(

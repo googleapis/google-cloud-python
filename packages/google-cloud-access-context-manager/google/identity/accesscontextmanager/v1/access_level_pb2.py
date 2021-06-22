@@ -240,7 +240,7 @@ _ACCESSLEVEL = _descriptor.Descriptor(
             containing_type=None,
             create_key=_descriptor._internal_create_key,
             fields=[],
-        )
+        ),
     ],
     serialized_start=257,
     serialized_end=569,
@@ -296,7 +296,7 @@ _BASICLEVEL = _descriptor.Descriptor(
     ],
     extensions=[],
     nested_types=[],
-    enum_types=[_BASICLEVEL_CONDITIONCOMBININGFUNCTION],
+    enum_types=[_BASICLEVEL_CONDITIONCOMBININGFUNCTION,],
     serialized_options=None,
     is_extendable=False,
     syntax="proto3",
@@ -469,7 +469,7 @@ _CUSTOMLEVEL = _descriptor.Descriptor(
             serialized_options=None,
             file=DESCRIPTOR,
             create_key=_descriptor._internal_create_key,
-        )
+        ),
     ],
     extensions=[],
     nested_types=[],
