@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.2.0](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.1.1...v3.2.0) (2021-06-22)
+
+
+### Features
+
+* support self-signed JWT flow for service accounts ([046c368](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/046c368cf5a75a210b0ecc7e6e1eee9bcd907669))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([046c368](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/046c368cf5a75a210b0ecc7e6e1eee9bcd907669))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/1127)) ([#164](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/164)) ([2741e4f](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/2741e4fb1d9074494872fafcec96d870b14b671d)), closes [#1126](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/1126)
+
 ### [3.1.1](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.1.0...v3.1.1) (2021-04-07)
 
 
