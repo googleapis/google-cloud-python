@@ -14,6 +14,8 @@
 
 """Database cursor for Google Cloud Spanner DB-API."""
 
+import sqlparse
+
 from google.api_core.exceptions import Aborted
 from google.api_core.exceptions import AlreadyExists
 from google.api_core.exceptions import FailedPrecondition
@@ -174,9 +176,10 @@ class Cursor(object):
         try:
             classification = parse_utils.classify_stmt(sql)
             if classification == parse_utils.STMT_DDL:
-                for ddl in sql.split(";"):
-                    ddl = ddl.strip()
+                for ddl in sqlparse.split(sql):
                     if ddl:
+                        if ddl[-1] == ";":
+                            ddl = ddl[:-1]
                         self.connection._ddl_statements.append(ddl)
                 if self.connection.autocommit:
                     self.connection.run_prior_DDL_statements()

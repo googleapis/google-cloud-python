@@ -199,7 +199,7 @@ def classify_stmt(query):
 
 def parse_insert(insert_sql, params):
     """
-    Parse an INSERT statement an generate a list of tuples of the form:
+    Parse an INSERT statement and generate a list of tuples of the form:
         [
             (SQL, params_per_row1),
             (SQL, params_per_row2),
