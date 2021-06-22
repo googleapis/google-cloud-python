@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [1.39.0](https://www.github.com/googleapis/python-storage/compare/v1.38.0...v1.39.0) (2021-06-21)
+
+
+### Features
+
+* media operation retries can be configured using the same interface as with non-media operation ([#447](https://www.github.com/googleapis/python-storage/issues/447)) ([0dbbb8a](https://www.github.com/googleapis/python-storage/commit/0dbbb8ac17a4b632707485ee6c7cc15e4670efaa))
+
+
+### Bug Fixes
+
+* add ConnectionError to default retry ([#445](https://www.github.com/googleapis/python-storage/issues/445)) ([8344253](https://www.github.com/googleapis/python-storage/commit/8344253a1969b9d04b81f87a6d7bddd3ddb55006))
+* apply idempotency policies for ACLs ([#458](https://www.github.com/googleapis/python-storage/issues/458)) ([2232f38](https://www.github.com/googleapis/python-storage/commit/2232f38933dbdfeb4f6585291794d332771ffdf2))
+* replace python lifecycle action parsing ValueError with warning ([#437](https://www.github.com/googleapis/python-storage/issues/437)) ([2532d50](https://www.github.com/googleapis/python-storage/commit/2532d506b44fc1ef0fa0a996822d29e7459c465a))
+* revise blob.compose query parameters `if_generation_match` ([#454](https://www.github.com/googleapis/python-storage/issues/454)) ([70d19e7](https://www.github.com/googleapis/python-storage/commit/70d19e72831dee112bb07f38b50beef4890c1155))
+
+
+### Documentation
+
+* streamline 'timeout' / 'retry' docs in docstrings ([#461](https://www.github.com/googleapis/python-storage/issues/461)) ([78b2eba](https://www.github.com/googleapis/python-storage/commit/78b2eba81003b437cd24f2b8d269ea2455682507))
+* streamline docstrings for conditional parmas ([#464](https://www.github.com/googleapis/python-storage/issues/464)) ([6999370](https://www.github.com/googleapis/python-storage/commit/69993702390322df07cc2e818003186a47524c2b))
+
 ## [1.38.0](https://www.github.com/googleapis/python-storage/compare/v1.37.1...v1.38.0) (2021-04-26)
 
 
