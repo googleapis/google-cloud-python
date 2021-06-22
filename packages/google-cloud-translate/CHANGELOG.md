@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+### [3.2.1](https://www.github.com/googleapis/python-translate/compare/v3.2.0...v3.2.1) (2021-06-21)
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-translate/issues/1127)) ([#175](https://www.github.com/googleapis/python-translate/issues/175)) ([7ef5f04](https://www.github.com/googleapis/python-translate/commit/7ef5f04cdb80198472bdc376364db9cc0a91fd9e))
+
 ## [3.2.0](https://www.github.com/googleapis/python-translate/compare/v3.1.0...v3.2.0) (2021-05-28)
 
 
