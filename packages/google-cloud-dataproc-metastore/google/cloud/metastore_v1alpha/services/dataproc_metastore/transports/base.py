@@ -25,6 +25,7 @@ from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.metastore_v1alpha.types import metastore
 from google.longrunning import operations_pb2  # type: ignore
@@ -45,8 +46,6 @@ except AttributeError:
     except pkg_resources.DistributionNotFound:  # pragma: NO COVER
         _GOOGLE_AUTH_VERSION = None
 
-_API_CORE_VERSION = google.api_core.__version__
-
 
 class DataprocMetastoreTransport(abc.ABC):
     """Abstract transport class for DataprocMetastore."""
@@ -64,6 +63,7 @@ class DataprocMetastoreTransport(abc.ABC):
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
         **kwargs,
     ) -> None:
         """Instantiate the transport.
@@ -87,6 +87,8 @@ class DataprocMetastoreTransport(abc.ABC):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
         """
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
@@ -115,13 +117,20 @@ class DataprocMetastoreTransport(abc.ABC):
                 **scopes_kwargs, quota_project_id=quota_project_id
             )
 
+        # If the credentials is service account credentials, then always try to use self signed JWT.
+        if (
+            always_use_jwt_access
+            and isinstance(credentials, service_account.Credentials)
+            and hasattr(service_account.Credentials, "with_always_use_jwt_access")
+        ):
+            credentials = credentials.with_always_use_jwt_access(True)
+
         # Save the credentials.
         self._credentials = credentials
 
-    # TODO(busunkim): These two class methods are in the base transport
+    # TODO(busunkim): This method is in the base transport
     # to avoid duplicating code across the transport classes. These functions
-    # should be deleted once the minimum required versions of google-api-core
-    # and google-auth are increased.
+    # should be deleted once the minimum required versions of google-auth is increased.
 
     # TODO: Remove this function once google-auth >= 1.25.0 is required
     @classmethod
@@ -141,27 +150,6 @@ class DataprocMetastoreTransport(abc.ABC):
             scopes_kwargs = {"scopes": scopes or cls.AUTH_SCOPES}
 
         return scopes_kwargs
-
-    # TODO: Remove this function once google-api-core >= 1.26.0 is required
-    @classmethod
-    def _get_self_signed_jwt_kwargs(
-        cls, host: str, scopes: Optional[Sequence[str]]
-    ) -> Dict[str, Union[Optional[Sequence[str]], str]]:
-        """Returns kwargs to pass to grpc_helpers.create_channel depending on the google-api-core version"""
-
-        self_signed_jwt_kwargs: Dict[str, Union[Optional[Sequence[str]], str]] = {}
-
-        if _API_CORE_VERSION and (
-            packaging.version.parse(_API_CORE_VERSION)
-            >= packaging.version.parse("1.26.0")
-        ):
-            self_signed_jwt_kwargs["default_scopes"] = cls.AUTH_SCOPES
-            self_signed_jwt_kwargs["scopes"] = scopes
-            self_signed_jwt_kwargs["default_host"] = cls.DEFAULT_HOST
-        else:
-            self_signed_jwt_kwargs["scopes"] = scopes or cls.AUTH_SCOPES
-
-        return self_signed_jwt_kwargs
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.

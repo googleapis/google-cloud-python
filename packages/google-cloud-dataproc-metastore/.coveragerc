@@ -2,7 +2,6 @@
 branch = True
 
 [report]
-fail_under = 100
 show_missing = True
 omit =
     google/cloud/metastore/__init__.py
