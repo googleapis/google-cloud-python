@@ -425,21 +425,26 @@ def test_receive_with_blocking_shutdown(
         if re.search(r".*done waiting.*stream shutdown.*", line, flags=re.IGNORECASE)
     ]
 
-    assert "Listening" in out
-    assert subscription_async in out
+    try:
+        assert "Listening" in out
+        assert subscription_async in out
 
-    assert len(stream_canceled_lines) == 1
-    assert len(shutdown_done_waiting_lines) == 1
-    assert len(msg_received_lines) == 3
-    assert len(msg_done_lines) == 3
+        assert len(stream_canceled_lines) == 1
+        assert len(shutdown_done_waiting_lines) == 1
+        assert len(msg_received_lines) == 3
+        assert len(msg_done_lines) == 3
 
-    # The stream should have been canceled *after* receiving messages, but before
-    # message processing was done.
-    assert msg_received_lines[-1] < stream_canceled_lines[0] < msg_done_lines[0]
+        # The stream should have been canceled *after* receiving messages, but before
+        # message processing was done.
+        assert msg_received_lines[-1] < stream_canceled_lines[0] < msg_done_lines[0]
 
-    # Yet, waiting on the stream shutdown should have completed *after* the processing
-    # of received messages has ended.
-    assert msg_done_lines[-1] < shutdown_done_waiting_lines[0]
+        # Yet, waiting on the stream shutdown should have completed *after*
+        # the processing of received messages has ended.
+        assert msg_done_lines[-1] < shutdown_done_waiting_lines[0]
+    except AssertionError:  # pragma: NO COVER
+        from pprint import pprint
+        pprint(out_lines)  # To make possible flakiness debugging easier.
+        raise
 
 
 def test_listen_for_errors(publisher_client, topic, subscription_async, capsys):
@@ -464,6 +469,7 @@ def test_receive_synchronously(publisher_client, topic, subscription_sync, capsy
     assert f"{subscription_sync}" in out
 
 
+@flaky(max_runs=3, min_passes=1)
 def test_receive_synchronously_with_lease(
     publisher_client, topic, subscription_sync, capsys
 ):

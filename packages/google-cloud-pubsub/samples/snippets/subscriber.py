@@ -499,7 +499,7 @@ def receive_messages_with_blocking_shutdown(project_id, subscription_id, timeout
 
     def callback(message):
         print(f"Received {message.data}.")
-        time.sleep(timeout + 5.0)  # Pocess longer than streaming pull future timeout.
+        time.sleep(timeout + 3.0)  # Pocess longer than streaming pull future timeout.
         message.ack()
         print(f"Done processing the message {message.data}.")
 

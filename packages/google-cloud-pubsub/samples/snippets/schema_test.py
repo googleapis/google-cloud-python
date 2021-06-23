@@ -17,6 +17,7 @@
 import os
 import uuid
 
+from flaky import flaky
 from google.api_core.exceptions import NotFound
 from google.cloud.pubsub import PublisherClient, SchemaServiceClient, SubscriberClient
 from google.pubsub_v1.types import Encoding
@@ -251,6 +252,7 @@ def test_subscribe_with_proto_schema(
     assert "Received a binary-encoded message" in out
 
 
+@flaky(max_runs=3, min_passes=1)
 def test_delete_schema(proto_schema, capsys):
     schema.delete_schema(PROJECT_ID, PROTO_SCHEMA_ID)
     out, _ = capsys.readouterr()
