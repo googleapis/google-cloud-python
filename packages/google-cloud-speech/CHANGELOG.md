@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+### [2.4.1](https://www.github.com/googleapis/python-speech/compare/v2.4.0...v2.4.1) (2021-06-21)
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-speech/issues/1127)) ([#178](https://www.github.com/googleapis/python-speech/issues/178)) ([77d8d0e](https://www.github.com/googleapis/python-speech/commit/77d8d0ebc9924f965b86d3196e73170f875dd06f)), closes [#1126](https://www.github.com/googleapis/python-speech/issues/1126)
+
 ## [2.4.0](https://www.github.com/googleapis/python-speech/compare/v2.3.0...v2.4.0) (2021-05-22)
 
 
