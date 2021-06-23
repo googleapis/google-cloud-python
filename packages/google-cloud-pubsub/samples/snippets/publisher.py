@@ -150,8 +150,8 @@ def publish_messages_with_error_handler(project_id, topic_id):
     def get_callback(publish_future, data):
         def callback(publish_future):
             try:
-                # Wait 100 ms for the publish call to succeed.
-                print(publish_future.result(timeout=0.1))
+                # Wait 60 seconds for the publish call to succeed.
+                print(publish_future.result(timeout=60))
             except futures.TimeoutError:
                 print(f"Publishing {data} timed out.")
 
@@ -246,7 +246,8 @@ def publish_messages_with_flow_control_settings(project_id, topic_id):
         message_id = publish_future.result()
         print(message_id)
 
-    # Publish 1000 messages in quick succession to trigger flow control.
+    # Publish 1000 messages in quick succession may be constrained by
+    # publisher flow control.
     for n in range(1, 1000):
         data = f"Message number {n}"
         # Data must be a bytestring
