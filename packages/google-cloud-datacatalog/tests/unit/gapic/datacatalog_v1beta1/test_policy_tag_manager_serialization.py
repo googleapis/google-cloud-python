@@ -41,9 +41,6 @@ from google.cloud.datacatalog_v1beta1.services.policy_tag_manager_serialization 
     transports,
 )
 from google.cloud.datacatalog_v1beta1.services.policy_tag_manager_serialization.transports.base import (
-    _API_CORE_VERSION,
-)
-from google.cloud.datacatalog_v1beta1.services.policy_tag_manager_serialization.transports.base import (
     _GOOGLE_AUTH_VERSION,
 )
 from google.cloud.datacatalog_v1beta1.types import policytagmanager
@@ -52,8 +49,9 @@ from google.oauth2 import service_account
 import google.auth
 
 
-# TODO(busunkim): Once google-api-core >= 1.26.0 is required:
-# - Delete all the api-core and auth "less than" test cases
+# TODO(busunkim): Once google-auth >= 1.25.0 is required transitively
+# through google-api-core:
+# - Delete the auth "less than" test cases
 # - Delete these pytest markers (Make the "greater than or equal to" tests the default).
 requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
     packaging.version.parse(_GOOGLE_AUTH_VERSION) >= packaging.version.parse("1.25.0"),
@@ -62,16 +60,6 @@ requires_google_auth_lt_1_25_0 = pytest.mark.skipif(
 requires_google_auth_gte_1_25_0 = pytest.mark.skipif(
     packaging.version.parse(_GOOGLE_AUTH_VERSION) < packaging.version.parse("1.25.0"),
     reason="This test requires google-auth >= 1.25.0",
-)
-
-requires_api_core_lt_1_26_0 = pytest.mark.skipif(
-    packaging.version.parse(_API_CORE_VERSION) >= packaging.version.parse("1.26.0"),
-    reason="This test requires google-api-core < 1.26.0",
-)
-
-requires_api_core_gte_1_26_0 = pytest.mark.skipif(
-    packaging.version.parse(_API_CORE_VERSION) < packaging.version.parse("1.26.0"),
-    reason="This test requires google-api-core >= 1.26.0",
 )
 
 
@@ -142,6 +130,21 @@ def test_policy_tag_manager_serialization_client_from_service_account_info(
         assert isinstance(client, client_class)
 
         assert client.transport._host == "datacatalog.googleapis.com:443"
+
+
+@pytest.mark.parametrize(
+    "client_class",
+    [PolicyTagManagerSerializationClient, PolicyTagManagerSerializationAsyncClient,],
+)
+def test_policy_tag_manager_serialization_client_service_account_always_use_jwt(
+    client_class,
+):
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        client = client_class(credentials=creds)
+        use_jwt.assert_called_with(True)
 
 
 @pytest.mark.parametrize(
@@ -1045,7 +1048,6 @@ def test_policy_tag_manager_serialization_transport_auth_adc_old_google_auth(
         ),
     ],
 )
-@requires_api_core_gte_1_26_0
 def test_policy_tag_manager_serialization_transport_create_channel(
     transport_class, grpc_helpers
 ):
@@ -1068,85 +1070,6 @@ def test_policy_tag_manager_serialization_transport_create_channel(
             default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
             scopes=["1", "2"],
             default_host="datacatalog.googleapis.com",
-            ssl_credentials=None,
-            options=[
-                ("grpc.max_send_message_length", -1),
-                ("grpc.max_receive_message_length", -1),
-            ],
-        )
-
-
-@pytest.mark.parametrize(
-    "transport_class,grpc_helpers",
-    [
-        (transports.PolicyTagManagerSerializationGrpcTransport, grpc_helpers),
-        (
-            transports.PolicyTagManagerSerializationGrpcAsyncIOTransport,
-            grpc_helpers_async,
-        ),
-    ],
-)
-@requires_api_core_lt_1_26_0
-def test_policy_tag_manager_serialization_transport_create_channel_old_api_core(
-    transport_class, grpc_helpers
-):
-    # If credentials and host are not provided, the transport class should use
-    # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
-        creds = ga_credentials.AnonymousCredentials()
-        adc.return_value = (creds, None)
-        transport_class(quota_project_id="octopus")
-
-        create_channel.assert_called_with(
-            "datacatalog.googleapis.com:443",
-            credentials=creds,
-            credentials_file=None,
-            quota_project_id="octopus",
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
-            ssl_credentials=None,
-            options=[
-                ("grpc.max_send_message_length", -1),
-                ("grpc.max_receive_message_length", -1),
-            ],
-        )
-
-
-@pytest.mark.parametrize(
-    "transport_class,grpc_helpers",
-    [
-        (transports.PolicyTagManagerSerializationGrpcTransport, grpc_helpers),
-        (
-            transports.PolicyTagManagerSerializationGrpcAsyncIOTransport,
-            grpc_helpers_async,
-        ),
-    ],
-)
-@requires_api_core_lt_1_26_0
-def test_policy_tag_manager_serialization_transport_create_channel_user_scopes(
-    transport_class, grpc_helpers
-):
-    # If credentials and host are not provided, the transport class should use
-    # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
-        creds = ga_credentials.AnonymousCredentials()
-        adc.return_value = (creds, None)
-
-        transport_class(quota_project_id="octopus", scopes=["1", "2"])
-
-        create_channel.assert_called_with(
-            "datacatalog.googleapis.com:443",
-            credentials=creds,
-            credentials_file=None,
-            quota_project_id="octopus",
-            scopes=["1", "2"],
             ssl_credentials=None,
             options=[
                 ("grpc.max_send_message_length", -1),
