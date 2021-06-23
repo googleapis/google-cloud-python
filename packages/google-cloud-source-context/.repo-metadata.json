@@ -1,0 +1,12 @@
+{
+    "name": "source",
+    "name_pretty": "Source Context",
+    "client_documentation": "https://googleapis.dev/python/source/latest",
+    "issue_tracker": "http://github.com/googleapis/python-source-context/issues",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-source-context",
+    "distribution_name": "google-cloud-source-context",
+    "api_id": "source.googleapis.com"
+}
