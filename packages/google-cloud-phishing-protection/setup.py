@@ -24,7 +24,7 @@ description = "Phishing Protection API API client library"
 version = "1.1.1"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
-    "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
+    "google-api-core[grpc] >= 1.26.0, <2.0.0dev",
     "proto-plus >= 1.4.0",
     "packaging >= 14.3",
 ]
