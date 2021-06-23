@@ -37,6 +37,7 @@ class TestClient(unittest.TestCase):
     INSTANCE_NAME = "%s/instances/%s" % (PATH, INSTANCE_ID)
     DISPLAY_NAME = "display-name"
     NODE_COUNT = 5
+    PROCESSING_UNITS = 5000
     LABELS = {"test": "true"}
     TIMEOUT_SECONDS = 80
 
@@ -580,6 +581,7 @@ class TestClient(unittest.TestCase):
                     config=self.CONFIGURATION_NAME,
                     display_name=self.DISPLAY_NAME,
                     node_count=self.NODE_COUNT,
+                    processing_units=self.PROCESSING_UNITS,
                 )
             ]
         )
@@ -597,6 +599,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(instance.config, self.CONFIGURATION_NAME)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
+        self.assertEqual(instance.processing_units, self.PROCESSING_UNITS)
 
         expected_metadata = (
             ("google-cloud-resource-prefix", client.project_name),

@@ -27,6 +27,7 @@ class TestInstance(unittest.TestCase):
     LOCATION = "projects/" + PROJECT + "/locations/" + CONFIG_NAME
     DISPLAY_NAME = "display_name"
     NODE_COUNT = 5
+    PROCESSING_UNITS = 5000
     OP_ID = 8915
     OP_NAME = "operations/projects/%s/instances/%soperations/%d" % (
         PROJECT,
@@ -39,6 +40,7 @@ class TestInstance(unittest.TestCase):
     DATABASE_ID = "database_id"
     DATABASE_NAME = "%s/databases/%s" % (INSTANCE_NAME, DATABASE_ID)
     LABELS = {"test": "true"}
+    FIELD_MASK = ["config", "display_name", "processing_units", "labels"]
 
     def _getTargetClass(self):
         from google.cloud.spanner_v1.instance import Instance
@@ -230,7 +232,7 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.name, self.INSTANCE_NAME)
         self.assertEqual(instance.config, self.CONFIG_NAME)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
-        self.assertEqual(instance.node_count, 1)
+        self.assertEqual(instance.processing_units, 1000)
         self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
 
     def test_create_success(self):
@@ -258,7 +260,36 @@ class TestInstance(unittest.TestCase):
         self.assertEqual(instance.name, self.INSTANCE_NAME)
         self.assertEqual(instance.config, self.CONFIG_NAME)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
-        self.assertEqual(instance.node_count, self.NODE_COUNT)
+        self.assertEqual(instance.processing_units, self.PROCESSING_UNITS)
+        self.assertEqual(instance.labels, self.LABELS)
+        self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
+
+    def test_create_with_processing_units(self):
+        op_future = _FauxOperationFuture()
+        client = _Client(self.PROJECT)
+        api = client.instance_admin_api = _FauxInstanceAdminAPI(
+            _create_instance_response=op_future
+        )
+        instance = self._make_one(
+            self.INSTANCE_ID,
+            client,
+            configuration_name=self.CONFIG_NAME,
+            display_name=self.DISPLAY_NAME,
+            processing_units=self.PROCESSING_UNITS,
+            labels=self.LABELS,
+        )
+
+        future = instance.create()
+
+        self.assertIs(future, op_future)
+
+        (parent, instance_id, instance, metadata) = api._created_instance
+        self.assertEqual(parent, self.PARENT)
+        self.assertEqual(instance_id, self.INSTANCE_ID)
+        self.assertEqual(instance.name, self.INSTANCE_NAME)
+        self.assertEqual(instance.config, self.CONFIG_NAME)
+        self.assertEqual(instance.display_name, self.DISPLAY_NAME)
+        self.assertEqual(instance.processing_units, self.PROCESSING_UNITS)
         self.assertEqual(instance.labels, self.LABELS)
         self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
 
@@ -389,9 +420,7 @@ class TestInstance(unittest.TestCase):
             instance.update()
 
         instance, field_mask, metadata = api._updated_instance
-        self.assertEqual(
-            field_mask.paths, ["config", "display_name", "node_count", "labels"]
-        )
+        self.assertEqual(field_mask.paths, self.FIELD_MASK)
         self.assertEqual(instance.name, self.INSTANCE_NAME)
         self.assertEqual(instance.config, self.CONFIG_NAME)
         self.assertEqual(instance.display_name, self.INSTANCE_ID)
@@ -418,13 +447,41 @@ class TestInstance(unittest.TestCase):
         self.assertIs(future, op_future)
 
         instance, field_mask, metadata = api._updated_instance
-        self.assertEqual(
-            field_mask.paths, ["config", "display_name", "node_count", "labels"]
-        )
+        self.assertEqual(field_mask.paths, self.FIELD_MASK)
         self.assertEqual(instance.name, self.INSTANCE_NAME)
         self.assertEqual(instance.config, self.CONFIG_NAME)
         self.assertEqual(instance.display_name, self.DISPLAY_NAME)
         self.assertEqual(instance.node_count, self.NODE_COUNT)
+        self.assertEqual(instance.labels, self.LABELS)
+        self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
+
+    def test_update_success_with_processing_units(self):
+        op_future = _FauxOperationFuture()
+        client = _Client(self.PROJECT)
+        api = client.instance_admin_api = _FauxInstanceAdminAPI(
+            _update_instance_response=op_future
+        )
+        instance = self._make_one(
+            self.INSTANCE_ID,
+            client,
+            configuration_name=self.CONFIG_NAME,
+            processing_units=self.PROCESSING_UNITS,
+            display_name=self.DISPLAY_NAME,
+            labels=self.LABELS,
+        )
+
+        future = instance.update()
+
+        self.assertIs(future, op_future)
+
+        instance, field_mask, metadata = api._updated_instance
+        self.assertEqual(
+            field_mask.paths, ["config", "display_name", "processing_units", "labels"]
+        )
+        self.assertEqual(instance.name, self.INSTANCE_NAME)
+        self.assertEqual(instance.config, self.CONFIG_NAME)
+        self.assertEqual(instance.display_name, self.DISPLAY_NAME)
+        self.assertEqual(instance.processing_units, self.PROCESSING_UNITS)
         self.assertEqual(instance.labels, self.LABELS)
         self.assertEqual(metadata, [("google-cloud-resource-prefix", instance.name)])
 

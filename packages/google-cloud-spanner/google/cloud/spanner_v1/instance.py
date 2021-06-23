@@ -15,6 +15,7 @@
 """User friendly container for Cloud Spanner Instance."""
 
 import google.api_core.operation
+from google.api_core.exceptions import InvalidArgument
 import re
 
 from google.cloud.spanner_admin_instance_v1 import Instance as InstancePB
@@ -41,6 +42,7 @@ _INSTANCE_NAME_RE = re.compile(
 )
 
 DEFAULT_NODE_COUNT = 1
+PROCESSING_UNITS_PER_NODE = 1000
 
 _OPERATION_METADATA_MESSAGES = (
     backup.Backup,
@@ -95,6 +97,10 @@ class Instance(object):
     :type node_count: int
     :param node_count: (Optional) Number of nodes allocated to the instance.
 
+    :type processing_units: int
+    :param processing_units: (Optional) The number of processing units
+                            allocated to this instance.
+
     :type display_name: str
     :param display_name: (Optional) The display name for the instance in the
                          Cloud Console UI. (Must be between 4 and 30
@@ -110,15 +116,29 @@ class Instance(object):
         instance_id,
         client,
         configuration_name=None,
-        node_count=DEFAULT_NODE_COUNT,
+        node_count=None,
         display_name=None,
         emulator_host=None,
         labels=None,
+        processing_units=None,
     ):
         self.instance_id = instance_id
         self._client = client
         self.configuration_name = configuration_name
-        self.node_count = node_count
+        if node_count is not None and processing_units is not None:
+            if processing_units != node_count * PROCESSING_UNITS_PER_NODE:
+                raise InvalidArgument(
+                    "Only one of node count and processing units can be set."
+                )
+        if node_count is None and processing_units is None:
+            self._node_count = DEFAULT_NODE_COUNT
+            self._processing_units = DEFAULT_NODE_COUNT * PROCESSING_UNITS_PER_NODE
+        elif node_count is not None:
+            self._node_count = node_count
+            self._processing_units = node_count * PROCESSING_UNITS_PER_NODE
+        else:
+            self._processing_units = processing_units
+            self._node_count = processing_units // PROCESSING_UNITS_PER_NODE
         self.display_name = display_name or instance_id
         self.emulator_host = emulator_host
         if labels is None:
@@ -134,7 +154,8 @@ class Instance(object):
             raise ValueError("Instance protobuf does not contain display_name")
         self.display_name = instance_pb.display_name
         self.configuration_name = instance_pb.config
-        self.node_count = instance_pb.node_count
+        self._node_count = instance_pb.node_count
+        self._processing_units = instance_pb.processing_units
         self.labels = instance_pb.labels
 
     @classmethod
@@ -190,6 +211,44 @@ class Instance(object):
         """
         return self._client.project_name + "/instances/" + self.instance_id
 
+    @property
+    def processing_units(self):
+        """Processing units used in requests.
+
+        :rtype: int
+        :returns: The number of processing units allocated to this instance.
+        """
+        return self._processing_units
+
+    @processing_units.setter
+    def processing_units(self, value):
+        """Sets the processing units for requests. Affects node_count.
+
+        :param value: The number of processing units allocated to this instance.
+        """
+        self._processing_units = value
+        self._node_count = value // PROCESSING_UNITS_PER_NODE
+
+    @property
+    def node_count(self):
+        """Node count used in requests.
+
+        :rtype: int
+        :returns:
+            The number of nodes in the instance's cluster;
+            used to set up the instance's cluster.
+        """
+        return self._node_count
+
+    @node_count.setter
+    def node_count(self, value):
+        """Sets the node count for requests. Affects processing_units.
+
+        :param value: The number of nodes in the instance's cluster.
+        """
+        self._node_count = value
+        self._processing_units = value * PROCESSING_UNITS_PER_NODE
+
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return NotImplemented
@@ -218,7 +277,8 @@ class Instance(object):
             self.instance_id,
             new_client,
             self.configuration_name,
-            node_count=self.node_count,
+            node_count=self._node_count,
+            processing_units=self._processing_units,
             display_name=self.display_name,
         )
 
@@ -250,7 +310,7 @@ class Instance(object):
             name=self.name,
             config=self.configuration_name,
             display_name=self.display_name,
-            node_count=self.node_count,
+            processing_units=self._processing_units,
             labels=self.labels,
         )
         metadata = _metadata_with_prefix(self.name)
@@ -306,8 +366,8 @@ class Instance(object):
 
         .. note::
 
-            Updates the ``display_name``, ``node_count`` and ``labels``. To change those
-            values before updating, set them via
+            Updates the ``display_name``, ``node_count``, ``processing_units``
+            and ``labels``. To change those values before updating, set them via
 
             .. code:: python
 
@@ -325,10 +385,15 @@ class Instance(object):
             name=self.name,
             config=self.configuration_name,
             display_name=self.display_name,
-            node_count=self.node_count,
+            node_count=self._node_count,
+            processing_units=self._processing_units,
             labels=self.labels,
         )
-        field_mask = FieldMask(paths=["config", "display_name", "node_count", "labels"])
+
+        # Always update only processing_units, not nodes
+        field_mask = FieldMask(
+            paths=["config", "display_name", "processing_units", "labels"]
+        )
         metadata = _metadata_with_prefix(self.name)
 
         future = api.update_instance(

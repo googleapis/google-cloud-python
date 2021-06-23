@@ -49,7 +49,6 @@ from google.cloud.spanner_admin_instance_v1 import InstanceAdminClient
 from google.cloud.client import ClientWithProject
 from google.cloud.spanner_v1 import __version__
 from google.cloud.spanner_v1._helpers import _merge_query_options, _metadata_with_prefix
-from google.cloud.spanner_v1.instance import DEFAULT_NODE_COUNT
 from google.cloud.spanner_v1.instance import Instance
 from google.cloud.spanner_v1 import ExecuteSqlRequest
 from google.cloud.spanner_admin_instance_v1 import ListInstanceConfigsRequest
@@ -294,8 +293,9 @@ class Client(ClientWithProject):
         instance_id,
         configuration_name=None,
         display_name=None,
-        node_count=DEFAULT_NODE_COUNT,
+        node_count=None,
         labels=None,
+        processing_units=None,
     ):
         """Factory to create a instance associated with this client.
 
@@ -320,6 +320,10 @@ class Client(ClientWithProject):
         :param node_count: (Optional) The number of nodes in the instance's
                             cluster; used to set up the instance's cluster.
 
+        :type processing_units: int
+        :param processing_units: (Optional) The number of processing units
+                                allocated to this instance.
+
         :type labels: dict (str -> str) or None
         :param labels: (Optional) User-assigned labels for this instance.
 
@@ -334,6 +338,7 @@ class Client(ClientWithProject):
             display_name,
             self._emulator_host,
             labels,
+            processing_units,
         )
 
     def list_instances(self, filter_="", page_size=None):
