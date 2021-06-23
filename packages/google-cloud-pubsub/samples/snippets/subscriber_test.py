@@ -15,6 +15,7 @@
 import os
 import re
 import sys
+import time
 import uuid
 
 import backoff
@@ -475,7 +476,13 @@ def test_receive_synchronously_with_lease(
 ):
     @backoff.on_exception(backoff.expo, Unknown, max_time=300)
     def run_sample():
-        _publish_messages(publisher_client, topic, message_num=3)
+        _publish_messages(publisher_client, topic, message_num=10)
+        # Pausing 10s to allow the subscriber to establish the connection
+        # because sync pull often returns fewer messages than requested.
+        # The intention is to fix flaky tests reporting errors like
+        # `google.api_core.exceptions.Unknown: None Stream removed` as
+        # in https://github.com/googleapis/python-pubsub/issues/341.
+        time.sleep(10)
         subscriber.synchronous_pull_with_lease_management(PROJECT_ID, SUBSCRIPTION_SYNC)
 
     run_sample()
