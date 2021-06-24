@@ -300,7 +300,7 @@ def docfx(session):
 
     session.install("-e", ".")
     session.install(
-        "sphinx==4.0.1", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml==0.2.0"
+        "sphinx==4.0.1", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml"
     )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
