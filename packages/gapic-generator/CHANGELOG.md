@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.50.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.0...v0.50.1) (2021-06-24)
+
+
+### Bug Fixes
+
+* **bazel:** Re-enable Python µgen integration tests post monolith rule removal ([#926](https://www.github.com/googleapis/gapic-generator-python/issues/926)) ([13a6b3a](https://www.github.com/googleapis/gapic-generator-python/commit/13a6b3aed35b5af85aea047922aa219258460a58))
+
 ## [0.50.0](https://www.github.com/googleapis/gapic-generator-python/compare/v0.49.0...v0.50.0) (2021-06-21)
 
 
