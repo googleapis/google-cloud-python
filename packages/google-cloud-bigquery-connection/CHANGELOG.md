@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.0.1...v1.1.0) (2021-06-23)
+
+
+### Features
+
+* add always_use_jwt_access ([#88](https://www.github.com/googleapis/python-bigquery-connection/issues/88)) ([821fffc](https://www.github.com/googleapis/python-bigquery-connection/commit/821fffcc3f9ecdb222e4a5a2c94ad9c5d3325681))
+* support self-signed JWT flow for service accounts ([2f1db84](https://www.github.com/googleapis/python-bigquery-connection/commit/2f1db842b16cf2c3981c61b503482fa7df85bdfe))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([2f1db84](https://www.github.com/googleapis/python-bigquery-connection/commit/2f1db842b16cf2c3981c61b503482fa7df85bdfe))
+* **deps:** add packaging requirement ([#77](https://www.github.com/googleapis/python-bigquery-connection/issues/77)) ([2ab8403](https://www.github.com/googleapis/python-bigquery-connection/commit/2ab84031d3f46b5ccd1acaefe5b744679b43e140))
+* exclude docs and tests from package ([#83](https://www.github.com/googleapis/python-bigquery-connection/issues/83)) ([3ef23e5](https://www.github.com/googleapis/python-bigquery-connection/commit/3ef23e5b9e8f4a0bcef24dbe79773ca92a336ef0))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-bigquery-connection/issues/1127)) ([#85](https://www.github.com/googleapis/python-bigquery-connection/issues/85)) ([715e04b](https://www.github.com/googleapis/python-bigquery-connection/commit/715e04b77dc352b17e508288a7268c6c2ce46e10)), closes [#1126](https://www.github.com/googleapis/python-bigquery-connection/issues/1126)
+* Update the README to reflect that this library is GA ([#79](https://www.github.com/googleapis/python-bigquery-connection/issues/79)) ([f737861](https://www.github.com/googleapis/python-bigquery-connection/commit/f7378614002697ed5c7dc9217fbe8b48ba7c7410))
+
 ### [1.0.1](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.0.0...v1.0.1) (2021-02-03)
 
 
