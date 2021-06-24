@@ -26,7 +26,7 @@ version = "0.1.0"
 release_status = "Development Status :: 4 - Beta"
 url = "https://github.com/googleapis/python-life-sciences"
 dependencies = [
-    "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
+    "google-api-core[grpc] >= 1.26.0, <2.0.0dev",
     "proto-plus >= 1.15.0",
     "packaging >= 14.3",
 ]
