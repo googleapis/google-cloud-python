@@ -193,7 +193,7 @@ instead of
 ``https://github.com/googleapis/python-source-context/blob/master/CONTRIBUTING.rst``)
 may cause problems creating links or rendering the description.
 
-.. _description on PyPI: https://pypi.org/project/google-cloud-python-source-context
+.. _description on PyPI: https://pypi.org/project/google-cloud-source-context
 
 
 *************************

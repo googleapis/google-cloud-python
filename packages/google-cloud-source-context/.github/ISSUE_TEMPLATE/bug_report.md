@@ -20,7 +20,7 @@ If you are still having issues, please be sure to include as much information as
   - OS type and version:
   - Python version: `python --version`
   - pip version: `pip --version`
-  - `google-cloud-python-source-context` version: `pip show google-cloud-python-source-context`
+  - `google-cloud-source-context` version: `pip show google-cloud-source-context`
 
 #### Steps to reproduce
 

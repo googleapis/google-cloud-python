@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# google-cloud-python-source-context documentation build configuration file
+# google-cloud-source-context documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -80,7 +80,7 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = "google-cloud-python-source-context"
+project = "google-cloud-source-context"
 copyright = "2019, Google"
 author = "Google APIs"
 
@@ -153,7 +153,7 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for google-cloud-python-source-context",
+    "description": "Google Cloud Client Libraries for google-cloud-source-context",
     "github_user": "googleapis",
     "github_repo": "python-source-context",
     "github_banner": True,
@@ -247,7 +247,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-python-source-context-doc"
+htmlhelp_basename = "google-cloud-source-context-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -280,8 +280,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "google-cloud-python-source-context.tex",
-        "google-cloud-python-source-context Documentation",
+        "google-cloud-source-context.tex",
+        "google-cloud-source-context Documentation",
         author,
         "manual",
     )
@@ -315,8 +315,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "google-cloud-python-source-context",
-        "google-cloud-python-source-context Documentation",
+        "google-cloud-source-context",
+        "google-cloud-source-context Documentation",
         [author],
         1,
     )
@@ -334,11 +334,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "google-cloud-python-source-context",
-        "google-cloud-python-source-context Documentation",
+        "google-cloud-source-context",
+        "google-cloud-source-context Documentation",
         author,
-        "google-cloud-python-source-context",
-        "google-cloud-python-source-context Library",
+        "google-cloud-source-context",
+        "google-cloud-source-context Library",
         "APIs",
     )
 ]
