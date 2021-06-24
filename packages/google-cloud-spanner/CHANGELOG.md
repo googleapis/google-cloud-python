@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.6.0](https://www.github.com/googleapis/python-spanner/compare/v3.5.0...v3.6.0) (2021-06-23)
+
+
+### Features
+
+* add RPC priority support ([#324](https://www.github.com/googleapis/python-spanner/issues/324)) ([51533b8](https://www.github.com/googleapis/python-spanner/commit/51533b812b68004eafeb402641b974e76bf9a837))
+* add support for low-cost instances ([#313](https://www.github.com/googleapis/python-spanner/issues/313)) ([44aa7cc](https://www.github.com/googleapis/python-spanner/commit/44aa7cc79769b6b7870b9de7204094f816150a25))
+* **spanner:** add processing_units to Instance resource ([#364](https://www.github.com/googleapis/python-spanner/issues/364)) ([113505c](https://www.github.com/googleapis/python-spanner/commit/113505c58dc52509973f4199330a8983e3c5d848))
+* update query stats samples ([#373](https://www.github.com/googleapis/python-spanner/issues/373)) ([c1ee8c2](https://www.github.com/googleapis/python-spanner/commit/c1ee8c2685a794f9f89329e16f7c461e135114af))
+
+
+### Bug Fixes
+
+* **db_api:** use sqlparse to split DDL statements ([#372](https://www.github.com/googleapis/python-spanner/issues/372)) ([ed9e124](https://github.com/googleapis/python-spanner/commit/ed9e124aa74e44778104e45eae1e577978d6b866))
+* **db_api:** classify batched DDL statements ([#360](https://www.github.com/googleapis/python-spanner/issues/360)) ([b8b24e1](https://www.github.com/googleapis/python-spanner/commit/b8b24e17a74c1296ca5de75798a1a32597691b53))
+* **deps:** add packaging requirement ([#368](https://www.github.com/googleapis/python-spanner/issues/368)) ([89c126c](https://www.github.com/googleapis/python-spanner/commit/89c126ceca327fcf9f344dace691522e7351dde7))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-spanner/issues/1127)) ([#374](https://www.github.com/googleapis/python-spanner/issues/374)) ([b7b3c38](https://www.github.com/googleapis/python-spanner/commit/b7b3c383abcca99dcbae6d92b27c49ca6707010a)), closes [#1126](https://www.github.com/googleapis/python-spanner/issues/1126)
+
 ## [3.5.0](https://www.github.com/googleapis/python-spanner/compare/v3.4.0...v3.5.0) (2021-06-11)
 
 
