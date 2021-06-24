@@ -35,6 +35,8 @@ from google.cloud.asset_v1.types.asset_service import GcsOutputResult
 from google.cloud.asset_v1.types.asset_service import GetFeedRequest
 from google.cloud.asset_v1.types.asset_service import IamPolicyAnalysisOutputConfig
 from google.cloud.asset_v1.types.asset_service import IamPolicyAnalysisQuery
+from google.cloud.asset_v1.types.asset_service import ListAssetsRequest
+from google.cloud.asset_v1.types.asset_service import ListAssetsResponse
 from google.cloud.asset_v1.types.asset_service import ListFeedsRequest
 from google.cloud.asset_v1.types.asset_service import ListFeedsResponse
 from google.cloud.asset_v1.types.asset_service import OutputConfig
@@ -48,6 +50,7 @@ from google.cloud.asset_v1.types.asset_service import SearchAllResourcesResponse
 from google.cloud.asset_v1.types.asset_service import UpdateFeedRequest
 from google.cloud.asset_v1.types.asset_service import ContentType
 from google.cloud.asset_v1.types.assets import Asset
+from google.cloud.asset_v1.types.assets import ConditionEvaluation
 from google.cloud.asset_v1.types.assets import IamPolicyAnalysisResult
 from google.cloud.asset_v1.types.assets import IamPolicyAnalysisState
 from google.cloud.asset_v1.types.assets import IamPolicySearchResult
@@ -76,6 +79,8 @@ __all__ = ('AssetServiceClient',
     'GetFeedRequest',
     'IamPolicyAnalysisOutputConfig',
     'IamPolicyAnalysisQuery',
+    'ListAssetsRequest',
+    'ListAssetsResponse',
     'ListFeedsRequest',
     'ListFeedsResponse',
     'OutputConfig',
@@ -89,6 +94,7 @@ __all__ = ('AssetServiceClient',
     'UpdateFeedRequest',
     'ContentType',
     'Asset',
+    'ConditionEvaluation',
     'IamPolicyAnalysisResult',
     'IamPolicyAnalysisState',
     'IamPolicySearchResult',

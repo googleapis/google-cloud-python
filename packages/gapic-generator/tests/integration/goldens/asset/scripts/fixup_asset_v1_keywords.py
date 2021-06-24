@@ -46,8 +46,9 @@ class assetCallTransformer(cst.CSTTransformer):
           'delete_feed': ('name', ),
           'export_assets': ('parent', 'output_config', 'read_time', 'asset_types', 'content_type', ),
           'get_feed': ('name', ),
+          'list_assets': ('parent', 'read_time', 'asset_types', 'content_type', 'page_size', 'page_token', ),
           'list_feeds': ('parent', ),
-          'search_all_iam_policies': ('scope', 'query', 'page_size', 'page_token', ),
+          'search_all_iam_policies': ('scope', 'query', 'page_size', 'page_token', 'asset_types', 'order_by', ),
           'search_all_resources': ('scope', 'query', 'asset_types', 'page_size', 'page_token', 'order_by', ),
           'update_feed': ('feed', 'update_mask', ),
     }

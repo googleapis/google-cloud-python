@@ -344,10 +344,8 @@ jobs:
         env:
           BAZEL_VERSION: 3.5.0
           BAZEL_BINARY: bazel_3.5.0-linux-x86_64.deb
-          # Temporarily disable integration tests due to a circular Bazel rule dependency.
-          # TODO(miraleung): Uncomment these once the monolith is gone from googleapis.
-          #- name: Integration Tests
-          #run: bazel test tests/integration:asset tests/integration:credentials tests/integration:logging tests/integration:redis
+      - name: Integration Tests
+        run: bazel test tests/integration:asset tests/integration:credentials tests/integration:logging tests/integration:redis
 
   style-check:
     runs-on: ubuntu-latest
