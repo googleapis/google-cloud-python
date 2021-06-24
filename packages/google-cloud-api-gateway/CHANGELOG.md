@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-api-gateway/compare/v0.2.0...v1.0.0) (2021-06-24)
+
+
+### Features
+
+* add always_use_jwt_access ([#38](https://www.github.com/googleapis/python-api-gateway/issues/38)) ([3ffe025](https://www.github.com/googleapis/python-api-gateway/commit/3ffe0253794bb43940293cfed2850567cdb86a9a))
+* bump release level to production/stable ([#25](https://www.github.com/googleapis/python-api-gateway/issues/25)) ([0eadb82](https://www.github.com/googleapis/python-api-gateway/commit/0eadb82978e33261a4aa56b54a546d418658080a))
+
+
+### Bug Fixes
+
+* exclude docs and tests from package ([#32](https://www.github.com/googleapis/python-api-gateway/issues/32)) ([8b176e5](https://www.github.com/googleapis/python-api-gateway/commit/8b176e56eaeb04e466f2496e4c043bfaf6e130a6))
+
+
+### Miscellaneous Chores
+
+* release as 1.0.0 ([#30](https://www.github.com/googleapis/python-api-gateway/issues/30)) ([4289246](https://www.github.com/googleapis/python-api-gateway/commit/42892467e4c6b594ad844a2ea733b65577d9d382))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-api-gateway/issues/1127)) ([#35](https://www.github.com/googleapis/python-api-gateway/issues/35)) ([2f3c1cc](https://www.github.com/googleapis/python-api-gateway/commit/2f3c1cc627db8495de970931fd7c7898bebc9fec))
+
 ## [0.2.0](https://www.github.com/googleapis/python-api-gateway/compare/v0.1.0...v0.2.0) (2021-05-28)
 
 
