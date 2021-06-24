@@ -1,5 +1,8 @@
 from docfx_yaml.extension import find_unique_name
 from docfx_yaml.extension import disambiguate_toc_name
+from docfx_yaml.extension import _resolve_reference_in_module_summary
+from docfx_yaml.extension import REF_PATTERN
+from docfx_yaml.extension import REF_PATTERN_LAST
 from docfx_yaml.extension import _extract_docstring_info
 
 import unittest
@@ -44,6 +47,69 @@ class TestGenerate(unittest.TestCase):
         test_file.close()
 
         self.assertEqual(yaml_want, yaml_got)
+
+
+    def test_reference_in_summary(self):
+        lines_got = """
+If a ``stream`` is attached to this download, then the downloaded
+resource will be written to the stream.
+
+Args:
+    transport (~requests.Session): A ``requests`` object which can
+        make authenticated requests.
+
+    timeout (Optional[Union[float, Tuple[float, float]]]):
+        The number of seconds to wait for the server response.
+        Depending on the retry strategy, a request may be repeated
+        several times using the same timeout each time.
+
+        Can also be passed as a tuple (connect_timeout, read_timeout).
+        See :meth:`requests.Session.request` documentation for details.
+
+Returns:
+    ~requests.Response: The HTTP response returned by ``transport``.
+
+Raises:
+    ~google.resumable_media.common.DataCorruption: If the download's
+        checksum doesn't agree with server-computed checksum.
+    ValueError: If the current :class:`Download` has already
+        finished.
+"""
+        lines_got = lines_got.split("\n")
+
+        # Resolve over different regular expressions for different types of reference patterns.
+        lines_got = _resolve_reference_in_module_summary(REF_PATTERN, lines_got)
+        lines_got = _resolve_reference_in_module_summary(REF_PATTERN_LAST, lines_got)
+
+        lines_want = """
+If a ``stream`` is attached to this download, then the downloaded
+resource will be written to the stream.
+
+Args:
+    transport (<xref:Session>): A ``requests`` object which can
+        make authenticated requests.
+
+    timeout (Optional[Union[float, Tuple[float, float]]]):
+        The number of seconds to wait for the server response.
+        Depending on the retry strategy, a request may be repeated
+        several times using the same timeout each time.
+
+        Can also be passed as a tuple (connect_timeout, read_timeout).
+        See <xref:requests.Session.request> documentation for details.
+
+Returns:
+    <xref:Response>: The HTTP response returned by ``transport``.
+
+Raises:
+    <xref:DataCorruption>: If the download's
+        checksum doesn't agree with server-computed checksum.
+    ValueError: If the current <xref:Download> has already
+        finished.
+"""
+        lines_want = lines_want.split("\n")
+
+        self.assertEqual(lines_got, lines_want)
+
 
     # Variables used for testing _extract_docstring_info
     top_summary1_want = "\nSimple test for docstring.\n\n"
@@ -162,6 +228,7 @@ It could return :param: with :returns as well.
         self.assertEqual(top_summary3_got, top_summary3_want)
         self.assertEqual(summary_info3_got, summary_info3_want)
 
+
     def test_extract_docstring_info_check_error(self):
         ## Test for incorrectly formmatted docstring raising error
         summary4 = """
@@ -171,6 +238,60 @@ Description of docstring which should fail.
 """
         with self.assertRaises(ValueError):
             _extract_docstring_info({}, summary4, "error string")
+
+
+    def test_extract_docstring_info_with_xref(self):
+        ## Test with xref included in the summary, ensure they're processed as-is
+        summary_info_want = {
+            'variables': {
+                'arg1': {
+                    'var_type': '<xref:google.spanner_v1.type.Type>',
+                    'description': 'simple description.'
+                },
+                'arg2': {
+                    'var_type': '~google.spanner_v1.type.dict',
+                    'description': 'simple description for `arg2`.'
+                }
+            },
+            'returns': [
+                {
+                    'var_type': '<xref:Pair>', 
+                    'description': 'simple description for return value.'
+                }
+            ],
+            'exceptions': [
+                {
+                    'var_type': '<xref:SpannerException>', 
+                    'description': 'if `condition x`.'
+                }
+            ]
+        }
+
+        summary = """
+Simple test for docstring.
+
+:type arg1: <xref:google.spanner_v1.type.Type>
+:param arg1: simple description.
+:param arg2: simple description for `arg2`.
+:type arg2: ~google.spanner_v1.type.dict
+
+:rtype: <xref:Pair>
+:returns: simple description for return value.
+
+:raises <xref:SpannerException>: if `condition x`. 
+"""
+
+        summary_info_got = {
+            'variables': {},
+            'returns': [],
+            'exceptions': []
+        }
+
+        top_summary_got = _extract_docstring_info(summary_info_got, summary, "")
+
+        # Same as the top summary from previous example, compare with that
+        self.assertEqual(top_summary_got, self.top_summary1_want)
+        self.assertEqual(summary_info_got, summary_info_want)
 
 if __name__ == '__main__':
     unittest.main()
