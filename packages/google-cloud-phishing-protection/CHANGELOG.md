@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+## [1.2.0](https://www.github.com/googleapis/python-phishingprotection/compare/v1.1.1...v1.2.0) (2021-06-23)
+
+
+### Features
+
+* add always_use_jwt_access ([#86](https://www.github.com/googleapis/python-phishingprotection/issues/86)) ([2550523](https://www.github.com/googleapis/python-phishingprotection/commit/2550523ddd59d042b8cb1411617eee33fdddc965))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-phishingprotection/issues/1127)) ([#81](https://www.github.com/googleapis/python-phishingprotection/issues/81)) ([e8590bb](https://www.github.com/googleapis/python-phishingprotection/commit/e8590bbfa6e70d915b618ee265d7cd59cab07e98)), closes [#1126](https://www.github.com/googleapis/python-phishingprotection/issues/1126)
+
 ### [1.1.1](https://www.github.com/googleapis/python-phishingprotection/compare/v1.1.0...v1.1.1) (2021-05-28)
 
 
