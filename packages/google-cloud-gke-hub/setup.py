@@ -25,7 +25,7 @@ description = "GKE Hub API client library"
 release_status = "Development Status :: 4 - Beta"
 url = "https://github.com/googleapis/python-gke-hub"
 dependencies = [
-    "google-api-core[grpc] >= 1.22.2, < 2.0.0dev",
+    "google-api-core[grpc] >= 1.26.0, <2.0.0dev",
     "proto-plus >= 1.4.0",
     "packaging >= 14.3",
 ]
