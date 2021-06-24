@@ -2272,12 +2272,6 @@ def _ReadRowsResponsePB(*args, **kw):
     return messages_v2_pb2.ReadRowsResponse(*args, **kw)
 
 
-def _mutate_rows_request_pb(*args, **kw):
-    from google.cloud.bigtable_v2.types import bigtable as data_messages_v2_pb2
-
-    return data_messages_v2_pb2.MutateRowsRequest(*args, **kw)
-
-
 class _MockReadRowsIterator(object):
     def __init__(self, *values):
         self.iter_values = iter(values)

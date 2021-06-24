@@ -22,33 +22,6 @@ from google.cloud.bigtable.row_set import RowRange
 from google.cloud.bigtable_v2.types import data as data_v2_pb2
 
 
-class MultiCallableStub(object):
-    """Stub for the grpc.UnaryUnaryMultiCallable interface."""
-
-    def __init__(self, method, channel_stub):
-        self.method = method
-        self.channel_stub = channel_stub
-
-    def __call__(self, request, timeout=None, metadata=None, credentials=None):
-        self.channel_stub.requests.append((self.method, request))
-
-        return self.channel_stub.responses.pop()
-
-
-class ChannelStub(object):
-    """Stub for the grpc.Channel interface."""
-
-    def __init__(self, responses=[]):
-        self.responses = responses
-        self.requests = []
-
-    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
-        return MultiCallableStub(method, self)
-
-    def unary_stream(self, method, request_serializer=None, response_deserializer=None):
-        return MultiCallableStub(method, self)
-
-
 class TestCell(unittest.TestCase):
     timestamp_micros = 18738724000  # Make sure millis granularity
 
