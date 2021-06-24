@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-area120-tables/compare/v0.3.1...v0.4.0) (2021-06-23)
+
+
+### Features
+
+* add always_use_jwt_access ([#61](https://www.github.com/googleapis/python-area120-tables/issues/61)) ([91c6f3a](https://www.github.com/googleapis/python-area120-tables/commit/91c6f3adf14a642aba2c0e18158536e9f3031f59))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-area120-tables/issues/1127)) ([#56](https://www.github.com/googleapis/python-area120-tables/issues/56)) ([4bf2bae](https://www.github.com/googleapis/python-area120-tables/commit/4bf2baea55b617393487c2ae6866f04ef073378d)), closes [#1126](https://www.github.com/googleapis/python-area120-tables/issues/1126)
+
 ### [0.3.1](https://www.github.com/googleapis/python-area120-tables/compare/v0.3.0...v0.3.1) (2021-06-16)
 
 
