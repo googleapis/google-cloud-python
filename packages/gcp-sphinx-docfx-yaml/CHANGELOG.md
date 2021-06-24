@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.3.2](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.3.1...v0.3.2) (2021-06-24)
+
+
+### Bug Fixes
+
+* properly handle Raises section for GoogleDocstring ([#56](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/56)) ([793dd48](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/793dd4847cfbc6bc060d7a8840bd102f4bf37058))
+* update parser to correctly parse desired tokens ([#55](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/55)) ([d1e18c7](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/d1e18c7cb64aac9710ff18863e7c78306e93d568))
+
 ### [0.3.1](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.3.0...v0.3.1) (2021-06-21)
 
 
