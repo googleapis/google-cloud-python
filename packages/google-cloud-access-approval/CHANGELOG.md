@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/googleapis/python-access-approval/compare/v1.2.0...v1.3.0) (2021-06-23)
+
+
+### Features
+
+* add `always_use_jwt_access` ([#88](https://www.github.com/googleapis/python-access-approval/issues/88)) ([73dce43](https://www.github.com/googleapis/python-access-approval/commit/73dce43cddf1f013ae54e83d9c53fb42f129223b))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-access-approval/issues/1127)) ([#83](https://www.github.com/googleapis/python-access-approval/issues/83)) ([8c56c88](https://www.github.com/googleapis/python-access-approval/commit/8c56c88e0ba6ceec08cb6dae2094bdca1f7365dc)), closes [#1126](https://www.github.com/googleapis/python-access-approval/issues/1126)
+
 ## [1.2.0](https://www.github.com/googleapis/python-access-approval/compare/v1.1.1...v1.2.0) (2021-05-28)
 
 
