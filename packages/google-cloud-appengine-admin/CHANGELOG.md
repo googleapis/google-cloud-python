@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-appengine-admin/compare/v1.0.2...v1.1.0) (2021-06-23)
+
+
+### Features
+
+* add always_use_jwt_access ([#40](https://www.github.com/googleapis/python-appengine-admin/issues/40)) ([f260f90](https://www.github.com/googleapis/python-appengine-admin/commit/f260f90985b5f05f11258b86af1b1ead652a882d))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-appengine-admin/issues/1127)) ([#35](https://www.github.com/googleapis/python-appengine-admin/issues/35)) ([34b578c](https://www.github.com/googleapis/python-appengine-admin/commit/34b578c920e8fba4cca1eb0532d357552056d12f)), closes [#1126](https://www.github.com/googleapis/python-appengine-admin/issues/1126)
+
 ### [1.0.2](https://www.github.com/googleapis/python-appengine-admin/compare/v1.0.1...v1.0.2) (2021-06-16)
 
 
