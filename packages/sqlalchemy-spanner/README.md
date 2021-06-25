@@ -97,6 +97,33 @@ A migration script can produce a lot of DDL statements. If each of the statement
 
 Features and limitations
 -----------
+**Interleaved tables**  
+Cloud Spanner dialect includes two dialect-specific arguments for `Table` constructor, which help to define interleave relations:
+`spanner_interleave_in` - a parent table name
+`spanner_inverleave_on_delete_cascade` - a flag specifying if `ON DELETE CASCADE` statement must be used for the interleave relation  
+An example of interleave relations definition:
+```python
+team = Table(
+    "team",
+    metadata,
+    Column("team_id", Integer, primary_key=True),
+    Column("team_name", String(16), nullable=False),
+)
+team.create(engine)
+
+client = Table(
+    "client",
+    metadata,
+    Column("team_id", Integer, primary_key=True),
+    Column("client_id", Integer, primary_key=True),
+    Column("client_name", String(16), nullable=False),
+    spanner_interleave_in="team",
+    spanner_interleave_on_delete_cascade=True,
+)
+
+client.create(engine)
+```
+
 **Unique constraints**  
 Cloud Spanner doesn't support direct UNIQUE constraints creation. In order to achieve column values uniqueness UNIQUE indexes should be used.
 

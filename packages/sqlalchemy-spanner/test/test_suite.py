@@ -18,6 +18,7 @@ import operator
 import pytest
 import decimal
 import pytz
+from unittest import mock
 
 import sqlalchemy
 from sqlalchemy import create_engine
@@ -1436,3 +1437,58 @@ class TestQueryHints(fixtures.TablesTest):
         query = query.join(Address)
 
         assert str(query.statement.compile(session.bind)) == EXPECTED_QUERY
+
+
+class InterleavedTablesTest(fixtures.TestBase):
+    """
+    Check that CREATE TABLE statements for interleaved tables are correctly
+    generated.
+    """
+
+    def setUp(self):
+        self._engine = create_engine(
+            "spanner:///projects/appdev-soda-spanner-staging/instances/"
+            "sqlalchemy-dialect-test/databases/compliance-test"
+        )
+        self._metadata = MetaData(bind=self._engine)
+
+    def test_interleave(self):
+        EXP_QUERY = (
+            "\nCREATE TABLE client (\n\tteam_id INT64 NOT NULL, "
+            "\n\tclient_id INT64 NOT NULL, "
+            "\n\tclient_name STRING(16) NOT NULL"
+            "\n) PRIMARY KEY (team_id, client_id),"
+            "\nINTERLEAVE IN PARENT team\n\n"
+        )
+        client = Table(
+            "client",
+            self._metadata,
+            Column("team_id", Integer, primary_key=True),
+            Column("client_id", Integer, primary_key=True),
+            Column("client_name", String(16), nullable=False),
+            spanner_interleave_in="team",
+        )
+        with mock.patch("google.cloud.spanner_dbapi.cursor.Cursor.execute") as execute:
+            client.create(self._engine)
+            execute.assert_called_once_with(EXP_QUERY, [])
+
+    def test_interleave_on_delete_cascade(self):
+        EXP_QUERY = (
+            "\nCREATE TABLE client (\n\tteam_id INT64 NOT NULL, "
+            "\n\tclient_id INT64 NOT NULL, "
+            "\n\tclient_name STRING(16) NOT NULL"
+            "\n) PRIMARY KEY (team_id, client_id),"
+            "\nINTERLEAVE IN PARENT team ON DELETE CASCADE\n\n"
+        )
+        client = Table(
+            "client",
+            self._metadata,
+            Column("team_id", Integer, primary_key=True),
+            Column("client_id", Integer, primary_key=True),
+            Column("client_name", String(16), nullable=False),
+            spanner_interleave_in="team",
+            spanner_inverleave_on_delete_cascade=True,
+        )
+        with mock.patch("google.cloud.spanner_dbapi.cursor.Cursor.execute") as execute:
+            client.create(self._engine)
+            execute.assert_called_once_with(EXP_QUERY, [])
