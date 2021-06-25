@@ -24,7 +24,7 @@ common = gcp.CommonTemplates()
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
-    excludes = ["setup.py", "docs/index.rst", "scripts/fixup*"]
+    excludes = ["setup.py", "README.rst", "docs/index.rst", "scripts/fixup*"]
     s.move(library, excludes=excludes)
 
 s.remove_staging_dirs()
