@@ -7,6 +7,7 @@ common = gcp.CommonTemplates()
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
+    microgenerator=True,
     cov_level=99,
     unit_test_external_dependencies=["click"],
     unit_test_python_versions=["3.6", "3.7", "3.8", "3.9"],

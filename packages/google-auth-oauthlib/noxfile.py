@@ -28,7 +28,7 @@ BLACK_VERSION = "black==19.10b0"
 BLACK_PATHS = ["docs", "google_auth_oauthlib", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
-SYSTEM_TEST_PYTHON_VERSIONS = ["2.7", "3.8"]
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9"]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
@@ -84,6 +84,8 @@ def default(session):
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
+    session.install("asyncmock", "pytest-asyncio", "-c", constraints_path)
+
     session.install("mock", "pytest", "pytest-cov", "click", "-c", constraints_path)
 
     session.install("-e", ".", "-c", constraints_path)
