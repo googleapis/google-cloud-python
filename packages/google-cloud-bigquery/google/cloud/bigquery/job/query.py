@@ -1300,12 +1300,14 @@ class QueryJob(_AsyncJob):
         return rows
 
     # If changing the signature of this method, make sure to apply the same
-    # changes to table.RowIterator.to_arrow()
+    # changes to table.RowIterator.to_arrow(), except for the max_results parameter
+    # that should only exist here in the QueryJob method.
     def to_arrow(
         self,
         progress_bar_type: str = None,
         bqstorage_client: "bigquery_storage.BigQueryReadClient" = None,
         create_bqstorage_client: bool = True,
+        max_results: Optional[int] = None,
     ) -> "pyarrow.Table":
         """[Beta] Create a class:`pyarrow.Table` by loading all pages of a
         table or query.
@@ -1349,6 +1351,11 @@ class QueryJob(_AsyncJob):
 
                 ..versionadded:: 1.24.0
 
+            max_results (Optional[int]):
+                Maximum number of rows to include in the result. No limit by default.
+
+                ..versionadded:: 2.21.0
+
         Returns:
             pyarrow.Table
                 A :class:`pyarrow.Table` populated with row data and column
@@ -1361,7 +1368,7 @@ class QueryJob(_AsyncJob):
 
         ..versionadded:: 1.17.0
         """
-        query_result = wait_for_query(self, progress_bar_type)
+        query_result = wait_for_query(self, progress_bar_type, max_results=max_results)
         return query_result.to_arrow(
             progress_bar_type=progress_bar_type,
             bqstorage_client=bqstorage_client,
@@ -1369,7 +1376,8 @@ class QueryJob(_AsyncJob):
         )
 
     # If changing the signature of this method, make sure to apply the same
-    # changes to table.RowIterator.to_dataframe()
+    # changes to table.RowIterator.to_dataframe(), except for the max_results parameter
+    # that should only exist here in the QueryJob method.
     def to_dataframe(
         self,
         bqstorage_client: "bigquery_storage.BigQueryReadClient" = None,
@@ -1377,6 +1385,7 @@ class QueryJob(_AsyncJob):
         progress_bar_type: str = None,
         create_bqstorage_client: bool = True,
         date_as_object: bool = True,
+        max_results: Optional[int] = None,
     ) -> "pandas.DataFrame":
         """Return a pandas DataFrame from a QueryJob
 
@@ -1423,6 +1432,11 @@ class QueryJob(_AsyncJob):
 
                 ..versionadded:: 1.26.0
 
+            max_results (Optional[int]):
+                Maximum number of rows to include in the result. No limit by default.
+
+                ..versionadded:: 2.21.0
+
         Returns:
             A :class:`~pandas.DataFrame` populated with row data and column
             headers from the query results. The column headers are derived
@@ -1431,7 +1445,7 @@ class QueryJob(_AsyncJob):
         Raises:
             ValueError: If the `pandas` library cannot be imported.
         """
-        query_result = wait_for_query(self, progress_bar_type)
+        query_result = wait_for_query(self, progress_bar_type, max_results=max_results)
         return query_result.to_dataframe(
             bqstorage_client=bqstorage_client,
             dtypes=dtypes,

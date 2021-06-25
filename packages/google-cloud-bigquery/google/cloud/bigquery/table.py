@@ -22,7 +22,7 @@ import functools
 import operator
 import pytz
 import typing
-from typing import Any, Dict, Iterable, Tuple
+from typing import Any, Dict, Iterable, Iterator, Optional, Tuple
 import warnings
 
 try:
@@ -1415,7 +1415,9 @@ class RowIterator(HTTPIterator):
     """A class for iterating through HTTP/JSON API row list responses.
 
     Args:
-        client (google.cloud.bigquery.Client): The API client.
+        client (Optional[google.cloud.bigquery.Client]):
+            The API client instance. This should always be non-`None`, except for
+            subclasses that do not use it, namely the ``_EmptyRowIterator``.
         api_request (Callable[google.cloud._http.JSONConnection.api_request]):
             The function to use to make API requests.
         path (str): The method path to query for the list of items.
@@ -1480,7 +1482,7 @@ class RowIterator(HTTPIterator):
         self._field_to_index = _helpers._field_to_index_mapping(schema)
         self._page_size = page_size
         self._preserve_order = False
-        self._project = client.project
+        self._project = client.project if client is not None else None
         self._schema = schema
         self._selected_fields = selected_fields
         self._table = table
@@ -1895,7 +1897,7 @@ class RowIterator(HTTPIterator):
         return df
 
 
-class _EmptyRowIterator(object):
+class _EmptyRowIterator(RowIterator):
     """An empty row iterator.
 
     This class prevents API requests when there are no rows to fetch or rows
@@ -1906,6 +1908,18 @@ class _EmptyRowIterator(object):
     schema = ()
     pages = ()
     total_rows = 0
+
+    def __init__(
+        self, client=None, api_request=None, path=None, schema=(), *args, **kwargs
+    ):
+        super().__init__(
+            client=client,
+            api_request=api_request,
+            path=path,
+            schema=schema,
+            *args,
+            **kwargs,
+        )
 
     def to_arrow(
         self,
@@ -1950,6 +1964,37 @@ class _EmptyRowIterator(object):
         if pandas is None:
             raise ValueError(_NO_PANDAS_ERROR)
         return pandas.DataFrame()
+
+    def to_dataframe_iterable(
+        self,
+        bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
+        dtypes: Optional[Dict[str, Any]] = None,
+        max_queue_size: Optional[int] = None,
+    ) -> Iterator["pandas.DataFrame"]:
+        """Create an iterable of pandas DataFrames, to process the table as a stream.
+
+        ..versionadded:: 2.21.0
+
+        Args:
+            bqstorage_client:
+                Ignored. Added for compatibility with RowIterator.
+
+            dtypes (Optional[Map[str, Union[str, pandas.Series.dtype]]]):
+                Ignored. Added for compatibility with RowIterator.
+
+            max_queue_size:
+                Ignored. Added for compatibility with RowIterator.
+
+        Returns:
+            An iterator yielding a single empty :class:`~pandas.DataFrame`.
+
+        Raises:
+            ValueError:
+                If the :mod:`pandas` library cannot be imported.
+        """
+        if pandas is None:
+            raise ValueError(_NO_PANDAS_ERROR)
+        return iter((pandas.DataFrame(),))
 
     def __iter__(self):
         return iter(())

@@ -1571,6 +1571,25 @@ class Test_EmptyRowIterator(unittest.TestCase):
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 0)  # verify the number of rows
 
+    @mock.patch("google.cloud.bigquery.table.pandas", new=None)
+    def test_to_dataframe_iterable_error_if_pandas_is_none(self):
+        row_iterator = self._make_one()
+        with self.assertRaises(ValueError):
+            row_iterator.to_dataframe_iterable()
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_iterable(self):
+        row_iterator = self._make_one()
+        df_iter = row_iterator.to_dataframe_iterable()
+
+        result = list(df_iter)
+
+        self.assertEqual(len(result), 1)
+        df = result[0]
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 0)  # Verify the number of rows.
+        self.assertEqual(len(df.columns), 0)
+
 
 class TestRowIterator(unittest.TestCase):
     def _class_under_test(self):

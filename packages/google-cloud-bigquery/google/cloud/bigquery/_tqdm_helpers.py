@@ -16,12 +16,18 @@
 
 import concurrent.futures
 import time
+import typing
+from typing import Optional
 import warnings
 
 try:
     import tqdm
 except ImportError:  # pragma: NO COVER
     tqdm = None
+
+if typing.TYPE_CHECKING:  # pragma: NO COVER
+    from google.cloud.bigquery import QueryJob
+    from google.cloud.bigquery.table import RowIterator
 
 _NO_TQDM_ERROR = (
     "A progress bar was requested, but there was an error loading the tqdm "
@@ -32,7 +38,7 @@ _PROGRESS_BAR_UPDATE_INTERVAL = 0.5
 
 
 def get_progress_bar(progress_bar_type, description, total, unit):
-    """Construct a tqdm progress bar object, if tqdm is     ."""
+    """Construct a tqdm progress bar object, if tqdm is installed."""
     if tqdm is None:
         if progress_bar_type is not None:
             warnings.warn(_NO_TQDM_ERROR, UserWarning, stacklevel=3)
@@ -53,16 +59,34 @@ def get_progress_bar(progress_bar_type, description, total, unit):
     return None
 
 
-def wait_for_query(query_job, progress_bar_type=None):
-    """Return query result and display a progress bar while the query running, if tqdm is installed."""
+def wait_for_query(
+    query_job: "QueryJob",
+    progress_bar_type: Optional[str] = None,
+    max_results: Optional[int] = None,
+) -> "RowIterator":
+    """Return query result and display a progress bar while the query running, if tqdm is installed.
+
+    Args:
+        query_job:
+            The job representing the execution of the query on the server.
+        progress_bar_type:
+            The type of progress bar to use to show query progress.
+        max_results:
+            The maximum number of rows the row iterator should return.
+
+    Returns:
+        A row iterator over the query results.
+    """
     default_total = 1
     current_stage = None
     start_time = time.time()
+
     progress_bar = get_progress_bar(
         progress_bar_type, "Query is running", default_total, "query"
     )
     if progress_bar is None:
-        return query_job.result()
+        return query_job.result(max_results=max_results)
+
     i = 0
     while True:
         if query_job.query_plan:
@@ -75,7 +99,9 @@ def wait_for_query(query_job, progress_bar_type=None):
                 ),
             )
         try:
-            query_result = query_job.result(timeout=_PROGRESS_BAR_UPDATE_INTERVAL)
+            query_result = query_job.result(
+                timeout=_PROGRESS_BAR_UPDATE_INTERVAL, max_results=max_results
+            )
             progress_bar.update(default_total)
             progress_bar.set_description(
                 "Query complete after {:0.2f}s".format(time.time() - start_time),
@@ -89,5 +115,6 @@ def wait_for_query(query_job, progress_bar_type=None):
                         progress_bar.update(i + 1)
                         i += 1
             continue
+
     progress_bar.close()
     return query_result
