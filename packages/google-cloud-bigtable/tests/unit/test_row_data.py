@@ -490,7 +490,7 @@ class TestPartialRowsData(unittest.TestCase):
         client._table_data_client = data_api
         request = object()
 
-        yrd = self._make_one(client._table_data_client.read_rows, request)
+        yrd = self._make_one(data_api.read_rows, request)
 
         yrd.response_iterator = iterator
         rows = [row for row in yrd]
@@ -510,6 +510,42 @@ class TestPartialRowsData(unittest.TestCase):
         yield_rows_data.cancel()
         self.assertEqual(response_iterator.cancel_calls, 1)
         self.assertEqual(list(yield_rows_data), [])
+
+    def test_cancel_between_chunks(self):
+        from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+
+        chunk1 = _ReadRowsResponseCellChunkPB(
+            row_key=self.ROW_KEY,
+            family_name=self.FAMILY_NAME,
+            qualifier=self.QUALIFIER,
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True,
+        )
+        chunk2 = _ReadRowsResponseCellChunkPB(
+            qualifier=self.QUALIFIER + b"1",
+            timestamp_micros=self.TIMESTAMP_MICROS,
+            value=self.VALUE,
+            commit_row=True,
+        )
+        chunks = [chunk1, chunk2]
+        response = _ReadRowsResponseV2(chunks)
+        response_iterator = _MockCancellableIterator(response)
+
+        client = _Client()
+        data_api = mock.create_autospec(BigtableClient)
+        client._table_data_client = data_api
+        request = object()
+        yrd = self._make_one(data_api.read_rows, request)
+        yrd.response_iterator = response_iterator
+
+        rows = []
+        for row in yrd:
+            yrd.cancel()
+            rows.append(row)
+
+        self.assertEqual(response_iterator.cancel_calls, 1)
+        self.assertEqual(list(yrd), [])
 
     # 'consume_next' tested via 'TestPartialRowsData_JSON_acceptance_tests'
 
