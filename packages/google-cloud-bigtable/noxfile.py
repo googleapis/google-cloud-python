@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import
 import os
+import pathlib
 import shutil
 
 import nox
@@ -29,6 +30,8 @@ BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.8"]
 UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9"]
+
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
 nox.options.sessions = [
@@ -78,13 +81,14 @@ def lint_setup_py(session):
 
 def default(session):
     # Install all test dependencies, then install this package in-place.
-    session.install("asyncmock", "pytest-asyncio")
-
-    session.install(
-        "mock", "pytest", "pytest-cov",
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
+    session.install("asyncmock", "pytest-asyncio", "-c", constraints_path)
 
-    session.install("-e", ".")
+    session.install("mock", "pytest", "pytest-cov", "-c", constraints_path)
+
+    session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the unit tests.
     session.run(
@@ -136,6 +140,10 @@ def system_emulated(session):
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
     """Run the system test suite."""
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
 
@@ -147,7 +155,7 @@ def system(session):
         session.skip("Credentials must be set via environment variable")
     # Install pyopenssl for mTLS testing.
     if os.environ.get("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false") == "true":
-        session.install("pyopenssl")
+        session.install("pyopenssl", "-c", constraints_path)
 
     system_test_exists = os.path.exists(system_test_path)
     system_test_folder_exists = os.path.exists(system_test_folder_path)
@@ -160,10 +168,8 @@ def system(session):
 
     # Install all test dependencies, then install this package into the
     # virtualenv's dist-packages.
-    session.install(
-        "mock", "pytest", "google-cloud-testutils",
-    )
-    session.install("-e", ".")
+    session.install("mock", "pytest", "google-cloud-testutils", "-c", constraints_path)
+    session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the system tests.
     if system_test_exists:
