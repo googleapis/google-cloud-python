@@ -6,6 +6,7 @@
 
 from django.db import NotSupportedError
 from django.db.backends.base.schema import BaseDatabaseSchemaEditor
+from django_spanner._opentelemetry_tracing import trace_call
 
 
 class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
@@ -119,7 +120,15 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                 sql += " " + tablespace_sql
         # Prevent using [] as params, in the case a literal '%' is used in the
         # definition
-        self.execute(sql, params or None)
+        trace_attributes = {
+            "model_name": self.quote_name(model._meta.db_table)
+        }
+        with trace_call(
+            "CloudSpannerDjango.create_model",
+            self.connection,
+            trace_attributes,
+        ):
+            self.execute(sql, params or None)
 
         # Add any field index and index_together's (deferred as SQLite
         # _remake_table needs it)
@@ -144,8 +153,25 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             model, index=True, primary_key=False
         )
         for index_name in index_names:
-            self.execute(self._delete_index_sql(model, index_name))
-        super().delete_model(model)
+            trace_attributes = {
+                "model_name": self.quote_name(model._meta.db_table),
+                "index_name": index_name,
+            }
+            with trace_call(
+                "CloudSpannerDjango.delete_model.delete_index",
+                self.connection,
+                trace_attributes,
+            ):
+                self.execute(self._delete_index_sql(model, index_name))
+        trace_attributes = {
+            "model_name": self.quote_name(model._meta.db_table)
+        }
+        with trace_call(
+            "CloudSpannerDjango.delete_model",
+            self.connection,
+            trace_attributes,
+        ):
+            super().delete_model(model)
 
     def add_field(self, model, field):
         """
@@ -250,8 +276,28 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
         # column.
         index_names = self._constraint_names(model, [field.column], index=True)
         for index_name in index_names:
-            self.execute(self._delete_index_sql(model, index_name))
-        super().remove_field(model, field)
+            trace_attributes = {
+                "model_name": self.quote_name(model._meta.db_table),
+                "field": field.column,
+                "index_name": index_name,
+            }
+            with trace_call(
+                "CloudSpannerDjango.remove_field.delete_index",
+                self.connection,
+                trace_attributes,
+            ):
+                self.execute(self._delete_index_sql(model, index_name))
+
+        trace_attributes = {
+            "model_name": self.quote_name(model._meta.db_table),
+            "field": field.column,
+        }
+        with trace_call(
+            "CloudSpannerDjango.remove_field",
+            self.connection,
+            trace_attributes,
+        ):
+            super().remove_field(model, field)
 
     def column_sql(
         self, model, field, include_default=False, exclude_not_null=False
@@ -320,7 +366,14 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             (field_name, " DESC" if order == "DESC" else "")
             for field_name, order in index.fields_orders
         ]
-        super().add_index(model, index)
+        trace_attributes = {
+            "model_name": self.quote_name(model._meta.db_table),
+            "index": "|".join(index.fields),
+        }
+        with trace_call(
+            "CloudSpannerDjango.add_index", self.connection, trace_attributes,
+        ):
+            super().add_index(model, index)
 
     def quote_value(self, value):
         # A more complete implementation isn't currently required.
@@ -355,20 +408,48 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
                     "index isn't yet supported."
                 )
             for index_name in index_names:
-                self.execute(self._delete_index_sql(model, index_name))
-        super()._alter_field(
-            model,
-            old_field,
-            new_field,
-            old_type,
-            new_type,
-            old_db_params,
-            new_db_params,
-            strict=False,
-        )
+                trace_attributes = {
+                    "model_name": self.quote_name(model._meta.db_table),
+                    "alter_field": old_field.column,
+                    "index_name": index_name,
+                }
+                with trace_call(
+                    "CloudSpannerDjango.alter_field.delete_index",
+                    self.connection,
+                    trace_attributes,
+                ):
+                    self.execute(self._delete_index_sql(model, index_name))
+        trace_attributes = {
+            "model_name": self.quote_name(model._meta.db_table),
+            "alter_field": old_field.column,
+        }
+        with trace_call(
+            "CloudSpannerDjango.alter_field",
+            self.connection,
+            trace_attributes,
+        ):
+            super()._alter_field(
+                model,
+                old_field,
+                new_field,
+                old_type,
+                new_type,
+                old_db_params,
+                new_db_params,
+                strict=False,
+            )
         # Recreate the index that was dropped earlier.
         if nullability_changed and new_field.db_index:
-            self.execute(self._create_index_sql(model, [new_field]))
+            trace_attributes = {
+                "model_name": self.quote_name(model._meta.db_table),
+                "alter_field": new_field.column,
+            }
+            with trace_call(
+                "CloudSpannerDjango.alter_field.recreate_index",
+                self.connection,
+                trace_attributes,
+            ):
+                self.execute(self._create_index_sql(model, [new_field]))
 
     def _alter_column_type_sql(self, model, old_field, new_field, new_type):
         # Spanner needs to use sql_alter_column_not_null if the field is
