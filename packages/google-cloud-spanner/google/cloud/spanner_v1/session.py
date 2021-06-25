@@ -110,7 +110,7 @@ class Session(object):
         See
         https://cloud.google.com/spanner/reference/rpc/google.spanner.v1#google.spanner.v1.Spanner.CreateSession
 
-        :raises: :exc:`ValueError` if :attr:`session_id` is already set.
+        :raises ValueError: if :attr:`session_id` is already set.
         """
         if self._session_id is not None:
             raise ValueError("Session ID already set by back-end")
@@ -171,7 +171,7 @@ class Session(object):
     def ping(self):
         """Ping the session to keep it alive by executing "SELECT 1".
 
-        :raises: ValueError: if :attr:`session_id` is not already set.
+        :raises ValueError: if :attr:`session_id` is not already set.
         """
         if self._session_id is None:
             raise ValueError("Session ID not set by back-end")
