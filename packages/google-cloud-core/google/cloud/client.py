@@ -106,7 +106,7 @@ class _ClientFactoryMixin(object):
         with io.open(json_credentials_path, "r", encoding="utf-8") as json_fi:
             credentials_info = json.load(json_fi)
 
-        return cls.from_service_account_info(credentials_info)
+        return cls.from_service_account_info(credentials_info, *args, **kwargs)
 
 
 class Client(_ClientFactoryMixin):

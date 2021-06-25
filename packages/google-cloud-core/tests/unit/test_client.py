@@ -420,16 +420,15 @@ class TestClientWithProject(unittest.TestCase):
     def _from_service_account_info_helper(self, project=None):
         klass = self._get_target_class()
 
-        info = {"dummy": "value", "valid": "json"}
+        default_project = "eye-d-of-project"
+        info = {"dummy": "value", "valid": "json", "project_id": default_project}
         kwargs = {}
 
         if project is None:
-            expected_project = "eye-d-of-project"
+            expected_project = default_project
         else:
             expected_project = project
             kwargs["project"] = project
-
-        info["project_id"] = expected_project
 
         constructor_patch = mock.patch(
             "google.oauth2.service_account.Credentials.from_service_account_info",
@@ -451,18 +450,45 @@ class TestClientWithProject(unittest.TestCase):
     def test_from_service_account_info_with_project(self):
         self._from_service_account_info_helper(project="prah-jekt")
 
+    def test_from_service_account_info_with_posarg(self):
+        class Derived(self._get_target_class()):
+            def __init__(self, required, **kwargs):
+                super(Derived, self).__init__(**kwargs)
+                self.required = required
+
+        project = "eye-d-of-project"
+        info = {"dummy": "value", "valid": "json", "project_id": project}
+
+        # Mock both the file opening and the credentials constructor.
+        constructor_patch = mock.patch(
+            "google.oauth2.service_account.Credentials.from_service_account_info",
+            return_value=_make_credentials(),
+        )
+
+        with constructor_patch as constructor:
+            client_obj = Derived.from_service_account_info(info, "REQUIRED")
+
+        self.assertIsInstance(client_obj, Derived)
+        self.assertIs(client_obj._credentials, constructor.return_value)
+        self.assertIsNone(client_obj._http_internal)
+        self.assertEqual(client_obj.project, project)
+        self.assertEqual(client_obj.required, "REQUIRED")
+
+        # Check that mocks were called as expected.
+        constructor.assert_called_once_with(info)
+
     def _from_service_account_json_helper(self, project=None):
         from google.cloud import _helpers
 
         klass = self._get_target_class()
 
-        info = {"dummy": "value", "valid": "json"}
+        default_project = "eye-d-of-project"
+        info = {"dummy": "value", "valid": "json", "project_id": default_project}
         if project is None:
             expected_project = "eye-d-of-project"
         else:
             expected_project = project
 
-        info["project_id"] = expected_project
         # Mock both the file opening and the credentials constructor.
         json_fi = io.StringIO(_helpers._bytes_to_unicode(json.dumps(info)))
         file_open_patch = mock.patch("io.open", return_value=json_fi)
@@ -492,3 +518,38 @@ class TestClientWithProject(unittest.TestCase):
 
     def test_from_service_account_json_project_set(self):
         self._from_service_account_json_helper(project="prah-jekt")
+
+    def test_from_service_account_json_with_posarg(self):
+        from google.cloud import _helpers
+
+        class Derived(self._get_target_class()):
+            def __init__(self, required, **kwargs):
+                super(Derived, self).__init__(**kwargs)
+                self.required = required
+
+        project = "eye-d-of-project"
+        info = {"dummy": "value", "valid": "json", "project_id": project}
+
+        # Mock both the file opening and the credentials constructor.
+        json_fi = io.StringIO(_helpers._bytes_to_unicode(json.dumps(info)))
+        file_open_patch = mock.patch("io.open", return_value=json_fi)
+        constructor_patch = mock.patch(
+            "google.oauth2.service_account.Credentials.from_service_account_info",
+            return_value=_make_credentials(),
+        )
+
+        with file_open_patch as file_open:
+            with constructor_patch as constructor:
+                client_obj = Derived.from_service_account_json(
+                    mock.sentinel.filename, "REQUIRED"
+                )
+
+        self.assertIsInstance(client_obj, Derived)
+        self.assertIs(client_obj._credentials, constructor.return_value)
+        self.assertIsNone(client_obj._http_internal)
+        self.assertEqual(client_obj.project, project)
+        self.assertEqual(client_obj.required, "REQUIRED")
+
+        # Check that mocks were called as expected.
+        file_open.assert_called_once_with(mock.sentinel.filename, "r", encoding="utf-8")
+        constructor.assert_called_once_with(info)
