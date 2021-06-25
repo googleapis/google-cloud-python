@@ -53,6 +53,9 @@ import warnings
 _MAX_BULK_MUTATIONS = 100000
 VIEW_NAME_ONLY = enums.Table.View.NAME_ONLY
 
+RETRYABLE_MUTATION_ERRORS = (Aborted, DeadlineExceeded, ServiceUnavailable)
+"""Errors which can be retried during row mutation."""
+
 
 class _BigtableRetryableError(Exception):
     """Retry-able error expected by the default retry strategy."""
@@ -1039,10 +1042,8 @@ class _RetryableMutateRowsWorker(object):
     are retryable, any subsequent call on this callable will be a no-op.
     """
 
-    RETRY_CODES = (
-        Aborted.grpc_status_code.value[0],
-        DeadlineExceeded.grpc_status_code.value[0],
-        ServiceUnavailable.grpc_status_code.value[0],
+    RETRY_CODES = tuple(
+        retryable.grpc_status_code.value[0] for retryable in RETRYABLE_MUTATION_ERRORS
     )
 
     def __init__(self, client, table_name, rows, app_profile_id=None, timeout=None):
@@ -1125,7 +1126,7 @@ class _RetryableMutateRowsWorker(object):
                 retry=None,
                 **kwargs
             )
-        except (ServiceUnavailable, DeadlineExceeded, Aborted):
+        except RETRYABLE_MUTATION_ERRORS:
             # If an exception, considered retryable by `RETRY_CODES`, is
             # returned from the initial call, consider
             # it to be retryable. Wrap as a Bigtable Retryable Error.
