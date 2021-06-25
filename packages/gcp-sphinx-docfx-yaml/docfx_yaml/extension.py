@@ -796,6 +796,9 @@ def find_unique_name(package_name, entries):
         if name != "google" and name != "cloud" and entries[name] == 1:
             return [name, package_name[-1]]
 
+    # If there is no way to disambiguate, return the identifier name
+    return [package_name[-1]]
+
 # Used to disambiguate names that have same entries.
 def disambiguate_toc_name(toc_yaml):
     name_entries = {}

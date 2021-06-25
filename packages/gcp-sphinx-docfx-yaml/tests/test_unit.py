@@ -49,6 +49,21 @@ class TestGenerate(unittest.TestCase):
         self.assertEqual(yaml_want, yaml_got)
 
 
+    def test_disambiguate_toc_name_duplicate(self):
+
+        want_file = open('tests/yaml_post_duplicate.yaml', 'r')
+        yaml_want = load(want_file, Loader=Loader)
+
+        test_file = open('tests/yaml_pre_duplicate.yaml', 'r')
+        yaml_got = load(test_file, Loader=Loader)
+        disambiguate_toc_name(yaml_got)
+
+        want_file.close()
+        test_file.close()
+
+        self.assertEqual(yaml_want, yaml_got)
+
+
     def test_reference_in_summary(self):
         lines_got = """
 If a ``stream`` is attached to this download, then the downloaded
