@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+### [1.7.1](https://www.github.com/googleapis/python-cloud-core/compare/v1.7.0...v1.7.1) (2021-06-25)
+
+
+### Bug Fixes
+
+* pass kwargs through in 'from_service_account_json' ([#109](https://www.github.com/googleapis/python-cloud-core/issues/109)) ([efc4bbf](https://www.github.com/googleapis/python-cloud-core/commit/efc4bbfd377e64763c60500407f5c191c03ef85c))
+
 ## [1.7.0](https://www.github.com/googleapis/python-cloud-core/compare/v1.6.0...v1.7.0) (2021-06-14)
 
 
