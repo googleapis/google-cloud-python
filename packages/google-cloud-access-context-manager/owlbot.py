@@ -24,7 +24,7 @@ from synthtool.sources import git
 #  Add templated files
 # ----------------------------------------------------------------------------
 common = gcp.CommonTemplates()
-templated_files = common.py_library()
+templated_files = common.py_library(microgenerator=True)
 s.move(
     templated_files, excludes=[".coveragerc", ".gitignore",],
 )

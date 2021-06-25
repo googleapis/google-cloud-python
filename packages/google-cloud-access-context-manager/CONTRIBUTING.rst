@@ -69,13 +69,16 @@ We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 
 - To test your changes, run unit tests with ``nox``::
 
+    $ nox -s unit-3.6
+    $ nox -s unit-3.7
     $ nox -s unit-3.8
-    $ ...
+    $ nox -s unit-3.9
 
 - Args to pytest can be passed through the nox command separated by a `--`. For
   example, to run a single test::
 
-    $ nox -s unit-3.8 -- -k <name of test>
+    $ nox -s unit-3.9 -- -k <name of test>
+
 
   .. note::
 
@@ -215,8 +218,8 @@ Supported versions can be found in our ``noxfile.py`` `config`_.
 .. _config: https://github.com/googleapis/python-access-context-manager/blob/master/noxfile.py
 
 
-We also explicitly decided to support Python 3 beginning with version
-3.6. Reasons for this include:
+We also explicitly decided to support Python 3 beginning with version 3.6.
+Reasons for this include:
 
 -  Encouraging use of newest versions of Python 3
 -  Taking the lead of `prominent`_ open-source `projects`_
