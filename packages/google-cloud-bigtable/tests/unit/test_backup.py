@@ -502,7 +502,9 @@ class TestBackup(unittest.TestCase):
 
         with self.assertRaises(Unknown):
             backup.exists()
-            api.get_backup(self.BACKUP_NAME)
+
+        request = {"name": self.BACKUP_NAME}
+        api.get_backup.assert_called_once_with(request)
 
     def test_exists_not_found(self):
         from google.api_core.exceptions import NotFound
