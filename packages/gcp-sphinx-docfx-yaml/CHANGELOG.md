@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.3](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.3.2...v0.3.3) (2021-06-25)
+
+
+### Bug Fixes
+
+* handle entries that cannot be disambiguated ([#59](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/59)) ([7678b24](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/7678b246636bf8387e7049af11bce1a33a9a5826))
+
 ### [0.3.2](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.3.1...v0.3.2) (2021-06-24)
 
 
