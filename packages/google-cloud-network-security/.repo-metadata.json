@@ -1,0 +1,13 @@
+{
+    "name": "networksecurity",
+    "name_pretty": "Network Security API",
+    "product_documentation": "https://cloud.google.com/traffic-director/docs/reference/network-security/rest",
+    "client_documentation": "https://googleapis.dev/python/networksecurity/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-network-security",
+    "distribution_name": "google-cloud-network-security",
+    "api_id": "networksecurity.googleapis.com"
+}
