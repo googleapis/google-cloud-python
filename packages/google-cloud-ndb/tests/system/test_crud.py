@@ -1118,6 +1118,53 @@ def test_retrieve_entity_with_legacy_repeated_structured_property(ds_entity):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_legacy_repeated_structured_property_w_expando(
+    ds_client, dispose_of, client_context
+):
+    """Regression test for #669
+
+    https://github.com/googleapis/python-ndb/issues/669
+    """
+
+    class OtherKind(ndb.Expando):
+        one = ndb.StringProperty()
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+        bar = ndb.StructuredProperty(OtherKind, repeated=True)
+
+    entity = SomeKind(
+        foo=42,
+        bar=[
+            OtherKind(one="one-a"),
+            OtherKind(two="two-b"),
+            OtherKind(one="one-c", two="two-c"),
+        ],
+    )
+
+    with client_context.new(legacy_data=True).use():
+        key = entity.put()
+        dispose_of(key._key)
+
+        ds_entity = ds_client.get(key._key)
+        assert ds_entity["bar.one"] == ["one-a", None, "one-c"]
+        assert ds_entity["bar.two"] == [None, "two-b", "two-c"]
+
+        retrieved = key.get()
+        assert retrieved.foo == 42
+        assert retrieved.bar[0].one == "one-a"
+        assert not hasattr(retrieved.bar[0], "two")
+        assert retrieved.bar[1].one is None
+        assert retrieved.bar[1].two == "two-b"
+        assert retrieved.bar[2].one == "one-c"
+        assert retrieved.bar[2].two == "two-c"
+
+        assert isinstance(retrieved.bar[0], OtherKind)
+        assert isinstance(retrieved.bar[1], OtherKind)
+        assert isinstance(retrieved.bar[2], OtherKind)
+
+
+@pytest.mark.usefixtures("client_context")
 def test_insert_expando(dispose_of):
     class SomeKind(ndb.Expando):
         foo = ndb.IntegerProperty()
