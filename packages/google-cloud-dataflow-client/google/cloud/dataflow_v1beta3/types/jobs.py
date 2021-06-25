@@ -1,0 +1,991 @@
+# -*- coding: utf-8 -*-
+# Copyright 2020 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+import proto  # type: ignore
+
+from google.cloud.dataflow_v1beta3.types import environment as gd_environment
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
+
+__protobuf__ = proto.module(
+    package="google.dataflow.v1beta3",
+    manifest={
+        "KindType",
+        "JobState",
+        "JobView",
+        "Job",
+        "DatastoreIODetails",
+        "PubSubIODetails",
+        "FileIODetails",
+        "BigTableIODetails",
+        "BigQueryIODetails",
+        "SpannerIODetails",
+        "SdkVersion",
+        "JobMetadata",
+        "ExecutionStageState",
+        "PipelineDescription",
+        "TransformSummary",
+        "ExecutionStageSummary",
+        "DisplayData",
+        "Step",
+        "JobExecutionInfo",
+        "JobExecutionStageInfo",
+        "CreateJobRequest",
+        "GetJobRequest",
+        "UpdateJobRequest",
+        "ListJobsRequest",
+        "FailedLocation",
+        "ListJobsResponse",
+        "SnapshotJobRequest",
+        "CheckActiveJobsRequest",
+        "CheckActiveJobsResponse",
+    },
+)
+
+
+class KindType(proto.Enum):
+    r"""Type of transform or stage operation."""
+    UNKNOWN_KIND = 0
+    PAR_DO_KIND = 1
+    GROUP_BY_KEY_KIND = 2
+    FLATTEN_KIND = 3
+    READ_KIND = 4
+    WRITE_KIND = 5
+    CONSTANT_KIND = 6
+    SINGLETON_KIND = 7
+    SHUFFLE_KIND = 8
+
+
+class JobState(proto.Enum):
+    r"""Describes the overall state of a
+    [google.dataflow.v1beta3.Job][google.dataflow.v1beta3.Job].
+    """
+    JOB_STATE_UNKNOWN = 0
+    JOB_STATE_STOPPED = 1
+    JOB_STATE_RUNNING = 2
+    JOB_STATE_DONE = 3
+    JOB_STATE_FAILED = 4
+    JOB_STATE_CANCELLED = 5
+    JOB_STATE_UPDATED = 6
+    JOB_STATE_DRAINING = 7
+    JOB_STATE_DRAINED = 8
+    JOB_STATE_PENDING = 9
+    JOB_STATE_CANCELLING = 10
+    JOB_STATE_QUEUED = 11
+    JOB_STATE_RESOURCE_CLEANING_UP = 12
+
+
+class JobView(proto.Enum):
+    r"""Selector for how much information is returned in Job
+    responses.
+    """
+    JOB_VIEW_UNKNOWN = 0
+    JOB_VIEW_SUMMARY = 1
+    JOB_VIEW_ALL = 2
+    JOB_VIEW_DESCRIPTION = 3
+
+
+class Job(proto.Message):
+    r"""Defines a job to be run by the Cloud Dataflow service.
+    nextID: 26
+
+    Attributes:
+        id (str):
+            The unique ID of this job.
+            This field is set by the Cloud Dataflow service
+            when the Job is created, and is immutable for
+            the life of the job.
+        project_id (str):
+            The ID of the Cloud Platform project that the
+            job belongs to.
+        name (str):
+            The user-specified Cloud Dataflow job name.
+
+            Only one Job with a given name may exist in a project at any
+            given time. If a caller attempts to create a Job with the
+            same name as an already-existing Job, the attempt returns
+            the existing Job.
+
+            The name must match the regular expression
+            ``[a-z]([-a-z0-9]{0,38}[a-z0-9])?``
+        type_ (google.cloud.dataflow_v1beta3.types.JobType):
+            The type of Cloud Dataflow job.
+        environment (google.cloud.dataflow_v1beta3.types.Environment):
+            The environment for the job.
+        steps (Sequence[google.cloud.dataflow_v1beta3.types.Step]):
+            Exactly one of step or steps_location should be specified.
+
+            The top-level steps that constitute the entire job. Only
+            retrieved with JOB_VIEW_ALL.
+        steps_location (str):
+            The Cloud Storage location where the steps
+            are stored.
+        current_state (google.cloud.dataflow_v1beta3.types.JobState):
+            The current state of the job.
+
+            Jobs are created in the ``JOB_STATE_STOPPED`` state unless
+            otherwise specified.
+
+            A job in the ``JOB_STATE_RUNNING`` state may asynchronously
+            enter a terminal state. After a job has reached a terminal
+            state, no further state updates may be made.
+
+            This field may be mutated by the Cloud Dataflow service;
+            callers cannot mutate it.
+        current_state_time (google.protobuf.timestamp_pb2.Timestamp):
+            The timestamp associated with the current
+            state.
+        requested_state (google.cloud.dataflow_v1beta3.types.JobState):
+            The job's requested state.
+
+            ``UpdateJob`` may be used to switch between the
+            ``JOB_STATE_STOPPED`` and ``JOB_STATE_RUNNING`` states, by
+            setting requested_state. ``UpdateJob`` may also be used to
+            directly set a job's requested state to
+            ``JOB_STATE_CANCELLED`` or ``JOB_STATE_DONE``, irrevocably
+            terminating the job if it has not already reached a terminal
+            state.
+        execution_info (google.cloud.dataflow_v1beta3.types.JobExecutionInfo):
+            Deprecated.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The timestamp when the job was initially
+            created. Immutable and set by the Cloud Dataflow
+            service.
+        replace_job_id (str):
+            If this job is an update of an existing job, this field is
+            the job ID of the job it replaced.
+
+            When sending a ``CreateJobRequest``, you can update a job by
+            specifying it here. The job named here is stopped, and its
+            intermediate state is transferred to this job.
+        transform_name_mapping (Sequence[google.cloud.dataflow_v1beta3.types.Job.TransformNameMappingEntry]):
+            The map of transform name prefixes of the job
+            to be replaced to the corresponding name
+            prefixes of the new job.
+        client_request_id (str):
+            The client's unique identifier of the job,
+            re-used across retried attempts. If this field
+            is set, the service will ensure its uniqueness.
+            The request to create a job will fail if the
+            service has knowledge of a previously submitted
+            job with the same client's ID and job name. The
+            caller may use this field to ensure idempotence
+            of job creation across retried attempts to
+            create a job. By default, the field is empty
+            and, in that case, the service ignores it.
+        replaced_by_job_id (str):
+            If another job is an update of this job (and thus, this job
+            is in ``JOB_STATE_UPDATED``), this field contains the ID of
+            that job.
+        temp_files (Sequence[str]):
+            A set of files the system should be aware of
+            that are used for temporary storage. These
+            temporary files will be removed on job
+            completion.
+            No duplicates are allowed.
+            No file patterns are supported.
+
+            The supported files are:
+
+            Google Cloud Storage:
+
+               storage.googleapis.com/{bucket}/{object}
+               bucket.storage.googleapis.com/{object}
+        labels (Sequence[google.cloud.dataflow_v1beta3.types.Job.LabelsEntry]):
+            User-defined labels for this job.
+
+            The labels map can contain no more than 64 entries. Entries
+            of the labels map are UTF8 strings that comply with the
+            following restrictions:
+
+            -  Keys must conform to regexp:
+               [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}
+            -  Values must conform to regexp:
+               [\p{Ll}\p{Lo}\p{N}_-]{0,63}
+            -  Both keys and values are additionally constrained to be
+               <= 128 bytes in size.
+        location (str):
+            The [regional endpoint]
+            (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
+            that contains this job.
+        pipeline_description (google.cloud.dataflow_v1beta3.types.PipelineDescription):
+            Preliminary field: The format of this data may change at any
+            time. A description of the user pipeline and stages through
+            which it is executed. Created by Cloud Dataflow service.
+            Only retrieved with JOB_VIEW_DESCRIPTION or JOB_VIEW_ALL.
+        stage_states (Sequence[google.cloud.dataflow_v1beta3.types.ExecutionStageState]):
+            This field may be mutated by the Cloud
+            Dataflow service; callers cannot mutate it.
+        job_metadata (google.cloud.dataflow_v1beta3.types.JobMetadata):
+            This field is populated by the Dataflow
+            service to support filtering jobs by the
+            metadata values provided here. Populated for
+            ListJobs and all GetJob views SUMMARY and
+            higher.
+        start_time (google.protobuf.timestamp_pb2.Timestamp):
+            The timestamp when the job was started (transitioned to
+            JOB_STATE_PENDING). Flexible resource scheduling jobs are
+            started with some delay after job creation, so start_time is
+            unset before start and is updated when the job is started by
+            the Cloud Dataflow service. For other jobs, start_time
+            always equals to create_time and is immutable and set by the
+            Cloud Dataflow service.
+        created_from_snapshot_id (str):
+            If this is specified, the job's initial state
+            is populated from the given snapshot.
+        satisfies_pzs (bool):
+            Reserved for future use. This field is set
+            only in responses from the server; it is ignored
+            if it is set in any requests.
+    """
+
+    id = proto.Field(proto.STRING, number=1,)
+    project_id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(proto.STRING, number=3,)
+    type_ = proto.Field(proto.ENUM, number=4, enum=gd_environment.JobType,)
+    environment = proto.Field(
+        proto.MESSAGE, number=5, message=gd_environment.Environment,
+    )
+    steps = proto.RepeatedField(proto.MESSAGE, number=6, message="Step",)
+    steps_location = proto.Field(proto.STRING, number=24,)
+    current_state = proto.Field(proto.ENUM, number=7, enum="JobState",)
+    current_state_time = proto.Field(
+        proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,
+    )
+    requested_state = proto.Field(proto.ENUM, number=9, enum="JobState",)
+    execution_info = proto.Field(proto.MESSAGE, number=10, message="JobExecutionInfo",)
+    create_time = proto.Field(
+        proto.MESSAGE, number=11, message=timestamp_pb2.Timestamp,
+    )
+    replace_job_id = proto.Field(proto.STRING, number=12,)
+    transform_name_mapping = proto.MapField(proto.STRING, proto.STRING, number=13,)
+    client_request_id = proto.Field(proto.STRING, number=14,)
+    replaced_by_job_id = proto.Field(proto.STRING, number=15,)
+    temp_files = proto.RepeatedField(proto.STRING, number=16,)
+    labels = proto.MapField(proto.STRING, proto.STRING, number=17,)
+    location = proto.Field(proto.STRING, number=18,)
+    pipeline_description = proto.Field(
+        proto.MESSAGE, number=19, message="PipelineDescription",
+    )
+    stage_states = proto.RepeatedField(
+        proto.MESSAGE, number=20, message="ExecutionStageState",
+    )
+    job_metadata = proto.Field(proto.MESSAGE, number=21, message="JobMetadata",)
+    start_time = proto.Field(proto.MESSAGE, number=22, message=timestamp_pb2.Timestamp,)
+    created_from_snapshot_id = proto.Field(proto.STRING, number=23,)
+    satisfies_pzs = proto.Field(proto.BOOL, number=25,)
+
+
+class DatastoreIODetails(proto.Message):
+    r"""Metadata for a Datastore connector used by the job.
+    Attributes:
+        namespace (str):
+            Namespace used in the connection.
+        project_id (str):
+            ProjectId accessed in the connection.
+    """
+
+    namespace = proto.Field(proto.STRING, number=1,)
+    project_id = proto.Field(proto.STRING, number=2,)
+
+
+class PubSubIODetails(proto.Message):
+    r"""Metadata for a Pub/Sub connector used by the job.
+    Attributes:
+        topic (str):
+            Topic accessed in the connection.
+        subscription (str):
+            Subscription used in the connection.
+    """
+
+    topic = proto.Field(proto.STRING, number=1,)
+    subscription = proto.Field(proto.STRING, number=2,)
+
+
+class FileIODetails(proto.Message):
+    r"""Metadata for a File connector used by the job.
+    Attributes:
+        file_pattern (str):
+            File Pattern used to access files by the
+            connector.
+    """
+
+    file_pattern = proto.Field(proto.STRING, number=1,)
+
+
+class BigTableIODetails(proto.Message):
+    r"""Metadata for a Cloud BigTable connector used by the job.
+    Attributes:
+        project_id (str):
+            ProjectId accessed in the connection.
+        instance_id (str):
+            InstanceId accessed in the connection.
+        table_id (str):
+            TableId accessed in the connection.
+    """
+
+    project_id = proto.Field(proto.STRING, number=1,)
+    instance_id = proto.Field(proto.STRING, number=2,)
+    table_id = proto.Field(proto.STRING, number=3,)
+
+
+class BigQueryIODetails(proto.Message):
+    r"""Metadata for a BigQuery connector used by the job.
+    Attributes:
+        table (str):
+            Table accessed in the connection.
+        dataset (str):
+            Dataset accessed in the connection.
+        project_id (str):
+            Project accessed in the connection.
+        query (str):
+            Query used to access data in the connection.
+    """
+
+    table = proto.Field(proto.STRING, number=1,)
+    dataset = proto.Field(proto.STRING, number=2,)
+    project_id = proto.Field(proto.STRING, number=3,)
+    query = proto.Field(proto.STRING, number=4,)
+
+
+class SpannerIODetails(proto.Message):
+    r"""Metadata for a Spanner connector used by the job.
+    Attributes:
+        project_id (str):
+            ProjectId accessed in the connection.
+        instance_id (str):
+            InstanceId accessed in the connection.
+        database_id (str):
+            DatabaseId accessed in the connection.
+    """
+
+    project_id = proto.Field(proto.STRING, number=1,)
+    instance_id = proto.Field(proto.STRING, number=2,)
+    database_id = proto.Field(proto.STRING, number=3,)
+
+
+class SdkVersion(proto.Message):
+    r"""The version of the SDK used to run the job.
+    Attributes:
+        version (str):
+            The version of the SDK used to run the job.
+        version_display_name (str):
+            A readable string describing the version of
+            the SDK.
+        sdk_support_status (google.cloud.dataflow_v1beta3.types.SdkVersion.SdkSupportStatus):
+            The support status for this SDK version.
+    """
+
+    class SdkSupportStatus(proto.Enum):
+        r"""The support status of the SDK used to run the job."""
+        UNKNOWN = 0
+        SUPPORTED = 1
+        STALE = 2
+        DEPRECATED = 3
+        UNSUPPORTED = 4
+
+    version = proto.Field(proto.STRING, number=1,)
+    version_display_name = proto.Field(proto.STRING, number=2,)
+    sdk_support_status = proto.Field(proto.ENUM, number=3, enum=SdkSupportStatus,)
+
+
+class JobMetadata(proto.Message):
+    r"""Metadata available primarily for filtering jobs. Will be
+    included in the ListJob response and Job SUMMARY view.
+
+    Attributes:
+        sdk_version (google.cloud.dataflow_v1beta3.types.SdkVersion):
+            The SDK version used to run the job.
+        spanner_details (Sequence[google.cloud.dataflow_v1beta3.types.SpannerIODetails]):
+            Identification of a Spanner source used in
+            the Dataflow job.
+        bigquery_details (Sequence[google.cloud.dataflow_v1beta3.types.BigQueryIODetails]):
+            Identification of a BigQuery source used in
+            the Dataflow job.
+        big_table_details (Sequence[google.cloud.dataflow_v1beta3.types.BigTableIODetails]):
+            Identification of a Cloud BigTable source
+            used in the Dataflow job.
+        pubsub_details (Sequence[google.cloud.dataflow_v1beta3.types.PubSubIODetails]):
+            Identification of a PubSub source used in the
+            Dataflow job.
+        file_details (Sequence[google.cloud.dataflow_v1beta3.types.FileIODetails]):
+            Identification of a File source used in the
+            Dataflow job.
+        datastore_details (Sequence[google.cloud.dataflow_v1beta3.types.DatastoreIODetails]):
+            Identification of a Datastore source used in
+            the Dataflow job.
+    """
+
+    sdk_version = proto.Field(proto.MESSAGE, number=1, message="SdkVersion",)
+    spanner_details = proto.RepeatedField(
+        proto.MESSAGE, number=2, message="SpannerIODetails",
+    )
+    bigquery_details = proto.RepeatedField(
+        proto.MESSAGE, number=3, message="BigQueryIODetails",
+    )
+    big_table_details = proto.RepeatedField(
+        proto.MESSAGE, number=4, message="BigTableIODetails",
+    )
+    pubsub_details = proto.RepeatedField(
+        proto.MESSAGE, number=5, message="PubSubIODetails",
+    )
+    file_details = proto.RepeatedField(
+        proto.MESSAGE, number=6, message="FileIODetails",
+    )
+    datastore_details = proto.RepeatedField(
+        proto.MESSAGE, number=7, message="DatastoreIODetails",
+    )
+
+
+class ExecutionStageState(proto.Message):
+    r"""A message describing the state of a particular execution
+    stage.
+
+    Attributes:
+        execution_stage_name (str):
+            The name of the execution stage.
+        execution_stage_state (google.cloud.dataflow_v1beta3.types.JobState):
+            Executions stage states allow the same set of
+            values as JobState.
+        current_state_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which the stage transitioned to
+            this state.
+    """
+
+    execution_stage_name = proto.Field(proto.STRING, number=1,)
+    execution_stage_state = proto.Field(proto.ENUM, number=2, enum="JobState",)
+    current_state_time = proto.Field(
+        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+    )
+
+
+class PipelineDescription(proto.Message):
+    r"""A descriptive representation of submitted pipeline as well as
+    the executed form.  This data is provided by the Dataflow
+    service for ease of visualizing the pipeline and interpreting
+    Dataflow provided metrics.
+
+    Attributes:
+        original_pipeline_transform (Sequence[google.cloud.dataflow_v1beta3.types.TransformSummary]):
+            Description of each transform in the pipeline
+            and collections between them.
+        execution_pipeline_stage (Sequence[google.cloud.dataflow_v1beta3.types.ExecutionStageSummary]):
+            Description of each stage of execution of the
+            pipeline.
+        display_data (Sequence[google.cloud.dataflow_v1beta3.types.DisplayData]):
+            Pipeline level display data.
+    """
+
+    original_pipeline_transform = proto.RepeatedField(
+        proto.MESSAGE, number=1, message="TransformSummary",
+    )
+    execution_pipeline_stage = proto.RepeatedField(
+        proto.MESSAGE, number=2, message="ExecutionStageSummary",
+    )
+    display_data = proto.RepeatedField(proto.MESSAGE, number=3, message="DisplayData",)
+
+
+class TransformSummary(proto.Message):
+    r"""Description of the type, names/ids, and input/outputs for a
+    transform.
+
+    Attributes:
+        kind (google.cloud.dataflow_v1beta3.types.KindType):
+            Type of transform.
+        id (str):
+            SDK generated id of this transform instance.
+        name (str):
+            User provided name for this transform
+            instance.
+        display_data (Sequence[google.cloud.dataflow_v1beta3.types.DisplayData]):
+            Transform-specific display data.
+        output_collection_name (Sequence[str]):
+            User  names for all collection outputs to
+            this transform.
+        input_collection_name (Sequence[str]):
+            User names for all collection inputs to this
+            transform.
+    """
+
+    kind = proto.Field(proto.ENUM, number=1, enum="KindType",)
+    id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(proto.STRING, number=3,)
+    display_data = proto.RepeatedField(proto.MESSAGE, number=4, message="DisplayData",)
+    output_collection_name = proto.RepeatedField(proto.STRING, number=5,)
+    input_collection_name = proto.RepeatedField(proto.STRING, number=6,)
+
+
+class ExecutionStageSummary(proto.Message):
+    r"""Description of the composing transforms, names/ids, and
+    input/outputs of a stage of execution.  Some composing
+    transforms and sources may have been generated by the Dataflow
+    service during execution planning.
+
+    Attributes:
+        name (str):
+            Dataflow service generated name for this
+            stage.
+        id (str):
+            Dataflow service generated id for this stage.
+        kind (google.cloud.dataflow_v1beta3.types.KindType):
+            Type of transform this stage is executing.
+        input_source (Sequence[google.cloud.dataflow_v1beta3.types.ExecutionStageSummary.StageSource]):
+            Input sources for this stage.
+        output_source (Sequence[google.cloud.dataflow_v1beta3.types.ExecutionStageSummary.StageSource]):
+            Output sources for this stage.
+        prerequisite_stage (Sequence[str]):
+            Other stages that must complete before this
+            stage can run.
+        component_transform (Sequence[google.cloud.dataflow_v1beta3.types.ExecutionStageSummary.ComponentTransform]):
+            Transforms that comprise this execution
+            stage.
+        component_source (Sequence[google.cloud.dataflow_v1beta3.types.ExecutionStageSummary.ComponentSource]):
+            Collections produced and consumed by
+            component transforms of this stage.
+    """
+
+    class StageSource(proto.Message):
+        r"""Description of an input or output of an execution stage.
+        Attributes:
+            user_name (str):
+                Human-readable name for this source; may be
+                user or system generated.
+            name (str):
+                Dataflow service generated name for this
+                source.
+            original_transform_or_collection (str):
+                User name for the original user transform or
+                collection with which this source is most
+                closely associated.
+            size_bytes (int):
+                Size of the source, if measurable.
+        """
+
+        user_name = proto.Field(proto.STRING, number=1,)
+        name = proto.Field(proto.STRING, number=2,)
+        original_transform_or_collection = proto.Field(proto.STRING, number=3,)
+        size_bytes = proto.Field(proto.INT64, number=4,)
+
+    class ComponentTransform(proto.Message):
+        r"""Description of a transform executed as part of an execution
+        stage.
+
+        Attributes:
+            user_name (str):
+                Human-readable name for this transform; may
+                be user or system generated.
+            name (str):
+                Dataflow service generated name for this
+                source.
+            original_transform (str):
+                User name for the original user transform
+                with which this transform is most closely
+                associated.
+        """
+
+        user_name = proto.Field(proto.STRING, number=1,)
+        name = proto.Field(proto.STRING, number=2,)
+        original_transform = proto.Field(proto.STRING, number=3,)
+
+    class ComponentSource(proto.Message):
+        r"""Description of an interstitial value between transforms in an
+        execution stage.
+
+        Attributes:
+            user_name (str):
+                Human-readable name for this transform; may
+                be user or system generated.
+            name (str):
+                Dataflow service generated name for this
+                source.
+            original_transform_or_collection (str):
+                User name for the original user transform or
+                collection with which this source is most
+                closely associated.
+        """
+
+        user_name = proto.Field(proto.STRING, number=1,)
+        name = proto.Field(proto.STRING, number=2,)
+        original_transform_or_collection = proto.Field(proto.STRING, number=3,)
+
+    name = proto.Field(proto.STRING, number=1,)
+    id = proto.Field(proto.STRING, number=2,)
+    kind = proto.Field(proto.ENUM, number=3, enum="KindType",)
+    input_source = proto.RepeatedField(proto.MESSAGE, number=4, message=StageSource,)
+    output_source = proto.RepeatedField(proto.MESSAGE, number=5, message=StageSource,)
+    prerequisite_stage = proto.RepeatedField(proto.STRING, number=8,)
+    component_transform = proto.RepeatedField(
+        proto.MESSAGE, number=6, message=ComponentTransform,
+    )
+    component_source = proto.RepeatedField(
+        proto.MESSAGE, number=7, message=ComponentSource,
+    )
+
+
+class DisplayData(proto.Message):
+    r"""Data provided with a pipeline or transform to provide
+    descriptive info.
+
+    Attributes:
+        key (str):
+            The key identifying the display data.
+            This is intended to be used as a label for the
+            display data when viewed in a dax monitoring
+            system.
+        namespace (str):
+            The namespace for the key. This is usually a
+            class name or programming language namespace
+            (i.e. python module) which defines the display
+            data. This allows a dax monitoring system to
+            specially handle the data and perform custom
+            rendering.
+        str_value (str):
+            Contains value if the data is of string type.
+        int64_value (int):
+            Contains value if the data is of int64 type.
+        float_value (float):
+            Contains value if the data is of float type.
+        java_class_value (str):
+            Contains value if the data is of java class
+            type.
+        timestamp_value (google.protobuf.timestamp_pb2.Timestamp):
+            Contains value if the data is of timestamp
+            type.
+        duration_value (google.protobuf.duration_pb2.Duration):
+            Contains value if the data is of duration
+            type.
+        bool_value (bool):
+            Contains value if the data is of a boolean
+            type.
+        short_str_value (str):
+            A possible additional shorter value to display. For example
+            a java_class_name_value of com.mypackage.MyDoFn will be
+            stored with MyDoFn as the short_str_value and
+            com.mypackage.MyDoFn as the java_class_name value.
+            short_str_value can be displayed and java_class_name_value
+            will be displayed as a tooltip.
+        url (str):
+            An optional full URL.
+        label (str):
+            An optional label to display in a dax UI for
+            the element.
+    """
+
+    key = proto.Field(proto.STRING, number=1,)
+    namespace = proto.Field(proto.STRING, number=2,)
+    str_value = proto.Field(proto.STRING, number=4, oneof="Value",)
+    int64_value = proto.Field(proto.INT64, number=5, oneof="Value",)
+    float_value = proto.Field(proto.FLOAT, number=6, oneof="Value",)
+    java_class_value = proto.Field(proto.STRING, number=7, oneof="Value",)
+    timestamp_value = proto.Field(
+        proto.MESSAGE, number=8, oneof="Value", message=timestamp_pb2.Timestamp,
+    )
+    duration_value = proto.Field(
+        proto.MESSAGE, number=9, oneof="Value", message=duration_pb2.Duration,
+    )
+    bool_value = proto.Field(proto.BOOL, number=10, oneof="Value",)
+    short_str_value = proto.Field(proto.STRING, number=11,)
+    url = proto.Field(proto.STRING, number=12,)
+    label = proto.Field(proto.STRING, number=13,)
+
+
+class Step(proto.Message):
+    r"""Defines a particular step within a Cloud Dataflow job.
+
+    A job consists of multiple steps, each of which performs some
+    specific operation as part of the overall job. Data is typically
+    passed from one step to another as part of the job.
+
+    Here's an example of a sequence of steps which together implement a
+    Map-Reduce job:
+
+    -  Read a collection of data from some source, parsing the
+       collection's elements.
+
+    -  Validate the elements.
+
+    -  Apply a user-defined function to map each element to some value
+       and extract an element-specific key value.
+
+    -  Group elements with the same key into a single element with that
+       key, transforming a multiply-keyed collection into a
+       uniquely-keyed collection.
+
+    -  Write the elements out to some data sink.
+
+    Note that the Cloud Dataflow service may be used to run many
+    different types of jobs, not just Map-Reduce.
+
+    Attributes:
+        kind (str):
+            The kind of step in the Cloud Dataflow job.
+        name (str):
+            The name that identifies the step. This must
+            be unique for each step with respect to all
+            other steps in the Cloud Dataflow job.
+        properties (google.protobuf.struct_pb2.Struct):
+            Named properties associated with the step. Each kind of
+            predefined step has its own required set of properties. Must
+            be provided on Create. Only retrieved with JOB_VIEW_ALL.
+    """
+
+    kind = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(proto.STRING, number=2,)
+    properties = proto.Field(proto.MESSAGE, number=3, message=struct_pb2.Struct,)
+
+
+class JobExecutionInfo(proto.Message):
+    r"""Additional information about how a Cloud Dataflow job will be
+    executed that isn't contained in the submitted job.
+
+    Attributes:
+        stages (Sequence[google.cloud.dataflow_v1beta3.types.JobExecutionInfo.StagesEntry]):
+            A mapping from each stage to the information
+            about that stage.
+    """
+
+    stages = proto.MapField(
+        proto.STRING, proto.MESSAGE, number=1, message="JobExecutionStageInfo",
+    )
+
+
+class JobExecutionStageInfo(proto.Message):
+    r"""Contains information about how a particular
+    [google.dataflow.v1beta3.Step][google.dataflow.v1beta3.Step] will be
+    executed.
+
+    Attributes:
+        step_name (Sequence[str]):
+            The steps associated with the execution
+            stage. Note that stages may have several steps,
+            and that a given step might be run by more than
+            one stage.
+    """
+
+    step_name = proto.RepeatedField(proto.STRING, number=1,)
+
+
+class CreateJobRequest(proto.Message):
+    r"""Request to create a Cloud Dataflow job.
+    Attributes:
+        project_id (str):
+            The ID of the Cloud Platform project that the
+            job belongs to.
+        job (google.cloud.dataflow_v1beta3.types.Job):
+            The job to create.
+        view (google.cloud.dataflow_v1beta3.types.JobView):
+            The level of information requested in
+            response.
+        replace_job_id (str):
+            Deprecated. This field is now in the Job
+            message.
+        location (str):
+            The [regional endpoint]
+            (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
+            that contains this job.
+    """
+
+    project_id = proto.Field(proto.STRING, number=1,)
+    job = proto.Field(proto.MESSAGE, number=2, message="Job",)
+    view = proto.Field(proto.ENUM, number=3, enum="JobView",)
+    replace_job_id = proto.Field(proto.STRING, number=4,)
+    location = proto.Field(proto.STRING, number=5,)
+
+
+class GetJobRequest(proto.Message):
+    r"""Request to get the state of a Cloud Dataflow job.
+    Attributes:
+        project_id (str):
+            The ID of the Cloud Platform project that the
+            job belongs to.
+        job_id (str):
+            The job ID.
+        view (google.cloud.dataflow_v1beta3.types.JobView):
+            The level of information requested in
+            response.
+        location (str):
+            The [regional endpoint]
+            (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
+            that contains this job.
+    """
+
+    project_id = proto.Field(proto.STRING, number=1,)
+    job_id = proto.Field(proto.STRING, number=2,)
+    view = proto.Field(proto.ENUM, number=3, enum="JobView",)
+    location = proto.Field(proto.STRING, number=4,)
+
+
+class UpdateJobRequest(proto.Message):
+    r"""Request to update a Cloud Dataflow job.
+    Attributes:
+        project_id (str):
+            The ID of the Cloud Platform project that the
+            job belongs to.
+        job_id (str):
+            The job ID.
+        job (google.cloud.dataflow_v1beta3.types.Job):
+            The updated job.
+            Only the job state is updatable; other fields
+            will be ignored.
+        location (str):
+            The [regional endpoint]
+            (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
+            that contains this job.
+    """
+
+    project_id = proto.Field(proto.STRING, number=1,)
+    job_id = proto.Field(proto.STRING, number=2,)
+    job = proto.Field(proto.MESSAGE, number=3, message="Job",)
+    location = proto.Field(proto.STRING, number=4,)
+
+
+class ListJobsRequest(proto.Message):
+    r"""Request to list Cloud Dataflow jobs.
+    Attributes:
+        filter (google.cloud.dataflow_v1beta3.types.ListJobsRequest.Filter):
+            The kind of filter to use.
+        project_id (str):
+            The project which owns the jobs.
+        view (google.cloud.dataflow_v1beta3.types.JobView):
+            Deprecated. ListJobs always returns summaries
+            now. Use GetJob for other JobViews.
+        page_size (int):
+            If there are many jobs, limit response to at most this many.
+            The actual number of jobs returned will be the lesser of
+            max_responses and an unspecified server-defined limit.
+        page_token (str):
+            Set this to the 'next_page_token' field of a previous
+            response to request additional results in a long list.
+        location (str):
+            The [regional endpoint]
+            (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
+            that contains this job.
+    """
+
+    class Filter(proto.Enum):
+        r"""This field filters out and returns jobs in the specified job
+        state. The order of data returned is determined by the filter
+        used, and is subject to change.
+        """
+        UNKNOWN = 0
+        ALL = 1
+        TERMINATED = 2
+        ACTIVE = 3
+
+    filter = proto.Field(proto.ENUM, number=5, enum=Filter,)
+    project_id = proto.Field(proto.STRING, number=1,)
+    view = proto.Field(proto.ENUM, number=2, enum="JobView",)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
+    location = proto.Field(proto.STRING, number=17,)
+
+
+class FailedLocation(proto.Message):
+    r"""Indicates which [regional endpoint]
+    (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
+    failed to respond to a request for data.
+
+    Attributes:
+        name (str):
+            The name of the [regional endpoint]
+            (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
+            that failed to respond.
+    """
+
+    name = proto.Field(proto.STRING, number=1,)
+
+
+class ListJobsResponse(proto.Message):
+    r"""Response to a request to list Cloud Dataflow jobs in a
+    project. This might be a partial response, depending on the page
+    size in the ListJobsRequest. However, if the project does not
+    have any jobs, an instance of ListJobsResponse is not returned
+    and the requests's response body is empty {}.
+
+    Attributes:
+        jobs (Sequence[google.cloud.dataflow_v1beta3.types.Job]):
+            A subset of the requested job information.
+        next_page_token (str):
+            Set if there may be more results than fit in
+            this response.
+        failed_location (Sequence[google.cloud.dataflow_v1beta3.types.FailedLocation]):
+            Zero or more messages describing the [regional endpoints]
+            (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints)
+            that failed to respond.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    jobs = proto.RepeatedField(proto.MESSAGE, number=1, message="Job",)
+    next_page_token = proto.Field(proto.STRING, number=2,)
+    failed_location = proto.RepeatedField(
+        proto.MESSAGE, number=3, message="FailedLocation",
+    )
+
+
+class SnapshotJobRequest(proto.Message):
+    r"""Request to create a snapshot of a job.
+    Attributes:
+        project_id (str):
+            The project which owns the job to be
+            snapshotted.
+        job_id (str):
+            The job to be snapshotted.
+        ttl (google.protobuf.duration_pb2.Duration):
+            TTL for the snapshot.
+        location (str):
+            The location that contains this job.
+        snapshot_sources (bool):
+            If true, perform snapshots for sources which
+            support this.
+        description (str):
+            User specified description of the snapshot.
+            Maybe empty.
+    """
+
+    project_id = proto.Field(proto.STRING, number=1,)
+    job_id = proto.Field(proto.STRING, number=2,)
+    ttl = proto.Field(proto.MESSAGE, number=3, message=duration_pb2.Duration,)
+    location = proto.Field(proto.STRING, number=4,)
+    snapshot_sources = proto.Field(proto.BOOL, number=5,)
+    description = proto.Field(proto.STRING, number=6,)
+
+
+class CheckActiveJobsRequest(proto.Message):
+    r"""Request to check is active jobs exists for a project
+    Attributes:
+        project_id (str):
+            The project which owns the jobs.
+    """
+
+    project_id = proto.Field(proto.STRING, number=1,)
+
+
+class CheckActiveJobsResponse(proto.Message):
+    r"""Response for CheckActiveJobsRequest.
+    Attributes:
+        active_jobs_exist (bool):
+            If True, active jobs exists for project.
+            False otherwise.
+    """
+
+    active_jobs_exist = proto.Field(proto.BOOL, number=1,)
+
+
+__all__ = tuple(sorted(__protobuf__.manifest))

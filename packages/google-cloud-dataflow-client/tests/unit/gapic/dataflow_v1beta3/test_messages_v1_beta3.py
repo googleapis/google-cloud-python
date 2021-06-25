@@ -31,16 +31,18 @@ from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.dataflow_v1beta3.services.messages_v1_beta3 import (
+from google.cloud.dataflow_v1beta3.services.messages_v1_beta3 import (
     MessagesV1Beta3AsyncClient,
 )
-from google.dataflow_v1beta3.services.messages_v1_beta3 import MessagesV1Beta3Client
-from google.dataflow_v1beta3.services.messages_v1_beta3 import pagers
-from google.dataflow_v1beta3.services.messages_v1_beta3 import transports
-from google.dataflow_v1beta3.services.messages_v1_beta3.transports.base import (
+from google.cloud.dataflow_v1beta3.services.messages_v1_beta3 import (
+    MessagesV1Beta3Client,
+)
+from google.cloud.dataflow_v1beta3.services.messages_v1_beta3 import pagers
+from google.cloud.dataflow_v1beta3.services.messages_v1_beta3 import transports
+from google.cloud.dataflow_v1beta3.services.messages_v1_beta3.transports.base import (
     _GOOGLE_AUTH_VERSION,
 )
-from google.dataflow_v1beta3.types import messages
+from google.cloud.dataflow_v1beta3.types import messages
 from google.oauth2 import service_account
 from google.protobuf import timestamp_pb2  # type: ignore
 import google.auth
@@ -467,7 +469,7 @@ def test_messages_v1_beta3_client_client_options_credentials_file(
 
 def test_messages_v1_beta3_client_client_options_from_dict():
     with mock.patch(
-        "google.dataflow_v1beta3.services.messages_v1_beta3.transports.MessagesV1Beta3GrpcTransport.__init__"
+        "google.cloud.dataflow_v1beta3.services.messages_v1_beta3.transports.MessagesV1Beta3GrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
         client = MessagesV1Beta3Client(
@@ -807,7 +809,7 @@ def test_messages_v1_beta3_base_transport_error():
 def test_messages_v1_beta3_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.dataflow_v1beta3.services.messages_v1_beta3.transports.MessagesV1Beta3Transport.__init__"
+        "google.cloud.dataflow_v1beta3.services.messages_v1_beta3.transports.MessagesV1Beta3Transport.__init__"
     ) as Transport:
         Transport.return_value = None
         transport = transports.MessagesV1Beta3Transport(
@@ -828,7 +830,7 @@ def test_messages_v1_beta3_base_transport_with_credentials_file():
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.dataflow_v1beta3.services.messages_v1_beta3.transports.MessagesV1Beta3Transport._prep_wrapped_messages"
+        "google.cloud.dataflow_v1beta3.services.messages_v1_beta3.transports.MessagesV1Beta3Transport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
@@ -854,7 +856,7 @@ def test_messages_v1_beta3_base_transport_with_credentials_file_old_google_auth(
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.dataflow_v1beta3.services.messages_v1_beta3.transports.MessagesV1Beta3Transport._prep_wrapped_messages"
+        "google.cloud.dataflow_v1beta3.services.messages_v1_beta3.transports.MessagesV1Beta3Transport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
@@ -876,7 +878,7 @@ def test_messages_v1_beta3_base_transport_with_credentials_file_old_google_auth(
 def test_messages_v1_beta3_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.dataflow_v1beta3.services.messages_v1_beta3.transports.MessagesV1Beta3Transport._prep_wrapped_messages"
+        "google.cloud.dataflow_v1beta3.services.messages_v1_beta3.transports.MessagesV1Beta3Transport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)

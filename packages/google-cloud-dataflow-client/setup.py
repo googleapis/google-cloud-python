@@ -71,7 +71,7 @@ setuptools.setup(
     ],
     platforms="Posix; MacOS X; Windows",
     packages=packages,
-    python_requires=">=3.6",    
+    python_requires=">=3.6",
     namespace_packages=namespaces,
     install_requires=dependencies,
     include_package_data=True,

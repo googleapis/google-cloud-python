@@ -1,7 +1,7 @@
-Types for Google Dataflow v1beta3 API
-=====================================
+Types for Google Cloud Dataflow v1beta3 API
+===========================================
 
-.. automodule:: google.dataflow_v1beta3.types
+.. automodule:: google.cloud.dataflow_v1beta3.types
     :members:
     :undoc-members:
     :show-inheritance:

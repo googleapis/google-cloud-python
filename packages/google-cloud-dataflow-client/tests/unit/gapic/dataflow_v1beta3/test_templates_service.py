@@ -31,17 +31,19 @@ from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.dataflow_v1beta3.services.templates_service import (
+from google.cloud.dataflow_v1beta3.services.templates_service import (
     TemplatesServiceAsyncClient,
 )
-from google.dataflow_v1beta3.services.templates_service import TemplatesServiceClient
-from google.dataflow_v1beta3.services.templates_service import transports
-from google.dataflow_v1beta3.services.templates_service.transports.base import (
+from google.cloud.dataflow_v1beta3.services.templates_service import (
+    TemplatesServiceClient,
+)
+from google.cloud.dataflow_v1beta3.services.templates_service import transports
+from google.cloud.dataflow_v1beta3.services.templates_service.transports.base import (
     _GOOGLE_AUTH_VERSION,
 )
-from google.dataflow_v1beta3.types import environment
-from google.dataflow_v1beta3.types import jobs
-from google.dataflow_v1beta3.types import templates
+from google.cloud.dataflow_v1beta3.types import environment
+from google.cloud.dataflow_v1beta3.types import jobs
+from google.cloud.dataflow_v1beta3.types import templates
 from google.oauth2 import service_account
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -470,7 +472,7 @@ def test_templates_service_client_client_options_credentials_file(
 
 def test_templates_service_client_client_options_from_dict():
     with mock.patch(
-        "google.dataflow_v1beta3.services.templates_service.transports.TemplatesServiceGrpcTransport.__init__"
+        "google.cloud.dataflow_v1beta3.services.templates_service.transports.TemplatesServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
         client = TemplatesServiceClient(
@@ -881,7 +883,7 @@ def test_templates_service_base_transport_error():
 def test_templates_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.dataflow_v1beta3.services.templates_service.transports.TemplatesServiceTransport.__init__"
+        "google.cloud.dataflow_v1beta3.services.templates_service.transports.TemplatesServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
         transport = transports.TemplatesServiceTransport(
@@ -906,7 +908,7 @@ def test_templates_service_base_transport_with_credentials_file():
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.dataflow_v1beta3.services.templates_service.transports.TemplatesServiceTransport._prep_wrapped_messages"
+        "google.cloud.dataflow_v1beta3.services.templates_service.transports.TemplatesServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
@@ -932,7 +934,7 @@ def test_templates_service_base_transport_with_credentials_file_old_google_auth(
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.dataflow_v1beta3.services.templates_service.transports.TemplatesServiceTransport._prep_wrapped_messages"
+        "google.cloud.dataflow_v1beta3.services.templates_service.transports.TemplatesServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
@@ -954,7 +956,7 @@ def test_templates_service_base_transport_with_credentials_file_old_google_auth(
 def test_templates_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.dataflow_v1beta3.services.templates_service.transports.TemplatesServiceTransport._prep_wrapped_messages"
+        "google.cloud.dataflow_v1beta3.services.templates_service.transports.TemplatesServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)

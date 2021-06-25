@@ -1,5 +1,5 @@
-Services for Google Dataflow v1beta3 API
-========================================
+Services for Google Cloud Dataflow v1beta3 API
+==============================================
 .. toctree::
     :maxdepth: 2
 
