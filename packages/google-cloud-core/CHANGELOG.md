@@ -4,7 +4,7 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
-### [1.7.1](https://www.github.com/googleapis/python-cloud-core/compare/v1.7.0...v1.7.1) (2021-06-25)
+## [1.7.1](https://www.github.com/googleapis/python-cloud-core/compare/v1.7.0...v1.7.1) (2021-06-25)
 
 
 ### Bug Fixes
