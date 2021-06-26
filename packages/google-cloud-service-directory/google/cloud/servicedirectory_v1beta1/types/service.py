@@ -16,6 +16,7 @@
 import proto  # type: ignore
 
 from google.cloud.servicedirectory_v1beta1.types import endpoint
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -32,24 +33,57 @@ class Service(proto.Message):
     Attributes:
         name (str):
             Immutable. The resource name for the service in the format
-            ``projects/*/locations/*/namespaces/*/services/*``
+            ``projects/*/locations/*/namespaces/*/services/*``.
         metadata (Sequence[google.cloud.servicedirectory_v1beta1.types.Service.MetadataEntry]):
-            Optional. Metadata for the service. This data
-            can be consumed by service clients.  The entire
-            metadata dictionary may contain up to 2000
-            characters, spread across all key-value pairs.
-            Metadata that goes beyond any these limits will
-            be rejected.
+            Optional. Metadata for the service. This data can be
+            consumed by service clients.
+
+            Restrictions:
+
+            -  The entire metadata dictionary may contain up to 2000
+               characters, spread accoss all key-value pairs. Metadata
+               that goes beyond this limit are rejected
+            -  Valid metadata keys have two segments: an optional prefix
+               and name, separated by a slash (/). The name segment is
+               required and must be 63 characters or less, beginning and
+               ending with an alphanumeric character ([a-z0-9A-Z]) with
+               dashes (-), underscores (_), dots (.), and alphanumerics
+               between. The prefix is optional. If specified, the prefix
+               must be a DNS subdomain: a series of DNS labels separated
+               by dots (.), not longer than 253 characters in total,
+               followed by a slash (/). Metadata that fails to meet
+               these requirements are rejected
+            -  The ``(*.)google.com/`` and ``(*.)googleapis.com/``
+               prefixes are reserved for system metadata managed by
+               Service Directory. If the user tries to write to these
+               keyspaces, those entries are silently ignored by the
+               system
+
+            Note: This field is equivalent to the ``annotations`` field
+            in the v1 API. They have the same syntax and read/write to
+            the same location in Service Directory.
         endpoints (Sequence[google.cloud.servicedirectory_v1beta1.types.Endpoint]):
-            Output only. Endpoints associated with this
-            service. Returned on LookupService.Resolve.
+            Output only. Endpoints associated with this service.
+            Returned on
+            [LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService].
             Control plane clients should use
-            RegistrationService.ListEndpoints.
+            [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints].
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the service
+            was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the service
+            was last updated. Note: endpoints being
+            created/deleted/updated within the service are
+            not considered service updates for the purpose
+            of this timestamp.
     """
 
     name = proto.Field(proto.STRING, number=1,)
     metadata = proto.MapField(proto.STRING, proto.STRING, number=2,)
     endpoints = proto.RepeatedField(proto.MESSAGE, number=3, message=endpoint.Endpoint,)
+    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

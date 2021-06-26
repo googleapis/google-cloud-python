@@ -43,6 +43,8 @@ class LookupServiceAsyncClient:
 
     endpoint_path = staticmethod(LookupServiceClient.endpoint_path)
     parse_endpoint_path = staticmethod(LookupServiceClient.parse_endpoint_path)
+    network_path = staticmethod(LookupServiceClient.network_path)
+    parse_network_path = staticmethod(LookupServiceClient.parse_network_path)
     service_path = staticmethod(LookupServiceClient.service_path)
     parse_service_path = staticmethod(LookupServiceClient.parse_service_path)
     common_billing_account_path = staticmethod(

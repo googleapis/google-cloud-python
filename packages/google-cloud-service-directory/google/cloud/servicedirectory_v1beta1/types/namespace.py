@@ -15,6 +15,8 @@
 #
 import proto  # type: ignore
 
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.cloud.servicedirectory.v1beta1", manifest={"Namespace",},
@@ -30,16 +32,24 @@ class Namespace(proto.Message):
     Attributes:
         name (str):
             Immutable. The resource name for the namespace in the format
-            ``projects/*/locations/*/namespaces/*``
+            ``projects/*/locations/*/namespaces/*``.
         labels (Sequence[google.cloud.servicedirectory_v1beta1.types.Namespace.LabelsEntry]):
             Optional. Resource labels associated with
-            this Namespace. No more than 64 user labels can
-            be associated with a given resource.  Label keys
+            this namespace. No more than 64 user labels can
+            be associated with a given resource. Label keys
             and values can be no longer than 63 characters.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the namespace
+            was created.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The timestamp when the namespace
+            was last updated.
     """
 
     name = proto.Field(proto.STRING, number=1,)
     labels = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
