@@ -34,8 +34,7 @@ from .client import ServiceControllerClient
 
 
 class ServiceControllerAsyncClient:
-    """`Google Service Control
-    API <https://cloud.google.com/service-control/overview>`__
+    """`Google Service Control API </service-control/overview>`__
 
     Lets clients check and report operations against a `managed
     service <https://cloud.google.com/service-management/reference/rpc/google.api/servicemanagement.v1#google.api.servicemanagement.v1.ManagedService>`__.
@@ -186,7 +185,7 @@ class ServiceControllerAsyncClient:
 
         NOTE: the
         [CheckRequest][google.api.servicecontrol.v1.CheckRequest] has
-        the size limit of 64KB.
+        the size limit (wire-format byte size) of 1MB.
 
         This method requires the ``servicemanagement.services.check``
         permission on the specified service. For more information, see
@@ -215,7 +214,16 @@ class ServiceControllerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.check,
-            default_timeout=None,
+            default_retry=retries.Retry(
+                initial=1.0,
+                maximum=10.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=5.0,
+            ),
+            default_timeout=5.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -275,7 +283,7 @@ class ServiceControllerAsyncClient:
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.report,
-            default_timeout=None,
+            default_timeout=16.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 

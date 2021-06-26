@@ -158,10 +158,21 @@ class ServiceControllerTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.check: gapic_v1.method.wrap_method(
-                self.check, default_timeout=None, client_info=client_info,
+                self.check,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=5.0,
+                ),
+                default_timeout=5.0,
+                client_info=client_info,
             ),
             self.report: gapic_v1.method.wrap_method(
-                self.report, default_timeout=None, client_info=client_info,
+                self.report, default_timeout=16.0, client_info=client_info,
             ),
         }
 

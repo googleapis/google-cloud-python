@@ -33,8 +33,7 @@ from .grpc import ServiceControllerGrpcTransport
 class ServiceControllerGrpcAsyncIOTransport(ServiceControllerTransport):
     """gRPC AsyncIO backend transport for ServiceController.
 
-    `Google Service Control
-    API <https://cloud.google.com/service-control/overview>`__
+    `Google Service Control API </service-control/overview>`__
 
     Lets clients check and report operations against a `managed
     service <https://cloud.google.com/service-management/reference/rpc/google.api/servicemanagement.v1#google.api.servicemanagement.v1.ManagedService>`__.
@@ -251,7 +250,7 @@ class ServiceControllerGrpcAsyncIOTransport(ServiceControllerTransport):
 
         NOTE: the
         [CheckRequest][google.api.servicecontrol.v1.CheckRequest] has
-        the size limit of 64KB.
+        the size limit (wire-format byte size) of 1MB.
 
         This method requires the ``servicemanagement.services.check``
         permission on the specified service. For more information, see

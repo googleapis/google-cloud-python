@@ -15,6 +15,8 @@
 #
 import proto  # type: ignore
 
+from google.api import distribution_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
     package="google.api.servicecontrol.v1", manifest={"Distribution",},
@@ -70,6 +72,9 @@ class Distribution(proto.Message):
             Buckets with exponentially growing width.
         explicit_buckets (google.cloud.servicecontrol_v1.types.Distribution.ExplicitBuckets):
             Buckets with arbitrary user-provided width.
+        exemplars (Sequence[google.api.distribution_pb2.Exemplar]):
+            Example points. Must be in increasing order of ``value``
+            field.
     """
 
     class LinearBuckets(proto.Message):
@@ -154,6 +159,9 @@ class Distribution(proto.Message):
     )
     explicit_buckets = proto.Field(
         proto.MESSAGE, number=9, oneof="bucket_option", message=ExplicitBuckets,
+    )
+    exemplars = proto.RepeatedField(
+        proto.MESSAGE, number=10, message=distribution_pb2.Distribution.Exemplar,
     )
 
 

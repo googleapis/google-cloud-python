@@ -71,8 +71,7 @@ class QuotaControllerClientMeta(type):
 
 
 class QuotaControllerClient(metaclass=QuotaControllerClientMeta):
-    """`Google Quota Control
-    API <https://cloud.google.com/service-control/overview>`__
+    """`Google Quota Control API </service-control/overview>`__
 
     Allows clients to allocate and release quota against a `managed
     service <https://cloud.google.com/service-management/reference/rpc/google.api/servicemanagement.v1#google.api.servicemanagement.v1.ManagedService>`__.

@@ -15,7 +15,7 @@
 #
 import proto  # type: ignore
 
-from google.cloud.servicecontrol_v1.types import distribution
+from google.cloud.servicecontrol_v1.types import distribution as gas_distribution
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
@@ -33,15 +33,18 @@ class MetricValue(proto.Message):
             for the overriding relationship. Note that this map must not
             contain monitored resource labels.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
-            The start of the time period over which this
-            metric value's measurement applies. The time
-            period has different semantics for different
-            metric types (cumulative, delta, and gauge). See
-            the metric definition documentation in the
-            service configuration for details.
+            The start of the time period over which this metric value's
+            measurement applies. The time period has different semantics
+            for different metric types (cumulative, delta, and gauge).
+            See the metric definition documentation in the service
+            configuration for details. If not specified,
+            [google.api.servicecontrol.v1.Operation.start_time][google.api.servicecontrol.v1.Operation.start_time]
+            will be used.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
-            The end of the time period over which this
-            metric value's measurement applies.
+            The end of the time period over which this metric value's
+            measurement applies. If not specified,
+            [google.api.servicecontrol.v1.Operation.end_time][google.api.servicecontrol.v1.Operation.end_time]
+            will be used.
         bool_value (bool):
             A boolean value.
         int64_value (int):
@@ -62,7 +65,7 @@ class MetricValue(proto.Message):
     double_value = proto.Field(proto.DOUBLE, number=6, oneof="value",)
     string_value = proto.Field(proto.STRING, number=7, oneof="value",)
     distribution_value = proto.Field(
-        proto.MESSAGE, number=8, oneof="value", message=distribution.Distribution,
+        proto.MESSAGE, number=8, oneof="value", message=gas_distribution.Distribution,
     )
 
 
