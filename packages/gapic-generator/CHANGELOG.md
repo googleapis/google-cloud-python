@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.50.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.1...v0.50.2) (2021-06-28)
+
+
+### Bug Fixes
+
+* fix wrong scopes for self signed jwt ([#935](https://www.github.com/googleapis/gapic-generator-python/issues/935)) ([e033acd](https://www.github.com/googleapis/gapic-generator-python/commit/e033acd44763f7cf65eabb6b35f66093022b1bcb))
+* import warnings when needed ([#930](https://www.github.com/googleapis/gapic-generator-python/issues/930)) ([d4270ae](https://www.github.com/googleapis/gapic-generator-python/commit/d4270ae5805f44ab8ee30bb11fe42a0da6d79755))
+
 ### [0.50.1](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.0...v0.50.1) (2021-06-24)
 
 
