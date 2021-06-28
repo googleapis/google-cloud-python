@@ -8,6 +8,9 @@ import os
 import re
 from typing import Callable, Dict, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union
 import pkg_resources
+{% if service.any_deprecated %}
+import warnings
+{% endif %}
 
 from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import exceptions as core_exceptions         # type: ignore
@@ -360,7 +363,9 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         {% endif %}
         """
         {% if method.is_deprecated %}
-        warnings.warn("{{ method.name|snake_case }} is deprecated", warnings.DeprecationWarning)
+        warnings.warn("{{ service.client_name }}.{{ method.name|snake_case }} is deprecated",
+            warnings.DeprecationWarning)
+
         {% endif %}
         {% if not method.client_streaming %}
         # Create or coerce a protobuf request object.

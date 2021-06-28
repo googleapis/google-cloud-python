@@ -7,6 +7,9 @@ import functools
 import re
 from typing import Dict, {% if service.any_server_streaming %}AsyncIterable, Awaitable, {% endif %}{% if service.any_client_streaming %}AsyncIterator, {% endif %}Sequence, Tuple, Type, Union
 import pkg_resources
+{% if service.any_deprecated %}
+import warnings
+{% endif %}
 
 import google.api_core.client_options as ClientOptions # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
@@ -196,6 +199,11 @@ class {{ service.async_client_name }}:
                 {{ method.client_output_async.meta.doc|rst(width=72, indent=16, source_format='rst') }}
         {% endif %}
         """
+        {% if method.is_deprecated %}
+        warnings.warn("{{ service.async_client_name }}.{{ method.name|snake_case }} is deprecated",
+            warnings.DeprecationWarning)
+
+        {% endif %}
         {% if not method.client_streaming %}
         # Create or coerce a protobuf request object.
         {% if method.flattened_fields %}
