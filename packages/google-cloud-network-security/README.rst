@@ -76,5 +76,5 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Network Security API Product documentation:  https://cloud.google.com/networksecurity/docs
+.. _Network Security API Product documentation:  https://cloud.google.com/traffic-director/docs/reference/network-security/rest
 .. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst

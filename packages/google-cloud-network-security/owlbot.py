@@ -30,7 +30,7 @@ s.remove_staging_dirs()
 # Add templated files
 # ----------------------------------------------------------------------------
 
-templated_files = gcp.CommonTemplates().py_library(microgenerator=True)
+templated_files = gcp.CommonTemplates().py_library(microgenerator=True, cov_level=99)
 s.move(templated_files, excludes=[".coveragerc"]) # the microgenerator has a good coveragerc file
 
 # ----------------------------------------------------------------------------
