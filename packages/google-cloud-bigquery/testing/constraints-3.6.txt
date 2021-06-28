@@ -9,7 +9,7 @@ google-api-core==1.29.0
 google-cloud-bigquery-storage==2.0.0
 google-cloud-core==1.4.1
 google-resumable-media==0.6.0
-grpcio==1.32.0
+grpcio==1.38.1
 opentelemetry-api==0.11b0
 opentelemetry-instrumentation==0.11b0
 opentelemetry-sdk==0.11b0

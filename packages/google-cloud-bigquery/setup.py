@@ -29,6 +29,7 @@ description = "Google BigQuery API client library"
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
+    "grpcio >= 1.38.1, < 2.0dev",  # https://github.com/googleapis/python-bigquery/issues/695
     "google-api-core[grpc] >= 1.29.0, < 2.0.0dev",
     "proto-plus >= 1.10.0",
     "google-cloud-core >= 1.4.1, < 2.0dev",
@@ -46,7 +47,7 @@ extras = {
         # See: https://github.com/googleapis/python-bigquery/issues/83 The
         # grpc.Channel.close() method isn't added until 1.32.0.
         # https://github.com/grpc/grpc/pull/15254
-        "grpcio >= 1.32.0, < 2.0dev",
+        "grpcio >= 1.38.1, < 2.0dev",
         "pyarrow >= 1.0.0, < 5.0dev",
     ],
     "pandas": ["pandas>=0.23.0", "pyarrow >= 1.0.0, < 5.0dev"],
