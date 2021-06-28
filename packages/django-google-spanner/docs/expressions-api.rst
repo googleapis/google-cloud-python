@@ -1,7 +1,7 @@
-Schema API
+Expressions API
 =====================
 
-.. automodule:: django_spanner.schema
+.. automodule:: django_spanner.expressions
   :members:
   :inherited-members:
   

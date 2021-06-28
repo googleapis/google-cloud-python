@@ -1,7 +1,7 @@
-Schema API
+Functions API
 =====================
 
-.. automodule:: django_spanner.schema
+.. automodule:: django_spanner.functions
   :members:
   :inherited-members:
   

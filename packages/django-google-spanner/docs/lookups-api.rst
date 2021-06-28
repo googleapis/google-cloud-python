@@ -1,7 +1,7 @@
-Schema API
+Lookups API
 =====================
 
-.. automodule:: django_spanner.schema
+.. automodule:: django_spanner.lookups
   :members:
   :inherited-members:
   

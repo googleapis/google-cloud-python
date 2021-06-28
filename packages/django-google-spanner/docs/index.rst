@@ -6,7 +6,7 @@ Usage Documentation
   :maxdepth: 1
   :titlesonly:
 
-  schema-usage
+  samples
 
 API Documentation
 -----------------

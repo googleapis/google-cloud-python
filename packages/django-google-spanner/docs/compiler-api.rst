@@ -1,7 +1,7 @@
-Schema API
+Compiler API
 =====================
 
-.. automodule:: django_spanner.schema
+.. automodule:: django_spanner.compiler
   :members:
   :inherited-members:
   

@@ -1,7 +1,7 @@
-Schema API
+Creation API
 =====================
 
-.. automodule:: django_spanner.schema
+.. automodule:: django_spanner.creation
   :members:
   :inherited-members:
   

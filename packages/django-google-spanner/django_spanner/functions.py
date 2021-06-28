@@ -38,7 +38,7 @@ def cast(self, compiler, connection, **extra_context):
     A method to extend Django Cast class. Cast SQL query for given
     parameters.
 
-    :type self: :class:`~django.db.models.functions.comparison.Cast`
+    :type self: :class:`~django.db.models.functions.Cast`
     :param self: the instance of the class that owns this method.
 
     :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
@@ -71,7 +71,7 @@ def chr_(self, compiler, connection, **extra_context):
     A method to extend Django Chr class. Returns a SQL query where the code
     points are displayed as a string.
 
-    :type self: :class:`~django.db.models.functions.text.Chr`
+    :type self: :class:`~django.db.models.functions.Chr`
     :param self: the instance of the class that owns this method.
 
     :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
@@ -101,7 +101,7 @@ def concatpair(self, compiler, connection, **extra_context):
     A method to extend Django ConcatPair class. Concatenates a SQL query
     into the sequence of :class:`IfNull` objects.
 
-    :type self: :class:`~django.db.models.functions.text.ConcatPair`
+    :type self: :class:`~django.db.models.functions.ConcatPair`
     :param self: the instance of the class that owns this method.
 
     :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
@@ -132,7 +132,7 @@ def cot(self, compiler, connection, **extra_context):
     A method to extend Django Cot class. Returns a SQL query of calculated
     trigonometric cotangent function.
 
-    :type self: :class:`~django.db.models.functions.math.Cot`
+    :type self: :class:`~django.db.models.functions.Cot`
     :param self: the instance of the class that owns this method.
 
     :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
@@ -162,7 +162,7 @@ def degrees(self, compiler, connection, **extra_context):
     A method to extend Django Degress class. Returns a SQL query of the
     angle converted to degrees.
 
-    :type self: :class:`~django.db.models.functions.math.Degrees`
+    :type self: :class:`~django.db.models.functions.Degrees`
     :param self: the instance of the class that owns this method.
 
     :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
@@ -190,8 +190,8 @@ def degrees(self, compiler, connection, **extra_context):
 def left_and_right(self, compiler, connection, **extra_context):
     """A method to extend Django Left and Right classes.
 
-    :type self: :class:`~django.db.models.functions.text.Left` or
-                :class:`~django.db.models.functions.text.Right`
+    :type self: :class:`~django.db.models.functions.Left` or
+                :class:`~django.db.models.functions.Right`
     :param self: the instance of the class that owns this method.
 
     :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
@@ -216,7 +216,7 @@ def log(self, compiler, connection, **extra_context):
     A method to extend Django Log class. Returns a SQL query of calculated
     logarithm.
 
-    :type self: :class:`~django.db.models.functions.math.Log`
+    :type self: :class:`~django.db.models.functions.Log`
     :param self: the instance of the class that owns this method.
 
     :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
@@ -245,7 +245,7 @@ def ord_(self, compiler, connection, **extra_context):
     A method to extend Django Ord class. Returns a SQL query of the
     expression converted to ord.
 
-    :type self: :class:`~django.db.models.functions.text.Ord`
+    :type self: :class:`~django.db.models.functions.Ord`
     :param self: the instance of the class that owns this method.
 
     :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
@@ -275,7 +275,7 @@ def pi(self, compiler, connection, **extra_context):
     A method to extend Django Pi class. Returns a SQL query of the Pi
     constant.
 
-    :type self: :class:`~django.db.models.functions.math.Pi`
+    :type self: :class:`~django.db.models.functions.Pi`
     :param self: the instance of the class that owns this method.
 
     :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
@@ -302,7 +302,7 @@ def radians(self, compiler, connection, **extra_context):
     A method to extend Django Radians class. Returns a SQL query of the
     angle converted to radians.
 
-    :type self: :class:`~django.db.models.functions.math.Radians`
+    :type self: :class:`~django.db.models.functions.Radians`
     :param self: the instance of the class that owns this method.
 
     :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
@@ -332,7 +332,7 @@ def strindex(self, compiler, connection, **extra_context):
     A method to extend Django StrIndex class. Returns a SQL query of the
     string position.
 
-    :type self: :class:`~django.db.models.functions.text.StrIndex`
+    :type self: :class:`~django.db.models.functions.StrIndex`
     :param self: the instance of the class that owns this method.
 
     :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
@@ -359,7 +359,7 @@ def substr(self, compiler, connection, **extra_context):
     A method to extend Django Substr class. Returns a SQL query of a
     substring.
 
-    :type self: :class:`~django.db.models.functions.text.Substr`
+    :type self: :class:`~django.db.models.functions.Substr`
     :param self: the instance of the class that owns this method.
 
     :type compiler: :class:`~django_spanner.compiler.SQLCompilerst`
