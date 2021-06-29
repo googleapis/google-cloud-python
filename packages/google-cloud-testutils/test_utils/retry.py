@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import time
-from functools import wraps
 
 import six
 
@@ -94,7 +93,7 @@ class RetryErrors(RetryBase):
         self.error_predicate = error_predicate
 
     def __call__(self, to_wrap):
-        @wraps(to_wrap)
+        @six.wraps(to_wrap)
         def wrapped_function(*args, **kwargs):
             tries = 0
             while tries < self.max_tries:
@@ -152,7 +151,7 @@ class RetryResult(RetryBase):
         self.result_predicate = result_predicate
 
     def __call__(self, to_wrap):
-        @wraps(to_wrap)
+        @six.wraps(to_wrap)
         def wrapped_function(*args, **kwargs):
             tries = 0
             while tries < self.max_tries:
@@ -209,7 +208,7 @@ class RetryInstanceState(RetryBase):
     def __call__(self, to_wrap):
         instance = to_wrap.__self__  # only instance methods allowed
 
-        @wraps(to_wrap)
+        @six.wraps(to_wrap)
         def wrapped_function(*args, **kwargs):
             tries = 0
             while tries < self.max_tries:
