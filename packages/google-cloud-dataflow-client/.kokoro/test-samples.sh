@@ -24,7 +24,7 @@ set -eo pipefail
 # Enables `**` to include files nested inside sub-folders
 shopt -s globstar
 
-cd github/python-dataflow
+cd github/python-dataflow-client
 
 # Run periodic samples tests at latest release
 if [[ $KOKORO_BUILD_ARTIFACTS_SUBDIR = *"periodic"* ]]; then

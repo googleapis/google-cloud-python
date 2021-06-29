@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# google-cloud-dataflow documentation build configuration file
+# google-cloud-dataflow-client documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -80,7 +80,7 @@ source_suffix = [".rst", ".md"]
 master_doc = "index"
 
 # General information about the project.
-project = "google-cloud-dataflow"
+project = "google-cloud-dataflow-client"
 copyright = "2019, Google"
 author = "Google APIs"
 
@@ -153,9 +153,9 @@ html_theme = "alabaster"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Google Cloud Client Libraries for google-cloud-dataflow",
+    "description": "Google Cloud Client Libraries for google-cloud-dataflow-client",
     "github_user": "googleapis",
-    "github_repo": "python-dataflow",
+    "github_repo": "python-dataflow-client",
     "github_banner": True,
     "font_family": "'Roboto', Georgia, sans",
     "head_font_family": "'Roboto', Georgia, serif",
@@ -247,7 +247,7 @@ html_static_path = ["_static"]
 # html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "google-cloud-dataflow-doc"
+htmlhelp_basename = "google-cloud-dataflow-client-doc"
 
 # -- Options for warnings ------------------------------------------------------
 
@@ -280,8 +280,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "google-cloud-dataflow.tex",
-        "google-cloud-dataflow Documentation",
+        "google-cloud-dataflow-client.tex",
+        "google-cloud-dataflow-client Documentation",
         author,
         "manual",
     )
@@ -315,8 +315,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "google-cloud-dataflow",
-        "google-cloud-dataflow Documentation",
+        "google-cloud-dataflow-client",
+        "google-cloud-dataflow-client Documentation",
         [author],
         1,
     )
@@ -334,11 +334,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "google-cloud-dataflow",
-        "google-cloud-dataflow Documentation",
+        "google-cloud-dataflow-client",
+        "google-cloud-dataflow-client Documentation",
         author,
-        "google-cloud-dataflow",
-        "google-cloud-dataflow Library",
+        "google-cloud-dataflow-client",
+        "google-cloud-dataflow-client Library",
         "APIs",
     )
 ]

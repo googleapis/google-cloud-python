@@ -20,11 +20,11 @@ import os
 import setuptools
 
 
-name = "google-cloud-dataflow"
+name = "google-cloud-dataflow-client"
 description = "Cloud Dataflow API client library"
 version = "0.1.0"
 release_status = "Development Status :: 4 - Beta"
-url = "https://github.com/googleapis/python-dataflow"
+url = "https://github.com/googleapis/python-dataflow-client"
 dependencies = [
     "google-api-core[grpc] >= 1.26.0, <2.0.0dev",
     "proto-plus >= 1.15.0",

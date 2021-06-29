@@ -7,7 +7,7 @@
     "release_level": "beta",
     "language": "python",
     "library_type": "GAPIC_AUTO",
-    "repo": "googleapis/python-dataflow",
-    "distribution_name": "google-cloud-dataflow",
+    "repo": "googleapis/python-dataflow-client",
+    "distribution_name": "google-cloud-dataflow-client",
     "api_id": "dataflow.googleapis.com"
 }

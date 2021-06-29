@@ -16,7 +16,7 @@
 set -eo pipefail
 
 if [[ -z "${PROJECT_ROOT:-}" ]]; then
-    PROJECT_ROOT="github/python-dataflow"
+    PROJECT_ROOT="github/python-dataflow-client"
 fi
 
 cd "${PROJECT_ROOT}"

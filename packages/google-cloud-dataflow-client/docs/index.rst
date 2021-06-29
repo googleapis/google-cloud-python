@@ -13,7 +13,7 @@ API Reference
 Changelog
 ---------
 
-For a list of all ``google-cloud-dataflow`` releases:
+For a list of all ``google-cloud-dataflow-client`` releases:
 
 .. toctree::
    :maxdepth: 2

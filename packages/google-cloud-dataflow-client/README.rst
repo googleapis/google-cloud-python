@@ -10,10 +10,10 @@ Python Client for Cloud Dataflow
 
 .. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
    :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
-.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-dataflow.svg
-   :target: https://pypi.org/project/google-cloud-dataflow/
-.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dataflow.svg
-   :target: https://pypi.org/project/google-cloud-dataflow/
+.. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-dataflow-client.svg
+   :target: https://pypi.org/project/google-cloud-dataflow-client/
+.. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-dataflow-client.svg
+   :target: https://pypi.org/project/google-cloud-dataflow-client/
 .. _Cloud Dataflow: https://cloud.google.com/dataflow/
 .. _Client Library Documentation: https://googleapis.dev/python/dataflow/latest
 .. _Product Documentation:  https://cloud.google.com/dataflow/
@@ -55,7 +55,7 @@ Mac/Linux
     pip install virtualenv
     virtualenv <your-env>
     source <your-env>/bin/activate
-    <your-env>/bin/pip install google-cloud-dataflow
+    <your-env>/bin/pip install google-cloud-dataflow-client
 
 
 Windows
@@ -66,7 +66,7 @@ Windows
     pip install virtualenv
     virtualenv <your-env>
     <your-env>\Scripts\activate
-    <your-env>\Scripts\pip.exe install google-cloud-dataflow
+    <your-env>\Scripts\pip.exe install google-cloud-dataflow-client
 
 Next Steps
 ~~~~~~~~~~
