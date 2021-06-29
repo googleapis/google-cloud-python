@@ -204,6 +204,19 @@ with engine.begin() as connection:
 ```
 Connectionless way of use is also deprecated since SQLAlchemy 2.0 and soon will be removed (see in [SQLAlchemy docs](https://docs.sqlalchemy.org/en/14/core/connections.html#connectionless-execution-implicit-execution)).
 
+Running tests
+------------
+Spanner dialect includes a compliance, migration and unit test suite. To run the tests the `nox` package commands can be used:
+```
+# Run the whole suite
+$ nox
+
+# Run a particular test session
+$ nox -s migration_test
+```
+**Running tests on Spanner emulator**  
+The dialect test suite can be runned on [Spanner emulator](https://cloud.google.com/spanner/docs/emulator). Several tests, relating to `NULL` values of data types, are skipped when executed on emulator.
+
 Contributing
 ------------
 

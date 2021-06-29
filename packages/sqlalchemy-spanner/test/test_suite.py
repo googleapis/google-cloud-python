@@ -14,9 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import operator
-import pytest
 import decimal
+import operator
+import os
+import pytest
 import pytz
 from unittest import mock
 
@@ -329,7 +330,17 @@ class DateTest(DateFixtureTest, _DateTest):
     and maintain DRY concept just inherit the class to run tests successfully.
     """
 
-    pass
+    @pytest.mark.skipif(
+        bool(os.environ.get("SPANNER_EMULATOR_HOST")), reason="Skipped on emulator"
+    )
+    def test_null_bound_comparison(self):
+        super().test_null_bound_comparison()
+
+    @pytest.mark.skipif(
+        bool(os.environ.get("SPANNER_EMULATOR_HOST")), reason="Skipped on emulator"
+    )
+    def test_null(self):
+        super().test_null()
 
 
 class DateTimeMicrosecondsTest(_DateTimeMicrosecondsTest, DateTest):
@@ -349,6 +360,18 @@ class DateTimeMicrosecondsTest(_DateTimeMicrosecondsTest, DateTest):
         eq_(row[0].rfc3339(), compare)
         assert isinstance(row[0], DatetimeWithNanoseconds)
 
+    @pytest.mark.skipif(
+        bool(os.environ.get("SPANNER_EMULATOR_HOST")), reason="Skipped on emulator"
+    )
+    def test_null_bound_comparison(self):
+        super().test_null_bound_comparison()
+
+    @pytest.mark.skipif(
+        bool(os.environ.get("SPANNER_EMULATOR_HOST")), reason="Skipped on emulator"
+    )
+    def test_null(self):
+        super().test_null()
+
 
 class DateTimeTest(_DateTimeTest, DateTimeMicrosecondsTest):
     """
@@ -359,7 +382,17 @@ class DateTimeTest(_DateTimeTest, DateTimeMicrosecondsTest):
     tests successfully.
     """
 
-    pass
+    @pytest.mark.skipif(
+        bool(os.environ.get("SPANNER_EMULATOR_HOST")), reason="Skipped on emulator"
+    )
+    def test_null_bound_comparison(self):
+        super().test_null_bound_comparison()
+
+    @pytest.mark.skipif(
+        bool(os.environ.get("SPANNER_EMULATOR_HOST")), reason="Skipped on emulator"
+    )
+    def test_null(self):
+        super().test_null()
 
 
 @pytest.mark.skip("Spanner doesn't support Time data type.")
