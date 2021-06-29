@@ -54,7 +54,7 @@ def unit(session, proto="python"):
 # Check if protobuf has released wheels for new python versions
 # https://pypi.org/project/protobuf/#files
 # This list will generally be shorter than 'unit'
-@nox.session(python=["3.6", "3.7", "3.8"])
+@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
 def unitcpp(session):
     return unit(session, proto="cpp")
 
