@@ -298,6 +298,45 @@ def test_service_any_streaming():
         assert service.any_server_streaming == server
 
 
+def test_service_any_deprecated():
+    service = make_service(
+        name='Service',
+        methods=(
+                (
+                    make_method(
+                        f"GetMollusc",
+                        input_message=make_message(
+                            "GetMolluscRequest",
+                        ),
+                        output_message=make_message(
+                            "GetMolluscResponse",
+                        ),
+                    ),
+                )
+            ))
+
+    assert service.any_deprecated == False
+
+    deprecated_service = make_service(
+        name='ServiceWithDeprecatedMethod',
+        methods=(
+                (
+                    make_method(
+                        f"GetMollusc",
+                        input_message=make_message(
+                            "GetMolluscRequest",
+                        ),
+                        output_message=make_message(
+                            "GetMolluscResponse",
+                        ),
+                        is_deprecated=True,
+                    ),
+                )
+            ))
+
+    assert deprecated_service.any_deprecated == True
+
+
 def test_has_pagers():
     paged = make_field(name='foos', message=make_message('Foo'), repeated=True)
     input_msg = make_message(

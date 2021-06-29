@@ -34,7 +34,7 @@ def unit(session):
     """Run the unit test suite."""
 
     session.install(
-        "pytest", "pytest-xdist", "pyfakefs",
+        "coverage", "pytest-cov", "pytest", "pytest-xdist", "pyfakefs",
     )
     session.install("-e", ".")
 
@@ -45,6 +45,10 @@ def unit(session):
             or [
                 "-vv",
                 "-n=auto",
+                "--cov=gapic",
+                "--cov-config=.coveragerc",
+                "--cov-report=term",
+                "--cov-fail-under=100",
                 path.join("tests", "unit"),
             ]
         ),
@@ -115,7 +119,7 @@ def showcase_library(
         )
 
         # Install the library.
-        session.install(tmp_dir)
+        session.install("-e", tmp_dir)
 
         yield tmp_dir
 
@@ -181,7 +185,9 @@ def showcase_mtls_alternative_templates(session):
 
 def run_showcase_unit_tests(session, fail_under=100):
     session.install(
+        "coverage",
         "pytest",
+        "pytest-cov",
         "pytest-xdist",
         "asyncmock",
         "pytest-asyncio",
@@ -192,6 +198,9 @@ def run_showcase_unit_tests(session, fail_under=100):
         "py.test",
         "-n=auto",
         "--quiet",
+        "--cov=google",
+        "--cov-append",
+       f"--cov-fail-under={str(fail_under)}",
         *(session.posargs or [path.join("tests", "unit")]),
     )
 
@@ -217,11 +226,11 @@ def showcase_unit(
         # google-auth is a transitive dependency so it isn't in the
         # lower bound constraints file produced above.
         session.install("google-auth==1.21.1")
-        run_showcase_unit_tests(session)
+        run_showcase_unit_tests(session, fail_under=0)
 
         # 2. Run the tests again with latest version of dependencies
         session.install(".", "--upgrade", "--force-reinstall")
-        run_showcase_unit_tests(session)
+        run_showcase_unit_tests(session, fail_under=100)
 
 
 @nox.session(python=["3.7", "3.8", "3.9"])
@@ -248,11 +257,11 @@ def showcase_unit_add_iam_methods(session):
         # google-auth is a transitive dependency so it isn't in the
         # lower bound constraints file produced above.
         session.install("google-auth==1.21.1")
-        run_showcase_unit_tests(session)
+        run_showcase_unit_tests(session, fail_under=0)
 
         # 2. Run the tests again with latest version of dependencies
         session.install(".", "--upgrade", "--force-reinstall")
-        run_showcase_unit_tests(session)
+        run_showcase_unit_tests(session, fail_under=100)
 
 
 @nox.session(python="3.8")
