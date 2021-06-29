@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.50.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.2...v0.50.3) (2021-06-29)
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#939](https://www.github.com/googleapis/gapic-generator-python/issues/939)) ([1302352](https://www.github.com/googleapis/gapic-generator-python/commit/130235220849987df572c1840735b3c199b85dfc))
+
 ### [0.50.2](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.1...v0.50.2) (2021-06-28)
 
 
