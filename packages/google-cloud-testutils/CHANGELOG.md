@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/googleapis/python-test-utils/compare/v0.2.0...v0.2.1) (2021-06-29)
+
+
+### Bug Fixes
+
+* use 'six.wraps' vs. 'functools.wraps' ([#37](https://www.github.com/googleapis/python-test-utils/issues/37)) ([701c3a4](https://www.github.com/googleapis/python-test-utils/commit/701c3a41fcf0a63c2b8b689493fa2ae21304511b))
+
 ## [0.2.0](https://www.github.com/googleapis/python-test-utils/compare/v0.1.0...v0.2.0) (2021-02-22)
 
 
