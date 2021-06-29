@@ -1,0 +1,13 @@
+{
+    "name": "datastream",
+    "name_pretty": "Datastream",
+    "product_documentation": "https://cloud.google.com/datastream/",
+    "client_documentation": "https://googleapis.dev/python/datastream/latest",
+    "issue_tracker": "",
+    "release_level": "alpha",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-datastream",
+    "distribution_name": "google-cloud-datastream",
+    "api_id": "datastream.googleapis.com"
+}
