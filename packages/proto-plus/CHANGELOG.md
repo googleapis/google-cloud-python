@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.19.0](https://www.github.com/googleapis/proto-plus-python/compare/v1.18.1...v1.19.0) (2021-06-29)
+
+
+### Features
+
+* pass 'including_default_value_fields' through to 'Message.to_dict' method ([#232](https://www.github.com/googleapis/proto-plus-python/issues/232)) ([15c2f47](https://www.github.com/googleapis/proto-plus-python/commit/15c2f479f81f0f80d451ca9b043e42cecfe7184e))
+
 ### [1.18.1](https://www.github.com/googleapis/proto-plus-python/compare/v1.18.0...v1.18.1) (2021-03-19)
 
 
