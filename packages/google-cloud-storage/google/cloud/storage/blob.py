@@ -2782,6 +2782,11 @@ class Blob(_PropertyMixin):
         client=None,
         timeout=_DEFAULT_TIMEOUT,
         checksum=None,
+        if_generation_match=None,
+        if_generation_not_match=None,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+        retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
     ):
         """Create a resumable upload session.
 
@@ -2857,6 +2862,41 @@ class Blob(_PropertyMixin):
             delete the uploaded object automatically. Supported values
             are "md5", "crc32c" and None. The default is None.
 
+        :type if_generation_match: long
+        :param if_generation_match:
+            (Optional) See :ref:`using-if-generation-match`
+
+        :type if_generation_not_match: long
+        :param if_generation_not_match:
+            (Optional) See :ref:`using-if-generation-not-match`
+
+        :type if_metageneration_match: long
+        :param if_metageneration_match:
+            (Optional) See :ref:`using-if-metageneration-match`
+
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match:
+            (Optional) See :ref:`using-if-metageneration-not-match`
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry: (Optional) How to retry the RPC. A None value will disable
+            retries. A google.api_core.retry.Retry value will enable retries,
+            and the object will define retriable response codes and errors and
+            configure backoff and timeout options.
+            A google.cloud.storage.retry.ConditionalRetryPolicy value wraps a
+            Retry object and activates it only if certain conditions are met.
+            This class exists to provide safe defaults for RPC calls that are
+            not technically safe to retry normally (due to potential data
+            duplication or other side-effects) but become safe to retry if a
+            condition such as if_generation_match is set.
+            See the retry.py source code and docstrings in this package
+            (google.cloud.storage.retry) for information on retry types and how
+            to configure them.
+            Media operations (downloads and uploads) do not support non-default
+            predicates in a Retry object. The default will always be used. Other
+            configuration changes for Retry objects such as delays and deadlines
+            are respected.
+
         :rtype: str
         :returns: The resumable upload session URL. The upload can be
                   completed by making an HTTP PUT request with the
@@ -2865,6 +2905,19 @@ class Blob(_PropertyMixin):
         :raises: :class:`google.cloud.exceptions.GoogleCloudError`
                  if the session creation response returns an error status.
         """
+
+        # Handle ConditionalRetryPolicy.
+        if isinstance(retry, ConditionalRetryPolicy):
+            # Conditional retries are designed for non-media calls, which change
+            # arguments into query_params dictionaries. Media operations work
+            # differently, so here we make a "fake" query_params to feed to the
+            # ConditionalRetryPolicy.
+            query_params = {
+                "ifGenerationMatch": if_generation_match,
+                "ifMetagenerationMatch": if_metageneration_match,
+            }
+            retry = retry.get_retry_policy_if_conditions_met(query_params=query_params)
+
         extra_headers = {}
         if origin is not None:
             # This header is specifically for client-side uploads, it
@@ -2883,10 +2936,15 @@ class Blob(_PropertyMixin):
                 size,
                 None,
                 predefined_acl=None,
+                if_generation_match=if_generation_match,
+                if_generation_not_match=if_generation_not_match,
+                if_metageneration_match=if_metageneration_match,
+                if_metageneration_not_match=if_metageneration_not_match,
                 extra_headers=extra_headers,
                 chunk_size=self._CHUNK_SIZE_MULTIPLE,
                 timeout=timeout,
                 checksum=checksum,
+                retry=retry,
             )
 
             return upload.resumable_url

@@ -25,6 +25,7 @@ import mock
 import pytest
 import six
 from six.moves import http_client
+from six.moves.urllib.parse import urlencode
 
 from google.cloud.storage.retry import DEFAULT_RETRY
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_ETAG_IN_JSON
@@ -2041,8 +2042,6 @@ class Test_Blob(unittest.TestCase):
         mtls=False,
         retry=None,
     ):
-        from six.moves.urllib.parse import urlencode
-
         bucket = _Bucket(name="w00t", user_project=user_project)
         blob = self._make_one(u"blob-name", bucket=bucket, kms_key_name=kms_key_name)
         self.assertIsNone(blob.chunk_size)
@@ -2286,7 +2285,6 @@ class Test_Blob(unittest.TestCase):
         mtls=False,
         retry=None,
     ):
-        from six.moves.urllib.parse import urlencode
         from google.resumable_media.requests import ResumableUpload
         from google.cloud.storage.blob import _DEFAULT_CHUNKSIZE
 
@@ -3248,7 +3246,15 @@ class Test_Blob(unittest.TestCase):
         self._upload_from_string_helper(data, num_retries=2)
 
     def _create_resumable_upload_session_helper(
-        self, origin=None, side_effect=None, timeout=None
+        self,
+        origin=None,
+        side_effect=None,
+        timeout=None,
+        if_generation_match=None,
+        if_generation_not_match=None,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+        retry=None,
     ):
         bucket = _Bucket(name="alex-trebek")
         blob = self._make_one("blob-name", bucket=bucket)
@@ -3280,6 +3286,11 @@ class Test_Blob(unittest.TestCase):
             size=size,
             origin=origin,
             client=client,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+            retry=retry,
             **timeout_kwarg
         )
 
@@ -3289,10 +3300,23 @@ class Test_Blob(unittest.TestCase):
 
         # Check the mocks.
         upload_url = (
-            "https://storage.googleapis.com/upload/storage/v1"
-            + bucket.path
-            + "/o?uploadType=resumable"
+            "https://storage.googleapis.com/upload/storage/v1" + bucket.path + "/o"
         )
+
+        qs_params = [("uploadType", "resumable")]
+        if if_generation_match is not None:
+            qs_params.append(("ifGenerationMatch", if_generation_match))
+
+        if if_generation_not_match is not None:
+            qs_params.append(("ifGenerationNotMatch", if_generation_not_match))
+
+        if if_metageneration_match is not None:
+            qs_params.append(("ifMetagenerationMatch", if_metageneration_match))
+
+        if if_metageneration_not_match is not None:
+            qs_params.append(("ifMetaGenerationNotMatch", if_metageneration_not_match))
+
+        upload_url += "?" + urlencode(qs_params)
         payload = b'{"name": "blob-name"}'
         expected_headers = {
             "content-type": "application/json; charset=UTF-8",
@@ -3317,6 +3341,26 @@ class Test_Blob(unittest.TestCase):
 
     def test_create_resumable_upload_session_with_origin(self):
         self._create_resumable_upload_session_helper(origin="http://google.com")
+
+    def test_create_resumable_upload_session_with_generation_match(self):
+        self._create_resumable_upload_session_helper(
+            if_generation_match=123456, if_metageneration_match=2
+        )
+
+    def test_create_resumable_upload_session_with_generation_not_match(self):
+        self._create_resumable_upload_session_helper(
+            if_generation_not_match=0, if_metageneration_not_match=3
+        )
+
+    def test_create_resumable_upload_session_with_conditional_retry_success(self):
+        self._create_resumable_upload_session_helper(
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED, if_generation_match=123456
+        )
+
+    def test_create_resumable_upload_session_with_conditional_retry_failure(self):
+        self._create_resumable_upload_session_helper(
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED
+        )
 
     def test_create_resumable_upload_session_with_failure(self):
         from google.resumable_media import InvalidResponse
