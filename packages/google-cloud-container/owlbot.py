@@ -71,6 +71,15 @@ for library in s.get_staging_dirs(default_version):
         library / f"google/container_{library.name}",
         f"google/cloud/container_{library.name}"
     )
+
+    # Fix DeprecationWarning
+    # Fix incorrect DeprecationWarning
+    # Fixed in https://github.com/googleapis/gapic-generator-python/pull/943
+    s.replace(
+        "google/**/*client.py",
+        "warnings\.DeprecationWarning",
+        "DeprecationWarning"
+    )
     s.move(library / "tests")
     s.move(library / "scripts")
     s.move(library / "docs", excludes=["index.rst"])
