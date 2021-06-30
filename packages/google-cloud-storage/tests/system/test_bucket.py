@@ -766,3 +766,82 @@ def test_ubla_set_unset_preserves_acls(
 
     assert bucket_acl_before == bucket_acl_after
     assert blob_acl_before == blob_acl_after
+
+
+def test_new_bucket_created_w_unspecified_pap(
+    storage_client, buckets_to_delete, blobs_to_delete,
+):
+    from google.cloud.storage import constants
+
+    bucket_name = _helpers.unique_name("new-w-pap-unspecified")
+    bucket = storage_client.bucket(bucket_name)
+    bucket.iam_configuration.uniform_bucket_level_access_enabled = True
+    bucket.create()
+    buckets_to_delete.append(bucket)
+
+    assert (
+        bucket.iam_configuration.public_access_prevention
+        == constants.PUBLIC_ACCESS_PREVENTION_UNSPECIFIED
+    )
+
+    bucket.iam_configuration.public_access_prevention = (
+        constants.PUBLIC_ACCESS_PREVENTION_ENFORCED
+    )
+    bucket.patch()
+    assert (
+        bucket.iam_configuration.public_access_prevention
+        == constants.PUBLIC_ACCESS_PREVENTION_ENFORCED
+    )
+    assert bucket.iam_configuration.uniform_bucket_level_access_enabled
+
+    bucket.iam_configuration.uniform_bucket_level_access_enabled = False
+    bucket.patch()
+    assert (
+        bucket.iam_configuration.public_access_prevention
+        == constants.PUBLIC_ACCESS_PREVENTION_ENFORCED
+    )
+
+    with pytest.raises(exceptions.BadRequest):
+        bucket.iam_configuration.public_access_prevention = "unexpected value"
+        bucket.patch()
+
+    with pytest.raises(exceptions.PreconditionFailed):
+        bucket.make_public()
+
+    blob_name = "my-blob.txt"
+    blob = bucket.blob(blob_name)
+    payload = b"DEADBEEF"
+    blob.upload_from_string(payload)
+
+    with pytest.raises(exceptions.PreconditionFailed):
+        blob.make_public()
+
+
+def test_new_bucket_created_w_enforced_pap(
+    storage_client, buckets_to_delete, blobs_to_delete,
+):
+    from google.cloud.storage import constants
+
+    bucket_name = _helpers.unique_name("new-w-pap-enforced")
+    bucket = storage_client.bucket(bucket_name)
+    bucket.iam_configuration.public_access_prevention = (
+        constants.PUBLIC_ACCESS_PREVENTION_ENFORCED
+    )
+    bucket.create()
+    buckets_to_delete.append(bucket)
+
+    assert (
+        bucket.iam_configuration.public_access_prevention
+        == constants.PUBLIC_ACCESS_PREVENTION_ENFORCED
+    )
+
+    bucket.iam_configuration.public_access_prevention = (
+        constants.PUBLIC_ACCESS_PREVENTION_UNSPECIFIED
+    )
+    bucket.patch()
+
+    assert (
+        bucket.iam_configuration.public_access_prevention
+        == constants.PUBLIC_ACCESS_PREVENTION_UNSPECIFIED
+    )
+    assert not bucket.iam_configuration.uniform_bucket_level_access_enabled

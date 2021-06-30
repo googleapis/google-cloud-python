@@ -96,3 +96,16 @@ Provides high availability and low latency across two regions.
 _DEFAULT_TIMEOUT = 60  # in seconds
 """The default request timeout in seconds if a timeout is not explicitly given.
 """
+
+# Public Access Prevention
+PUBLIC_ACCESS_PREVENTION_ENFORCED = "enforced"
+"""Enforced public access prevention value.
+
+See: https://cloud.google.com/storage/docs/public-access-prevention
+"""
+
+PUBLIC_ACCESS_PREVENTION_UNSPECIFIED = "unspecified"
+"""Unspecified public access prevention value.
+
+See: https://cloud.google.com/storage/docs/public-access-prevention
+"""
