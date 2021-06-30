@@ -1,4 +1,21 @@
 # Changelog
+## [1.3.0](https://www.github.com/googleapis/python-billingbudgets/compare/v1.2.0...v1.3.0) (2021-06-30)
+
+
+### Features
+
+* add always_use_jwt_access ([#107](https://www.github.com/googleapis/python-billingbudgets/issues/107)) ([af01c04](https://www.github.com/googleapis/python-billingbudgets/commit/af01c04f8c4ea1e052b186733527838fbdd31bd1))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#112](https://www.github.com/googleapis/python-billingbudgets/issues/112)) ([e9ffec8](https://www.github.com/googleapis/python-billingbudgets/commit/e9ffec8dafcdcc2692050326daa8d3ac13b0e63a))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-billingbudgets/issues/1127)) ([#102](https://www.github.com/googleapis/python-billingbudgets/issues/102)) ([3d88e32](https://www.github.com/googleapis/python-billingbudgets/commit/3d88e32d967e97a72b8162bd0ed19552aa4c253e)), closes [#1126](https://www.github.com/googleapis/python-billingbudgets/issues/1126)
+
 ## [1.2.0](https://www.github.com/googleapis/python-billingbudgets/compare/v1.1.1...v1.2.0) (2021-05-17)
 
 ### Features
