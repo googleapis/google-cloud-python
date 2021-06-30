@@ -62,6 +62,7 @@ from .cloudbuild import (
     UpdateBuildTriggerRequest,
     UpdateWorkerPoolRequest,
     Volume,
+    WebhookConfig,
     WorkerConfig,
     WorkerPool,
 )
@@ -115,6 +116,7 @@ __all__ = (
     "UpdateBuildTriggerRequest",
     "UpdateWorkerPoolRequest",
     "Volume",
+    "WebhookConfig",
     "WorkerConfig",
     "WorkerPool",
 )

@@ -65,6 +65,7 @@ from .types.cloudbuild import TimeSpan
 from .types.cloudbuild import UpdateBuildTriggerRequest
 from .types.cloudbuild import UpdateWorkerPoolRequest
 from .types.cloudbuild import Volume
+from .types.cloudbuild import WebhookConfig
 from .types.cloudbuild import WorkerConfig
 from .types.cloudbuild import WorkerPool
 
@@ -119,6 +120,7 @@ __all__ = (
     "UpdateBuildTriggerRequest",
     "UpdateWorkerPoolRequest",
     "Volume",
+    "WebhookConfig",
     "WorkerConfig",
     "WorkerPool",
 )

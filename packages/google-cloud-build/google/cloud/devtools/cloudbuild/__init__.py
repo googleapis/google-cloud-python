@@ -83,6 +83,7 @@ from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
 )
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import UpdateWorkerPoolRequest
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import Volume
+from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import WebhookConfig
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import WorkerConfig
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import WorkerPool
 
@@ -137,6 +138,7 @@ __all__ = (
     "UpdateBuildTriggerRequest",
     "UpdateWorkerPoolRequest",
     "Volume",
+    "WebhookConfig",
     "WorkerConfig",
     "WorkerPool",
 )
