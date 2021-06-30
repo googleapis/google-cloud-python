@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.5.0](https://www.github.com/googleapis/python-container/compare/v2.4.1...v2.5.0) (2021-06-30)
+
+
+### Features
+
+* add always_use_jwt_access ([#119](https://www.github.com/googleapis/python-container/issues/119)) ([bb598c4](https://www.github.com/googleapis/python-container/commit/bb598c45f5f2c5ca75a638c17168d6a4a15547a4))
+* support for NodeAutoprovisioning ImageType ([#107](https://www.github.com/googleapis/python-container/issues/107)) ([d56f699](https://www.github.com/googleapis/python-container/commit/d56f699dad3e7fdf654861e36a007a79df760790))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-container/issues/1127)) ([#112](https://www.github.com/googleapis/python-container/issues/112)) ([5a3941a](https://www.github.com/googleapis/python-container/commit/5a3941a03c48e3cef4d21ac10fc8e7b1b594ad1e)), closes [#1126](https://www.github.com/googleapis/python-container/issues/1126)
+
 ### [2.4.1](https://www.github.com/googleapis/python-container/compare/v2.4.0...v2.4.1) (2021-05-16)
 
 
