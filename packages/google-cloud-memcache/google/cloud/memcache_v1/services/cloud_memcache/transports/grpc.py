@@ -77,6 +77,7 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
         client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
         quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
     ) -> None:
         """Instantiate the transport.
 
@@ -117,6 +118,8 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -170,6 +173,7 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
             scopes=scopes,
             quota_project_id=quota_project_id,
             client_info=client_info,
+            always_use_jwt_access=always_use_jwt_access,
         )
 
         if not self._grpc_channel:
@@ -225,14 +229,14 @@ class CloudMemcacheGrpcTransport(CloudMemcacheTransport):
               and ``credentials_file`` are passed.
         """
 
-        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
-
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
             quota_project_id=quota_project_id,
-            **self_signed_jwt_kwargs,
+            default_scopes=cls.AUTH_SCOPES,
+            scopes=scopes,
+            default_host=cls.DEFAULT_HOST,
             **kwargs,
         )
 
