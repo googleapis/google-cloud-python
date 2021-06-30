@@ -32,8 +32,10 @@ def test_authorized_session_with_service_account_and_self_signed_jwt():
 
     # List Pub/Sub Topics through the REST API
     # https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics/list
-    response = session.get("https://pubsub.googleapis.com/v1/projects/{}/topics".format(project_id))
-    response.raise_for_status()
+    url = "https://pubsub.googleapis.com/v1/projects/{}/topics".format(project_id)
+    with session:
+        response = session.get(url)
+        response.raise_for_status()
 
     # Check that self-signed JWT was created and is being used
     assert credentials._jwt_credentials is not None

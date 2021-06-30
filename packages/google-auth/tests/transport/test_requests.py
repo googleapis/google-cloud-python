@@ -213,7 +213,7 @@ class TestAuthorizedSession(object):
             mock.sentinel.credentials, auth_request=auth_request
         )
 
-        assert authed_session._auth_request == auth_request
+        assert authed_session._auth_request is auth_request
 
     def test_request_default_timeout(self):
         credentials = mock.Mock(wraps=CredentialsStub())
@@ -504,3 +504,22 @@ class TestAuthorizedSession(object):
         auth_session.configure_mtls_channel(mock_callback)
         assert not auth_session.is_mtls
         mock_callback.assert_not_called()
+
+    def test_close_wo_passed_in_auth_request(self):
+        authed_session = google.auth.transport.requests.AuthorizedSession(
+            mock.sentinel.credentials
+        )
+        authed_session._auth_request_session = mock.Mock(spec=["close"])
+
+        authed_session.close()
+
+        authed_session._auth_request_session.close.assert_called_once_with()
+
+    def test_close_w_passed_in_auth_request(self):
+        http = mock.create_autospec(requests.Session)
+        auth_request = google.auth.transport.requests.Request(http)
+        authed_session = google.auth.transport.requests.AuthorizedSession(
+            mock.sentinel.credentials, auth_request=auth_request
+        )
+
+        authed_session.close()  # no raise
