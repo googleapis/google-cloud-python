@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.4.0](https://www.github.com/googleapis/python-containeranalysis/compare/v2.3.0...v2.4.0) (2021-06-30)
+
+
+### Features
+
+* add always_use_jwt_access ([#147](https://www.github.com/googleapis/python-containeranalysis/issues/147)) ([1f55871](https://www.github.com/googleapis/python-containeranalysis/commit/1f558713a683e3b48d9d7fba2c015e92818850fd))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#151](https://www.github.com/googleapis/python-containeranalysis/issues/151)) ([7768ae1](https://www.github.com/googleapis/python-containeranalysis/commit/7768ae1ce4a32fa25ef5c0fb86f8981fed038297))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-containeranalysis/issues/1127)) ([#141](https://www.github.com/googleapis/python-containeranalysis/issues/141)) ([a588841](https://www.github.com/googleapis/python-containeranalysis/commit/a58884154f23caf453040ad314c0a2d4416952f2))
+
 ## [2.3.0](https://www.github.com/googleapis/python-containeranalysis/compare/v2.2.3...v2.3.0) (2021-05-25)
 
 
