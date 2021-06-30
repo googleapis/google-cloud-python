@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-security-private-ca/compare/v0.3.0...v0.4.0) (2021-06-30)
+
+
+### Features
+
+* add always_use_jwt_access ([#70](https://www.github.com/googleapis/python-security-private-ca/issues/70)) ([9b3584d](https://www.github.com/googleapis/python-security-private-ca/commit/9b3584dcf00f50ceab9529f758da3e4ddd5a602c))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#74](https://www.github.com/googleapis/python-security-private-ca/issues/74)) ([5cda9ac](https://www.github.com/googleapis/python-security-private-ca/commit/5cda9acc4f7b1aa83bc73700f9cef4f84cc2306a))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-security-private-ca/issues/1127)) ([#65](https://www.github.com/googleapis/python-security-private-ca/issues/65)) ([a82b1ab](https://www.github.com/googleapis/python-security-private-ca/commit/a82b1abdaf8d55f6b6cbf71d6fb7a416e3307888)), closes [#1126](https://www.github.com/googleapis/python-security-private-ca/issues/1126)
+
 ## [0.3.0](https://www.github.com/googleapis/python-security-private-ca/compare/v0.2.0...v0.3.0) (2021-05-17)
 
 
