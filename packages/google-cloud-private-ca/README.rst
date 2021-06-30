@@ -1,7 +1,7 @@
 Python Client for Certificate Authority Service
 =================================================
 
-|beta| |pypi| |versions|
+|GA| |pypi| |versions|
 
 `Certificate Authority Service`_: Highly available and scalable certificate authority
 hosted by Google and managed by the customer, to simplify certificate deployment and management
@@ -10,8 +10,8 @@ within infrastructure and cloud native applications.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-private-ca.svg
    :target: https://pypi.org/project/google-cloud-private-ca/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-private-ca.svg
