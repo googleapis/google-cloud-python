@@ -138,6 +138,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
         quota_project_id=None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
     ) -> None:
         """Instantiate the transport.
 
@@ -179,6 +180,8 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -230,7 +233,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
             scopes=scopes,
             quota_project_id=quota_project_id,
             client_info=client_info,
-            always_use_jwt_access=True,
+            always_use_jwt_access=always_use_jwt_access,
         )
 
         if not self._grpc_channel:
