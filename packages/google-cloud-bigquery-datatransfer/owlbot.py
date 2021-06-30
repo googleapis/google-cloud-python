@@ -27,17 +27,12 @@ common = gcp.CommonTemplates()
 # ----------------------------------------------------------------------------
 for library in s.get_staging_dirs("v1"):
 
-    # Comment out broken assertion in unit test
-    # https://github.com/googleapis/gapic-generator-python/issues/897
+    # Fix incorrect DeprecationWarning
+    # Fixed in https://github.com/googleapis/gapic-generator-python/pull/943
     s.replace(
-        library / "tests/**/*.py",
-        "assert args\[0\]\.start_time == timestamp_pb2\.Timestamp\(seconds=751\)",
-        "# assert args[0].start_time == timestamp_pb2.Timestamp(seconds=751)"
-    )
-    s.replace(
-        library / "tests/**/*.py",
-        "assert args\[0\]\.end_time == timestamp_pb2\.Timestamp\(seconds=751\)",
-        "# assert args[0].end_time == timestamp_pb2.Timestamp(seconds=751)"
+        "google/**/*client.py",
+        "warnings\.DeprecationWarning",
+        "DeprecationWarning"
     )
 
     s.move(library, excludes=["*.tar.gz", "docs/index.rst", "README.rst", "setup.py"])
