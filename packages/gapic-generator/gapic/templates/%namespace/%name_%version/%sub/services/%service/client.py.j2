@@ -364,7 +364,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
         """
         {% if method.is_deprecated %}
         warnings.warn("{{ service.client_name }}.{{ method.name|snake_case }} is deprecated",
-            warnings.DeprecationWarning)
+            DeprecationWarning)
 
         {% endif %}
         {% if not method.client_streaming %}

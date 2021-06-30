@@ -201,7 +201,7 @@ class {{ service.async_client_name }}:
         """
         {% if method.is_deprecated %}
         warnings.warn("{{ service.async_client_name }}.{{ method.name|snake_case }} is deprecated",
-            warnings.DeprecationWarning)
+            DeprecationWarning)
 
         {% endif %}
         {% if not method.client_streaming %}
