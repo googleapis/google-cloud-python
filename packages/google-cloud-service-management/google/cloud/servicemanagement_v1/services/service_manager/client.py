@@ -19,6 +19,7 @@ import os
 import re
 from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
+import warnings
 
 from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
@@ -1614,6 +1615,10 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 Operation payload for EnableService method.
 
         """
+        warnings.warn(
+            "ServiceManagerClient.enable_service is deprecated", DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
@@ -1715,6 +1720,10 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
                 Operation payload for DisableService method.
 
         """
+        warnings.warn(
+            "ServiceManagerClient.disable_service is deprecated", DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.

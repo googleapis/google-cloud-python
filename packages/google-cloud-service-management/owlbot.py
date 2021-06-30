@@ -27,6 +27,15 @@ default_version = "v1"
 for library in s.get_staging_dirs(default_version):
     s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
 
+    # Fix DeprecationWarning
+    # Fix incorrect DeprecationWarning
+    # Fixed in https://github.com/googleapis/gapic-generator-python/pull/943
+    s.replace(
+        "google/**/*client.py",
+        "warnings\.DeprecationWarning",
+        "DeprecationWarning"
+    )
+
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------
