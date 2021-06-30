@@ -95,12 +95,12 @@ class Intent(proto.Message):
             and values can be no longer than 63 characters and no more
             than 128 bytes.
 
-            Prefix "sys." is reserved for Dialogflow defined labels.
+            Prefix "sys-" is reserved for Dialogflow defined labels.
             Currently allowed Dialogflow defined labels include:
 
-            -  sys.head
-            -  sys.contextual The above labels do not require value.
-               "sys.head" means the intent is a head intent.
+            -  sys-head
+            -  sys-contextual The above labels do not require value.
+               "sys-head" means the intent is a head intent.
                "sys.contextual" means the intent is a contextual intent.
         description (str):
             Human readable description for better

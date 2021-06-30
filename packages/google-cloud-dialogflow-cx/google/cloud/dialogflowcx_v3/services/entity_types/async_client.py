@@ -358,6 +358,10 @@ class EntityTypesAsyncClient:
     ) -> gcdc_entity_type.EntityType:
         r"""Creates an entity type in the specified agent.
 
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
         Args:
             request (:class:`google.cloud.dialogflowcx_v3.types.CreateEntityTypeRequest`):
                 The request object. The request message for
@@ -468,6 +472,10 @@ class EntityTypesAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_entity_type.EntityType:
         r"""Updates the specified entity type.
+
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
             request (:class:`google.cloud.dialogflowcx_v3.types.UpdateEntityTypeRequest`):
@@ -580,6 +588,10 @@ class EntityTypesAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified entity type.
+
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
             request (:class:`google.cloud.dialogflowcx_v3.types.DeleteEntityTypeRequest`):

@@ -83,14 +83,14 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
             aio.Channel: A gRPC AsyncIO channel object.
         """
 
-        self_signed_jwt_kwargs = cls._get_self_signed_jwt_kwargs(host, scopes)
-
         return grpc_helpers_async.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
             quota_project_id=quota_project_id,
-            **self_signed_jwt_kwargs,
+            default_scopes=cls.AUTH_SCOPES,
+            scopes=scopes,
+            default_host=cls.DEFAULT_HOST,
             **kwargs,
         )
 
@@ -108,6 +108,7 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
         client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
         quota_project_id=None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
     ) -> None:
         """Instantiate the transport.
 
@@ -149,6 +150,8 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
                 API requests. If ``None``, then default info will be used.
                 Generally, you only need to set this if you're developing
                 your own client library.
+            always_use_jwt_access (Optional[bool]): Whether self signed JWT should
+                be used for service account credentials.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -200,6 +203,7 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
             scopes=scopes,
             quota_project_id=quota_project_id,
             client_info=client_info,
+            always_use_jwt_access=always_use_jwt_access,
         )
 
         if not self._grpc_channel:
@@ -302,6 +306,10 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
         [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup]
         in the specified flow.
 
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
         Returns:
             Callable[[~.CreateTransitionRouteGroupRequest],
                     Awaitable[~.TransitionRouteGroup]]:
@@ -334,6 +342,10 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
         Updates the specified
         [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
 
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
         Returns:
             Callable[[~.UpdateTransitionRouteGroupRequest],
                     Awaitable[~.TransitionRouteGroup]]:
@@ -365,6 +377,10 @@ class TransitionRouteGroupsGrpcAsyncIOTransport(TransitionRouteGroupsTransport):
 
         Deletes the specified
         [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
+
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Returns:
             Callable[[~.DeleteTransitionRouteGroupRequest],

@@ -620,6 +620,10 @@ class PagesClient(metaclass=PagesClientMeta):
     ) -> gcdc_page.Page:
         r"""Creates a page in the specified flow.
 
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
+
         Args:
             request (google.cloud.dialogflowcx_v3.types.CreatePageRequest):
                 The request object. The request message for
@@ -718,6 +722,10 @@ class PagesClient(metaclass=PagesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> gcdc_page.Page:
         r"""Updates the specified page.
+
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
             request (google.cloud.dialogflowcx_v3.types.UpdatePageRequest):
@@ -819,6 +827,10 @@ class PagesClient(metaclass=PagesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes the specified page.
+
+        Note: You should always train a flow prior to sending it
+        queries. See the `training
+        documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
         Args:
             request (google.cloud.dialogflowcx_v3.types.DeletePageRequest):
