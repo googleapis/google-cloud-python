@@ -227,7 +227,9 @@ class MessagesV1Beta3AsyncClient:
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-dataflow",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-dataflow-client",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

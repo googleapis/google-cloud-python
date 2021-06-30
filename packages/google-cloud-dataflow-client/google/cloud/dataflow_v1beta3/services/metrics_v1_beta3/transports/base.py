@@ -30,7 +30,9 @@ from google.cloud.dataflow_v1beta3.types import metrics
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-dataflow",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-dataflow-client",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -101,7 +103,7 @@ class MetricsV1Beta3Transport(abc.ABC):
         scopes_kwargs = self._get_scopes_kwargs(self._host, scopes)
 
         # Save the scopes.
-        self._scopes = scopes or self.AUTH_SCOPES
+        self._scopes = scopes
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
