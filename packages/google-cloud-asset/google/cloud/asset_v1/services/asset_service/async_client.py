@@ -955,12 +955,11 @@ class AssetServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
-                deadline=15.0,
+                deadline=30.0,
             ),
-            default_timeout=15.0,
+            default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 
@@ -1067,6 +1066,10 @@ class AssetServiceAsyncClient:
                    find IAM policy bindings that are set on resources
                    "instance1" or "instance2" and also specify user
                    "amy".
+                -  ``roles:roles/compute.admin`` to find IAM policy
+                   bindings that specify the Compute Admin role.
+                -  ``memberTypes:user`` to find IAM policy bindings that
+                   contain the "user" member type.
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1113,12 +1116,11 @@ class AssetServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
                     core_exceptions.ServiceUnavailable,
                 ),
-                deadline=15.0,
+                deadline=30.0,
             ),
-            default_timeout=15.0,
+            default_timeout=30.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
 

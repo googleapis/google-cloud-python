@@ -1194,6 +1194,10 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                    find IAM policy bindings that are set on resources
                    "instance1" or "instance2" and also specify user
                    "amy".
+                -  ``roles:roles/compute.admin`` to find IAM policy
+                   bindings that specify the Compute Admin role.
+                -  ``memberTypes:user`` to find IAM policy bindings that
+                   contain the "user" member type.
 
                 This corresponds to the ``query`` field
                 on the ``request`` instance; if ``request`` is provided, this

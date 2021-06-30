@@ -518,6 +518,13 @@ class IamPolicySearchResult(proto.Message):
 
             -  use a field query. Example:
                ``resource:organizations/123``
+        asset_type (str):
+            The type of the resource associated with this IAM policy.
+            Example: ``compute.googleapis.com/Disk``.
+
+            To search against the ``asset_type``:
+
+            -  specify the ``asset_types`` field in your search request.
         project (str):
             The project that the associated GCP resource belongs to, in
             the form of projects/{PROJECT_NUMBER}. If an IAM policy is
@@ -529,6 +536,28 @@ class IamPolicySearchResult(proto.Message):
             To search against the ``project``:
 
             -  specify the ``scope`` field as this project in your
+               search request.
+        folders (Sequence[str]):
+            The folder(s) that the IAM policy belongs to, in the form of
+            folders/{FOLDER_NUMBER}. This field is available when the
+            IAM policy belongs to one or more folders.
+
+            To search against ``folders``:
+
+            -  use a field query. Example: ``folders:(123 OR 456)``
+            -  use a free text query. Example: ``123``
+            -  specify the ``scope`` field as this folder in your search
+               request.
+        organization (str):
+            The organization that the IAM policy belongs to, in the form
+            of organizations/{ORGANIZATION_NUMBER}. This field is
+            available when the IAM policy belongs to an organization.
+
+            To search against ``organization``:
+
+            -  use a field query. Example: ``organization:123``
+            -  use a free text query. Example: ``123``
+            -  specify the ``scope`` field as this organization in your
                search request.
         policy (google.iam.v1.policy_pb2.Policy):
             The IAM policy directly set on the given resource. Note that
@@ -588,7 +617,10 @@ class IamPolicySearchResult(proto.Message):
         )
 
     resource = proto.Field(proto.STRING, number=1,)
+    asset_type = proto.Field(proto.STRING, number=5,)
     project = proto.Field(proto.STRING, number=2,)
+    folders = proto.RepeatedField(proto.STRING, number=6,)
+    organization = proto.Field(proto.STRING, number=7,)
     policy = proto.Field(proto.MESSAGE, number=3, message=policy_pb2.Policy,)
     explanation = proto.Field(proto.MESSAGE, number=4, message=Explanation,)
 
