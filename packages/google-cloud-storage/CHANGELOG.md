@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [1.40.0](https://www.github.com/googleapis/python-storage/compare/v1.39.0...v1.40.0) (2021-06-30)
+
+
+### Features
+
+* add preconditions and retry configuration to blob.create_resumable_upload_session ([#484](https://www.github.com/googleapis/python-storage/issues/484)) ([0ae35ee](https://www.github.com/googleapis/python-storage/commit/0ae35eef0fe82fe60bc095c4b183102bb1dabeeb))
+* add public access prevention to bucket IAM configuration ([#304](https://www.github.com/googleapis/python-storage/issues/304)) ([e3e57a9](https://www.github.com/googleapis/python-storage/commit/e3e57a9c779d6b87852063787f19e27c76b1bb14))
+
+
+### Bug Fixes
+
+* replace default retry for upload operations ([#480](https://www.github.com/googleapis/python-storage/issues/480)) ([c027ccf](https://www.github.com/googleapis/python-storage/commit/c027ccf4279fb05e041754294f10744b7d81beea))
+
 ## [1.39.0](https://www.github.com/googleapis/python-storage/compare/v1.38.0...v1.39.0) (2021-06-21)
 
 
