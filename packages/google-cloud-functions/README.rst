@@ -1,15 +1,15 @@
 Python Client for Cloud Functions
 =================================================
 
-|beta| |pypi| |versions|
+|GA| |pypi| |versions|
 
 `Cloud Functions API`_: Manages lightweight user-provided functions executed in response to events.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-functions.svg
    :target: https://pypi.org/project/google-cloud-functions/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-functions.svg
