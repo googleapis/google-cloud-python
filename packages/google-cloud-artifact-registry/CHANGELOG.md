@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.3.1](https://www.github.com/googleapis/python-artifact-registry/compare/v0.3.0...v0.3.1) (2021-06-30)
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([ce910f4](https://www.github.com/googleapis/python-artifact-registry/commit/ce910f40a365c56a07372664adffe98a628fabe9))
+* disable always_use_jwt_access ([#50](https://www.github.com/googleapis/python-artifact-registry/issues/50)) ([ce910f4](https://www.github.com/googleapis/python-artifact-registry/commit/ce910f40a365c56a07372664adffe98a628fabe9))
+
 ## [0.3.0](https://www.github.com/googleapis/python-artifact-registry/compare/v0.2.2...v0.3.0) (2021-06-23)
 
 
