@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.1.0...v1.2.0) (2021-06-30)
+
+
+### Features
+
+* add always_use_jwt_access ([#123](https://www.github.com/googleapis/python-bigquery-reservation/issues/123)) ([3123e99](https://www.github.com/googleapis/python-bigquery-reservation/commit/3123e99e8e288dcfb3627f77610c90060654bee4))
+* support self-signed JWT flow for service accounts ([4d52ed9](https://www.github.com/googleapis/python-bigquery-reservation/commit/4d52ed91ae9eaa7ec6091138c134e682c9434853))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([4d52ed9](https://www.github.com/googleapis/python-bigquery-reservation/commit/4d52ed91ae9eaa7ec6091138c134e682c9434853))
+* disable always_use_jwt_access ([32b279f](https://www.github.com/googleapis/python-bigquery-reservation/commit/32b279f0666a55c66e87c347ed7e913c2a9267a7))
+* disable always_use_jwt_access ([#126](https://www.github.com/googleapis/python-bigquery-reservation/issues/126)) ([32b279f](https://www.github.com/googleapis/python-bigquery-reservation/commit/32b279f0666a55c66e87c347ed7e913c2a9267a7))
+* exclude docs and tests from package ([#117](https://www.github.com/googleapis/python-bigquery-reservation/issues/117)) ([4f90792](https://www.github.com/googleapis/python-bigquery-reservation/commit/4f90792c26c8e47aad5a52267c713723e661efa3))
+* require google-api-core >= 1.22.2 ([#90](https://www.github.com/googleapis/python-bigquery-reservation/issues/90)) ([3f0fff7](https://www.github.com/googleapis/python-bigquery-reservation/commit/3f0fff779d880df0648b7bcf59df01c4cacd4ca3))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-bigquery-reservation/issues/1127)) ([#120](https://www.github.com/googleapis/python-bigquery-reservation/issues/120)) ([7d65f87](https://www.github.com/googleapis/python-bigquery-reservation/commit/7d65f877f6814aed37f68116b52e200585587c58)), closes [#1126](https://www.github.com/googleapis/python-bigquery-reservation/issues/1126)
+* Update the README to reflect that this library is GA ([#112](https://www.github.com/googleapis/python-bigquery-reservation/issues/112)) ([7bca7a9](https://www.github.com/googleapis/python-bigquery-reservation/commit/7bca7a9b6d73d8c8ee522c8ac930192fad49da57))
+
 ## [1.1.0](https://www.github.com/googleapis/python-bigquery-reservation/compare/v1.0.1...v1.1.0) (2021-03-09)
 
 
