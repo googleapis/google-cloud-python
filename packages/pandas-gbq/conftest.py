@@ -1,3 +1,7 @@
+# Copyright (c) 2017 pandas-gbq Authors All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
 """Shared pytest fixtures for `tests/system` and `samples/tests` tests."""
 
 import os
