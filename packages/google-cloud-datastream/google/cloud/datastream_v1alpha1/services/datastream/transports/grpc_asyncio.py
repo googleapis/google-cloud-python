@@ -407,7 +407,7 @@ class DatastreamGrpcAsyncIOTransport(DatastreamTransport):
         The discover API call exposes the data objects and
         metadata belonging to the profile. Typically, a request
         returns children data objects under a parent data object
-        that’s optionally supplied in the request.
+        that's optionally supplied in the request.
 
         Returns:
             Callable[[~.DiscoverConnectionProfileRequest],
@@ -606,7 +606,7 @@ class DatastreamGrpcAsyncIOTransport(DatastreamTransport):
 
         The FetchStaticIps API call exposes the static ips
         used by Datastream. Typically, a request returns
-        children data objects under a parent data object that’s
+        children data objects under a parent data object that's
         optionally supplied in the request.
 
         Returns:
