@@ -395,7 +395,7 @@ class TestBlobWriterBinary(unittest.TestCase):
                 blob,
                 chunk_size=chunk_size,
                 content_type=PLAIN_CONTENT_TYPE,
-                if_metageneration_match=1,
+                if_generation_match=123456,
             )
 
         # The transmit_next_chunk method must actually consume bytes from the
@@ -421,7 +421,7 @@ class TestBlobWriterBinary(unittest.TestCase):
             None,  # num_retries
             chunk_size=chunk_size,
             retry=DEFAULT_RETRY,
-            if_metageneration_match=1,
+            if_generation_match=123456,
         )
         upload.transmit_next_chunk.assert_called_with(transport)
         self.assertEqual(upload.transmit_next_chunk.call_count, 4)

@@ -29,7 +29,6 @@ from six.moves import http_client
 from google.cloud.storage.retry import DEFAULT_RETRY
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_ETAG_IN_JSON
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
-from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
 
 
 def _make_credentials():
@@ -2853,8 +2852,8 @@ class Test_Blob(unittest.TestCase):
             **timeout_kwarg
         )
 
-        if retry is DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED:
-            retry = DEFAULT_RETRY if if_metageneration_match else None
+        if retry is DEFAULT_RETRY_IF_GENERATION_SPECIFIED:
+            retry = DEFAULT_RETRY if if_generation_match else None
 
         self.assertIs(created_json, mock.sentinel.json)
         response.json.assert_called_once_with()
@@ -2925,11 +2924,11 @@ class Test_Blob(unittest.TestCase):
 
     def test__do_upload_with_conditional_retry_success(self):
         self._do_upload_helper(
-            retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED, if_metageneration_match=1
+            retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED, if_generation_match=123456
         )
 
     def test__do_upload_with_conditional_retry_failure(self):
-        self._do_upload_helper(retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED)
+        self._do_upload_helper(retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED)
 
     def _upload_from_file_helper(self, side_effect=None, **kwargs):
         from google.cloud._helpers import UTC
@@ -2955,7 +2954,7 @@ class Test_Blob(unittest.TestCase):
         if_metageneration_not_match = kwargs.get("if_metageneration_not_match", None)
         num_retries = kwargs.get("num_retries", None)
         default_retry = (
-            DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED if not num_retries else None
+            DEFAULT_RETRY_IF_GENERATION_SPECIFIED if not num_retries else None
         )
         retry = kwargs.get("retry", default_retry)
         ret_val = blob.upload_from_file(
@@ -3062,9 +3061,7 @@ class Test_Blob(unittest.TestCase):
 
         expected_timeout = self._get_default_timeout() if timeout is None else timeout
         if not retry:
-            retry = (
-                DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED if not num_retries else None
-            )
+            retry = DEFAULT_RETRY_IF_GENERATION_SPECIFIED if not num_retries else None
         self.assertEqual(
             kwargs, {"timeout": expected_timeout, "checksum": None, "retry": retry}
         )

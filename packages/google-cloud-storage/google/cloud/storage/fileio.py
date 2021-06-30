@@ -18,7 +18,7 @@ import warnings
 from google.api_core.exceptions import RequestRangeNotSatisfiable
 from google.cloud.storage._helpers import _NUM_RETRIES_MESSAGE
 from google.cloud.storage.retry import DEFAULT_RETRY
-from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
+from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
 from google.cloud.storage.retry import ConditionalRetryPolicy
 
 
@@ -278,7 +278,7 @@ class BlobWriter(io.BufferedIOBase):
         blob,
         chunk_size=None,
         text_mode=False,
-        retry=DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
+        retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
         **upload_kwargs
     ):
         for kwarg in upload_kwargs:
@@ -346,7 +346,7 @@ class BlobWriter(io.BufferedIOBase):
             # num_retries and retry are mutually exclusive. If num_retries is
             # set and retry is exactly the default, then nullify retry for
             # backwards compatibility.
-            if retry is DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED:
+            if retry is DEFAULT_RETRY_IF_GENERATION_SPECIFIED:
                 retry = None
 
         # Handle ConditionalRetryPolicy.
