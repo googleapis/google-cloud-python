@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.50.4](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.3...v0.50.4) (2021-06-30)
+
+
+### Bug Fixes
+
+* fix syntax for Deprecationwarning ([#942](https://www.github.com/googleapis/gapic-generator-python/issues/942)) ([82dbddb](https://www.github.com/googleapis/gapic-generator-python/commit/82dbddb6a9caf1227c4b335345f365dd01025794))
+
 ### [0.50.3](https://www.github.com/googleapis/gapic-generator-python/compare/v0.50.2...v0.50.3) (2021-06-29)
 
 
