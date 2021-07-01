@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.5.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.4.0...v2.5.0) (2021-06-26)
+
+
+### Features
+
+* added Automated agent reply type and allow cancellation flag for partial response feature ([#314](https://www.github.com/googleapis/python-dialogflow/issues/314)) ([5dfd375](https://www.github.com/googleapis/python-dialogflow/commit/5dfd375c389e41e8d87055a6479cfb9c0b5f2e37))
+* **v2beta1:** added Automated agent reply type and allow cancellation flag for partial response feature ([#311](https://www.github.com/googleapis/python-dialogflow/issues/311)) ([1d34763](https://www.github.com/googleapis/python-dialogflow/commit/1d34763b13902162f567fac7768d08619f77f81e))
+
+
+### Documentation
+
+* added notes to train agent prior to sending queries ([#319](https://www.github.com/googleapis/python-dialogflow/issues/319)) ([37dece2](https://www.github.com/googleapis/python-dialogflow/commit/37dece29c4f2b852f5d5426fb10c6c8b55d9bff6))
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-dialogflow/issues/1127)) ([#316](https://www.github.com/googleapis/python-dialogflow/issues/316)) ([55fcb9d](https://www.github.com/googleapis/python-dialogflow/commit/55fcb9d366a27318e7f044f15984df8f3fb32f8e))
+* update comment in ListSuggestions to use absolute URL for /apis/design/design_patterns ([#313](https://www.github.com/googleapis/python-dialogflow/issues/313)) ([99d8897](https://www.github.com/googleapis/python-dialogflow/commit/99d8897a9a576bcf1d3887c5d40ec86efd8e3ec4))
+
 ## [2.4.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.3.0...v2.4.0) (2021-05-25)
 
 
