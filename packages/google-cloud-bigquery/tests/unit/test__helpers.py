@@ -656,8 +656,23 @@ class Test_float_to_json(unittest.TestCase):
 
         return _float_to_json(value)
 
+    def test_w_none(self):
+        self.assertEqual(self._call_fut(None), None)
+
     def test_w_float(self):
         self.assertEqual(self._call_fut(1.23), 1.23)
+
+    def test_w_nan(self):
+        result = self._call_fut(float("nan"))
+        self.assertEqual(result.lower(), "nan")
+
+    def test_w_infinity(self):
+        result = self._call_fut(float("inf"))
+        self.assertEqual(result.lower(), "inf")
+
+    def test_w_negative_infinity(self):
+        result = self._call_fut(float("-inf"))
+        self.assertEqual(result.lower(), "-inf")
 
 
 class Test_decimal_to_json(unittest.TestCase):

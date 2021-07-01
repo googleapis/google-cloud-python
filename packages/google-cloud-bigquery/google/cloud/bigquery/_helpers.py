@@ -17,6 +17,7 @@
 import base64
 import datetime
 import decimal
+import math
 import re
 
 from google.cloud._helpers import UTC
@@ -305,7 +306,12 @@ def _int_to_json(value):
 
 def _float_to_json(value):
     """Coerce 'value' to an JSON-compatible representation."""
-    return value if value is None else float(value)
+    if value is None:
+        return None
+    elif math.isnan(value) or math.isinf(value):
+        return str(value)
+    else:
+        return float(value)
 
 
 def _decimal_to_json(value):
