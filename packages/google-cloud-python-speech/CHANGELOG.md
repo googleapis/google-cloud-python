@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.5.0](https://www.github.com/googleapis/python-speech/compare/v2.4.1...v2.5.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#191](https://www.github.com/googleapis/python-speech/issues/191)) ([0d84445](https://www.github.com/googleapis/python-speech/commit/0d8444543138f45445fc7995eccd5655376e0bfc))
+
 ### [2.4.1](https://www.github.com/googleapis/python-speech/compare/v2.4.0...v2.4.1) (2021-06-21)
 
 
