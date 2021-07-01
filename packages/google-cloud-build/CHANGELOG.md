@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.3.0](https://www.github.com/googleapis/python-cloudbuild/compare/v3.2.1...v3.3.0) (2021-06-30)
+
+
+### Features
+
+* add always_use_jwt_access ([#118](https://www.github.com/googleapis/python-cloudbuild/issues/118)) ([6414a3b](https://www.github.com/googleapis/python-cloudbuild/commit/6414a3bcc27baa4e60b2bf7cf2f7d9f776ad6843))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#123](https://www.github.com/googleapis/python-cloudbuild/issues/123)) ([c1c9608](https://www.github.com/googleapis/python-cloudbuild/commit/c1c960894dc401b0a125801b08ef1a4fee659abe))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-cloudbuild/issues/1127)) ([#112](https://www.github.com/googleapis/python-cloudbuild/issues/112)) ([e2420f8](https://www.github.com/googleapis/python-cloudbuild/commit/e2420f8ad5630aedff0d52e3cc4facbb11300b72)), closes [#1126](https://www.github.com/googleapis/python-cloudbuild/issues/1126)
+
 ### [3.2.1](https://www.github.com/googleapis/python-cloudbuild/compare/v3.2.0...v3.2.1) (2021-05-16)
 
 
