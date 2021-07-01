@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.5.0](https://www.github.com/googleapis/python-media-translation/compare/v0.4.0...v0.5.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#75](https://www.github.com/googleapis/python-media-translation/issues/75)) ([1540d4a](https://www.github.com/googleapis/python-media-translation/commit/1540d4adf751930379e7b71567b61a1b3e7c42ae))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#79](https://www.github.com/googleapis/python-media-translation/issues/79)) ([3fb3edd](https://www.github.com/googleapis/python-media-translation/commit/3fb3edd4020616efad83de1c109a8bfa944ca87f))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-media-translation/issues/1127)) ([#69](https://www.github.com/googleapis/python-media-translation/issues/69)) ([d77ac0d](https://www.github.com/googleapis/python-media-translation/commit/d77ac0d6af1b278c8285c537a3a28fdf6491ceea)), closes [#1126](https://www.github.com/googleapis/python-media-translation/issues/1126)
+
 ## [0.4.0](https://www.github.com/googleapis/python-media-translation/compare/v0.3.0...v0.4.0) (2021-05-27)
 
 
