@@ -16,6 +16,7 @@ import time
 import uuid
 
 from google.cloud import spanner
+from google.cloud.spanner_v1.instance import Instance
 import pytest
 
 import snippets
@@ -31,6 +32,20 @@ def unique_database_id():
     return f"test-db-{uuid.uuid4().hex[:10]}"
 
 
+def cleanup_old_instances(spanner_client):
+    # Delete test instances that are older than an hour.
+    cutoff = int(time.time()) - 1 * 60 * 60
+    instance_pbs = spanner_client.list_instances("labels.cloud_spanner_samples:true")
+    for instance_pb in instance_pbs:
+        instance = Instance.from_pb(instance_pb, spanner_client)
+        if "created" not in instance.labels:
+            continue
+        create_time = int(instance.labels["created"])
+        if create_time > cutoff:
+            continue
+        instance.delete()
+
+
 INSTANCE_ID = unique_instance_id()
 DATABASE_ID = unique_database_id()
 CMEK_DATABASE_ID = unique_database_id()
@@ -38,8 +53,9 @@ CMEK_DATABASE_ID = unique_database_id()
 
 @pytest.fixture(scope="module")
 def spanner_instance():
-    snippets.create_instance(INSTANCE_ID)
     spanner_client = spanner.Client()
+    cleanup_old_instances(spanner_client)
+    snippets.create_instance(INSTANCE_ID)
     instance = spanner_client.instance(INSTANCE_ID)
     yield instance
     instance.delete()

@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import time
 import uuid
 
 from google.api_core.exceptions import DeadlineExceeded
@@ -19,6 +20,7 @@ import pytest
 from test_utils.retry import RetryErrors
 
 import backup_sample
+from snippets_test import cleanup_old_instances
 
 
 def unique_instance_id():
@@ -49,10 +51,18 @@ RETENTION_PERIOD = "7d"
 @pytest.fixture(scope="module")
 def spanner_instance():
     spanner_client = spanner.Client()
+    cleanup_old_instances(spanner_client)
     instance_config = "{}/instanceConfigs/{}".format(
         spanner_client.project_name, "regional-us-central1"
     )
-    instance = spanner_client.instance(INSTANCE_ID, instance_config)
+    instance = spanner_client.instance(
+        INSTANCE_ID,
+        instance_config,
+        labels={
+           "cloud_spanner_samples": "true",
+           "created": str(int(time.time()))
+        }
+    )
     op = instance.create()
     op.result(120)  # block until completion
     yield instance

@@ -4,6 +4,7 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
+import time
 import uuid
 
 from google.api_core.exceptions import Aborted
@@ -12,6 +13,7 @@ import pytest
 from test_utils.retry import RetryErrors
 
 import autocommit
+from snippets_test import cleanup_old_instances
 
 
 def unique_instance_id():
@@ -31,9 +33,18 @@ DATABASE_ID = unique_database_id()
 @pytest.fixture(scope="module")
 def spanner_instance():
     spanner_client = spanner.Client()
-    config_name = f"{spanner_client.project_name}/instanceConfigs/regional-us-central1"
-
-    instance = spanner_client.instance(INSTANCE_ID, config_name)
+    cleanup_old_instances(spanner_client)
+    instance_config = "{}/instanceConfigs/{}".format(
+        spanner_client.project_name, "regional-us-central1"
+    )
+    instance = spanner_client.instance(
+        INSTANCE_ID,
+        instance_config,
+        labels={
+            "cloud_spanner_samples": "true",
+            "created": str(int(time.time()))
+        }
+    )
     op = instance.create()
     op.result(120)  # block until completion
     yield instance

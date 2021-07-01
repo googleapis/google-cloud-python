@@ -25,6 +25,7 @@ import base64
 import datetime
 import decimal
 import logging
+import time
 
 from google.cloud import spanner
 from google.cloud.spanner_v1 import param_types
@@ -44,6 +45,10 @@ def create_instance(instance_id):
         configuration_name=config_name,
         display_name="This is a display name.",
         node_count=1,
+        labels={
+            "cloud_spanner_samples": "true",
+            "created": str(int(time.time()))
+        }
     )
 
     operation = instance.create()
