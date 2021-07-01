@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-tasks/compare/v2.3.0...v2.4.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#122](https://www.github.com/googleapis/python-tasks/issues/122)) ([87c9ccc](https://www.github.com/googleapis/python-tasks/commit/87c9cccb42237eb421c72411652985a7fbe1c16a))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#126](https://www.github.com/googleapis/python-tasks/issues/126)) ([54d2286](https://www.github.com/googleapis/python-tasks/commit/54d2286b153c36b7a50b5a936517aa59e10ad27c))
+* update sample for task name ([#120](https://www.github.com/googleapis/python-tasks/issues/120)) ([b1be2de](https://www.github.com/googleapis/python-tasks/commit/b1be2de174fc37d0eb90bbf877851c11ddb14907))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in CONTRIBUTING.rst ([#116](https://www.github.com/googleapis/python-tasks/issues/116)) ([0732ab7](https://www.github.com/googleapis/python-tasks/commit/0732ab7d726fdf564897fad009f8a5da45b5c017)), closes [#1126](https://www.github.com/googleapis/python-tasks/issues/1126)
+
 ## [2.3.0](https://www.github.com/googleapis/python-tasks/compare/v2.2.0...v2.3.0) (2021-05-28)
 
 
