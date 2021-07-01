@@ -5,6 +5,7 @@
 #
 # e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
 # Then this file should have foo==1.14.0
+grpcio==1.38.1
 google-api-core==1.22.2
 libcst==0.3.10
 proto-plus==1.7.1
