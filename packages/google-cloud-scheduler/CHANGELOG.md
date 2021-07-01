@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-scheduler/compare/v2.2.0...v2.3.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#102](https://www.github.com/googleapis/python-scheduler/issues/102)) ([bd5550b](https://www.github.com/googleapis/python-scheduler/commit/bd5550b4c7732ad20c5a16fa0ac2c9f86704b8fc))
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#89](https://www.github.com/googleapis/python-scheduler/issues/89)) ([8966559](https://www.github.com/googleapis/python-scheduler/commit/8966559b7bf2e4409906ca4a5eb831a011ba3484))
+* disable always_use_jwt_access ([#106](https://www.github.com/googleapis/python-scheduler/issues/106)) ([c8dd497](https://www.github.com/googleapis/python-scheduler/commit/c8dd497c56f475c63c05c2ba5708067cc03c4173))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-scheduler/issues/1127)) ([#99](https://www.github.com/googleapis/python-scheduler/issues/99)) ([2dcbcdf](https://www.github.com/googleapis/python-scheduler/commit/2dcbcdf36c7678ee62d2b76ea31bee69f597d3b2)), closes [#1126](https://www.github.com/googleapis/python-scheduler/issues/1126)
+
 ## [2.2.0](https://www.github.com/googleapis/python-scheduler/compare/v2.1.1...v2.2.0) (2021-03-31)
 
 
