@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.2.0](https://www.github.com/googleapis/python-language/compare/v2.1.0...v2.2.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#138](https://www.github.com/googleapis/python-language/issues/138)) ([242aa5e](https://www.github.com/googleapis/python-language/commit/242aa5e997161104b760f554f69f2eecd86cd560))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#143](https://www.github.com/googleapis/python-language/issues/143)) ([21c9d6e](https://www.github.com/googleapis/python-language/commit/21c9d6e1a96707007bdcf23ce667f02b42c8a207))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-language/issues/1127)) ([#132](https://www.github.com/googleapis/python-language/issues/132)) ([bc5f89e](https://www.github.com/googleapis/python-language/commit/bc5f89e3d21bccd2d78ae3f2f4038b19db54871d))
+
 ## [2.1.0](https://www.github.com/googleapis/python-language/compare/v1.4.0...v2.1.0) (2021-06-16)
 
 
