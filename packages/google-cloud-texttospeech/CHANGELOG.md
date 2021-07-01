@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.5.0](https://www.github.com/googleapis/python-texttospeech/compare/v2.4.0...v2.5.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#155](https://www.github.com/googleapis/python-texttospeech/issues/155)) ([cd10c37](https://www.github.com/googleapis/python-texttospeech/commit/cd10c3704db610f2abf65c9142cfdaa867d8490a))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#159](https://www.github.com/googleapis/python-texttospeech/issues/159)) ([d109303](https://www.github.com/googleapis/python-texttospeech/commit/d109303898facc663a6e7fe9212440831c1eeb75))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-texttospeech/issues/1127)) ([#150](https://www.github.com/googleapis/python-texttospeech/issues/150)) ([d2954ba](https://www.github.com/googleapis/python-texttospeech/commit/d2954ba91385db6d581f75154fb11c969f6ca0e2)), closes [#1126](https://www.github.com/googleapis/python-texttospeech/issues/1126)
+
 ## [2.4.0](https://www.github.com/googleapis/python-texttospeech/compare/v2.3.0...v2.4.0) (2021-05-28)
 
 
