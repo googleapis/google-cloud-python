@@ -136,7 +136,25 @@ def test_speech_translation_service_client_service_account_always_use_jwt(client
     ) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         client = client_class(credentials=creds)
-        use_jwt.assert_called_with(True)
+        use_jwt.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "transport_class,transport_name",
+    [
+        (transports.SpeechTranslationServiceGrpcTransport, "grpc"),
+        (transports.SpeechTranslationServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+    ],
+)
+def test_speech_translation_service_client_service_account_always_use_jwt_true(
+    transport_class, transport_name
+):
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
 
 
 @pytest.mark.parametrize(
@@ -867,7 +885,7 @@ def test_speech_translation_service_grpc_transport_client_cert_source_for_mtls(
             "squid.clam.whelk:443",
             credentials=cred,
             credentials_file=None,
-            scopes=("https://www.googleapis.com/auth/cloud-platform",),
+            scopes=None,
             ssl_credentials=mock_ssl_channel_creds,
             quota_project_id=None,
             options=[
@@ -976,7 +994,7 @@ def test_speech_translation_service_transport_channel_mtls_with_client_cert_sour
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
                 credentials_file=None,
-                scopes=("https://www.googleapis.com/auth/cloud-platform",),
+                scopes=None,
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
                 options=[
@@ -1023,7 +1041,7 @@ def test_speech_translation_service_transport_channel_mtls_with_adc(transport_cl
                 "mtls.squid.clam.whelk:443",
                 credentials=mock_cred,
                 credentials_file=None,
-                scopes=("https://www.googleapis.com/auth/cloud-platform",),
+                scopes=None,
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
                 options=[
