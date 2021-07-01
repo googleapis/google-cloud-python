@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-shell/compare/v0.1.0...v0.2.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#9](https://www.github.com/googleapis/python-shell/issues/9)) ([13ce7ba](https://www.github.com/googleapis/python-shell/commit/13ce7bab4613f287a73743d80d1bbbee5c59969a))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([b447260](https://www.github.com/googleapis/python-shell/commit/b4472606f4eb050b9135d5dd948d65ae065a1e04))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-shell/issues/1127)) ([#4](https://www.github.com/googleapis/python-shell/issues/4)) ([0150a5d](https://www.github.com/googleapis/python-shell/commit/0150a5d71e22b6aeb194cd2992d58ed03683d1ca)), closes [#1126](https://www.github.com/googleapis/python-shell/issues/1126)
+
 ## 0.1.0 (2021-06-13)
 
 
