@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-binary-authorization/compare/v0.2.2...v0.3.0) (2021-06-30)
+
+
+### Features
+
+* add always_use_jwt_access ([#48](https://www.github.com/googleapis/python-binary-authorization/issues/48)) ([63a3c9a](https://www.github.com/googleapis/python-binary-authorization/commit/63a3c9a8f8c9ab97436882adc7658260aa66df9d))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#52](https://www.github.com/googleapis/python-binary-authorization/issues/52)) ([b840980](https://www.github.com/googleapis/python-binary-authorization/commit/b84098014328d14531caafe30585a5bd55c216f4))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-binary-authorization/issues/1127)) ([#43](https://www.github.com/googleapis/python-binary-authorization/issues/43)) ([726d589](https://www.github.com/googleapis/python-binary-authorization/commit/726d58920de4e97a70cbbe1fd88ac427224ba1ea)), closes [#1126](https://www.github.com/googleapis/python-binary-authorization/issues/1126)
+
 ### [0.2.2](https://www.github.com/googleapis/python-binary-authorization/compare/v0.2.1...v0.2.2) (2021-06-16)
 
 
