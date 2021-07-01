@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-monitoring/compare/v2.3.0...v2.4.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#165](https://www.github.com/googleapis/python-monitoring/issues/165)) ([064f1e0](https://www.github.com/googleapis/python-monitoring/commit/064f1e0a8df02c04bdae6b13c645f2b399c2c1ef))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#171](https://www.github.com/googleapis/python-monitoring/issues/171)) ([c194a00](https://www.github.com/googleapis/python-monitoring/commit/c194a00031763153bcc67346328a02b85fabc359))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-monitoring/issues/1127)) ([#159](https://www.github.com/googleapis/python-monitoring/issues/159)) ([adc82c9](https://www.github.com/googleapis/python-monitoring/commit/adc82c9d1812fb0efe00cbfa09f19e8c04277881)), closes [#1126](https://www.github.com/googleapis/python-monitoring/issues/1126)
+
 ## [2.3.0](https://www.github.com/googleapis/python-monitoring/compare/v2.2.1...v2.3.0) (2021-06-18)
 
 
