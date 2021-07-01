@@ -124,7 +124,25 @@ def test_tag_bindings_client_service_account_always_use_jwt(client_class):
     ) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         client = client_class(credentials=creds)
-        use_jwt.assert_called_with(True)
+        use_jwt.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "transport_class,transport_name",
+    [
+        (transports.TagBindingsGrpcTransport, "grpc"),
+        (transports.TagBindingsGrpcAsyncIOTransport, "grpc_asyncio"),
+    ],
+)
+def test_tag_bindings_client_service_account_always_use_jwt_true(
+    transport_class, transport_name
+):
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
 
 
 @pytest.mark.parametrize("client_class", [TagBindingsClient, TagBindingsAsyncClient,])
@@ -1432,10 +1450,7 @@ def test_tag_bindings_grpc_transport_client_cert_source_for_mtls(transport_class
             "squid.clam.whelk:443",
             credentials=cred,
             credentials_file=None,
-            scopes=(
-                "https://www.googleapis.com/auth/cloud-platform",
-                "https://www.googleapis.com/auth/cloud-platform.read-only",
-            ),
+            scopes=None,
             ssl_credentials=mock_ssl_channel_creds,
             quota_project_id=None,
             options=[
@@ -1539,10 +1554,7 @@ def test_tag_bindings_transport_channel_mtls_with_client_cert_source(transport_c
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
                 credentials_file=None,
-                scopes=(
-                    "https://www.googleapis.com/auth/cloud-platform",
-                    "https://www.googleapis.com/auth/cloud-platform.read-only",
-                ),
+                scopes=None,
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
                 options=[
@@ -1586,10 +1598,7 @@ def test_tag_bindings_transport_channel_mtls_with_adc(transport_class):
                 "mtls.squid.clam.whelk:443",
                 credentials=mock_cred,
                 credentials_file=None,
-                scopes=(
-                    "https://www.googleapis.com/auth/cloud-platform",
-                    "https://www.googleapis.com/auth/cloud-platform.read-only",
-                ),
+                scopes=None,
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
                 options=[
