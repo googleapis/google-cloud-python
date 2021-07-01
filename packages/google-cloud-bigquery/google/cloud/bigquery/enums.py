@@ -21,6 +21,13 @@ from google.cloud.bigquery_v2 import types as gapic_types
 from google.cloud.bigquery.query import ScalarQueryParameterType
 
 
+class AutoRowIDs(enum.Enum):
+    """How to handle automatic insert IDs when inserting rows as a stream."""
+
+    DISABLED = enum.auto()
+    GENERATE_UUID = enum.auto()
+
+
 class Compression(object):
     """The compression type to use for exported files. The default value is
     :attr:`NONE`.

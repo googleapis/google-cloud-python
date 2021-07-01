@@ -37,6 +37,7 @@ from google.cloud.bigquery.dataset import AccessEntry
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery import enums
+from google.cloud.bigquery.enums import AutoRowIDs
 from google.cloud.bigquery.enums import KeyResultStatementKind
 from google.cloud.bigquery.enums import SqlTypeNames
 from google.cloud.bigquery.enums import StandardSqlDataTypes
@@ -144,6 +145,7 @@ __all__ = [
     "DEFAULT_RETRY",
     # Enum Constants
     "enums",
+    "AutoRowIDs",
     "Compression",
     "CreateDisposition",
     "DestinationFormat",
