@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -22,14 +20,14 @@ from typing import Dict, Sequence, Tuple, Type, Union
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from grafeas.grafeas_v1.services.grafeas import pagers
 from grafeas.grafeas_v1.types import attestation
 from grafeas.grafeas_v1.types import build
@@ -41,8 +39,7 @@ from grafeas.grafeas_v1.types import image
 from grafeas.grafeas_v1.types import package
 from grafeas.grafeas_v1.types import upgrade
 from grafeas.grafeas_v1.types import vulnerability
-
-from .transports.base import GrafeasTransport
+from .transports.base import GrafeasTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import GrafeasGrpcAsyncIOTransport
 from .client import GrafeasClient
 
@@ -68,12 +65,52 @@ class GrafeasAsyncClient:
 
     _client: GrafeasClient
 
-    DEFAULT_ENDPOINT = GrafeasClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = GrafeasClient.DEFAULT_MTLS_ENDPOINT
-
-    occurrence_path = staticmethod(GrafeasClient.occurrence_path)
-
     note_path = staticmethod(GrafeasClient.note_path)
+    parse_note_path = staticmethod(GrafeasClient.parse_note_path)
+    occurrence_path = staticmethod(GrafeasClient.occurrence_path)
+    parse_occurrence_path = staticmethod(GrafeasClient.parse_occurrence_path)
+    project_path = staticmethod(GrafeasClient.project_path)
+    parse_project_path = staticmethod(GrafeasClient.parse_project_path)
+    common_billing_account_path = staticmethod(
+        GrafeasClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        GrafeasClient.parse_common_billing_account_path
+    )
+    common_folder_path = staticmethod(GrafeasClient.common_folder_path)
+    parse_common_folder_path = staticmethod(GrafeasClient.parse_common_folder_path)
+    common_organization_path = staticmethod(GrafeasClient.common_organization_path)
+    parse_common_organization_path = staticmethod(
+        GrafeasClient.parse_common_organization_path
+    )
+    common_project_path = staticmethod(GrafeasClient.common_project_path)
+    parse_common_project_path = staticmethod(GrafeasClient.parse_common_project_path)
+    common_location_path = staticmethod(GrafeasClient.common_location_path)
+    parse_common_location_path = staticmethod(GrafeasClient.parse_common_location_path)
+
+    @classmethod
+    def from_service_account_info(cls, info: dict, *args, **kwargs):
+        """Creates an instance of this client using the provided credentials
+            info.
+
+        Args:
+            info (dict): The service account private key info.
+            args: Additional arguments to pass to the constructor.
+            kwargs: Additional arguments to pass to the constructor.
+
+        Returns:
+            GrafeasAsyncClient: The constructed client.
+        """
+        return GrafeasClient.from_service_account_info.__func__(GrafeasAsyncClient, info, *args, **kwargs)  # type: ignore
+
+    @property
+    def transport(self) -> GrafeasTransport:
+        """Returns the transport used by the client instance.
+
+        Returns:
+            GrafeasTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
     get_transport_class = functools.partial(
         type(GrafeasClient).get_transport_class, type(GrafeasClient)
@@ -107,15 +144,15 @@ class GrafeasAsyncClient:
         r"""Gets the specified occurrence.
 
         Args:
-            request (:class:`~.grafeas.GetOccurrenceRequest`):
+            request (:class:`grafeas.grafeas_v1.types.GetOccurrenceRequest`):
                 The request object. Request to get an occurrence.
             name (:class:`str`):
                 The name of the occurrence in the form of
                 ``projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -123,7 +160,7 @@ class GrafeasAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.grafeas.Occurrence:
+            grafeas.grafeas_v1.types.Occurrence:
                 An instance of an analysis type that
                 has been found on a resource.
 
@@ -131,7 +168,8 @@ class GrafeasAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -141,7 +179,6 @@ class GrafeasAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -154,11 +191,13 @@ class GrafeasAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
+                deadline=30.0,
             ),
             default_timeout=30.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -186,11 +225,12 @@ class GrafeasAsyncClient:
         r"""Lists occurrences for the specified project.
 
         Args:
-            request (:class:`~.grafeas.ListOccurrencesRequest`):
+            request (:class:`grafeas.grafeas_v1.types.ListOccurrencesRequest`):
                 The request object. Request to list occurrences.
             parent (:class:`str`):
                 The name of the project to list occurrences for in the
                 form of ``projects/[PROJECT_ID]``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -199,7 +239,6 @@ class GrafeasAsyncClient:
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -207,7 +246,7 @@ class GrafeasAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListOccurrencesAsyncPager:
+            grafeas.grafeas_v1.services.grafeas.pagers.ListOccurrencesAsyncPager:
                 Response for listing occurrences.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -217,7 +256,8 @@ class GrafeasAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, filter]):
+        has_flattened_params = any([parent, filter])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -227,7 +267,6 @@ class GrafeasAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if filter is not None:
@@ -242,11 +281,13 @@ class GrafeasAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
+                deadline=30.0,
             ),
             default_timeout=30.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -281,15 +322,15 @@ class GrafeasAsyncClient:
         is no longer applicable for the given resource.
 
         Args:
-            request (:class:`~.grafeas.DeleteOccurrenceRequest`):
+            request (:class:`grafeas.grafeas_v1.types.DeleteOccurrenceRequest`):
                 The request object. Request to delete an occurrence.
             name (:class:`str`):
                 The name of the occurrence in the form of
                 ``projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -299,7 +340,8 @@ class GrafeasAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -309,7 +351,6 @@ class GrafeasAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -322,11 +363,13 @@ class GrafeasAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
+                deadline=30.0,
             ),
             default_timeout=30.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -353,21 +396,21 @@ class GrafeasAsyncClient:
         r"""Creates a new occurrence.
 
         Args:
-            request (:class:`~.grafeas.CreateOccurrenceRequest`):
+            request (:class:`grafeas.grafeas_v1.types.CreateOccurrenceRequest`):
                 The request object. Request to create a new occurrence.
             parent (:class:`str`):
                 The name of the project in the form of
                 ``projects/[PROJECT_ID]``, under which the occurrence is
                 to be created.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            occurrence (:class:`~.grafeas.Occurrence`):
+            occurrence (:class:`grafeas.grafeas_v1.types.Occurrence`):
                 The occurrence to create.
                 This corresponds to the ``occurrence`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -375,7 +418,7 @@ class GrafeasAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.grafeas.Occurrence:
+            grafeas.grafeas_v1.types.Occurrence:
                 An instance of an analysis type that
                 has been found on a resource.
 
@@ -383,7 +426,8 @@ class GrafeasAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, occurrence]):
+        has_flattened_params = any([parent, occurrence])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -393,7 +437,6 @@ class GrafeasAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if occurrence is not None:
@@ -404,7 +447,7 @@ class GrafeasAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_occurrence,
             default_timeout=30.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -432,23 +475,24 @@ class GrafeasAsyncClient:
         r"""Creates new occurrences in batch.
 
         Args:
-            request (:class:`~.grafeas.BatchCreateOccurrencesRequest`):
+            request (:class:`grafeas.grafeas_v1.types.BatchCreateOccurrencesRequest`):
                 The request object. Request to create occurrences in
                 batch.
             parent (:class:`str`):
                 The name of the project in the form of
                 ``projects/[PROJECT_ID]``, under which the occurrences
                 are to be created.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            occurrences (:class:`Sequence[~.grafeas.Occurrence]`):
+            occurrences (:class:`Sequence[grafeas.grafeas_v1.types.Occurrence]`):
                 The occurrences to create. Max
                 allowed length is 1000.
+
                 This corresponds to the ``occurrences`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -456,7 +500,7 @@ class GrafeasAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.grafeas.BatchCreateOccurrencesResponse:
+            grafeas.grafeas_v1.types.BatchCreateOccurrencesResponse:
                 Response for creating occurrences in
                 batch.
 
@@ -464,7 +508,8 @@ class GrafeasAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, occurrences]):
+        has_flattened_params = any([parent, occurrences])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -474,18 +519,17 @@ class GrafeasAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
-        if occurrences is not None:
-            request.occurrences = occurrences
+        if occurrences:
+            request.occurrences.extend(occurrences)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_create_occurrences,
             default_timeout=30.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -506,7 +550,7 @@ class GrafeasAsyncClient:
         *,
         name: str = None,
         occurrence: grafeas.Occurrence = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -514,25 +558,25 @@ class GrafeasAsyncClient:
         r"""Updates the specified occurrence.
 
         Args:
-            request (:class:`~.grafeas.UpdateOccurrenceRequest`):
+            request (:class:`grafeas.grafeas_v1.types.UpdateOccurrenceRequest`):
                 The request object. Request to update an occurrence.
             name (:class:`str`):
                 The name of the occurrence in the form of
                 ``projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            occurrence (:class:`~.grafeas.Occurrence`):
+            occurrence (:class:`grafeas.grafeas_v1.types.Occurrence`):
                 The updated occurrence.
                 This corresponds to the ``occurrence`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 The fields to update.
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -540,7 +584,7 @@ class GrafeasAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.grafeas.Occurrence:
+            grafeas.grafeas_v1.types.Occurrence:
                 An instance of an analysis type that
                 has been found on a resource.
 
@@ -548,7 +592,8 @@ class GrafeasAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, occurrence, update_mask]):
+        has_flattened_params = any([name, occurrence, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -558,7 +603,6 @@ class GrafeasAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
         if occurrence is not None:
@@ -571,7 +615,7 @@ class GrafeasAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_occurrence,
             default_timeout=30.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -600,16 +644,16 @@ class GrafeasAsyncClient:
         belongs to a provider project.
 
         Args:
-            request (:class:`~.grafeas.GetOccurrenceNoteRequest`):
+            request (:class:`grafeas.grafeas_v1.types.GetOccurrenceNoteRequest`):
                 The request object. Request to get the note to which the
                 specified occurrence is attached.
             name (:class:`str`):
                 The name of the occurrence in the form of
                 ``projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -617,7 +661,7 @@ class GrafeasAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.grafeas.Note:
+            grafeas.grafeas_v1.types.Note:
                 A type of analysis that can be done
                 for a resource.
 
@@ -625,7 +669,8 @@ class GrafeasAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -635,7 +680,6 @@ class GrafeasAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -648,11 +692,13 @@ class GrafeasAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
+                deadline=30.0,
             ),
             default_timeout=30.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -679,15 +725,15 @@ class GrafeasAsyncClient:
         r"""Gets the specified note.
 
         Args:
-            request (:class:`~.grafeas.GetNoteRequest`):
+            request (:class:`grafeas.grafeas_v1.types.GetNoteRequest`):
                 The request object. Request to get a note.
             name (:class:`str`):
                 The name of the note in the form of
                 ``projects/[PROVIDER_ID]/notes/[NOTE_ID]``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -695,7 +741,7 @@ class GrafeasAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.grafeas.Note:
+            grafeas.grafeas_v1.types.Note:
                 A type of analysis that can be done
                 for a resource.
 
@@ -703,7 +749,8 @@ class GrafeasAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -713,7 +760,6 @@ class GrafeasAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -726,11 +772,13 @@ class GrafeasAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
+                deadline=30.0,
             ),
             default_timeout=30.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -758,11 +806,12 @@ class GrafeasAsyncClient:
         r"""Lists notes for the specified project.
 
         Args:
-            request (:class:`~.grafeas.ListNotesRequest`):
+            request (:class:`grafeas.grafeas_v1.types.ListNotesRequest`):
                 The request object. Request to list notes.
             parent (:class:`str`):
                 The name of the project to list notes for in the form of
                 ``projects/[PROJECT_ID]``.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -771,7 +820,6 @@ class GrafeasAsyncClient:
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -779,7 +827,7 @@ class GrafeasAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListNotesAsyncPager:
+            grafeas.grafeas_v1.services.grafeas.pagers.ListNotesAsyncPager:
                 Response for listing notes.
                 Iterating over this object will yield
                 results and resolve additional pages
@@ -789,7 +837,8 @@ class GrafeasAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, filter]):
+        has_flattened_params = any([parent, filter])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -799,7 +848,6 @@ class GrafeasAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if filter is not None:
@@ -814,11 +862,13 @@ class GrafeasAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
+                deadline=30.0,
             ),
             default_timeout=30.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -851,15 +901,15 @@ class GrafeasAsyncClient:
         r"""Deletes the specified note.
 
         Args:
-            request (:class:`~.grafeas.DeleteNoteRequest`):
+            request (:class:`grafeas.grafeas_v1.types.DeleteNoteRequest`):
                 The request object. Request to delete a note.
             name (:class:`str`):
                 The name of the note in the form of
                 ``projects/[PROVIDER_ID]/notes/[NOTE_ID]``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -869,7 +919,8 @@ class GrafeasAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name]):
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -879,7 +930,6 @@ class GrafeasAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
 
@@ -892,11 +942,13 @@ class GrafeasAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
+                deadline=30.0,
             ),
             default_timeout=30.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -924,12 +976,13 @@ class GrafeasAsyncClient:
         r"""Creates a new note.
 
         Args:
-            request (:class:`~.grafeas.CreateNoteRequest`):
+            request (:class:`grafeas.grafeas_v1.types.CreateNoteRequest`):
                 The request object. Request to create a new note.
             parent (:class:`str`):
                 The name of the project in the form of
                 ``projects/[PROJECT_ID]``, under which the note is to be
                 created.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -938,12 +991,11 @@ class GrafeasAsyncClient:
                 This corresponds to the ``note_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            note (:class:`~.grafeas.Note`):
+            note (:class:`grafeas.grafeas_v1.types.Note`):
                 The note to create.
                 This corresponds to the ``note`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -951,7 +1003,7 @@ class GrafeasAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.grafeas.Note:
+            grafeas.grafeas_v1.types.Note:
                 A type of analysis that can be done
                 for a resource.
 
@@ -959,7 +1011,8 @@ class GrafeasAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, note_id, note]):
+        has_flattened_params = any([parent, note_id, note])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -969,7 +1022,6 @@ class GrafeasAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
         if note_id is not None:
@@ -982,7 +1034,7 @@ class GrafeasAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.create_note,
             default_timeout=30.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1010,22 +1062,23 @@ class GrafeasAsyncClient:
         r"""Creates new notes in batch.
 
         Args:
-            request (:class:`~.grafeas.BatchCreateNotesRequest`):
+            request (:class:`grafeas.grafeas_v1.types.BatchCreateNotesRequest`):
                 The request object. Request to create notes in batch.
             parent (:class:`str`):
                 The name of the project in the form of
                 ``projects/[PROJECT_ID]``, under which the notes are to
                 be created.
+
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            notes (:class:`Sequence[~.grafeas.BatchCreateNotesRequest.NotesEntry]`):
+            notes (:class:`Sequence[grafeas.grafeas_v1.types.BatchCreateNotesRequest.NotesEntry]`):
                 The notes to create. Max allowed
                 length is 1000.
+
                 This corresponds to the ``notes`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1033,13 +1086,14 @@ class GrafeasAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.grafeas.BatchCreateNotesResponse:
+            grafeas.grafeas_v1.types.BatchCreateNotesResponse:
                 Response for creating notes in batch.
         """
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([parent, notes]):
+        has_flattened_params = any([parent, notes])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1049,18 +1103,18 @@ class GrafeasAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if parent is not None:
             request.parent = parent
-        if notes is not None:
-            request.notes = notes
+
+        if notes:
+            request.notes.update(notes)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.batch_create_notes,
             default_timeout=30.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1081,7 +1135,7 @@ class GrafeasAsyncClient:
         *,
         name: str = None,
         note: grafeas.Note = None,
-        update_mask: field_mask.FieldMask = None,
+        update_mask: field_mask_pb2.FieldMask = None,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1089,25 +1143,25 @@ class GrafeasAsyncClient:
         r"""Updates the specified note.
 
         Args:
-            request (:class:`~.grafeas.UpdateNoteRequest`):
+            request (:class:`grafeas.grafeas_v1.types.UpdateNoteRequest`):
                 The request object. Request to update a note.
             name (:class:`str`):
                 The name of the note in the form of
                 ``projects/[PROVIDER_ID]/notes/[NOTE_ID]``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            note (:class:`~.grafeas.Note`):
+            note (:class:`grafeas.grafeas_v1.types.Note`):
                 The updated note.
                 This corresponds to the ``note`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (:class:`~.field_mask.FieldMask`):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 The fields to update.
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1115,7 +1169,7 @@ class GrafeasAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.grafeas.Note:
+            grafeas.grafeas_v1.types.Note:
                 A type of analysis that can be done
                 for a resource.
 
@@ -1123,7 +1177,8 @@ class GrafeasAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, note, update_mask]):
+        has_flattened_params = any([name, note, update_mask])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1133,7 +1188,6 @@ class GrafeasAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
         if note is not None:
@@ -1146,7 +1200,7 @@ class GrafeasAsyncClient:
         rpc = gapic_v1.method_async.wrap_method(
             self._client._transport.update_note,
             default_timeout=30.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1177,12 +1231,13 @@ class GrafeasAsyncClient:
         specified note.
 
         Args:
-            request (:class:`~.grafeas.ListNoteOccurrencesRequest`):
+            request (:class:`grafeas.grafeas_v1.types.ListNoteOccurrencesRequest`):
                 The request object. Request to list occurrences for a
                 note.
             name (:class:`str`):
                 The name of the note to list occurrences for in the form
                 of ``projects/[PROVIDER_ID]/notes/[NOTE_ID]``.
+
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
@@ -1191,7 +1246,6 @@ class GrafeasAsyncClient:
                 This corresponds to the ``filter`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1199,7 +1253,7 @@ class GrafeasAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            ~.pagers.ListNoteOccurrencesAsyncPager:
+            grafeas.grafeas_v1.services.grafeas.pagers.ListNoteOccurrencesAsyncPager:
                 Response for listing occurrences for
                 a note.
                 Iterating over this object will yield
@@ -1210,7 +1264,8 @@ class GrafeasAsyncClient:
         # Create or coerce a protobuf request object.
         # Sanity check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
-        if request is not None and any([name, filter]):
+        has_flattened_params = any([name, filter])
+        if request is not None and has_flattened_params:
             raise ValueError(
                 "If the `request` argument is set, then none of "
                 "the individual field arguments should be set."
@@ -1220,7 +1275,6 @@ class GrafeasAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
         if filter is not None:
@@ -1235,11 +1289,13 @@ class GrafeasAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.DeadlineExceeded, exceptions.ServiceUnavailable,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
+                deadline=30.0,
             ),
             default_timeout=30.0,
-            client_info=_client_info,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Certain fields should be provided within the metadata header;
@@ -1262,11 +1318,11 @@ class GrafeasAsyncClient:
 
 
 try:
-    _client_info = gapic_v1.client_info.ClientInfo(
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
         gapic_version=pkg_resources.get_distribution("grafeas",).version,
     )
 except pkg_resources.DistributionNotFound:
-    _client_info = gapic_v1.client_info.ClientInfo()
+    DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
 __all__ = ("GrafeasAsyncClient",)

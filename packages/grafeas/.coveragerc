@@ -2,9 +2,9 @@
 branch = True
 
 [report]
-fail_under = 100
 show_missing = True
-omit = grafeas/__init__.py
+omit =
+    grafeas/grafeas/__init__.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER

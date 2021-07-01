@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
 
@@ -38,9 +36,8 @@ class Layer(proto.Message):
             directive.
     """
 
-    directive = proto.Field(proto.STRING, number=1)
-
-    arguments = proto.Field(proto.STRING, number=2)
+    directive = proto.Field(proto.STRING, number=1,)
+    arguments = proto.Field(proto.STRING, number=2,)
 
 
 class Fingerprint(proto.Message):
@@ -60,11 +57,9 @@ class Fingerprint(proto.Message):
             v2_name[N+1]) Only the name of the final blob is kept.
     """
 
-    v1_name = proto.Field(proto.STRING, number=1)
-
-    v2_blob = proto.RepeatedField(proto.STRING, number=2)
-
-    v2_name = proto.Field(proto.STRING, number=3)
+    v1_name = proto.Field(proto.STRING, number=1,)
+    v2_blob = proto.RepeatedField(proto.STRING, number=2,)
+    v2_name = proto.Field(proto.STRING, number=3,)
 
 
 class ImageNote(proto.Message):
@@ -77,14 +72,13 @@ class ImageNote(proto.Message):
         resource_url (str):
             Required. Immutable. The resource_url for the resource
             representing the basis of associated occurrence images.
-        fingerprint (~.image.Fingerprint):
+        fingerprint (grafeas.grafeas_v1.types.Fingerprint):
             Required. Immutable. The fingerprint of the
             base image.
     """
 
-    resource_url = proto.Field(proto.STRING, number=1)
-
-    fingerprint = proto.Field(proto.MESSAGE, number=2, message=Fingerprint,)
+    resource_url = proto.Field(proto.STRING, number=1,)
+    fingerprint = proto.Field(proto.MESSAGE, number=2, message="Fingerprint",)
 
 
 class ImageOccurrence(proto.Message):
@@ -93,14 +87,14 @@ class ImageOccurrence(proto.Message):
     with FROM <DockerImage.Basis in attached Note>.
 
     Attributes:
-        fingerprint (~.image.Fingerprint):
+        fingerprint (grafeas.grafeas_v1.types.Fingerprint):
             Required. The fingerprint of the derived
             image.
         distance (int):
             Output only. The number of layers by which
             this image differs from the associated image
             basis.
-        layer_info (Sequence[~.image.Layer]):
+        layer_info (Sequence[grafeas.grafeas_v1.types.Layer]):
             This contains layer-specific metadata, if populated it has
             length "distance" and is ordered with [distance] being the
             layer immediately following the base image and [1] being the
@@ -110,13 +104,10 @@ class ImageOccurrence(proto.Message):
             for the derived image occurrence.
     """
 
-    fingerprint = proto.Field(proto.MESSAGE, number=1, message=Fingerprint,)
-
-    distance = proto.Field(proto.INT32, number=2)
-
-    layer_info = proto.RepeatedField(proto.MESSAGE, number=3, message=Layer,)
-
-    base_resource_url = proto.Field(proto.STRING, number=4)
+    fingerprint = proto.Field(proto.MESSAGE, number=1, message="Fingerprint",)
+    distance = proto.Field(proto.INT32, number=2,)
+    layer_info = proto.RepeatedField(proto.MESSAGE, number=3, message="Layer",)
+    base_resource_url = proto.Field(proto.STRING, number=4,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

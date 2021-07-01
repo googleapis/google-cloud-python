@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,13 +15,15 @@
 #
 
 from .services.grafeas import GrafeasClient
+from .services.grafeas import GrafeasAsyncClient
+
 from .types.attestation import AttestationNote
 from .types.attestation import AttestationOccurrence
 from .types.build import BuildNote
 from .types.build import BuildOccurrence
-from .types.common import NoteKind
 from .types.common import RelatedUrl
 from .types.common import Signature
+from .types.common import NoteKind
 from .types.cvss import CVSSv3
 from .types.deployment import DeploymentNote
 from .types.deployment import DeploymentOccurrence
@@ -53,12 +54,12 @@ from .types.image import Fingerprint
 from .types.image import ImageNote
 from .types.image import ImageOccurrence
 from .types.image import Layer
-from .types.package import Architecture
 from .types.package import Distribution
 from .types.package import Location
 from .types.package import PackageNote
 from .types.package import PackageOccurrence
 from .types.package import Version
+from .types.package import Architecture
 from .types.provenance import AliasContext
 from .types.provenance import Artifact
 from .types.provenance import BuildProvenance
@@ -76,12 +77,12 @@ from .types.upgrade import UpgradeDistribution
 from .types.upgrade import UpgradeNote
 from .types.upgrade import UpgradeOccurrence
 from .types.upgrade import WindowsUpdate
-from .types.vulnerability import Severity
 from .types.vulnerability import VulnerabilityNote
 from .types.vulnerability import VulnerabilityOccurrence
-
+from .types.vulnerability import Severity
 
 __all__ = (
+    "GrafeasAsyncClient",
     "AliasContext",
     "Architecture",
     "Artifact",
@@ -113,6 +114,7 @@ __all__ = (
     "GetOccurrenceNoteRequest",
     "GetOccurrenceRequest",
     "GitSourceContext",
+    "GrafeasClient",
     "Hash",
     "ImageNote",
     "ImageOccurrence",
@@ -145,5 +147,4 @@ __all__ = (
     "VulnerabilityNote",
     "VulnerabilityOccurrence",
     "WindowsUpdate",
-    "GrafeasClient",
 )

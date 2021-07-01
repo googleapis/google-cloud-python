@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,21 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-from typing import Callable, Dict, Optional, Sequence, Tuple
+import warnings
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import grpc_helpers  # type: ignore
-from google import auth  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.api_core import gapic_v1  # type: ignore
+import google.auth  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-
 
 import grpc  # type: ignore
 
-from google.protobuf import empty_pb2 as empty  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from grafeas.grafeas_v1.types import grafeas
-
-from .base import GrafeasTransport
+from .base import GrafeasTransport, DEFAULT_CLIENT_INFO
 
 
 class GrafeasGrpcTransport(GrafeasTransport):
@@ -65,18 +63,22 @@ class GrafeasGrpcTransport(GrafeasTransport):
         self,
         *,
         host: str = "",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Sequence[str] = None,
         channel: grpc.Channel = None,
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
-        quota_project_id: Optional[str] = None
+        ssl_channel_credentials: grpc.ChannelCredentials = None,
+        client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiate the transport.
 
         Args:
-            host (Optional[str]): The hostname to connect to.
+            host (Optional[str]):
+                 The hostname to connect to.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -90,16 +92,27 @@ class GrafeasGrpcTransport(GrafeasTransport):
                 ignored if ``channel`` is provided.
             channel (Optional[grpc.Channel]): A ``Channel`` instance through
                 which to make calls.
-            api_mtls_endpoint (Optional[str]): The mutual TLS endpoint. If
-                provided, it overrides the ``host`` argument and tries to create
+            api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
+                If provided, it overrides the ``host`` argument and tries to create
                 a mutual TLS channel with client SSL credentials from
                 ``client_cert_source`` or applicatin default SSL credentials.
-            client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]): A
-                callback to provide client SSL certificate bytes and private key
-                bytes, both in PEM format. It is ignored if ``api_mtls_endpoint``
-                is None.
+            client_cert_source (Optional[Callable[[], Tuple[bytes, bytes]]]):
+                Deprecated. A callback to provide client SSL certificate bytes and
+                private key bytes, both in PEM format. It is ignored if
+                ``api_mtls_endpoint`` is None.
+            ssl_channel_credentials (grpc.ChannelCredentials): SSL credentials
+                for grpc channel. It is ignored if ``channel`` is provided.
+            client_cert_source_for_mtls (Optional[Callable[[], Tuple[bytes, bytes]]]):
+                A callback to provide client certificate bytes and private key bytes,
+                both in PEM format. It is used to configure mutual TLS channel. It is
+                ignored if ``channel`` or ``ssl_channel_credentials`` is provided.
             quota_project_id (Optional[str]): An optional project to use for billing
                 and quota.
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
+                your own client library.
 
         Raises:
           google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
@@ -107,69 +120,84 @@ class GrafeasGrpcTransport(GrafeasTransport):
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        if channel:
-            # Sanity check: Ensure that channel and credentials are not both
-            # provided.
-            credentials = False
+        self._grpc_channel = None
+        self._ssl_channel_credentials = ssl_channel_credentials
+        self._stubs: Dict[str, Callable] = {}
 
+        if api_mtls_endpoint:
+            warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
+        if client_cert_source:
+            warnings.warn("client_cert_source is deprecated", DeprecationWarning)
+
+        if channel:
+            # Ignore credentials if a channel was passed.
+            credentials = False
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
-        elif api_mtls_endpoint:
-            host = (
-                api_mtls_endpoint
-                if ":" in api_mtls_endpoint
-                else api_mtls_endpoint + ":443"
-            )
+            self._ssl_channel_credentials = None
 
-            if credentials is None:
-                credentials, _ = auth.default(
-                    scopes=self.AUTH_SCOPES, quota_project_id=quota_project_id
-                )
+        else:
+            if api_mtls_endpoint:
+                host = api_mtls_endpoint
 
-            # Create SSL credentials with client_cert_source or application
-            # default SSL credentials.
-            if client_cert_source:
-                cert, key = client_cert_source()
-                ssl_credentials = grpc.ssl_channel_credentials(
-                    certificate_chain=cert, private_key=key
-                )
+                # Create SSL credentials with client_cert_source or application
+                # default SSL credentials.
+                if client_cert_source:
+                    cert, key = client_cert_source()
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                        certificate_chain=cert, private_key=key
+                    )
+                else:
+                    self._ssl_channel_credentials = SslCredentials().ssl_credentials
+
             else:
-                ssl_credentials = SslCredentials().ssl_credentials
+                if client_cert_source_for_mtls and not ssl_channel_credentials:
+                    cert, key = client_cert_source_for_mtls()
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
+                        certificate_chain=cert, private_key=key
+                    )
 
-            # create a new channel. The provided one is ignored.
-            self._grpc_channel = type(self).create_channel(
-                host,
-                credentials=credentials,
-                credentials_file=credentials_file,
-                ssl_credentials=ssl_credentials,
-                scopes=scopes or self.AUTH_SCOPES,
-                quota_project_id=quota_project_id,
-            )
-
-        self._stubs = {}  # type: Dict[str, Callable]
-
-        # Run the base constructor.
+        # The base transport sets the host, credentials and scopes
         super().__init__(
             host=host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes or self.AUTH_SCOPES,
+            scopes=scopes,
             quota_project_id=quota_project_id,
+            client_info=client_info,
+            always_use_jwt_access=True,
         )
+
+        if not self._grpc_channel:
+            self._grpc_channel = type(self).create_channel(
+                self._host,
+                credentials=self._credentials,
+                credentials_file=credentials_file,
+                scopes=self._scopes,
+                ssl_credentials=self._ssl_channel_credentials,
+                quota_project_id=quota_project_id,
+                options=[
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
+
+        # Wrap messages. This must be done after self._grpc_channel exists
+        self._prep_wrapped_messages(client_info)
 
     @classmethod
     def create_channel(
         cls,
         host: str = "",
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         credentials_file: str = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
-        **kwargs
+        **kwargs,
     ) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
-            address (Optionsl[str]): The host for the channel to use.
+            host (Optional[str]): The host for the channel to use.
             credentials (Optional[~.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If
@@ -192,31 +220,22 @@ class GrafeasGrpcTransport(GrafeasTransport):
             google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
         """
-        scopes = scopes or cls.AUTH_SCOPES
+
         return grpc_helpers.create_channel(
             host,
             credentials=credentials,
             credentials_file=credentials_file,
-            scopes=scopes,
             quota_project_id=quota_project_id,
-            **kwargs
+            default_scopes=cls.AUTH_SCOPES,
+            scopes=scopes,
+            default_host=cls.DEFAULT_HOST,
+            **kwargs,
         )
 
     @property
     def grpc_channel(self) -> grpc.Channel:
-        """Create the channel designed to connect to this service.
-
-        This property caches on the instance; repeated calls return
-        the same channel.
+        """Return the channel designed to connect to this service.
         """
-        # Sanity check: Only create a new channel if we do not already
-        # have one.
-        if not hasattr(self, "_grpc_channel"):
-            self._grpc_channel = self.create_channel(
-                self._host, credentials=self._credentials,
-            )
-
-        # Return the channel from cache.
         return self._grpc_channel
 
     @property
@@ -274,7 +293,7 @@ class GrafeasGrpcTransport(GrafeasTransport):
     @property
     def delete_occurrence(
         self,
-    ) -> Callable[[grafeas.DeleteOccurrenceRequest], empty.Empty]:
+    ) -> Callable[[grafeas.DeleteOccurrenceRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete occurrence method over gRPC.
 
         Deletes the specified occurrence. For example, use
@@ -295,7 +314,7 @@ class GrafeasGrpcTransport(GrafeasTransport):
             self._stubs["delete_occurrence"] = self.grpc_channel.unary_unary(
                 "/grafeas.v1.Grafeas/DeleteOccurrence",
                 request_serializer=grafeas.DeleteOccurrenceRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_occurrence"]
 
@@ -458,7 +477,7 @@ class GrafeasGrpcTransport(GrafeasTransport):
         return self._stubs["list_notes"]
 
     @property
-    def delete_note(self) -> Callable[[grafeas.DeleteNoteRequest], empty.Empty]:
+    def delete_note(self) -> Callable[[grafeas.DeleteNoteRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete note method over gRPC.
 
         Deletes the specified note.
@@ -477,7 +496,7 @@ class GrafeasGrpcTransport(GrafeasTransport):
             self._stubs["delete_note"] = self.grpc_channel.unary_unary(
                 "/grafeas.v1.Grafeas/DeleteNote",
                 request_serializer=grafeas.DeleteNoteRequest.serialize,
-                response_deserializer=empty.Empty.FromString,
+                response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_note"]
 

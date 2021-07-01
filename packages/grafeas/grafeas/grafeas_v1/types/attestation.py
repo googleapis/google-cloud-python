@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
-
 
 from grafeas.grafeas_v1.types import common
 
@@ -38,7 +35,7 @@ class AttestationNote(proto.Message):
     don't all live in the same project.
 
     Attributes:
-        hint (~.attestation.AttestationNote.Hint):
+        hint (grafeas.grafeas_v1.types.AttestationNote.Hint):
             Hint hints at the purpose of the attestation
             authority.
     """
@@ -59,7 +56,7 @@ class AttestationNote(proto.Message):
                 attestation authority, for example "qa".
         """
 
-        human_readable_name = proto.Field(proto.STRING, number=1)
+        human_readable_name = proto.Field(proto.STRING, number=1,)
 
     hint = proto.Field(proto.MESSAGE, number=1, message=Hint,)
 
@@ -79,7 +76,7 @@ class AttestationOccurrence(proto.Message):
         serialized_payload (bytes):
             Required. The serialized payload that is verified by one or
             more ``signatures``.
-        signatures (Sequence[~.common.Signature]):
+        signatures (Sequence[grafeas.grafeas_v1.types.Signature]):
             One or more signatures over ``serialized_payload``. Verifier
             implementations should consider this attestation message
             verified if at least one ``signature`` verifies
@@ -87,8 +84,7 @@ class AttestationOccurrence(proto.Message):
             for more details on signature structure and verification.
     """
 
-    serialized_payload = proto.Field(proto.BYTES, number=1)
-
+    serialized_payload = proto.Field(proto.BYTES, number=1,)
     signatures = proto.RepeatedField(proto.MESSAGE, number=2, message=common.Signature,)
 
 

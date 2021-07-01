@@ -26,6 +26,7 @@ exclude =
   *_pb2.py
 
   # Standard linting exemptions.
+  **/.nox/**
   __pycache__,
   .git,
   *.pyc,

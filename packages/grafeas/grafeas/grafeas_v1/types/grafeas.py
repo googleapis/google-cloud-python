@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from grafeas.grafeas_v1.types import attestation as g_attestation
 from grafeas.grafeas_v1.types import build as g_build
 from grafeas.grafeas_v1.types import common
@@ -77,95 +74,81 @@ class Occurrence(proto.Message):
             occurrence, in the form of
             ``projects/[PROVIDER_ID]/notes/[NOTE_ID]``. This field can
             be used as a filter in list requests.
-        kind (~.common.NoteKind):
+        kind (grafeas.grafeas_v1.types.NoteKind):
             Output only. This explicitly denotes which of
             the occurrence details are specified. This field
             can be used as a filter in list requests.
         remediation (str):
             A description of actions that can be taken to
             remedy the note.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time this occurrence was
             created.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time this occurrence was
             last updated.
-        vulnerability (~.g_vulnerability.VulnerabilityOccurrence):
+        vulnerability (grafeas.grafeas_v1.types.VulnerabilityOccurrence):
             Describes a security vulnerability.
-        build (~.g_build.BuildOccurrence):
+        build (grafeas.grafeas_v1.types.BuildOccurrence):
             Describes a verifiable build.
-        image (~.g_image.ImageOccurrence):
+        image (grafeas.grafeas_v1.types.ImageOccurrence):
             Describes how this resource derives from the
             basis in the associated note.
-        package (~.g_package.PackageOccurrence):
+        package (grafeas.grafeas_v1.types.PackageOccurrence):
             Describes the installation of a package on
             the linked resource.
-        deployment (~.g_deployment.DeploymentOccurrence):
+        deployment (grafeas.grafeas_v1.types.DeploymentOccurrence):
             Describes the deployment of an artifact on a
             runtime.
-        discovery (~.g_discovery.DiscoveryOccurrence):
+        discovery (grafeas.grafeas_v1.types.DiscoveryOccurrence):
             Describes when a resource was discovered.
-        attestation (~.g_attestation.AttestationOccurrence):
+        attestation (grafeas.grafeas_v1.types.AttestationOccurrence):
             Describes an attestation of an artifact.
-        upgrade (~.g_upgrade.UpgradeOccurrence):
+        upgrade (grafeas.grafeas_v1.types.UpgradeOccurrence):
             Describes an available package upgrade on the
             linked resource.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    resource_uri = proto.Field(proto.STRING, number=2)
-
-    note_name = proto.Field(proto.STRING, number=3)
-
+    name = proto.Field(proto.STRING, number=1,)
+    resource_uri = proto.Field(proto.STRING, number=2,)
+    note_name = proto.Field(proto.STRING, number=3,)
     kind = proto.Field(proto.ENUM, number=4, enum=common.NoteKind,)
-
-    remediation = proto.Field(proto.STRING, number=5)
-
-    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=7, message=timestamp.Timestamp,)
-
+    remediation = proto.Field(proto.STRING, number=5,)
+    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
     vulnerability = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="details",
         message=g_vulnerability.VulnerabilityOccurrence,
     )
-
     build = proto.Field(
         proto.MESSAGE, number=9, oneof="details", message=g_build.BuildOccurrence,
     )
-
     image = proto.Field(
         proto.MESSAGE, number=10, oneof="details", message=g_image.ImageOccurrence,
     )
-
     package = proto.Field(
         proto.MESSAGE, number=11, oneof="details", message=g_package.PackageOccurrence,
     )
-
     deployment = proto.Field(
         proto.MESSAGE,
         number=12,
         oneof="details",
         message=g_deployment.DeploymentOccurrence,
     )
-
     discovery = proto.Field(
         proto.MESSAGE,
         number=13,
         oneof="details",
         message=g_discovery.DiscoveryOccurrence,
     )
-
     attestation = proto.Field(
         proto.MESSAGE,
         number=14,
         oneof="details",
         message=g_attestation.AttestationOccurrence,
     )
-
     upgrade = proto.Field(
         proto.MESSAGE, number=15, oneof="details", message=g_upgrade.UpgradeOccurrence,
     )
@@ -182,97 +165,83 @@ class Note(proto.Message):
             A one sentence description of this note.
         long_description (str):
             A detailed description of this note.
-        kind (~.common.NoteKind):
+        kind (grafeas.grafeas_v1.types.NoteKind):
             Output only. The type of analysis. This field
             can be used as a filter in list requests.
-        related_url (Sequence[~.common.RelatedUrl]):
+        related_url (Sequence[grafeas.grafeas_v1.types.RelatedUrl]):
             URLs associated with this note.
-        expiration_time (~.timestamp.Timestamp):
+        expiration_time (google.protobuf.timestamp_pb2.Timestamp):
             Time of expiration for this note. Empty if
             note does not expire.
-        create_time (~.timestamp.Timestamp):
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time this note was created.
             This field can be used as a filter in list
             requests.
-        update_time (~.timestamp.Timestamp):
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time this note was last
             updated. This field can be used as a filter in
             list requests.
         related_note_names (Sequence[str]):
             Other notes related to this note.
-        vulnerability (~.g_vulnerability.VulnerabilityNote):
+        vulnerability (grafeas.grafeas_v1.types.VulnerabilityNote):
             A note describing a package vulnerability.
-        build (~.g_build.BuildNote):
+        build (grafeas.grafeas_v1.types.BuildNote):
             A note describing build provenance for a
             verifiable build.
-        image (~.g_image.ImageNote):
+        image (grafeas.grafeas_v1.types.ImageNote):
             A note describing a base image.
-        package (~.g_package.PackageNote):
+        package (grafeas.grafeas_v1.types.PackageNote):
             A note describing a package hosted by various
             package managers.
-        deployment (~.g_deployment.DeploymentNote):
+        deployment (grafeas.grafeas_v1.types.DeploymentNote):
             A note describing something that can be
             deployed.
-        discovery (~.g_discovery.DiscoveryNote):
+        discovery (grafeas.grafeas_v1.types.DiscoveryNote):
             A note describing the initial analysis of a
             resource.
-        attestation (~.g_attestation.AttestationNote):
+        attestation (grafeas.grafeas_v1.types.AttestationNote):
             A note describing an attestation role.
-        upgrade (~.g_upgrade.UpgradeNote):
+        upgrade (grafeas.grafeas_v1.types.UpgradeNote):
             A note describing available package upgrades.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    short_description = proto.Field(proto.STRING, number=2)
-
-    long_description = proto.Field(proto.STRING, number=3)
-
+    name = proto.Field(proto.STRING, number=1,)
+    short_description = proto.Field(proto.STRING, number=2,)
+    long_description = proto.Field(proto.STRING, number=3,)
     kind = proto.Field(proto.ENUM, number=4, enum=common.NoteKind,)
-
     related_url = proto.RepeatedField(
         proto.MESSAGE, number=5, message=common.RelatedUrl,
     )
-
-    expiration_time = proto.Field(proto.MESSAGE, number=6, message=timestamp.Timestamp,)
-
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp.Timestamp,)
-
-    update_time = proto.Field(proto.MESSAGE, number=8, message=timestamp.Timestamp,)
-
-    related_note_names = proto.RepeatedField(proto.STRING, number=9)
-
+    expiration_time = proto.Field(
+        proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,
+    )
+    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
+    related_note_names = proto.RepeatedField(proto.STRING, number=9,)
     vulnerability = proto.Field(
         proto.MESSAGE,
         number=10,
         oneof="type",
         message=g_vulnerability.VulnerabilityNote,
     )
-
     build = proto.Field(
         proto.MESSAGE, number=11, oneof="type", message=g_build.BuildNote,
     )
-
     image = proto.Field(
         proto.MESSAGE, number=12, oneof="type", message=g_image.ImageNote,
     )
-
     package = proto.Field(
         proto.MESSAGE, number=13, oneof="type", message=g_package.PackageNote,
     )
-
     deployment = proto.Field(
         proto.MESSAGE, number=14, oneof="type", message=g_deployment.DeploymentNote,
     )
-
     discovery = proto.Field(
         proto.MESSAGE, number=15, oneof="type", message=g_discovery.DiscoveryNote,
     )
-
     attestation = proto.Field(
         proto.MESSAGE, number=16, oneof="type", message=g_attestation.AttestationNote,
     )
-
     upgrade = proto.Field(
         proto.MESSAGE, number=17, oneof="type", message=g_upgrade.UpgradeNote,
     )
@@ -287,7 +256,7 @@ class GetOccurrenceRequest(proto.Message):
             ``projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListOccurrencesRequest(proto.Message):
@@ -308,20 +277,17 @@ class ListOccurrencesRequest(proto.Message):
             in the list.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class ListOccurrencesResponse(proto.Message):
     r"""Response for listing occurrences.
 
     Attributes:
-        occurrences (Sequence[~.grafeas.Occurrence]):
+        occurrences (Sequence[grafeas.grafeas_v1.types.Occurrence]):
             The occurrences requested.
         next_page_token (str):
             The next pagination token in the list response. It should be
@@ -333,9 +299,8 @@ class ListOccurrencesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    occurrences = proto.RepeatedField(proto.MESSAGE, number=1, message=Occurrence,)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    occurrences = proto.RepeatedField(proto.MESSAGE, number=1, message="Occurrence",)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class DeleteOccurrenceRequest(proto.Message):
@@ -347,7 +312,7 @@ class DeleteOccurrenceRequest(proto.Message):
             ``projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateOccurrenceRequest(proto.Message):
@@ -358,13 +323,12 @@ class CreateOccurrenceRequest(proto.Message):
             The name of the project in the form of
             ``projects/[PROJECT_ID]``, under which the occurrence is to
             be created.
-        occurrence (~.grafeas.Occurrence):
+        occurrence (grafeas.grafeas_v1.types.Occurrence):
             The occurrence to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    occurrence = proto.Field(proto.MESSAGE, number=2, message=Occurrence,)
+    parent = proto.Field(proto.STRING, number=1,)
+    occurrence = proto.Field(proto.MESSAGE, number=2, message="Occurrence",)
 
 
 class UpdateOccurrenceRequest(proto.Message):
@@ -374,17 +338,17 @@ class UpdateOccurrenceRequest(proto.Message):
         name (str):
             The name of the occurrence in the form of
             ``projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]``.
-        occurrence (~.grafeas.Occurrence):
+        occurrence (grafeas.grafeas_v1.types.Occurrence):
             The updated occurrence.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The fields to update.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    occurrence = proto.Field(proto.MESSAGE, number=2, message=Occurrence,)
-
-    update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
+    name = proto.Field(proto.STRING, number=1,)
+    occurrence = proto.Field(proto.MESSAGE, number=2, message="Occurrence",)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+    )
 
 
 class GetNoteRequest(proto.Message):
@@ -396,7 +360,7 @@ class GetNoteRequest(proto.Message):
             ``projects/[PROVIDER_ID]/notes/[NOTE_ID]``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class GetOccurrenceNoteRequest(proto.Message):
@@ -409,7 +373,7 @@ class GetOccurrenceNoteRequest(proto.Message):
             ``projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class ListNotesRequest(proto.Message):
@@ -430,20 +394,17 @@ class ListNotesRequest(proto.Message):
             in the list.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    parent = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class ListNotesResponse(proto.Message):
     r"""Response for listing notes.
 
     Attributes:
-        notes (Sequence[~.grafeas.Note]):
+        notes (Sequence[grafeas.grafeas_v1.types.Note]):
             The notes requested.
         next_page_token (str):
             The next pagination token in the list response. It should be
@@ -455,9 +416,8 @@ class ListNotesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    notes = proto.RepeatedField(proto.MESSAGE, number=1, message=Note,)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    notes = proto.RepeatedField(proto.MESSAGE, number=1, message="Note",)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class DeleteNoteRequest(proto.Message):
@@ -469,7 +429,7 @@ class DeleteNoteRequest(proto.Message):
             ``projects/[PROVIDER_ID]/notes/[NOTE_ID]``.
     """
 
-    name = proto.Field(proto.STRING, number=1)
+    name = proto.Field(proto.STRING, number=1,)
 
 
 class CreateNoteRequest(proto.Message):
@@ -482,15 +442,13 @@ class CreateNoteRequest(proto.Message):
             created.
         note_id (str):
             The ID to use for this note.
-        note (~.grafeas.Note):
+        note (grafeas.grafeas_v1.types.Note):
             The note to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    note_id = proto.Field(proto.STRING, number=2)
-
-    note = proto.Field(proto.MESSAGE, number=3, message=Note,)
+    parent = proto.Field(proto.STRING, number=1,)
+    note_id = proto.Field(proto.STRING, number=2,)
+    note = proto.Field(proto.MESSAGE, number=3, message="Note",)
 
 
 class UpdateNoteRequest(proto.Message):
@@ -500,17 +458,17 @@ class UpdateNoteRequest(proto.Message):
         name (str):
             The name of the note in the form of
             ``projects/[PROVIDER_ID]/notes/[NOTE_ID]``.
-        note (~.grafeas.Note):
+        note (grafeas.grafeas_v1.types.Note):
             The updated note.
-        update_mask (~.field_mask.FieldMask):
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The fields to update.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    note = proto.Field(proto.MESSAGE, number=2, message=Note,)
-
-    update_mask = proto.Field(proto.MESSAGE, number=3, message=field_mask.FieldMask,)
+    name = proto.Field(proto.STRING, number=1,)
+    note = proto.Field(proto.MESSAGE, number=2, message="Note",)
+    update_mask = proto.Field(
+        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+    )
 
 
 class ListNoteOccurrencesRequest(proto.Message):
@@ -529,20 +487,17 @@ class ListNoteOccurrencesRequest(proto.Message):
             in the list.
     """
 
-    name = proto.Field(proto.STRING, number=1)
-
-    filter = proto.Field(proto.STRING, number=2)
-
-    page_size = proto.Field(proto.INT32, number=3)
-
-    page_token = proto.Field(proto.STRING, number=4)
+    name = proto.Field(proto.STRING, number=1,)
+    filter = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(proto.INT32, number=3,)
+    page_token = proto.Field(proto.STRING, number=4,)
 
 
 class ListNoteOccurrencesResponse(proto.Message):
     r"""Response for listing occurrences for a note.
 
     Attributes:
-        occurrences (Sequence[~.grafeas.Occurrence]):
+        occurrences (Sequence[grafeas.grafeas_v1.types.Occurrence]):
             The occurrences attached to the specified
             note.
         next_page_token (str):
@@ -554,9 +509,8 @@ class ListNoteOccurrencesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    occurrences = proto.RepeatedField(proto.MESSAGE, number=1, message=Occurrence,)
-
-    next_page_token = proto.Field(proto.STRING, number=2)
+    occurrences = proto.RepeatedField(proto.MESSAGE, number=1, message="Occurrence",)
+    next_page_token = proto.Field(proto.STRING, number=2,)
 
 
 class BatchCreateNotesRequest(proto.Message):
@@ -567,25 +521,24 @@ class BatchCreateNotesRequest(proto.Message):
             The name of the project in the form of
             ``projects/[PROJECT_ID]``, under which the notes are to be
             created.
-        notes (Sequence[~.grafeas.BatchCreateNotesRequest.NotesEntry]):
+        notes (Sequence[grafeas.grafeas_v1.types.BatchCreateNotesRequest.NotesEntry]):
             The notes to create. Max allowed length is
             1000.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    notes = proto.MapField(proto.STRING, proto.MESSAGE, number=2, message=Note,)
+    parent = proto.Field(proto.STRING, number=1,)
+    notes = proto.MapField(proto.STRING, proto.MESSAGE, number=2, message="Note",)
 
 
 class BatchCreateNotesResponse(proto.Message):
     r"""Response for creating notes in batch.
 
     Attributes:
-        notes (Sequence[~.grafeas.Note]):
+        notes (Sequence[grafeas.grafeas_v1.types.Note]):
             The notes that were created.
     """
 
-    notes = proto.RepeatedField(proto.MESSAGE, number=1, message=Note,)
+    notes = proto.RepeatedField(proto.MESSAGE, number=1, message="Note",)
 
 
 class BatchCreateOccurrencesRequest(proto.Message):
@@ -596,25 +549,24 @@ class BatchCreateOccurrencesRequest(proto.Message):
             The name of the project in the form of
             ``projects/[PROJECT_ID]``, under which the occurrences are
             to be created.
-        occurrences (Sequence[~.grafeas.Occurrence]):
+        occurrences (Sequence[grafeas.grafeas_v1.types.Occurrence]):
             The occurrences to create. Max allowed length
             is 1000.
     """
 
-    parent = proto.Field(proto.STRING, number=1)
-
-    occurrences = proto.RepeatedField(proto.MESSAGE, number=2, message=Occurrence,)
+    parent = proto.Field(proto.STRING, number=1,)
+    occurrences = proto.RepeatedField(proto.MESSAGE, number=2, message="Occurrence",)
 
 
 class BatchCreateOccurrencesResponse(proto.Message):
     r"""Response for creating occurrences in batch.
 
     Attributes:
-        occurrences (Sequence[~.grafeas.Occurrence]):
+        occurrences (Sequence[grafeas.grafeas_v1.types.Occurrence]):
             The occurrences that were created.
     """
 
-    occurrences = proto.RepeatedField(proto.MESSAGE, number=1, message=Occurrence,)
+    occurrences = proto.RepeatedField(proto.MESSAGE, number=1, message="Occurrence",)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

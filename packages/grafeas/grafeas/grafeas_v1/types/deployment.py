@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import proto  # type: ignore
 
-
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -35,7 +32,7 @@ class DeploymentNote(proto.Message):
             deployed.
     """
 
-    resource_uri = proto.RepeatedField(proto.STRING, number=1)
+    resource_uri = proto.RepeatedField(proto.STRING, number=1,)
 
 
 class DeploymentOccurrence(proto.Message):
@@ -46,10 +43,10 @@ class DeploymentOccurrence(proto.Message):
         user_email (str):
             Identity of the user that triggered this
             deployment.
-        deploy_time (~.timestamp.Timestamp):
+        deploy_time (google.protobuf.timestamp_pb2.Timestamp):
             Required. Beginning of the lifetime of this
             deployment.
-        undeploy_time (~.timestamp.Timestamp):
+        undeploy_time (google.protobuf.timestamp_pb2.Timestamp):
             End of the lifetime of this deployment.
         config (str):
             Configuration used to create this deployment.
@@ -60,7 +57,7 @@ class DeploymentOccurrence(proto.Message):
             Output only. Resource URI for the artifact
             being deployed taken from the deployable field
             with the same name.
-        platform (~.deployment.DeploymentOccurrence.Platform):
+        platform (grafeas.grafeas_v1.types.DeploymentOccurrence.Platform):
             Platform hosting this deployment.
     """
 
@@ -71,18 +68,14 @@ class DeploymentOccurrence(proto.Message):
         FLEX = 2
         CUSTOM = 3
 
-    user_email = proto.Field(proto.STRING, number=1)
-
-    deploy_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
-
-    undeploy_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
-
-    config = proto.Field(proto.STRING, number=4)
-
-    address = proto.Field(proto.STRING, number=5)
-
-    resource_uri = proto.RepeatedField(proto.STRING, number=6)
-
+    user_email = proto.Field(proto.STRING, number=1,)
+    deploy_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    undeploy_time = proto.Field(
+        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+    )
+    config = proto.Field(proto.STRING, number=4,)
+    address = proto.Field(proto.STRING, number=5,)
+    resource_uri = proto.RepeatedField(proto.STRING, number=6,)
     platform = proto.Field(proto.ENUM, number=7, enum=Platform,)
 
 
