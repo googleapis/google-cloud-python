@@ -149,7 +149,7 @@ def test_load_table_from_dataframe_w_nullable_int64_datatype(
     reason="Only `pandas version >=1.0.0` is supported",
 )
 def test_load_table_from_dataframe_w_nullable_int64_datatype_automatic_schema(
-    bigquery_client, dataset_id
+    bigquery_client, dataset_id, table_id
 ):
     """Test that a DataFrame containing column with None-type values and int64 datatype
     can be uploaded without specifying a schema.
@@ -157,9 +157,6 @@ def test_load_table_from_dataframe_w_nullable_int64_datatype_automatic_schema(
     https://github.com/googleapis/python-bigquery/issues/22
     """
 
-    table_id = "{}.{}.load_table_from_dataframe_w_nullable_int64_datatype".format(
-        bigquery_client.project, dataset_id
-    )
     df_data = collections.OrderedDict(
         [("x", pandas.Series([1, 2, None, 4], dtype="Int64"))]
     )
@@ -511,7 +508,7 @@ def test_load_table_from_dataframe_w_explicit_schema_source_format_csv(
 
 
 def test_load_table_from_dataframe_w_explicit_schema_source_format_csv_floats(
-    bigquery_client, dataset_id
+    bigquery_client, dataset_id, table_id
 ):
     from google.cloud.bigquery.job import SourceFormat
 
@@ -535,10 +532,6 @@ def test_load_table_from_dataframe_w_explicit_schema_source_format_csv_floats(
         ]
     )
     dataframe = pandas.DataFrame(df_data, dtype="object", columns=df_data.keys())
-
-    table_id = "{}.{}.load_table_from_dataframe_w_explicit_schema_csv".format(
-        bigquery_client.project, dataset_id
-    )
 
     job_config = bigquery.LoadJobConfig(
         schema=table_schema, source_format=SourceFormat.CSV

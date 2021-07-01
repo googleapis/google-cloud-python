@@ -16,6 +16,7 @@ import datetime
 import decimal
 import math
 import operator as op
+import re
 import unittest
 
 import pytest
@@ -394,11 +395,13 @@ def test_to_query_parameters_dict_w_types():
 
     assert sorted(
         _helpers.to_query_parameters(
-            dict(i=1, x=1.2, y=None, z=[]), dict(x="numeric", y="string", z="float64")
+            dict(i=1, x=1.2, y=None, q="hi", z=[]),
+            dict(x="numeric", y="string", q="string(9)", z="float64"),
         ),
         key=lambda p: p.name,
     ) == [
         bigquery.ScalarQueryParameter("i", "INT64", 1),
+        bigquery.ScalarQueryParameter("q", "STRING", "hi"),
         bigquery.ScalarQueryParameter("x", "NUMERIC", 1.2),
         bigquery.ScalarQueryParameter("y", "STRING", None),
         bigquery.ArrayQueryParameter("z", "FLOAT64", []),
@@ -409,10 +412,285 @@ def test_to_query_parameters_list_w_types():
     from google.cloud import bigquery
 
     assert _helpers.to_query_parameters(
-        [1, 1.2, None, []], [None, "numeric", "string", "float64"]
+        [1, 1.2, None, "hi", []], [None, "numeric", "string", "string(9)", "float64"]
     ) == [
         bigquery.ScalarQueryParameter(None, "INT64", 1),
         bigquery.ScalarQueryParameter(None, "NUMERIC", 1.2),
         bigquery.ScalarQueryParameter(None, "STRING", None),
+        bigquery.ScalarQueryParameter(None, "STRING", "hi"),
         bigquery.ArrayQueryParameter(None, "FLOAT64", []),
     ]
+
+
+@pytest.mark.parametrize(
+    "value,type_,expect",
+    [
+        (
+            [],
+            "ARRAY<INT64>",
+            {
+                "parameterType": {"type": "ARRAY", "arrayType": {"type": "INT64"}},
+                "parameterValue": {"arrayValues": []},
+            },
+        ),
+        (
+            [1, 2],
+            "ARRAY<INT64>",
+            {
+                "parameterType": {"type": "ARRAY", "arrayType": {"type": "INT64"}},
+                "parameterValue": {"arrayValues": [{"value": "1"}, {"value": "2"}]},
+            },
+        ),
+        (
+            dict(
+                name="par",
+                children=[
+                    dict(name="ch1", bdate=datetime.date(2021, 1, 1)),
+                    dict(name="ch2", bdate=datetime.date(2021, 1, 2)),
+                ],
+            ),
+            "struct<name string, children array<struct<name string, bdate date>>>",
+            {
+                "parameterType": {
+                    "structTypes": [
+                        {"name": "name", "type": {"type": "STRING"}},
+                        {
+                            "name": "children",
+                            "type": {
+                                "arrayType": {
+                                    "structTypes": [
+                                        {"name": "name", "type": {"type": "STRING"}},
+                                        {"name": "bdate", "type": {"type": "DATE"}},
+                                    ],
+                                    "type": "STRUCT",
+                                },
+                                "type": "ARRAY",
+                            },
+                        },
+                    ],
+                    "type": "STRUCT",
+                },
+                "parameterValue": {
+                    "structValues": {
+                        "children": {
+                            "arrayValues": [
+                                {
+                                    "structValues": {
+                                        "bdate": {"value": "2021-01-01"},
+                                        "name": {"value": "ch1"},
+                                    }
+                                },
+                                {
+                                    "structValues": {
+                                        "bdate": {"value": "2021-01-02"},
+                                        "name": {"value": "ch2"},
+                                    }
+                                },
+                            ]
+                        },
+                        "name": {"value": "par"},
+                    }
+                },
+            },
+        ),
+        (
+            dict(
+                name="par",
+                children=[
+                    dict(name="ch1", bdate=datetime.date(2021, 1, 1)),
+                    dict(name="ch2", bdate=datetime.date(2021, 1, 2)),
+                ],
+            ),
+            "struct<name string(9), children array<struct<name string(9), bdate date>>>",
+            {
+                "parameterType": {
+                    "structTypes": [
+                        {"name": "name", "type": {"type": "STRING"}},
+                        {
+                            "name": "children",
+                            "type": {
+                                "arrayType": {
+                                    "structTypes": [
+                                        {"name": "name", "type": {"type": "STRING"}},
+                                        {"name": "bdate", "type": {"type": "DATE"}},
+                                    ],
+                                    "type": "STRUCT",
+                                },
+                                "type": "ARRAY",
+                            },
+                        },
+                    ],
+                    "type": "STRUCT",
+                },
+                "parameterValue": {
+                    "structValues": {
+                        "children": {
+                            "arrayValues": [
+                                {
+                                    "structValues": {
+                                        "bdate": {"value": "2021-01-01"},
+                                        "name": {"value": "ch1"},
+                                    }
+                                },
+                                {
+                                    "structValues": {
+                                        "bdate": {"value": "2021-01-02"},
+                                        "name": {"value": "ch2"},
+                                    }
+                                },
+                            ]
+                        },
+                        "name": {"value": "par"},
+                    }
+                },
+            },
+        ),
+        (
+            ["1", "hi"],
+            "ARRAY<string(9)>",
+            {
+                "parameterType": {"type": "ARRAY", "arrayType": {"type": "STRING"}},
+                "parameterValue": {"arrayValues": [{"value": "1"}, {"value": "hi"}]},
+            },
+        ),
+    ],
+)
+def test_complex_query_parameter_type(type_, value, expect):
+    from google.cloud.bigquery.dbapi._helpers import complex_query_parameter
+
+    param = complex_query_parameter("test", value, type_).to_api_repr()
+    assert param.pop("name") == "test"
+    assert param == expect
+
+
+def _expected_error_match(expect):
+    return "^" + re.escape(expect) + "$"
+
+
+@pytest.mark.parametrize(
+    "value,type_,expect",
+    [
+        (
+            [],
+            "ARRAY<INT>",
+            "The given parameter type, INT,"
+            " is not a valid BigQuery scalar type, in ARRAY<INT>.",
+        ),
+        ([], "x<INT>", "Invalid parameter type, x<INT>"),
+        ({}, "struct<int>", "Invalid struct field, int, in struct<int>"),
+        (
+            {"x": 1},
+            "struct<x int>",
+            "The given parameter type, int,"
+            " for x is not a valid BigQuery scalar type, in struct<x int>.",
+        ),
+        ([], "x<<INT>", "Invalid parameter type, x<<INT>"),
+        (0, "ARRAY<INT64>", "Array type with non-array-like value with type int"),
+        (
+            [],
+            "ARRAY<ARRAY<INT64>>",
+            "Array can't contain an array in ARRAY<ARRAY<INT64>>",
+        ),
+        ([], "struct<x int>", "Non-mapping value for type struct<x int>"),
+        ({}, "struct<x int>", "No field value for x in struct<x int>"),
+        ({"x": 1, "y": 1}, "struct<x int64>", "Extra data keys for struct<x int64>"),
+        ([], "array<struct<xxx>>", "Invalid struct field, xxx, in array<struct<xxx>>"),
+        ([], "array<<>>", "Invalid parameter type, <>"),
+    ],
+)
+def test_complex_query_parameter_type_errors(type_, value, expect):
+    from google.cloud.bigquery.dbapi._helpers import complex_query_parameter
+    from google.cloud.bigquery.dbapi import exceptions
+
+    with pytest.raises(
+        exceptions.ProgrammingError, match=_expected_error_match(expect),
+    ):
+        complex_query_parameter("test", value, type_)
+
+
+@pytest.mark.parametrize(
+    "parameters,parameter_types,expect",
+    [
+        (
+            [[], dict(name="ch1", bdate=datetime.date(2021, 1, 1))],
+            ["ARRAY<INT64>", "struct<name string, bdate date>"],
+            [
+                {
+                    "parameterType": {"arrayType": {"type": "INT64"}, "type": "ARRAY"},
+                    "parameterValue": {"arrayValues": []},
+                },
+                {
+                    "parameterType": {
+                        "structTypes": [
+                            {"name": "name", "type": {"type": "STRING"}},
+                            {"name": "bdate", "type": {"type": "DATE"}},
+                        ],
+                        "type": "STRUCT",
+                    },
+                    "parameterValue": {
+                        "structValues": {
+                            "bdate": {"value": "2021-01-01"},
+                            "name": {"value": "ch1"},
+                        }
+                    },
+                },
+            ],
+        ),
+        (
+            dict(ids=[], child=dict(name="ch1", bdate=datetime.date(2021, 1, 1))),
+            dict(ids="ARRAY<INT64>", child="struct<name string, bdate date>"),
+            [
+                {
+                    "name": "ids",
+                    "parameterType": {"arrayType": {"type": "INT64"}, "type": "ARRAY"},
+                    "parameterValue": {"arrayValues": []},
+                },
+                {
+                    "name": "child",
+                    "parameterType": {
+                        "structTypes": [
+                            {"name": "name", "type": {"type": "STRING"}},
+                            {"name": "bdate", "type": {"type": "DATE"}},
+                        ],
+                        "type": "STRUCT",
+                    },
+                    "parameterValue": {
+                        "structValues": {
+                            "bdate": {"value": "2021-01-01"},
+                            "name": {"value": "ch1"},
+                        }
+                    },
+                },
+            ],
+        ),
+    ],
+)
+def test_to_query_parameters_complex_types(parameters, parameter_types, expect):
+    from google.cloud.bigquery.dbapi._helpers import to_query_parameters
+
+    result = [p.to_api_repr() for p in to_query_parameters(parameters, parameter_types)]
+    assert result == expect
+
+
+def test_to_query_parameters_struct_error():
+    from google.cloud.bigquery.dbapi._helpers import to_query_parameters
+
+    with pytest.raises(
+        NotImplementedError,
+        match=_expected_error_match(
+            "STRUCT-like parameter values are not supported, "
+            "unless an explicit type is give in the parameter placeholder "
+            "(e.g. '%(:struct<...>)s')."
+        ),
+    ):
+        to_query_parameters([dict(x=1)], [None])
+
+    with pytest.raises(
+        NotImplementedError,
+        match=_expected_error_match(
+            "STRUCT-like parameter values are not supported (parameter foo), "
+            "unless an explicit type is give in the parameter placeholder "
+            "(e.g. '%(foo:struct<...>)s')."
+        ),
+    ):
+        to_query_parameters(dict(foo=dict(x=1)), {})

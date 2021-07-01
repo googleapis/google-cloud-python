@@ -31,9 +31,14 @@ def bqstorage_client(bigquery_client):
     return bigquery_storage.BigQueryReadClient(credentials=bigquery_client._credentials)
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def dataset_id(bigquery_client):
     dataset_id = f"bqsystem_{helpers.temp_suffix()}"
     bigquery_client.create_dataset(dataset_id)
     yield dataset_id
     bigquery_client.delete_dataset(dataset_id, delete_contents=True)
+
+
+@pytest.fixture
+def table_id(dataset_id):
+    return f"{dataset_id}.table_{helpers.temp_suffix()}"

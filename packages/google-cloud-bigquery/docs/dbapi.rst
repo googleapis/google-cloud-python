@@ -25,7 +25,7 @@ and using named parameters::
 Providing explicit type information
 -----------------------------------
 
-BigQuery requires type information for parameters.  The The BigQuery
+BigQuery requires type information for parameters.  The BigQuery
 DB-API can usually determine parameter types for parameters based on
 provided values.  Sometimes, however, types can't be determined (for
 example when `None` is passed) or are determined incorrectly (for
@@ -37,7 +37,14 @@ colon, as in::
 
   insert into people (name, income) values (%(name:string)s, %(income:numeric)s)
 
-For unnamed parameters, use the named syntax with a type, but now
+For unnamed parameters, use the named syntax with a type, but no
 name, as in::
 
   insert into people (name, income) values (%(:string)s, %(:numeric)s)
+
+Providing type information is the *only* way to pass `struct` data::
+
+  cursor.execute(
+    "insert into points (point) values (%(:struct<x float64, y float64>)s)",
+    [{"x": 10, "y": 20}],
+    )
