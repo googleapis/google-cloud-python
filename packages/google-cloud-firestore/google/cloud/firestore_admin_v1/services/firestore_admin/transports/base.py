@@ -106,7 +106,7 @@ class FirestoreAdminTransport(abc.ABC):
         scopes_kwargs = self._get_scopes_kwargs(self._host, scopes)
 
         # Save the scopes.
-        self._scopes = scopes or self.AUTH_SCOPES
+        self._scopes = scopes
 
         # If no credentials are provided, then determine the appropriate
         # defaults.
