@@ -1212,7 +1212,7 @@ class ClusterManagerAsyncClient:
 
         """
         warnings.warn(
-            "ClusterManagerAsyncClient.set_locations is deprecated", DeprecationWarning,
+            "ClusterManagerAsyncClient.set_locations is deprecated", DeprecationWarning
         )
 
         # Create or coerce a protobuf request object.

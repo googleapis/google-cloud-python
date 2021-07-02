@@ -1720,6 +1720,9 @@ class ClusterUpdate(proto.Message):
             Configuration for Shielded Nodes.
         desired_master (google.cloud.container_v1beta1.types.Master):
             Configuration for master components.
+        desired_authenticator_groups_config (google.cloud.container_v1beta1.types.AuthenticatorGroupsConfig):
+            AuthenticatorGroupsConfig specifies the
+            config for the cluster security groups settings.
     """
 
     desired_node_version = proto.Field(proto.STRING, number=4,)
@@ -1785,6 +1788,9 @@ class ClusterUpdate(proto.Message):
         proto.MESSAGE, number=48, message="ShieldedNodes",
     )
     desired_master = proto.Field(proto.MESSAGE, number=52, message="Master",)
+    desired_authenticator_groups_config = proto.Field(
+        proto.MESSAGE, number=63, message="AuthenticatorGroupsConfig",
+    )
 
 
 class Operation(proto.Message):
