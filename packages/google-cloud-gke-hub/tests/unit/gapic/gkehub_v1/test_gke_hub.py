@@ -34,23 +34,20 @@ from google.api_core import operation_async  # type: ignore
 from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.gkehub_v1beta1.services.gke_hub_membership_service import (
-    GkeHubMembershipServiceAsyncClient,
-)
-from google.cloud.gkehub_v1beta1.services.gke_hub_membership_service import (
-    GkeHubMembershipServiceClient,
-)
-from google.cloud.gkehub_v1beta1.services.gke_hub_membership_service import pagers
-from google.cloud.gkehub_v1beta1.services.gke_hub_membership_service import transports
-from google.cloud.gkehub_v1beta1.services.gke_hub_membership_service.transports.base import (
-    _GOOGLE_AUTH_VERSION,
-)
-from google.cloud.gkehub_v1beta1.types import membership
+import google.cloud.gkehub.configmanagement_v1 as configmanagement_pb2  # type: ignore
+import google.cloud.gkehub.multiclusteringress_v1 as multiclusteringress_pb2  # type: ignore
+from google.cloud.gkehub_v1.services.gke_hub import GkeHubAsyncClient
+from google.cloud.gkehub_v1.services.gke_hub import GkeHubClient
+from google.cloud.gkehub_v1.services.gke_hub import pagers
+from google.cloud.gkehub_v1.services.gke_hub import transports
+from google.cloud.gkehub_v1.services.gke_hub.transports.base import _GOOGLE_AUTH_VERSION
+from google.cloud.gkehub_v1.types import feature
+from google.cloud.gkehub_v1.types import membership
+from google.cloud.gkehub_v1.types import service
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 import google.auth
 
 
@@ -90,33 +87,24 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert GkeHubMembershipServiceClient._get_default_mtls_endpoint(None) is None
+    assert GkeHubClient._get_default_mtls_endpoint(None) is None
+    assert GkeHubClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
     assert (
-        GkeHubMembershipServiceClient._get_default_mtls_endpoint(api_endpoint)
-        == api_mtls_endpoint
+        GkeHubClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
     )
     assert (
-        GkeHubMembershipServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        GkeHubMembershipServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
+        GkeHubClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        GkeHubMembershipServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        GkeHubClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
         == sandbox_mtls_endpoint
     )
-    assert (
-        GkeHubMembershipServiceClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
-    )
+    assert GkeHubClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize(
-    "client_class", [GkeHubMembershipServiceClient, GkeHubMembershipServiceAsyncClient,]
-)
-def test_gke_hub_membership_service_client_from_service_account_info(client_class):
+@pytest.mark.parametrize("client_class", [GkeHubClient, GkeHubAsyncClient,])
+def test_gke_hub_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
@@ -130,22 +118,36 @@ def test_gke_hub_membership_service_client_from_service_account_info(client_clas
         assert client.transport._host == "gkehub.googleapis.com:443"
 
 
-@pytest.mark.parametrize(
-    "client_class", [GkeHubMembershipServiceClient, GkeHubMembershipServiceAsyncClient,]
-)
-def test_gke_hub_membership_service_client_service_account_always_use_jwt(client_class):
+@pytest.mark.parametrize("client_class", [GkeHubClient, GkeHubAsyncClient,])
+def test_gke_hub_client_service_account_always_use_jwt(client_class):
     with mock.patch.object(
         service_account.Credentials, "with_always_use_jwt_access", create=True
     ) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         client = client_class(credentials=creds)
-        use_jwt.assert_called_with(True)
+        use_jwt.assert_not_called()
 
 
 @pytest.mark.parametrize(
-    "client_class", [GkeHubMembershipServiceClient, GkeHubMembershipServiceAsyncClient,]
+    "transport_class,transport_name",
+    [
+        (transports.GkeHubGrpcTransport, "grpc"),
+        (transports.GkeHubGrpcAsyncIOTransport, "grpc_asyncio"),
+    ],
 )
-def test_gke_hub_membership_service_client_from_service_account_file(client_class):
+def test_gke_hub_client_service_account_always_use_jwt_true(
+    transport_class, transport_name
+):
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
+
+
+@pytest.mark.parametrize("client_class", [GkeHubClient, GkeHubAsyncClient,])
+def test_gke_hub_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
@@ -162,53 +164,39 @@ def test_gke_hub_membership_service_client_from_service_account_file(client_clas
         assert client.transport._host == "gkehub.googleapis.com:443"
 
 
-def test_gke_hub_membership_service_client_get_transport_class():
-    transport = GkeHubMembershipServiceClient.get_transport_class()
+def test_gke_hub_client_get_transport_class():
+    transport = GkeHubClient.get_transport_class()
     available_transports = [
-        transports.GkeHubMembershipServiceGrpcTransport,
+        transports.GkeHubGrpcTransport,
     ]
     assert transport in available_transports
 
-    transport = GkeHubMembershipServiceClient.get_transport_class("grpc")
-    assert transport == transports.GkeHubMembershipServiceGrpcTransport
+    transport = GkeHubClient.get_transport_class("grpc")
+    assert transport == transports.GkeHubGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (
-            GkeHubMembershipServiceClient,
-            transports.GkeHubMembershipServiceGrpcTransport,
-            "grpc",
-        ),
-        (
-            GkeHubMembershipServiceAsyncClient,
-            transports.GkeHubMembershipServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
+        (GkeHubClient, transports.GkeHubGrpcTransport, "grpc"),
+        (GkeHubAsyncClient, transports.GkeHubGrpcAsyncIOTransport, "grpc_asyncio"),
     ],
 )
 @mock.patch.object(
-    GkeHubMembershipServiceClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(GkeHubMembershipServiceClient),
+    GkeHubClient, "DEFAULT_ENDPOINT", modify_default_endpoint(GkeHubClient)
 )
 @mock.patch.object(
-    GkeHubMembershipServiceAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(GkeHubMembershipServiceAsyncClient),
+    GkeHubAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(GkeHubAsyncClient)
 )
-def test_gke_hub_membership_service_client_client_options(
-    client_class, transport_class, transport_name
-):
+def test_gke_hub_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(GkeHubMembershipServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(GkeHubClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(GkeHubMembershipServiceClient, "get_transport_class") as gtc:
+    with mock.patch.object(GkeHubClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -291,44 +279,30 @@ def test_gke_hub_membership_service_client_client_options(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
+        (GkeHubClient, transports.GkeHubGrpcTransport, "grpc", "true"),
         (
-            GkeHubMembershipServiceClient,
-            transports.GkeHubMembershipServiceGrpcTransport,
-            "grpc",
-            "true",
-        ),
-        (
-            GkeHubMembershipServiceAsyncClient,
-            transports.GkeHubMembershipServiceGrpcAsyncIOTransport,
+            GkeHubAsyncClient,
+            transports.GkeHubGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
+        (GkeHubClient, transports.GkeHubGrpcTransport, "grpc", "false"),
         (
-            GkeHubMembershipServiceClient,
-            transports.GkeHubMembershipServiceGrpcTransport,
-            "grpc",
-            "false",
-        ),
-        (
-            GkeHubMembershipServiceAsyncClient,
-            transports.GkeHubMembershipServiceGrpcAsyncIOTransport,
+            GkeHubAsyncClient,
+            transports.GkeHubGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
     ],
 )
 @mock.patch.object(
-    GkeHubMembershipServiceClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(GkeHubMembershipServiceClient),
+    GkeHubClient, "DEFAULT_ENDPOINT", modify_default_endpoint(GkeHubClient)
 )
 @mock.patch.object(
-    GkeHubMembershipServiceAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(GkeHubMembershipServiceAsyncClient),
+    GkeHubAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(GkeHubAsyncClient)
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_gke_hub_membership_service_client_mtls_env_auto(
+def test_gke_hub_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -421,19 +395,11 @@ def test_gke_hub_membership_service_client_mtls_env_auto(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (
-            GkeHubMembershipServiceClient,
-            transports.GkeHubMembershipServiceGrpcTransport,
-            "grpc",
-        ),
-        (
-            GkeHubMembershipServiceAsyncClient,
-            transports.GkeHubMembershipServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
+        (GkeHubClient, transports.GkeHubGrpcTransport, "grpc"),
+        (GkeHubAsyncClient, transports.GkeHubGrpcAsyncIOTransport, "grpc_asyncio"),
     ],
 )
-def test_gke_hub_membership_service_client_client_options_scopes(
+def test_gke_hub_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -455,19 +421,11 @@ def test_gke_hub_membership_service_client_client_options_scopes(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (
-            GkeHubMembershipServiceClient,
-            transports.GkeHubMembershipServiceGrpcTransport,
-            "grpc",
-        ),
-        (
-            GkeHubMembershipServiceAsyncClient,
-            transports.GkeHubMembershipServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
+        (GkeHubClient, transports.GkeHubGrpcTransport, "grpc"),
+        (GkeHubAsyncClient, transports.GkeHubGrpcAsyncIOTransport, "grpc_asyncio"),
     ],
 )
-def test_gke_hub_membership_service_client_client_options_credentials_file(
+def test_gke_hub_client_client_options_credentials_file(
     client_class, transport_class, transport_name
 ):
     # Check the case credentials file is provided.
@@ -486,14 +444,12 @@ def test_gke_hub_membership_service_client_client_options_credentials_file(
         )
 
 
-def test_gke_hub_membership_service_client_client_options_from_dict():
+def test_gke_hub_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.gkehub_v1beta1.services.gke_hub_membership_service.transports.GkeHubMembershipServiceGrpcTransport.__init__"
+        "google.cloud.gkehub_v1.services.gke_hub.transports.GkeHubGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = GkeHubMembershipServiceClient(
-            client_options={"api_endpoint": "squid.clam.whelk"}
-        )
+        client = GkeHubClient(client_options={"api_endpoint": "squid.clam.whelk"})
         grpc_transport.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -506,9 +462,9 @@ def test_gke_hub_membership_service_client_client_options_from_dict():
 
 
 def test_list_memberships(
-    transport: str = "grpc", request_type=membership.ListMembershipsRequest
+    transport: str = "grpc", request_type=service.ListMembershipsRequest
 ):
-    client = GkeHubMembershipServiceClient(
+    client = GkeHubClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -519,7 +475,7 @@ def test_list_memberships(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_memberships), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = membership.ListMembershipsResponse(
+        call.return_value = service.ListMembershipsResponse(
             next_page_token="next_page_token_value", unreachable=["unreachable_value"],
         )
         response = client.list_memberships(request)
@@ -527,7 +483,7 @@ def test_list_memberships(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.ListMembershipsRequest()
+        assert args[0] == service.ListMembershipsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMembershipsPager)
@@ -542,7 +498,7 @@ def test_list_memberships_from_dict():
 def test_list_memberships_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = GkeHubMembershipServiceClient(
+    client = GkeHubClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
@@ -551,14 +507,14 @@ def test_list_memberships_empty_call():
         client.list_memberships()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.ListMembershipsRequest()
+        assert args[0] == service.ListMembershipsRequest()
 
 
 @pytest.mark.asyncio
 async def test_list_memberships_async(
-    transport: str = "grpc_asyncio", request_type=membership.ListMembershipsRequest
+    transport: str = "grpc_asyncio", request_type=service.ListMembershipsRequest
 ):
-    client = GkeHubMembershipServiceAsyncClient(
+    client = GkeHubAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -570,7 +526,7 @@ async def test_list_memberships_async(
     with mock.patch.object(type(client.transport.list_memberships), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            membership.ListMembershipsResponse(
+            service.ListMembershipsResponse(
                 next_page_token="next_page_token_value",
                 unreachable=["unreachable_value"],
             )
@@ -580,7 +536,7 @@ async def test_list_memberships_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.ListMembershipsRequest()
+        assert args[0] == service.ListMembershipsRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMembershipsAsyncPager)
@@ -594,19 +550,17 @@ async def test_list_memberships_async_from_dict():
 
 
 def test_list_memberships_field_headers():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = membership.ListMembershipsRequest()
+    request = service.ListMembershipsRequest()
 
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_memberships), "__call__") as call:
-        call.return_value = membership.ListMembershipsResponse()
+        call.return_value = service.ListMembershipsResponse()
         client.list_memberships(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -621,20 +575,18 @@ def test_list_memberships_field_headers():
 
 @pytest.mark.asyncio
 async def test_list_memberships_field_headers_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = membership.ListMembershipsRequest()
+    request = service.ListMembershipsRequest()
 
     request.parent = "parent/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_memberships), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            membership.ListMembershipsResponse()
+            service.ListMembershipsResponse()
         )
         await client.list_memberships(request)
 
@@ -649,14 +601,12 @@ async def test_list_memberships_field_headers_async():
 
 
 def test_list_memberships_flattened():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_memberships), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = membership.ListMembershipsResponse()
+        call.return_value = service.ListMembershipsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_memberships(parent="parent_value",)
@@ -669,31 +619,27 @@ def test_list_memberships_flattened():
 
 
 def test_list_memberships_flattened_error():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_memberships(
-            membership.ListMembershipsRequest(), parent="parent_value",
+            service.ListMembershipsRequest(), parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_memberships_flattened_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_memberships), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = membership.ListMembershipsResponse()
+        call.return_value = service.ListMembershipsResponse()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            membership.ListMembershipsResponse()
+            service.ListMembershipsResponse()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
@@ -708,28 +654,24 @@ async def test_list_memberships_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_memberships_flattened_error_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_memberships(
-            membership.ListMembershipsRequest(), parent="parent_value",
+            service.ListMembershipsRequest(), parent="parent_value",
         )
 
 
 def test_list_memberships_pager():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_memberships), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            membership.ListMembershipsResponse(
+            service.ListMembershipsResponse(
                 resources=[
                     membership.Membership(),
                     membership.Membership(),
@@ -737,11 +679,11 @@ def test_list_memberships_pager():
                 ],
                 next_page_token="abc",
             ),
-            membership.ListMembershipsResponse(resources=[], next_page_token="def",),
-            membership.ListMembershipsResponse(
+            service.ListMembershipsResponse(resources=[], next_page_token="def",),
+            service.ListMembershipsResponse(
                 resources=[membership.Membership(),], next_page_token="ghi",
             ),
-            membership.ListMembershipsResponse(
+            service.ListMembershipsResponse(
                 resources=[membership.Membership(), membership.Membership(),],
             ),
             RuntimeError,
@@ -761,15 +703,13 @@ def test_list_memberships_pager():
 
 
 def test_list_memberships_pages():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_memberships), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            membership.ListMembershipsResponse(
+            service.ListMembershipsResponse(
                 resources=[
                     membership.Membership(),
                     membership.Membership(),
@@ -777,11 +717,11 @@ def test_list_memberships_pages():
                 ],
                 next_page_token="abc",
             ),
-            membership.ListMembershipsResponse(resources=[], next_page_token="def",),
-            membership.ListMembershipsResponse(
+            service.ListMembershipsResponse(resources=[], next_page_token="def",),
+            service.ListMembershipsResponse(
                 resources=[membership.Membership(),], next_page_token="ghi",
             ),
-            membership.ListMembershipsResponse(
+            service.ListMembershipsResponse(
                 resources=[membership.Membership(), membership.Membership(),],
             ),
             RuntimeError,
@@ -793,9 +733,7 @@ def test_list_memberships_pages():
 
 @pytest.mark.asyncio
 async def test_list_memberships_async_pager():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -803,7 +741,7 @@ async def test_list_memberships_async_pager():
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            membership.ListMembershipsResponse(
+            service.ListMembershipsResponse(
                 resources=[
                     membership.Membership(),
                     membership.Membership(),
@@ -811,11 +749,11 @@ async def test_list_memberships_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            membership.ListMembershipsResponse(resources=[], next_page_token="def",),
-            membership.ListMembershipsResponse(
+            service.ListMembershipsResponse(resources=[], next_page_token="def",),
+            service.ListMembershipsResponse(
                 resources=[membership.Membership(),], next_page_token="ghi",
             ),
-            membership.ListMembershipsResponse(
+            service.ListMembershipsResponse(
                 resources=[membership.Membership(), membership.Membership(),],
             ),
             RuntimeError,
@@ -832,9 +770,7 @@ async def test_list_memberships_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_memberships_async_pages():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -842,7 +778,7 @@ async def test_list_memberships_async_pages():
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            membership.ListMembershipsResponse(
+            service.ListMembershipsResponse(
                 resources=[
                     membership.Membership(),
                     membership.Membership(),
@@ -850,11 +786,11 @@ async def test_list_memberships_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            membership.ListMembershipsResponse(resources=[], next_page_token="def",),
-            membership.ListMembershipsResponse(
+            service.ListMembershipsResponse(resources=[], next_page_token="def",),
+            service.ListMembershipsResponse(
                 resources=[membership.Membership(),], next_page_token="ghi",
             ),
-            membership.ListMembershipsResponse(
+            service.ListMembershipsResponse(
                 resources=[membership.Membership(), membership.Membership(),],
             ),
             RuntimeError,
@@ -866,10 +802,330 @@ async def test_list_memberships_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-def test_get_membership(
-    transport: str = "grpc", request_type=membership.GetMembershipRequest
+def test_list_features(
+    transport: str = "grpc", request_type=service.ListFeaturesRequest
 ):
-    client = GkeHubMembershipServiceClient(
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_features), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListFeaturesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_features(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListFeaturesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListFeaturesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_features_from_dict():
+    test_list_features(request_type=dict)
+
+
+def test_list_features_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_features), "__call__") as call:
+        client.list_features()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListFeaturesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_features_async(
+    transport: str = "grpc_asyncio", request_type=service.ListFeaturesRequest
+):
+    client = GkeHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_features), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListFeaturesResponse(next_page_token="next_page_token_value",)
+        )
+        response = await client.list_features(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListFeaturesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListFeaturesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_features_async_from_dict():
+    await test_list_features_async(request_type=dict)
+
+
+def test_list_features_field_headers():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListFeaturesRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_features), "__call__") as call:
+        call.return_value = service.ListFeaturesResponse()
+        client.list_features(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_features_field_headers_async():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListFeaturesRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_features), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListFeaturesResponse()
+        )
+        await client.list_features(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_list_features_flattened():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_features), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListFeaturesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_features(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].parent == "parent_value"
+
+
+def test_list_features_flattened_error():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_features(
+            service.ListFeaturesRequest(), parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_features_flattened_async():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_features), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListFeaturesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListFeaturesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_features(parent="parent_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].parent == "parent_value"
+
+
+@pytest.mark.asyncio
+async def test_list_features_flattened_error_async():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_features(
+            service.ListFeaturesRequest(), parent="parent_value",
+        )
+
+
+def test_list_features_pager():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_features), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListFeaturesResponse(
+                resources=[feature.Feature(), feature.Feature(), feature.Feature(),],
+                next_page_token="abc",
+            ),
+            service.ListFeaturesResponse(resources=[], next_page_token="def",),
+            service.ListFeaturesResponse(
+                resources=[feature.Feature(),], next_page_token="ghi",
+            ),
+            service.ListFeaturesResponse(
+                resources=[feature.Feature(), feature.Feature(),],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_features(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(isinstance(i, feature.Feature) for i in results)
+
+
+def test_list_features_pages():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_features), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListFeaturesResponse(
+                resources=[feature.Feature(), feature.Feature(), feature.Feature(),],
+                next_page_token="abc",
+            ),
+            service.ListFeaturesResponse(resources=[], next_page_token="def",),
+            service.ListFeaturesResponse(
+                resources=[feature.Feature(),], next_page_token="ghi",
+            ),
+            service.ListFeaturesResponse(
+                resources=[feature.Feature(), feature.Feature(),],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_features(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_features_async_pager():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_features), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListFeaturesResponse(
+                resources=[feature.Feature(), feature.Feature(), feature.Feature(),],
+                next_page_token="abc",
+            ),
+            service.ListFeaturesResponse(resources=[], next_page_token="def",),
+            service.ListFeaturesResponse(
+                resources=[feature.Feature(),], next_page_token="ghi",
+            ),
+            service.ListFeaturesResponse(
+                resources=[feature.Feature(), feature.Feature(),],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_features(request={},)
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, feature.Feature) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_features_async_pages():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_features), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListFeaturesResponse(
+                resources=[feature.Feature(), feature.Feature(), feature.Feature(),],
+                next_page_token="abc",
+            ),
+            service.ListFeaturesResponse(resources=[], next_page_token="def",),
+            service.ListFeaturesResponse(
+                resources=[feature.Feature(),], next_page_token="ghi",
+            ),
+            service.ListFeaturesResponse(
+                resources=[feature.Feature(), feature.Feature(),],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_features(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+def test_get_membership(
+    transport: str = "grpc", request_type=service.GetMembershipRequest
+):
+    client = GkeHubClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -885,7 +1141,6 @@ def test_get_membership(
             description="description_value",
             external_id="external_id_value",
             unique_id="unique_id_value",
-            infrastructure_type=membership.Membership.InfrastructureType.ON_PREM,
             endpoint=membership.MembershipEndpoint(
                 gke_cluster=membership.GkeCluster(resource_link="resource_link_value")
             ),
@@ -895,7 +1150,7 @@ def test_get_membership(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.GetMembershipRequest()
+        assert args[0] == service.GetMembershipRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, membership.Membership)
@@ -903,9 +1158,6 @@ def test_get_membership(
     assert response.description == "description_value"
     assert response.external_id == "external_id_value"
     assert response.unique_id == "unique_id_value"
-    assert (
-        response.infrastructure_type == membership.Membership.InfrastructureType.ON_PREM
-    )
 
 
 def test_get_membership_from_dict():
@@ -915,7 +1167,7 @@ def test_get_membership_from_dict():
 def test_get_membership_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = GkeHubMembershipServiceClient(
+    client = GkeHubClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
@@ -924,14 +1176,14 @@ def test_get_membership_empty_call():
         client.get_membership()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.GetMembershipRequest()
+        assert args[0] == service.GetMembershipRequest()
 
 
 @pytest.mark.asyncio
 async def test_get_membership_async(
-    transport: str = "grpc_asyncio", request_type=membership.GetMembershipRequest
+    transport: str = "grpc_asyncio", request_type=service.GetMembershipRequest
 ):
-    client = GkeHubMembershipServiceAsyncClient(
+    client = GkeHubAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -948,7 +1200,6 @@ async def test_get_membership_async(
                 description="description_value",
                 external_id="external_id_value",
                 unique_id="unique_id_value",
-                infrastructure_type=membership.Membership.InfrastructureType.ON_PREM,
             )
         )
         response = await client.get_membership(request)
@@ -956,7 +1207,7 @@ async def test_get_membership_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.GetMembershipRequest()
+        assert args[0] == service.GetMembershipRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, membership.Membership)
@@ -964,9 +1215,6 @@ async def test_get_membership_async(
     assert response.description == "description_value"
     assert response.external_id == "external_id_value"
     assert response.unique_id == "unique_id_value"
-    assert (
-        response.infrastructure_type == membership.Membership.InfrastructureType.ON_PREM
-    )
 
 
 @pytest.mark.asyncio
@@ -975,13 +1223,11 @@ async def test_get_membership_async_from_dict():
 
 
 def test_get_membership_field_headers():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = membership.GetMembershipRequest()
+    request = service.GetMembershipRequest()
 
     request.name = "name/value"
 
@@ -1002,13 +1248,11 @@ def test_get_membership_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_membership_field_headers_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = membership.GetMembershipRequest()
+    request = service.GetMembershipRequest()
 
     request.name = "name/value"
 
@@ -1030,9 +1274,7 @@ async def test_get_membership_field_headers_async():
 
 
 def test_get_membership_flattened():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_membership), "__call__") as call:
@@ -1050,23 +1292,19 @@ def test_get_membership_flattened():
 
 
 def test_get_membership_flattened_error():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_membership(
-            membership.GetMembershipRequest(), name="name_value",
+            service.GetMembershipRequest(), name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_membership_flattened_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_membership), "__call__") as call:
@@ -1089,22 +1327,210 @@ async def test_get_membership_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_membership_flattened_error_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_membership(
-            membership.GetMembershipRequest(), name="name_value",
+            service.GetMembershipRequest(), name="name_value",
+        )
+
+
+def test_get_feature(transport: str = "grpc", request_type=service.GetFeatureRequest):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_feature), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = feature.Feature(name="name_value",)
+        response = client.get_feature(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetFeatureRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, feature.Feature)
+    assert response.name == "name_value"
+
+
+def test_get_feature_from_dict():
+    test_get_feature(request_type=dict)
+
+
+def test_get_feature_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_feature), "__call__") as call:
+        client.get_feature()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetFeatureRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_feature_async(
+    transport: str = "grpc_asyncio", request_type=service.GetFeatureRequest
+):
+    client = GkeHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_feature), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            feature.Feature(name="name_value",)
+        )
+        response = await client.get_feature(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetFeatureRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, feature.Feature)
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_feature_async_from_dict():
+    await test_get_feature_async(request_type=dict)
+
+
+def test_get_feature_field_headers():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.GetFeatureRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_feature), "__call__") as call:
+        call.return_value = feature.Feature()
+        client.get_feature(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_feature_field_headers_async():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.GetFeatureRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_feature), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(feature.Feature())
+        await client.get_feature(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_get_feature_flattened():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_feature), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = feature.Feature()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_feature(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].name == "name_value"
+
+
+def test_get_feature_flattened_error():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_feature(
+            service.GetFeatureRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_feature_flattened_async():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_feature), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = feature.Feature()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(feature.Feature())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_feature(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_feature_flattened_error_async():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_feature(
+            service.GetFeatureRequest(), name="name_value",
         )
 
 
 def test_create_membership(
-    transport: str = "grpc", request_type=membership.CreateMembershipRequest
+    transport: str = "grpc", request_type=service.CreateMembershipRequest
 ):
-    client = GkeHubMembershipServiceClient(
+    client = GkeHubClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -1123,7 +1549,7 @@ def test_create_membership(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.CreateMembershipRequest()
+        assert args[0] == service.CreateMembershipRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1136,7 +1562,7 @@ def test_create_membership_from_dict():
 def test_create_membership_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = GkeHubMembershipServiceClient(
+    client = GkeHubClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
@@ -1147,14 +1573,14 @@ def test_create_membership_empty_call():
         client.create_membership()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.CreateMembershipRequest()
+        assert args[0] == service.CreateMembershipRequest()
 
 
 @pytest.mark.asyncio
 async def test_create_membership_async(
-    transport: str = "grpc_asyncio", request_type=membership.CreateMembershipRequest
+    transport: str = "grpc_asyncio", request_type=service.CreateMembershipRequest
 ):
-    client = GkeHubMembershipServiceAsyncClient(
+    client = GkeHubAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -1175,7 +1601,7 @@ async def test_create_membership_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.CreateMembershipRequest()
+        assert args[0] == service.CreateMembershipRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1187,13 +1613,11 @@ async def test_create_membership_async_from_dict():
 
 
 def test_create_membership_field_headers():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = membership.CreateMembershipRequest()
+    request = service.CreateMembershipRequest()
 
     request.parent = "parent/value"
 
@@ -1216,13 +1640,11 @@ def test_create_membership_field_headers():
 
 @pytest.mark.asyncio
 async def test_create_membership_field_headers_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = membership.CreateMembershipRequest()
+    request = service.CreateMembershipRequest()
 
     request.parent = "parent/value"
 
@@ -1246,9 +1668,7 @@ async def test_create_membership_field_headers_async():
 
 
 def test_create_membership_flattened():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1260,7 +1680,13 @@ def test_create_membership_flattened():
         # using the keyword arguments to the method.
         client.create_membership(
             parent="parent_value",
-            resource=membership.Membership(name="name_value"),
+            resource=membership.Membership(
+                endpoint=membership.MembershipEndpoint(
+                    gke_cluster=membership.GkeCluster(
+                        resource_link="resource_link_value"
+                    )
+                )
+            ),
             membership_id="membership_id_value",
         )
 
@@ -1269,31 +1695,37 @@ def test_create_membership_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0].parent == "parent_value"
-        assert args[0].resource == membership.Membership(name="name_value")
+        assert args[0].resource == membership.Membership(
+            endpoint=membership.MembershipEndpoint(
+                gke_cluster=membership.GkeCluster(resource_link="resource_link_value")
+            )
+        )
         assert args[0].membership_id == "membership_id_value"
 
 
 def test_create_membership_flattened_error():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.create_membership(
-            membership.CreateMembershipRequest(),
+            service.CreateMembershipRequest(),
             parent="parent_value",
-            resource=membership.Membership(name="name_value"),
+            resource=membership.Membership(
+                endpoint=membership.MembershipEndpoint(
+                    gke_cluster=membership.GkeCluster(
+                        resource_link="resource_link_value"
+                    )
+                )
+            ),
             membership_id="membership_id_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_create_membership_flattened_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1309,7 +1741,13 @@ async def test_create_membership_flattened_async():
         # using the keyword arguments to the method.
         response = await client.create_membership(
             parent="parent_value",
-            resource=membership.Membership(name="name_value"),
+            resource=membership.Membership(
+                endpoint=membership.MembershipEndpoint(
+                    gke_cluster=membership.GkeCluster(
+                        resource_link="resource_link_value"
+                    )
+                )
+            ),
             membership_id="membership_id_value",
         )
 
@@ -1318,31 +1756,251 @@ async def test_create_membership_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         assert args[0].parent == "parent_value"
-        assert args[0].resource == membership.Membership(name="name_value")
+        assert args[0].resource == membership.Membership(
+            endpoint=membership.MembershipEndpoint(
+                gke_cluster=membership.GkeCluster(resource_link="resource_link_value")
+            )
+        )
         assert args[0].membership_id == "membership_id_value"
 
 
 @pytest.mark.asyncio
 async def test_create_membership_flattened_error_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.create_membership(
-            membership.CreateMembershipRequest(),
+            service.CreateMembershipRequest(),
             parent="parent_value",
-            resource=membership.Membership(name="name_value"),
+            resource=membership.Membership(
+                endpoint=membership.MembershipEndpoint(
+                    gke_cluster=membership.GkeCluster(
+                        resource_link="resource_link_value"
+                    )
+                )
+            ),
             membership_id="membership_id_value",
         )
 
 
-def test_delete_membership(
-    transport: str = "grpc", request_type=membership.DeleteMembershipRequest
+def test_create_feature(
+    transport: str = "grpc", request_type=service.CreateFeatureRequest
 ):
-    client = GkeHubMembershipServiceClient(
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_feature), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_feature(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateFeatureRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_feature_from_dict():
+    test_create_feature(request_type=dict)
+
+
+def test_create_feature_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_feature), "__call__") as call:
+        client.create_feature()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateFeatureRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_feature_async(
+    transport: str = "grpc_asyncio", request_type=service.CreateFeatureRequest
+):
+    client = GkeHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_feature), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_feature(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateFeatureRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_feature_async_from_dict():
+    await test_create_feature_async(request_type=dict)
+
+
+def test_create_feature_field_headers():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.CreateFeatureRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_feature), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_feature(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_feature_field_headers_async():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.CreateFeatureRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_feature), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_feature(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+
+
+def test_create_feature_flattened():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_feature), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_feature(
+            parent="parent_value",
+            resource=feature.Feature(name="name_value"),
+            feature_id="feature_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].parent == "parent_value"
+        assert args[0].resource == feature.Feature(name="name_value")
+        assert args[0].feature_id == "feature_id_value"
+
+
+def test_create_feature_flattened_error():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_feature(
+            service.CreateFeatureRequest(),
+            parent="parent_value",
+            resource=feature.Feature(name="name_value"),
+            feature_id="feature_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_feature_flattened_async():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_feature), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_feature(
+            parent="parent_value",
+            resource=feature.Feature(name="name_value"),
+            feature_id="feature_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].parent == "parent_value"
+        assert args[0].resource == feature.Feature(name="name_value")
+        assert args[0].feature_id == "feature_id_value"
+
+
+@pytest.mark.asyncio
+async def test_create_feature_flattened_error_async():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_feature(
+            service.CreateFeatureRequest(),
+            parent="parent_value",
+            resource=feature.Feature(name="name_value"),
+            feature_id="feature_id_value",
+        )
+
+
+def test_delete_membership(
+    transport: str = "grpc", request_type=service.DeleteMembershipRequest
+):
+    client = GkeHubClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -1361,7 +2019,7 @@ def test_delete_membership(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.DeleteMembershipRequest()
+        assert args[0] == service.DeleteMembershipRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1374,7 +2032,7 @@ def test_delete_membership_from_dict():
 def test_delete_membership_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = GkeHubMembershipServiceClient(
+    client = GkeHubClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
@@ -1385,14 +2043,14 @@ def test_delete_membership_empty_call():
         client.delete_membership()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.DeleteMembershipRequest()
+        assert args[0] == service.DeleteMembershipRequest()
 
 
 @pytest.mark.asyncio
 async def test_delete_membership_async(
-    transport: str = "grpc_asyncio", request_type=membership.DeleteMembershipRequest
+    transport: str = "grpc_asyncio", request_type=service.DeleteMembershipRequest
 ):
-    client = GkeHubMembershipServiceAsyncClient(
+    client = GkeHubAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -1413,7 +2071,7 @@ async def test_delete_membership_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.DeleteMembershipRequest()
+        assert args[0] == service.DeleteMembershipRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1425,13 +2083,11 @@ async def test_delete_membership_async_from_dict():
 
 
 def test_delete_membership_field_headers():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = membership.DeleteMembershipRequest()
+    request = service.DeleteMembershipRequest()
 
     request.name = "name/value"
 
@@ -1454,13 +2110,11 @@ def test_delete_membership_field_headers():
 
 @pytest.mark.asyncio
 async def test_delete_membership_field_headers_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = membership.DeleteMembershipRequest()
+    request = service.DeleteMembershipRequest()
 
     request.name = "name/value"
 
@@ -1484,9 +2138,7 @@ async def test_delete_membership_field_headers_async():
 
 
 def test_delete_membership_flattened():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1506,23 +2158,19 @@ def test_delete_membership_flattened():
 
 
 def test_delete_membership_flattened_error():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_membership(
-            membership.DeleteMembershipRequest(), name="name_value",
+            service.DeleteMembershipRequest(), name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_membership_flattened_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1547,22 +2195,214 @@ async def test_delete_membership_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_membership_flattened_error_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_membership(
-            membership.DeleteMembershipRequest(), name="name_value",
+            service.DeleteMembershipRequest(), name="name_value",
+        )
+
+
+def test_delete_feature(
+    transport: str = "grpc", request_type=service.DeleteFeatureRequest
+):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_feature), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_feature(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteFeatureRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_feature_from_dict():
+    test_delete_feature(request_type=dict)
+
+
+def test_delete_feature_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_feature), "__call__") as call:
+        client.delete_feature()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteFeatureRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_feature_async(
+    transport: str = "grpc_asyncio", request_type=service.DeleteFeatureRequest
+):
+    client = GkeHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_feature), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_feature(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteFeatureRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_feature_async_from_dict():
+    await test_delete_feature_async(request_type=dict)
+
+
+def test_delete_feature_field_headers():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.DeleteFeatureRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_feature), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_feature(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_feature_field_headers_async():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.DeleteFeatureRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_feature), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_feature(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_delete_feature_flattened():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_feature), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_feature(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].name == "name_value"
+
+
+def test_delete_feature_flattened_error():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_feature(
+            service.DeleteFeatureRequest(), name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_feature_flattened_async():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_feature), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_feature(name="name_value",)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_delete_feature_flattened_error_async():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_feature(
+            service.DeleteFeatureRequest(), name="name_value",
         )
 
 
 def test_update_membership(
-    transport: str = "grpc", request_type=membership.UpdateMembershipRequest
+    transport: str = "grpc", request_type=service.UpdateMembershipRequest
 ):
-    client = GkeHubMembershipServiceClient(
+    client = GkeHubClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -1581,7 +2421,7 @@ def test_update_membership(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.UpdateMembershipRequest()
+        assert args[0] == service.UpdateMembershipRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1594,7 +2434,7 @@ def test_update_membership_from_dict():
 def test_update_membership_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = GkeHubMembershipServiceClient(
+    client = GkeHubClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
@@ -1605,14 +2445,14 @@ def test_update_membership_empty_call():
         client.update_membership()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.UpdateMembershipRequest()
+        assert args[0] == service.UpdateMembershipRequest()
 
 
 @pytest.mark.asyncio
 async def test_update_membership_async(
-    transport: str = "grpc_asyncio", request_type=membership.UpdateMembershipRequest
+    transport: str = "grpc_asyncio", request_type=service.UpdateMembershipRequest
 ):
-    client = GkeHubMembershipServiceAsyncClient(
+    client = GkeHubAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -1633,7 +2473,7 @@ async def test_update_membership_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.UpdateMembershipRequest()
+        assert args[0] == service.UpdateMembershipRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1645,13 +2485,11 @@ async def test_update_membership_async_from_dict():
 
 
 def test_update_membership_field_headers():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = membership.UpdateMembershipRequest()
+    request = service.UpdateMembershipRequest()
 
     request.name = "name/value"
 
@@ -1674,13 +2512,11 @@ def test_update_membership_field_headers():
 
 @pytest.mark.asyncio
 async def test_update_membership_field_headers_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = membership.UpdateMembershipRequest()
+    request = service.UpdateMembershipRequest()
 
     request.name = "name/value"
 
@@ -1704,9 +2540,7 @@ async def test_update_membership_field_headers_async():
 
 
 def test_update_membership_flattened():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1718,7 +2552,13 @@ def test_update_membership_flattened():
         # using the keyword arguments to the method.
         client.update_membership(
             name="name_value",
-            resource=membership.Membership(name="name_value"),
+            resource=membership.Membership(
+                endpoint=membership.MembershipEndpoint(
+                    gke_cluster=membership.GkeCluster(
+                        resource_link="resource_link_value"
+                    )
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -1727,31 +2567,37 @@ def test_update_membership_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         assert args[0].name == "name_value"
-        assert args[0].resource == membership.Membership(name="name_value")
+        assert args[0].resource == membership.Membership(
+            endpoint=membership.MembershipEndpoint(
+                gke_cluster=membership.GkeCluster(resource_link="resource_link_value")
+            )
+        )
         assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
 
 
 def test_update_membership_flattened_error():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.update_membership(
-            membership.UpdateMembershipRequest(),
+            service.UpdateMembershipRequest(),
             name="name_value",
-            resource=membership.Membership(name="name_value"),
+            resource=membership.Membership(
+                endpoint=membership.MembershipEndpoint(
+                    gke_cluster=membership.GkeCluster(
+                        resource_link="resource_link_value"
+                    )
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 @pytest.mark.asyncio
 async def test_update_membership_flattened_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1767,7 +2613,13 @@ async def test_update_membership_flattened_async():
         # using the keyword arguments to the method.
         response = await client.update_membership(
             name="name_value",
-            resource=membership.Membership(name="name_value"),
+            resource=membership.Membership(
+                endpoint=membership.MembershipEndpoint(
+                    gke_cluster=membership.GkeCluster(
+                        resource_link="resource_link_value"
+                    )
+                )
+            ),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -1776,31 +2628,251 @@ async def test_update_membership_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         assert args[0].name == "name_value"
-        assert args[0].resource == membership.Membership(name="name_value")
+        assert args[0].resource == membership.Membership(
+            endpoint=membership.MembershipEndpoint(
+                gke_cluster=membership.GkeCluster(resource_link="resource_link_value")
+            )
+        )
         assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
 
 
 @pytest.mark.asyncio
 async def test_update_membership_flattened_error_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.update_membership(
-            membership.UpdateMembershipRequest(),
+            service.UpdateMembershipRequest(),
             name="name_value",
-            resource=membership.Membership(name="name_value"),
+            resource=membership.Membership(
+                endpoint=membership.MembershipEndpoint(
+                    gke_cluster=membership.GkeCluster(
+                        resource_link="resource_link_value"
+                    )
+                )
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_feature(
+    transport: str = "grpc", request_type=service.UpdateFeatureRequest
+):
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_feature), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_feature(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateFeatureRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_feature_from_dict():
+    test_update_feature(request_type=dict)
+
+
+def test_update_feature_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = GkeHubClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_feature), "__call__") as call:
+        client.update_feature()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateFeatureRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_feature_async(
+    transport: str = "grpc_asyncio", request_type=service.UpdateFeatureRequest
+):
+    client = GkeHubAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_feature), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_feature(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateFeatureRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_feature_async_from_dict():
+    await test_update_feature_async(request_type=dict)
+
+
+def test_update_feature_field_headers():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.UpdateFeatureRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_feature), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_feature(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_feature_field_headers_async():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.UpdateFeatureRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_feature), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_feature(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+
+
+def test_update_feature_flattened():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_feature), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_feature(
+            name="name_value",
+            resource=feature.Feature(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0].name == "name_value"
+        assert args[0].resource == feature.Feature(name="name_value")
+        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+
+
+def test_update_feature_flattened_error():
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_feature(
+            service.UpdateFeatureRequest(),
+            name="name_value",
+            resource=feature.Feature(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_feature_flattened_async():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_feature), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_feature(
+            name="name_value",
+            resource=feature.Feature(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0].name == "name_value"
+        assert args[0].resource == feature.Feature(name="name_value")
+        assert args[0].update_mask == field_mask_pb2.FieldMask(paths=["paths_value"])
+
+
+@pytest.mark.asyncio
+async def test_update_feature_flattened_error_async():
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_feature(
+            service.UpdateFeatureRequest(),
+            name="name_value",
+            resource=feature.Feature(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
 
 def test_generate_connect_manifest(
-    transport: str = "grpc", request_type=membership.GenerateConnectManifestRequest
+    transport: str = "grpc", request_type=service.GenerateConnectManifestRequest
 ):
-    client = GkeHubMembershipServiceClient(
+    client = GkeHubClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -1813,16 +2885,16 @@ def test_generate_connect_manifest(
         type(client.transport.generate_connect_manifest), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = membership.GenerateConnectManifestResponse()
+        call.return_value = service.GenerateConnectManifestResponse()
         response = client.generate_connect_manifest(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.GenerateConnectManifestRequest()
+        assert args[0] == service.GenerateConnectManifestRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, membership.GenerateConnectManifestResponse)
+    assert isinstance(response, service.GenerateConnectManifestResponse)
 
 
 def test_generate_connect_manifest_from_dict():
@@ -1832,7 +2904,7 @@ def test_generate_connect_manifest_from_dict():
 def test_generate_connect_manifest_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = GkeHubMembershipServiceClient(
+    client = GkeHubClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
 
@@ -1843,15 +2915,14 @@ def test_generate_connect_manifest_empty_call():
         client.generate_connect_manifest()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.GenerateConnectManifestRequest()
+        assert args[0] == service.GenerateConnectManifestRequest()
 
 
 @pytest.mark.asyncio
 async def test_generate_connect_manifest_async(
-    transport: str = "grpc_asyncio",
-    request_type=membership.GenerateConnectManifestRequest,
+    transport: str = "grpc_asyncio", request_type=service.GenerateConnectManifestRequest
 ):
-    client = GkeHubMembershipServiceAsyncClient(
+    client = GkeHubAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
@@ -1865,17 +2936,17 @@ async def test_generate_connect_manifest_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            membership.GenerateConnectManifestResponse()
+            service.GenerateConnectManifestResponse()
         )
         response = await client.generate_connect_manifest(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.GenerateConnectManifestRequest()
+        assert args[0] == service.GenerateConnectManifestRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, membership.GenerateConnectManifestResponse)
+    assert isinstance(response, service.GenerateConnectManifestResponse)
 
 
 @pytest.mark.asyncio
@@ -1884,13 +2955,11 @@ async def test_generate_connect_manifest_async_from_dict():
 
 
 def test_generate_connect_manifest_field_headers():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = membership.GenerateConnectManifestRequest()
+    request = service.GenerateConnectManifestRequest()
 
     request.name = "name/value"
 
@@ -1898,7 +2967,7 @@ def test_generate_connect_manifest_field_headers():
     with mock.patch.object(
         type(client.transport.generate_connect_manifest), "__call__"
     ) as call:
-        call.return_value = membership.GenerateConnectManifestResponse()
+        call.return_value = service.GenerateConnectManifestResponse()
         client.generate_connect_manifest(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1913,13 +2982,11 @@ def test_generate_connect_manifest_field_headers():
 
 @pytest.mark.asyncio
 async def test_generate_connect_manifest_field_headers_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
+    client = GkeHubAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = membership.GenerateConnectManifestRequest()
+    request = service.GenerateConnectManifestRequest()
 
     request.name = "name/value"
 
@@ -1928,7 +2995,7 @@ async def test_generate_connect_manifest_field_headers_async():
         type(client.transport.generate_connect_manifest), "__call__"
     ) as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            membership.GenerateConnectManifestResponse()
+            service.GenerateConnectManifestResponse()
         )
         await client.generate_connect_manifest(request)
 
@@ -1942,351 +3009,54 @@ async def test_generate_connect_manifest_field_headers_async():
     assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
 
 
-def test_validate_exclusivity(
-    transport: str = "grpc", request_type=membership.ValidateExclusivityRequest
-):
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.validate_exclusivity), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = membership.ValidateExclusivityResponse()
-        response = client.validate_exclusivity(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.ValidateExclusivityRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, membership.ValidateExclusivityResponse)
-
-
-def test_validate_exclusivity_from_dict():
-    test_validate_exclusivity(request_type=dict)
-
-
-def test_validate_exclusivity_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.validate_exclusivity), "__call__"
-    ) as call:
-        client.validate_exclusivity()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.ValidateExclusivityRequest()
-
-
-@pytest.mark.asyncio
-async def test_validate_exclusivity_async(
-    transport: str = "grpc_asyncio", request_type=membership.ValidateExclusivityRequest
-):
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.validate_exclusivity), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            membership.ValidateExclusivityResponse()
-        )
-        response = await client.validate_exclusivity(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.ValidateExclusivityRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, membership.ValidateExclusivityResponse)
-
-
-@pytest.mark.asyncio
-async def test_validate_exclusivity_async_from_dict():
-    await test_validate_exclusivity_async(request_type=dict)
-
-
-def test_validate_exclusivity_field_headers():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = membership.ValidateExclusivityRequest()
-
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.validate_exclusivity), "__call__"
-    ) as call:
-        call.return_value = membership.ValidateExclusivityResponse()
-        client.validate_exclusivity(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_validate_exclusivity_field_headers_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = membership.ValidateExclusivityRequest()
-
-    request.parent = "parent/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.validate_exclusivity), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            membership.ValidateExclusivityResponse()
-        )
-        await client.validate_exclusivity(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
-
-
-def test_generate_exclusivity_manifest(
-    transport: str = "grpc", request_type=membership.GenerateExclusivityManifestRequest
-):
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_exclusivity_manifest), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = membership.GenerateExclusivityManifestResponse(
-            crd_manifest="crd_manifest_value", cr_manifest="cr_manifest_value",
-        )
-        response = client.generate_exclusivity_manifest(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.GenerateExclusivityManifestRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, membership.GenerateExclusivityManifestResponse)
-    assert response.crd_manifest == "crd_manifest_value"
-    assert response.cr_manifest == "cr_manifest_value"
-
-
-def test_generate_exclusivity_manifest_from_dict():
-    test_generate_exclusivity_manifest(request_type=dict)
-
-
-def test_generate_exclusivity_manifest_empty_call():
-    # This test is a coverage failsafe to make sure that totally empty calls,
-    # i.e. request == None and no flattened fields passed, work.
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
-    )
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_exclusivity_manifest), "__call__"
-    ) as call:
-        client.generate_exclusivity_manifest()
-        call.assert_called()
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.GenerateExclusivityManifestRequest()
-
-
-@pytest.mark.asyncio
-async def test_generate_exclusivity_manifest_async(
-    transport: str = "grpc_asyncio",
-    request_type=membership.GenerateExclusivityManifestRequest,
-):
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = request_type()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_exclusivity_manifest), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            membership.GenerateExclusivityManifestResponse(
-                crd_manifest="crd_manifest_value", cr_manifest="cr_manifest_value",
-            )
-        )
-        response = await client.generate_exclusivity_manifest(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == membership.GenerateExclusivityManifestRequest()
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, membership.GenerateExclusivityManifestResponse)
-    assert response.crd_manifest == "crd_manifest_value"
-    assert response.cr_manifest == "cr_manifest_value"
-
-
-@pytest.mark.asyncio
-async def test_generate_exclusivity_manifest_async_from_dict():
-    await test_generate_exclusivity_manifest_async(request_type=dict)
-
-
-def test_generate_exclusivity_manifest_field_headers():
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = membership.GenerateExclusivityManifestRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_exclusivity_manifest), "__call__"
-    ) as call:
-        call.return_value = membership.GenerateExclusivityManifestResponse()
-        client.generate_exclusivity_manifest(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
-@pytest.mark.asyncio
-async def test_generate_exclusivity_manifest_field_headers_async():
-    client = GkeHubMembershipServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = membership.GenerateExclusivityManifestRequest()
-
-    request.name = "name/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_exclusivity_manifest), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            membership.GenerateExclusivityManifestResponse()
-        )
-        await client.generate_exclusivity_manifest(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls)
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
-
-
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.GkeHubMembershipServiceGrpcTransport(
+    transport = transports.GkeHubGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = GkeHubMembershipServiceClient(
+        client = GkeHubClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.GkeHubMembershipServiceGrpcTransport(
+    transport = transports.GkeHubGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = GkeHubMembershipServiceClient(
+        client = GkeHubClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.GkeHubMembershipServiceGrpcTransport(
+    transport = transports.GkeHubGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = GkeHubMembershipServiceClient(
+        client = GkeHubClient(
             client_options={"scopes": ["1", "2"]}, transport=transport,
         )
 
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.GkeHubMembershipServiceGrpcTransport(
+    transport = transports.GkeHubGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = GkeHubMembershipServiceClient(transport=transport)
+    client = GkeHubClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.GkeHubMembershipServiceGrpcTransport(
+    transport = transports.GkeHubGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.GkeHubMembershipServiceGrpcAsyncIOTransport(
+    transport = transports.GkeHubGrpcAsyncIOTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -2295,10 +3065,7 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [
-        transports.GkeHubMembershipServiceGrpcTransport,
-        transports.GkeHubMembershipServiceGrpcAsyncIOTransport,
-    ],
+    [transports.GkeHubGrpcTransport, transports.GkeHubGrpcAsyncIOTransport,],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -2310,30 +3077,26 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = GkeHubMembershipServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    assert isinstance(
-        client.transport, transports.GkeHubMembershipServiceGrpcTransport,
-    )
+    client = GkeHubClient(credentials=ga_credentials.AnonymousCredentials(),)
+    assert isinstance(client.transport, transports.GkeHubGrpcTransport,)
 
 
-def test_gke_hub_membership_service_base_transport_error():
+def test_gke_hub_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.GkeHubMembershipServiceTransport(
+        transport = transports.GkeHubTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_gke_hub_membership_service_base_transport():
+def test_gke_hub_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.gkehub_v1beta1.services.gke_hub_membership_service.transports.GkeHubMembershipServiceTransport.__init__"
+        "google.cloud.gkehub_v1.services.gke_hub.transports.GkeHubTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.GkeHubMembershipServiceTransport(
+        transport = transports.GkeHubTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
@@ -2341,13 +3104,16 @@ def test_gke_hub_membership_service_base_transport():
     # raise NotImplementedError.
     methods = (
         "list_memberships",
+        "list_features",
         "get_membership",
+        "get_feature",
         "create_membership",
+        "create_feature",
         "delete_membership",
+        "delete_feature",
         "update_membership",
+        "update_feature",
         "generate_connect_manifest",
-        "validate_exclusivity",
-        "generate_exclusivity_manifest",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -2360,16 +3126,16 @@ def test_gke_hub_membership_service_base_transport():
 
 
 @requires_google_auth_gte_1_25_0
-def test_gke_hub_membership_service_base_transport_with_credentials_file():
+def test_gke_hub_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.gkehub_v1beta1.services.gke_hub_membership_service.transports.GkeHubMembershipServiceTransport._prep_wrapped_messages"
+        "google.cloud.gkehub_v1.services.gke_hub.transports.GkeHubTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.GkeHubMembershipServiceTransport(
+        transport = transports.GkeHubTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
@@ -2381,16 +3147,16 @@ def test_gke_hub_membership_service_base_transport_with_credentials_file():
 
 
 @requires_google_auth_lt_1_25_0
-def test_gke_hub_membership_service_base_transport_with_credentials_file_old_google_auth():
+def test_gke_hub_base_transport_with_credentials_file_old_google_auth():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.gkehub_v1beta1.services.gke_hub_membership_service.transports.GkeHubMembershipServiceTransport._prep_wrapped_messages"
+        "google.cloud.gkehub_v1.services.gke_hub.transports.GkeHubTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.GkeHubMembershipServiceTransport(
+        transport = transports.GkeHubTransport(
             credentials_file="credentials.json", quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
@@ -2400,23 +3166,23 @@ def test_gke_hub_membership_service_base_transport_with_credentials_file_old_goo
         )
 
 
-def test_gke_hub_membership_service_base_transport_with_adc():
+def test_gke_hub_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.gkehub_v1beta1.services.gke_hub_membership_service.transports.GkeHubMembershipServiceTransport._prep_wrapped_messages"
+        "google.cloud.gkehub_v1.services.gke_hub.transports.GkeHubTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.GkeHubMembershipServiceTransport()
+        transport = transports.GkeHubTransport()
         adc.assert_called_once()
 
 
 @requires_google_auth_gte_1_25_0
-def test_gke_hub_membership_service_auth_adc():
+def test_gke_hub_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        GkeHubMembershipServiceClient()
+        GkeHubClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
@@ -2425,11 +3191,11 @@ def test_gke_hub_membership_service_auth_adc():
 
 
 @requires_google_auth_lt_1_25_0
-def test_gke_hub_membership_service_auth_adc_old_google_auth():
+def test_gke_hub_auth_adc_old_google_auth():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        GkeHubMembershipServiceClient()
+        GkeHubClient()
         adc.assert_called_once_with(
             scopes=("https://www.googleapis.com/auth/cloud-platform",),
             quota_project_id=None,
@@ -2438,13 +3204,10 @@ def test_gke_hub_membership_service_auth_adc_old_google_auth():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [
-        transports.GkeHubMembershipServiceGrpcTransport,
-        transports.GkeHubMembershipServiceGrpcAsyncIOTransport,
-    ],
+    [transports.GkeHubGrpcTransport, transports.GkeHubGrpcAsyncIOTransport,],
 )
 @requires_google_auth_gte_1_25_0
-def test_gke_hub_membership_service_transport_auth_adc(transport_class):
+def test_gke_hub_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -2459,13 +3222,10 @@ def test_gke_hub_membership_service_transport_auth_adc(transport_class):
 
 @pytest.mark.parametrize(
     "transport_class",
-    [
-        transports.GkeHubMembershipServiceGrpcTransport,
-        transports.GkeHubMembershipServiceGrpcAsyncIOTransport,
-    ],
+    [transports.GkeHubGrpcTransport, transports.GkeHubGrpcAsyncIOTransport,],
 )
 @requires_google_auth_lt_1_25_0
-def test_gke_hub_membership_service_transport_auth_adc_old_google_auth(transport_class):
+def test_gke_hub_transport_auth_adc_old_google_auth(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -2480,13 +3240,11 @@ def test_gke_hub_membership_service_transport_auth_adc_old_google_auth(transport
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
-        (transports.GkeHubMembershipServiceGrpcTransport, grpc_helpers),
-        (transports.GkeHubMembershipServiceGrpcAsyncIOTransport, grpc_helpers_async),
+        (transports.GkeHubGrpcTransport, grpc_helpers),
+        (transports.GkeHubGrpcAsyncIOTransport, grpc_helpers_async),
     ],
 )
-def test_gke_hub_membership_service_transport_create_channel(
-    transport_class, grpc_helpers
-):
+def test_gke_hub_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(
@@ -2516,14 +3274,9 @@ def test_gke_hub_membership_service_transport_create_channel(
 
 @pytest.mark.parametrize(
     "transport_class",
-    [
-        transports.GkeHubMembershipServiceGrpcTransport,
-        transports.GkeHubMembershipServiceGrpcAsyncIOTransport,
-    ],
+    [transports.GkeHubGrpcTransport, transports.GkeHubGrpcAsyncIOTransport],
 )
-def test_gke_hub_membership_service_grpc_transport_client_cert_source_for_mtls(
-    transport_class,
-):
+def test_gke_hub_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
@@ -2561,8 +3314,8 @@ def test_gke_hub_membership_service_grpc_transport_client_cert_source_for_mtls(
             )
 
 
-def test_gke_hub_membership_service_host_no_port():
-    client = GkeHubMembershipServiceClient(
+def test_gke_hub_host_no_port():
+    client = GkeHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="gkehub.googleapis.com"
@@ -2571,8 +3324,8 @@ def test_gke_hub_membership_service_host_no_port():
     assert client.transport._host == "gkehub.googleapis.com:443"
 
 
-def test_gke_hub_membership_service_host_with_port():
-    client = GkeHubMembershipServiceClient(
+def test_gke_hub_host_with_port():
+    client = GkeHubClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="gkehub.googleapis.com:8000"
@@ -2581,11 +3334,11 @@ def test_gke_hub_membership_service_host_with_port():
     assert client.transport._host == "gkehub.googleapis.com:8000"
 
 
-def test_gke_hub_membership_service_grpc_transport_channel():
+def test_gke_hub_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.GkeHubMembershipServiceGrpcTransport(
+    transport = transports.GkeHubGrpcTransport(
         host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
@@ -2593,11 +3346,11 @@ def test_gke_hub_membership_service_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_gke_hub_membership_service_grpc_asyncio_transport_channel():
+def test_gke_hub_grpc_asyncio_transport_channel():
     channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.GkeHubMembershipServiceGrpcAsyncIOTransport(
+    transport = transports.GkeHubGrpcAsyncIOTransport(
         host="squid.clam.whelk", channel=channel,
     )
     assert transport.grpc_channel == channel
@@ -2609,14 +3362,9 @@ def test_gke_hub_membership_service_grpc_asyncio_transport_channel():
 # removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
-    [
-        transports.GkeHubMembershipServiceGrpcTransport,
-        transports.GkeHubMembershipServiceGrpcAsyncIOTransport,
-    ],
+    [transports.GkeHubGrpcTransport, transports.GkeHubGrpcAsyncIOTransport],
 )
-def test_gke_hub_membership_service_transport_channel_mtls_with_client_cert_source(
-    transport_class,
-):
+def test_gke_hub_transport_channel_mtls_with_client_cert_source(transport_class):
     with mock.patch(
         "grpc.ssl_channel_credentials", autospec=True
     ) as grpc_ssl_channel_cred:
@@ -2663,12 +3411,9 @@ def test_gke_hub_membership_service_transport_channel_mtls_with_client_cert_sour
 # removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
     "transport_class",
-    [
-        transports.GkeHubMembershipServiceGrpcTransport,
-        transports.GkeHubMembershipServiceGrpcAsyncIOTransport,
-    ],
+    [transports.GkeHubGrpcTransport, transports.GkeHubGrpcAsyncIOTransport],
 )
-def test_gke_hub_membership_service_transport_channel_mtls_with_adc(transport_class):
+def test_gke_hub_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -2705,8 +3450,8 @@ def test_gke_hub_membership_service_transport_channel_mtls_with_adc(transport_cl
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_gke_hub_membership_service_grpc_lro_client():
-    client = GkeHubMembershipServiceClient(
+def test_gke_hub_grpc_lro_client():
+    client = GkeHubClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
     )
     transport = client.transport
@@ -2718,8 +3463,8 @@ def test_gke_hub_membership_service_grpc_lro_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_gke_hub_membership_service_grpc_lro_async_client():
-    client = GkeHubMembershipServiceAsyncClient(
+def test_gke_hub_grpc_lro_async_client():
+    client = GkeHubAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
     )
     transport = client.transport
@@ -2731,125 +3476,147 @@ def test_gke_hub_membership_service_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_membership_path():
+def test_feature_path():
     project = "squid"
     location = "clam"
-    membership = "whelk"
+    feature = "whelk"
+    expected = "projects/{project}/locations/{location}/features/{feature}".format(
+        project=project, location=location, feature=feature,
+    )
+    actual = GkeHubClient.feature_path(project, location, feature)
+    assert expected == actual
+
+
+def test_parse_feature_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "feature": "nudibranch",
+    }
+    path = GkeHubClient.feature_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = GkeHubClient.parse_feature_path(path)
+    assert expected == actual
+
+
+def test_membership_path():
+    project = "cuttlefish"
+    location = "mussel"
+    membership = "winkle"
     expected = "projects/{project}/locations/{location}/memberships/{membership}".format(
         project=project, location=location, membership=membership,
     )
-    actual = GkeHubMembershipServiceClient.membership_path(
-        project, location, membership
-    )
+    actual = GkeHubClient.membership_path(project, location, membership)
     assert expected == actual
 
 
 def test_parse_membership_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "membership": "nudibranch",
+        "project": "nautilus",
+        "location": "scallop",
+        "membership": "abalone",
     }
-    path = GkeHubMembershipServiceClient.membership_path(**expected)
+    path = GkeHubClient.membership_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GkeHubMembershipServiceClient.parse_membership_path(path)
+    actual = GkeHubClient.parse_membership_path(path)
     assert expected == actual
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = GkeHubMembershipServiceClient.common_billing_account_path(billing_account)
+    actual = GkeHubClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "clam",
     }
-    path = GkeHubMembershipServiceClient.common_billing_account_path(**expected)
+    path = GkeHubClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GkeHubMembershipServiceClient.parse_common_billing_account_path(path)
+    actual = GkeHubClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "whelk"
     expected = "folders/{folder}".format(folder=folder,)
-    actual = GkeHubMembershipServiceClient.common_folder_path(folder)
+    actual = GkeHubClient.common_folder_path(folder)
     assert expected == actual
 
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "octopus",
     }
-    path = GkeHubMembershipServiceClient.common_folder_path(**expected)
+    path = GkeHubClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GkeHubMembershipServiceClient.parse_common_folder_path(path)
+    actual = GkeHubClient.parse_common_folder_path(path)
     assert expected == actual
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "oyster"
     expected = "organizations/{organization}".format(organization=organization,)
-    actual = GkeHubMembershipServiceClient.common_organization_path(organization)
+    actual = GkeHubClient.common_organization_path(organization)
     assert expected == actual
 
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "nudibranch",
     }
-    path = GkeHubMembershipServiceClient.common_organization_path(**expected)
+    path = GkeHubClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GkeHubMembershipServiceClient.parse_common_organization_path(path)
+    actual = GkeHubClient.parse_common_organization_path(path)
     assert expected == actual
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "cuttlefish"
     expected = "projects/{project}".format(project=project,)
-    actual = GkeHubMembershipServiceClient.common_project_path(project)
+    actual = GkeHubClient.common_project_path(project)
     assert expected == actual
 
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "mussel",
     }
-    path = GkeHubMembershipServiceClient.common_project_path(**expected)
+    path = GkeHubClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GkeHubMembershipServiceClient.parse_common_project_path(path)
+    actual = GkeHubClient.parse_common_project_path(path)
     assert expected == actual
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project, location=location,
     )
-    actual = GkeHubMembershipServiceClient.common_location_path(project, location)
+    actual = GkeHubClient.common_location_path(project, location)
     assert expected == actual
 
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "scallop",
+        "location": "abalone",
     }
-    path = GkeHubMembershipServiceClient.common_location_path(**expected)
+    path = GkeHubClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = GkeHubMembershipServiceClient.parse_common_location_path(path)
+    actual = GkeHubClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -2857,17 +3624,17 @@ def test_client_withDEFAULT_CLIENT_INFO():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.GkeHubMembershipServiceTransport, "_prep_wrapped_messages"
+        transports.GkeHubTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = GkeHubMembershipServiceClient(
+        client = GkeHubClient(
             credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.GkeHubMembershipServiceTransport, "_prep_wrapped_messages"
+        transports.GkeHubTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = GkeHubMembershipServiceClient.get_transport_class()
+        transport_class = GkeHubClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
         )

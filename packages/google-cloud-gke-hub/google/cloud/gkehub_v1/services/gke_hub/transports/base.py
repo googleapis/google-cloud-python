@@ -27,7 +27,9 @@ from google.api_core import operations_v1  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.cloud.gkehub_v1beta1.types import membership
+from google.cloud.gkehub_v1.types import feature
+from google.cloud.gkehub_v1.types import membership
+from google.cloud.gkehub_v1.types import service
 from google.longrunning import operations_pb2  # type: ignore
 
 try:
@@ -47,8 +49,8 @@ except AttributeError:
         _GOOGLE_AUTH_VERSION = None
 
 
-class GkeHubMembershipServiceTransport(abc.ABC):
-    """Abstract transport class for GkeHubMembershipService."""
+class GkeHubTransport(abc.ABC):
+    """Abstract transport class for GkeHub."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
@@ -157,30 +159,35 @@ class GkeHubMembershipServiceTransport(abc.ABC):
             self.list_memberships: gapic_v1.method.wrap_method(
                 self.list_memberships, default_timeout=None, client_info=client_info,
             ),
+            self.list_features: gapic_v1.method.wrap_method(
+                self.list_features, default_timeout=None, client_info=client_info,
+            ),
             self.get_membership: gapic_v1.method.wrap_method(
                 self.get_membership, default_timeout=None, client_info=client_info,
+            ),
+            self.get_feature: gapic_v1.method.wrap_method(
+                self.get_feature, default_timeout=None, client_info=client_info,
             ),
             self.create_membership: gapic_v1.method.wrap_method(
                 self.create_membership, default_timeout=None, client_info=client_info,
             ),
+            self.create_feature: gapic_v1.method.wrap_method(
+                self.create_feature, default_timeout=None, client_info=client_info,
+            ),
             self.delete_membership: gapic_v1.method.wrap_method(
                 self.delete_membership, default_timeout=None, client_info=client_info,
+            ),
+            self.delete_feature: gapic_v1.method.wrap_method(
+                self.delete_feature, default_timeout=None, client_info=client_info,
             ),
             self.update_membership: gapic_v1.method.wrap_method(
                 self.update_membership, default_timeout=None, client_info=client_info,
             ),
+            self.update_feature: gapic_v1.method.wrap_method(
+                self.update_feature, default_timeout=None, client_info=client_info,
+            ),
             self.generate_connect_manifest: gapic_v1.method.wrap_method(
                 self.generate_connect_manifest,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.validate_exclusivity: gapic_v1.method.wrap_method(
-                self.validate_exclusivity,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.generate_exclusivity_manifest: gapic_v1.method.wrap_method(
-                self.generate_exclusivity_manifest,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -195,11 +202,19 @@ class GkeHubMembershipServiceTransport(abc.ABC):
     def list_memberships(
         self,
     ) -> Callable[
-        [membership.ListMembershipsRequest],
+        [service.ListMembershipsRequest],
         Union[
-            membership.ListMembershipsResponse,
-            Awaitable[membership.ListMembershipsResponse],
+            service.ListMembershipsResponse, Awaitable[service.ListMembershipsResponse]
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_features(
+        self,
+    ) -> Callable[
+        [service.ListFeaturesRequest],
+        Union[service.ListFeaturesResponse, Awaitable[service.ListFeaturesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -207,8 +222,16 @@ class GkeHubMembershipServiceTransport(abc.ABC):
     def get_membership(
         self,
     ) -> Callable[
-        [membership.GetMembershipRequest],
+        [service.GetMembershipRequest],
         Union[membership.Membership, Awaitable[membership.Membership]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_feature(
+        self,
+    ) -> Callable[
+        [service.GetFeatureRequest], Union[feature.Feature, Awaitable[feature.Feature]]
     ]:
         raise NotImplementedError()
 
@@ -216,7 +239,16 @@ class GkeHubMembershipServiceTransport(abc.ABC):
     def create_membership(
         self,
     ) -> Callable[
-        [membership.CreateMembershipRequest],
+        [service.CreateMembershipRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_feature(
+        self,
+    ) -> Callable[
+        [service.CreateFeatureRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -225,7 +257,16 @@ class GkeHubMembershipServiceTransport(abc.ABC):
     def delete_membership(
         self,
     ) -> Callable[
-        [membership.DeleteMembershipRequest],
+        [service.DeleteMembershipRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_feature(
+        self,
+    ) -> Callable[
+        [service.DeleteFeatureRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -234,7 +275,16 @@ class GkeHubMembershipServiceTransport(abc.ABC):
     def update_membership(
         self,
     ) -> Callable[
-        [membership.UpdateMembershipRequest],
+        [service.UpdateMembershipRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_feature(
+        self,
+    ) -> Callable[
+        [service.UpdateFeatureRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -243,37 +293,13 @@ class GkeHubMembershipServiceTransport(abc.ABC):
     def generate_connect_manifest(
         self,
     ) -> Callable[
-        [membership.GenerateConnectManifestRequest],
+        [service.GenerateConnectManifestRequest],
         Union[
-            membership.GenerateConnectManifestResponse,
-            Awaitable[membership.GenerateConnectManifestResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def validate_exclusivity(
-        self,
-    ) -> Callable[
-        [membership.ValidateExclusivityRequest],
-        Union[
-            membership.ValidateExclusivityResponse,
-            Awaitable[membership.ValidateExclusivityResponse],
-        ],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def generate_exclusivity_manifest(
-        self,
-    ) -> Callable[
-        [membership.GenerateExclusivityManifestRequest],
-        Union[
-            membership.GenerateExclusivityManifestResponse,
-            Awaitable[membership.GenerateExclusivityManifestResponse],
+            service.GenerateConnectManifestResponse,
+            Awaitable[service.GenerateConnectManifestResponse],
         ],
     ]:
         raise NotImplementedError()
 
 
-__all__ = ("GkeHubMembershipServiceTransport",)
+__all__ = ("GkeHubTransport",)

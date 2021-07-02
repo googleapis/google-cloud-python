@@ -1,4 +1,5 @@
-# Copyright 2021 Google LLC
+# -*- coding: utf-8 -*-
+# Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,21 +12,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
-docker:
-  image: gcr.io/repo-automation-bots/owlbot-python:latest
 
-deep-remove-regex:
-  - /owl-bot-staging
+from google.cloud.gkehub.multiclusteringress_v1.types.multiclusteringress import (
+    FeatureSpec,
+)
 
-deep-preserve-regex:
-  - /owl-bot-staging/v1alpha
-  - /owl-bot-staging/v1alpha2
-  - /owl-bot-staging/v1beta
-
-deep-copy-regex:
-  - source: /google/cloud/gkehub/(v.*)/.*-py/(.*)
-    dest: /owl-bot-staging/$1/$2
-
-begin-after-commit-hash: 6a5da3f1274b088752f074da5bc9e30bd1beb27e
-
+__all__ = ("FeatureSpec",)

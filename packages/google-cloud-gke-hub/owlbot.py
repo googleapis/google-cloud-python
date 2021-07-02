@@ -22,10 +22,68 @@ from synthtool.languages import python
 
 common = gcp.CommonTemplates()
 
-default_version = "v1beta1"
+default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
-    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst"])
+    dependencies = [
+      "configmanagement",
+      "multiclusteringress",
+    ]
+
+    # rename google.cloud.gkehub.vX to google.cloud.gkehub_vX
+    s.replace(
+      [
+            library  / f"google/cloud/gkehub_{library.name}/**/*.py",
+            library  / f"tests/unit/gapic/gkehub_{library.name}/**/*.py",
+      ],
+      f"google.cloud.gkehub.{library.name}",
+      f"google.cloud.gkehub_{library.name}",
+    )
+
+    # rename dependencies google.cloud.gkehub.dep.vX to google.cloud.gkehub.dep_vX
+    for dep in dependencies:
+        s.replace(
+          [
+            library  / f"google/cloud/gkehub_{library.name}/**/*.py",
+            library  / f"tests/unit/gapic/gkehub_{library.name}/**/*.py",
+            library  / f"google/cloud/gkehub/{dep}_{library.name}/**/*.py",
+          ],
+          f"from google.cloud.gkehub.{dep}.{library.name} import",
+          f"import google.cloud.gkehub.{dep}_{library.name} as"
+        )
+
+        s.replace(
+          [
+            library  / f"google/cloud/gkehub_{library.name}/**/*.py",
+            library  / f"tests/unit/gapic/gkehub_{library.name}/**/*.py",
+            library  / f"google/cloud/gkehub/{dep}_{library.name}/**/*.py",
+          ],
+          f"google.cloud.gkehub.{dep}.{library.name}",
+          f"google.cloud.gkehub.{dep}_{library.name}"
+        )
+
+    # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
+    s.replace(library / f"google/cloud/**/types/*.py",
+              r""".
+    Attributes:""",
+              r""".\n
+    Attributes:""",
+    )
+
+    # Work around docs issue. Fix proposed upstream in cl/382492769
+    s.replace(library / f"google/cloud/gkehub_{library.name}/types/feature.py",
+        "    projects/{p}/locations/{l}/memberships/{m}",
+        "`projects/{p}/locations/{l}/memberships/{m}`"
+    )
+
+     # Work around docs issue. Fix proposed upstream in cl/382492769
+    s.replace(library / f"google/cloud/gkehub_{library.name}/types/membership.py",
+        """the GKE cluster. For example:
+                //container.googleapis.com/projects/my-""",
+        """the GKE cluster. For example:
+            //container.googleapis.com/projects/my-"""
+    )
+    s.move(library, excludes=["setup.py", "README.rst", "docs/index.rst","google/cloud/gkehub/__init__.py"])
 
 s.remove_staging_dirs()
 
