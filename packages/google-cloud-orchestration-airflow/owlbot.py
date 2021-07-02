@@ -23,11 +23,20 @@ from synthtool.languages import python
 default_version = "v1"
 
 for library in s.get_staging_dirs(default_version):
+    # Work around issue with docs generation with missing code-block
+    s.replace(library / f"google/cloud/orchestration/airflow/service_{library.name}/types/environments.py",
+        r"""The following example:\n
+       {""",
+        r"""The following example:\n
+    .. code-block:: none\n
+       {"""
+    )
+
     # Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
     s.replace(library / f"google/cloud/orchestration/airflow/service_{library.name}/types/*.py",
-                r""".
+        r""".
     Attributes:""",
-                r""".\n
+        r""".\n
     Attributes:""",
     )
 
