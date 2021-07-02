@@ -1,0 +1,117 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.orchestration.airflow.service_v1beta1",
+  "protoPackage": "google.cloud.orchestration.airflow.service.v1beta1",
+  "schema": "1.0",
+  "services": {
+    "Environments": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "EnvironmentsClient",
+          "rpcs": {
+            "CheckUpgrade": {
+              "methods": [
+                "check_upgrade"
+              ]
+            },
+            "CreateEnvironment": {
+              "methods": [
+                "create_environment"
+              ]
+            },
+            "DeleteEnvironment": {
+              "methods": [
+                "delete_environment"
+              ]
+            },
+            "GetEnvironment": {
+              "methods": [
+                "get_environment"
+              ]
+            },
+            "ListEnvironments": {
+              "methods": [
+                "list_environments"
+              ]
+            },
+            "RestartWebServer": {
+              "methods": [
+                "restart_web_server"
+              ]
+            },
+            "UpdateEnvironment": {
+              "methods": [
+                "update_environment"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "EnvironmentsAsyncClient",
+          "rpcs": {
+            "CheckUpgrade": {
+              "methods": [
+                "check_upgrade"
+              ]
+            },
+            "CreateEnvironment": {
+              "methods": [
+                "create_environment"
+              ]
+            },
+            "DeleteEnvironment": {
+              "methods": [
+                "delete_environment"
+              ]
+            },
+            "GetEnvironment": {
+              "methods": [
+                "get_environment"
+              ]
+            },
+            "ListEnvironments": {
+              "methods": [
+                "list_environments"
+              ]
+            },
+            "RestartWebServer": {
+              "methods": [
+                "restart_web_server"
+              ]
+            },
+            "UpdateEnvironment": {
+              "methods": [
+                "update_environment"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ImageVersions": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ImageVersionsClient",
+          "rpcs": {
+            "ListImageVersions": {
+              "methods": [
+                "list_image_versions"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ImageVersionsAsyncClient",
+          "rpcs": {
+            "ListImageVersions": {
+              "methods": [
+                "list_image_versions"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

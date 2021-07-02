@@ -1,0 +1,13 @@
+{
+    "name": "composer",
+    "name_pretty": "Cloud Composer",
+    "product_documentation": "https://cloud.google.com/composer/",
+    "client_documentation": "https://googleapis.dev/python/composer/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-composer",
+    "distribution_name": "google-cloud-composer",
+    "api_id": "composer.googleapis.com"
+}
