@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.1](https://www.github.com/googleapis/python-dataflow-client/compare/v0.1.0...v0.1.1) (2021-06-30)
+
+
+### Miscellaneous Chores
+
+* release 0.1.1 ([#9](https://www.github.com/googleapis/python-dataflow-client/issues/9)) ([db3ece7](https://www.github.com/googleapis/python-dataflow-client/commit/db3ece7761283ada3ddbc8e15b7ca04972b22f0b))
+
 ## 0.1.0 (2021-06-25)
 
 
