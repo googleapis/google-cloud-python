@@ -12,26 +12,55 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
+import time
+import uuid
 
 from google.cloud import spanner
 import mock
 import pytest
 
 import quickstart
+from snippets_test import cleanup_old_instances
 
-SPANNER_INSTANCE = os.environ["SPANNER_INSTANCE"]
+
+def unique_instance_id():
+    """Creates a unique id for the database."""
+    return f"test-instance-{uuid.uuid4().hex[:10]}"
+
+
+INSTANCE_ID = unique_instance_id()
+
+
+def create_instance():
+    spanner_client = spanner.Client()
+    cleanup_old_instances(spanner_client)
+    instance_config = "{}/instanceConfigs/{}".format(
+        spanner_client.project_name, "regional-us-central1"
+    )
+    instance = spanner_client.instance(
+        INSTANCE_ID,
+        instance_config,
+        labels={"cloud_spanner_samples": "true", "created": str(int(time.time()))},
+    )
+    op = instance.create()
+    op.result(120)  # block until completion
 
 
 @pytest.fixture
 def patch_instance():
     original_instance = spanner.Client.instance
 
+    spanner_client = spanner.Client()
+    cleanup_old_instances(spanner_client)
+    create_instance()
+
     def new_instance(self, unused_instance_name):
-        return original_instance(self, SPANNER_INSTANCE)
+        return original_instance(self, INSTANCE_ID)
 
     instance_patch = mock.patch(
-        "google.cloud.spanner_v1.Client.instance", side_effect=new_instance, autospec=True
+        "google.cloud.spanner_v1.Client.instance",
+        side_effect=new_instance,
+        autospec=True,
     )
 
     with instance_patch:
@@ -41,7 +70,7 @@ def patch_instance():
 @pytest.fixture
 def example_database():
     spanner_client = spanner.Client()
-    instance = spanner_client.instance(SPANNER_INSTANCE)
+    instance = spanner_client.instance(INSTANCE_ID)
     database = instance.database("my-database-id")
 
     if not database.exists():
@@ -50,7 +79,17 @@ def example_database():
     yield
 
 
+def drop_instance():
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(INSTANCE_ID)
+    instance.delete()
+
+
 def test_quickstart(capsys, patch_instance, example_database):
     quickstart.run_quickstart()
     out, _ = capsys.readouterr()
+
+    # Drop created instance before verifying output.
+    drop_instance()
+
     assert "[1]" in out

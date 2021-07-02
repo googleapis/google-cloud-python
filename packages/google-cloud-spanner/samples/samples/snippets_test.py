@@ -16,6 +16,7 @@ import time
 import uuid
 
 from google.cloud import spanner
+from google.cloud.spanner_v1.instance import Backup
 from google.cloud.spanner_v1.instance import Instance
 import pytest
 
@@ -43,6 +44,11 @@ def cleanup_old_instances(spanner_client):
         create_time = int(instance.labels["created"])
         if create_time > cutoff:
             continue
+
+        for backup_pb in instance.list_backups():
+            backup = Backup.from_pb(backup_pb, instance)
+            backup.delete()
+
         instance.delete()
 
 
