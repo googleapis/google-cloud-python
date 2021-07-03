@@ -68,14 +68,9 @@ Using ``nox``
 We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 
 - To test your changes, run unit tests with ``nox``::
+    $ nox -s unit
 
-    $ nox -s unit-3.6
-    $ nox -s unit-3.7
-    $ nox -s unit-3.8
-    $ nox -s unit-3.9
-
-- Args to pytest can be passed through the nox command separated by a `--`. For
-  example, to run a single test::
+- To run a single unit test::
 
     $ nox -s unit-3.9 -- -k <name of test>
 
@@ -145,7 +140,7 @@ Running System Tests
 - To run system tests, you can execute::
 
    # Run all system tests
-   $ nox -s system-3.8
+   $ nox -s system
 
    # Run a single system test
    $ nox -s system-3.8 -- -k <name of test>
