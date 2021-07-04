@@ -14,9 +14,15 @@
 
 """This script is used to synthesize generated parts of this library."""
 
-from typing import List, Optional
+import os
 import requests
+from typing import List, Optional
 
+
+class MissingGithubToken(ValueError):
+    """Raised when the GITHUB_TOKEN environment variable is not set"""
+
+    pass
 
 class CloudClient:
     repo: str = None
@@ -111,7 +117,6 @@ def client_for_repo(repo_slug) -> Optional[CloudClient]:
 
     return CloudClient(response.json())
 
-
 REPO_LIST_JSON = "https://api.github.com/orgs/googleapis/repos?per_page=100&page={page_number}"
 REPO_EXCLUSION = [
     # core libraries
@@ -141,6 +146,7 @@ def get_clients_batch_from_response_json(response_json) -> List[CloudClient]:
 def all_clients() -> List[CloudClient]:
     clients = []
     first_request = True
+    token = os.environ['GITHUB_TOKEN']
 
     while first_request or 'next' in response.links:
         if first_request:
@@ -148,7 +154,8 @@ def all_clients() -> List[CloudClient]:
             first_request = False
         else:
             url = response.links['next']['url']
-        response = requests.get(url=url)
+        headers = {'Authorization': f'token {token}'}
+        response = requests.get(url=url, headers= headers)
         if len(response.json()) == 0:
             break
         clients.extend(get_clients_batch_from_response_json(response.json()))
@@ -156,6 +163,8 @@ def all_clients() -> List[CloudClient]:
     # remove empty clients
     return [client for client in clients if client]
 
+if 'GITHUB_TOKEN' not in os.environ:
+    raise MissingGithubToken("Please include a GITHUB_TOKEN env var.")
 
 clients = sorted(all_clients())
 table_contents = generate_table_contents(clients)
