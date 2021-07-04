@@ -140,13 +140,18 @@ def get_clients_batch_from_response_json(response_json) -> List[CloudClient]:
 
 def all_clients() -> List[CloudClient]:
     clients = []
-    page_number = 1
-    while page_number < 10:
-        response = requests.get(REPO_LIST_JSON.format(page_number=page_number))
+    first_request = True
+
+    while first_request or 'next' in response.links:
+        if first_request:
+            url = REPO_LIST_JSON.format(page_number=1)
+            first_request = False
+        else:
+            url = response.links['next']['url']
+        response = requests.get(url=url)
         if len(response.json()) == 0:
             break
         clients.extend(get_clients_batch_from_response_json(response.json()))
-        page_number = page_number + 1
 
     # remove empty clients
     return [client for client in clients if client]
