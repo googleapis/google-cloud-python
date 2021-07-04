@@ -403,6 +403,9 @@ Libraries
    * - `Data QnA <https://github.com/googleapis/python-data-qna>`_
      - |alpha|
      - |PyPI-google-cloud-data-qna|
+   * - `Datastream <https://github.com/googleapis/python-datastream>`_
+     - |alpha|
+     - |PyPI-google-cloud-datastream|
    * - `Network Connectivity Center <https://github.com/googleapis/python-network-connectivity>`_
      - |alpha|
      - |PyPI-google-cloud-network-connectivity|
@@ -629,6 +632,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-dns
 .. |PyPI-google-cloud-data-qna| image:: https://img.shields.io/pypi/v/google-cloud-data-qna.svg
      :target: https://pypi.org/project/google-cloud-data-qna
+.. |PyPI-google-cloud-datastream| image:: https://img.shields.io/pypi/v/google-cloud-datastream.svg
+     :target: https://pypi.org/project/google-cloud-datastream
 .. |PyPI-google-cloud-network-connectivity| image:: https://img.shields.io/pypi/v/google-cloud-network-connectivity.svg
      :target: https://pypi.org/project/google-cloud-network-connectivity
 
