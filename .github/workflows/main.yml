@@ -36,6 +36,9 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
+      - name: Install script dependencies
+        run: pip3 install -r requirements.txt
+        working-directory: ./scripts
       - name: Run python script to update the api list in README.rst
         run: python3 updateapilist.py
         working-directory: ./scripts
