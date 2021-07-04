@@ -14,9 +14,15 @@
 
 """This script is used to synthesize generated parts of this library."""
 
-from typing import List, Optional
+import os
 import requests
+from typing import List, Optional
 
+
+class MissingGithubToken(ValueError):
+    """Raised when the GITHUB_TOKEN environment variable is not set"""
+
+    pass
 
 class CloudClient:
     repo: str = None
@@ -111,8 +117,7 @@ def client_for_repo(repo_slug) -> Optional[CloudClient]:
 
     return CloudClient(response.json())
 
-
-REPO_LIST_JSON = "https://raw.githubusercontent.com/googleapis/sloth/master/repos.json"
+REPO_LIST_JSON = "https://api.github.com/orgs/googleapis/repos?per_page=100&page={page_number}"
 REPO_EXCLUSION = [
     # core libraries
     "googleapis/python-api-core",
@@ -129,22 +134,37 @@ REPO_EXCLUSION = [
 
 def allowed_repo(repo) -> bool:
     return (
-        repo["language"] == "python"
-        and repo["repo"].startswith("googleapis/python-")
-        and repo["repo"] not in REPO_EXCLUSION
+        repo["full_name"].startswith("googleapis/python-")
+        and repo["full_name"] not in REPO_EXCLUSION
+        and not repo["archived"]
     )
 
 
+def get_clients_batch_from_response_json(response_json) -> List[CloudClient]:
+    return [client_for_repo(repo["full_name"]) for repo in response_json if allowed_repo(repo)]
+
 def all_clients() -> List[CloudClient]:
-    response = requests.get(REPO_LIST_JSON)
-    clients = [
-        client_for_repo(repo["repo"])
-        for repo in response.json()["repos"]
-        if allowed_repo(repo)
-    ]
+    clients = []
+    first_request = True
+    token = os.environ['GITHUB_TOKEN']
+
+    while first_request or 'next' in response.links:
+        if first_request:
+            url = REPO_LIST_JSON.format(page_number=1)
+            first_request = False
+        else:
+            url = response.links['next']['url']
+        headers = {'Authorization': f'token {token}'}
+        response = requests.get(url=url, headers= headers)
+        if len(response.json()) == 0:
+            break
+        clients.extend(get_clients_batch_from_response_json(response.json()))
+
     # remove empty clients
     return [client for client in clients if client]
 
+if 'GITHUB_TOKEN' not in os.environ:
+    raise MissingGithubToken("Please include a GITHUB_TOKEN env var.")
 
 clients = sorted(all_clients())
 table_contents = generate_table_contents(clients)
