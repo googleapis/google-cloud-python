@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: A workflow for updating the api index in README.rst
+name: A workflow for updating the api list in README.rst
 # Controls when the action will run.
 
 on:
@@ -27,7 +27,7 @@ on:
 
 jobs:
   build:
-    name: Update API Index PR
+    name: Update API List PR
     runs-on: ubuntu-latest
     # don't run the workflow on forks of googleapis/google-cloud-python
     if: ${{github.repository == 'googleapis/google-cloud-python'}}
@@ -40,8 +40,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Run python script to update the api index in README.rst
-        run: python3 updateapiindex.py
+      - name: Run python script to update the api list in README.rst
+        run: python3 updateapilist.py
         working-directory: ./scripts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
