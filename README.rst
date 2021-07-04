@@ -133,12 +133,21 @@ Libraries
    * - `Dialogflow <https://github.com/googleapis/python-dialogflow>`_
      - |ga|
      - |PyPI-google-cloud-dialogflow|
+   * - `Dialogflow CX <https://github.com/googleapis/python-dialogflow-cx>`_
+     - |ga|
+     - |PyPI-google-cloud-dialogflow-cx|
    * - `Document Understanding API <https://github.com/googleapis/python-documentai>`_
      - |ga|
      - |PyPI-google-cloud-documentai|
    * - `Firestore <https://github.com/googleapis/python-firestore>`_
      - |ga|
      - |PyPI-google-cloud-firestore|
+   * - `Functions <https://github.com/googleapis/python-functions>`_
+     - |ga|
+     - |PyPI-google-cloud-functions|
+   * - `Game Servers <https://github.com/googleapis/python-game-servers>`_
+     - |ga|
+     - |PyPI-google-cloud-game-servers|
    * - `Grafeas <https://github.com/googleapis/python-grafeas>`_
      - |ga|
      - |PyPI-grafeas|
@@ -160,6 +169,9 @@ Libraries
    * - `Logging <https://github.com/googleapis/python-logging>`_
      - |ga|
      - |PyPI-google-cloud-logging|
+   * - `Managed Service for Microsoft Active Directory <https://github.com/googleapis/python-managed-identities>`_
+     - |ga|
+     - |PyPI-google-cloud-managed-identities|
    * - `Memorystore for Memcached <https://github.com/googleapis/python-memcache>`_
      - |ga|
      - |PyPI-google-cloud-memcache|
@@ -175,6 +187,9 @@ Libraries
    * - `OS Login <https://github.com/googleapis/python-oslogin>`_
      - |ga|
      - |PyPI-google-cloud-os-login|
+   * - `Private Certificate Authority <https://github.com/googleapis/python-security-private-ca>`_
+     - |ga|
+     - |PyPI-google-cloud-private-ca|
    * - `Pub/Sub <https://github.com/googleapis/python-pubsub>`_
      - |ga|
      - |PyPI-google-cloud-pubsub|
@@ -280,12 +295,15 @@ Libraries
    * - `Database Migration Service <https://github.com/googleapis/python-dms>`_
      - |beta|
      - |PyPI-google-cloud-dms|
+   * - `Dataflow <https://github.com/googleapis/python-dataflow-client>`_
+     - |beta|
+     - |PyPI-google-cloud-dataflow-client|
    * - `Dataproc Metastore <https://github.com/googleapis/python-dataproc-metastore>`_
      - |beta|
      - |PyPI-google-cloud-dataproc-metastore|
-   * - `Dialogflow CX <https://github.com/googleapis/python-dialogflow-cx>`_
+   * - `Debugger <https://github.com/googleapis/python-debugger-client>`_
      - |beta|
-     - |PyPI-google-cloud-dialogflow-cx|
+     - |PyPI-google-cloud-debugger-client|
    * - `Domains <https://github.com/googleapis/python-domains>`_
      - |beta|
      - |PyPI-google-cloud-domains|
@@ -295,36 +313,36 @@ Libraries
    * - `Essential Contacts API <https://github.com/googleapis/python-essential-contacts>`_
      - |beta|
      - |PyPI-google-cloud-essential-contacts|
-   * - `Functions <https://github.com/googleapis/python-functions>`_
+   * - `Eventarc <https://github.com/googleapis/python-eventarc>`_
      - |beta|
-     - |PyPI-google-cloud-functions|
+     - |PyPI-google-cloud-eventarc|
+   * - `GKE Connect Gateway API <https://github.com/googleapis/python-gke-connect-gateway>`_
+     - |beta|
+     - |PyPI-google-cloud-gke-connect-gateway|
    * - `GKE Hub API <https://github.com/googleapis/python-gke-hub>`_
      - |beta|
      - |PyPI-google-cloud-gke-hub|
-   * - `Game Servers <https://github.com/googleapis/python-game-servers>`_
-     - |beta|
-     - |PyPI-google-cloud-game-servers|
    * - `IAM Logging Protos <https://github.com/googleapis/python-iam-logging>`_
      - |beta|
      - |PyPI-google-cloud-iam-logging|
    * - `Life Sciences <https://github.com/googleapis/python-life-sciences>`_
      - |beta|
      - |PyPI-google-cloud-life-sciences|
-   * - `Managed Service for Microsoft Active Directory <https://github.com/googleapis/python-managed-identities>`_
-     - |beta|
-     - |PyPI-google-cloud-managed-identities|
    * - `Media Translation <https://github.com/googleapis/python-media-translation>`_
      - |beta|
      - |PyPI-google-cloud-media-translation|
+   * - `Network Management API <https://github.com/googleapis/python-network-management>`_
+     - |beta|
+     - |PyPI-google-cloud-network-management|
+   * - `Network Security API <https://github.com/googleapis/python-network-security>`_
+     - |beta|
+     - |PyPI-google-cloud-network-security|
    * - `Phishing Protection <https://github.com/googleapis/python-phishingprotection>`_
      - |beta|
      - |PyPI-google-cloud-phishing-protection|
    * - `Private Catalog <https://github.com/googleapis/python-private-catalog>`_
      - |beta|
      - |PyPI-google-cloud-private-catalog|
-   * - `Private Certificate Authority <https://github.com/googleapis/python-security-private-ca>`_
-     - |beta|
-     - |PyPI-google-cloud-private-ca|
    * - `Pub/Sub Lite <https://github.com/googleapis/python-pubsublite>`_
      - |beta|
      - |PyPI-google-cloud-pubsublite|
@@ -334,6 +352,9 @@ Libraries
    * - `Resource Manager API <https://github.com/googleapis/python-resource-manager>`_
      - |beta|
      - |PyPI-google-cloud-resource-manager|
+   * - `Resource Settings <https://github.com/googleapis/python-resource-settings>`_
+     - |beta|
+     - |PyPI-google-cloud-resource-settings|
    * - `Runtime Configurator <https://github.com/googleapis/python-runtimeconfig>`_
      - |beta|
      - |PyPI-google-cloud-runtimeconfig|
@@ -346,6 +367,12 @@ Libraries
    * - `Shell <https://github.com/googleapis/python-shell>`_
      - |beta|
      - |PyPI-google-cloud-shell|
+   * - `Source Context <https://github.com/googleapis/python-source-context>`_
+     - |beta|
+     - |PyPI-google-cloud-source-context|
+   * - `Spanner Django <https://github.com/googleapis/python-spanner-django>`_
+     - |beta|
+     - |PyPI-django-google-spanner|
    * - `TPU <https://github.com/googleapis/python-tpu>`_
      - |beta|
      - |PyPI-google-cloud-tpu|
@@ -376,6 +403,9 @@ Libraries
    * - `Data QnA <https://github.com/googleapis/python-data-qna>`_
      - |alpha|
      - |PyPI-google-cloud-data-qna|
+   * - `Datastream <https://github.com/googleapis/python-datastream>`_
+     - |alpha|
+     - |PyPI-google-cloud-datastream|
    * - `Network Connectivity Center <https://github.com/googleapis/python-network-connectivity>`_
      - |alpha|
      - |PyPI-google-cloud-network-connectivity|
@@ -422,10 +452,16 @@ Libraries
      :target: https://pypi.org/project/google-cloud-datastore
 .. |PyPI-google-cloud-dialogflow| image:: https://img.shields.io/pypi/v/google-cloud-dialogflow.svg
      :target: https://pypi.org/project/google-cloud-dialogflow
+.. |PyPI-google-cloud-dialogflow-cx| image:: https://img.shields.io/pypi/v/google-cloud-dialogflow-cx.svg
+     :target: https://pypi.org/project/google-cloud-dialogflow-cx
 .. |PyPI-google-cloud-documentai| image:: https://img.shields.io/pypi/v/google-cloud-documentai.svg
      :target: https://pypi.org/project/google-cloud-documentai
 .. |PyPI-google-cloud-firestore| image:: https://img.shields.io/pypi/v/google-cloud-firestore.svg
      :target: https://pypi.org/project/google-cloud-firestore
+.. |PyPI-google-cloud-functions| image:: https://img.shields.io/pypi/v/google-cloud-functions.svg
+     :target: https://pypi.org/project/google-cloud-functions
+.. |PyPI-google-cloud-game-servers| image:: https://img.shields.io/pypi/v/google-cloud-game-servers.svg
+     :target: https://pypi.org/project/google-cloud-game-servers
 .. |PyPI-grafeas| image:: https://img.shields.io/pypi/v/grafeas.svg
      :target: https://pypi.org/project/grafeas
 .. |PyPI-google-cloud-policy-troubleshooter| image:: https://img.shields.io/pypi/v/google-cloud-policy-troubleshooter.svg
@@ -440,6 +476,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-container
 .. |PyPI-google-cloud-logging| image:: https://img.shields.io/pypi/v/google-cloud-logging.svg
      :target: https://pypi.org/project/google-cloud-logging
+.. |PyPI-google-cloud-managed-identities| image:: https://img.shields.io/pypi/v/google-cloud-managed-identities.svg
+     :target: https://pypi.org/project/google-cloud-managed-identities
 .. |PyPI-google-cloud-memcache| image:: https://img.shields.io/pypi/v/google-cloud-memcache.svg
      :target: https://pypi.org/project/google-cloud-memcache
 .. |PyPI-google-cloud-monitoring-dashboards| image:: https://img.shields.io/pypi/v/google-cloud-monitoring-dashboards.svg
@@ -450,6 +488,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-language
 .. |PyPI-google-cloud-os-login| image:: https://img.shields.io/pypi/v/google-cloud-os-login.svg
      :target: https://pypi.org/project/google-cloud-os-login
+.. |PyPI-google-cloud-private-ca| image:: https://img.shields.io/pypi/v/google-cloud-private-ca.svg
+     :target: https://pypi.org/project/google-cloud-private-ca
 .. |PyPI-google-cloud-pubsub| image:: https://img.shields.io/pypi/v/google-cloud-pubsub.svg
      :target: https://pypi.org/project/google-cloud-pubsub
 .. |PyPI-google-cloud-recommender| image:: https://img.shields.io/pypi/v/google-cloud-recommender.svg
@@ -520,42 +560,46 @@ Libraries
      :target: https://pypi.org/project/google-cloud-datalabeling
 .. |PyPI-google-cloud-dms| image:: https://img.shields.io/pypi/v/google-cloud-dms.svg
      :target: https://pypi.org/project/google-cloud-dms
+.. |PyPI-google-cloud-dataflow-client| image:: https://img.shields.io/pypi/v/google-cloud-dataflow-client.svg
+     :target: https://pypi.org/project/google-cloud-dataflow-client
 .. |PyPI-google-cloud-dataproc-metastore| image:: https://img.shields.io/pypi/v/google-cloud-dataproc-metastore.svg
      :target: https://pypi.org/project/google-cloud-dataproc-metastore
-.. |PyPI-google-cloud-dialogflow-cx| image:: https://img.shields.io/pypi/v/google-cloud-dialogflow-cx.svg
-     :target: https://pypi.org/project/google-cloud-dialogflow-cx
+.. |PyPI-google-cloud-debugger-client| image:: https://img.shields.io/pypi/v/google-cloud-debugger-client.svg
+     :target: https://pypi.org/project/google-cloud-debugger-client
 .. |PyPI-google-cloud-domains| image:: https://img.shields.io/pypi/v/google-cloud-domains.svg
      :target: https://pypi.org/project/google-cloud-domains
 .. |PyPI-google-cloud-error-reporting| image:: https://img.shields.io/pypi/v/google-cloud-error-reporting.svg
      :target: https://pypi.org/project/google-cloud-error-reporting
 .. |PyPI-google-cloud-essential-contacts| image:: https://img.shields.io/pypi/v/google-cloud-essential-contacts.svg
      :target: https://pypi.org/project/google-cloud-essential-contacts
-.. |PyPI-google-cloud-functions| image:: https://img.shields.io/pypi/v/google-cloud-functions.svg
-     :target: https://pypi.org/project/google-cloud-functions
+.. |PyPI-google-cloud-eventarc| image:: https://img.shields.io/pypi/v/google-cloud-eventarc.svg
+     :target: https://pypi.org/project/google-cloud-eventarc
+.. |PyPI-google-cloud-gke-connect-gateway| image:: https://img.shields.io/pypi/v/google-cloud-gke-connect-gateway.svg
+     :target: https://pypi.org/project/google-cloud-gke-connect-gateway
 .. |PyPI-google-cloud-gke-hub| image:: https://img.shields.io/pypi/v/google-cloud-gke-hub.svg
      :target: https://pypi.org/project/google-cloud-gke-hub
-.. |PyPI-google-cloud-game-servers| image:: https://img.shields.io/pypi/v/google-cloud-game-servers.svg
-     :target: https://pypi.org/project/google-cloud-game-servers
 .. |PyPI-google-cloud-iam-logging| image:: https://img.shields.io/pypi/v/google-cloud-iam-logging.svg
      :target: https://pypi.org/project/google-cloud-iam-logging
 .. |PyPI-google-cloud-life-sciences| image:: https://img.shields.io/pypi/v/google-cloud-life-sciences.svg
      :target: https://pypi.org/project/google-cloud-life-sciences
-.. |PyPI-google-cloud-managed-identities| image:: https://img.shields.io/pypi/v/google-cloud-managed-identities.svg
-     :target: https://pypi.org/project/google-cloud-managed-identities
 .. |PyPI-google-cloud-media-translation| image:: https://img.shields.io/pypi/v/google-cloud-media-translation.svg
      :target: https://pypi.org/project/google-cloud-media-translation
+.. |PyPI-google-cloud-network-management| image:: https://img.shields.io/pypi/v/google-cloud-network-management.svg
+     :target: https://pypi.org/project/google-cloud-network-management
+.. |PyPI-google-cloud-network-security| image:: https://img.shields.io/pypi/v/google-cloud-network-security.svg
+     :target: https://pypi.org/project/google-cloud-network-security
 .. |PyPI-google-cloud-phishing-protection| image:: https://img.shields.io/pypi/v/google-cloud-phishing-protection.svg
      :target: https://pypi.org/project/google-cloud-phishing-protection
 .. |PyPI-google-cloud-private-catalog| image:: https://img.shields.io/pypi/v/google-cloud-private-catalog.svg
      :target: https://pypi.org/project/google-cloud-private-catalog
-.. |PyPI-google-cloud-private-ca| image:: https://img.shields.io/pypi/v/google-cloud-private-ca.svg
-     :target: https://pypi.org/project/google-cloud-private-ca
 .. |PyPI-google-cloud-pubsublite| image:: https://img.shields.io/pypi/v/google-cloud-pubsublite.svg
      :target: https://pypi.org/project/google-cloud-pubsublite
 .. |PyPI-google-cloud-recommendations-ai| image:: https://img.shields.io/pypi/v/google-cloud-recommendations-ai.svg
      :target: https://pypi.org/project/google-cloud-recommendations-ai
 .. |PyPI-google-cloud-resource-manager| image:: https://img.shields.io/pypi/v/google-cloud-resource-manager.svg
      :target: https://pypi.org/project/google-cloud-resource-manager
+.. |PyPI-google-cloud-resource-settings| image:: https://img.shields.io/pypi/v/google-cloud-resource-settings.svg
+     :target: https://pypi.org/project/google-cloud-resource-settings
 .. |PyPI-google-cloud-runtimeconfig| image:: https://img.shields.io/pypi/v/google-cloud-runtimeconfig.svg
      :target: https://pypi.org/project/google-cloud-runtimeconfig
 .. |PyPI-pybigquery| image:: https://img.shields.io/pypi/v/pybigquery.svg
@@ -564,6 +608,10 @@ Libraries
      :target: https://pypi.org/project/google-cloud-service-usage
 .. |PyPI-google-cloud-shell| image:: https://img.shields.io/pypi/v/google-cloud-shell.svg
      :target: https://pypi.org/project/google-cloud-shell
+.. |PyPI-google-cloud-source-context| image:: https://img.shields.io/pypi/v/google-cloud-source-context.svg
+     :target: https://pypi.org/project/google-cloud-source-context
+.. |PyPI-django-google-spanner| image:: https://img.shields.io/pypi/v/django-google-spanner.svg
+     :target: https://pypi.org/project/django-google-spanner
 .. |PyPI-google-cloud-tpu| image:: https://img.shields.io/pypi/v/google-cloud-tpu.svg
      :target: https://pypi.org/project/google-cloud-tpu
 .. |PyPI-google-cloud-talent| image:: https://img.shields.io/pypi/v/google-cloud-talent.svg
@@ -584,6 +632,8 @@ Libraries
      :target: https://pypi.org/project/google-cloud-dns
 .. |PyPI-google-cloud-data-qna| image:: https://img.shields.io/pypi/v/google-cloud-data-qna.svg
      :target: https://pypi.org/project/google-cloud-data-qna
+.. |PyPI-google-cloud-datastream| image:: https://img.shields.io/pypi/v/google-cloud-datastream.svg
+     :target: https://pypi.org/project/google-cloud-datastream
 .. |PyPI-google-cloud-network-connectivity| image:: https://img.shields.io/pypi/v/google-cloud-network-connectivity.svg
      :target: https://pypi.org/project/google-cloud-network-connectivity
 
