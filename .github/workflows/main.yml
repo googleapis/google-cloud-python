@@ -44,8 +44,7 @@ jobs:
         run: pip3 install -r requirements.txt
         working-directory: ./scripts
       - name: Run python script to update the api list in README.rst
-        run: python3 updateapilist.py
-        working-directory: ./scripts
+        run: python3 scripts/updateapilist.py
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: googleapis/code-suggester@v2
