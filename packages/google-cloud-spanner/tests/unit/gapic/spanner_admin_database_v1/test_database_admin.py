@@ -147,7 +147,25 @@ def test_database_admin_client_service_account_always_use_jwt(client_class):
     ) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         client = client_class(credentials=creds)
-        use_jwt.assert_called_with(True)
+        use_jwt.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "transport_class,transport_name",
+    [
+        (transports.DatabaseAdminGrpcTransport, "grpc"),
+        (transports.DatabaseAdminGrpcAsyncIOTransport, "grpc_asyncio"),
+    ],
+)
+def test_database_admin_client_service_account_always_use_jwt_true(
+    transport_class, transport_name
+):
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
 
 
 @pytest.mark.parametrize(
@@ -1085,6 +1103,7 @@ def test_get_database(
             name="name_value",
             state=spanner_database_admin.Database.State.CREATING,
             version_retention_period="version_retention_period_value",
+            default_leader="default_leader_value",
         )
         response = client.get_database(request)
 
@@ -1098,6 +1117,7 @@ def test_get_database(
     assert response.name == "name_value"
     assert response.state == spanner_database_admin.Database.State.CREATING
     assert response.version_retention_period == "version_retention_period_value"
+    assert response.default_leader == "default_leader_value"
 
 
 def test_get_database_from_dict():
@@ -1140,6 +1160,7 @@ async def test_get_database_async(
                 name="name_value",
                 state=spanner_database_admin.Database.State.CREATING,
                 version_retention_period="version_retention_period_value",
+                default_leader="default_leader_value",
             )
         )
         response = await client.get_database(request)
@@ -1154,6 +1175,7 @@ async def test_get_database_async(
     assert response.name == "name_value"
     assert response.state == spanner_database_admin.Database.State.CREATING
     assert response.version_retention_period == "version_retention_period_value"
+    assert response.default_leader == "default_leader_value"
 
 
 @pytest.mark.asyncio
@@ -5046,10 +5068,7 @@ def test_database_admin_grpc_transport_client_cert_source_for_mtls(transport_cla
             "squid.clam.whelk:443",
             credentials=cred,
             credentials_file=None,
-            scopes=(
-                "https://www.googleapis.com/auth/cloud-platform",
-                "https://www.googleapis.com/auth/spanner.admin",
-            ),
+            scopes=None,
             ssl_credentials=mock_ssl_channel_creds,
             quota_project_id=None,
             options=[
@@ -5156,10 +5175,7 @@ def test_database_admin_transport_channel_mtls_with_client_cert_source(transport
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
                 credentials_file=None,
-                scopes=(
-                    "https://www.googleapis.com/auth/cloud-platform",
-                    "https://www.googleapis.com/auth/spanner.admin",
-                ),
+                scopes=None,
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
                 options=[
@@ -5206,10 +5222,7 @@ def test_database_admin_transport_channel_mtls_with_adc(transport_class):
                 "mtls.squid.clam.whelk:443",
                 credentials=mock_cred,
                 credentials_file=None,
-                scopes=(
-                    "https://www.googleapis.com/auth/cloud-platform",
-                    "https://www.googleapis.com/auth/spanner.admin",
-                ),
+                scopes=None,
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
                 options=[

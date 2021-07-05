@@ -121,6 +121,14 @@ class Database(proto.Message):
             sure to account for the time from the moment
             when the value is queried to the moment when you
             initiate the recovery.
+        default_leader (str):
+            Output only. The read-write region which contains the
+            database's leader replicas.
+
+            This is the same as the value of default_leader database
+            option set using DatabaseAdmin.CreateDatabase or
+            DatabaseAdmin.UpdateDatabaseDdl. If not explicitly set, this
+            is empty.
     """
 
     class State(proto.Enum):
@@ -144,6 +152,7 @@ class Database(proto.Message):
     earliest_version_time = proto.Field(
         proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,
     )
+    default_leader = proto.Field(proto.STRING, number=9,)
 
 
 class ListDatabasesRequest(proto.Message):

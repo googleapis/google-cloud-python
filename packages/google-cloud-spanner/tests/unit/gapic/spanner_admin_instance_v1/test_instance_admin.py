@@ -140,7 +140,25 @@ def test_instance_admin_client_service_account_always_use_jwt(client_class):
     ) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         client = client_class(credentials=creds)
-        use_jwt.assert_called_with(True)
+        use_jwt.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "transport_class,transport_name",
+    [
+        (transports.InstanceAdminGrpcTransport, "grpc"),
+        (transports.InstanceAdminGrpcAsyncIOTransport, "grpc_asyncio"),
+    ],
+)
+def test_instance_admin_client_service_account_always_use_jwt_true(
+    transport_class, transport_name
+):
+    with mock.patch.object(
+        service_account.Credentials, "with_always_use_jwt_access", create=True
+    ) as use_jwt:
+        creds = service_account.Credentials(None, None, None)
+        transport = transport_class(credentials=creds, always_use_jwt_access=True)
+        use_jwt.assert_called_once_with(True)
 
 
 @pytest.mark.parametrize(
@@ -898,7 +916,9 @@ def test_get_instance_config(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = spanner_instance_admin.InstanceConfig(
-            name="name_value", display_name="display_name_value",
+            name="name_value",
+            display_name="display_name_value",
+            leader_options=["leader_options_value"],
         )
         response = client.get_instance_config(request)
 
@@ -911,6 +931,7 @@ def test_get_instance_config(
     assert isinstance(response, spanner_instance_admin.InstanceConfig)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.leader_options == ["leader_options_value"]
 
 
 def test_get_instance_config_from_dict():
@@ -954,7 +975,9 @@ async def test_get_instance_config_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             spanner_instance_admin.InstanceConfig(
-                name="name_value", display_name="display_name_value",
+                name="name_value",
+                display_name="display_name_value",
+                leader_options=["leader_options_value"],
             )
         )
         response = await client.get_instance_config(request)
@@ -968,6 +991,7 @@ async def test_get_instance_config_async(
     assert isinstance(response, spanner_instance_admin.InstanceConfig)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.leader_options == ["leader_options_value"]
 
 
 @pytest.mark.asyncio
@@ -3323,10 +3347,7 @@ def test_instance_admin_grpc_transport_client_cert_source_for_mtls(transport_cla
             "squid.clam.whelk:443",
             credentials=cred,
             credentials_file=None,
-            scopes=(
-                "https://www.googleapis.com/auth/cloud-platform",
-                "https://www.googleapis.com/auth/spanner.admin",
-            ),
+            scopes=None,
             ssl_credentials=mock_ssl_channel_creds,
             quota_project_id=None,
             options=[
@@ -3433,10 +3454,7 @@ def test_instance_admin_transport_channel_mtls_with_client_cert_source(transport
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
                 credentials_file=None,
-                scopes=(
-                    "https://www.googleapis.com/auth/cloud-platform",
-                    "https://www.googleapis.com/auth/spanner.admin",
-                ),
+                scopes=None,
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
                 options=[
@@ -3483,10 +3501,7 @@ def test_instance_admin_transport_channel_mtls_with_adc(transport_class):
                 "mtls.squid.clam.whelk:443",
                 credentials=mock_cred,
                 credentials_file=None,
-                scopes=(
-                    "https://www.googleapis.com/auth/cloud-platform",
-                    "https://www.googleapis.com/auth/spanner.admin",
-                ),
+                scopes=None,
                 ssl_credentials=mock_ssl_cred,
                 quota_project_id=None,
                 options=[

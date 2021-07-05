@@ -41,6 +41,7 @@ class TypeCode(proto.Enum):
     ARRAY = 8
     STRUCT = 9
     NUMERIC = 10
+    JSON = 11
 
 
 class Type(proto.Message):
