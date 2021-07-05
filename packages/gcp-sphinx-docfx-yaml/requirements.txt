@@ -1,4 +1,4 @@
 # google-resumable-media-python requires manual update as this repo isn't templated.
-sphinx==4.0.2
+sphinx==4.0.3
 -e .
 tox
