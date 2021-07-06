@@ -6251,11 +6251,23 @@ class Expando(Model):
         return prop._get_value(self)
 
     def __setattr__(self, name, value):
-        if name.startswith("_") or isinstance(
-            getattr(self.__class__, name, None), (Property, property)
+        if (
+            name.startswith("_")
+            or isinstance(getattr(self.__class__, name, None), (Property, property))
+            or isinstance(self._properties.get(name, None), (Property, property))
         ):
             return super(Expando, self).__setattr__(name, value)
+
+        if "." in name:
+            # Legacy structured property
+            supername, subname = name.split(".", 1)
+            supervalue = getattr(self, supername, None)
+            if isinstance(supervalue, Expando):
+                return setattr(supervalue, subname, value)
+            return setattr(self, supername, {subname: value})
+
         self._clone_properties()
+
         if isinstance(value, Model):
             prop = StructuredProperty(Model, name)
         elif isinstance(value, dict):

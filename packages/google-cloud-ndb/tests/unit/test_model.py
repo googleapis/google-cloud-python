@@ -5703,6 +5703,24 @@ class TestExpando:
         assert expansive.bar.baz == "z"
 
     @staticmethod
+    def test___setattr__with_dotted_name():
+        """Regression test for issue #673
+
+        https://github.com/googleapis/python-ndb/issues/673
+        """
+
+        class Expansive(model.Expando):
+            foo = model.StringProperty()
+
+        expansive = Expansive(foo="x")
+        setattr(expansive, "a.b", "one")
+        assert expansive.a.b == "one"
+
+        setattr(expansive, "a.c", "two")
+        assert expansive.a.b == "one"
+        assert expansive.a.c == "two"
+
+    @staticmethod
     def test___delattr__():
         class Expansive(model.Expando):
             foo = model.StringProperty()

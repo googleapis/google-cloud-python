@@ -1179,6 +1179,60 @@ def test_insert_expando(dispose_of):
     assert retrieved.expando_prop == "exp-value"
 
 
+def test_insert_expando_w_legacy_structured_property(client_context, dispose_of):
+    """Regression test for issue #673
+
+    https://github.com/googleapis/python-ndb/issues/673
+    """
+
+    class SomeKind(ndb.Expando):
+        foo = ndb.IntegerProperty()
+
+    class OtherKind(ndb.Expando):
+        bar = ndb.StringProperty()
+
+    with client_context.new(legacy_data=True).use():
+        entity = SomeKind(
+            foo=42,
+            other=OtherKind(
+                bar="hi mom!",
+                other=OtherKind(bar="hello dad!"),
+            ),
+        )
+        key = entity.put()
+        dispose_of(key._key)
+
+        retrieved = key.get()
+        assert retrieved.foo == 42
+        assert retrieved.other.bar == "hi mom!"
+
+        # Note that the class for the subobject is lost. I tested with legacy NDB and
+        # this is true there as well.
+        assert isinstance(retrieved.other, ndb.Expando)
+        assert not isinstance(retrieved.other, OtherKind)
+
+
+def test_insert_expando_w_legacy_dynamic_dict(client_context, dispose_of):
+    """Regression test for issue #673
+
+    https://github.com/googleapis/python-ndb/issues/673
+    """
+
+    class SomeKind(ndb.Expando):
+        foo = ndb.IntegerProperty()
+
+    with client_context.new(legacy_data=True).use():
+        dynamic_dict_value = {"k1": {"k2": {"k3": "v1"}}, "k4": "v2"}
+        entity = SomeKind(foo=42, dynamic_dict_prop=dynamic_dict_value)
+        key = entity.put()
+        dispose_of(key._key)
+
+        retrieved = key.get()
+        assert retrieved.foo == 42
+        assert retrieved.dynamic_dict_prop.k1.k2.k3 == "v1"
+        assert retrieved.dynamic_dict_prop.k4 == "v2"
+
+
 @pytest.mark.usefixtures("client_context")
 def test_insert_polymodel(dispose_of):
     class Animal(ndb.PolyModel):
