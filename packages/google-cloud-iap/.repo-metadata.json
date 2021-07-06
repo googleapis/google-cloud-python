@@ -1,0 +1,13 @@
+{
+    "name": "iap",
+    "name_pretty": "Identity-Aware Proxy",
+    "product_documentation": "https://cloud.google.com/iap",
+    "client_documentation": "https://googleapis.dev/python/iap/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-iap",
+    "distribution_name": "google-cloud-iap",
+    "api_id": "iap.googleapis.com"
+}
