@@ -133,13 +133,13 @@ Running System Tests
 
 - To run system tests, you can execute::
 
-   $ nox -s system-3.7
+   $ nox -s system-3.8
    $ nox -s system-2.7
 
   .. note::
 
       System tests are only configured to run under Python 2.7 and
-      Python 3.7. For expediency, we do not run them in older versions
+      Python 3.8. For expediency, we do not run them in older versions
       of Python 3.
 
   This alone will not run the tests. You'll need to change some local

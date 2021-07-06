@@ -1035,8 +1035,11 @@ class Test_Blob(unittest.TestCase):
                 "Content-Language": "ko-kr",
                 "Cache-Control": "max-age=1337;public",
                 "Content-Encoding": "gzip",
+                "Etag": "kittens",
                 "X-Goog-Storage-Class": "STANDARD",
                 "X-Goog-Hash": "crc32c=4gcgLQ==,md5=CS9tHYTtyFntzj7B9nkkJQ==",
+                "X-goog-generation": 42,
+                "X-goog-metageneration": 4,
             },
             # { "x": 5 } gzipped
             content=b"\x1f\x8b\x08\x00\xcfo\x17_\x02\xff\xabVP\xaaP\xb2R0U\xa8\x05\x00\xa1\xcaQ\x93\n\x00\x00\x00",
@@ -1050,6 +1053,9 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob.storage_class, "STANDARD")
         self.assertEqual(blob.md5_hash, "CS9tHYTtyFntzj7B9nkkJQ==")
         self.assertEqual(blob.crc32c, "4gcgLQ==")
+        self.assertEqual(blob.etag, "kittens")
+        self.assertEqual(blob.generation, 42)
+        self.assertEqual(blob.metageneration, 4)
 
     def test__extract_headers_from_download_empty(self):
         blob_name = "blob-name"
@@ -1064,8 +1070,11 @@ class Test_Blob(unittest.TestCase):
                 "Content-Language": "en-US",
                 "Cache-Control": "max-age=1337;public",
                 "Content-Encoding": "gzip",
+                "Etag": "kittens",
                 "X-Goog-Storage-Class": "STANDARD",
                 "X-Goog-Hash": "crc32c=4/c+LQ==,md5=CS9tHYTt/+ntzj7B9nkkJQ==",
+                "X-goog-generation": 42,
+                "X-goog-metageneration": 4,
             },
             content=b"",
         )
@@ -1074,6 +1083,9 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(blob.content_language, "en-US")
         self.assertEqual(blob.md5_hash, "CS9tHYTt/+ntzj7B9nkkJQ==")
         self.assertEqual(blob.crc32c, "4/c+LQ==")
+        self.assertEqual(blob.etag, "kittens")
+        self.assertEqual(blob.generation, 42)
+        self.assertEqual(blob.metageneration, 4)
 
     def test__extract_headers_from_download_w_hash_response_header_none(self):
         blob_name = "blob-name"

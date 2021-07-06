@@ -173,17 +173,23 @@ def test_blob_crud_w_user_project(
     # Exercise 'objects.insert' w/ userProject.
     blob.upload_from_filename(info["path"])
     gen0 = blob.generation
+    etag0 = blob.etag
 
     # Upload a second generation of the blob
     blob.upload_from_string(gen1_payload)
     gen1 = blob.generation
+    etag1 = blob.etag
 
     blob0 = with_user_project.blob("SmallFile", generation=gen0)
     blob1 = with_user_project.blob("SmallFile", generation=gen1)
 
     # Exercise 'objects.get' w/ generation
-    assert with_user_project.get_blob(blob.name).generation == gen1
-    assert with_user_project.get_blob(blob.name, generation=gen0).generation == gen0
+    blob1 = with_user_project.get_blob(blob.name)
+    assert blob1.generation == gen1
+    assert blob1.etag == etag1
+    blob0 = with_user_project.get_blob(blob.name, generation=gen0)
+    assert blob0.generation == gen0
+    assert blob0.etag == etag0
 
     try:
         # Exercise 'objects.get' (metadata) w/ userProject.
@@ -191,8 +197,14 @@ def test_blob_crud_w_user_project(
         blob.reload()
 
         # Exercise 'objects.get' (media) w/ userProject.
+        blob0 = with_user_project.blob("SmallFile", generation=gen0)
+        blob1 = with_user_project.blob("SmallFile", generation=gen1)
+        assert blob0.etag is None
+        assert blob1.etag is None
         assert blob0.download_as_bytes() == gen0_payload
         assert blob1.download_as_bytes() == gen1_payload
+        assert blob0.etag == etag0
+        assert blob1.etag == etag1
 
         # Exercise 'objects.patch' w/ userProject.
         blob0.content_language = "en"
@@ -468,10 +480,14 @@ def test_blob_download_as_text(
     blob = shared_bucket.blob("MyBuffer")
     payload = "Hello World"
     blob.upload_from_string(payload)
+    etag = blob.etag
     blobs_to_delete.append(blob)
 
+    blob = shared_bucket.blob("MyBuffer")
+    assert blob.etag is None
     stored_contents = blob.download_as_text()
     assert stored_contents == payload
+    assert blob.etag == etag
 
 
 def test_blob_upload_w_gzip_encoded_download_raw(

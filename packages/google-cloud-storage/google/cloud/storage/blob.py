@@ -858,6 +858,11 @@ class Blob(_PropertyMixin):
         self.cache_control = response.headers.get("Cache-Control", None)
         self.storage_class = response.headers.get("X-Goog-Storage-Class", None)
         self.content_language = response.headers.get("Content-Language", None)
+        self._properties["etag"] = response.headers.get("ETag", None)
+        self._properties["generation"] = response.headers.get("X-goog-generation", None)
+        self._properties["metageneration"] = response.headers.get(
+            "X-goog-metageneration", None
+        )
         #  'X-Goog-Hash': 'crc32c=4gcgLQ==,md5=CS9tHYTtyFntzj7B9nkkJQ==',
         x_goog_hash = response.headers.get("X-Goog-Hash", "")
 
