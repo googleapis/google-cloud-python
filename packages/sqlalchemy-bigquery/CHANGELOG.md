@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/pybigquery/#history
 
+### [0.9.1](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.9.0...v0.9.1) (2021-06-25)
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([d52334c](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/d52334c3290d8356a26e1c9fc54dae75854410c9))
+
 ## [0.9.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.8.0...v0.9.0) (2021-05-25)
 
 
