@@ -462,7 +462,7 @@ class FauxClient:
             google.cloud.bigquery.Dataset("myproject.yourdataset"),
         ]
 
-    def list_tables(self, dataset):
+    def list_tables(self, dataset, page_size):
         with contextlib.closing(self.connection.connection.cursor()) as cursor:
             cursor.execute("select * from sqlite_master")
             return [

@@ -68,6 +68,7 @@ def parse_url(url):  # noqa: C901
     dataset_id = url.database or None
     arraysize = None
     credentials_path = None
+    list_tables_page_size = None
 
     # location
     if "location" in query:
@@ -85,6 +86,16 @@ def parse_url(url):  # noqa: C901
         except ValueError:
             raise ValueError("invalid int in url query arraysize: " + str_arraysize)
 
+    if "list_tables_page_size" in query:
+        str_list_tables_page_size = query.pop("list_tables_page_size")
+        try:
+            list_tables_page_size = int(str_list_tables_page_size)
+        except ValueError:
+            raise ValueError(
+                "invalid int in url query list_tables_page_size: "
+                + str_list_tables_page_size
+            )
+
     # if only these "non-config" values were present, the dict will now be empty
     if not query:
         # if a dataset_id exists, we need to return a job_config that isn't None
@@ -97,9 +108,18 @@ def parse_url(url):  # noqa: C901
                 arraysize,
                 credentials_path,
                 QueryJobConfig(),
+                list_tables_page_size,
             )
         else:
-            return project_id, location, dataset_id, arraysize, credentials_path, None
+            return (
+                project_id,
+                location,
+                dataset_id,
+                arraysize,
+                credentials_path,
+                None,
+                list_tables_page_size,
+            )
 
     job_config = QueryJobConfig()
 
@@ -239,4 +259,12 @@ def parse_url(url):  # noqa: C901
                 "invalid write_disposition in url query: " + query["write_disposition"]
             )
 
-    return project_id, location, dataset_id, arraysize, credentials_path, job_config
+    return (
+        project_id,
+        location,
+        dataset_id,
+        arraysize,
+        credentials_path,
+        job_config,
+        list_tables_page_size,
+    )

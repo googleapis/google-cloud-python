@@ -148,6 +148,15 @@ By default, ``arraysize`` is set to ``5000``. ``arraysize`` is used to set the b
 
     engine = create_engine('bigquery://project', arraysize=1000)
 
+Page size for dataset.list_tables
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, ``list_tables_page_size`` is set to ``1000``. ``list_tables_page_size`` is used to set the max_results for `dataset.list_tables`_ operation. To change it, pass ``list_tables_page_size`` to ``create_engine()``:
+
+.. _`dataset.list_tables`: https://cloud.google.com/bigquery/docs/reference/rest/v2/tables/list
+.. code-block:: python
+
+    engine = create_engine('bigquery://project', list_tables_page_size=100)
 
 Adding a Default Dataset
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -180,7 +189,7 @@ Connection String Parameters
 
 There are many situations where you can't call ``create_engine`` directly, such as when using tools like `Flask SQLAlchemy <http://flask-sqlalchemy.pocoo.org/2.3/>`_. For situations like these, or for situations where you want the ``Client`` to have a `default_query_job_config <https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery/generated/google.cloud.bigquery.client.Client.html#google.cloud.bigquery.client.Client>`_, you can pass many arguments in the query of the connection string.
 
-The ``credentials_path``, ``credentials_info``, ``location``, and ``arraysize`` parameters are used by this library, and the rest are used to create a `QueryJobConfig <https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery/generated/google.cloud.bigquery.job.QueryJobConfig.html#google.cloud.bigquery.job.QueryJobConfig>`_
+The ``credentials_path``, ``credentials_info``, ``location``, ``arraysize`` and ``list_tables_page_size`` parameters are used by this library, and the rest are used to create a `QueryJobConfig <https://googlecloudplatform.github.io/google-cloud-python/latest/bigquery/generated/google.cloud.bigquery.job.QueryJobConfig.html#google.cloud.bigquery.job.QueryJobConfig>`_
 
 Note that if you want to use query strings, it will be more reliable if you use three slashes, so ``'bigquery:///?a=b'`` will work reliably, but ``'bigquery://?a=b'`` might be interpreted as having a "database" of ``?a=b``, depending on the system being used to parse the connection string.
 
@@ -193,6 +202,7 @@ Here are examples of all the supported arguments. Any not present are either for
         'credentials_path=/some/path/to.json' '&'
         'location=some-location' '&'
         'arraysize=1000' '&'
+        'list_tables_page_size=100' '&'
         'clustering_fields=a,b,c' '&'
         'create_disposition=CREATE_IF_NEEDED' '&'
         'destination=different-project.different-dataset.table' '&'

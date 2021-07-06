@@ -50,6 +50,7 @@ def url_with_everything():
         "?credentials_path=/some/path/to.json"
         "&location=some-location"
         "&arraysize=1000"
+        "&list_tables_page_size=5000"
         "&clustering_fields=a,b,c"
         "&create_disposition=CREATE_IF_NEEDED"
         "&destination=different-project.different-dataset.table"
@@ -72,12 +73,14 @@ def test_basic(url_with_everything):
         arraysize,
         credentials_path,
         job_config,
+        list_tables_page_size,
     ) = parse_url(url_with_everything)
 
     assert project_id == "some-project"
     assert location == "some-location"
     assert dataset_id == "some-dataset"
     assert arraysize == 1000
+    assert list_tables_page_size == 5000
     assert credentials_path == "/some/path/to.json"
     assert isinstance(job_config, QueryJobConfig)
 
@@ -136,6 +139,7 @@ def test_all_values(url_with_everything, param, value, default):
     "param, value",
     [
         ("arraysize", "not-int"),
+        ("list_tables_page_size", "not-int"),
         ("create_disposition", "not-attribute"),
         ("destination", "not.fully-qualified"),
         ("dry_run", "not-bool"),
@@ -167,7 +171,15 @@ def test_empty_with_non_config():
             "bigquery:///?location=some-location&arraysize=1000&credentials_path=/some/path/to.json"
         )
     )
-    project_id, location, dataset_id, arraysize, credentials_path, job_config = url
+    (
+        project_id,
+        location,
+        dataset_id,
+        arraysize,
+        credentials_path,
+        job_config,
+        list_tables_page_size,
+    ) = url
 
     assert project_id is None
     assert location == "some-location"
@@ -175,17 +187,27 @@ def test_empty_with_non_config():
     assert arraysize == 1000
     assert credentials_path == "/some/path/to.json"
     assert job_config is None
+    assert list_tables_page_size is None
 
 
 def test_only_dataset():
     url = parse_url(make_url("bigquery:///some-dataset"))
-    project_id, location, dataset_id, arraysize, credentials_path, job_config = url
+    (
+        project_id,
+        location,
+        dataset_id,
+        arraysize,
+        credentials_path,
+        job_config,
+        list_tables_page_size,
+    ) = url
 
     assert project_id is None
     assert location is None
     assert dataset_id == "some-dataset"
     assert arraysize is None
     assert credentials_path is None
+    assert list_tables_page_size is None
     assert isinstance(job_config, QueryJobConfig)
     # we can't actually test that the dataset is on the job_config,
     # since we take care of that afterwards, when we have a client to fill in the project

@@ -52,3 +52,15 @@ def test_set_arraysize(faux_conn, metadata):
 
     # Because we gave a false array size, the array size wasn't set on the cursor:
     assert conn.connection.test_data["arraysize"] == 42
+
+
+def test_arraysize_querystring_takes_precedence_over_default(faux_conn, metadata):
+    arraysize = 42
+    engine = sqlalchemy.create_engine(
+        f"bigquery://myproject/mydataset?arraysize={arraysize}"
+    )
+    sqlalchemy.Table("t", metadata, sqlalchemy.Column("c", sqlalchemy.Integer))
+    conn = engine.connect()
+    metadata.create_all(engine)
+
+    assert conn.connection.test_data["arraysize"] == arraysize

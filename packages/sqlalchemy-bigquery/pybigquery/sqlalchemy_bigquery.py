@@ -657,6 +657,7 @@ class BigQueryDialect(DefaultDialect):
         credentials_path=None,
         location=None,
         credentials_info=None,
+        list_tables_page_size=1000,
         *args,
         **kwargs,
     ):
@@ -666,6 +667,7 @@ class BigQueryDialect(DefaultDialect):
         self.credentials_info = credentials_info
         self.location = location
         self.dataset_id = None
+        self.list_tables_page_size = list_tables_page_size
 
     @classmethod
     def dbapi(cls):
@@ -694,9 +696,11 @@ class BigQueryDialect(DefaultDialect):
             arraysize,
             credentials_path,
             default_query_job_config,
+            list_tables_page_size,
         ) = parse_url(url)
 
-        self.arraysize = self.arraysize or arraysize
+        self.arraysize = arraysize or self.arraysize
+        self.list_tables_page_size = list_tables_page_size or self.list_tables_page_size
         self.location = location or self.location
         self.credentials_path = credentials_path or self.credentials_path
         self.dataset_id = dataset_id
@@ -737,7 +741,9 @@ class BigQueryDialect(DefaultDialect):
                 continue
 
             try:
-                tables = client.list_tables(dataset.reference)
+                tables = client.list_tables(
+                    dataset.reference, page_size=self.list_tables_page_size
+                )
                 for table in tables:
                     if table_type == table.table_type:
                         result.append(get_table_name(table))
