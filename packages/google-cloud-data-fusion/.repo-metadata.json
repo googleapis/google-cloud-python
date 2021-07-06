@@ -1,0 +1,13 @@
+{
+    "name": "datafusion",
+    "name_pretty": "Cloud Data Fusion",
+    "product_documentation": "https://cloud.google.com/data-fusion",
+    "client_documentation": "https://googleapis.dev/python/datafusion/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-data-fusion",
+    "distribution_name": "google-cloud-data-fusion",
+    "api_id": "datafusion.googleapis.com"
+}
