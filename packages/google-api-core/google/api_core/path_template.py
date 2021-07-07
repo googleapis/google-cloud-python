@@ -104,7 +104,7 @@ def _expand_variable_match(positional_vars, named_vars, match):
 def expand(tmpl, *args, **kwargs):
     """Expand a path template with the given variables.
 
-    ..code-block:: python
+    .. code-block:: python
 
         >>> expand('users/*/messages/*', 'me', '123')
         users/me/messages/123

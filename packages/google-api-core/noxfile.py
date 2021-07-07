@@ -159,13 +159,13 @@ def cover(session):
     session.run("coverage", "erase")
 
 
-@nox.session(python="3.7")
+@nox.session(python="3.8")
 def docs(session):
     """Build the docs for this library."""
 
     session.install(".", "grpcio >= 1.8.2", "grpcio-gcp >= 0.2.2")
     session.install("-e", ".")
-    session.install("sphinx < 3.0", "alabaster", "recommonmark")
+    session.install("sphinx==4.0.1", "alabaster", "recommonmark")
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
@@ -182,14 +182,14 @@ def docs(session):
     )
 
 
-@nox.session(python="3.7")
+@nox.session(python="3.8")
 def docfx(session):
     """Build the docfx yaml files for this library."""
 
     session.install("-e", ".")
-    # sphinx-docfx-yaml supports up to sphinx version 1.5.5.
-    # https://github.com/docascode/sphinx-docfx-yaml/issues/97
-    session.install("sphinx==1.5.5", "alabaster", "recommonmark", "sphinx-docfx-yaml")
+    session.install(
+        "sphinx==4.0.1", "alabaster", "recommonmark", "gcp-sphinx-docfx-yaml"
+    )
 
     shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
     session.run(
