@@ -20,7 +20,7 @@ import setuptools
 # extracts lower bounds.
 requirements = [
     "requests>=1.0.0",
-    "packaging>=14.0, <20.0.0",
+    "packaging>=14.0, <22.0.0",
     "six<2.0.0, >=1.0.0",
     "click==7.0.0",
 ]

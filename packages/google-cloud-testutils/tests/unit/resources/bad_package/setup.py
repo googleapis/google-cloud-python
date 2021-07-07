@@ -17,7 +17,7 @@ import setuptools
 
 requirements = [
     "requests",  # no lower bound
-    "packaging>=14.0, !=15.0, <20.0.0",  # too complex for tool
+    "packaging>=14.0, !=15.0, <22.0.0",  # too complex for tool
     "six<2.0.0",  # no lower bound
     "click==7.0.0",
 ]
