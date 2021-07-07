@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.3.4](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.3.3...v0.3.4) (2021-07-05)
+
+
+### Bug Fixes
+
+* deduplicate entries in children and references ([#61](https://www.github.com/googleapis/sphinx-docfx-yaml/issues/61)) ([6d5407b](https://www.github.com/googleapis/sphinx-docfx-yaml/commit/6d5407b6c004587071d2523f1bad4717678774da))
+
 ### [0.3.3](https://www.github.com/googleapis/sphinx-docfx-yaml/compare/v0.3.2...v0.3.3) (2021-06-25)
 
 
