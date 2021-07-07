@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/pybigquery/#history
 
+## [0.10.0](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.9.1...v0.10.0) (2021-07-06)
+
+
+### Features
+
+* There's a new `page_size` option to control the page size used when listing tables. ([#174](https://www.github.com/googleapis/python-bigquery-sqlalchemy/issues/174)) ([e0f1496](https://www.github.com/googleapis/python-bigquery-sqlalchemy/commit/e0f1496c99dd627e0ed04a0c4e89ca5b14611be2))
+
 ### [0.9.1](https://www.github.com/googleapis/python-bigquery-sqlalchemy/compare/v0.9.0...v0.9.1) (2021-06-25)
 
 
