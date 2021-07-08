@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import
 import os
+import pathlib
 import shutil
 
 import nox
@@ -29,6 +30,8 @@ BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["2.7", "3.8"]
 UNIT_TEST_PYTHON_VERSIONS = ["2.7", "3.6", "3.7", "3.8", "3.9"]
+
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -65,9 +68,12 @@ def lint_setup_py(session):
 
 
 def default(session):
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
     # Install all test dependencies, then install this package in-place.
-    session.install("mock", "pytest", "pytest-cov")
-    session.install("-e", ".")
+    session.install("mock", "pytest", "pytest-cov", "-c", constraints_path)
+    session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the unit tests.
     session.run(
@@ -93,6 +99,9 @@ def unit(session):
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
     """Run the system test suite."""
     system_test_path = os.path.join("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
@@ -121,15 +130,15 @@ def system(session):
     # 2021-05-06: defer installing 'google-cloud-*' to after this package,
     #             in order to work around Python 2.7 googolapis-common-protos
     #             issue.
-    session.install(
-        "mock", "pytest",
-    )
-    session.install("-e", ".")
+    session.install("mock", "pytest", "-c", constraints_path)
+    session.install("-e", ".", "-c", constraints_path)
     session.install(
         "google-cloud-testutils",
         "google-cloud-iam",
         "google-cloud-pubsub < 2.0.0",
         "google-cloud-kms < 2.0dev",
+        "-c",
+        constraints_path,
     )
 
     # Run py.test against the system tests.
