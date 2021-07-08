@@ -2,7 +2,9 @@
 
 Spanner dialect for SQLAlchemy represents an interface API designed to make it possible to control Cloud Spanner databases with SQLAlchemy API. The dialect is built on top of [the Spanner DB API](https://github.com/googleapis/python-spanner/tree/master/google/cloud/spanner_dbapi), which is designed in accordance with [PEP-249](https://www.python.org/dev/peps/pep-0249/).
 
-**NOTE: This project is still in DEVELOPMENT. It may make breaking changes without prior notice and should not yet be used for production purposes.**  
+This project has **Preview** release status. Known limitations are listed [here](#features-and-limitations). All supported features have been tested and verified to work with the test configurations. There may be configurations and/or data model variations that have not yet been covered by the tests and that show unexpected behavior. Please report any problems that you might encounter by [creating a new issue](https://github.com/cloudspannerecosystem/python-spanner-sqlalchemy/issues/new).
+
+**NOTE: This project may still make breaking changes without prior notice and should not yet be used for production purposes.**  
 
 - [Cloud Spanner product documentation](https://cloud.google.com/spanner/docs)
 - [SQLAlchemy product documentation](https://www.sqlalchemy.org/)
