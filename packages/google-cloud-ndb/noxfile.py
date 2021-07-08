@@ -18,6 +18,7 @@ Assumes ``nox >= 2018.9.14`` is installed.
 """
 
 import os
+import pathlib
 import shutil
 
 import nox
@@ -28,6 +29,7 @@ DEFAULT_INTERPRETER = "3.8"
 ALL_INTERPRETERS = ("2.7", "3.6", "3.7", "3.8", "3.9")
 PY3_INTERPRETERS = ("3.6", "3.7", "3.8", "3.9")
 MAJOR_INTERPRETERS = ("2.7", "3.8")
+CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 BLACK_VERSION = "black==20.8b1"
 
@@ -38,10 +40,13 @@ def get_path(*names):
 
 @nox.session(py=ALL_INTERPRETERS)
 def unit(session):
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
     # Install all dependencies.
     session.install("pytest", "pytest-cov")
     session.install("mock")
-    session.install("-e", ".")
+    session.install("-e", ".", "-c", constraints_path)
     # This variable is used to skip coverage by Python version
     session.env["PY_VERSION"] = session.python[0]
     # Run py.test against the unit tests.
@@ -159,6 +164,9 @@ def doctest(session):
 @nox.session(py=MAJOR_INTERPRETERS)
 def system(session):
     """Run the system test suite."""
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
     system_test_path = get_path("tests", "system.py")
     system_test_folder_path = os.path.join("tests", "system")
 
@@ -182,7 +190,7 @@ def system(session):
     for local_dep in LOCAL_DEPS:
         session.install(local_dep)
     session.install("-e", get_path("test_utils", "test_utils"))
-    session.install("-e", ".")
+    session.install("-e", ".", "-c", constraints_path)
 
     # Run py.test against the system tests.
     if system_test_exists:
