@@ -20,6 +20,7 @@ import pytest
 import re
 import requests
 import unittest
+from six import string_types
 from six.moves import http_client
 from six.moves.urllib import parse as urlparse
 
@@ -1451,6 +1452,32 @@ class TestClient(unittest.TestCase):
             use_chunks=True, raw_download=True, retry=None
         )
 
+    def test_download_blob_to_file_w_conditional_etag_match_string(self):
+        self._download_blob_to_file_helper(
+            use_chunks=True, raw_download=True, retry=None, if_etag_match="kittens",
+        )
+
+    def test_download_blob_to_file_w_conditional_etag_match_list(self):
+        self._download_blob_to_file_helper(
+            use_chunks=True,
+            raw_download=True,
+            retry=None,
+            if_etag_match=["kittens", "fluffy"],
+        )
+
+    def test_download_blob_to_file_w_conditional_etag_not_match_string(self):
+        self._download_blob_to_file_helper(
+            use_chunks=True, raw_download=True, retry=None, if_etag_not_match="kittens",
+        )
+
+    def test_download_blob_to_file_w_conditional_etag_not_match_list(self):
+        self._download_blob_to_file_helper(
+            use_chunks=True,
+            raw_download=True,
+            retry=None,
+            if_etag_not_match=["kittens", "fluffy"],
+        )
+
     def test_download_blob_to_file_w_conditional_retry_pass(self):
         self._download_blob_to_file_helper(
             use_chunks=True,
@@ -1502,6 +1529,17 @@ class TestClient(unittest.TestCase):
             expected_retry = None
 
         headers = {"accept-encoding": "gzip"}
+        if_etag_match = extra_kwargs.get("if_etag_match")
+        if if_etag_match is not None:
+            if isinstance(if_etag_match, string_types):
+                if_etag_match = [if_etag_match]
+            headers["If-Match"] = ", ".join(if_etag_match)
+        if_etag_not_match = extra_kwargs.get("if_etag_not_match")
+        if if_etag_not_match is not None:
+            if isinstance(if_etag_not_match, string_types):
+                if_etag_not_match = [if_etag_not_match]
+            headers["If-None-Match"] = ", ".join(if_etag_not_match)
+
         blob._do_download.assert_called_once_with(
             client._http,
             file_obj,

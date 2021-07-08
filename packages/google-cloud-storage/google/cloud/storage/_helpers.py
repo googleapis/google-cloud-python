@@ -22,6 +22,7 @@ from hashlib import md5
 from datetime import datetime
 import os
 
+from six import string_types
 from six.moves.urllib.parse import urlsplit
 from google import resumable_media
 from google.cloud.storage.constants import _DEFAULT_TIMEOUT
@@ -33,6 +34,12 @@ STORAGE_EMULATOR_ENV_VAR = "STORAGE_EMULATOR_HOST"
 """Environment variable defining host for Storage emulator."""
 
 _DEFAULT_STORAGE_HOST = u"https://storage.googleapis.com"
+
+# etag match parameters in snake case and equivalent header
+_ETAG_MATCH_PARAMETERS = (
+    ("if_etag_match", "If-Match"),
+    ("if_etag_not_match", "If-None-Match"),
+)
 
 # generation match parameters in camel and snake cases
 _GENERATION_MATCH_PARAMETERS = (
@@ -147,6 +154,8 @@ class _PropertyMixin(object):
         self,
         client=None,
         projection="noAcl",
+        if_etag_match=None,
+        if_etag_not_match=None,
         if_generation_match=None,
         if_generation_not_match=None,
         if_metageneration_match=None,
@@ -167,6 +176,12 @@ class _PropertyMixin(object):
         :param projection: (Optional) If used, must be 'full' or 'noAcl'.
                            Defaults to ``'noAcl'``. Specifies the set of
                            properties to return.
+
+        :type if_etag_match: Union[str, Set[str]]
+        :param if_etag_match: (Optional) See :ref:`using-if-etag-match`
+
+        :type if_etag_not_match: Union[str, Set[str]])
+        :param if_etag_not_match: (Optional) See :ref:`using-if-etag-not-match`
 
         :type if_generation_match: long
         :param if_generation_match:
@@ -205,10 +220,14 @@ class _PropertyMixin(object):
             if_metageneration_match=if_metageneration_match,
             if_metageneration_not_match=if_metageneration_not_match,
         )
+        headers = self._encryption_headers()
+        _add_etag_match_headers(
+            headers, if_etag_match=if_etag_match, if_etag_not_match=if_etag_not_match
+        )
         api_response = client._get_resource(
             self.path,
             query_params=query_params,
-            headers=self._encryption_headers(),
+            headers=headers,
             timeout=timeout,
             retry=retry,
             _target_object=self,
@@ -384,8 +403,7 @@ class _PropertyMixin(object):
 
 
 def _scalar_property(fieldname):
-    """Create a property descriptor around the :class:`_PropertyMixin` helpers.
-    """
+    """Create a property descriptor around the :class:`_PropertyMixin` helpers."""
 
     def _getter(self):
         """Scalar property getter."""
@@ -447,6 +465,24 @@ def _convert_to_timestamp(value):
     utc_naive = value.replace(tzinfo=None) - value.utcoffset()
     mtime = (utc_naive - datetime(1970, 1, 1)).total_seconds()
     return mtime
+
+
+def _add_etag_match_headers(headers, **match_parameters):
+    """Add generation match parameters into the given parameters list.
+
+    :type headers: dict
+    :param headers: Headers dict.
+
+    :type match_parameters: dict
+    :param match_parameters: if*etag*match parameters to add.
+    """
+    for snakecase_name, header_name in _ETAG_MATCH_PARAMETERS:
+        value = match_parameters.get(snakecase_name)
+
+        if value is not None:
+            if isinstance(value, string_types):
+                value = [value]
+            headers[header_name] = ", ".join(value)
 
 
 def _add_generation_match_parameters(parameters, **match_parameters):

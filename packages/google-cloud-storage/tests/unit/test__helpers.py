@@ -136,6 +136,39 @@ class Test_PropertyMixin(unittest.TestCase):
             _target_object=derived,
         )
 
+    def test_reload_w_etag_match(self):
+        etag = "kittens"
+        path = "/path"
+        response = {"foo": "Foo"}
+        client = mock.Mock(spec=["_get_resource"])
+        client._get_resource.return_value = response
+        derived = self._derivedClass(path)()
+        # Make sure changes is not a set instance before calling reload
+        # (which will clear / replace it with an empty set), checked below.
+        derived._changes = object()
+        derived.client = client
+
+        derived.reload(if_etag_match=etag,)
+
+        self.assertEqual(derived._properties, response)
+        self.assertEqual(derived._changes, set())
+
+        expected_query_params = {
+            "projection": "noAcl",
+        }
+        # no encryption headers by default
+        expected_headers = {
+            "If-Match": etag,
+        }
+        client._get_resource.assert_called_once_with(
+            path,
+            query_params=expected_query_params,
+            headers=expected_headers,
+            timeout=self._get_default_timeout(),
+            retry=DEFAULT_RETRY,
+            _target_object=derived,
+        )
+
     def test_reload_w_generation_match_w_timeout(self):
         generation_number = 9
         metageneration_number = 6
@@ -519,6 +552,33 @@ class Test__base64_md5hash(unittest.TestCase):
         self.assertEqual(MD5._called, [None])
         self.assertEqual(MD5.hash_obj.num_digest_calls, 1)
         self.assertEqual(MD5.hash_obj._blocks, [BYTES_TO_SIGN])
+
+
+class Test__add_etag_match_headers(unittest.TestCase):
+    def _call_fut(self, headers, **match_params):
+        from google.cloud.storage._helpers import _add_etag_match_headers
+
+        return _add_etag_match_headers(headers, **match_params)
+
+    def test_add_etag_match_parameters_str(self):
+        ETAG = "kittens"
+        headers = {"foo": "bar"}
+        EXPECTED_HEADERS = {
+            "foo": "bar",
+            "If-Match": ETAG,
+        }
+        self._call_fut(headers, if_etag_match=ETAG)
+        self.assertEqual(headers, EXPECTED_HEADERS)
+
+    def test_add_generation_match_parameters_list(self):
+        ETAGS = ["kittens", "fluffy"]
+        EXPECTED_HEADERS = {
+            "foo": "bar",
+            "If-Match": ", ".join(ETAGS),
+        }
+        headers = {"foo": "bar"}
+        self._call_fut(headers, if_etag_match=ETAGS)
+        self.assertEqual(headers, EXPECTED_HEADERS)
 
 
 class Test__add_generation_match_parameters(unittest.TestCase):

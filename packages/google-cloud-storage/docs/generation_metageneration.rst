@@ -1,16 +1,30 @@
-Conditional Requests Via Generation / Metageneration Preconditions
-==================================================================
+Conditional Requests Via ETag / Generation / Metageneration Preconditions
+=========================================================================
 
 Preconditions tell Cloud Storage to only perform a request if the
-:ref:`generation <concept-generation>` or
+:ref:`ETag <concept-etag>`, :ref:`generation <concept-generation>`, or
 :ref:`metageneration <concept-metageneration>` number of the affected object
-meets your precondition criteria. These checks of the generation and
+meets your precondition criteria. These checks of the ETag, generation, and
 metageneration numbers ensure that the object is in the expected state,
 allowing you to perform safe read-modify-write updates and conditional
 operations on objects
 
 Concepts
 --------
+
+.. _concept-etag:
+
+ETag
+::::::::::::::
+
+An ETag is returned as part of the response header whenever a resource is
+returned, as well as included in the resource itself. Users should make no
+assumptions about the value used in an ETag except that it changes whenever the
+underlying data changes, per the
+`specification <https://tools.ietf.org/html/rfc7232#section-2.3>`_
+
+The ``ETag`` attribute is set by the GCS back-end, and is read-only in the
+client library.
 
 .. _concept-metageneration:
 
@@ -58,6 +72,32 @@ See also
 
 Conditional Parameters
 ----------------------
+
+.. _using-if-etag-match:
+
+Using ``if_etag_match``
+:::::::::::::::::::::::::::::
+
+Passing the ``if_etag_match`` parameter to a method which retrieves a
+blob resource (e.g.,
+:meth:`Blob.reload <google.cloud.storage.blob.Blob.reload>`)
+makes the operation conditional on whether the blob's current ``ETag`` matches
+the given value. This parameter is not supported for modification (e.g.,
+:meth:`Blob.update <google.cloud.storage.blob.Blob.update>`).
+
+
+.. _using-if-etag-not-match:
+
+Using ``if_etag_not_match``
+:::::::::::::::::::::::::::::
+
+Passing the ``if_etag_not_match`` parameter to a method which retrieves a
+blob resource (e.g.,
+:meth:`Blob.reload <google.cloud.storage.blob.Blob.reload>`)
+makes the operation conditional on whether the blob's current ``ETag`` matches
+the given value. This parameter is not supported for modification (e.g.,
+:meth:`Blob.update <google.cloud.storage.blob.Blob.update>`).
+
 
 .. _using-if-generation-match:
 

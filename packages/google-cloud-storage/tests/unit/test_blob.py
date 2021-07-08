@@ -702,9 +702,11 @@ class Test_Blob(unittest.TestCase):
         self.assertFalse(blob.exists())
 
         expected_query_params = {"fields": "name"}
+        expected_headers = {}
         client._get_resource.assert_called_once_with(
             blob.path,
             query_params=expected_query_params,
+            headers=expected_headers,
             timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
             _target_object=None,
@@ -723,9 +725,11 @@ class Test_Blob(unittest.TestCase):
         self.assertTrue(blob.exists(timeout=timeout))
 
         expected_query_params = {"fields": "name", "userProject": user_project}
+        expected_headers = {}
         client._get_resource.assert_called_once_with(
             blob.path,
             query_params=expected_query_params,
+            headers=expected_headers,
             timeout=timeout,
             retry=DEFAULT_RETRY,
             _target_object=None,
@@ -744,11 +748,39 @@ class Test_Blob(unittest.TestCase):
         self.assertTrue(blob.exists(retry=retry))
 
         expected_query_params = {"fields": "name", "generation": generation}
+        expected_headers = {}
         client._get_resource.assert_called_once_with(
             blob.path,
             query_params=expected_query_params,
+            headers=expected_headers,
             timeout=self._get_default_timeout(),
             retry=retry,
+            _target_object=None,
+        )
+
+    def test_exists_w_etag_match(self):
+        blob_name = "blob-name"
+        etag = "kittens"
+        api_response = {"name": blob_name}
+        client = mock.Mock(spec=["_get_resource"])
+        client._get_resource.return_value = api_response
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket)
+
+        self.assertTrue(blob.exists(if_etag_match=etag, retry=None,))
+
+        expected_query_params = {
+            "fields": "name",
+        }
+        expected_headers = {
+            "If-Match": etag,
+        }
+        client._get_resource.assert_called_once_with(
+            blob.path,
+            query_params=expected_query_params,
+            headers=expected_headers,
+            timeout=self._get_default_timeout(),
+            retry=None,
             _target_object=None,
         )
 
@@ -775,9 +807,11 @@ class Test_Blob(unittest.TestCase):
             "ifGenerationMatch": generation_number,
             "ifMetagenerationMatch": metageneration_number,
         }
+        expected_headers = {}
         client._get_resource.assert_called_once_with(
             blob.path,
             query_params=expected_query_params,
+            headers=expected_headers,
             timeout=self._get_default_timeout(),
             retry=None,
             _target_object=None,
@@ -1139,7 +1173,7 @@ class Test_Blob(unittest.TestCase):
         transport = object()
         file_obj = io.BytesIO()
         download_url = "http://test.invalid"
-        headers = {}
+        headers = extra_kwargs.pop("headers", {})
 
         if raw_download:
             patch = mock.patch("google.cloud.storage.blob.RawDownload")
@@ -1210,19 +1244,47 @@ class Test_Blob(unittest.TestCase):
     def test__do_download_wo_chunks_wo_range_wo_raw(self):
         self._do_download_helper_wo_chunks(w_range=False, raw_download=False)
 
+    def test__do_download_wo_chunks_wo_range_wo_raw_w_headers(self):
+        self._do_download_helper_wo_chunks(
+            w_range=False, raw_download=False, headers={"If-Match": "kittens"}
+        )
+
     def test__do_download_wo_chunks_wo_range_wo_raw_w_retry(self):
         self._do_download_helper_wo_chunks(
             w_range=False, raw_download=False, retry=DEFAULT_RETRY
         )
 
+    def test__do_download_wo_chunks_wo_range_wo_raw_w_retry_w_headers(self):
+        self._do_download_helper_wo_chunks(
+            w_range=False,
+            raw_download=False,
+            retry=DEFAULT_RETRY,
+            headers={"If-Match": "kittens"},
+        )
+
     def test__do_download_wo_chunks_w_range_wo_raw(self):
         self._do_download_helper_wo_chunks(w_range=True, raw_download=False)
+
+    def test__do_download_wo_chunks_w_range_wo_raw_w_headers(self):
+        self._do_download_helper_wo_chunks(
+            w_range=True, raw_download=False, headers={"If-Match": "kittens"}
+        )
 
     def test__do_download_wo_chunks_wo_range_w_raw(self):
         self._do_download_helper_wo_chunks(w_range=False, raw_download=True)
 
+    def test__do_download_wo_chunks_wo_range_w_raw_w_headers(self):
+        self._do_download_helper_wo_chunks(
+            w_range=False, raw_download=True, headers={"If-Match": "kittens"}
+        )
+
     def test__do_download_wo_chunks_w_range_w_raw(self):
         self._do_download_helper_wo_chunks(w_range=True, raw_download=True)
+
+    def test__do_download_wo_chunks_w_range_w_raw_w_headers(self):
+        self._do_download_helper_wo_chunks(
+            w_range=True, raw_download=True, headers={"If-Match": "kittens"}
+        )
 
     def test__do_download_wo_chunks_w_custom_timeout(self):
         self._do_download_helper_wo_chunks(
@@ -1356,6 +1418,8 @@ class Test_Blob(unittest.TestCase):
             file_obj,
             start=None,
             end=None,
+            if_etag_match=None,
+            if_etag_not_match=None,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1384,6 +1448,34 @@ class Test_Blob(unittest.TestCase):
             file_obj,
             start=None,
             end=None,
+            if_etag_match=None,
+            if_etag_not_match=None,
+            if_generation_match=None,
+            if_generation_not_match=None,
+            if_metageneration_match=None,
+            if_metageneration_not_match=None,
+            raw_download=False,
+            timeout=expected_timeout,
+            checksum="md5",
+            retry=DEFAULT_RETRY,
+        )
+
+    def test_download_to_file_w_etag_match(self):
+        etag = "kittens"
+        client = self._make_client()
+        blob = self._make_one("blob-name", bucket=_Bucket(client))
+        file_obj = io.BytesIO()
+
+        blob.download_to_file(file_obj, if_etag_not_match=etag)
+
+        expected_timeout = self._get_default_timeout()
+        client.download_blob_to_file.assert_called_once_with(
+            blob,
+            file_obj,
+            start=None,
+            end=None,
+            if_etag_match=None,
+            if_etag_not_match=etag,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1408,6 +1500,8 @@ class Test_Blob(unittest.TestCase):
             file_obj,
             start=None,
             end=None,
+            if_etag_match=None,
+            if_etag_not_match=None,
             if_generation_match=None,
             if_generation_not_match=generation_number,
             if_metageneration_match=None,
@@ -1452,6 +1546,8 @@ class Test_Blob(unittest.TestCase):
             file_obj,
             start=None,
             end=None,
+            if_etag_match=None,
+            if_etag_not_match=None,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1530,6 +1626,8 @@ class Test_Blob(unittest.TestCase):
             mock.ANY,
             start=None,
             end=None,
+            if_etag_match=None,
+            if_etag_not_match=None,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1567,6 +1665,36 @@ class Test_Blob(unittest.TestCase):
             updated=None, raw_download=False, timeout=9.58
         )
 
+    def test_download_to_filename_w_etag_match(self):
+        from google.cloud._testing import _NamedTemporaryFile
+
+        etag = "kittens"
+        client = self._make_client()
+        blob = self._make_one("blob-name", bucket=_Bucket(client))
+
+        with _NamedTemporaryFile() as temp:
+            blob.download_to_filename(temp.name, if_etag_match=etag)
+
+        expected_timeout = self._get_default_timeout()
+        client.download_blob_to_file.assert_called_once_with(
+            blob,
+            mock.ANY,
+            start=None,
+            end=None,
+            if_etag_match=etag,
+            if_etag_not_match=None,
+            if_generation_match=None,
+            if_generation_not_match=None,
+            if_metageneration_match=None,
+            if_metageneration_not_match=None,
+            raw_download=False,
+            timeout=expected_timeout,
+            checksum="md5",
+            retry=DEFAULT_RETRY,
+        )
+        stream = client.download_blob_to_file.mock_calls[0].args[1]
+        self.assertEqual(stream.name, temp.name)
+
     def test_download_to_filename_w_generation_match(self):
         from google.cloud._testing import _NamedTemporaryFile
 
@@ -1583,6 +1711,8 @@ class Test_Blob(unittest.TestCase):
             mock.ANY,
             start=None,
             end=None,
+            if_etag_match=None,
+            if_etag_not_match=None,
             if_generation_match=generation_number,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1623,6 +1753,8 @@ class Test_Blob(unittest.TestCase):
             mock.ANY,
             start=None,
             end=None,
+            if_etag_match=None,
+            if_etag_not_match=None,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1658,6 +1790,8 @@ class Test_Blob(unittest.TestCase):
             mock.ANY,
             start=None,
             end=None,
+            if_etag_match=None,
+            if_etag_not_match=None,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1672,6 +1806,36 @@ class Test_Blob(unittest.TestCase):
 
     def test_download_as_bytes_w_custom_timeout(self):
         self._download_as_bytes_helper(raw_download=False, timeout=9.58)
+
+    def test_download_as_bytes_w_etag_match(self):
+        ETAG = "kittens"
+        MEDIA_LINK = "http://example.com/media/"
+
+        client = self._make_client()
+        blob = self._make_one(
+            "blob-name", bucket=_Bucket(client), properties={"mediaLink": MEDIA_LINK}
+        )
+        client.download_blob_to_file = mock.Mock()
+
+        fetched = blob.download_as_bytes(if_etag_match=ETAG)
+        self.assertEqual(fetched, b"")
+
+        client.download_blob_to_file.assert_called_once_with(
+            blob,
+            mock.ANY,
+            start=None,
+            end=None,
+            raw_download=False,
+            if_etag_match=ETAG,
+            if_etag_not_match=None,
+            if_generation_match=None,
+            if_generation_not_match=None,
+            if_metageneration_match=None,
+            if_metageneration_not_match=None,
+            timeout=self._get_default_timeout(),
+            checksum="md5",
+            retry=DEFAULT_RETRY,
+        )
 
     def test_download_as_bytes_w_generation_match(self):
         GENERATION_NUMBER = 6
@@ -1692,6 +1856,8 @@ class Test_Blob(unittest.TestCase):
             start=None,
             end=None,
             raw_download=False,
+            if_etag_match=None,
+            if_etag_not_match=None,
             if_generation_match=GENERATION_NUMBER,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1719,6 +1885,8 @@ class Test_Blob(unittest.TestCase):
         client=None,
         start=None,
         end=None,
+        if_etag_match=None,
+        if_etag_not_match=None,
         if_generation_match=None,
         if_generation_not_match=None,
         if_metageneration_match=None,
@@ -1764,6 +1932,12 @@ class Test_Blob(unittest.TestCase):
         if encoding is not None:
             kwargs["encoding"] = encoding
 
+        if if_etag_match is not None:
+            kwargs["if_etag_match"] = if_etag_match
+
+        if if_etag_not_match is not None:
+            kwargs["if_etag_not_match"] = if_etag_not_match
+
         if if_generation_match is not None:
             kwargs["if_generation_match"] = if_generation_match
 
@@ -1795,6 +1969,8 @@ class Test_Blob(unittest.TestCase):
             end=end,
             raw_download=raw_download,
             timeout=expected_timeout,
+            if_etag_match=if_etag_match,
+            if_etag_not_match=if_etag_not_match,
             if_generation_match=if_generation_match,
             if_generation_not_match=if_generation_not_match,
             if_metageneration_match=if_metageneration_match,
@@ -1822,6 +1998,26 @@ class Test_Blob(unittest.TestCase):
 
     def test_download_as_text_w_custom_timeout(self):
         self._download_as_text_helper(raw_download=False, timeout=9.58)
+
+    def test_download_as_text_w_if_etag_match_str(self):
+        self._download_as_text_helper(
+            raw_download=False, if_etag_match="kittens",
+        )
+
+    def test_download_as_text_w_if_etag_match_list(self):
+        self._download_as_text_helper(
+            raw_download=False, if_etag_match=["kittens", "fluffy"],
+        )
+
+    def test_download_as_text_w_if_etag_not_match_str(self):
+        self._download_as_text_helper(
+            raw_download=False, if_etag_not_match="kittens",
+        )
+
+    def test_download_as_text_w_if_etag_not_match_list(self):
+        self._download_as_text_helper(
+            raw_download=False, if_etag_not_match=["kittens", "fluffy"],
+        )
 
     def test_download_as_text_w_if_generation_match(self):
         self._download_as_text_helper(raw_download=False, if_generation_match=6)
@@ -1889,6 +2085,8 @@ class Test_Blob(unittest.TestCase):
             start=None,
             end=None,
             raw_download=False,
+            if_etag_match=None,
+            if_etag_not_match=None,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,
@@ -1923,6 +2121,8 @@ class Test_Blob(unittest.TestCase):
             start=None,
             end=None,
             raw_download=False,
+            if_etag_match=None,
+            if_etag_not_match=None,
             if_generation_match=None,
             if_generation_not_match=None,
             if_metageneration_match=None,

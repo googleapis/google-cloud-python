@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import re
 import tempfile
 
@@ -102,3 +103,43 @@ def test_download_blob_to_file_w_uri(
             stored_contents = file_obj.read()
 
     assert stored_contents == payload
+
+
+def test_download_blob_to_file_w_etag(
+    storage_client, shared_bucket, blobs_to_delete, service_account,
+):
+    filename = "kittens"
+    blob = shared_bucket.blob(filename)
+    payload = b"fluffy"
+    blob.upload_from_string(payload)
+    blobs_to_delete.append(blob)
+
+    buffer = io.BytesIO()
+    with pytest.raises(exceptions.NotModified):
+        storage_client.download_blob_to_file(
+            "gs://" + shared_bucket.name + "/" + filename,
+            buffer,
+            if_etag_not_match=blob.etag,
+        )
+
+    buffer = io.BytesIO()
+    with pytest.raises(exceptions.PreconditionFailed):
+        storage_client.download_blob_to_file(
+            "gs://" + shared_bucket.name + "/" + filename,
+            buffer,
+            if_etag_match="kittens",
+        )
+
+    buffer = io.BytesIO()
+    storage_client.download_blob_to_file(
+        "gs://" + shared_bucket.name + "/" + filename,
+        buffer,
+        if_etag_not_match="kittens",
+    )
+    assert buffer.getvalue() == payload
+
+    buffer = io.BytesIO()
+    storage_client.download_blob_to_file(
+        "gs://" + shared_bucket.name + "/" + filename, buffer, if_etag_match=blob.etag,
+    )
+    assert buffer.getvalue() == payload
