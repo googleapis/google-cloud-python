@@ -232,4 +232,5 @@ API Reference
   api/client
   api/message
   api/futures
+  api/pagers
   api/scheduler

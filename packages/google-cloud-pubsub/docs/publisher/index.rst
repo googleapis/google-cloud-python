@@ -172,3 +172,4 @@ API Reference
 
   api/client
   api/futures
+  api/pagers
