@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.6.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.5.0...v2.6.0) (2021-07-09)
+
+
+### Features
+
+* `read_session` optional to `ReadRowsStream.rows()` ([#228](https://www.github.com/googleapis/python-bigquery-storage/issues/228)) ([4f56029](https://www.github.com/googleapis/python-bigquery-storage/commit/4f5602950a0c1959e332aa2964245b9caf4828c8))
+* add always_use_jwt_access ([#223](https://www.github.com/googleapis/python-bigquery-storage/issues/223)) ([fd82417](https://www.github.com/googleapis/python-bigquery-storage/commit/fd824174fb044fbacc83c647f619fda556333e26))
+
 ## [2.5.0](https://www.github.com/googleapis/python-bigquery-storage/compare/v2.4.0...v2.5.0) (2021-06-29)
 
 
