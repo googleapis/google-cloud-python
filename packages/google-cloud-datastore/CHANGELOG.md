@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+### [2.1.4](https://www.github.com/googleapis/python-datastore/compare/v2.1.3...v2.1.4) (2021-07-09)
+
+
+### Performance Improvements
+
+* further avoid using proto-plus wrapper when unmarshalling entities ([#190](https://www.github.com/googleapis/python-datastore/issues/190)) ([d0481bf](https://www.github.com/googleapis/python-datastore/commit/d0481bf8caa84a829808e7f512fda8709f38d0cc))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-datastore/issues/1127)) ([#181](https://www.github.com/googleapis/python-datastore/issues/181)) ([6efde70](https://www.github.com/googleapis/python-datastore/commit/6efde70db751bf708091b24a932ab8571bd981a6))
+
 ### [2.1.3](https://www.github.com/googleapis/python-datastore/compare/v2.1.2...v2.1.3) (2021-05-25)
 
 
