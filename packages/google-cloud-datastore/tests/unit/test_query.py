@@ -15,6 +15,7 @@
 import unittest
 
 import mock
+import pytest
 
 
 class TestQuery(unittest.TestCase):
@@ -527,6 +528,7 @@ class TestIterator(unittest.TestCase):
         self.assertIsNone(iterator.next_page_token)
         self.assertFalse(iterator._more_results)
 
+    @pytest.mark.filterwarnings("ignore")
     def test__process_query_results_bad_enum(self):
         iterator = self._make_one(None, None)
         more_results_enum = 999

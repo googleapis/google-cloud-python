@@ -118,8 +118,6 @@ class TestBatch(unittest.TestCase):
         self.assertEqual(batch._partial_key_entities, [entity])
 
     def test_put_entity_w_completed_key(self):
-        from google.cloud.datastore.helpers import _property_tuples
-
         project = "PROJECT"
         properties = {"foo": "bar", "baz": "qux", "spam": [1, 2, 3], "frotz": []}
         client = _Client(project)
@@ -134,7 +132,7 @@ class TestBatch(unittest.TestCase):
         mutated_entity = _mutated_pb(self, batch.mutations, "upsert")
         self.assertEqual(mutated_entity.key, key._key)
 
-        prop_dict = dict(_property_tuples(mutated_entity))
+        prop_dict = dict(mutated_entity.properties.items())
         self.assertEqual(len(prop_dict), 4)
         self.assertFalse(prop_dict["foo"].exclude_from_indexes)
         self.assertTrue(prop_dict["baz"].exclude_from_indexes)

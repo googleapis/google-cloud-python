@@ -22,6 +22,7 @@ import itertools
 
 from google.protobuf import struct_pb2
 from google.type import latlng_pb2
+from proto.datetime_helpers import DatetimeWithNanoseconds
 
 from google.cloud._helpers import _datetime_to_pb_timestamp
 from google.cloud.datastore_v1.types import datastore as datastore_pb2
@@ -33,8 +34,8 @@ from google.cloud.datastore.key import Key
 def _get_meaning(value_pb, is_list=False):
     """Get the meaning from a protobuf value.
 
-    :type value_pb: :class:`.entity_pb2.Value`
-    :param value_pb: The protobuf value to be checked for an
+    :type value_pb: :class:`.entity_pb2.Value._pb`
+    :param value_pb: The *raw* protobuf value to be checked for an
                      associated meaning.
 
     :type is_list: bool
@@ -47,14 +48,9 @@ def _get_meaning(value_pb, is_list=False):
               means it just returns a list of meanings. If all the
               list meanings agree, it just condenses them.
     """
-    meaning = None
     if is_list:
 
-        values = (
-            value_pb._pb.array_value.values
-            if hasattr(value_pb, "_pb")
-            else value_pb.array_value.values
-        )
+        values = value_pb.array_value.values
 
         # An empty list will have no values, hence no shared meaning
         # set among them.
@@ -65,16 +61,18 @@ def _get_meaning(value_pb, is_list=False):
         # the rest which may be enum/int values.
         all_meanings = [_get_meaning(sub_value_pb) for sub_value_pb in values]
         unique_meanings = set(all_meanings)
+
         if len(unique_meanings) == 1:
             # If there is a unique meaning, we preserve it.
-            meaning = unique_meanings.pop()
+            return unique_meanings.pop()
         else:  # We know len(value_pb.array_value.values) > 0.
             # If the meaning is not unique, just return all of them.
-            meaning = all_meanings
-    elif value_pb.meaning:  # Simple field (int32).
-        meaning = value_pb.meaning
+            return all_meanings
 
-    return meaning
+    elif value_pb.meaning:  # Simple field (int32).
+        return value_pb.meaning
+
+    return None
 
 
 def _new_value_pb(entity_pb, name):
@@ -89,27 +87,10 @@ def _new_value_pb(entity_pb, name):
     :rtype: :class:`.entity_pb2.Value`
     :returns: The new ``Value`` protobuf that was added to the entity.
     """
-    properties = entity_pb.properties
-    try:
-        properties = properties._pb
-    except AttributeError:
-        # TODO(microgenerator): shouldn't need this. the issue is that
-        # we have wrapped and non-wrapped protos coming here.
-        pass
+    # TODO(microgenerator): shouldn't need this. the issue is that
+    # we have wrapped and non-wrapped protos coming here.
+    properties = getattr(entity_pb.properties, "_pb", entity_pb.properties)
     return properties.get_or_create(name)
-
-
-def _property_tuples(entity_pb):
-    """Iterator of name, ``Value`` tuples from entity properties.
-
-    :type entity_pb: :class:`.entity_pb2.Entity`
-    :param entity_pb: An entity protobuf to add a new property to.
-
-    :rtype: :class:`generator`
-    :returns: An iterator that yields tuples of a name and ``Value``
-              corresponding to properties on the entity.
-    """
-    return iter(entity_pb.properties.items())
 
 
 def entity_from_protobuf(pb):
@@ -124,21 +105,18 @@ def entity_from_protobuf(pb):
     :rtype: :class:`google.cloud.datastore.entity.Entity`
     :returns: The entity derived from the protobuf.
     """
-    if not isinstance(pb, entity_pb2.Entity):
-        proto_pb = entity_pb2.Entity.wrap(pb)
-    else:
-        proto_pb = pb
+    if isinstance(pb, entity_pb2.Entity):
         pb = pb._pb
 
     key = None
-    if "key" in proto_pb:  # Message field (Key)
-        key = key_from_protobuf(proto_pb.key)
+    if pb.HasField("key"):  # Message field (Key)
+        key = key_from_protobuf(pb.key)
 
     entity_props = {}
     entity_meanings = {}
     exclude_from_indexes = []
 
-    for prop_name, value_pb in _property_tuples(proto_pb._pb):
+    for prop_name, value_pb in pb.properties.items():
         value = _get_value_from_value_pb(value_pb)
         entity_props[prop_name] = value
 
@@ -384,7 +362,7 @@ def _pb_attr_value(val):
     return name + "_value", value
 
 
-def _get_value_from_value_pb(value):
+def _get_value_from_value_pb(pb):
     """Given a protobuf for a Value, get the correct value.
 
     The Cloud Datastore Protobuf API returns a Property Protobuf which
@@ -394,56 +372,47 @@ def _get_value_from_value_pb(value):
     Some work is done to coerce the return value into a more useful type
     (particularly in the case of a timestamp value, or a key value).
 
-    :type value_pb: :class:`.entity_pb2.Value`
-    :param value_pb: The Value Protobuf.
+    :type pb: :class:`.entity_pb2.Value._pb`
+    :param pb: The *raw* Value Protobuf.
 
     :rtype: object
     :returns: The value provided by the Protobuf.
     :raises: :class:`ValueError <exceptions.ValueError>` if no value type
              has been set.
     """
-    if not getattr(value, "_pb", False):
-        # Coerce raw pb type into proto-plus pythonic type.
-        value = entity_pb2.Value.wrap(value)
-
-    value_type = value._pb.WhichOneof("value_type")
+    value_type = pb.WhichOneof("value_type")
 
     if value_type == "timestamp_value":
-        # Do not access `._pb` here, as that returns a Timestamp proto,
-        # but this should return a Pythonic `DatetimeWithNanoseconds` value,
-        # which is found at `value.timestamp_value`
-        result = value.timestamp_value
+        result = DatetimeWithNanoseconds.from_timestamp_pb(pb.timestamp_value)
 
     elif value_type == "key_value":
-        result = key_from_protobuf(value._pb.key_value)
+        result = key_from_protobuf(pb.key_value)
 
     elif value_type == "boolean_value":
-        result = value._pb.boolean_value
+        result = pb.boolean_value
 
     elif value_type == "double_value":
-        result = value._pb.double_value
+        result = pb.double_value
 
     elif value_type == "integer_value":
-        result = value._pb.integer_value
+        result = pb.integer_value
 
     elif value_type == "string_value":
-        result = value._pb.string_value
+        result = pb.string_value
 
     elif value_type == "blob_value":
-        result = value._pb.blob_value
+        result = pb.blob_value
 
     elif value_type == "entity_value":
-        result = entity_from_protobuf(value._pb.entity_value)
+        result = entity_from_protobuf(pb.entity_value)
 
     elif value_type == "array_value":
         result = [
-            _get_value_from_value_pb(value) for value in value._pb.array_value.values
+            _get_value_from_value_pb(item_value) for item_value in pb.array_value.values
         ]
 
     elif value_type == "geo_point_value":
-        result = GeoPoint(
-            value._pb.geo_point_value.latitude, value._pb.geo_point_value.longitude,
-        )
+        result = GeoPoint(pb.geo_point_value.latitude, pb.geo_point_value.longitude,)
 
     elif value_type == "null_value":
         result = None

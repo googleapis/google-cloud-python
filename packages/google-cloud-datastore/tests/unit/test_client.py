@@ -802,7 +802,6 @@ class TestClient(unittest.TestCase):
 
     def test_put_multi_no_batch_w_partial_key_w_retry_w_timeout(self):
         from google.cloud.datastore_v1.types import datastore as datastore_pb2
-        from google.cloud.datastore.helpers import _property_tuples
 
         entity = _Entity(foo=u"bar")
         key = entity.key = _Key(_Key.kind, None)
@@ -838,15 +837,13 @@ class TestClient(unittest.TestCase):
         mutated_entity = _mutated_pb(self, mutations, "insert")
         self.assertEqual(mutated_entity.key, key.to_protobuf())
 
-        prop_list = list(_property_tuples(mutated_entity))
+        prop_list = list(mutated_entity.properties.items())
         self.assertTrue(len(prop_list), 1)
         name, value_pb = prop_list[0]
         self.assertEqual(name, "foo")
         self.assertEqual(value_pb.string_value, u"bar")
 
     def test_put_multi_existing_batch_w_completed_key(self):
-        from google.cloud.datastore.helpers import _property_tuples
-
         creds = _make_credentials()
         client = self._make_one(credentials=creds)
         entity = _Entity(foo=u"bar")
@@ -859,7 +856,7 @@ class TestClient(unittest.TestCase):
         mutated_entity = _mutated_pb(self, CURR_BATCH.mutations, "upsert")
         self.assertEqual(mutated_entity.key, key.to_protobuf())
 
-        prop_list = list(_property_tuples(mutated_entity))
+        prop_list = list(mutated_entity.properties.items())
         self.assertTrue(len(prop_list), 1)
         name, value_pb = prop_list[0]
         self.assertEqual(name, "foo")
