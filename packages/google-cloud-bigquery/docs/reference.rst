@@ -173,10 +173,11 @@ Magics
 Enums
 =====
 
-.. autosummary::
-    :toctree: generated
+.. toctree::
+    :maxdepth: 2
 
-    enums.StandardSqlDataTypes
+    enums
+
 
 Encryption Configuration
 ========================
