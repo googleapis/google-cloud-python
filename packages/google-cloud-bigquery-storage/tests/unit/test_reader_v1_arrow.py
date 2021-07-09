@@ -84,11 +84,17 @@ def _bq_to_arrow_batch_objects(bq_blocks, arrow_schema):
 
 def _bq_to_arrow_batches(bq_blocks, arrow_schema):
     arrow_batches = []
+    first_message = True
     for record_batch in _bq_to_arrow_batch_objects(bq_blocks, arrow_schema):
         response = types.ReadRowsResponse()
         response.arrow_record_batch.serialized_record_batch = (
             record_batch.serialize().to_pybytes()
         )
+        if first_message:
+            response.arrow_schema = {
+                "serialized_schema": arrow_schema.serialize().to_pybytes(),
+            }
+            first_message = False
         arrow_batches.append(response)
     return arrow_batches
 
@@ -123,14 +129,15 @@ def test_pyarrow_rows_raises_import_error(
     mut, class_under_test, mock_gapic_client, monkeypatch
 ):
     monkeypatch.setattr(mut, "pyarrow", None)
-    reader = class_under_test([], mock_gapic_client, "", 0, {})
+    arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
+    arrow_batches = _bq_to_arrow_batches(SCALAR_BLOCKS, arrow_schema)
+    reader = class_under_test(arrow_batches, mock_gapic_client, "", 0, {})
+    rows = iter(reader.rows())
 
-    bq_columns = [{"name": "int_col", "type": "int64"}]
-    arrow_schema = _bq_to_arrow_schema(bq_columns)
-    read_session = _generate_arrow_read_session(arrow_schema)
-
+    # Since session isn't passed in, reader doesn't know serialization type
+    # until you start iterating.
     with pytest.raises(ImportError):
-        reader.rows(read_session)
+        next(rows)
 
 
 def test_to_arrow_no_pyarrow_raises_import_error(
@@ -138,26 +145,24 @@ def test_to_arrow_no_pyarrow_raises_import_error(
 ):
     monkeypatch.setattr(mut, "pyarrow", None)
     arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
-    read_session = _generate_arrow_read_session(arrow_schema)
     arrow_batches = _bq_to_arrow_batches(SCALAR_BLOCKS, arrow_schema)
     reader = class_under_test(arrow_batches, mock_gapic_client, "", 0, {})
 
     with pytest.raises(ImportError):
-        reader.to_arrow(read_session)
+        reader.to_arrow()
 
     with pytest.raises(ImportError):
-        reader.rows(read_session).to_arrow()
+        reader.rows().to_arrow()
 
     with pytest.raises(ImportError):
-        next(reader.rows(read_session).pages).to_arrow()
+        next(reader.rows().pages).to_arrow()
 
 
 def test_to_arrow_w_scalars_arrow(class_under_test):
     arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
-    read_session = _generate_arrow_read_session(arrow_schema)
     arrow_batches = _bq_to_arrow_batches(SCALAR_BLOCKS, arrow_schema)
     reader = class_under_test(arrow_batches, mock_gapic_client, "", 0, {})
-    actual_table = reader.to_arrow(read_session)
+    actual_table = reader.to_arrow()
     expected_table = pyarrow.Table.from_batches(
         _bq_to_arrow_batch_objects(SCALAR_BLOCKS, arrow_schema)
     )
@@ -166,11 +171,10 @@ def test_to_arrow_w_scalars_arrow(class_under_test):
 
 def test_to_dataframe_w_scalars_arrow(class_under_test):
     arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
-    read_session = _generate_arrow_read_session(arrow_schema)
     arrow_batches = _bq_to_arrow_batches(SCALAR_BLOCKS, arrow_schema)
 
     reader = class_under_test(arrow_batches, mock_gapic_client, "", 0, {})
-    got = reader.to_dataframe(read_session)
+    got = reader.to_dataframe()
 
     expected = pandas.DataFrame(
         list(itertools.chain.from_iterable(SCALAR_BLOCKS)), columns=SCALAR_COLUMN_NAMES
@@ -183,24 +187,19 @@ def test_to_dataframe_w_scalars_arrow(class_under_test):
 
 
 def test_rows_w_empty_stream_arrow(class_under_test, mock_gapic_client):
-    bq_columns = [{"name": "int_col", "type": "int64"}]
-    arrow_schema = _bq_to_arrow_schema(bq_columns)
-    read_session = _generate_arrow_read_session(arrow_schema)
     reader = class_under_test([], mock_gapic_client, "", 0, {})
-
-    got = reader.rows(read_session)
+    got = reader.rows()
     assert tuple(got) == ()
 
 
 def test_rows_w_scalars_arrow(class_under_test, mock_gapic_client):
     arrow_schema = _bq_to_arrow_schema(SCALAR_COLUMNS)
-    read_session = _generate_arrow_read_session(arrow_schema)
     arrow_batches = _bq_to_arrow_batches(SCALAR_BLOCKS, arrow_schema)
 
     reader = class_under_test(arrow_batches, mock_gapic_client, "", 0, {})
     got = tuple(
         dict((key, value.as_py()) for key, value in row_dict.items())
-        for row_dict in reader.rows(read_session)
+        for row_dict in reader.rows()
     )
 
     expected = tuple(itertools.chain.from_iterable(SCALAR_BLOCKS))
@@ -214,7 +213,6 @@ def test_to_dataframe_w_dtypes_arrow(class_under_test):
             {"name": "lilfloat", "type": "float64"},
         ]
     )
-    read_session = _generate_arrow_read_session(arrow_schema)
     blocks = [
         [{"bigfloat": 1.25, "lilfloat": 30.5}, {"bigfloat": 2.5, "lilfloat": 21.125}],
         [{"bigfloat": 3.75, "lilfloat": 11.0}],
@@ -222,7 +220,7 @@ def test_to_dataframe_w_dtypes_arrow(class_under_test):
     arrow_batches = _bq_to_arrow_batches(blocks, arrow_schema)
 
     reader = class_under_test(arrow_batches, mock_gapic_client, "", 0, {})
-    got = reader.to_dataframe(read_session, dtypes={"lilfloat": "float16"})
+    got = reader.to_dataframe(dtypes={"lilfloat": "float16"})
 
     expected = pandas.DataFrame(
         {
@@ -243,6 +241,7 @@ def test_to_dataframe_empty_w_scalars_arrow(class_under_test):
     arrow_batches = _bq_to_arrow_batches([], arrow_schema)
     reader = class_under_test(arrow_batches, mock_gapic_client, "", 0, {})
 
+    # Read session is needed to get a schema for empty streams.
     got = reader.to_dataframe(read_session)
 
     expected = pandas.DataFrame([], columns=SCALAR_COLUMN_NAMES)
@@ -270,6 +269,7 @@ def test_to_dataframe_empty_w_dtypes_arrow(class_under_test, mock_gapic_client):
     arrow_batches = _bq_to_arrow_batches([], arrow_schema)
     reader = class_under_test(arrow_batches, mock_gapic_client, "", 0, {})
 
+    # Read session is needed to get a schema for empty streams.
     got = reader.to_dataframe(read_session, dtypes={"lilfloat": "float16"})
 
     expected = pandas.DataFrame([], columns=["bigfloat", "lilfloat"])
@@ -288,7 +288,6 @@ def test_to_dataframe_by_page_arrow(class_under_test, mock_gapic_client):
         {"name": "bool_col", "type": "bool"},
     ]
     arrow_schema = _bq_to_arrow_schema(bq_columns)
-    read_session = _generate_arrow_read_session(arrow_schema)
 
     bq_block_1 = [
         {"int_col": 123, "bool_col": True},
@@ -315,7 +314,7 @@ def test_to_dataframe_by_page_arrow(class_under_test, mock_gapic_client):
     reader = class_under_test(
         _pages_w_unavailable(batch_1), mock_gapic_client, "", 0, {}
     )
-    got = reader.rows(read_session)
+    got = reader.rows()
     pages = iter(got.pages)
 
     page_1 = next(pages)

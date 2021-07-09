@@ -66,6 +66,7 @@ def mock_gapic_client():
 def _bq_to_avro_blocks(bq_blocks, avro_schema_json):
     avro_schema = fastavro.parse_schema(avro_schema_json)
     avro_blocks = []
+    first_message = True
     for block in bq_blocks:
         blockio = six.BytesIO()
         for row in block:
@@ -73,6 +74,9 @@ def _bq_to_avro_blocks(bq_blocks, avro_schema_json):
         response = types.ReadRowsResponse()
         response.row_count = len(block)
         response.avro_rows.serialized_binary_rows = blockio.getvalue()
+        if first_message:
+            response.avro_schema = {"schema": json.dumps(avro_schema_json)}
+            first_message = False
         avro_blocks.append(response)
     return avro_blocks
 
@@ -128,54 +132,48 @@ def _bq_to_avro_schema(bq_columns):
     return avro_schema
 
 
-def _get_avro_bytes(rows, avro_schema):
-    avro_file = six.BytesIO()
-    for row in rows:
-        fastavro.schemaless_writer(avro_file, avro_schema, row)
-    return avro_file.getvalue()
-
-
 def test_avro_rows_raises_import_error(
     mut, class_under_test, mock_gapic_client, monkeypatch
 ):
     monkeypatch.setattr(mut, "fastavro", None)
-    reader = class_under_test([], mock_gapic_client, "", 0, {})
+    avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
+    avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
+    reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
+    rows = iter(reader.rows())
 
-    bq_columns = [{"name": "int_col", "type": "int64"}]
-    avro_schema = _bq_to_avro_schema(bq_columns)
-    read_session = _generate_avro_read_session(avro_schema)
-
+    # Since session isn't passed in, reader doesn't know serialization type
+    # until you start iterating.
     with pytest.raises(ImportError):
-        reader.rows(read_session)
+        next(rows)
 
 
 def test_rows_no_schema_set_raises_type_error(
     mut, class_under_test, mock_gapic_client, monkeypatch
 ):
-    reader = class_under_test([], mock_gapic_client, "", 0, {})
-    read_session = types.ReadSession()
+    avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
+    avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
+    avro_blocks[0].avro_schema = None
+    reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
+    rows = iter(reader.rows())
 
+    # Since session isn't passed in, reader doesn't know serialization type
+    # until you start iterating.
     with pytest.raises(TypeError):
-        reader.rows(read_session)
+        next(rows)
 
 
 def test_rows_w_empty_stream(class_under_test, mock_gapic_client):
-    bq_columns = [{"name": "int_col", "type": "int64"}]
-    avro_schema = _bq_to_avro_schema(bq_columns)
-    read_session = _generate_avro_read_session(avro_schema)
     reader = class_under_test([], mock_gapic_client, "", 0, {})
-
-    got = reader.rows(read_session)
+    got = reader.rows()
     assert tuple(got) == ()
 
 
 def test_rows_w_scalars(class_under_test, mock_gapic_client):
     avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
-    read_session = _generate_avro_read_session(avro_schema)
     avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
 
     reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
-    got = tuple(reader.rows(read_session))
+    got = tuple(reader.rows())
 
     expected = tuple(itertools.chain.from_iterable(SCALAR_BLOCKS))
     assert got == expected
@@ -184,7 +182,6 @@ def test_rows_w_scalars(class_under_test, mock_gapic_client):
 def test_rows_w_timeout(class_under_test, mock_gapic_client):
     bq_columns = [{"name": "int_col", "type": "int64"}]
     avro_schema = _bq_to_avro_schema(bq_columns)
-    read_session = _generate_avro_read_session(avro_schema)
     bq_blocks_1 = [
         [{"int_col": 123}, {"int_col": 234}],
         [{"int_col": 345}, {"int_col": 456}],
@@ -206,7 +203,7 @@ def test_rows_w_timeout(class_under_test, mock_gapic_client):
     )
 
     with pytest.raises(google.api_core.exceptions.DeadlineExceeded):
-        list(reader.rows(read_session))
+        list(reader.rows())
 
     # Don't reconnect on DeadlineException. This allows user-specified timeouts
     # to be respected.
@@ -216,7 +213,6 @@ def test_rows_w_timeout(class_under_test, mock_gapic_client):
 def test_rows_w_nonresumable_internal_error(class_under_test, mock_gapic_client):
     bq_columns = [{"name": "int_col", "type": "int64"}]
     avro_schema = _bq_to_avro_schema(bq_columns)
-    read_session = _generate_avro_read_session(avro_schema)
     bq_blocks = [[{"int_col": 1024}, {"int_col": 512}], [{"int_col": 256}]]
     avro_blocks = _pages_w_nonresumable_internal_error(
         _bq_to_avro_blocks(bq_blocks, avro_schema)
@@ -227,7 +223,7 @@ def test_rows_w_nonresumable_internal_error(class_under_test, mock_gapic_client)
     with pytest.raises(
         google.api_core.exceptions.InternalServerError, match="nonresumable error"
     ):
-        list(reader.rows(read_session))
+        list(reader.rows())
 
     mock_gapic_client.read_rows.assert_not_called()
 
@@ -235,7 +231,6 @@ def test_rows_w_nonresumable_internal_error(class_under_test, mock_gapic_client)
 def test_rows_w_reconnect(class_under_test, mock_gapic_client):
     bq_columns = [{"name": "int_col", "type": "int64"}]
     avro_schema = _bq_to_avro_schema(bq_columns)
-    read_session = _generate_avro_read_session(avro_schema)
     bq_blocks_1 = [
         [{"int_col": 123}, {"int_col": 234}],
         [{"int_col": 345}, {"int_col": 456}],
@@ -258,7 +253,7 @@ def test_rows_w_reconnect(class_under_test, mock_gapic_client):
         0,
         {"metadata": {"test-key": "test-value"}},
     )
-    got = reader.rows(read_session)
+    got = reader.rows()
 
     expected = tuple(
         itertools.chain(
@@ -280,7 +275,6 @@ def test_rows_w_reconnect(class_under_test, mock_gapic_client):
 def test_rows_w_reconnect_by_page(class_under_test, mock_gapic_client):
     bq_columns = [{"name": "int_col", "type": "int64"}]
     avro_schema = _bq_to_avro_schema(bq_columns)
-    read_session = _generate_avro_read_session(avro_schema)
     bq_blocks_1 = [
         [{"int_col": 123}, {"int_col": 234}],
         [{"int_col": 345}, {"int_col": 456}],
@@ -298,7 +292,7 @@ def test_rows_w_reconnect_by_page(class_under_test, mock_gapic_client):
         0,
         {"metadata": {"test-key": "test-value"}},
     )
-    got = reader.rows(read_session)
+    got = reader.rows()
     pages = iter(got.pages)
 
     page_1 = next(pages)
@@ -330,38 +324,41 @@ def test_to_dataframe_no_pandas_raises_import_error(
 ):
     monkeypatch.setattr(mut, "pandas", None)
     avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
-    read_session = _generate_avro_read_session(avro_schema)
     avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
 
     reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
 
     with pytest.raises(ImportError):
-        reader.to_dataframe(read_session)
+        reader.to_dataframe()
 
     with pytest.raises(ImportError):
-        reader.rows(read_session).to_dataframe()
+        reader.rows().to_dataframe()
 
     with pytest.raises(ImportError):
-        next(reader.rows(read_session).pages).to_dataframe()
+        next(reader.rows().pages).to_dataframe()
 
 
 def test_to_dataframe_no_schema_set_raises_type_error(
     mut, class_under_test, mock_gapic_client, monkeypatch
 ):
-    reader = class_under_test([], mock_gapic_client, "", 0, {})
-    read_session = types.ReadSession()
+    avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
+    avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
+    avro_blocks[0].avro_schema = None
+    reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
+    rows = reader.rows()
 
+    # Since session isn't passed in, reader doesn't know serialization type
+    # until you start iterating.
     with pytest.raises(TypeError):
-        reader.to_dataframe(read_session)
+        rows.to_dataframe()
 
 
 def test_to_dataframe_w_scalars(class_under_test):
     avro_schema = _bq_to_avro_schema(SCALAR_COLUMNS)
-    read_session = _generate_avro_read_session(avro_schema)
     avro_blocks = _bq_to_avro_blocks(SCALAR_BLOCKS, avro_schema)
 
     reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
-    got = reader.to_dataframe(read_session)
+    got = reader.to_dataframe()
 
     expected = pandas.DataFrame(
         list(itertools.chain.from_iterable(SCALAR_BLOCKS)), columns=SCALAR_COLUMN_NAMES
@@ -392,7 +389,6 @@ def test_to_dataframe_w_dtypes(class_under_test):
             {"name": "lilfloat", "type": "float64"},
         ]
     )
-    read_session = _generate_avro_read_session(avro_schema)
     blocks = [
         [{"bigfloat": 1.25, "lilfloat": 30.5}, {"bigfloat": 2.5, "lilfloat": 21.125}],
         [{"bigfloat": 3.75, "lilfloat": 11.0}],
@@ -400,7 +396,7 @@ def test_to_dataframe_w_dtypes(class_under_test):
     avro_blocks = _bq_to_avro_blocks(blocks, avro_schema)
 
     reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
-    got = reader.to_dataframe(read_session, dtypes={"lilfloat": "float16"})
+    got = reader.to_dataframe(dtypes={"lilfloat": "float16"})
 
     expected = pandas.DataFrame(
         {
@@ -421,6 +417,7 @@ def test_to_dataframe_empty_w_scalars_avro(class_under_test):
     avro_blocks = _bq_to_avro_blocks([], avro_schema)
     reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
 
+    # Read session is needed to get a schema for empty streams.
     got = reader.to_dataframe(read_session)
 
     expected = pandas.DataFrame(columns=SCALAR_COLUMN_NAMES)
@@ -448,6 +445,7 @@ def test_to_dataframe_empty_w_dtypes_avro(class_under_test, mock_gapic_client):
     avro_blocks = _bq_to_avro_blocks([], avro_schema)
     reader = class_under_test(avro_blocks, mock_gapic_client, "", 0, {})
 
+    # Read session is needed to get a schema for empty streams.
     got = reader.to_dataframe(read_session, dtypes={"lilfloat": "float16"})
 
     expected = pandas.DataFrame([], columns=["bigfloat", "lilfloat"])
@@ -466,7 +464,6 @@ def test_to_dataframe_by_page(class_under_test, mock_gapic_client):
         {"name": "bool_col", "type": "bool"},
     ]
     avro_schema = _bq_to_avro_schema(bq_columns)
-    read_session = _generate_avro_read_session(avro_schema)
     block_1 = [{"int_col": 123, "bool_col": True}, {"int_col": 234, "bool_col": False}]
     block_2 = [{"int_col": 345, "bool_col": True}, {"int_col": 456, "bool_col": False}]
     block_3 = [{"int_col": 567, "bool_col": True}, {"int_col": 789, "bool_col": False}]
@@ -487,7 +484,7 @@ def test_to_dataframe_by_page(class_under_test, mock_gapic_client):
         0,
         {"metadata": {"test-key": "test-value"}},
     )
-    got = reader.rows(read_session)
+    got = reader.rows()
     pages = iter(got.pages)
 
     page_1 = next(pages)

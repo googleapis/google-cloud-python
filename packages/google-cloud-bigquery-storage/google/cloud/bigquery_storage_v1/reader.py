@@ -156,7 +156,7 @@ class ReadRowsStream(object):
             read_stream=self._name, offset=self._offset, **self._read_rows_kwargs
         )
 
-    def rows(self, read_session):
+    def rows(self, read_session=None):
         """Iterate over all rows in the stream.
 
         This method requires the fastavro library in order to parse row
@@ -169,19 +169,21 @@ class ReadRowsStream(object):
 
         Args:
             read_session ( \
-                ~google.cloud.bigquery_storage_v1.types.ReadSession \
+                Optional[~google.cloud.bigquery_storage_v1.types.ReadSession] \
             ):
-                The read session associated with this read rows stream. This
-                contains the schema, which is required to parse the data
-                messages.
+                DEPRECATED.
+
+                This argument was used to specify the schema of the rows in the
+                stream, but now the first message in a read stream contains
+                this information.
 
         Returns:
             Iterable[Mapping]:
                 A sequence of rows, represented as dictionaries.
         """
-        return ReadRowsIterable(self, read_session)
+        return ReadRowsIterable(self, read_session=read_session)
 
-    def to_arrow(self, read_session):
+    def to_arrow(self, read_session=None):
         """Create a :class:`pyarrow.Table` of all rows in the stream.
 
         This method requires the pyarrow library and a stream using the Arrow
@@ -191,17 +193,19 @@ class ReadRowsStream(object):
             read_session ( \
                 ~google.cloud.bigquery_storage_v1.types.ReadSession \
             ):
-                The read session associated with this read rows stream. This
-                contains the schema, which is required to parse the data
-                messages.
+                DEPRECATED.
+
+                This argument was used to specify the schema of the rows in the
+                stream, but now the first message in a read stream contains
+                this information.
 
         Returns:
             pyarrow.Table:
                 A table of all rows in the stream.
         """
-        return self.rows(read_session).to_arrow()
+        return self.rows(read_session=read_session).to_arrow()
 
-    def to_dataframe(self, read_session, dtypes=None):
+    def to_dataframe(self, read_session=None, dtypes=None):
         """Create a :class:`pandas.DataFrame` of all rows in the stream.
 
         This method requires the pandas libary to create a data frame and the
@@ -215,9 +219,11 @@ class ReadRowsStream(object):
             read_session ( \
                 ~google.cloud.bigquery_storage_v1.types.ReadSession \
             ):
-                The read session associated with this read rows stream. This
-                contains the schema, which is required to parse the data
-                messages.
+                DEPRECATED.
+
+                This argument was used to specify the schema of the rows in the
+                stream, but now the first message in a read stream contains
+                this information.
             dtypes ( \
                 Map[str, Union[str, pandas.Series.dtype]] \
             ):
@@ -233,7 +239,7 @@ class ReadRowsStream(object):
         if pandas is None:
             raise ImportError(_PANDAS_REQUIRED)
 
-        return self.rows(read_session).to_dataframe(dtypes=dtypes)
+        return self.rows(read_session=read_session).to_dataframe(dtypes=dtypes)
 
 
 class ReadRowsIterable(object):
@@ -242,18 +248,25 @@ class ReadRowsIterable(object):
     Args:
         reader (google.cloud.bigquery_storage_v1.reader.ReadRowsStream):
             A read rows stream.
-        read_session (google.cloud.bigquery_storage_v1.types.ReadSession):
-            A read session. This is required because it contains the schema
-            used in the stream messages.
+        read_session ( \
+            Optional[~google.cloud.bigquery_storage_v1.types.ReadSession] \
+        ):
+            DEPRECATED.
+
+            This argument was used to specify the schema of the rows in the
+            stream, but now the first message in a read stream contains
+            this information.
     """
 
     # This class is modelled after the google.cloud.bigquery.table.RowIterator
     # and aims to be API compatible where possible.
 
-    def __init__(self, reader, read_session):
+    def __init__(self, reader, read_session=None):
         self._reader = reader
-        self._read_session = read_session
-        self._stream_parser = _StreamParser.from_read_session(self._read_session)
+        if read_session is not None:
+            self._stream_parser = _StreamParser.from_read_session(read_session)
+        else:
+            self._stream_parser = None
 
     @property
     def pages(self):
@@ -266,6 +279,10 @@ class ReadRowsIterable(object):
         # Each page is an iterator of rows. But also has num_items, remaining,
         # and to_dataframe.
         for message in self._reader:
+            # Only the first message contains the schema, which is needed to
+            # decode the messages.
+            if not self._stream_parser:
+                self._stream_parser = _StreamParser.from_read_rows_response(message)
             yield ReadRowsPage(self._stream_parser, message)
 
     def __iter__(self):
@@ -328,10 +345,11 @@ class ReadRowsIterable(object):
         # pandas dataframe is about 2x faster. This is because pandas.concat is
         # rarely no-copy, whereas pyarrow.Table.from_batches + to_pandas is
         # usually no-copy.
-        schema_type = self._read_session._pb.WhichOneof("schema")
-
-        if schema_type == "arrow_schema":
+        try:
             record_batch = self.to_arrow()
+        except NotImplementedError:
+            pass
+        else:
             df = record_batch.to_pandas()
             for column in dtypes:
                 df[column] = pandas.Series(df[column], dtype=dtypes[column])
@@ -491,6 +509,12 @@ class _StreamParser(object):
     def to_rows(self, message):
         raise NotImplementedError("Not implemented.")
 
+    def _parse_avro_schema(self):
+        raise NotImplementedError("Not implemented.")
+
+    def _parse_arrow_schema(self):
+        raise NotImplementedError("Not implemented.")
+
     @staticmethod
     def from_read_session(read_session):
         schema_type = read_session._pb.WhichOneof("schema")
@@ -503,22 +527,38 @@ class _StreamParser(object):
                 "Unsupported schema type in read_session: {0}".format(schema_type)
             )
 
+    @staticmethod
+    def from_read_rows_response(message):
+        schema_type = message._pb.WhichOneof("schema")
+        if schema_type == "avro_schema":
+            return _AvroStreamParser(message)
+        elif schema_type == "arrow_schema":
+            return _ArrowStreamParser(message)
+        else:
+            raise TypeError(
+                "Unsupported schema type in message: {0}".format(schema_type)
+            )
+
 
 class _AvroStreamParser(_StreamParser):
     """Helper to parse Avro messages into useful representations."""
 
-    def __init__(self, read_session):
+    def __init__(self, message):
         """Construct an _AvroStreamParser.
 
         Args:
-            read_session (google.cloud.bigquery_storage_v1.types.ReadSession):
-                A read session. This is required because it contains the schema
-                used in the stream messages.
+            message (Union[
+                google.cloud.bigquery_storage_v1.types.ReadSession, \
+                google.cloud.bigquery_storage_v1.types.ReadRowsResponse, \
+            ]):
+                Either the first message of data from a read rows stream or a
+                read session. Both types contain a oneof "schema" field, which
+                can be used to determine how to deserialize rows.
         """
         if fastavro is None:
             raise ImportError(_FASTAVRO_REQUIRED)
 
-        self._read_session = read_session
+        self._first_message = message
         self._avro_schema_json = None
         self._fastavro_schema = None
         self._column_names = None
@@ -548,6 +588,10 @@ class _AvroStreamParser(_StreamParser):
             strings in the fastavro library.
 
         Args:
+            message ( \
+                ~google.cloud.bigquery_storage_v1.types.ReadRowsResponse \
+            ):
+                A message containing Avro bytes to parse into a pandas DataFrame.
             dtypes ( \
                 Map[str, Union[str, pandas.Series.dtype]] \
             ):
@@ -578,10 +622,11 @@ class _AvroStreamParser(_StreamParser):
         if self._avro_schema_json:
             return
 
-        self._avro_schema_json = json.loads(self._read_session.avro_schema.schema)
+        self._avro_schema_json = json.loads(self._first_message.avro_schema.schema)
         self._column_names = tuple(
             (field["name"] for field in self._avro_schema_json["fields"])
         )
+        self._first_message = None
 
     def _parse_fastavro(self):
         """Convert parsed Avro schema to fastavro format."""
@@ -615,11 +660,22 @@ class _AvroStreamParser(_StreamParser):
 
 
 class _ArrowStreamParser(_StreamParser):
-    def __init__(self, read_session):
+    def __init__(self, message):
+        """Construct an _ArrowStreamParser.
+
+        Args:
+            message (Union[
+                google.cloud.bigquery_storage_v1.types.ReadSession, \
+                google.cloud.bigquery_storage_v1.types.ReadRowsResponse, \
+            ]):
+                Either the first message of data from a read rows stream or a
+                read session. Both types contain a oneof "schema" field, which
+                can be used to determine how to deserialize rows.
+        """
         if pyarrow is None:
             raise ImportError(_PYARROW_REQUIRED)
 
-        self._read_session = read_session
+        self._first_message = message
         self._schema = None
 
     def to_arrow(self, message):
@@ -659,6 +715,7 @@ class _ArrowStreamParser(_StreamParser):
             return
 
         self._schema = pyarrow.ipc.read_schema(
-            pyarrow.py_buffer(self._read_session.arrow_schema.serialized_schema)
+            pyarrow.py_buffer(self._first_message.arrow_schema.serialized_schema)
         )
         self._column_names = [field.name for field in self._schema]
+        self._first_message = None

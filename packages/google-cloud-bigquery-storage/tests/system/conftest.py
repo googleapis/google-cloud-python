@@ -18,13 +18,41 @@
 import os
 import uuid
 
+import google.auth
+from google.cloud import bigquery
 import pytest
+import test_utils.prefixer
 
 from . import helpers
 
 
+prefixer = test_utils.prefixer.Prefixer("python-bigquery-storage", "tests/system")
+
+
 _TABLE_FORMAT = "projects/{}/datasets/{}/tables/{}"
 _ASSETS_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), "assets")
+_ALL_TYPES_SCHEMA = [
+    bigquery.SchemaField("string_field", "STRING"),
+    bigquery.SchemaField("bytes_field", "BYTES"),
+    bigquery.SchemaField("int64_field", "INT64"),
+    bigquery.SchemaField("float64_field", "FLOAT64"),
+    bigquery.SchemaField("numeric_field", "NUMERIC"),
+    bigquery.SchemaField("bool_field", "BOOL"),
+    bigquery.SchemaField("geography_field", "GEOGRAPHY"),
+    bigquery.SchemaField(
+        "person_struct_field",
+        "STRUCT",
+        fields=(
+            bigquery.SchemaField("name", "STRING"),
+            bigquery.SchemaField("age", "INT64"),
+        ),
+    ),
+    bigquery.SchemaField("timestamp_field", "TIMESTAMP"),
+    bigquery.SchemaField("date_field", "DATE"),
+    bigquery.SchemaField("time_field", "TIME"),
+    bigquery.SchemaField("datetime_field", "DATETIME"),
+    bigquery.SchemaField("string_array_field", "STRING", mode="REPEATED"),
+]
 
 
 @pytest.fixture(scope="session")
@@ -38,18 +66,9 @@ def use_mtls():
 
 
 @pytest.fixture(scope="session")
-def credentials(use_mtls):
-    import google.auth
-    from google.oauth2 import service_account
-
-    if use_mtls:
-        # mTLS test uses user credentials instead of service account credentials
-        creds, _ = google.auth.default()
-        return creds
-
-    # NOTE: the test config in noxfile checks that the env variable is indeed set
-    filename = os.environ["GOOGLE_APPLICATION_CREDENTIALS"]
-    return service_account.Credentials.from_service_account_file(filename)
+def credentials():
+    creds, _ = google.auth.default()
+    return creds
 
 
 @pytest.fixture()
@@ -77,8 +96,7 @@ def local_shakespeare_table_reference(project_id, use_mtls):
 def dataset(project_id, bq_client):
     from google.cloud import bigquery
 
-    unique_suffix = str(uuid.uuid4()).replace("-", "_")
-    dataset_name = "bq_storage_system_tests_" + unique_suffix
+    dataset_name = prefixer.create_prefix()
 
     dataset_id = "{}.{}".format(project_id, dataset_name)
     dataset = bigquery.Dataset(dataset_id)
@@ -120,35 +138,20 @@ def bq_client(credentials, use_mtls):
     return bigquery.Client(credentials=credentials)
 
 
+@pytest.fixture(scope="session", autouse=True)
+def cleanup_datasets(bq_client: bigquery.Client):
+    for dataset in bq_client.list_datasets():
+        if prefixer.should_cleanup(dataset.dataset_id):
+            bq_client.delete_dataset(dataset, delete_contents=True, not_found_ok=True)
+
+
 @pytest.fixture
 def all_types_table_ref(project_id, dataset, bq_client):
     from google.cloud import bigquery
 
-    schema = [
-        bigquery.SchemaField("string_field", "STRING"),
-        bigquery.SchemaField("bytes_field", "BYTES"),
-        bigquery.SchemaField("int64_field", "INT64"),
-        bigquery.SchemaField("float64_field", "FLOAT64"),
-        bigquery.SchemaField("numeric_field", "NUMERIC"),
-        bigquery.SchemaField("bool_field", "BOOL"),
-        bigquery.SchemaField("geography_field", "GEOGRAPHY"),
-        bigquery.SchemaField(
-            "person_struct_field",
-            "STRUCT",
-            fields=(
-                bigquery.SchemaField("name", "STRING"),
-                bigquery.SchemaField("age", "INT64"),
-            ),
-        ),
-        bigquery.SchemaField("timestamp_field", "TIMESTAMP"),
-        bigquery.SchemaField("date_field", "DATE"),
-        bigquery.SchemaField("time_field", "TIME"),
-        bigquery.SchemaField("datetime_field", "DATETIME"),
-        bigquery.SchemaField("string_array_field", "STRING", mode="REPEATED"),
-    ]
     bq_table = bigquery.table.Table(
         table_ref="{}.{}.complex_records".format(project_id, dataset.dataset_id),
-        schema=schema,
+        schema=_ALL_TYPES_SCHEMA,
     )
 
     created_table = bq_client.create_table(bq_table)
