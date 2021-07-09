@@ -18,8 +18,6 @@ from google.api_core import exceptions as api_exceptions
 from google.api_core import retry
 from google.auth import exceptions as auth_exceptions
 
-import json
-
 
 # ConnectionError is a built-in exception only in Python3 and not in Python2.
 try:
@@ -120,20 +118,21 @@ def is_metageneration_specified(query_params):
     return if_metageneration_match
 
 
-def is_etag_in_json(data):
-    """Return True if an etag is contained in the JSON body.
+def is_etag_in_data(data):
+    """Return True if an etag is contained in the request body.
 
-    Indended for use on calls with relatively short JSON payloads."""
-    try:
-        content = json.loads(data)
-        if content.get("etag"):
-            return True
-    # Though this method should only be called when a JSON body is expected,
-    # the retry policy should be robust to unexpected payloads.
-    # In Python 3 a JSONDecodeError is possible, but it is a subclass of ValueError.
-    except (ValueError, TypeError):
-        pass
-    return False
+    :type data: dict or None
+    :param data: A dict representing the request JSON body. If not passed, returns False.
+    """
+    return data is not None and "etag" in data
+
+
+def is_etag_in_json(data):
+    """
+    ``is_etag_in_json`` is supported for backwards-compatibility reasons only;
+    please use ``is_etag_in_data`` instead.
+    """
+    return is_etag_in_data(data)
 
 
 DEFAULT_RETRY_IF_GENERATION_SPECIFIED = ConditionalRetryPolicy(

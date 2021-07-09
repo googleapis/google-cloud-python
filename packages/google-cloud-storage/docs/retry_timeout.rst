@@ -133,14 +133,14 @@ explicit policy in your code.
 
    from google.api_core.retry import Retry
    from google.cloud.storage.retry import ConditionalRetryPolicy
-   from google.cloud.storage.retry import is_etag_in_json
+   from google.cloud.storage.retry import is_etag_in_data
 
    def is_retryable(exc):
        ... # as above
 
    my_retry_policy = Retry(predicate=is_retryable)
    my_cond_policy = ConditionalRetryPolicy(
-       my_retry_policy, conditional_predicate=is_etag_in_json)
+       my_retry_policy, conditional_predicate=is_etag_in_data)
    bucket = client.get_bucket(BUCKET_NAME, retry=my_cond_policy)
 
 
