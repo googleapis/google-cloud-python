@@ -17,6 +17,7 @@
 from .services.dashboards_service import DashboardsServiceClient
 from .services.dashboards_service import DashboardsServiceAsyncClient
 
+from .types.alertchart import AlertChart
 from .types.common import Aggregation
 from .types.common import PickTimeSeriesFilter
 from .types.common import StatisticalTimeSeriesFilter
@@ -45,6 +46,7 @@ from .types.xychart import XyChart
 __all__ = (
     "DashboardsServiceAsyncClient",
     "Aggregation",
+    "AlertChart",
     "ChartOptions",
     "ColumnLayout",
     "CreateDashboardRequest",

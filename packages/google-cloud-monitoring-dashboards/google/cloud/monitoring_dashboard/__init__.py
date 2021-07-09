@@ -21,6 +21,7 @@ from google.cloud.monitoring_dashboard_v1.services.dashboards_service.async_clie
     DashboardsServiceAsyncClient,
 )
 
+from google.cloud.monitoring_dashboard_v1.types.alertchart import AlertChart
 from google.cloud.monitoring_dashboard_v1.types.common import Aggregation
 from google.cloud.monitoring_dashboard_v1.types.common import PickTimeSeriesFilter
 from google.cloud.monitoring_dashboard_v1.types.common import (
@@ -63,6 +64,7 @@ from google.cloud.monitoring_dashboard_v1.types.xychart import XyChart
 __all__ = (
     "DashboardsServiceClient",
     "DashboardsServiceAsyncClient",
+    "AlertChart",
     "Aggregation",
     "PickTimeSeriesFilter",
     "StatisticalTimeSeriesFilter",

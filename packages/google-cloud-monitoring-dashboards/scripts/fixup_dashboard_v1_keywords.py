@@ -39,11 +39,11 @@ def partition(
 class dashboardCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-          'create_dashboard': ('parent', 'dashboard', ),
+          'create_dashboard': ('parent', 'dashboard', 'validate_only', ),
           'delete_dashboard': ('name', ),
           'get_dashboard': ('name', ),
           'list_dashboards': ('parent', 'page_size', 'page_token', ),
-          'update_dashboard': ('dashboard', ),
+          'update_dashboard': ('dashboard', 'validate_only', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

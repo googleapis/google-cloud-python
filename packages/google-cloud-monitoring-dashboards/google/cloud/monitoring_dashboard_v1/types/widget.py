@@ -15,6 +15,7 @@
 #
 import proto  # type: ignore
 
+from google.cloud.monitoring_dashboard_v1.types import alertchart
 from google.cloud.monitoring_dashboard_v1.types import scorecard as gmd_scorecard
 from google.cloud.monitoring_dashboard_v1.types import text as gmd_text
 from google.cloud.monitoring_dashboard_v1.types import xychart
@@ -42,6 +43,8 @@ class Widget(proto.Message):
             content.
         blank (google.protobuf.empty_pb2.Empty):
             A blank space.
+        alert_chart (google.cloud.monitoring_dashboard_v1.types.AlertChart):
+            A chart of alert policy data.
     """
 
     title = proto.Field(proto.STRING, number=1,)
@@ -54,6 +57,9 @@ class Widget(proto.Message):
     text = proto.Field(proto.MESSAGE, number=4, oneof="content", message=gmd_text.Text,)
     blank = proto.Field(
         proto.MESSAGE, number=5, oneof="content", message=empty_pb2.Empty,
+    )
+    alert_chart = proto.Field(
+        proto.MESSAGE, number=7, oneof="content", message=alertchart.AlertChart,
     )
 
 

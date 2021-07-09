@@ -47,10 +47,14 @@ class CreateDashboardRequest(proto.Message):
         dashboard (google.cloud.monitoring_dashboard_v1.types.Dashboard):
             Required. The initial dashboard
             specification.
+        validate_only (bool):
+            If set, validate the request and preview the
+            review, but do not actually save it.
     """
 
     parent = proto.Field(proto.STRING, number=1,)
     dashboard = proto.Field(proto.MESSAGE, number=2, message=gmd_dashboard.Dashboard,)
+    validate_only = proto.Field(proto.BOOL, number=3,)
 
 
 class ListDashboardsRequest(proto.Message):
@@ -136,9 +140,13 @@ class UpdateDashboardRequest(proto.Message):
         dashboard (google.cloud.monitoring_dashboard_v1.types.Dashboard):
             Required. The dashboard that will replace the
             existing dashboard.
+        validate_only (bool):
+            If set, validate the request and preview the
+            review, but do not actually save it.
     """
 
     dashboard = proto.Field(proto.MESSAGE, number=1, message=gmd_dashboard.Dashboard,)
+    validate_only = proto.Field(proto.BOOL, number=3,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
