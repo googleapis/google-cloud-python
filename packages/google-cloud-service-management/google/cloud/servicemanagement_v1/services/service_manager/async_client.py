@@ -1445,8 +1445,7 @@ class ServiceManagerAsyncClient:
 
         """
         warnings.warn(
-            "ServiceManagerAsyncClient.enable_service is deprecated",
-            DeprecationWarning,
+            "ServiceManagerAsyncClient.enable_service is deprecated", DeprecationWarning
         )
 
         # Create or coerce a protobuf request object.
