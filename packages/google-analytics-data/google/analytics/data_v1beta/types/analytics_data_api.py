@@ -547,6 +547,15 @@ class RunRealtimeReportRequest(proto.Message):
             Toggles whether to return the current state of this
             Analytics Property's Realtime quota. Quota is returned in
             `PropertyQuota <#PropertyQuota>`__.
+        minute_ranges (Sequence[google.analytics.data_v1beta.types.MinuteRange]):
+            The minute ranges of event data to read. If
+            unspecified, one minute range for the last 30
+            minutes will be used. If multiple minute ranges
+            are requested, each response row will contain a
+            zero based minute range index. If two minute
+            ranges overlap, the event data for the
+            overlapping minutes is included in the response
+            rows for both minute ranges.
     """
 
     property = proto.Field(proto.STRING, number=1,)
@@ -562,6 +571,9 @@ class RunRealtimeReportRequest(proto.Message):
     )
     order_bys = proto.RepeatedField(proto.MESSAGE, number=8, message=data.OrderBy,)
     return_property_quota = proto.Field(proto.BOOL, number=9,)
+    minute_ranges = proto.RepeatedField(
+        proto.MESSAGE, number=10, message=data.MinuteRange,
+    )
 
 
 class RunRealtimeReportResponse(proto.Message):

@@ -46,6 +46,7 @@ from .types.data import Metric
 from .types.data import MetricHeader
 from .types.data import MetricMetadata
 from .types.data import MetricValue
+from .types.data import MinuteRange
 from .types.data import NumericValue
 from .types.data import OrderBy
 from .types.data import Pivot
@@ -86,6 +87,7 @@ __all__ = (
     "MetricMetadata",
     "MetricType",
     "MetricValue",
+    "MinuteRange",
     "NumericValue",
     "OrderBy",
     "Pivot",
