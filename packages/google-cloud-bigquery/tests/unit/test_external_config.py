@@ -532,6 +532,64 @@ class TestExternalConfig(unittest.TestCase):
 
         self.assertEqual(got_resource, exp_resource)
 
+    def test_from_api_repr_decimal_target_types(self):
+        from google.cloud.bigquery.enums import DecimalTargetType
+
+        resource = _copy_and_update(
+            self.BASE_RESOURCE,
+            {
+                "sourceFormat": "FORMAT_FOO",
+                "decimalTargetTypes": [DecimalTargetType.NUMERIC],
+            },
+        )
+
+        ec = external_config.ExternalConfig.from_api_repr(resource)
+
+        self._verify_base(ec)
+        self.assertEqual(ec.source_format, "FORMAT_FOO")
+        self.assertEqual(
+            ec.decimal_target_types, frozenset([DecimalTargetType.NUMERIC])
+        )
+
+        # converting back to API representation should yield the same result
+        got_resource = ec.to_api_repr()
+        self.assertEqual(got_resource, resource)
+
+        del resource["decimalTargetTypes"]
+        ec = external_config.ExternalConfig.from_api_repr(resource)
+        self.assertIsNone(ec.decimal_target_types)
+
+        got_resource = ec.to_api_repr()
+        self.assertEqual(got_resource, resource)
+
+    def test_to_api_repr_decimal_target_types(self):
+        from google.cloud.bigquery.enums import DecimalTargetType
+
+        ec = external_config.ExternalConfig("FORMAT_FOO")
+        ec.decimal_target_types = [DecimalTargetType.NUMERIC, DecimalTargetType.STRING]
+
+        got_resource = ec.to_api_repr()
+
+        expected_resource = {
+            "sourceFormat": "FORMAT_FOO",
+            "decimalTargetTypes": [DecimalTargetType.NUMERIC, DecimalTargetType.STRING],
+        }
+        self.assertEqual(got_resource, expected_resource)
+
+    def test_to_api_repr_decimal_target_types_unset(self):
+        from google.cloud.bigquery.enums import DecimalTargetType
+
+        ec = external_config.ExternalConfig("FORMAT_FOO")
+        ec._properties["decimalTargetTypes"] = [DecimalTargetType.NUMERIC]
+        ec.decimal_target_types = None
+
+        got_resource = ec.to_api_repr()
+
+        expected_resource = {"sourceFormat": "FORMAT_FOO"}
+        self.assertEqual(got_resource, expected_resource)
+
+        ec.decimal_target_types = None  # No error if unsetting when already unset.
+
 
 def _copy_and_update(d, u):
     d = copy.deepcopy(d)

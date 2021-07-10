@@ -864,6 +864,60 @@ class TestBigQuery(unittest.TestCase):
             sorted(row_tuples, key=by_wavelength), sorted(ROWS, key=by_wavelength)
         )
 
+    def test_load_table_from_local_parquet_file_decimal_types(self):
+        from google.cloud.bigquery.enums import DecimalTargetType
+        from google.cloud.bigquery.job import SourceFormat
+        from google.cloud.bigquery.job import WriteDisposition
+
+        TABLE_NAME = "test_table_parquet"
+
+        expected_rows = [
+            (decimal.Decimal("123.999999999999"),),
+            (decimal.Decimal("99999999999999999999999999.999999999999"),),
+        ]
+
+        dataset = self.temp_dataset(_make_dataset_id("load_local_parquet_then_dump"))
+        table_ref = dataset.table(TABLE_NAME)
+        table = Table(table_ref)
+        self.to_delete.insert(0, table)
+
+        job_config = bigquery.LoadJobConfig()
+        job_config.source_format = SourceFormat.PARQUET
+        job_config.write_disposition = WriteDisposition.WRITE_TRUNCATE
+        job_config.decimal_target_types = [
+            DecimalTargetType.NUMERIC,
+            DecimalTargetType.BIGNUMERIC,
+            DecimalTargetType.STRING,
+        ]
+
+        with open(DATA_PATH / "numeric_38_12.parquet", "rb") as parquet_file:
+            job = Config.CLIENT.load_table_from_file(
+                parquet_file, table_ref, job_config=job_config
+            )
+
+        job.result(timeout=JOB_TIMEOUT)  # Retry until done.
+
+        self.assertEqual(job.output_rows, len(expected_rows))
+
+        table = Config.CLIENT.get_table(table)
+        rows = self._fetch_single_page(table)
+        row_tuples = [r.values() for r in rows]
+        self.assertEqual(sorted(row_tuples), sorted(expected_rows))
+
+        # Forcing the NUMERIC type, however, should result in an error.
+        job_config.decimal_target_types = [DecimalTargetType.NUMERIC]
+
+        with open(DATA_PATH / "numeric_38_12.parquet", "rb") as parquet_file:
+            job = Config.CLIENT.load_table_from_file(
+                parquet_file, table_ref, job_config=job_config
+            )
+
+        with self.assertRaises(BadRequest) as exc_info:
+            job.result(timeout=JOB_TIMEOUT)
+
+        exc_msg = str(exc_info.exception)
+        self.assertIn("out of valid NUMERIC range", exc_msg)
+
     def test_load_table_from_json_basic_use(self):
         table_schema = (
             bigquery.SchemaField("name", "STRING", mode="REQUIRED"),

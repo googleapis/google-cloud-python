@@ -122,6 +122,45 @@ class TestLoadJobConfig(_Base):
         config.create_disposition = disposition
         self.assertEqual(config._properties["load"]["createDisposition"], disposition)
 
+    def test_decimal_target_types_miss(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.decimal_target_types)
+
+    def test_decimal_target_types_hit(self):
+        from google.cloud.bigquery.enums import DecimalTargetType
+
+        config = self._get_target_class()()
+        decimal_target_types = [DecimalTargetType.NUMERIC, DecimalTargetType.STRING]
+        config._properties["load"]["decimalTargetTypes"] = decimal_target_types
+
+        expected = frozenset(decimal_target_types)
+        self.assertEqual(config.decimal_target_types, expected)
+
+    def test_decimal_target_types_setter(self):
+        from google.cloud.bigquery.enums import DecimalTargetType
+
+        decimal_target_types = (DecimalTargetType.NUMERIC, DecimalTargetType.BIGNUMERIC)
+        config = self._get_target_class()()
+        config.decimal_target_types = decimal_target_types
+        self.assertEqual(
+            config._properties["load"]["decimalTargetTypes"],
+            list(decimal_target_types),
+        )
+
+    def test_decimal_target_types_setter_w_none(self):
+        from google.cloud.bigquery.enums import DecimalTargetType
+
+        config = self._get_target_class()()
+        decimal_target_types = [DecimalTargetType.BIGNUMERIC]
+        config._properties["load"]["decimalTargetTypes"] = decimal_target_types
+
+        config.decimal_target_types = None
+
+        self.assertIsNone(config.decimal_target_types)
+        self.assertNotIn("decimalTargetTypes", config._properties["load"])
+
+        config.decimal_target_types = None  # No error if unsetting an unset property.
+
     def test_destination_encryption_configuration_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.destination_encryption_configuration)

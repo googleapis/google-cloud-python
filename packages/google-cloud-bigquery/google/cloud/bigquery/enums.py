@@ -49,6 +49,24 @@ class Compression(object):
     """Specifies no compression."""
 
 
+class DecimalTargetType:
+    """The data types that could be used as a target type when converting decimal values.
+
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#DecimalTargetType
+
+    .. versionadded:: 2.21.0
+    """
+
+    NUMERIC = "NUMERIC"
+    """Decimal values could be converted to NUMERIC type."""
+
+    BIGNUMERIC = "BIGNUMERIC"
+    """Decimal values could be converted to BIGNUMERIC type."""
+
+    STRING = "STRING"
+    """Decimal values could be converted to STRING type."""
+
+
 class CreateDisposition(object):
     """Specifies whether the job is allowed to create new tables. The default
     value is :attr:`CREATE_IF_NEEDED`.

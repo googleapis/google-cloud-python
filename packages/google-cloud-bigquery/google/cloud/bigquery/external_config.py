@@ -22,6 +22,7 @@ from __future__ import absolute_import
 
 import base64
 import copy
+from typing import FrozenSet, Iterable, Optional
 
 from google.cloud.bigquery._helpers import _to_bytes
 from google.cloud.bigquery._helpers import _bytes_to_json
@@ -692,6 +693,28 @@ class ExternalConfig(object):
     @compression.setter
     def compression(self, value):
         self._properties["compression"] = value
+
+    @property
+    def decimal_target_types(self) -> Optional[FrozenSet[str]]:
+        """Possible SQL data types to which the source decimal values are converted.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#ExternalDataConfiguration.FIELDS.decimal_target_types
+
+        .. versionadded:: 2.21.0
+        """
+        prop = self._properties.get("decimalTargetTypes")
+        if prop is not None:
+            prop = frozenset(prop)
+        return prop
+
+    @decimal_target_types.setter
+    def decimal_target_types(self, value: Optional[Iterable[str]]):
+        if value is not None:
+            self._properties["decimalTargetTypes"] = list(value)
+        else:
+            if "decimalTargetTypes" in self._properties:
+                del self._properties["decimalTargetTypes"]
 
     @property
     def hive_partitioning(self):

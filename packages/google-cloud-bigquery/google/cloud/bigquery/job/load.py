@@ -14,6 +14,8 @@
 
 """Classes for load jobs."""
 
+from typing import FrozenSet, Iterable, Optional
+
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 from google.cloud.bigquery.external_config import HivePartitioningOptions
 from google.cloud.bigquery.format_options import ParquetOptions
@@ -120,6 +122,27 @@ class LoadJobConfig(_JobConfig):
     @create_disposition.setter
     def create_disposition(self, value):
         self._set_sub_prop("createDisposition", value)
+
+    @property
+    def decimal_target_types(self) -> Optional[FrozenSet[str]]:
+        """Possible SQL data types to which the source decimal values are converted.
+
+        See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/Job#JobConfigurationLoad.FIELDS.decimal_target_types
+
+        .. versionadded:: 2.21.0
+        """
+        prop = self._get_sub_prop("decimalTargetTypes")
+        if prop is not None:
+            prop = frozenset(prop)
+        return prop
+
+    @decimal_target_types.setter
+    def decimal_target_types(self, value: Optional[Iterable[str]]):
+        if value is not None:
+            self._set_sub_prop("decimalTargetTypes", list(value))
+        else:
+            self._del_sub_prop("decimalTargetTypes")
 
     @property
     def destination_encryption_configuration(self):
