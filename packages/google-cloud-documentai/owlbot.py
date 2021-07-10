@@ -13,6 +13,7 @@
 # limitations under the License.
 
 """This script is used to synthesize generated parts of this library."""
+import re
 
 from synthtool.languages import python
 
@@ -34,6 +35,29 @@ for library in s.get_staging_dirs(default_version):
         "setup.py",
         "scripts/fixup_documentai_v*",  # this library was always generated with the microgenerator
     ]
+
+    s.replace(library / "google/cloud/documentai_v1beta2/**/base.py",
+        """scopes_kwargs = \{"scopes": scopes, "default_scopes": cls\.AUTH_SCOPES\}""",
+        """# Documentai uses a regional host (us-documentai.googleapis.com) as the default
+            # so self-signed JWT cannot be used.
+            # Intentionally pass default scopes as user scopes so the auth library
+            # does not use the self-signed JWT flow.
+            # https://github.com/googleapis/python-documentai/issues/174
+            scopes_kwargs = {"scopes": scopes or cls.AUTH_SCOPES, "default_scopes": cls.AUTH_SCOPES}""")
+
+    s.replace(library / "tests/**/documentai_v1beta2/*.py",
+    """(@requires_google_auth_gte_1_25_0
+def test_document_.*?_service_base_transport_with_credentials_file.*?)scopes=None,""",
+    """\g<1>scopes=("https://www.googleapis.com/auth/cloud-platform",),""",
+        flags=re.MULTILINE | re.DOTALL,
+        )
+
+    s.replace(library / "tests/**/documentai_v1beta2/*.py",
+    """(@requires_google_auth_gte_1_25_0
+def test_document_.*?_service_auth_adc.*?)scopes=None,""",
+    """\g<1>scopes=("https://www.googleapis.com/auth/cloud-platform",),""",
+        flags=re.MULTILINE | re.DOTALL,
+        )
     s.move(library, excludes=excludes)
 
 s.remove_staging_dirs()
