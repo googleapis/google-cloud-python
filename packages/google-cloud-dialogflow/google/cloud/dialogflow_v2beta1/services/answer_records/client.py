@@ -19,6 +19,7 @@ import os
 import re
 from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
+import warnings
 
 from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import exceptions as core_exceptions  # type: ignore
@@ -405,6 +406,10 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
                       is wrong.
 
         """
+        warnings.warn(
+            "AnswerRecordsClient.get_answer_record is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # Minor optimization to avoid making a copy if the user passes
         # in a answer_record.GetAnswerRecordRequest.

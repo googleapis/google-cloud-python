@@ -23,6 +23,13 @@ common = gcp.CommonTemplates()
 default_version = "v2"
 
 for library in s.get_staging_dirs(default_version):
+    # Work around gapic generator bug
+    s.replace(
+        library / f"google/cloud/dialogflow_{library.name}/services/**/client.py",
+        "warnings.DeprecationWarning",
+        "DeprecationWarning"
+    )
+
     s.move(library, excludes=["docs/index.rst", "setup.py", "README.rst"])
 
 s.remove_staging_dirs()
