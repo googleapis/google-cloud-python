@@ -61,6 +61,7 @@ from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import ExtractJobConfig
 from google.cloud.bigquery.job import LoadJob
 from google.cloud.bigquery.job import LoadJobConfig
+from google.cloud.bigquery.job import OperationType
 from google.cloud.bigquery.job import QueryJob
 from google.cloud.bigquery.job import QueryJobConfig
 from google.cloud.bigquery.job import QueryPriority
@@ -87,6 +88,7 @@ from google.cloud.bigquery.schema import SchemaField
 from google.cloud.bigquery.table import PartitionRange
 from google.cloud.bigquery.table import RangePartitioning
 from google.cloud.bigquery.table import Row
+from google.cloud.bigquery.table import SnapshotDefinition
 from google.cloud.bigquery.table import Table
 from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import TimePartitioningType
@@ -115,6 +117,7 @@ __all__ = [
     "PartitionRange",
     "RangePartitioning",
     "Row",
+    "SnapshotDefinition",
     "TimePartitioning",
     "TimePartitioningType",
     # Jobs
@@ -155,6 +158,7 @@ __all__ = [
     "ExternalSourceFormat",
     "Encoding",
     "KeyResultStatementKind",
+    "OperationType",
     "QueryPriority",
     "SchemaUpdateOption",
     "SourceFormat",

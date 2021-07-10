@@ -321,6 +321,7 @@ class Table(object):
         "range_partitioning": "rangePartitioning",
         "time_partitioning": "timePartitioning",
         "schema": "schema",
+        "snapshot_definition": "snapshotDefinition",
         "streaming_buffer": "streamingBuffer",
         "self_link": "selfLink",
         "table_id": ["tableReference", "tableId"],
@@ -910,6 +911,19 @@ class Table(object):
             self._PROPERTY_TO_API_FIELD["external_data_configuration"]
         ] = api_repr
 
+    @property
+    def snapshot_definition(self) -> Optional["SnapshotDefinition"]:
+        """Information about the snapshot. This value is set via snapshot creation.
+
+        See: https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#Table.FIELDS.snapshot_definition
+        """
+        snapshot_info = self._properties.get(
+            self._PROPERTY_TO_API_FIELD["snapshot_definition"]
+        )
+        if snapshot_info is not None:
+            snapshot_info = SnapshotDefinition(snapshot_info)
+        return snapshot_info
+
     @classmethod
     def from_string(cls, full_table_id: str) -> "Table":
         """Construct a table from fully-qualified table ID.
@@ -1271,6 +1285,29 @@ class StreamingBuffer(object):
         if "oldestEntryTime" in resource:
             self.oldest_entry_time = google.cloud._helpers._datetime_from_microseconds(
                 1000.0 * int(resource["oldestEntryTime"])
+            )
+
+
+class SnapshotDefinition:
+    """Information about base table and snapshot time of the snapshot.
+
+    See https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#snapshotdefinition
+
+    Args:
+        resource: Snapshot definition representation returned from the API.
+    """
+
+    def __init__(self, resource: Dict[str, Any]):
+        self.base_table_reference = None
+        if "baseTableReference" in resource:
+            self.base_table_reference = TableReference.from_api_repr(
+                resource["baseTableReference"]
+            )
+
+        self.snapshot_time = None
+        if "snapshotTime" in resource:
+            self.snapshot_time = google.cloud._helpers._rfc3339_to_datetime(
+                resource["snapshotTime"]
             )
 
 

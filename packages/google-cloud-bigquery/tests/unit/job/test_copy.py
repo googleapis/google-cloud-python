@@ -28,18 +28,34 @@ class TestCopyJobConfig(_Base):
 
         return CopyJobConfig
 
+    def test_ctor_defaults(self):
+        from google.cloud.bigquery.job import OperationType
+
+        config = self._make_one()
+
+        assert config.create_disposition is None
+        assert config.write_disposition is None
+        assert config.destination_encryption_configuration is None
+        assert config.operation_type == OperationType.OPERATION_TYPE_UNSPECIFIED
+
     def test_ctor_w_properties(self):
         from google.cloud.bigquery.job import CreateDisposition
+        from google.cloud.bigquery.job import OperationType
         from google.cloud.bigquery.job import WriteDisposition
 
         create_disposition = CreateDisposition.CREATE_NEVER
         write_disposition = WriteDisposition.WRITE_TRUNCATE
+        snapshot_operation = OperationType.SNAPSHOT
+
         config = self._get_target_class()(
-            create_disposition=create_disposition, write_disposition=write_disposition
+            create_disposition=create_disposition,
+            write_disposition=write_disposition,
+            operation_type=snapshot_operation,
         )
 
         self.assertEqual(config.create_disposition, create_disposition)
         self.assertEqual(config.write_disposition, write_disposition)
+        self.assertEqual(config.operation_type, snapshot_operation)
 
     def test_to_api_repr_with_encryption(self):
         from google.cloud.bigquery.encryption_configuration import (
@@ -69,6 +85,22 @@ class TestCopyJobConfig(_Base):
         self.assertEqual(
             resource, {"copy": {"destinationEncryptionConfiguration": None}}
         )
+
+    def test_operation_type_setting_none(self):
+        from google.cloud.bigquery.job import OperationType
+
+        config = self._make_one(operation_type=OperationType.SNAPSHOT)
+
+        # Setting it to None is the same as setting it to OPERATION_TYPE_UNSPECIFIED.
+        config.operation_type = None
+        assert config.operation_type == OperationType.OPERATION_TYPE_UNSPECIFIED
+
+    def test_operation_type_setting_non_none(self):
+        from google.cloud.bigquery.job import OperationType
+
+        config = self._make_one(operation_type=None)
+        config.operation_type = OperationType.RESTORE
+        assert config.operation_type == OperationType.RESTORE
 
 
 class TestCopyJob(_Base):

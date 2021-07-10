@@ -25,6 +25,7 @@ from google.cloud.bigquery.job.base import ScriptStackFrame
 from google.cloud.bigquery.job.base import UnknownJob
 from google.cloud.bigquery.job.copy_ import CopyJob
 from google.cloud.bigquery.job.copy_ import CopyJobConfig
+from google.cloud.bigquery.job.copy_ import OperationType
 from google.cloud.bigquery.job.extract import ExtractJob
 from google.cloud.bigquery.job.extract import ExtractJobConfig
 from google.cloud.bigquery.job.load import LoadJob
@@ -59,6 +60,7 @@ __all__ = [
     "UnknownJob",
     "CopyJob",
     "CopyJobConfig",
+    "OperationType",
     "ExtractJob",
     "ExtractJobConfig",
     "LoadJob",
