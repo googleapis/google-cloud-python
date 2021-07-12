@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-data-qna/compare/v0.2.1...v0.3.0) (2021-06-30)
+
+
+### Features
+
+* add always_use_jwt_access ([#59](https://www.github.com/googleapis/python-data-qna/issues/59)) ([8a247c0](https://www.github.com/googleapis/python-data-qna/commit/8a247c0c69fc2dbf262686a80fc8cdb13065b62e))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([3d347fa](https://www.github.com/googleapis/python-data-qna/commit/3d347faa705b8a226ae7bd6e20b6a8abf7b72706))
+* disable always_use_jwt_access ([#63](https://www.github.com/googleapis/python-data-qna/issues/63)) ([3d347fa](https://www.github.com/googleapis/python-data-qna/commit/3d347faa705b8a226ae7bd6e20b6a8abf7b72706))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-data-qna/issues/1127)) ([#54](https://www.github.com/googleapis/python-data-qna/issues/54)) ([2eb4cfb](https://www.github.com/googleapis/python-data-qna/commit/2eb4cfb449856ea2e40b2202cbba766c14ade9ce))
+
 ### [0.2.1](https://www.github.com/googleapis/python-data-qna/compare/v0.2.0...v0.2.1) (2021-06-16)
 
 
