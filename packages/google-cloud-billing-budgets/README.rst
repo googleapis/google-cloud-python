@@ -1,7 +1,7 @@
 Python Client for Cloud Billing Budget API
 =====================================================
 
-|beta| |pypi| |versions|
+|GA| |pypi| |versions|
 
 `Cloud Billing Budget API`_: The Cloud Billing Budget API stores Cloud Billing budgets, which define a
 budget plan and the rules to execute as spend is tracked against that
@@ -10,8 +10,8 @@ plan.
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |beta| image:: https://img.shields.io/badge/support-beta-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#beta-support
+.. |GA| image:: https://img.shields.io/badge/support-ga-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/master/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-billing-budgets.svg
    :target: https://pypi.org/project/google-cloud-billing-budgets
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-billing-budgets.svg
