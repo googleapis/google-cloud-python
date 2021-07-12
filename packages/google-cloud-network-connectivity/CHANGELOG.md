@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-network-connectivity/compare/v0.3.0...v0.4.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#48](https://www.github.com/googleapis/python-network-connectivity/issues/48)) ([dec3204](https://www.github.com/googleapis/python-network-connectivity/commit/dec3204223da36ff8c01ea2266c086ff459bce4d))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#52](https://www.github.com/googleapis/python-network-connectivity/issues/52)) ([9c1ad1a](https://www.github.com/googleapis/python-network-connectivity/commit/9c1ad1aff188e97d4fdeaee812b670ba2f34df65))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-network-connectivity/issues/1127)) ([#44](https://www.github.com/googleapis/python-network-connectivity/issues/44)) ([39475e1](https://www.github.com/googleapis/python-network-connectivity/commit/39475e101d8baaa235f20d7a52efc176f5e7de9e)), closes [#1126](https://www.github.com/googleapis/python-network-connectivity/issues/1126)
+
 ## [0.3.0](https://www.github.com/googleapis/python-network-connectivity/compare/v0.2.0...v0.3.0) (2021-06-16)
 
 
