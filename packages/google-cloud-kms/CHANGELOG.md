@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-kms/compare/v2.3.0...v2.4.0) (2021-07-12)
+
+
+### Features
+
+* add always_use_jwt_access ([#129](https://www.github.com/googleapis/python-kms/issues/129)) ([cfa0802](https://www.github.com/googleapis/python-kms/commit/cfa08022db3e096e2414418b63482606af8d46cb))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#133](https://www.github.com/googleapis/python-kms/issues/133)) ([8007b81](https://www.github.com/googleapis/python-kms/commit/8007b810f11ebf49cd24edd77867abac174841e9))
+
+
+### Documentation
+
+* Include verify_attestation_chains.py help text to attestations README ([#134](https://www.github.com/googleapis/python-kms/issues/134)) ([2f2bb49](https://www.github.com/googleapis/python-kms/commit/2f2bb49adca244031d584ffbb27e32585e64ed42))
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-kms/issues/1127)) ([#124](https://www.github.com/googleapis/python-kms/issues/124)) ([5c3e273](https://www.github.com/googleapis/python-kms/commit/5c3e27391c4771b4a03c87e21a5260ed8d61b9c4)), closes [#1126](https://www.github.com/googleapis/python-kms/issues/1126)
+
 ## [2.3.0](https://www.github.com/googleapis/python-kms/compare/v2.2.0...v2.3.0) (2021-06-14)
 
 
