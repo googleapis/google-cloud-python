@@ -5,6 +5,23 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## 2.6.1
+
+07-05-2021 10:33 PDT
+
+### Dependencies
+
+- Fix possible crash by requiring `grpcio >= 1.38.1`. ([#414](https://github.com/googleapis/python-pubsub/issues/414)) ([7037a28](https://github.com/googleapis/python-pubsub/pull/435/commits/7037a28090aa4efa01808231721716bca80bb0b7))
+
+### Documentation
+
+- Adjust samples for publishing with error handler and flow control. ([#433](https://github.com/googleapis/python-pubsub/pull/433))
+
+### Internal / Testing Changes
+
+- Fix flaky sync pull sample test. ([#434](https://github.com/googleapis/python-pubsub/pull/434))
+- Mitigate flaky snippets tests. ([#432](https://github.com/googleapis/python-pubsub/pull/432))
+
 ## [2.6.0](https://www.github.com/googleapis/python-pubsub/compare/v2.5.0...v2.6.0) (2021-06-17)
 
 
