@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-video-transcoder/compare/v0.3.1...v0.4.0) (2021-07-09)
+
+
+### Features
+
+* add always_use_jwt_access ([#62](https://www.github.com/googleapis/python-video-transcoder/issues/62)) ([d43c40e](https://www.github.com/googleapis/python-video-transcoder/commit/d43c40e9ab80c42afd25efa1c2980d23dbc50ce2))
+* Add Transcoder V1 ([#67](https://www.github.com/googleapis/python-video-transcoder/issues/67)) ([721d28e](https://www.github.com/googleapis/python-video-transcoder/commit/721d28ec565bfdb41a195167a989baf042ede228))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#66](https://www.github.com/googleapis/python-video-transcoder/issues/66)) ([98d8b86](https://www.github.com/googleapis/python-video-transcoder/commit/98d8b860227a9b9a8b4cecc851ec547d7789ac66))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-video-transcoder/issues/1127)) ([#58](https://www.github.com/googleapis/python-video-transcoder/issues/58)) ([1659ce8](https://www.github.com/googleapis/python-video-transcoder/commit/1659ce88ef94139a271be9719a4adaf4e3a600c0)), closes [#1126](https://www.github.com/googleapis/python-video-transcoder/issues/1126)
+
 ### [0.3.1](https://www.github.com/googleapis/python-video-transcoder/compare/v0.3.0...v0.3.1) (2021-05-28)
 
 
