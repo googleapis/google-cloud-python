@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.1.0...v1.1.1) (2021-06-30)
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([37f28c5](https://www.github.com/googleapis/python-bigquery-connection/commit/37f28c5112d9b8f180a8cf754d474ac74f5f92d9))
+* disable always_use_jwt_access ([#91](https://www.github.com/googleapis/python-bigquery-connection/issues/91)) ([37f28c5](https://www.github.com/googleapis/python-bigquery-connection/commit/37f28c5112d9b8f180a8cf754d474ac74f5f92d9))
+
 ## [1.1.0](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.0.1...v1.1.0) (2021-06-23)
 
 
