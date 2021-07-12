@@ -86,10 +86,67 @@ s.remove_staging_dirs()
 templated_files = common.py_library(
     samples=True,  # set to True only if there are samples
     microgenerator=True,
-    cov_level=99
+    cov_level=100,
 )
 
-s.move(templated_files, excludes=[".coveragerc", "noxfile.py"])
+s.move(templated_files, excludes=[".coveragerc"])
+
+# ----------------------------------------------------------------------------
+# Customize noxfile.py
+# ----------------------------------------------------------------------------
+
+def place_before(path, text, *before_text, escape=None):
+    replacement = "\n".join(before_text) + "\n" + text
+    if escape:
+        for c in escape:
+            text = text.replace(c, '\\' + c)
+    s.replace([path], text, replacement)
+
+system_emulated_session = """
+@nox.session(python="3.8")
+def system_emulated(session):
+    import subprocess
+    import signal
+
+    try:
+        subprocess.call(["gcloud", "--version"])
+    except OSError:
+        session.skip("gcloud not found but required for emulator support")
+
+    # Currently, CI/CD doesn't have beta component of gcloud.
+    subprocess.call(["gcloud", "components", "install", "beta", "bigtable"])
+
+    hostport = "localhost:8789"
+    p = subprocess.Popen(
+        ["gcloud", "beta", "emulators", "bigtable", "start", "--host-port", hostport]
+    )
+
+    session.env["BIGTABLE_EMULATOR_HOST"] = hostport
+    system(session)
+
+    # Stop Emulator
+    os.killpg(os.getpgid(p.pid), signal.SIGTERM)
+
+"""
+
+place_before(
+    "noxfile.py",
+    "@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)\n"
+    "def system(session):",
+    system_emulated_session,
+    escape="()"
+)
+
+# add system_emulated nox session
+s.replace("noxfile.py",
+    """nox.options.sessions = \[
+    "unit",
+    "system",""",
+    """nox.options.sessions = [
+    "unit",
+    "system_emulated",
+    "system",""",
+)
 
 # ----------------------------------------------------------------------------
 # Samples templates
@@ -97,7 +154,7 @@ s.move(templated_files, excludes=[".coveragerc", "noxfile.py"])
 
 sample_files = common.py_samples(samples=True)
 for path in sample_files:
-    s.move(path, excludes=['noxfile.py'])
+    s.move(path)
 
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)

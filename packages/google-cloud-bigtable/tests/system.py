@@ -144,9 +144,9 @@ def setUpModule():
 
         # After listing, create the test instances.
         admin_op = Config.INSTANCE.create(clusters=[Config.CLUSTER])
-        admin_op.result(timeout=10)
+        admin_op.result(timeout=30)
         data_op = Config.INSTANCE_DATA.create(clusters=[Config.CLUSTER_DATA])
-        data_op.result(timeout=10)
+        data_op.result(timeout=30)
 
 
 def tearDownModule():
@@ -203,7 +203,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.instances_to_delete.append(instance)
 
         # We want to make sure the operation completes.
-        operation.result(timeout=10)
+        operation.result(timeout=30)
 
         # Create a new instance instance and make sure it is the same.
         instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID)
@@ -232,7 +232,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.instances_to_delete.append(instance)
 
         # We want to make sure the operation completes.
-        operation.result(timeout=10)
+        operation.result(timeout=30)
 
         # Create a new instance instance and make sure it is the same.
         instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID)
@@ -675,7 +675,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         operation = Config.INSTANCE.update()
 
         # We want to make sure the operation completes.
-        operation.result(timeout=10)
+        operation.result(timeout=30)
 
         # Create a new instance instance and reload it.
         instance_alt = Config.CLIENT.instance(INSTANCE_ID, labels=LABELS)
@@ -692,7 +692,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         operation = Config.INSTANCE.update()
 
         # We want to make sure the operation completes.
-        operation.result(timeout=10)
+        operation.result(timeout=30)
 
     def test_update_type(self):
         from google.cloud.bigtable.enums import Instance
@@ -709,7 +709,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         self.instances_to_delete.append(instance)
 
         # We want to make sure the operation completes.
-        operation.result(timeout=10)
+        operation.result(timeout=30)
 
         # Unset the display_name
         instance.display_name = None
@@ -718,7 +718,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         operation = instance.update()
 
         # We want to make sure the operation completes.
-        operation.result(timeout=10)
+        operation.result(timeout=30)
 
         # Create a new instance instance and reload it.
         instance_alt = Config.CLIENT.instance(ALT_INSTANCE_ID)
@@ -734,7 +734,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         operation = Config.CLUSTER.update()
 
         # We want to make sure the operation completes.
-        operation.result(timeout=10)
+        operation.result(timeout=30)
 
         # Create a new cluster instance and reload it.
         alt_cluster = Config.INSTANCE.cluster(CLUSTER_ID)
@@ -745,7 +745,7 @@ class TestInstanceAdminAPI(unittest.TestCase):
         # other test cases.
         Config.CLUSTER.serve_nodes = SERVE_NODES
         operation = Config.CLUSTER.update()
-        operation.result(timeout=20)
+        operation.result(timeout=30)
 
     def test_create_cluster(self):
         from google.cloud.bigtable.enums import StorageType
@@ -1084,7 +1084,7 @@ class TestTableAdminAPI(unittest.TestCase):
         self.assertFalse(temp_backup.exists())
 
         # Testing `Backup.create()` method
-        temp_backup.create().result()
+        temp_backup.create().result(timeout=30)
 
         # Implicit testing of `Backup.delete()` method
         self.backups_to_delete.append(temp_backup)
@@ -1120,7 +1120,7 @@ class TestTableAdminAPI(unittest.TestCase):
         restored_table = Config.INSTANCE_DATA.table(restored_table_id)
         temp_table.restore(
             restored_table_id, cluster_id=CLUSTER_ID_DATA, backup_id=temp_backup_id,
-        ).result()
+        ).result(timeout=30)
         tables = Config.INSTANCE_DATA.list_tables()
         self.assertIn(restored_table, tables)
         restored_table.delete()
@@ -1134,10 +1134,10 @@ class TestTableAdminAPI(unittest.TestCase):
             cluster_id=alt_cluster_id, location_id=LOCATION_ID, serve_nodes=SERVE_NODES,
         )
         if not Config.IN_EMULATOR:
-            alt_instance.create(clusters=[alt_cluster]).result(timeout=10)
+            alt_instance.create(clusters=[alt_cluster]).result(timeout=30)
 
         # Testing `restore()`...
-        temp_backup.restore(restored_table_id, alt_instance_id).result()
+        temp_backup.restore(restored_table_id, alt_instance_id).result(timeout=30)
         restored_table = alt_instance.table(restored_table_id)
         self.assertIn(restored_table, alt_instance.list_tables())
         restored_table.delete()
