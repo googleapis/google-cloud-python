@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.3.1](https://www.github.com/googleapis/python-access-approval/compare/v1.3.0...v1.3.1) (2021-06-30)
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([e4e04a0](https://www.github.com/googleapis/python-access-approval/commit/e4e04a02ba3c58a6451356ea75cfd0b0146ec956))
+* disable always_use_jwt_access ([#93](https://www.github.com/googleapis/python-access-approval/issues/93)) ([e4e04a0](https://www.github.com/googleapis/python-access-approval/commit/e4e04a02ba3c58a6451356ea75cfd0b0146ec956))
+
 ## [1.3.0](https://www.github.com/googleapis/python-access-approval/compare/v1.2.0...v1.3.0) (2021-06-23)
 
 
