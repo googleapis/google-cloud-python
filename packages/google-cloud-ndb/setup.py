@@ -67,6 +67,7 @@ def main():
         namespace_packages=["google", "google.cloud"],
         install_requires=dependencies,
         extras_require={},
+        python_requires=">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*",
         include_package_data=False,
         zip_safe=False,
     )
