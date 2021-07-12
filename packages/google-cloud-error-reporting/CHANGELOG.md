@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+## [1.2.0](https://www.github.com/googleapis/python-error-reporting/compare/v1.1.2...v1.2.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#140](https://www.github.com/googleapis/python-error-reporting/issues/140)) ([2f8f790](https://www.github.com/googleapis/python-error-reporting/commit/2f8f790dd70646848afd5e5209a147b01c6f388b))
+
+
+### Bug Fixes
+
+* **deps:** add packaging requirement ([#124](https://www.github.com/googleapis/python-error-reporting/issues/124)) ([ed36389](https://www.github.com/googleapis/python-error-reporting/commit/ed3638946f8829c4d2b379785e38cc2a2228c688))
+* **deps:** widen version range on google-cloud-logging ([#133](https://www.github.com/googleapis/python-error-reporting/issues/133)) ([c5e87bb](https://www.github.com/googleapis/python-error-reporting/commit/c5e87bb8c177688833ca9524daa4e6229875627d))
+* disable always_use_jwt_access ([8aff323](https://www.github.com/googleapis/python-error-reporting/commit/8aff32330ebf544cc043bec0003140d61df7e7a1))
+* disable always_use_jwt_access ([#144](https://www.github.com/googleapis/python-error-reporting/issues/144)) ([8aff323](https://www.github.com/googleapis/python-error-reporting/commit/8aff32330ebf544cc043bec0003140d61df7e7a1))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-error-reporting/issues/1127)) ([#137](https://www.github.com/googleapis/python-error-reporting/issues/137)) ([0ca7d43](https://www.github.com/googleapis/python-error-reporting/commit/0ca7d4385de86e7ff462322807a717345774c017))
+
 ### [1.1.2](https://www.github.com/googleapis/python-error-reporting/compare/v1.1.1...v1.1.2) (2021-04-05)
 
 
