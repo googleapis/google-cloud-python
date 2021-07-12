@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.2.0](https://www.github.com/googleapis/python-dlp/compare/v3.1.1...v3.2.0) (2021-07-12)
+
+
+### Features
+
+* add always_use_jwt_access ([#172](https://www.github.com/googleapis/python-dlp/issues/172)) ([fb86805](https://www.github.com/googleapis/python-dlp/commit/fb8680580a16b088fd680355e85f12593372b9a4))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#177](https://www.github.com/googleapis/python-dlp/issues/177)) ([15f189f](https://www.github.com/googleapis/python-dlp/commit/15f189fdbbb8f9445bd88e3675c3f1e65da84aad))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-dlp/issues/1127)) ([#166](https://www.github.com/googleapis/python-dlp/issues/166)) ([e2e1c90](https://www.github.com/googleapis/python-dlp/commit/e2e1c90d65a2e2e9c1be1ed7921e138059401519))
+
 ### [3.1.1](https://www.github.com/googleapis/python-dlp/compare/v3.1.0...v3.1.1) (2021-06-16)
 
 
