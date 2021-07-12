@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-workflows/compare/v1.1.0...v1.2.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#68](https://www.github.com/googleapis/python-workflows/issues/68)) ([a88f246](https://www.github.com/googleapis/python-workflows/commit/a88f2466a906fdec0ebf4d772967cdf334b8ac91))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#72](https://www.github.com/googleapis/python-workflows/issues/72)) ([2085463](https://www.github.com/googleapis/python-workflows/commit/20854636d22eefd738872ef4fa8b280a2f6989ec))
+* exclude docs and tests from package ([#63](https://www.github.com/googleapis/python-workflows/issues/63)) ([ff68d16](https://www.github.com/googleapis/python-workflows/commit/ff68d16bb68960dbee188771f6f334ab69a98b23))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-workflows/issues/1127)) ([#65](https://www.github.com/googleapis/python-workflows/issues/65)) ([10341d6](https://www.github.com/googleapis/python-workflows/commit/10341d6b7adf284507d5f99dc68bae34e4360be9))
+
 ## [1.1.0](https://www.github.com/googleapis/python-workflows/compare/v1.0.0...v1.1.0) (2021-06-16)
 
 
