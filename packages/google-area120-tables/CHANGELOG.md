@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-area120-tables/compare/v0.4.0...v0.4.1) (2021-06-30)
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([5c043fa](https://www.github.com/googleapis/python-area120-tables/commit/5c043fa62bd8e7cdb27a2392a72a74bb15d2e9f4))
+* disable always_use_jwt_access ([#65](https://www.github.com/googleapis/python-area120-tables/issues/65)) ([5c043fa](https://www.github.com/googleapis/python-area120-tables/commit/5c043fa62bd8e7cdb27a2392a72a74bb15d2e9f4))
+
 ## [0.4.0](https://www.github.com/googleapis/python-area120-tables/compare/v0.3.1...v0.4.0) (2021-06-23)
 
 
