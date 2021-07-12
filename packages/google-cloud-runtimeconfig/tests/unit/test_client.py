@@ -37,11 +37,11 @@ class TestClient(unittest.TestCase):
         from google.cloud._http import ClientInfo
         from google.cloud.runtimeconfig._http import Connection
 
-        PROJECT = "PROJECT"
+        project = "PROJECT"
         http = object()
         creds = _make_credentials()
 
-        client = self._make_one(project=PROJECT, credentials=creds, _http=http)
+        client = self._make_one(project=project, credentials=creds, _http=http)
         self.assertIsInstance(client._connection, Connection)
         self.assertIs(client._credentials, creds)
         self.assertIs(client._http_internal, http)
@@ -51,13 +51,13 @@ class TestClient(unittest.TestCase):
         from google.cloud._http import ClientInfo
         from google.cloud.runtimeconfig._http import Connection
 
-        PROJECT = "PROJECT"
+        project = "PROJECT"
         http = object()
         creds = _make_credentials()
         client_info = ClientInfo()
 
         client = self._make_one(
-            project=PROJECT, credentials=creds, _http=http, client_info=client_info
+            project=project, credentials=creds, _http=http, client_info=client_info
         )
         self.assertIsInstance(client._connection, Connection)
         self.assertIs(client._credentials, creds)
@@ -67,44 +67,65 @@ class TestClient(unittest.TestCase):
     def test_ctor_w_empty_client_options(self):
         from google.api_core.client_options import ClientOptions
 
+        project = "PROJECT"
         http = object()
+        creds = _make_credentials()
         client_options = ClientOptions()
-        client = self._make_one(_http=http, client_options=client_options)
+        client = self._make_one(
+            project=project,
+            credentials=creds,
+            _http=http,
+            client_options=client_options,
+        )
         self.assertEqual(
             client._connection.API_BASE_URL, client._connection.DEFAULT_API_ENDPOINT
         )
 
-    def test_constructor_w_client_options_object(self):
+    def test_ctor_w_client_options_object(self):
         from google.api_core.client_options import ClientOptions
 
+        project = "PROJECT"
         http = object()
+        creds = _make_credentials()
         client_options = ClientOptions(
             api_endpoint="https://foo-runtimeconfig.googleapis.com"
         )
-        client = self._make_one(_http=http, client_options=client_options)
+        client = self._make_one(
+            project=project,
+            credentials=creds,
+            _http=http,
+            client_options=client_options,
+        )
         self.assertEqual(
             client._connection.API_BASE_URL, "https://foo-runtimeconfig.googleapis.com"
         )
 
-    def test_constructor_w_client_options_dict(self):
+    def test_ctor_w_client_options_dict(self):
+        project = "PROJECT"
         http = object()
+        creds = _make_credentials()
         client_options = {"api_endpoint": "https://foo-runtimeconfig.googleapis.com"}
-        client = self._make_one(_http=http, client_options=client_options)
+        client = self._make_one(
+            project=project,
+            credentials=creds,
+            _http=http,
+            client_options=client_options,
+        )
         self.assertEqual(
             client._connection.API_BASE_URL, "https://foo-runtimeconfig.googleapis.com"
         )
 
     def test_config(self):
-        PROJECT = "PROJECT"
+        project = "PROJECT"
         CONFIG_NAME = "config_name"
         creds = _make_credentials()
 
-        client = self._make_one(project=PROJECT, credentials=creds)
+        client = self._make_one(project=project, credentials=creds)
         new_config = client.config(CONFIG_NAME)
         self.assertEqual(new_config.name, CONFIG_NAME)
         self.assertIs(new_config._client, client)
-        self.assertEqual(new_config.project, PROJECT)
+        self.assertEqual(new_config.project, project)
         self.assertEqual(
-            new_config.full_name, "projects/%s/configs/%s" % (PROJECT, CONFIG_NAME)
+            new_config.full_name, "projects/%s/configs/%s" % (project, CONFIG_NAME)
         )
         self.assertFalse(new_config.description)
