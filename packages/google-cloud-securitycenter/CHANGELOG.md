@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.4.0](https://www.github.com/googleapis/python-securitycenter/compare/v1.3.1...v1.4.0) (2021-07-12)
+
+
+### Features
+
+* add always_use_jwt_access ([#170](https://www.github.com/googleapis/python-securitycenter/issues/170)) ([421b7fc](https://www.github.com/googleapis/python-securitycenter/commit/421b7fc0ffcae152cc329a064d7e233f91a5775d))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#174](https://www.github.com/googleapis/python-securitycenter/issues/174)) ([5431e8b](https://www.github.com/googleapis/python-securitycenter/commit/5431e8b61616d044288b10ca1c244210aa717124))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-securitycenter/issues/1127)) ([#164](https://www.github.com/googleapis/python-securitycenter/issues/164)) ([42a2f11](https://www.github.com/googleapis/python-securitycenter/commit/42a2f1175d022174c45f04726072935b8738e111)), closes [#1126](https://www.github.com/googleapis/python-securitycenter/issues/1126)
+
 ### [1.3.1](https://www.github.com/googleapis/python-securitycenter/compare/v1.3.0...v1.3.1) (2021-06-10)
 
 
