@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.2.2...v0.3.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#60](https://www.github.com/googleapis/python-recommendations-ai/issues/60)) ([354fc1c](https://www.github.com/googleapis/python-recommendations-ai/commit/354fc1cef059a69ab2b1310858f546a66db6fe5a))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#64](https://www.github.com/googleapis/python-recommendations-ai/issues/64)) ([3263c2e](https://www.github.com/googleapis/python-recommendations-ai/commit/3263c2ee0eb44e283de7356dbf9410d8620a8727))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-recommendations-ai/issues/1127)) ([#55](https://www.github.com/googleapis/python-recommendations-ai/issues/55)) ([47faef8](https://www.github.com/googleapis/python-recommendations-ai/commit/47faef890d8356ce60da06925b92a50f23a34e20)), closes [#1126](https://www.github.com/googleapis/python-recommendations-ai/issues/1126)
+
 ### [0.2.2](https://www.github.com/googleapis/python-recommendations-ai/compare/v0.2.1...v0.2.2) (2021-06-16)
 
 
