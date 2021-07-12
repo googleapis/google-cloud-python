@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.2.0](https://www.github.com/googleapis/python-asset/compare/v3.1.0...v3.2.0) (2021-07-12)
+
+
+### Features
+
+* add always_use_jwt_access ([0a14f25](https://www.github.com/googleapis/python-asset/commit/0a14f25784a5d39b666709c2dc6521f014eea781))
+* add new searchable fields (memberTypes, roles, project, folders and organization) in SearchAllIamPolicies ([0a14f25](https://www.github.com/googleapis/python-asset/commit/0a14f25784a5d39b666709c2dc6521f014eea781))
+* new request fields (assetTypes and orderBy) in SearchAllIamPolicies ([0a14f25](https://www.github.com/googleapis/python-asset/commit/0a14f25784a5d39b666709c2dc6521f014eea781))
+* new response fields (assetType, folders and organization) in SearchAllIamPolicies ([0a14f25](https://www.github.com/googleapis/python-asset/commit/0a14f25784a5d39b666709c2dc6521f014eea781))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([0a14f25](https://www.github.com/googleapis/python-asset/commit/0a14f25784a5d39b666709c2dc6521f014eea781))
+* disable always_use_jwt_access ([#217](https://www.github.com/googleapis/python-asset/issues/217)) ([0a14f25](https://www.github.com/googleapis/python-asset/commit/0a14f25784a5d39b666709c2dc6521f014eea781))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-asset/issues/1127)) ([#205](https://www.github.com/googleapis/python-asset/issues/205)) ([b9db51a](https://www.github.com/googleapis/python-asset/commit/b9db51a1e88615ab2da22da188d59987fcfca5d4)), closes [#1126](https://www.github.com/googleapis/python-asset/issues/1126)
+
 ## [3.1.0](https://www.github.com/googleapis/python-asset/compare/v3.0.0...v3.1.0) (2021-06-07)
 
 
