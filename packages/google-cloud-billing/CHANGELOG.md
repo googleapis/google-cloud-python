@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/googleapis/python-billing/compare/v1.2.1...v1.3.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#86](https://www.github.com/googleapis/python-billing/issues/86)) ([7ff02d6](https://www.github.com/googleapis/python-billing/commit/7ff02d68336e9a5d51dba0e03e6e9332d6080cf9))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([cff1d3e](https://www.github.com/googleapis/python-billing/commit/cff1d3e7d191321914003bc1d677954bfea49304))
+* disable always_use_jwt_access ([#93](https://www.github.com/googleapis/python-billing/issues/93)) ([cff1d3e](https://www.github.com/googleapis/python-billing/commit/cff1d3e7d191321914003bc1d677954bfea49304))
+
+
+### Documentation
+
+* include client library documentation in README.rst ([#91](https://www.github.com/googleapis/python-billing/issues/91)) ([3a6999d](https://www.github.com/googleapis/python-billing/commit/3a6999d6196f8d5ea1a92f4304c60fd3c2cc549c))
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-billing/issues/1127)) ([#82](https://www.github.com/googleapis/python-billing/issues/82)) ([634d7b0](https://www.github.com/googleapis/python-billing/commit/634d7b01fba7d834b0acfd3a2ee1357260f0b695))
+
 ### [1.2.1](https://www.github.com/googleapis/python-billing/compare/v1.2.0...v1.2.1) (2021-06-16)
 
 
