@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-dataproc-metastore/compare/v0.2.2...v0.3.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#43](https://www.github.com/googleapis/python-dataproc-metastore/issues/43)) ([75cf2ee](https://www.github.com/googleapis/python-dataproc-metastore/commit/75cf2ee2204211be6f43d94bf78cfa7f02ba1976))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#47](https://www.github.com/googleapis/python-dataproc-metastore/issues/47)) ([903b08e](https://www.github.com/googleapis/python-dataproc-metastore/commit/903b08e9436691a92f5557d3e8a0a49612d4d8db))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-dataproc-metastore/issues/1127)) ([#38](https://www.github.com/googleapis/python-dataproc-metastore/issues/38)) ([9b8c147](https://www.github.com/googleapis/python-dataproc-metastore/commit/9b8c14739b9cb5d02f9372d952acf099712f9826)), closes [#1126](https://www.github.com/googleapis/python-dataproc-metastore/issues/1126)
+
 ### [0.2.2](https://www.github.com/googleapis/python-dataproc-metastore/compare/v0.2.1...v0.2.2) (2021-06-16)
 
 
