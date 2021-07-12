@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-notebooks/compare/v0.2.0...v0.3.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#56](https://www.github.com/googleapis/python-notebooks/issues/56)) ([a60c86d](https://www.github.com/googleapis/python-notebooks/commit/a60c86d69ebe76897d63ee53b0a7aa44c3a32013))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#60](https://www.github.com/googleapis/python-notebooks/issues/60)) ([336ab30](https://www.github.com/googleapis/python-notebooks/commit/336ab303d677415d4c3de172768f8236379c5f90))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-notebooks/issues/1127)) ([#51](https://www.github.com/googleapis/python-notebooks/issues/51)) ([4b4cb00](https://www.github.com/googleapis/python-notebooks/commit/4b4cb00dc4245ab5090eb29434af30a3b4e736a0)), closes [#1126](https://www.github.com/googleapis/python-notebooks/issues/1126)
+
 ## [0.2.0](https://www.github.com/googleapis/python-notebooks/compare/v0.1.2...v0.2.0) (2021-05-28)
 
 
