@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-videointelligence/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-videointelligence/compare/v2.2.0...v2.3.0) (2021-07-12)
+
+
+### Features
+
+* add always_use_jwt_access ([#173](https://www.github.com/googleapis/python-videointelligence/issues/173)) ([3c7fbb0](https://www.github.com/googleapis/python-videointelligence/commit/3c7fbb00a6bddd239d3fdb3a75a485db3dfe041e))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-videointelligence/issues/1127)) ([#163](https://www.github.com/googleapis/python-videointelligence/issues/163)) ([09b0a33](https://www.github.com/googleapis/python-videointelligence/commit/09b0a338c8de99dc547c5dc5e15b42d14210ba18)), closes [#1126](https://www.github.com/googleapis/python-videointelligence/issues/1126)
+
 ## [2.2.0](https://www.github.com/googleapis/python-videointelligence/compare/v2.1.0...v2.2.0) (2021-05-28)
 
 
