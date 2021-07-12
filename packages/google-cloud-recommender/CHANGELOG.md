@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.3.0](https://www.github.com/googleapis/python-recommender/compare/v2.2.0...v2.3.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#102](https://www.github.com/googleapis/python-recommender/issues/102)) ([facf208](https://www.github.com/googleapis/python-recommender/commit/facf208a7b698e8e5af113d4b151250d2ea84734))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#106](https://www.github.com/googleapis/python-recommender/issues/106)) ([b823493](https://www.github.com/googleapis/python-recommender/commit/b82349335502dbd9ec15646b036af4e59d41014e))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-recommender/issues/1127)) ([#97](https://www.github.com/googleapis/python-recommender/issues/97)) ([f00fab2](https://www.github.com/googleapis/python-recommender/commit/f00fab2d3064c3a87823b444f556cce6cdccfab6)), closes [#1126](https://www.github.com/googleapis/python-recommender/issues/1126)
+
 ## [2.2.0](https://www.github.com/googleapis/python-recommender/compare/v2.1.0...v2.2.0) (2021-05-28)
 
 
