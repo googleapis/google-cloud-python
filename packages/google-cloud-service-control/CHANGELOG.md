@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-service-control/compare/v0.2.0...v0.3.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#36](https://www.github.com/googleapis/python-service-control/issues/36)) ([7c6c08f](https://www.github.com/googleapis/python-service-control/commit/7c6c08ff833f17cb3adbfd576b7c1107fde3c852))
+* Added the gRPC service config for the Service Controller v1 API ([#38](https://www.github.com/googleapis/python-service-control/issues/38)) ([b95a767](https://www.github.com/googleapis/python-service-control/commit/b95a7673dd59b2b84cd8d203ea3c05fc08d8b59e))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#41](https://www.github.com/googleapis/python-service-control/issues/41)) ([77350ec](https://www.github.com/googleapis/python-service-control/commit/77350ec06c0385384cbb1a8c99164a270bc58c95))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-service-control/issues/1127)) ([#31](https://www.github.com/googleapis/python-service-control/issues/31)) ([57502d9](https://www.github.com/googleapis/python-service-control/commit/57502d9d8b0cf68df2ab0f99b8bb4dcaeef7ae1f)), closes [#1126](https://www.github.com/googleapis/python-service-control/issues/1126)
+
 ## [0.2.0](https://www.github.com/googleapis/python-service-control/compare/v0.1.0...v0.2.0) (2021-05-27)
 
 
