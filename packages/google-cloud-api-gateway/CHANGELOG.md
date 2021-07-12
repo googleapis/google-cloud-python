@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-api-gateway/compare/v1.0.0...v1.0.1) (2021-06-30)
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([b2869e6](https://www.github.com/googleapis/python-api-gateway/commit/b2869e6fc540d65af1bdcf4329f8c888ab61de9a))
+* disable always_use_jwt_access ([#41](https://www.github.com/googleapis/python-api-gateway/issues/41)) ([b2869e6](https://www.github.com/googleapis/python-api-gateway/commit/b2869e6fc540d65af1bdcf4329f8c888ab61de9a))
+
 ## [1.0.0](https://www.github.com/googleapis/python-api-gateway/compare/v0.2.0...v1.0.0) (2021-06-24)
 
 
