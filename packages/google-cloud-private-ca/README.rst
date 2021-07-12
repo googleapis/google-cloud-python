@@ -18,7 +18,7 @@ within infrastructure and cloud native applications.
    :target: https://pypi.org/project/google-cloud-private-ca/
 .. _Certificate Authority Service: https://cloud.google.com/certificate-authority-service
 .. _Client Library Documentation: https://googleapis.dev/python/privateca/latest
-.. _Product Documentation:  https://cloud.google.com/certificate-authority-service
+.. _Product Documentation:  https://cloud.google.com/certificate-authority-service/docs
 
 Quick Start
 -----------
@@ -80,5 +80,5 @@ Next Steps
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _Certificate Authority Service Product documentation:  https://cloud.google.com/privateca/docs
+.. _Certificate Authority Service Product documentation:  https://cloud.google.com/certificate-authority-service/docs
 .. _README: https://github.com/googleapis/google-cloud-python/blob/master/README.rst
