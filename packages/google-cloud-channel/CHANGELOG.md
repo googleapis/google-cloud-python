@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-channel/compare/v1.1.1...v1.2.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#64](https://www.github.com/googleapis/python-channel/issues/64)) ([45621e5](https://www.github.com/googleapis/python-channel/commit/45621e5eabad6ff6979b89d619dcbf979ed78d63))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([2f8fa52](https://www.github.com/googleapis/python-channel/commit/2f8fa52e232e5468e6797d2b14166c7f319a0ca1))
+* disable always_use_jwt_access ([#68](https://www.github.com/googleapis/python-channel/issues/68)) ([2f8fa52](https://www.github.com/googleapis/python-channel/commit/2f8fa52e232e5468e6797d2b14166c7f319a0ca1))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-channel/issues/1127)) ([#59](https://www.github.com/googleapis/python-channel/issues/59)) ([f358de3](https://www.github.com/googleapis/python-channel/commit/f358de3eb94fc9c870a899e3d94d93c5f14b5b0d)), closes [#1126](https://www.github.com/googleapis/python-channel/issues/1126)
+
 ### [1.1.1](https://www.github.com/googleapis/python-channel/compare/v1.1.0...v1.1.1) (2021-06-16)
 
 
