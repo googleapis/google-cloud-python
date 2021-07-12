@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-org-policy/compare/v0.3.0...v1.0.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#59](https://www.github.com/googleapis/python-org-policy/issues/59)) ([6acf334](https://www.github.com/googleapis/python-org-policy/commit/6acf334ca0c306603b49ab64694647985b04e83b))
+* bump release level to production/stable ([#50](https://www.github.com/googleapis/python-org-policy/issues/50)) ([2b1da9e](https://www.github.com/googleapis/python-org-policy/commit/2b1da9e03aa82330b0461c78abee2fa75390d238))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#62](https://www.github.com/googleapis/python-org-policy/issues/62)) ([b6bf93c](https://www.github.com/googleapis/python-org-policy/commit/b6bf93c535dee1822d3b111a8e96ca6d4d30ba55))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-org-policy/issues/1127)) ([#56](https://www.github.com/googleapis/python-org-policy/issues/56)) ([540f601](https://www.github.com/googleapis/python-org-policy/commit/540f6018e9631664c0fda97ca1d0db90ab5783fd)), closes [#1126](https://www.github.com/googleapis/python-org-policy/issues/1126)
+
 ## [0.3.0](https://www.github.com/googleapis/python-org-policy/compare/v0.2.0...v0.3.0) (2021-05-16)
 
 
