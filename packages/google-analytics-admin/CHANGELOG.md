@@ -1,5 +1,13 @@
 # Changelog
 
+### [0.4.1](https://www.github.com/googleapis/python-analytics-admin/compare/v0.4.0...v0.4.1) (2021-06-30)
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([5e3df32](https://www.github.com/googleapis/python-analytics-admin/commit/5e3df324aa9d428d63d80816d10ad7d2d7ef41c1))
+* disable always_use_jwt_access ([#95](https://www.github.com/googleapis/python-analytics-admin/issues/95)) ([5e3df32](https://www.github.com/googleapis/python-analytics-admin/commit/5e3df324aa9d428d63d80816d10ad7d2d7ef41c1))
+
 ## [0.4.0](https://www.github.com/googleapis/python-analytics-admin/compare/v0.3.2...v0.4.0) (2021-06-23)
 
 
