@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/dialogflow/#history
 
+## [2.6.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.5.0...v2.6.0) (2021-07-10)
+
+
+### Features
+
+* add always_use_jwt_access ([#320](https://www.github.com/googleapis/python-dialogflow/issues/320)) ([9bf371d](https://www.github.com/googleapis/python-dialogflow/commit/9bf371d38a4c55bbb349cc59c7fd7e9d49847560))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([9bf371d](https://www.github.com/googleapis/python-dialogflow/commit/9bf371d38a4c55bbb349cc59c7fd7e9d49847560))
+
 ## [2.5.0](https://www.github.com/googleapis/python-dialogflow/compare/v2.4.0...v2.5.0) (2021-06-26)
 
 
