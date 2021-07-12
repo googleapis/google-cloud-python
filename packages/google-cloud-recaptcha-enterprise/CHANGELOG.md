@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.3.3...v0.4.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#87](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/87)) ([d0851c8](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/d0851c8df866f4a5604523fcd23cfbba2a5fd51c))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#91](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/91)) ([de8c214](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/de8c214bbbbe1aaf55ebabca35ab005540180be6))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/1127)) ([#82](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/82)) ([fd4b1b4](https://www.github.com/googleapis/python-recaptcha-enterprise/commit/fd4b1b4af92ff9027675b7bd1b494870225eccaa)), closes [#1126](https://www.github.com/googleapis/python-recaptcha-enterprise/issues/1126)
+
 ### [0.3.3](https://www.github.com/googleapis/python-recaptcha-enterprise/compare/v0.3.2...v0.3.3) (2021-06-16)
 
 
