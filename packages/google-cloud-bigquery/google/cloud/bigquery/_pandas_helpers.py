@@ -780,7 +780,7 @@ def dataframe_to_json_generator(dataframe):
         output = {}
         for column, value in zip(dataframe.columns, row):
             # Omit NaN values.
-            if value != value:
+            if pandas.isna(value):
                 continue
             output[column] = value
         yield output
