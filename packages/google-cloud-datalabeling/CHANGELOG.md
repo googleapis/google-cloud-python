@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-datalabeling/#history
 
+## [1.2.0](https://www.github.com/googleapis/python-datalabeling/compare/v1.1.0...v1.2.0) (2021-07-12)
+
+
+### Features
+
+* add always_use_jwt_access ([#113](https://www.github.com/googleapis/python-datalabeling/issues/113)) ([416b3e9](https://www.github.com/googleapis/python-datalabeling/commit/416b3e9e15d7b147c69391133cb4576c64a41a82))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#117](https://www.github.com/googleapis/python-datalabeling/issues/117)) ([8c50b89](https://www.github.com/googleapis/python-datalabeling/commit/8c50b899ff1cee04af36fc5f2dae68ba721efdae))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-datalabeling/issues/1127)) ([#108](https://www.github.com/googleapis/python-datalabeling/issues/108)) ([2d38075](https://www.github.com/googleapis/python-datalabeling/commit/2d38075bd68c083ed164a7202fd65056ff1edbc8)), closes [#1126](https://www.github.com/googleapis/python-datalabeling/issues/1126)
+
 ## [1.1.0](https://www.github.com/googleapis/python-datalabeling/compare/v1.0.0...v1.1.0) (2021-05-28)
 
 
