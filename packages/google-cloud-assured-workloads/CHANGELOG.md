@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.4.0](https://www.github.com/googleapis/python-assured-workloads/compare/v0.3.1...v0.4.0) (2021-06-30)
+
+
+### Features
+
+* add always_use_jwt_access ([#52](https://www.github.com/googleapis/python-assured-workloads/issues/52)) ([9533d55](https://www.github.com/googleapis/python-assured-workloads/commit/9533d55b45ca854800cd2a15c136dc0247465fea))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([efac3ed](https://www.github.com/googleapis/python-assured-workloads/commit/efac3eddda13b62f01a451e0314b544d0f97cac8))
+* disable always_use_jwt_access ([#56](https://www.github.com/googleapis/python-assured-workloads/issues/56)) ([efac3ed](https://www.github.com/googleapis/python-assured-workloads/commit/efac3eddda13b62f01a451e0314b544d0f97cac8))
+
+
+### Documentation
+
+* fix typo in docs/index.rst ([#43](https://www.github.com/googleapis/python-assured-workloads/issues/43)) ([df2ea64](https://www.github.com/googleapis/python-assured-workloads/commit/df2ea6472b097b53ee7c278051ad4bd11e85ef7b))
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-assured-workloads/issues/1127)) ([#47](https://www.github.com/googleapis/python-assured-workloads/issues/47)) ([0f28736](https://www.github.com/googleapis/python-assured-workloads/commit/0f28736ad7d1966f41410d5d571fb56b6fef91df))
+
 ### [0.3.1](https://www.github.com/googleapis/python-assured-workloads/compare/v0.3.0...v0.3.1) (2021-06-16)
 
 
