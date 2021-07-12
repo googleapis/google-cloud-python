@@ -15,19 +15,15 @@
 """This script is used to synthesize generated parts of this library."""
 
 import synthtool as s
-import synthtool.gcp as gcp
+from synthtool import gcp
 from synthtool.languages import python
-import logging
-
-logging.basicConfig(level=logging.DEBUG)
 
 common = gcp.CommonTemplates()
 
 default_version = "v2"
 
 for library in s.get_staging_dirs(default_version):
-    excludes = ["README.rst", "nox.py", "setup.py", "docs/index.rst"]
-    s.move(library, excludes=excludes)
+    s.move(library, excludes=["README.rst", "docs/index.rst", "setup.py"])
 
 s.remove_staging_dirs()
 
@@ -35,14 +31,13 @@ s.remove_staging_dirs()
 # Add templated files
 # ----------------------------------------------------------------------------
 templated_files = common.py_library(
-    system_test_dependencies=["test_utils"], samples=True, microgenerator=True,
+    samples=True,
+    microgenerator=True,  # set to True only if there are samples
     cov_level=98
 )
+
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
 
-# ----------------------------------------------------------------------------
-# Samples templates
-# ----------------------------------------------------------------------------
 python.py_samples()
 
 # Temporarily disable warnings due to
