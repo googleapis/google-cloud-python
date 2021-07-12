@@ -1,5 +1,24 @@
 # Changelog
 
+## [2.2.0](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.1.0...v2.2.0) (2021-07-09)
+
+
+### Features
+
+* add always_use_jwt_access ([#80](https://www.github.com/googleapis/python-monitoring-dashboards/issues/80)) ([a907b7d](https://www.github.com/googleapis/python-monitoring-dashboards/commit/a907b7dcf6d7b5013950e4f3457ce6a11ebb382c))
+* added alert chart widget ([509abf5](https://www.github.com/googleapis/python-monitoring-dashboards/commit/509abf5b4354225b9383a59b748ca4498b524757))
+* added validation only mode when writing dashboards ([#86](https://www.github.com/googleapis/python-monitoring-dashboards/issues/86)) ([509abf5](https://www.github.com/googleapis/python-monitoring-dashboards/commit/509abf5b4354225b9383a59b748ca4498b524757))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#84](https://www.github.com/googleapis/python-monitoring-dashboards/issues/84)) ([d9b1482](https://www.github.com/googleapis/python-monitoring-dashboards/commit/d9b148215d701339263cf515dafc255f1ddf0b7e))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-monitoring-dashboards/issues/1127)) ([#75](https://www.github.com/googleapis/python-monitoring-dashboards/issues/75)) ([f267b35](https://www.github.com/googleapis/python-monitoring-dashboards/commit/f267b356fefab3bc79c8d001ae14158a75b95f72)), closes [#1126](https://www.github.com/googleapis/python-monitoring-dashboards/issues/1126)
+
 ## [2.1.0](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.0.0...v2.1.0) (2021-05-22)
 
 
