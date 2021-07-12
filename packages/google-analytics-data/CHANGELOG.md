@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.7.0](https://www.github.com/googleapis/python-analytics-data/compare/v0.6.1...v0.7.0) (2021-07-10)
+
+
+### Features
+
+* add `minute_ranges` field to `RunRealtimeReportRequest` object  ([#101](https://www.github.com/googleapis/python-analytics-data/issues/101)) ([8523e6a](https://www.github.com/googleapis/python-analytics-data/commit/8523e6ad87f126766576d71b05d68478960bd10b))
+* add always_use_jwt_access ([1678019](https://www.github.com/googleapis/python-analytics-data/commit/16780195811dd93333afe6e27b674dd5e78705a3))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#97](https://www.github.com/googleapis/python-analytics-data/issues/97)) ([1678019](https://www.github.com/googleapis/python-analytics-data/commit/16780195811dd93333afe6e27b674dd5e78705a3))
+
+
+### Documentation
+
+* document the increase of the number of allowed dimensions in a report query ([8523e6a](https://www.github.com/googleapis/python-analytics-data/commit/8523e6ad87f126766576d71b05d68478960bd10b))
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-analytics-data/issues/1127)) ([#87](https://www.github.com/googleapis/python-analytics-data/issues/87)) ([6e30719](https://www.github.com/googleapis/python-analytics-data/commit/6e30719c4158c0e2e7580bff373e94cf7dd91475)), closes [#1126](https://www.github.com/googleapis/python-analytics-data/issues/1126)
+
 ### [0.6.1](https://www.github.com/googleapis/python-analytics-data/compare/v0.6.0...v0.6.1) (2021-06-16)
 
 
