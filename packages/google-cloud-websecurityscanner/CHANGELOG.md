@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-websecurityscanner/#history
 
+## [1.4.0](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.3.0...v1.4.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#79](https://www.github.com/googleapis/python-websecurityscanner/issues/79)) ([ad969a1](https://www.github.com/googleapis/python-websecurityscanner/commit/ad969a11f8df9149688c2efce9aa5bdbc65c4691))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#83](https://www.github.com/googleapis/python-websecurityscanner/issues/83)) ([099f589](https://www.github.com/googleapis/python-websecurityscanner/commit/099f589840131116359fde934af155690c73037d))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-websecurityscanner/issues/1127)) ([#74](https://www.github.com/googleapis/python-websecurityscanner/issues/74)) ([31439ef](https://www.github.com/googleapis/python-websecurityscanner/commit/31439ef980c5f96d1181bf2982cf0aa9b5265122)), closes [#1126](https://www.github.com/googleapis/python-websecurityscanner/issues/1126)
+
 ## [1.3.0](https://www.github.com/googleapis/python-websecurityscanner/compare/v1.2.0...v1.3.0) (2021-06-07)
 
 
