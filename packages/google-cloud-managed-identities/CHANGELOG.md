@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-managed-identities/compare/v1.0.0...v1.1.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#44](https://www.github.com/googleapis/python-managed-identities/issues/44)) ([1fd37ac](https://www.github.com/googleapis/python-managed-identities/commit/1fd37ac71b3d0b4106d87bcf527bf0bd8dada27d))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#48](https://www.github.com/googleapis/python-managed-identities/issues/48)) ([c3dda3f](https://www.github.com/googleapis/python-managed-identities/commit/c3dda3f68b5c2a4320a046852c4f218d04075326))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-managed-identities/issues/1127)) ([#39](https://www.github.com/googleapis/python-managed-identities/issues/39)) ([4c82d41](https://www.github.com/googleapis/python-managed-identities/commit/4c82d419bd18f6361d9ebc134dc3c7cebf473cac))
+
 ## [1.0.0](https://www.github.com/googleapis/python-managed-identities/compare/v0.2.0...v1.0.0) (2021-06-16)
 
 
