@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.4.0](https://www.github.com/googleapis/python-automl/compare/v2.3.0...v2.4.0) (2021-07-12)
+
+
+### Features
+
+* add always_use_jwt_access ([#175](https://www.github.com/googleapis/python-automl/issues/175)) ([7da3fc7](https://www.github.com/googleapis/python-automl/commit/7da3fc7b4a8e648afad733cb2ee4e1dbe74fb736))
+* support self-signed JWT flow for service accounts ([bfece77](https://www.github.com/googleapis/python-automl/commit/bfece7799fe6cf803d650c26e0d6e2a78e64f7c1))
+
+
+### Bug Fixes
+
+* add async client to %name_%version/init.py ([bfece77](https://www.github.com/googleapis/python-automl/commit/bfece7799fe6cf803d650c26e0d6e2a78e64f7c1))
+* **deps:** add packaging requirement ([#162](https://www.github.com/googleapis/python-automl/issues/162)) ([dea0cc3](https://www.github.com/googleapis/python-automl/commit/dea0cc37794c57a4b0521c039dc251becf694021))
+* disable always_use_jwt_access ([160a7ad](https://www.github.com/googleapis/python-automl/commit/160a7adad3f2d53ca6f733a21e72bfe866a5ebc1))
+* disable always_use_jwt_access ([#181](https://www.github.com/googleapis/python-automl/issues/181)) ([160a7ad](https://www.github.com/googleapis/python-automl/commit/160a7adad3f2d53ca6f733a21e72bfe866a5ebc1))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-automl/issues/1127)) ([#172](https://www.github.com/googleapis/python-automl/issues/172)) ([2489e39](https://www.github.com/googleapis/python-automl/commit/2489e397c1fc66d5dc360f150935673a25537c02)), closes [#1126](https://www.github.com/googleapis/python-automl/issues/1126)
+
 ## [2.3.0](https://www.github.com/googleapis/python-automl/compare/v2.2.0...v2.3.0) (2021-04-14)
 
 
