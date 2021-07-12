@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.3.0](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.2.0...v3.3.0) (2021-07-12)
+
+
+### Features
+
+* add always_use_jwt_access ([#171](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/171)) ([cd4494f](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/cd4494f0dc7304469e7d4a0ed6e13d716b3cacbf))
+
+
+### Documentation
+
+* add sample to include run notification ([#173](https://www.github.com/googleapis/python-bigquery-datatransfer/issues/173)) ([ea018c9](https://www.github.com/googleapis/python-bigquery-datatransfer/commit/ea018c9f4a1f9c360dbe9f08650250ea8c505f29))
+
 ## [3.2.0](https://www.github.com/googleapis/python-bigquery-datatransfer/compare/v3.1.1...v3.2.0) (2021-06-22)
 
 
