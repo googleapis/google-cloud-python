@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-functions/compare/v0.7.0...v1.0.0) (2021-06-30)
+
+
+### Features
+
+* bump release level to production/stable ([#65](https://www.github.com/googleapis/python-functions/issues/65)) ([b0f9d70](https://www.github.com/googleapis/python-functions/commit/b0f9d70287cf4c330523d052371793ad7faf33ae))
+
 ## [0.7.0](https://www.github.com/googleapis/python-functions/compare/v0.6.1...v0.7.0) (2021-06-30)
 
 
