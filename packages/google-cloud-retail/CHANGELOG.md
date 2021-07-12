@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.3.0](https://www.github.com/googleapis/python-retail/compare/v0.2.0...v0.3.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#51](https://www.github.com/googleapis/python-retail/issues/51)) ([f6ad4b6](https://www.github.com/googleapis/python-retail/commit/f6ad4b6586924129baecc9fc0536559590518bf6))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#55](https://www.github.com/googleapis/python-retail/issues/55)) ([d7f0666](https://www.github.com/googleapis/python-retail/commit/d7f0666dd00706e19bf73656d7379ad01805f61d))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-retail/issues/1127)) ([#46](https://www.github.com/googleapis/python-retail/issues/46)) ([f03c60a](https://www.github.com/googleapis/python-retail/commit/f03c60ab178f98ceda54d0ed594f83f6af20270f)), closes [#1126](https://www.github.com/googleapis/python-retail/issues/1126)
+
 ## [0.2.0](https://www.github.com/googleapis/python-retail/compare/v0.1.0...v0.2.0) (2021-05-28)
 
 
