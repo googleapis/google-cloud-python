@@ -3,6 +3,23 @@
 [PyPI History][1]
 
 [1]: https://pypi.org/project/google-cloud-webrisk/#history
+## [1.4.0](https://www.github.com/googleapis/python-webrisk/compare/v1.3.0...v1.4.0) (2021-07-01)
+
+
+### Features
+
+* add always_use_jwt_access ([#96](https://www.github.com/googleapis/python-webrisk/issues/96)) ([b0f0fd3](https://www.github.com/googleapis/python-webrisk/commit/b0f0fd3c7acd0bb4061956c3afd8e50d4d3c63a7))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#100](https://www.github.com/googleapis/python-webrisk/issues/100)) ([8f2d77e](https://www.github.com/googleapis/python-webrisk/commit/8f2d77ec058ba0a9943f43edcf077835a6dbd47e))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-webrisk/issues/1127)) ([#91](https://www.github.com/googleapis/python-webrisk/issues/91)) ([fe10bdc](https://www.github.com/googleapis/python-webrisk/commit/fe10bdc4e887621002230c175f3a93916b6d81ca)), closes [#1126](https://www.github.com/googleapis/python-webrisk/issues/1126)
+
 ## [1.3.0](https://www.github.com/googleapis/python-webrisk/compare/v1.2.0...v1.3.0) (2021-06-01)
 
 
