@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.1.1...v1.2.0) (2021-07-13)
+
+
+### Features
+
+* add cloud spanner connection support ([#93](https://www.github.com/googleapis/python-bigquery-connection/issues/93)) ([3ae2369](https://www.github.com/googleapis/python-bigquery-connection/commit/3ae236928f0ac923367d5379daa59f366299397b))
+
 ### [1.1.1](https://www.github.com/googleapis/python-bigquery-connection/compare/v1.1.0...v1.1.1) (2021-06-30)
 
 
