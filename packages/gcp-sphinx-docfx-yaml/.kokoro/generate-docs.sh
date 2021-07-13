@@ -30,6 +30,8 @@ gcloud auth activate-service-account --key-file ${GOOGLE_APPLICATION_CREDENTIALS
 # Install dependencies.
 python3 -m pip install --user --quiet --upgrade nox
 python3 -m pip install --user gcp-docuploader
+python3 -m pip install -e .
+python3 -m pip install recommonmark
 
 # Retrieve unique repositories to regenerate the YAML with.
 for bucket_item in $(gsutil ls 'gs://docs-staging-v2/docfx-python*' | sort -u -t- -k5,5); do
@@ -93,6 +95,12 @@ for bucket_item in $(gsutil ls 'gs://docs-staging-v2/docfx-python*' | sort -u -t
     ## upload docs
     # python3 -m docuploader upload docs/_build/html --metadata-file docs.metadata --staging-bucket "${STAGING_BUCKET}"
 
+    # Test running with the plugin version locally.
+    if [[ "${TEST_PLUGIN}" == "true" ]]; then
+      python3 -m pip install -e .
+      sphinx-build -T -N -D extensions=sphinx.ext.autodoc,sphinx.ext.autosummary,docfx_yaml.extension,sphinx.ext.intersphinx,sphinx.ext.coverage,sphinx.ext.napoleon,sphinx.ext.todo,sphinx.ext.viewcode,recommonmark -b html -d docs/_build/doctrees/ docs/ docs/_build/html/
+      continue
+    fi
 
     # Build YAML tarballs for Cloud-RAD.
     nox -s docfx

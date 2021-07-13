@@ -26,6 +26,7 @@ pass_down_envvars+=(
     "V2_STAGING_BUCKET"
     "NOX_SESSION"
     "FORCE_GENERATE_ALL_TAGS"   # Regenerates YAML for all versions if set to true.
+    "TEST_PLUGIN"               # Test current plugin version without updating the docs.
 )
 
 # Prevent unintentional override on the default image.
