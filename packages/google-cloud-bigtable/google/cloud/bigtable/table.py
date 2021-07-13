@@ -13,6 +13,9 @@
 # limitations under the License.
 
 """User-friendly container for Google Cloud Bigtable Table."""
+
+import warnings
+
 from google.api_core import timeout
 from google.api_core.exceptions import Aborted
 from google.api_core.exceptions import DeadlineExceeded
@@ -44,8 +47,6 @@ from google.cloud.bigtable_admin_v2.types import table as admin_messages_v2_pb2
 from google.cloud.bigtable_admin_v2.types import (
     bigtable_table_admin as table_admin_messages_v2_pb2,
 )
-
-import warnings
 
 # Maximum number of mutations in bulk (MutateRowsRequest message):
 # (https://cloud.google.com/bigtable/docs/reference/data/rpc/
