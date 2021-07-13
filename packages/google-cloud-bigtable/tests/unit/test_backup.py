@@ -332,7 +332,7 @@ class TestBackup(unittest.TestCase):
         from google.cloud.bigtable_admin_v2.types import table
 
         client = _Client()
-        api = client._table_admin_client = self._make_table_admin_client()
+        api = client.table_admin_client = self._make_table_admin_client()
         api.create_backup.side_effect = Unknown("testing")
 
         timestamp = self._make_timestamp()
@@ -365,7 +365,7 @@ class TestBackup(unittest.TestCase):
         from google.cloud.exceptions import Conflict
 
         client = _Client()
-        api = client._table_admin_client = self._make_table_admin_client()
+        api = client.table_admin_client = self._make_table_admin_client()
         api.create_backup.side_effect = Conflict("testing")
 
         timestamp = self._make_timestamp()
@@ -398,7 +398,7 @@ class TestBackup(unittest.TestCase):
         from google.cloud.exceptions import NotFound
 
         client = _Client()
-        api = client._table_admin_client = self._make_table_admin_client()
+        api = client.table_admin_client = self._make_table_admin_client()
         api.create_backup.side_effect = NotFound("testing")
 
         timestamp = self._make_timestamp()
@@ -494,7 +494,7 @@ class TestBackup(unittest.TestCase):
         from google.api_core.exceptions import Unknown
 
         client = _Client()
-        api = client._table_admin_client = self._make_table_admin_client()
+        api = client.table_admin_client = self._make_table_admin_client()
         api.get_backup.side_effect = Unknown("testing")
 
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -510,7 +510,7 @@ class TestBackup(unittest.TestCase):
         from google.api_core.exceptions import NotFound
 
         client = _Client()
-        api = client._table_admin_client = self._make_table_admin_client()
+        api = client.table_admin_client = self._make_table_admin_client()
         api.get_backup.side_effect = NotFound("testing")
 
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -537,7 +537,7 @@ class TestBackup(unittest.TestCase):
             size_bytes=0,
             state=state,
         )
-        api = client._table_admin_client = self._make_table_admin_client()
+        api = client.table_admin_client = self._make_table_admin_client()
         api.get_backup.return_value = backup_pb
 
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -562,7 +562,7 @@ class TestBackup(unittest.TestCase):
             size_bytes=0,
             state=state,
         )
-        api = client._table_admin_client = self._make_table_admin_client()
+        api = client.table_admin_client = self._make_table_admin_client()
         api.get_backup.return_value = backup_pb
 
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -581,7 +581,7 @@ class TestBackup(unittest.TestCase):
 
         client = _Client()
         backup_pb = table.Backup(name=self.BACKUP_NAME)
-        api = client._table_admin_client = self._make_table_admin_client()
+        api = client.table_admin_client = self._make_table_admin_client()
         api.get_backup.return_value = backup_pb
 
         instance = _Instance(self.INSTANCE_NAME, client=client)
@@ -595,7 +595,7 @@ class TestBackup(unittest.TestCase):
         from google.api_core.exceptions import Unknown
 
         client = _Client()
-        api = client._table_admin_client = self._make_table_admin_client()
+        api = client.table_admin_client = self._make_table_admin_client()
         api.delete_backup.side_effect = Unknown("testing")
         instance = _Instance(self.INSTANCE_NAME, client=client)
         backup = self._make_one(self.BACKUP_ID, instance, cluster_id=self.CLUSTER_ID)
@@ -609,7 +609,7 @@ class TestBackup(unittest.TestCase):
         from google.api_core.exceptions import NotFound
 
         client = _Client()
-        api = client._table_admin_client = self._make_table_admin_client()
+        api = client.table_admin_client = self._make_table_admin_client()
         api.delete_backup.side_effect = NotFound("testing")
         instance = _Instance(self.INSTANCE_NAME, client=client)
         backup = self._make_one(self.BACKUP_ID, instance, cluster_id=self.CLUSTER_ID)
@@ -623,7 +623,7 @@ class TestBackup(unittest.TestCase):
         from google.protobuf.empty_pb2 import Empty
 
         client = _Client()
-        api = client._table_admin_client = self._make_table_admin_client()
+        api = client.table_admin_client = self._make_table_admin_client()
         api.delete_backup.return_value = Empty()
         instance = _Instance(self.INSTANCE_NAME, client=client)
         backup = self._make_one(self.BACKUP_ID, instance, cluster_id=self.CLUSTER_ID)
@@ -639,7 +639,7 @@ class TestBackup(unittest.TestCase):
         from google.protobuf import field_mask_pb2
 
         client = _Client()
-        api = client._table_admin_client = self._make_table_admin_client()
+        api = client.table_admin_client = self._make_table_admin_client()
         api.update_backup.side_effect = Unknown("testing")
         instance = _Instance(self.INSTANCE_NAME, client=client)
         backup = self._make_one(self.BACKUP_ID, instance, cluster_id=self.CLUSTER_ID)
@@ -663,7 +663,7 @@ class TestBackup(unittest.TestCase):
         from google.protobuf import field_mask_pb2
 
         client = _Client()
-        api = client._table_admin_client = self._make_table_admin_client()
+        api = client.table_admin_client = self._make_table_admin_client()
         api.update_backup.side_effect = NotFound("testing")
         instance = _Instance(self.INSTANCE_NAME, client=client)
         backup = self._make_one(self.BACKUP_ID, instance, cluster_id=self.CLUSTER_ID)
@@ -686,7 +686,7 @@ class TestBackup(unittest.TestCase):
         from google.protobuf import field_mask_pb2
 
         client = _Client()
-        api = client._table_admin_client = self._make_table_admin_client()
+        api = client.table_admin_client = self._make_table_admin_client()
         api.update_backup.return_type = table.Backup(name=self.BACKUP_NAME)
         instance = _Instance(self.INSTANCE_NAME, client=client)
         backup = self._make_one(self.BACKUP_ID, instance, cluster_id=self.CLUSTER_ID)
@@ -707,7 +707,7 @@ class TestBackup(unittest.TestCase):
         from google.api_core.exceptions import Unknown
 
         client = _Client()
-        api = client._table_admin_client = self._make_table_admin_client()
+        api = client.table_admin_client = self._make_table_admin_client()
         api.restore_table.side_effect = Unknown("testing")
 
         timestamp = self._make_timestamp()
@@ -732,7 +732,7 @@ class TestBackup(unittest.TestCase):
 
     def test_restore_cluster_not_set(self):
         client = _Client()
-        client._table_admin_client = self._make_table_admin_client()
+        client.table_admin_client = self._make_table_admin_client()
         backup = self._make_one(
             self.BACKUP_ID,
             _Instance(self.INSTANCE_NAME, client=client),
@@ -746,7 +746,7 @@ class TestBackup(unittest.TestCase):
     def _restore_helper(self, instance_id=None, instance_name=None):
         op_future = object()
         client = _Client()
-        api = client._table_admin_client = self._make_table_admin_client()
+        api = client.table_admin_client = self._make_table_admin_client()
         api.restore_table.return_value = op_future
 
         timestamp = self._make_timestamp()

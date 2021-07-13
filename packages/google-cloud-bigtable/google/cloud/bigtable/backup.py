@@ -330,7 +330,7 @@ class Backup(object):
             expire_time=_datetime_to_pb_timestamp(self.expire_time),
         )
 
-        api = self._instance._client._table_admin_client
+        api = self._instance._client.table_admin_client
         return api.create_backup(
             request={
                 "parent": self.parent,
@@ -351,7 +351,7 @@ class Backup(object):
                 due to a retryable error and retry attempts failed.
         :raises ValueError: If the parameters are invalid.
         """
-        api = self._instance._client._table_admin_client
+        api = self._instance._client.table_admin_client
         try:
             return api.get_backup(request={"name": self.name})
         except NotFound:
@@ -385,13 +385,13 @@ class Backup(object):
             name=self.name, expire_time=_datetime_to_pb_timestamp(new_expire_time),
         )
         update_mask = field_mask_pb2.FieldMask(paths=["expire_time"])
-        api = self._instance._client._table_admin_client
+        api = self._instance._client.table_admin_client
         api.update_backup(request={"backup": backup_update, "update_mask": update_mask})
         self._expire_time = new_expire_time
 
     def delete(self):
         """Delete this Backup."""
-        self._instance._client._table_admin_client.delete_backup(
+        self._instance._client.table_admin_client.delete_backup(
             request={"name": self.name}
         )
 
@@ -423,7 +423,7 @@ class Backup(object):
                  due to a retryable error and retry attempts failed.
         :raises: ValueError: If the parameters are invalid.
         """
-        api = self._instance._client._table_admin_client
+        api = self._instance._client.table_admin_client
         if instance_id:
             parent = BigtableTableAdminClient.instance_path(
                 project=self._instance._client.project, instance=instance_id,

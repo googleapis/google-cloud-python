@@ -1080,6 +1080,9 @@ class TestTableAdminAPI(unittest.TestCase):
             expire_time=datetime.datetime.utcfromtimestamp(expire),
         )
 
+        # Reinitialize the admin client. This is to test `_table_admin_client` returns a client object (and not NoneType)
+        temp_backup._instance._client = Client(admin=True)
+
         # Sanity check for `Backup.exists()` method
         self.assertFalse(temp_backup.exists())
 
