@@ -2068,6 +2068,8 @@ class Test_Blob(unittest.TestCase):
 
     @mock.patch("warnings.warn")
     def test_download_as_string(self, mock_warn):
+        from google.cloud.storage.blob import _DOWNLOAD_AS_STRING_DEPRECATED
+
         MEDIA_LINK = "http://example.com/media/"
 
         client = self._make_client()
@@ -2096,14 +2098,14 @@ class Test_Blob(unittest.TestCase):
             retry=DEFAULT_RETRY,
         )
 
-        mock_warn.assert_called_with(
-            "Blob.download_as_string() is deprecated and will be removed in future."
-            "Use Blob.download_as_bytes() instead.",
-            PendingDeprecationWarning,
-            stacklevel=1,
+        mock_warn.assert_called_once_with(
+            _DOWNLOAD_AS_STRING_DEPRECATED, PendingDeprecationWarning, stacklevel=2,
         )
 
-    def test_download_as_string_no_retry(self):
+    @mock.patch("warnings.warn")
+    def test_download_as_string_no_retry(self, mock_warn):
+        from google.cloud.storage.blob import _DOWNLOAD_AS_STRING_DEPRECATED
+
         MEDIA_LINK = "http://example.com/media/"
 
         client = self._make_client()
@@ -2130,6 +2132,10 @@ class Test_Blob(unittest.TestCase):
             timeout=self._get_default_timeout(),
             checksum="md5",
             retry=None,
+        )
+
+        mock_warn.assert_called_once_with(
+            _DOWNLOAD_AS_STRING_DEPRECATED, PendingDeprecationWarning, stacklevel=2,
         )
 
     def test__get_content_type_explicit(self):
@@ -2718,7 +2724,7 @@ class Test_Blob(unittest.TestCase):
     def test__initiate_resumable_upload_with_retry(self):
         self._initiate_resumable_helper(retry=DEFAULT_RETRY)
 
-    def test__initiate_resumable_upload_with_num_retries(self):
+    def test__initiate_resumable_upload_w_num_retries(self):
         self._initiate_resumable_helper(num_retries=11)
 
     def test__initiate_resumable_upload_with_retry_conflict(self):
@@ -2983,7 +2989,7 @@ class Test_Blob(unittest.TestCase):
     def test__do_resumable_upload_with_retry(self):
         self._do_resumable_helper(retry=DEFAULT_RETRY)
 
-    def test__do_resumable_upload_with_num_retries(self):
+    def test__do_resumable_upload_w_num_retries(self):
         self._do_resumable_helper(num_retries=8)
 
     def test__do_resumable_upload_with_retry_conflict(self):
@@ -3129,7 +3135,7 @@ class Test_Blob(unittest.TestCase):
     def test__do_upload_with_retry(self):
         self._do_upload_helper(retry=DEFAULT_RETRY)
 
-    def test__do_upload_with_num_retries(self):
+    def test__do_upload_w_num_retries(self):
         self._do_upload_helper(num_retries=2)
 
     def test__do_upload_with_conditional_retry_success(self):
@@ -3199,25 +3205,31 @@ class Test_Blob(unittest.TestCase):
         stream = self._upload_from_file_helper(predefined_acl="private")
         assert stream.tell() == 2
 
-    @mock.patch("warnings.warn")
-    def test_upload_from_file_with_retries(self, mock_warn):
+    def test_upload_from_file_with_retry(self):
         self._upload_from_file_helper(retry=DEFAULT_RETRY)
 
     @mock.patch("warnings.warn")
-    def test_upload_from_file_with_num_retries(self, mock_warn):
-        from google.cloud.storage import blob as blob_module
+    def test_upload_from_file_w_num_retries(self, mock_warn):
+        from google.cloud.storage._helpers import _NUM_RETRIES_MESSAGE
 
         self._upload_from_file_helper(num_retries=2)
+
         mock_warn.assert_called_once_with(
-            blob_module._NUM_RETRIES_MESSAGE, DeprecationWarning, stacklevel=2
+            _NUM_RETRIES_MESSAGE, DeprecationWarning, stacklevel=2,
         )
 
     @mock.patch("warnings.warn")
     def test_upload_from_file_with_retry_conflict(self, mock_warn):
+        from google.cloud.storage._helpers import _NUM_RETRIES_MESSAGE
+
         # Special case here: in a conflict this method should NOT raise an error
         # as that's handled further downstream. It should pass both options
         # through.
         self._upload_from_file_helper(retry=DEFAULT_RETRY, num_retries=2)
+
+        mock_warn.assert_called_once_with(
+            _NUM_RETRIES_MESSAGE, DeprecationWarning, stacklevel=2,
+        )
 
     def test_upload_from_file_with_rewind(self):
         stream = self._upload_from_file_helper(rewind=True)
@@ -3342,8 +3354,10 @@ class Test_Blob(unittest.TestCase):
         self.assertEqual(stream.mode, "rb")
         self.assertEqual(stream.name, temp.name)
 
-    def test_upload_from_filename_with_num_retries(self):
+    @mock.patch("warnings.warn")
+    def test_upload_from_filename_w_num_retries(self, mock_warn):
         from google.cloud._testing import _NamedTemporaryFile
+        from google.cloud.storage._helpers import _NUM_RETRIES_MESSAGE
 
         blob = self._make_one("blob-name", bucket=None)
         # Mock low-level upload helper on blob (it is tested elsewhere).
@@ -3374,6 +3388,10 @@ class Test_Blob(unittest.TestCase):
         self.assertTrue(stream.closed)
         self.assertEqual(stream.mode, "rb")
         self.assertEqual(stream.name, temp.name)
+
+        mock_warn.assert_called_once_with(
+            _NUM_RETRIES_MESSAGE, DeprecationWarning, stacklevel=2,
+        )
 
     def test_upload_from_filename_w_custom_timeout(self):
         from google.cloud._testing import _NamedTemporaryFile
@@ -3453,9 +3471,16 @@ class Test_Blob(unittest.TestCase):
         data = u"\N{snowman} \N{sailboat}"
         self._upload_from_string_helper(data, retry=DEFAULT_RETRY)
 
-    def test_upload_from_string_w_text_w_num_retries(self):
+    @mock.patch("warnings.warn")
+    def test_upload_from_string_with_num_retries(self, mock_warn):
+        from google.cloud.storage._helpers import _NUM_RETRIES_MESSAGE
+
         data = u"\N{snowman} \N{sailboat}"
         self._upload_from_string_helper(data, num_retries=2)
+
+        mock_warn.assert_called_once_with(
+            _NUM_RETRIES_MESSAGE, DeprecationWarning, stacklevel=2,
+        )
 
     def _create_resumable_upload_session_helper(
         self,
@@ -4303,7 +4328,10 @@ class Test_Blob(unittest.TestCase):
             _COMPOSE_IF_GENERATION_LIST_DEPRECATED, DeprecationWarning, stacklevel=2,
         )
 
-    def test_compose_w_if_generation_match_and_if_s_generation_match(self):
+    @mock.patch("warnings.warn")
+    def test_compose_w_if_generation_match_and_if_s_generation_match(self, mock_warn):
+        from google.cloud.storage.blob import _COMPOSE_IF_GENERATION_LIST_DEPRECATED
+
         source_1_name = "source-1"
         source_2_name = "source-2"
         destination_name = "destination"
@@ -4323,6 +4351,10 @@ class Test_Blob(unittest.TestCase):
             )
 
         client._post_resource.assert_not_called()
+
+        mock_warn.assert_called_with(
+            _COMPOSE_IF_GENERATION_LIST_DEPRECATED, DeprecationWarning, stacklevel=2,
+        )
 
     @mock.patch("warnings.warn")
     def test_compose_w_if_metageneration_match_list_w_warning(self, mock_warn):

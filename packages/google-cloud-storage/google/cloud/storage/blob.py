@@ -36,8 +36,8 @@ import mimetypes
 import os
 import re
 import warnings
-import six
 
+import six
 from six.moves.urllib.parse import parse_qsl
 from six.moves.urllib.parse import quote
 from six.moves.urllib.parse import urlencode
@@ -134,6 +134,10 @@ _COMPOSE_IF_METAGENERATION_LIST_DEPRECATED = (
 )
 _COMPOSE_IF_SOURCE_GENERATION_MISMATCH_ERROR = (
     "'if_source_generation_match' length must be the same as 'sources' length"
+)
+_DOWNLOAD_AS_STRING_DEPRECATED = (
+    "Blob.download_as_string() is deprecated and will be removed in future. "
+    "Use Blob.download_as_bytes() instead.",
 )
 
 
@@ -1514,10 +1518,7 @@ class Blob(_PropertyMixin):
         :raises: :class:`google.cloud.exceptions.NotFound`
         """
         warnings.warn(
-            "Blob.download_as_string() is deprecated and will be removed in future."
-            "Use Blob.download_as_bytes() instead.",
-            PendingDeprecationWarning,
-            stacklevel=1,
+            _DOWNLOAD_AS_STRING_DEPRECATED, PendingDeprecationWarning, stacklevel=2
         )
         return self.download_as_bytes(
             client=client,
