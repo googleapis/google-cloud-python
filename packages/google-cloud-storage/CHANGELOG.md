@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [1.41.0](https://www.github.com/googleapis/python-storage/compare/v1.40.0...v1.41.0) (2021-07-13)
+
+
+### Features
+
+* add support for Etag headers on reads ([#489](https://www.github.com/googleapis/python-storage/issues/489)) ([741d3fd](https://www.github.com/googleapis/python-storage/commit/741d3fda4e4280022cede29ebeb7c2ea09e73b6f))
+
+
+### Bug Fixes
+
+* **deps:** update minimum dependency versions to pick up bugfixes ([#496](https://www.github.com/googleapis/python-storage/issues/496)) ([92251a5](https://www.github.com/googleapis/python-storage/commit/92251a5c8ea4d663773506eb1c630201a657aa69)), closes [#494](https://www.github.com/googleapis/python-storage/issues/494)
+* populate etag / generation / metageneration properties during download ([#488](https://www.github.com/googleapis/python-storage/issues/488)) ([49ba14c](https://www.github.com/googleapis/python-storage/commit/49ba14c9c47dbe6bc2bb45d53bbe5621c131fbcb))
+* revise and rename is_etag_in_json(data) ([#483](https://www.github.com/googleapis/python-storage/issues/483)) ([0a52546](https://www.github.com/googleapis/python-storage/commit/0a5254647bf1155874fe48f3891bcc34a76b0b81))
+
 ## [1.40.0](https://www.github.com/googleapis/python-storage/compare/v1.39.0...v1.40.0) (2021-06-30)
 
 
