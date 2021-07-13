@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.6.0](https://www.github.com/googleapis/python-container/compare/v2.5.0...v2.6.0) (2021-07-09)
+
+
+### Features
+
+* allow updating security group on existing clusters ([#120](https://www.github.com/googleapis/python-container/issues/120)) ([28a3fc9](https://www.github.com/googleapis/python-container/commit/28a3fc94cd7587b5900408bbadf994f143b0d0c3))
+* allow updating security group on existing clusters ([#123](https://www.github.com/googleapis/python-container/issues/123)) ([e0d70e9](https://www.github.com/googleapis/python-container/commit/e0d70e98991eec24880497516829a0d4ed1dbc18))
+
 ## [2.5.0](https://www.github.com/googleapis/python-container/compare/v2.4.1...v2.5.0) (2021-06-30)
 
 
