@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [2.21.0](https://www.github.com/googleapis/python-bigquery/compare/v2.20.0...v2.21.0) (2021-07-12)
+
+
+### Features
+
+* Add max_results parameter to some of the `QueryJob` methods. ([#698](https://www.github.com/googleapis/python-bigquery/issues/698)) ([2a9618f](https://www.github.com/googleapis/python-bigquery/commit/2a9618f4daaa4a014161e1a2f7376844eec9e8da))
+* Add support for decimal target types. ([#735](https://www.github.com/googleapis/python-bigquery/issues/735)) ([7d2d3e9](https://www.github.com/googleapis/python-bigquery/commit/7d2d3e906a9eb161911a198fb925ad79de5df934))
+* Add support for table snapshots. ([#740](https://www.github.com/googleapis/python-bigquery/issues/740)) ([ba86b2a](https://www.github.com/googleapis/python-bigquery/commit/ba86b2a6300ae5a9f3c803beeb42bda4c522e34c))
+* Enable unsetting policy tags on schema fields. ([#703](https://www.github.com/googleapis/python-bigquery/issues/703)) ([18bb443](https://www.github.com/googleapis/python-bigquery/commit/18bb443c7acd0a75dcb57d9aebe38b2d734ff8c7))
+* Make it easier to disable best-effort deduplication with streaming inserts. ([#734](https://www.github.com/googleapis/python-bigquery/issues/734)) ([1246da8](https://www.github.com/googleapis/python-bigquery/commit/1246da86b78b03ca1aa2c45ec71649e294cfb2f1))
+* Support passing struct data to the DB API. ([#718](https://www.github.com/googleapis/python-bigquery/issues/718)) ([38b3ef9](https://www.github.com/googleapis/python-bigquery/commit/38b3ef96c3dedc139b84f0ff06885141ae7ce78c))
+
+
+### Bug Fixes
+
+* Inserting non-finite floats with `insert_rows()`. ([#728](https://www.github.com/googleapis/python-bigquery/issues/728)) ([d047419](https://www.github.com/googleapis/python-bigquery/commit/d047419879e807e123296da2eee89a5253050166))
+* Use `pandas` function to check for `NaN`. ([#750](https://www.github.com/googleapis/python-bigquery/issues/750)) ([67bc5fb](https://www.github.com/googleapis/python-bigquery/commit/67bc5fbd306be7cdffd216f3791d4024acfa95b3))
+
+
+### Documentation
+
+* Add docs for all enums in module. ([#745](https://www.github.com/googleapis/python-bigquery/issues/745)) ([145944f](https://www.github.com/googleapis/python-bigquery/commit/145944f24fedc4d739687399a8309f9d51d43dfd))
+* Omit mention of Python 2.7 in `CONTRIBUTING.rst`. ([#706](https://www.github.com/googleapis/python-bigquery/issues/706)) ([27d6839](https://www.github.com/googleapis/python-bigquery/commit/27d6839ee8a40909e4199cfa0da8b6b64705b2e9))
+
 ## [2.20.0](https://www.github.com/googleapis/python-bigquery/compare/v2.19.0...v2.20.0) (2021-06-07)
 
 
