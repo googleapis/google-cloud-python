@@ -30,8 +30,10 @@ __protobuf__ = proto.module(
         "Connection",
         "CloudSqlProperties",
         "CloudSqlCredential",
+        "CloudSpannerProperties",
         "AwsProperties",
         "AwsCrossAccountRole",
+        "AwsAccessRole",
     },
 )
 
@@ -158,6 +160,8 @@ class Connection(proto.Message):
             Cloud SQL properties.
         aws (google.cloud.bigquery_connection_v1.types.AwsProperties):
             Amazon Web Services (AWS) properties.
+        cloud_spanner (google.cloud.bigquery_connection_v1.types.CloudSpannerProperties):
+            Cloud Spanner properties.
         creation_time (int):
             Output only. The creation timestamp of the
             connection.
@@ -177,6 +181,9 @@ class Connection(proto.Message):
     )
     aws = proto.Field(
         proto.MESSAGE, number=8, oneof="properties", message="AwsProperties",
+    )
+    cloud_spanner = proto.Field(
+        proto.MESSAGE, number=21, oneof="properties", message="CloudSpannerProperties",
     )
     creation_time = proto.Field(proto.INT64, number=5,)
     last_modified_time = proto.Field(proto.INT64, number=6,)
@@ -222,6 +229,21 @@ class CloudSqlCredential(proto.Message):
     password = proto.Field(proto.STRING, number=2,)
 
 
+class CloudSpannerProperties(proto.Message):
+    r"""Connection properties specific to Cloud Spanner.
+    Attributes:
+        database (str):
+            Cloud Spanner database in the form
+            \`project/instance/database'
+        use_parallelism (bool):
+            If parallelism should be used when reading
+            from Cloud Spanner
+    """
+
+    database = proto.Field(proto.STRING, number=1,)
+    use_parallelism = proto.Field(proto.BOOL, number=2,)
+
+
 class AwsProperties(proto.Message):
     r"""Connection properties specific to Amazon Web Services (AWS).
     Attributes:
@@ -229,6 +251,9 @@ class AwsProperties(proto.Message):
             Authentication using Google owned AWS IAM
             user's access key to assume into customer's AWS
             IAM Role.
+        access_role (google.cloud.bigquery_connection_v1.types.AwsAccessRole):
+            Authentication using Google owned service
+            account to assume into customer's AWS IAM Role.
     """
 
     cross_account_role = proto.Field(
@@ -236,6 +261,9 @@ class AwsProperties(proto.Message):
         number=2,
         oneof="authentication_method",
         message="AwsCrossAccountRole",
+    )
+    access_role = proto.Field(
+        proto.MESSAGE, number=3, oneof="authentication_method", message="AwsAccessRole",
     )
 
 
@@ -261,6 +289,25 @@ class AwsCrossAccountRole(proto.Message):
     iam_role_id = proto.Field(proto.STRING, number=1,)
     iam_user_id = proto.Field(proto.STRING, number=2,)
     external_id = proto.Field(proto.STRING, number=3,)
+
+
+class AwsAccessRole(proto.Message):
+    r"""Authentication method for Amazon Web Services (AWS) that uses
+    Google owned Google service account to assume into customer's
+    AWS IAM Role.
+
+    Attributes:
+        iam_role_id (str):
+            The user’s AWS IAM Role that trusts the
+            Google-owned AWS IAM user Connection.
+        identity (str):
+            A unique Google-owned and Google-generated
+            identity for the Connection. This identity will
+            be used to access the user's AWS IAM Role.
+    """
+
+    iam_role_id = proto.Field(proto.STRING, number=1,)
+    identity = proto.Field(proto.STRING, number=2,)
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

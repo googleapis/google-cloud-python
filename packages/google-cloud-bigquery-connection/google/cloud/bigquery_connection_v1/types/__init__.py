@@ -14,8 +14,10 @@
 # limitations under the License.
 #
 from .connection import (
+    AwsAccessRole,
     AwsCrossAccountRole,
     AwsProperties,
+    CloudSpannerProperties,
     CloudSqlCredential,
     CloudSqlProperties,
     Connection,
@@ -28,8 +30,10 @@ from .connection import (
 )
 
 __all__ = (
+    "AwsAccessRole",
     "AwsCrossAccountRole",
     "AwsProperties",
+    "CloudSpannerProperties",
     "CloudSqlCredential",
     "CloudSqlProperties",
     "Connection",

@@ -17,8 +17,10 @@
 from .services.connection_service import ConnectionServiceClient
 from .services.connection_service import ConnectionServiceAsyncClient
 
+from .types.connection import AwsAccessRole
 from .types.connection import AwsCrossAccountRole
 from .types.connection import AwsProperties
+from .types.connection import CloudSpannerProperties
 from .types.connection import CloudSqlCredential
 from .types.connection import CloudSqlProperties
 from .types.connection import Connection
@@ -31,8 +33,10 @@ from .types.connection import UpdateConnectionRequest
 
 __all__ = (
     "ConnectionServiceAsyncClient",
+    "AwsAccessRole",
     "AwsCrossAccountRole",
     "AwsProperties",
+    "CloudSpannerProperties",
     "CloudSqlCredential",
     "CloudSqlProperties",
     "Connection",
