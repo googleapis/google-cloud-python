@@ -180,13 +180,14 @@ async def verify_firebase_token(id_token, request, audience=None):
 async def fetch_id_token(request, audience):
     """Fetch the ID Token from the current environment.
 
-    This function acquires ID token from the environment in the following order:
+    This function acquires ID token from the environment in the following order.
+    See https://google.aip.dev/auth/4110.
 
-    1. If the application is running in Compute Engine, App Engine or Cloud Run,
-       then the ID token are obtained from the metadata server.
-    2. If the environment variable ``GOOGLE_APPLICATION_CREDENTIALS`` is set
+    1. If the environment variable ``GOOGLE_APPLICATION_CREDENTIALS`` is set
        to the path of a valid service account JSON file, then ID token is
        acquired using this service account credentials.
+    2. If the application is running in Compute Engine, App Engine or Cloud Run,
+       then the ID token are obtained from the metadata server.
     3. If metadata server doesn't exist and no valid service account credentials
        are found, :class:`~google.auth.exceptions.DefaultCredentialsError` will
        be raised.
@@ -214,54 +215,52 @@ async def fetch_id_token(request, audience):
             If metadata server doesn't exist and no valid service account
             credentials are found.
     """
-    # 1. First try to fetch ID token from metadata server if it exists. The code
-    # works for GAE and Cloud Run metadata server as well.
-    try:
-        from google.auth import compute_engine
-
-        request_new = requests.Request()
-        credentials = compute_engine.IDTokenCredentials(
-            request_new, audience, use_metadata_identity_endpoint=True
-        )
-        credentials.refresh(request_new)
-
-        return credentials.token
-
-    except (ImportError, exceptions.TransportError, exceptions.RefreshError):
-        pass
-
-    # 2. Try to use service account credentials to get ID token.
-
-    # Try to get credentials from the GOOGLE_APPLICATION_CREDENTIALS environment
+    # 1. Try to get credentials from the GOOGLE_APPLICATION_CREDENTIALS environment
     # variable.
     credentials_filename = os.environ.get(environment_vars.CREDENTIALS)
-    if not (
-        credentials_filename
-        and os.path.exists(credentials_filename)
-        and os.path.isfile(credentials_filename)
-    ):
-        raise exceptions.DefaultCredentialsError(
-            "Neither metadata server or valid service account credentials are found."
-        )
+    if credentials_filename:
+        if not (
+            os.path.exists(credentials_filename)
+            and os.path.isfile(credentials_filename)
+        ):
+            raise exceptions.DefaultCredentialsError(
+                "GOOGLE_APPLICATION_CREDENTIALS path is either not found or invalid."
+            )
 
+        try:
+            with open(credentials_filename, "r") as f:
+                from google.oauth2 import _service_account_async as service_account
+
+                info = json.load(f)
+                if info.get("type") == "service_account":
+                    credentials = service_account.IDTokenCredentials.from_service_account_info(
+                        info, target_audience=audience
+                    )
+                    await credentials.refresh(request)
+                    return credentials.token
+        except ValueError as caught_exc:
+            new_exc = exceptions.DefaultCredentialsError(
+                "GOOGLE_APPLICATION_CREDENTIALS is not valid service account credentials.",
+                caught_exc,
+            )
+            six.raise_from(new_exc, caught_exc)
+
+    # 2. Try to fetch ID token from metada server if it exists. The code works for GAE and
+    # Cloud Run metadata server as well.
     try:
-        with open(credentials_filename, "r") as f:
-            info = json.load(f)
-            credentials_content = (
-                (info.get("type") == "service_account") and info or None
+        from google.auth import compute_engine
+        from google.auth.compute_engine import _metadata
+
+        request_new = requests.Request()
+        if _metadata.ping(request_new):
+            credentials = compute_engine.IDTokenCredentials(
+                request_new, audience, use_metadata_identity_endpoint=True
             )
+            credentials.refresh(request_new)
+            return credentials.token
+    except (ImportError, exceptions.TransportError):
+        pass
 
-            from google.oauth2 import _service_account_async as service_account
-
-            credentials = service_account.IDTokenCredentials.from_service_account_info(
-                credentials_content, target_audience=audience
-            )
-    except ValueError as caught_exc:
-        new_exc = exceptions.DefaultCredentialsError(
-            "Neither metadata server or valid service account credentials are found.",
-            caught_exc,
-        )
-        six.raise_from(new_exc, caught_exc)
-
-    await credentials.refresh(request)
-    return credentials.token
+    raise exceptions.DefaultCredentialsError(
+        "Neither metadata server or valid service account credentials are found."
+    )
