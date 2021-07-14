@@ -4617,6 +4617,81 @@ class TestClient(unittest.TestCase):
             },
         )
 
+    def test_query_job_rpc_fail_w_random_error(self):
+        from google.api_core.exceptions import Unknown
+        from google.cloud.bigquery.job import QueryJob
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        job_create_error = Unknown("Not sure what went wrong.")
+        job_begin_patcher = mock.patch.object(
+            QueryJob, "_begin", side_effect=job_create_error
+        )
+        with job_begin_patcher:
+            with pytest.raises(Unknown, match="Not sure what went wrong."):
+                client.query("SELECT 1;", job_id="123")
+
+    def test_query_job_rpc_fail_w_conflict_job_id_given(self):
+        from google.api_core.exceptions import Conflict
+        from google.cloud.bigquery.job import QueryJob
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        job_create_error = Conflict("Job already exists.")
+        job_begin_patcher = mock.patch.object(
+            QueryJob, "_begin", side_effect=job_create_error
+        )
+        with job_begin_patcher:
+            with pytest.raises(Conflict, match="Job already exists."):
+                client.query("SELECT 1;", job_id="123")
+
+    def test_query_job_rpc_fail_w_conflict_random_id_job_fetch_fails(self):
+        from google.api_core.exceptions import Conflict
+        from google.api_core.exceptions import DataLoss
+        from google.cloud.bigquery.job import QueryJob
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        job_create_error = Conflict("Job already exists.")
+        job_begin_patcher = mock.patch.object(
+            QueryJob, "_begin", side_effect=job_create_error
+        )
+        get_job_patcher = mock.patch.object(
+            client, "get_job", side_effect=DataLoss("we lost yor job, sorry")
+        )
+
+        with job_begin_patcher, get_job_patcher:
+            # If get job request fails, the original exception should be raised.
+            with pytest.raises(Conflict, match="Job already exists."):
+                client.query("SELECT 1;", job_id=None)
+
+    def test_query_job_rpc_fail_w_conflict_random_id_job_fetch_succeeds(self):
+        from google.api_core.exceptions import Conflict
+        from google.cloud.bigquery.job import QueryJob
+
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(project=self.PROJECT, credentials=creds, _http=http)
+
+        job_create_error = Conflict("Job already exists.")
+        job_begin_patcher = mock.patch.object(
+            QueryJob, "_begin", side_effect=job_create_error
+        )
+        get_job_patcher = mock.patch.object(
+            client, "get_job", return_value=mock.sentinel.query_job
+        )
+
+        with job_begin_patcher, get_job_patcher:
+            result = client.query("SELECT 1;", job_id=None)
+
+        assert result is mock.sentinel.query_job
+
     def test_insert_rows_w_timeout(self):
         from google.cloud.bigquery.schema import SchemaField
         from google.cloud.bigquery.table import Table

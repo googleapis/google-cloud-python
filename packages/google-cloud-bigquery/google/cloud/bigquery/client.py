@@ -3190,6 +3190,7 @@ class Client(ClientWithProject):
                 If ``job_config`` is not an instance of :class:`~google.cloud.bigquery.job.QueryJobConfig`
                 class.
         """
+        job_id_given = job_id is not None
         job_id = _make_job_id(job_id, job_id_prefix)
 
         if project is None:
@@ -3221,9 +3222,30 @@ class Client(ClientWithProject):
 
         job_ref = job._JobReference(job_id, project=project, location=location)
         query_job = job.QueryJob(job_ref, query, client=self, job_config=job_config)
-        query_job._begin(retry=retry, timeout=timeout)
 
-        return query_job
+        try:
+            query_job._begin(retry=retry, timeout=timeout)
+        except core_exceptions.Conflict as create_exc:
+            # The thought is if someone is providing their own job IDs and they get
+            # their job ID generation wrong, this could end up returning results for
+            # the wrong query. We thus only try to recover if job ID was not given.
+            if job_id_given:
+                raise create_exc
+
+            try:
+                query_job = self.get_job(
+                    job_id,
+                    project=project,
+                    location=location,
+                    retry=retry,
+                    timeout=timeout,
+                )
+            except core_exceptions.GoogleAPIError:  # (includes RetryError)
+                raise create_exc
+            else:
+                return query_job
+        else:
+            return query_job
 
     def insert_rows(
         self,
