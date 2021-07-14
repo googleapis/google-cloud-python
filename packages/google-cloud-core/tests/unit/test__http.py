@@ -134,6 +134,11 @@ def make_response(status=http_client.OK, content=b"", headers={}):
     response._content = content
     response.headers = headers
     response.request = requests.Request()
+
+    # Work around requests 'charset_normalizer' idiocy.
+    # See https://github.com/googleapis/python-cloud-core/issues/117
+    response.encoding = "utf-8"
+
     return response
 
 
