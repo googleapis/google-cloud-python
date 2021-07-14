@@ -374,10 +374,11 @@ class DashboardsServiceClient(metaclass=DashboardsServiceClientMeta):
     ) -> dashboard.Dashboard:
         r"""Creates a new custom dashboard. For examples on how you can use
         this API to create dashboards, see `Managing dashboards by
-        API </monitoring/dashboards/api-dashboard>`__. This method
-        requires the ``monitoring.dashboards.create`` permission on the
-        specified project. For more information about permissions, see
-        `Cloud Identity and Access Management </iam>`__.
+        API <https://cloud.google.com/monitoring/dashboards/api-dashboard>`__.
+        This method requires the ``monitoring.dashboards.create``
+        permission on the specified project. For more information about
+        permissions, see `Cloud Identity and Access
+        Management <https://cloud.google.com/iam>`__.
 
         Args:
             request (google.cloud.monitoring_dashboard_v1.types.CreateDashboardRequest):
