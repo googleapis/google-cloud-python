@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+### [2.3.1](https://www.github.com/googleapis/python-bigtable/compare/v2.3.0...v2.3.1) (2021-07-13)
+
+
+### Bug Fixes
+
+* use public 'table_admin_client' property in backups methods ([#359](https://www.github.com/googleapis/python-bigtable/issues/359)) ([bc57c79](https://www.github.com/googleapis/python-bigtable/commit/bc57c79640b270ff89fd10ec243dd04559168c5c))
+
 ## [2.3.0](https://www.github.com/googleapis/python-bigtable/compare/v2.2.0...v2.3.0) (2021-07-01)
 
 
