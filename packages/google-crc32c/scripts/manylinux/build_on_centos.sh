@@ -16,6 +16,7 @@
 set -e -x
 
 MAIN_PYTHON_BIN="/opt/python/cp37-cp37m/bin"
+echo "BUILD_PYTHON: ${BUILD_PYTHON}"
 
 # Upgrade `pip` before using it.
 ${MAIN_PYTHON_BIN}/python -m pip install --upgrade pip
@@ -36,30 +37,39 @@ ${MAIN_PYTHON_BIN}/cmake \
     ..
 make all install
 
-# Collect all target Python versions.
 VERSION_WHITELIST=""
-for PYTHON_BIN in /opt/python/*/bin; do
-    # H/T: https://stackoverflow.com/a/229606/1068170
-    if [[ "${PYTHON_BIN}" == *"36"* ]]; then
-        VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
-        continue
-    elif [[ "${PYTHON_BIN}" == *"37"* ]]; then
-        VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
-        continue
-    elif [[ "${PYTHON_BIN}" == *"38"* ]]; then
-        VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
-        continue
-    elif [[ "${PYTHON_BIN}" == *"39"* ]]; then
-        VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
-        continue
-    elif [[ "${PYTHON_BIN}" == *"310"* ]]; then
-        VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
-        continue
-    else
-        echo "Ignoring unsupported version: ${PYTHON_BIN}"
-        echo "====================================="
-    fi
-done
+if [[ -z ${BUILD_PYTHON} ]]; then
+    # Collect all target Python versions.
+    for PYTHON_BIN in /opt/python/*/bin; do
+        # H/T: https://stackoverflow.com/a/229606/1068170
+        if [[ "${PYTHON_BIN}" == *"36"* ]]; then
+            VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+            continue
+        elif [[ "${PYTHON_BIN}" == *"37"* ]]; then
+            VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+            continue
+        elif [[ "${PYTHON_BIN}" == *"38"* ]]; then
+            VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+            continue
+        elif [[ "${PYTHON_BIN}" == *"39"* ]]; then
+            VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+            continue
+        elif [[ "${PYTHON_BIN}" == *"310"* ]]; then
+            VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+            continue
+        else
+            echo "Ignoring unsupported version: ${PYTHON_BIN}"
+            echo "====================================="
+        fi
+    done
+else
+    STRIPPED_PYTHON=$(echo ${BUILD_PYTHON} | sed -e "s/\.//g")
+    for PYTHON_BIN in /opt/python/*/bin; do
+        if [[ "${PYTHON_BIN}" == *"${STRIPPED_PYTHON}"* ]]; then
+            VERSION_WHITELIST="${VERSION_WHITELIST} ${PYTHON_BIN}"
+        fi
+    done
+fi
 
 # Build the wheels.
 cd /var/code/python-crc32c/
