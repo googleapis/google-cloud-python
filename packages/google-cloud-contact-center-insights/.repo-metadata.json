@@ -1,0 +1,13 @@
+{
+    "name": "contactcenterinsights",
+    "name_pretty": "Contact Center AI Insights API",
+    "product_documentation": "https://cloud.google.com/dialogflow/priv/docs/insights/",
+    "client_documentation": "https://googleapis.dev/python/contactcenterinsights/latest",
+    "issue_tracker": "",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-contact-center-insights",
+    "distribution_name": "google-cloud-contact-center-insights",
+    "api_id": "contactcenterinsights.googleapis.com"
+}
