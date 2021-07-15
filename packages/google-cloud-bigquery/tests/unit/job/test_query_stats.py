@@ -15,6 +15,43 @@
 from .helpers import _Base
 
 
+class TestDmlStats:
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.job import DmlStats
+
+        return DmlStats
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor_defaults(self):
+        dml_stats = self._make_one()
+        assert dml_stats.inserted_row_count == 0
+        assert dml_stats.deleted_row_count == 0
+        assert dml_stats.updated_row_count == 0
+
+    def test_from_api_repr_partial_stats(self):
+        klass = self._get_target_class()
+        result = klass.from_api_repr({"deletedRowCount": "12"})
+
+        assert isinstance(result, klass)
+        assert result.inserted_row_count == 0
+        assert result.deleted_row_count == 12
+        assert result.updated_row_count == 0
+
+    def test_from_api_repr_full_stats(self):
+        klass = self._get_target_class()
+        result = klass.from_api_repr(
+            {"updatedRowCount": "4", "insertedRowCount": "7", "deletedRowCount": "25"}
+        )
+
+        assert isinstance(result, klass)
+        assert result.inserted_row_count == 7
+        assert result.deleted_row_count == 25
+        assert result.updated_row_count == 4
+
+
 class TestQueryPlanEntryStep(_Base):
     KIND = "KIND"
     SUBSTEPS = ("SUB1", "SUB2")

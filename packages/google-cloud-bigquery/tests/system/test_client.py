@@ -1521,6 +1521,62 @@ class TestBigQuery(unittest.TestCase):
         self.assertGreater(stages_with_inputs, 0)
         self.assertGreater(len(plan), stages_with_inputs)
 
+    def test_dml_statistics(self):
+        table_schema = (
+            bigquery.SchemaField("foo", "STRING"),
+            bigquery.SchemaField("bar", "INTEGER"),
+        )
+
+        dataset_id = _make_dataset_id("bq_system_test")
+        self.temp_dataset(dataset_id)
+        table_id = "{}.{}.test_dml_statistics".format(Config.CLIENT.project, dataset_id)
+
+        # Create the table before loading so that the column order is deterministic.
+        table = helpers.retry_403(Config.CLIENT.create_table)(
+            Table(table_id, schema=table_schema)
+        )
+        self.to_delete.insert(0, table)
+
+        # Insert a few rows and check the stats.
+        sql = f"""
+            INSERT INTO `{table_id}`
+            VALUES ("one", 1), ("two", 2), ("three", 3), ("four", 4);
+        """
+        query_job = Config.CLIENT.query(sql)
+        query_job.result()
+
+        assert query_job.dml_stats is not None
+        assert query_job.dml_stats.inserted_row_count == 4
+        assert query_job.dml_stats.updated_row_count == 0
+        assert query_job.dml_stats.deleted_row_count == 0
+
+        # Update some of the rows.
+        sql = f"""
+            UPDATE `{table_id}`
+            SET bar = bar + 1
+            WHERE bar > 2;
+        """
+        query_job = Config.CLIENT.query(sql)
+        query_job.result()
+
+        assert query_job.dml_stats is not None
+        assert query_job.dml_stats.inserted_row_count == 0
+        assert query_job.dml_stats.updated_row_count == 2
+        assert query_job.dml_stats.deleted_row_count == 0
+
+        # Now delete a few rows and check the stats.
+        sql = f"""
+            DELETE FROM `{table_id}`
+            WHERE foo != "two";
+        """
+        query_job = Config.CLIENT.query(sql)
+        query_job.result()
+
+        assert query_job.dml_stats is not None
+        assert query_job.dml_stats.inserted_row_count == 0
+        assert query_job.dml_stats.updated_row_count == 0
+        assert query_job.dml_stats.deleted_row_count == 3
+
     def test_dbapi_w_standard_sql_types(self):
         for sql, expected in helpers.STANDARD_SQL_EXAMPLES:
             Config.CURSOR.execute(sql)

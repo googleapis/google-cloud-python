@@ -110,6 +110,24 @@ class TestQueryJob(_Base):
                 self.assertIsNotNone(expected_ec)
                 self.assertEqual(found_ec.to_api_repr(), expected_ec)
 
+    def _verify_dml_stats_resource_properties(self, job, resource):
+        query_stats = resource.get("statistics", {}).get("query", {})
+
+        if "dmlStats" in query_stats:
+            resource_dml_stats = query_stats["dmlStats"]
+            job_dml_stats = job.dml_stats
+            assert str(job_dml_stats.inserted_row_count) == resource_dml_stats.get(
+                "insertedRowCount", "0"
+            )
+            assert str(job_dml_stats.updated_row_count) == resource_dml_stats.get(
+                "updatedRowCount", "0"
+            )
+            assert str(job_dml_stats.deleted_row_count) == resource_dml_stats.get(
+                "deletedRowCount", "0"
+            )
+        else:
+            assert job.dml_stats is None
+
     def _verify_configuration_properties(self, job, configuration):
         if "dryRun" in configuration:
             self.assertEqual(job.dry_run, configuration["dryRun"])
@@ -118,6 +136,7 @@ class TestQueryJob(_Base):
 
     def _verifyResourceProperties(self, job, resource):
         self._verifyReadonlyResourceProperties(job, resource)
+        self._verify_dml_stats_resource_properties(job, resource)
 
         configuration = resource.get("configuration", {})
         self._verify_configuration_properties(job, configuration)
@@ -130,16 +149,19 @@ class TestQueryJob(_Base):
         self._verify_table_definitions(job, query_config)
 
         self.assertEqual(job.query, query_config["query"])
+
         if "createDisposition" in query_config:
             self.assertEqual(job.create_disposition, query_config["createDisposition"])
         else:
             self.assertIsNone(job.create_disposition)
+
         if "defaultDataset" in query_config:
             ds_ref = job.default_dataset
             ds_ref = {"projectId": ds_ref.project, "datasetId": ds_ref.dataset_id}
             self.assertEqual(ds_ref, query_config["defaultDataset"])
         else:
             self.assertIsNone(job.default_dataset)
+
         if "destinationTable" in query_config:
             table = job.destination
             tb_ref = {
@@ -150,14 +172,17 @@ class TestQueryJob(_Base):
             self.assertEqual(tb_ref, query_config["destinationTable"])
         else:
             self.assertIsNone(job.destination)
+
         if "priority" in query_config:
             self.assertEqual(job.priority, query_config["priority"])
         else:
             self.assertIsNone(job.priority)
+
         if "writeDisposition" in query_config:
             self.assertEqual(job.write_disposition, query_config["writeDisposition"])
         else:
             self.assertIsNone(job.write_disposition)
+
         if "destinationEncryptionConfiguration" in query_config:
             self.assertIsNotNone(job.destination_encryption_configuration)
             self.assertEqual(
@@ -166,6 +191,7 @@ class TestQueryJob(_Base):
             )
         else:
             self.assertIsNone(job.destination_encryption_configuration)
+
         if "schemaUpdateOptions" in query_config:
             self.assertEqual(
                 job.schema_update_options, query_config["schemaUpdateOptions"]
@@ -190,6 +216,7 @@ class TestQueryJob(_Base):
         self.assertIsNone(job.create_disposition)
         self.assertIsNone(job.default_dataset)
         self.assertIsNone(job.destination)
+        self.assertIsNone(job.dml_stats)
         self.assertIsNone(job.flatten_results)
         self.assertIsNone(job.priority)
         self.assertIsNone(job.use_query_cache)
@@ -275,6 +302,26 @@ class TestQueryJob(_Base):
         }
         klass = self._get_target_class()
         job = klass.from_api_repr(RESOURCE, client=client)
+        self.assertIs(job._client, client)
+        self._verifyResourceProperties(job, RESOURCE)
+
+    def test_from_api_repr_with_dml_stats(self):
+        self._setUpConstants()
+        client = _make_client(project=self.PROJECT)
+        RESOURCE = {
+            "id": self.JOB_ID,
+            "jobReference": {"projectId": self.PROJECT, "jobId": self.JOB_ID},
+            "configuration": {"query": {"query": self.QUERY}},
+            "statistics": {
+                "query": {
+                    "dmlStats": {"insertedRowCount": "15", "updatedRowCount": "2"},
+                },
+            },
+        }
+        klass = self._get_target_class()
+
+        job = klass.from_api_repr(RESOURCE, client=client)
+
         self.assertIs(job._client, client)
         self._verifyResourceProperties(job, RESOURCE)
 
@@ -814,6 +861,23 @@ class TestQueryJob(_Base):
 
         query_stats["estimatedBytesProcessed"] = str(est_bytes)
         self.assertEqual(job.estimated_bytes_processed, est_bytes)
+
+    def test_dml_stats(self):
+        from google.cloud.bigquery.job.query import DmlStats
+
+        client = _make_client(project=self.PROJECT)
+        job = self._make_one(self.JOB_ID, self.QUERY, client)
+        assert job.dml_stats is None
+
+        statistics = job._properties["statistics"] = {}
+        assert job.dml_stats is None
+
+        query_stats = statistics["query"] = {}
+        assert job.dml_stats is None
+
+        query_stats["dmlStats"] = {"insertedRowCount": "35"}
+        assert isinstance(job.dml_stats, DmlStats)
+        assert job.dml_stats.inserted_row_count == 35
 
     def test_result(self):
         from google.cloud.bigquery.table import RowIterator

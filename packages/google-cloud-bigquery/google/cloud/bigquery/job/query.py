@@ -114,6 +114,35 @@ def _to_api_repr_table_defs(value):
     return {k: ExternalConfig.to_api_repr(v) for k, v in value.items()}
 
 
+class DmlStats(typing.NamedTuple):
+    """Detailed statistics for DML statements.
+
+    https://cloud.google.com/bigquery/docs/reference/rest/v2/DmlStats
+    """
+
+    inserted_row_count: int = 0
+    """Number of inserted rows. Populated by DML INSERT and MERGE statements."""
+
+    deleted_row_count: int = 0
+    """Number of deleted rows. populated by DML DELETE, MERGE and TRUNCATE statements.
+    """
+
+    updated_row_count: int = 0
+    """Number of updated rows. Populated by DML UPDATE and MERGE statements."""
+
+    @classmethod
+    def from_api_repr(cls, stats: Dict[str, str]) -> "DmlStats":
+        # NOTE: The field order here must match the order of fields set at the
+        # class level.
+        api_fields = ("insertedRowCount", "deletedRowCount", "updatedRowCount")
+
+        args = (
+            int(stats.get(api_field, default_val))
+            for api_field, default_val in zip(api_fields, cls.__new__.__defaults__)
+        )
+        return cls(*args)
+
+
 class ScriptOptions:
     """Options controlling the execution of scripts.
 
@@ -1078,6 +1107,14 @@ class QueryJob(_AsyncJob):
         if result is not None:
             result = int(result)
         return result
+
+    @property
+    def dml_stats(self) -> Optional[DmlStats]:
+        stats = self._job_statistics().get("dmlStats")
+        if stats is None:
+            return None
+        else:
+            return DmlStats.from_api_repr(stats)
 
     def _blocking_poll(self, timeout=None, **kwargs):
         self._done_timeout = timeout

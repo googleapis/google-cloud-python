@@ -58,6 +58,7 @@ Job-Related Types
     job.Compression
     job.CreateDisposition
     job.DestinationFormat
+    job.DmlStats
     job.Encoding
     job.OperationType
     job.QueryPlanEntry

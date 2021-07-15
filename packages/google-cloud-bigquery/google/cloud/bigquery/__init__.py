@@ -56,6 +56,7 @@ from google.cloud.bigquery.job import CopyJob
 from google.cloud.bigquery.job import CopyJobConfig
 from google.cloud.bigquery.job import CreateDisposition
 from google.cloud.bigquery.job import DestinationFormat
+from google.cloud.bigquery.job import DmlStats
 from google.cloud.bigquery.job import Encoding
 from google.cloud.bigquery.job import ExtractJob
 from google.cloud.bigquery.job import ExtractJobConfig
@@ -142,6 +143,7 @@ __all__ = [
     "BigtableOptions",
     "BigtableColumnFamily",
     "BigtableColumn",
+    "DmlStats",
     "CSVOptions",
     "GoogleSheetsOptions",
     "ParquetOptions",
