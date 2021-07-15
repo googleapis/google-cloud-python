@@ -119,7 +119,7 @@ _CHUNKED_DOWNLOAD_CHECKSUM_MESSAGE = (
 _COMPOSE_IF_GENERATION_LIST_DEPRECATED = (
     "'if_generation_match: type list' is deprecated and supported for "
     "backwards-compatability reasons only.  Use 'if_source_generation_match' "
-    "instead' to match source objects' generations.",
+    "instead' to match source objects' generations."
 )
 _COMPOSE_IF_GENERATION_LIST_AND_IF_SOURCE_GENERATION_ERROR = (
     "Use 'if_generation_match' to match the generation of the destination "
@@ -130,14 +130,14 @@ _COMPOSE_IF_METAGENERATION_LIST_DEPRECATED = (
     "'if_metageneration_match: type list' is deprecated and supported for "
     "backwards-compatability reasons only. Note that the metageneration to "
     "be matched is that of the destination blob. Please pass in a single "
-    "value (type long).",
+    "value (type long)."
 )
 _COMPOSE_IF_SOURCE_GENERATION_MISMATCH_ERROR = (
     "'if_source_generation_match' length must be the same as 'sources' length"
 )
 _DOWNLOAD_AS_STRING_DEPRECATED = (
     "Blob.download_as_string() is deprecated and will be removed in future. "
-    "Use Blob.download_as_bytes() instead.",
+    "Use Blob.download_as_bytes() instead."
 )
 
 
