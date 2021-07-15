@@ -34,7 +34,7 @@ setuptools.setup(
     platforms='Posix; MacOS X; Windows',
     include_package_data=True,
     install_requires=(
-        'google-api-core[grpc] >= 1.27.0, < 2.0.0dev',
+        'google-api-core[grpc] >= 1.27.0, < 3.0.0dev',
         'libcst >= 0.2.5',
         'proto-plus >= 1.15.0',
         'packaging >= 14.3',        'grpc-google-iam-v1 >= 0.12.3, < 0.13dev',    ),
@@ -46,6 +46,7 @@ setuptools.setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Topic :: Internet',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
