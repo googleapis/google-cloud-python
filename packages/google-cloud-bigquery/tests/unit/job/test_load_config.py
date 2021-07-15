@@ -424,6 +424,17 @@ class TestLoadJobConfig(_Base):
         config.null_marker = null_marker
         self.assertEqual(config._properties["load"]["nullMarker"], null_marker)
 
+    def test_projection_fields_miss(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.projection_fields)
+
+    def test_projection_fields_hit(self):
+        config = self._get_target_class()()
+        fields = ["email", "postal_code"]
+        config.projection_fields = fields
+        self.assertEqual(config._properties["load"]["projectionFields"], fields)
+        self.assertEqual(config.projection_fields, fields)
+
     def test_quote_character_missing(self):
         config = self._get_target_class()()
         self.assertIsNone(config.quote_character)
