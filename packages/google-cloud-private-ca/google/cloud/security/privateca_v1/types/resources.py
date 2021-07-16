@@ -363,7 +363,7 @@ class CaPool(proto.Message):
 
         Attributes:
             publish_ca_cert (bool):
-                Required. When true, publishes each
+                Optional. When true, publishes each
                 [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
                 CA certificate and includes its URL in the "Authority
                 Information Access" X.509 extension in all issued
@@ -372,7 +372,7 @@ class CaPool(proto.Message):
                 and the corresponding X.509 extension will not be written in
                 issued certificates.
             publish_crl (bool):
-                Required. When true, publishes each
+                Optional. When true, publishes each
                 [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s
                 CRL and includes its URL in the "CRL Distribution Points"
                 X.509 extension in all issued
@@ -544,11 +544,11 @@ class CaPool(proto.Message):
 
             Attributes:
                 allow_csr_based_issuance (bool):
-                    Required. When true, allows callers to create
+                    Optional. When true, allows callers to create
                     [Certificates][google.cloud.security.privateca.v1.Certificate]
                     by specifying a CSR.
                 allow_config_based_issuance (bool):
-                    Required. When true, allows callers to create
+                    Optional. When true, allows callers to create
                     [Certificates][google.cloud.security.privateca.v1.Certificate]
                     by specifying a
                     [CertificateConfig][google.cloud.security.privateca.v1.CertificateConfig].
@@ -1101,14 +1101,16 @@ class CertificateDescription(proto.Message):
                 The serial number encoded in lowercase
                 hexadecimal.
             lifetime (google.protobuf.duration_pb2.Duration):
-                For convenience, the actual lifetime of an issued
-                certificate. Corresponds to 'not_after_time' -
-                'not_before_time'.
+                For convenience, the actual lifetime of an
+                issued certificate.
             not_before_time (google.protobuf.timestamp_pb2.Timestamp):
                 The time at which the certificate becomes
                 valid.
             not_after_time (google.protobuf.timestamp_pb2.Timestamp):
-                The time at which the certificate expires.
+                The time after which the certificate is expired. Per RFC
+                5280, the validity period for a certificate is the period of
+                time from not_before_time through not_after_time, inclusive.
+                Corresponds to 'not_before_time' + 'lifetime' - 1 second.
         """
 
         subject = proto.Field(proto.MESSAGE, number=1, message="Subject",)
@@ -1184,7 +1186,7 @@ class X509Extension(proto.Message):
         object_id (google.cloud.security.privateca_v1.types.ObjectId):
             Required. The OID for this X.509 extension.
         critical (bool):
-            Required. Indicates whether or not this
+            Optional. Indicates whether or not this
             extension is critical (i.e., if the client does
             not know how to handle this extension, the
             client should consider this to be an error).
@@ -1383,25 +1385,21 @@ class CertificateIdentityConstraints(proto.Message):
             signed. To see the full allowed syntax and some
             examples, see
             https://cloud.google.com/certificate-authority-
-            service/docs/cel-guide
+            service/docs/using-cel
         allow_subject_passthrough (bool):
             Required. If this is true, the
             [Subject][google.cloud.security.privateca.v1.Subject] field
             may be copied from a certificate request into the signed
             certificate. Otherwise, the requested
             [Subject][google.cloud.security.privateca.v1.Subject] will
-            be discarded. The bool is optional to indicate an unset
-            field, which suggests a forgotten value that needs to be set
-            by the caller.
+            be discarded.
         allow_subject_alt_names_passthrough (bool):
             Required. If this is true, the
             [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
             extension may be copied from a certificate request into the
             signed certificate. Otherwise, the requested
             [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames]
-            will be discarded. The bool is optional to indicate an unset
-            field, which suggests a forgotten value that needs to be set
-            by the caller.
+            will be discarded.
     """
 
     cel_expression = proto.Field(proto.MESSAGE, number=1, message=expr_pb2.Expr,)

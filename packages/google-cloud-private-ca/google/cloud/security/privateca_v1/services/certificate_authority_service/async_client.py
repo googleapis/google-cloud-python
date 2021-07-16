@@ -1933,15 +1933,19 @@ class CertificateAuthorityServiceAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.security.privateca_v1.types.CaPool` A [CaPool][google.cloud.security.privateca.v1.CaPool] represents a group of
-                   [CertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthority]
-                   that form a trust anchor. A
-                   [CaPool][google.cloud.security.privateca.v1.CaPool]
-                   can be used to manage issuance policies for one or
-                   more
-                   [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
-                   resources and to rotate CA certificates in and out of
-                   the trust anchor.
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+                   The JSON representation for Empty is empty JSON
+                   object {}.
 
         """
         # Create or coerce a protobuf request object.
@@ -1982,7 +1986,7 @@ class CertificateAuthorityServiceAsyncClient:
         response = operation_async.from_gapic(
             response,
             self._client._transport.operations_client,
-            resources.CaPool,
+            empty_pb2.Empty,
             metadata_type=service.OperationMetadata,
         )
 
