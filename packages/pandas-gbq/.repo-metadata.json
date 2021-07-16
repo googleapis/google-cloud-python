@@ -1,0 +1,13 @@
+{
+    "name": "pandas-gbq",
+    "name_pretty": "Google BigQuery connector for pandas",
+    "product_documentation": "https://cloud.google.com/bigquery",
+    "client_documentation": "https://pandas-gbq.readthedocs.io/en/latest/",
+    "issue_tracker": "https://github.com/googleapis/python-bigquery-pandas/issues",
+    "release_level": "beta",
+    "language": "python",
+    "library_type": "INTEGRATION",
+    "repo": "googleapis/python-bigquery-pandas",
+    "distribution_name": "pandas-gbq",
+    "api_id": "bigquery.googleapis.com"
+  }
