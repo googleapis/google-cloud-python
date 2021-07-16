@@ -1889,7 +1889,7 @@ class TestRowIterator(unittest.TestCase):
         iterator = self._make_one(first_page_response=None)  # not cached
 
         patcher = mock.patch(
-            "google.cloud.bigquery.table._helpers._verify_bq_storage_version",
+            "google.cloud.bigquery.table._helpers.BQ_STORAGE_VERSIONS.verify_version",
             side_effect=LegacyBigQueryStorageError("BQ Storage too old"),
         )
         with patcher, warnings.catch_warnings(record=True) as warned:

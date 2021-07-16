@@ -41,6 +41,7 @@ else:
     # Having BQ Storage available implies that pyarrow >=1.0.0 is available, too.
     _ARROW_COMPRESSION_SUPPORT = True
 
+from google.cloud.bigquery import _helpers
 from google.cloud.bigquery import schema
 
 
@@ -590,7 +591,14 @@ def _bqstorage_page_to_dataframe(column_names, dtypes, page):
 def _download_table_bqstorage_stream(
     download_state, bqstorage_client, session, stream, worker_queue, page_to_item
 ):
-    rowstream = bqstorage_client.read_rows(stream.name).rows(session)
+    reader = bqstorage_client.read_rows(stream.name)
+
+    # Avoid deprecation warnings for passing in unnecessary read session.
+    # https://github.com/googleapis/python-bigquery-storage/issues/229
+    if _helpers.BQ_STORAGE_VERSIONS.is_read_session_optional:
+        rowstream = reader.rows()
+    else:
+        rowstream = reader.rows(session)
 
     for page in rowstream.pages:
         if download_state.done:

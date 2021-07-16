@@ -61,7 +61,7 @@ from google.cloud.bigquery._helpers import _del_sub_prop
 from google.cloud.bigquery._helpers import _get_sub_prop
 from google.cloud.bigquery._helpers import _record_field_to_json
 from google.cloud.bigquery._helpers import _str_or_none
-from google.cloud.bigquery._helpers import _verify_bq_storage_version
+from google.cloud.bigquery._helpers import BQ_STORAGE_VERSIONS
 from google.cloud.bigquery._helpers import _verify_job_config_type
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery import _pandas_helpers
@@ -508,7 +508,7 @@ class Client(ClientWithProject):
             return None
 
         try:
-            _verify_bq_storage_version()
+            BQ_STORAGE_VERSIONS.verify_version()
         except LegacyBigQueryStorageError as exc:
             warnings.warn(str(exc))
             return None

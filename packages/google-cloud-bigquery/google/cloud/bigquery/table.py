@@ -1565,7 +1565,7 @@ class RowIterator(HTTPIterator):
             return False
 
         try:
-            _helpers._verify_bq_storage_version()
+            _helpers.BQ_STORAGE_VERSIONS.verify_version()
         except LegacyBigQueryStorageError as exc:
             warnings.warn(str(exc))
             return False
