@@ -68,15 +68,12 @@ Using ``nox``
 We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 
 - To test your changes, run unit tests with ``nox``::
+    $ nox -s unit
 
-    $ nox -s unit-2.7
-    $ nox -s unit-3.8
-    $ ...
+- To run a single unit test::
 
-- Args to pytest can be passed through the nox command separated by a `--`. For
-  example, to run a single test::
+    $ nox -s unit-3.9 -- -k <name of test>
 
-    $ nox -s unit-3.8 -- -k <name of test>
 
   .. note::
 
@@ -143,8 +140,7 @@ Running System Tests
 - To run system tests, you can execute::
 
    # Run all system tests
-   $ nox -s system-3.8
-   $ nox -s system-2.7
+   $ nox -s system
 
    # Run a single system test
    $ nox -s system-3.8 -- -k <name of test>
@@ -152,29 +148,14 @@ Running System Tests
 
   .. note::
 
-      System tests are only configured to run under Python 2.7 and
-      Python 3.8. For expediency, we do not run them in older versions
-      of Python 3.
+      System tests are only configured to run under Python 3.8.
+      For expediency, we do not run them in older versions of Python 3.
 
   This alone will not run the tests. You'll need to change some local
   auth settings and change some configuration in your project to
   run all the tests.
 
-- System tests will be run against an actual project and
-  so you'll need to provide some environment variables to facilitate
-  authentication to your project:
-
-  - ``GOOGLE_APPLICATION_CREDENTIALS``: The path to a JSON key file;
-    Such a file can be downloaded directly from the developer's console by clicking
-    "Generate new JSON key". See private key
-    `docs <https://cloud.google.com/storage/docs/authentication#generating-a-private-key>`__
-    for more details.
-
-- Once you have downloaded your json keys, set the environment variable 
-  ``GOOGLE_APPLICATION_CREDENTIALS`` to the absolute path of the json file::
-
-   $ export GOOGLE_APPLICATION_CREDENTIALS="/Users/<your_username>/path/to/app_credentials.json"
-
+- System tests will be run against an actual project. You should use local credentials from gcloud when possible. See `Best practices for application authentication <https://cloud.google.com/docs/authentication/best-practices-applications#local_development_and_testing_with_the>`__. Some tests require a service account. For those tests see `Authenticating as a service account <https://cloud.google.com/docs/authentication/production>`__.
 
 *************
 Test Coverage
@@ -232,8 +213,8 @@ Supported versions can be found in our ``noxfile.py`` `config`_.
 .. _config: https://github.com/googleapis/python-pubsub/blob/master/noxfile.py
 
 
-We also explicitly decided to support Python 3 beginning with version
-3.6. Reasons for this include:
+We also explicitly decided to support Python 3 beginning with version 3.6.
+Reasons for this include:
 
 -  Encouraging use of newest versions of Python 3
 -  Taking the lead of `prominent`_ open-source `projects`_

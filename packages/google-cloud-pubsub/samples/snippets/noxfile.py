@@ -28,8 +28,9 @@ import nox
 # WARNING - WARNING - WARNING - WARNING - WARNING
 # WARNING - WARNING - WARNING - WARNING - WARNING
 
-# Copy `noxfile_config.py` to your directory and modify it instead.
+BLACK_VERSION = "black==19.10b0"
 
+# Copy `noxfile_config.py` to your directory and modify it instead.
 
 # `TEST_CONFIG` dict is a configuration hook that allows users to
 # modify the test configurations. The values here should be in sync
@@ -50,7 +51,10 @@ TEST_CONFIG = {
     # to use your own Cloud project.
     'gcloud_project_env': 'GOOGLE_CLOUD_PROJECT',
     # 'gcloud_project_env': 'BUILD_SPECIFIC_GCLOUD_PROJECT',
-
+    # If you need to use a specific version of pip,
+    # change pip_version_override to the string representation
+    # of the version number, for example, "20.2.4"
+    "pip_version_override": None,
     # A dictionary you want to inject into your test. Don't put any
     # secrets here. These values will override predefined values.
     'envs': {},
@@ -156,7 +160,7 @@ def lint(session: nox.sessions.Session) -> None:
 
 @nox.session
 def blacken(session: nox.sessions.Session) -> None:
-    session.install("black")
+    session.install(BLACK_VERSION)
     python_files = [path for path in os.listdir(".") if path.endswith(".py")]
 
     session.run("black", *python_files)
@@ -170,6 +174,9 @@ PYTEST_COMMON_ARGS = ["--junitxml=sponge_log.xml"]
 
 
 def _session_tests(session: nox.sessions.Session, post_install: Callable = None) -> None:
+    if TEST_CONFIG["pip_version_override"]:
+        pip_version = TEST_CONFIG["pip_version_override"]
+        session.install(f"pip=={pip_version}")
     """Runs py.test for a particular project."""
     if os.path.exists("requirements.txt"):
         if os.path.exists("constraints.txt"):

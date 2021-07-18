@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/python-pubsub.git",
-        "sha": "b8352f91c63e0cb7d64c4d0e557651248cd301b5"
+        "sha": "f1ee3463a89a1a994af0cc522d25bfd1c4412824"
       }
     },
     {
@@ -13,27 +13,6 @@
         "remote": "https://github.com/googleapis/googleapis.git",
         "sha": "6598bb829c9e9a534be674649ffd1b4671a821f9",
         "internalRef": "364449524"
-      }
-    },
-    {
-      "git": {
-        "name": "synthtool",
-        "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "043cc620d6a6111816d9e09f2a97208565fde958"
-      }
-    },
-    {
-      "git": {
-        "name": "synthtool",
-        "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "043cc620d6a6111816d9e09f2a97208565fde958"
-      }
-    },
-    {
-      "git": {
-        "name": "synthtool",
-        "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "043cc620d6a6111816d9e09f2a97208565fde958"
       }
     }
   ],
@@ -64,7 +43,6 @@
     ".kokoro/continuous/common.cfg",
     ".kokoro/continuous/continuous.cfg",
     ".kokoro/docker/docs/Dockerfile",
-    ".kokoro/docker/docs/fetch_gpg_keys.sh",
     ".kokoro/docs/common.cfg",
     ".kokoro/docs/docs-presubmit.cfg",
     ".kokoro/docs/docs.cfg",
@@ -94,6 +72,11 @@
     ".kokoro/samples/python3.8/periodic-head.cfg",
     ".kokoro/samples/python3.8/periodic.cfg",
     ".kokoro/samples/python3.8/presubmit.cfg",
+    ".kokoro/samples/python3.9/common.cfg",
+    ".kokoro/samples/python3.9/continuous.cfg",
+    ".kokoro/samples/python3.9/periodic-head.cfg",
+    ".kokoro/samples/python3.9/periodic.cfg",
+    ".kokoro/samples/python3.9/presubmit.cfg",
     ".kokoro/test-samples-against-head.sh",
     ".kokoro/test-samples-impl.sh",
     ".kokoro/test-samples.sh",
@@ -105,6 +88,7 @@
     "CONTRIBUTING.rst",
     "LICENSE",
     "MANIFEST.in",
+    "SECURITY.md",
     "docs/_static/custom.css",
     "docs/_templates/layout.html",
     "docs/conf.py",

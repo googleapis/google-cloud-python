@@ -796,6 +796,7 @@ class PublisherClient(metaclass=PublisherClientMeta):
                 This corresponds to the ``topic`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
+
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (TimeoutType):
@@ -1207,6 +1208,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
             request (:class:`~.iam_policy.GetIamPolicyRequest`):
                 The request object. Request message for `GetIamPolicy`
                 method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
             timeout (TimeoutType):
                 The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
@@ -1317,6 +1320,8 @@ class PublisherClient(metaclass=PublisherClientMeta):
             request (:class:`~.iam_policy.TestIamPermissionsRequest`):
                 The request object. Request message for
                 `TestIamPermissions` method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
             timeout (TimeoutType):
                 The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
