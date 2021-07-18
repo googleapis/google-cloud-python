@@ -49,7 +49,7 @@ s.move(
 # DEFAULT SCOPES and SERVICE_ADDRESS are being used. so let's force them in.
 s.replace(
     "google/pubsub_v1/services/*er/*client.py",
-    r"DEFAULT_ENDPOINT = 'pubsub\.googleapis\.com'",
+    """DEFAULT_ENDPOINT = "pubsub\.googleapis\.com\"""",
     """
     # The scopes needed to make gRPC calls to all of the methods defined in
     # this service
@@ -300,6 +300,22 @@ s.replace(
     ".coveragerc",
     r"((?P<indent>[^\n\S]+)google/pubsub/__init__\.py)",
     "\g<indent>google/cloud/__init__.py\n\g<0>",
+)
+
+# Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
+s.replace(f"google/pubsub_v1/types/*.py",
+            r""".
+    Attributes:""",
+            r""".\n
+    Attributes:""",
+)
+
+# Work around gapic generator bug https://github.com/googleapis/gapic-generator-python/issues/902
+s.replace("google/pubsub_v1/types/*.py",
+            r""".
+        Attributes:""",
+            r""".\n
+        Attributes:""",
 )
 
 # ----------------------------------------------------------------------------

@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 import argparse
 import os
 import libcst as cst
@@ -41,42 +39,40 @@ def partition(
 class pubsubCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-    'acknowledge': ('subscription', 'ack_ids', ),
-    'create_schema': ('parent', 'schema', 'schema_id', ),
-    'create_snapshot': ('name', 'subscription', 'labels', ),
-    'create_subscription': ('name', 'topic', 'push_config', 'ack_deadline_seconds', 'retain_acked_messages', 'message_retention_duration', 'labels', 'enable_message_ordering', 'expiration_policy', 'filter', 'dead_letter_policy', 'retry_policy', 'detached', ),
-    'create_topic': ('name', 'labels', 'message_storage_policy', 'kms_key_name', 'schema_settings', 'satisfies_pzs', ),
-    'delete_schema': ('name', ),
-    'delete_snapshot': ('snapshot', ),
-    'delete_subscription': ('subscription', ),
-    'delete_topic': ('topic', ),
-    'detach_subscription': ('subscription', ),
-    'get_schema': ('name', 'view', ),
-    'get_snapshot': ('snapshot', ),
-    'get_subscription': ('subscription', ),
-    'get_topic': ('topic', ),
-    'list_schemas': ('parent', 'view', 'page_size', 'page_token', ),
-    'list_snapshots': ('project', 'page_size', 'page_token', ),
-    'list_subscriptions': ('project', 'page_size', 'page_token', ),
-    'list_topics': ('project', 'page_size', 'page_token', ),
-    'list_topic_snapshots': ('topic', 'page_size', 'page_token', ),
-    'list_topic_subscriptions': ('topic', 'page_size', 'page_token', ),
-    'modify_ack_deadline': ('subscription', 'ack_ids', 'ack_deadline_seconds', ),
-    'modify_push_config': ('subscription', 'push_config', ),
-    'publish': ('topic', 'messages', ),
-    'pull': ('subscription', 'max_messages', 'return_immediately', ),
-    'seek': ('subscription', 'time', 'snapshot', ),
-    'streaming_pull': ('subscription', 'stream_ack_deadline_seconds', 'ack_ids', 'modify_deadline_seconds', 'modify_deadline_ack_ids', 'client_id', 'max_outstanding_messages', 'max_outstanding_bytes', ),
-    'update_snapshot': ('snapshot', 'update_mask', ),
-    'update_subscription': ('subscription', 'update_mask', ),
-    'update_topic': ('topic', 'update_mask', ),
-    'validate_message': ('parent', 'name', 'schema', 'message', 'encoding', ),
-    'validate_schema': ('parent', 'schema', ),
-
+          'acknowledge': ('subscription', 'ack_ids', ),
+          'create_schema': ('parent', 'schema', 'schema_id', ),
+          'create_snapshot': ('name', 'subscription', 'labels', ),
+          'create_subscription': ('name', 'topic', 'push_config', 'ack_deadline_seconds', 'retain_acked_messages', 'message_retention_duration', 'labels', 'enable_message_ordering', 'expiration_policy', 'filter', 'dead_letter_policy', 'retry_policy', 'detached', ),
+          'create_topic': ('name', 'labels', 'message_storage_policy', 'kms_key_name', 'schema_settings', 'satisfies_pzs', ),
+          'delete_schema': ('name', ),
+          'delete_snapshot': ('snapshot', ),
+          'delete_subscription': ('subscription', ),
+          'delete_topic': ('topic', ),
+          'detach_subscription': ('subscription', ),
+          'get_schema': ('name', 'view', ),
+          'get_snapshot': ('snapshot', ),
+          'get_subscription': ('subscription', ),
+          'get_topic': ('topic', ),
+          'list_schemas': ('parent', 'view', 'page_size', 'page_token', ),
+          'list_snapshots': ('project', 'page_size', 'page_token', ),
+          'list_subscriptions': ('project', 'page_size', 'page_token', ),
+          'list_topics': ('project', 'page_size', 'page_token', ),
+          'list_topic_snapshots': ('topic', 'page_size', 'page_token', ),
+          'list_topic_subscriptions': ('topic', 'page_size', 'page_token', ),
+          'modify_ack_deadline': ('subscription', 'ack_ids', 'ack_deadline_seconds', ),
+          'modify_push_config': ('subscription', 'push_config', ),
+          'publish': ('topic', 'messages', ),
+          'pull': ('subscription', 'max_messages', 'return_immediately', ),
+          'seek': ('subscription', 'time', 'snapshot', ),
+          'streaming_pull': ('subscription', 'stream_ack_deadline_seconds', 'ack_ids', 'modify_deadline_seconds', 'modify_deadline_ack_ids', 'client_id', 'max_outstanding_messages', 'max_outstanding_bytes', ),
+          'update_snapshot': ('snapshot', 'update_mask', ),
+          'update_subscription': ('subscription', 'update_mask', ),
+          'update_topic': ('topic', 'update_mask', ),
+          'validate_message': ('parent', 'name', 'schema', 'message', 'encoding', ),
+          'validate_schema': ('parent', 'schema', ),
     'get_iam_policy': ('resource', 'options', ),
     'set_iam_policy': ('resource', 'policy', ),
     'test_iam_permissions': ('resource', 'permissions', ),
-
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
@@ -107,7 +103,7 @@ class pubsubCallTransformer(cst.CSTTransformer):
             value=cst.Dict([
                 cst.DictElement(
                     cst.SimpleString("'{}'".format(name)),
-                    cst.Element(value=arg.value)
+cst.Element(value=arg.value)
                 )
                 # Note: the args + kwargs looks silly, but keep in mind that
                 # the control parameters had to be stripped out, and that

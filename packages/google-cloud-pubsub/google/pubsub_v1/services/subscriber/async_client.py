@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 from collections import OrderedDict
 import functools
 import re
@@ -32,19 +30,18 @@ import warnings
 import pkg_resources
 
 import google.api_core.client_options as ClientOptions  # type: ignore
-from google.api_core import exceptions  # type: ignore
+from google.api_core import exceptions as core_exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-from google.auth import credentials  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
-from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
-from google.iam.v1 import policy_pb2 as policy  # type: ignore
-from google.protobuf import duration_pb2 as duration  # type: ignore
-from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from google.pubsub_v1.services.subscriber import pagers
 from google.pubsub_v1.types import pubsub
-
 from .transports.base import SubscriberTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import SubscriberGrpcAsyncIOTransport
 from .client import SubscriberClient
@@ -68,25 +65,20 @@ class SubscriberAsyncClient:
     parse_subscription_path = staticmethod(SubscriberClient.parse_subscription_path)
     topic_path = staticmethod(SubscriberClient.topic_path)
     parse_topic_path = staticmethod(SubscriberClient.parse_topic_path)
-
     common_billing_account_path = staticmethod(
         SubscriberClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
         SubscriberClient.parse_common_billing_account_path
     )
-
     common_folder_path = staticmethod(SubscriberClient.common_folder_path)
     parse_common_folder_path = staticmethod(SubscriberClient.parse_common_folder_path)
-
     common_organization_path = staticmethod(SubscriberClient.common_organization_path)
     parse_common_organization_path = staticmethod(
         SubscriberClient.parse_common_organization_path
     )
-
     common_project_path = staticmethod(SubscriberClient.common_project_path)
     parse_common_project_path = staticmethod(SubscriberClient.parse_common_project_path)
-
     common_location_path = staticmethod(SubscriberClient.common_location_path)
     parse_common_location_path = staticmethod(
         SubscriberClient.parse_common_location_path
@@ -94,7 +86,8 @@ class SubscriberAsyncClient:
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
-        """Creates an instance of this client using the provided credentials info.
+        """Creates an instance of this client using the provided credentials
+            info.
 
         Args:
             info (dict): The service account private key info.
@@ -109,7 +102,7 @@ class SubscriberAsyncClient:
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
         """Creates an instance of this client using the provided credentials
-        file.
+            file.
 
         Args:
             filename (str): The path to the service account private key json
@@ -126,7 +119,7 @@ class SubscriberAsyncClient:
 
     @property
     def transport(self) -> SubscriberTransport:
-        """Return the transport used by the client instance.
+        """Returns the transport used by the client instance.
 
         Returns:
             SubscriberTransport: The transport used by the client instance.
@@ -140,12 +133,12 @@ class SubscriberAsyncClient:
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
+        credentials: ga_credentials.Credentials = None,
         transport: Union[str, SubscriberTransport] = "grpc_asyncio",
         client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiate the subscriber client.
+        """Instantiates the subscriber client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -177,7 +170,6 @@ class SubscriberAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-
         self._client = SubscriberClient(
             credentials=credentials,
             transport=transport,
@@ -276,7 +268,6 @@ class SubscriberAsyncClient:
                 This corresponds to the ``ack_deadline_seconds`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -301,7 +292,6 @@ class SubscriberAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
         if topic is not None:
@@ -320,9 +310,9 @@ class SubscriberAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.Aborted,
-                    exceptions.ServiceUnavailable,
-                    exceptions.Unknown,
+                    core_exceptions.Aborted,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
@@ -364,7 +354,6 @@ class SubscriberAsyncClient:
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -389,7 +378,6 @@ class SubscriberAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if subscription is not None:
             request.subscription = subscription
 
@@ -402,9 +390,9 @@ class SubscriberAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.Aborted,
-                    exceptions.ServiceUnavailable,
-                    exceptions.Unknown,
+                    core_exceptions.Aborted,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
@@ -442,7 +430,6 @@ class SubscriberAsyncClient:
             request (:class:`google.pubsub_v1.types.UpdateSubscriptionRequest`):
                 The request object. Request for the UpdateSubscription
                 method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -454,7 +441,6 @@ class SubscriberAsyncClient:
                 A subscription resource.
         """
         # Create or coerce a protobuf request object.
-
         request = pubsub.UpdateSubscriptionRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -465,7 +451,9 @@ class SubscriberAsyncClient:
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
                 deadline=60.0,
             ),
             default_timeout=60.0,
@@ -508,7 +496,6 @@ class SubscriberAsyncClient:
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -537,7 +524,6 @@ class SubscriberAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if project is not None:
             request.project = project
 
@@ -550,9 +536,9 @@ class SubscriberAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.Aborted,
-                    exceptions.ServiceUnavailable,
-                    exceptions.Unknown,
+                    core_exceptions.Aborted,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
@@ -605,7 +591,6 @@ class SubscriberAsyncClient:
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -626,7 +611,6 @@ class SubscriberAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if subscription is not None:
             request.subscription = subscription
 
@@ -638,7 +622,9 @@ class SubscriberAsyncClient:
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
                 deadline=60.0,
             ),
             default_timeout=60.0,
@@ -708,7 +694,6 @@ class SubscriberAsyncClient:
                 This corresponds to the ``ack_deadline_seconds`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -729,12 +714,10 @@ class SubscriberAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if subscription is not None:
             request.subscription = subscription
         if ack_deadline_seconds is not None:
             request.ack_deadline_seconds = ack_deadline_seconds
-
         if ack_ids:
             request.ack_ids.extend(ack_ids)
 
@@ -746,7 +729,9 @@ class SubscriberAsyncClient:
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
                 deadline=60.0,
             ),
             default_timeout=60.0,
@@ -804,7 +789,6 @@ class SubscriberAsyncClient:
                 This corresponds to the ``ack_ids`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -825,10 +809,8 @@ class SubscriberAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if subscription is not None:
             request.subscription = subscription
-
         if ack_ids:
             request.ack_ids.extend(ack_ids)
 
@@ -840,7 +822,9 @@ class SubscriberAsyncClient:
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
                 deadline=60.0,
             ),
             default_timeout=60.0,
@@ -910,7 +894,6 @@ class SubscriberAsyncClient:
                 This corresponds to the ``max_messages`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -935,7 +918,6 @@ class SubscriberAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if subscription is not None:
             request.subscription = subscription
         if return_immediately is not None:
@@ -958,9 +940,9 @@ class SubscriberAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.Aborted,
-                    exceptions.ServiceUnavailable,
-                    exceptions.Unknown,
+                    core_exceptions.Aborted,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
@@ -1028,11 +1010,11 @@ class SubscriberAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.Aborted,
-                    exceptions.DeadlineExceeded,
-                    exceptions.InternalServerError,
-                    exceptions.ResourceExhausted,
-                    exceptions.ServiceUnavailable,
+                    core_exceptions.Aborted,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.InternalServerError,
+                    core_exceptions.ResourceExhausted,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=900.0,
             ),
@@ -1087,7 +1069,6 @@ class SubscriberAsyncClient:
                 This corresponds to the ``push_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1108,7 +1089,6 @@ class SubscriberAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if subscription is not None:
             request.subscription = subscription
         if push_config is not None:
@@ -1122,7 +1102,9 @@ class SubscriberAsyncClient:
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
                 deadline=60.0,
             ),
             default_timeout=60.0,
@@ -1169,7 +1151,6 @@ class SubscriberAsyncClient:
                 This corresponds to the ``snapshot`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1200,7 +1181,6 @@ class SubscriberAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if snapshot is not None:
             request.snapshot = snapshot
 
@@ -1213,9 +1193,9 @@ class SubscriberAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.Aborted,
-                    exceptions.ServiceUnavailable,
-                    exceptions.Unknown,
+                    core_exceptions.Aborted,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
@@ -1261,7 +1241,6 @@ class SubscriberAsyncClient:
                 This corresponds to the ``project`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1290,7 +1269,6 @@ class SubscriberAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if project is not None:
             request.project = project
 
@@ -1303,9 +1281,9 @@ class SubscriberAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.Aborted,
-                    exceptions.ServiceUnavailable,
-                    exceptions.Unknown,
+                    core_exceptions.Aborted,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
@@ -1392,7 +1370,6 @@ class SubscriberAsyncClient:
                 This corresponds to the ``subscription`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1423,7 +1400,6 @@ class SubscriberAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if name is not None:
             request.name = name
         if subscription is not None:
@@ -1437,7 +1413,9 @@ class SubscriberAsyncClient:
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
                 deadline=60.0,
             ),
             default_timeout=60.0,
@@ -1476,7 +1454,6 @@ class SubscriberAsyncClient:
             request (:class:`google.pubsub_v1.types.UpdateSnapshotRequest`):
                 The request object. Request for the UpdateSnapshot
                 method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1494,7 +1471,6 @@ class SubscriberAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
-
         request = pubsub.UpdateSnapshotRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1505,7 +1481,9 @@ class SubscriberAsyncClient:
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
                 deadline=60.0,
             ),
             default_timeout=60.0,
@@ -1557,7 +1535,6 @@ class SubscriberAsyncClient:
                 This corresponds to the ``snapshot`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1578,7 +1555,6 @@ class SubscriberAsyncClient:
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
-
         if snapshot is not None:
             request.snapshot = snapshot
 
@@ -1590,7 +1566,9 @@ class SubscriberAsyncClient:
                 initial=0.1,
                 maximum=60.0,
                 multiplier=1.3,
-                predicate=retries.if_exception_type(exceptions.ServiceUnavailable,),
+                predicate=retries.if_exception_type(
+                    core_exceptions.ServiceUnavailable,
+                ),
                 deadline=60.0,
             ),
             default_timeout=60.0,
@@ -1629,7 +1607,6 @@ class SubscriberAsyncClient:
         Args:
             request (:class:`google.pubsub_v1.types.SeekRequest`):
                 The request object. Request for the `Seek` method.
-
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -1641,7 +1618,6 @@ class SubscriberAsyncClient:
                 Response for the Seek method (this response is empty).
         """
         # Create or coerce a protobuf request object.
-
         request = pubsub.SeekRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
@@ -1653,9 +1629,9 @@ class SubscriberAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    exceptions.Aborted,
-                    exceptions.ServiceUnavailable,
-                    exceptions.Unknown,
+                    core_exceptions.Aborted,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
@@ -1679,16 +1655,18 @@ class SubscriberAsyncClient:
 
     async def set_iam_policy(
         self,
-        request: iam_policy.SetIamPolicyRequest = None,
+        request: iam_policy_pb2.SetIamPolicyRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
-        r"""Sets the IAM access control policy on the specified
-        function. Replaces any existing policy.
+    ) -> policy_pb2.Policy:
+        r"""Sets the IAM access control policy on the specified function.
+
+        Replaces any existing policy.
+
         Args:
-            request (:class:`~.iam_policy.SetIamPolicyRequest`):
+            request (:class:`~.policy_pb2.SetIamPolicyRequest`):
                 The request object. Request message for `SetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1697,7 +1675,7 @@ class SubscriberAsyncClient:
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         Returns:
-            ~.policy.Policy:
+            ~.policy_pb2.Policy:
                 Defines an Identity and Access Management (IAM) policy.
                 It is used to specify access control policies for Cloud
                 Platform resources.
@@ -1761,7 +1739,7 @@ class SubscriberAsyncClient:
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
-            request = iam_policy.SetIamPolicyRequest(**request)
+            request = iam_policy_pb2.SetIamPolicyRequest(**request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1785,17 +1763,19 @@ class SubscriberAsyncClient:
 
     async def get_iam_policy(
         self,
-        request: iam_policy.GetIamPolicyRequest = None,
+        request: iam_policy_pb2.GetIamPolicyRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> policy.Policy:
+    ) -> policy_pb2.Policy:
         r"""Gets the IAM access control policy for a function.
+
         Returns an empty policy if the function exists and does
         not have a policy set.
+
         Args:
-            request (:class:`~.iam_policy.GetIamPolicyRequest`):
+            request (:class:`~.iam_policy_pb2.GetIamPolicyRequest`):
                 The request object. Request message for `GetIamPolicy`
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1804,7 +1784,7 @@ class SubscriberAsyncClient:
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         Returns:
-            ~.policy.Policy:
+            ~.policy_pb2.Policy:
                 Defines an Identity and Access Management (IAM) policy.
                 It is used to specify access control policies for Cloud
                 Platform resources.
@@ -1868,7 +1848,7 @@ class SubscriberAsyncClient:
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
-            request = iam_policy.GetIamPolicyRequest(**request)
+            request = iam_policy_pb2.GetIamPolicyRequest(**request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1892,17 +1872,20 @@ class SubscriberAsyncClient:
 
     async def test_iam_permissions(
         self,
-        request: iam_policy.TestIamPermissionsRequest = None,
+        request: iam_policy_pb2.TestIamPermissionsRequest = None,
         *,
         retry: retries.Retry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> iam_policy.TestIamPermissionsResponse:
+    ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified permissions against the IAM access control
-        policy for a function. If the function does not exist, this will
+            policy for a function.
+
+        If the function does not exist, this will
         return an empty set of permissions, not a NOT_FOUND error.
+
         Args:
-            request (:class:`~.iam_policy.TestIamPermissionsRequest`):
+            request (:class:`~.iam_policy_pb2.TestIamPermissionsRequest`):
                 The request object. Request message for
                 `TestIamPermissions` method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
@@ -1911,7 +1894,7 @@ class SubscriberAsyncClient:
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         Returns:
-            ~.iam_policy.TestIamPermissionsResponse:
+            ~iam_policy_pb2.PolicyTestIamPermissionsResponse:
                 Response message for ``TestIamPermissions`` method.
         """
         # Create or coerce a protobuf request object.
@@ -1919,7 +1902,7 @@ class SubscriberAsyncClient:
         # The request isn't a proto-plus wrapped type,
         # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
-            request = iam_policy.TestIamPermissionsRequest(**request)
+            request = iam_policy_pb2.TestIamPermissionsRequest(**request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
