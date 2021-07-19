@@ -444,6 +444,10 @@ def test_query_data_with_query_options(capsys):
     assert "VenueId: 42, VenueName: Venue 42, LastUpdateTime:" in out
 
 
+@pytest.mark.skip(
+    "Failure is due to the package being missing on the backend."
+    "See: https://github.com/googleapis/python-spanner/issues/421"
+)
 def test_create_client_with_query_options(capsys):
     snippets.create_client_with_query_options(INSTANCE_ID, DATABASE_ID)
     out, _ = capsys.readouterr()
