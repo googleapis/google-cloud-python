@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-essential-contacts/compare/v0.1.1...v0.2.0) (2021-07-14)
+
+
+### Features
+
+* add always_use_jwt_access ([#14](https://www.github.com/googleapis/python-essential-contacts/issues/14)) ([66e7ee0](https://www.github.com/googleapis/python-essential-contacts/commit/66e7ee0f82527e33c708949088493ad90e634fb1))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#18](https://www.github.com/googleapis/python-essential-contacts/issues/18)) ([fcc8156](https://www.github.com/googleapis/python-essential-contacts/commit/fcc815666514d9827c12507a4e601a409bce2235))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-essential-contacts/issues/1127)) ([#9](https://www.github.com/googleapis/python-essential-contacts/issues/9)) ([31ae5a1](https://www.github.com/googleapis/python-essential-contacts/commit/31ae5a198e8844bfcc57283da8b26bcef17d6814)), closes [#1126](https://www.github.com/googleapis/python-essential-contacts/issues/1126)
+
 ### [0.1.1](https://www.github.com/googleapis/python-essential-contacts/compare/v0.1.0...v0.1.1) (2021-06-16)
 
 
