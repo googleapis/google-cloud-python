@@ -1,5 +1,16 @@
 # Changelog
 
+### [1.0.1](https://www.github.com/googleapis/python-security-private-ca/compare/v1.0.0...v1.0.1) (2021-07-16)
+
+
+### Bug Fixes
+
+* correct response type of DeleteCaPool ([13e54bf](https://www.github.com/googleapis/python-security-private-ca/commit/13e54bf5ad66f85f1e2165b2cf67604af50ccd0c))
+* make allow_config_based_issuance bool optional ([#80](https://www.github.com/googleapis/python-security-private-ca/issues/80)) ([13e54bf](https://www.github.com/googleapis/python-security-private-ca/commit/13e54bf5ad66f85f1e2165b2cf67604af50ccd0c))
+* make allow_csr_based_issuance bool optional ([13e54bf](https://www.github.com/googleapis/python-security-private-ca/commit/13e54bf5ad66f85f1e2165b2cf67604af50ccd0c))
+* make publish_ca_cert bool optional ([13e54bf](https://www.github.com/googleapis/python-security-private-ca/commit/13e54bf5ad66f85f1e2165b2cf67604af50ccd0c))
+* make publish_crl bool optional ([13e54bf](https://www.github.com/googleapis/python-security-private-ca/commit/13e54bf5ad66f85f1e2165b2cf67604af50ccd0c))
+
 ## [1.0.0](https://www.github.com/googleapis/python-security-private-ca/compare/v0.4.0...v1.0.0) (2021-07-12)
 
 
