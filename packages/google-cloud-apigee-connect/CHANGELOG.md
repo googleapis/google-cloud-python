@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/googleapis/python-apigee-connect/compare/v0.1.0...v0.2.0) (2021-07-14)
+
+
+### Features
+
+* add always_use_jwt_access ([#11](https://www.github.com/googleapis/python-apigee-connect/issues/11)) ([bdd0f21](https://www.github.com/googleapis/python-apigee-connect/commit/bdd0f2109e34d100c285ab355f302326816f24c8))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([f4cff83](https://www.github.com/googleapis/python-apigee-connect/commit/f4cff83baf1865477139bd14b02a12e47505150d))
+* disable always_use_jwt_access ([#15](https://www.github.com/googleapis/python-apigee-connect/issues/15)) ([f4cff83](https://www.github.com/googleapis/python-apigee-connect/commit/f4cff83baf1865477139bd14b02a12e47505150d))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-apigee-connect/issues/1127)) ([#6](https://www.github.com/googleapis/python-apigee-connect/issues/6)) ([a465d9a](https://www.github.com/googleapis/python-apigee-connect/commit/a465d9a37f4738f0f16e89b4c26a74366c0834fb)), closes [#1126](https://www.github.com/googleapis/python-apigee-connect/issues/1126)
+
 ## 0.1.0 (2021-06-13)
 
 
