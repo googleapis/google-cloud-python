@@ -42,6 +42,7 @@ def spanner_instance():
         instance_config,
         labels={
             "cloud_spanner_samples": "true",
+            "sample_name": "autocommit",
             "created": str(int(time.time()))
         }
     )

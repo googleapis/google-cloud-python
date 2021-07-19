@@ -47,6 +47,7 @@ def create_instance(instance_id):
         node_count=1,
         labels={
             "cloud_spanner_samples": "true",
+            "sample_name": "snippets-create_instance",
             "created": str(int(time.time()))
         }
     )
@@ -76,6 +77,11 @@ def create_instance_with_processing_units(instance_id, processing_units):
         configuration_name=config_name,
         display_name="This is a display name.",
         processing_units=processing_units,
+        labels={
+            "cloud_spanner_samples": "true",
+            "sample_name": "snippets-create_instance_with_processing_units",
+            "created": str(int(time.time()))
+        }
     )
 
     operation = instance.create()

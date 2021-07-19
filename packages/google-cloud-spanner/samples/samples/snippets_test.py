@@ -88,6 +88,9 @@ def test_create_instance_with_processing_units(capsys):
     out, _ = capsys.readouterr()
     assert LCI_INSTANCE_ID in out
     assert "{} processing units".format(processing_units) in out
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(LCI_INSTANCE_ID)
+    instance.delete()
 
 
 def test_create_database(database):

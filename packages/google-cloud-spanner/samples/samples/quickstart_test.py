@@ -40,7 +40,11 @@ def create_instance():
     instance = spanner_client.instance(
         INSTANCE_ID,
         instance_config,
-        labels={"cloud_spanner_samples": "true", "created": str(int(time.time()))},
+        labels={
+            "cloud_spanner_samples": "true",
+            "sample_name": "quickstart",
+            "created": str(int(time.time()))
+        },
     )
     op = instance.create()
     op.result(120)  # block until completion
