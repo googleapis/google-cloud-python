@@ -303,7 +303,7 @@ class SpannerDDLCompiler(DDLCompiler):
                 table.kwargs["spanner_interleave_in"]
             )
 
-            if table.kwargs.get("spanner_inverleave_on_delete_cascade"):
+            if table.kwargs.get("spanner_interleave_on_delete_cascade"):
                 post_cmds += " ON DELETE CASCADE"
 
         return post_cmds

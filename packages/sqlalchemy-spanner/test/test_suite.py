@@ -1520,7 +1520,7 @@ class InterleavedTablesTest(fixtures.TestBase):
             Column("client_id", Integer, primary_key=True),
             Column("client_name", String(16), nullable=False),
             spanner_interleave_in="team",
-            spanner_inverleave_on_delete_cascade=True,
+            spanner_interleave_on_delete_cascade=True,
         )
         with mock.patch("google.cloud.spanner_dbapi.cursor.Cursor.execute") as execute:
             client.create(self._engine)
