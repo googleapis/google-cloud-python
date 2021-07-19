@@ -15,10 +15,12 @@
 import time
 import uuid
 
+from google.api_core import exceptions
 from google.cloud import spanner
 from google.cloud.spanner_v1.instance import Backup
 from google.cloud.spanner_v1.instance import Instance
 import pytest
+from test_utils.retry import RetryErrors
 
 import snippets
 
@@ -84,7 +86,10 @@ def test_create_instance(spanner_instance):
 
 def test_create_instance_with_processing_units(capsys):
     processing_units = 500
-    snippets.create_instance_with_processing_units(LCI_INSTANCE_ID, processing_units)
+    retry_429 = RetryErrors(exceptions.ResourceExhausted, delay=15)
+    retry_429(snippets.create_instance_with_processing_units)(
+        LCI_INSTANCE_ID, processing_units,
+    )
     out, _ = capsys.readouterr()
     assert LCI_INSTANCE_ID in out
     assert "{} processing units".format(processing_units) in out
