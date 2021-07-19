@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.5.1](https://www.github.com/googleapis/python-media-translation/compare/v0.5.0...v0.5.1) (2021-07-19)
+
+
+### Documentation
+
+* **README:** fix link to API documentation ([#83](https://www.github.com/googleapis/python-media-translation/issues/83)) ([e6f8da6](https://www.github.com/googleapis/python-media-translation/commit/e6f8da65529e680ed8110f54a6fce5072f4474e4))
+
 ## [0.5.0](https://www.github.com/googleapis/python-media-translation/compare/v0.4.0...v0.5.0) (2021-07-01)
 
 
