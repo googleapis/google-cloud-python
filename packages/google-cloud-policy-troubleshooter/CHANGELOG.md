@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.1.0](https://www.github.com/googleapis/python-policy-troubleshooter/compare/v1.0.0...v1.1.0) (2021-07-14)
+
+
+### Features
+
+* add always_use_jwt_access ([#35](https://www.github.com/googleapis/python-policy-troubleshooter/issues/35)) ([0c3e8f7](https://www.github.com/googleapis/python-policy-troubleshooter/commit/0c3e8f7d4554e3d3f515cd6f92c7538482fe6155))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([f4f810d](https://www.github.com/googleapis/python-policy-troubleshooter/commit/f4f810ddc58b4ebe076457d6d1ba75d023fce572))
+* disable always_use_jwt_access ([#39](https://www.github.com/googleapis/python-policy-troubleshooter/issues/39)) ([f4f810d](https://www.github.com/googleapis/python-policy-troubleshooter/commit/f4f810ddc58b4ebe076457d6d1ba75d023fce572))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-policy-troubleshooter/issues/1127)) ([#30](https://www.github.com/googleapis/python-policy-troubleshooter/issues/30)) ([da0adc2](https://www.github.com/googleapis/python-policy-troubleshooter/commit/da0adc2d0c05be77f06f21e0f34a0d35705832b2))
+
 ## [1.0.0](https://www.github.com/googleapis/python-policy-troubleshooter/compare/v0.2.0...v1.0.0) (2021-06-02)
 
 
