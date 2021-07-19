@@ -70,6 +70,7 @@ for library in s.get_staging_dirs(default_version):
         library,
         excludes=[
             "*.tar.gz",
+            ".coveragerc",
             "docs/index.rst",
             f"docs/bigquery_{library.name}/*_service.rst",
             f"docs/bigquery_{library.name}/services.rst",

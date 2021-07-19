@@ -27,6 +27,7 @@ from .standard_sql import (
     StandardSqlDataType,
     StandardSqlField,
     StandardSqlStructType,
+    StandardSqlTableType,
 )
 from .table_reference import TableReference
 
@@ -42,5 +43,6 @@ __all__ = (
     "StandardSqlDataType",
     "StandardSqlField",
     "StandardSqlStructType",
+    "StandardSqlTableType",
     "TableReference",
 )
