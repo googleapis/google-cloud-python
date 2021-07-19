@@ -5,6 +5,31 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [2.22.0](https://www.github.com/googleapis/python-bigquery/compare/v2.21.0...v2.22.0) (2021-07-19)
+
+
+### Features
+
+* add `LoadJobConfig.projection_fields` to select DATASTORE_BACKUP fields ([#736](https://www.github.com/googleapis/python-bigquery/issues/736)) ([c45a738](https://www.github.com/googleapis/python-bigquery/commit/c45a7380871af3dfbd3c45524cb606c60e1a01d1))
+* add standard sql table type, update scalar type enums ([#777](https://www.github.com/googleapis/python-bigquery/issues/777)) ([b8b5433](https://www.github.com/googleapis/python-bigquery/commit/b8b5433898ec881f8da1303614780a660d94733a))
+* add support for more detailed DML stats ([#758](https://www.github.com/googleapis/python-bigquery/issues/758)) ([36fe86f](https://www.github.com/googleapis/python-bigquery/commit/36fe86f41c1a8f46167284f752a6d6bbf886a04b))
+* add support for user defined Table View Functions ([#724](https://www.github.com/googleapis/python-bigquery/issues/724)) ([8c7b839](https://www.github.com/googleapis/python-bigquery/commit/8c7b839a6ac1491c1c3b6b0e8755f4b70ed72ee3))
+
+
+### Bug Fixes
+
+* avoid possible job already exists error ([#751](https://www.github.com/googleapis/python-bigquery/issues/751)) ([45b9308](https://www.github.com/googleapis/python-bigquery/commit/45b93089f5398740413104285cc8acfd5ebc9c08))
+
+
+### Dependencies
+
+* allow 2.x versions of `google-api-core`, `google-cloud-core`, `google-resumable-media` ([#770](https://www.github.com/googleapis/python-bigquery/issues/770)) ([87a09fa](https://www.github.com/googleapis/python-bigquery/commit/87a09fa3f2a9ab35728a1ac925f9d5f2e6616c65))
+
+
+### Documentation
+
+* add loading data from Firestore backup sample ([#737](https://www.github.com/googleapis/python-bigquery/issues/737)) ([22fd848](https://www.github.com/googleapis/python-bigquery/commit/22fd848cae4af1148040e1faa31dd15a4d674687))
+
 ## [2.21.0](https://www.github.com/googleapis/python-bigquery/compare/v2.20.0...v2.21.0) (2021-07-12)
 
 
