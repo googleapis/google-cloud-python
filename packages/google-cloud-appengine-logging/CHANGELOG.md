@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.1.2](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.1...v0.1.2) (2021-07-14)
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-appengine-logging/issues/1127)) ([#8](https://www.github.com/googleapis/python-appengine-logging/issues/8)) ([f1bd0a3](https://www.github.com/googleapis/python-appengine-logging/commit/f1bd0a3d2d068fae0c6d9c167a25908b6f808997)), closes [#1126](https://www.github.com/googleapis/python-appengine-logging/issues/1126)
+
 ### [0.1.1](https://www.github.com/googleapis/python-appengine-logging/compare/v0.1.0...v0.1.1) (2021-06-16)
 
 
