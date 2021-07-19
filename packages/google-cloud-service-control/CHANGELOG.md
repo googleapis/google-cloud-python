@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://www.github.com/googleapis/python-service-control/compare/v0.3.0...v1.0.0) (2021-07-18)
+
+
+### Miscellaneous Chores
+
+* release as 1.0.0 ([#42](https://www.github.com/googleapis/python-service-control/issues/42)) ([7722bef](https://www.github.com/googleapis/python-service-control/commit/7722bef5c084f1e610469ec09023fb9c712e904c))
+
 ## [0.3.0](https://www.github.com/googleapis/python-service-control/compare/v0.2.0...v0.3.0) (2021-07-01)
 
 
