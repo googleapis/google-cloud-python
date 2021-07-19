@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.3.0](https://www.github.com/googleapis/python-os-config/compare/v1.2.0...v1.3.0) (2021-07-14)
+
+
+### Features
+
+* add always_use_jwt_access ([#88](https://www.github.com/googleapis/python-os-config/issues/88)) ([abb4837](https://www.github.com/googleapis/python-os-config/commit/abb48378d71deab058958c3b3b1efff5c253c99e))
+
+
+### Bug Fixes
+
+* disable always_use_jwt_access ([#92](https://www.github.com/googleapis/python-os-config/issues/92)) ([5d8a4bb](https://www.github.com/googleapis/python-os-config/commit/5d8a4bb9ef477f8fd81344fbd02631ac31660169))
+
+
+### Documentation
+
+* omit mention of Python 2.7 in 'CONTRIBUTING.rst' ([#1127](https://www.github.com/googleapis/python-os-config/issues/1127)) ([#83](https://www.github.com/googleapis/python-os-config/issues/83)) ([b9fc494](https://www.github.com/googleapis/python-os-config/commit/b9fc4948a320fcf6a7154a2c7a1476cc78736c4d))
+
 ## [1.2.0](https://www.github.com/googleapis/python-os-config/compare/v1.1.0...v1.2.0) (2021-06-09)
 
 
