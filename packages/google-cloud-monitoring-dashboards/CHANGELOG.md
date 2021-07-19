@@ -1,5 +1,12 @@
 # Changelog
 
+### [2.2.1](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.2.0...v2.2.1) (2021-07-14)
+
+
+### Documentation
+
+* fixed broken links ([#90](https://www.github.com/googleapis/python-monitoring-dashboards/issues/90)) ([59cd222](https://www.github.com/googleapis/python-monitoring-dashboards/commit/59cd222eb61b03b421ceb07b9506571ae17826ae))
+
 ## [2.2.0](https://www.github.com/googleapis/python-monitoring-dashboards/compare/v2.1.0...v2.2.0) (2021-07-09)
 
 
